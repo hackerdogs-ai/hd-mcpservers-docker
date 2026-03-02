@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "tlsx-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/tlsx-mcp:latest"
+      ]
+    }
+  }
+}

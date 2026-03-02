@@ -1,0 +1,13 @@
+services:
+  titus-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hackerdogs/titus-mcp:latest
+    container_name: titus-mcp
+    ports:
+      - "8103:8103"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8103
+    restart: unless-stopped

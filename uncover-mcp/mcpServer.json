@@ -1,0 +1,23 @@
+{
+  "mcpServers": {
+    "uncover-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e", "SHODAN_API_KEY",
+        "-e", "CENSYS_API_TOKEN",
+        "-e", "FOFA_EMAIL",
+        "-e", "FOFA_KEY",
+        "hackerdogs/uncover-mcp:latest"
+      ],
+      "env": {
+        "SHODAN_API_KEY": "<your-shodan-api-key>",
+        "CENSYS_API_TOKEN": "<your-censys-api-token>",
+        "FOFA_EMAIL": "<your-fofa-email>",
+        "FOFA_KEY": "<your-fofa-key>"
+      }
+    }
+  }
+}

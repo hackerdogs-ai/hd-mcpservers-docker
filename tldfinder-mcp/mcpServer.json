@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "tldfinder-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/tldfinder-mcp:latest"
+      ]
+    }
+  }
+}

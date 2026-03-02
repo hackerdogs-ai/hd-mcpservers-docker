@@ -1,0 +1,12 @@
+services:
+  brutus-mcp:
+    image: hackerdogs/brutus-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8102:8102"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8102
+    restart: unless-stopped

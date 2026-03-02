@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "dnsx-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/dnsx-mcp:latest"
+      ]
+    }
+  }
+}

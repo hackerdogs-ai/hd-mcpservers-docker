@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "wappalyzergo-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/wappalyzergo-mcp:latest"
+      ]
+    }
+  }
+}

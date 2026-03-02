@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  cvemap-mcp:
+    image: hackerdogs/cvemap-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cvemap-mcp
+    ports:
+      - "8106:8106"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8106
+      - PDCP_API_KEY=${PDCP_API_KEY:-}
+    restart: unless-stopped

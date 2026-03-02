@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  vulnx-mcp:
+    image: hackerdogs/vulnx-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vulnx-mcp
+    ports:
+      - "8116:8116"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8116
+      - PDCP_API_KEY=${PDCP_API_KEY:-}
+    restart: unless-stopped

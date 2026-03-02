@@ -1,0 +1,13 @@
+services:
+  nerva-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hackerdogs/nerva-mcp:latest
+    container_name: nerva-mcp
+    ports:
+      - "8104:8104"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8104
+    restart: unless-stopped

@@ -1,0 +1,244 @@
+services:
+  julius-mcp:
+    build:
+      context: ./julius-mcp
+      dockerfile: Dockerfile
+    image: hackerdogs/julius-mcp:latest
+    container_name: julius-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8100
+    ports:
+      - "8100:8100"
+    restart: unless-stopped
+
+  augustus-mcp:
+    build:
+      context: ./augustus-mcp
+      dockerfile: Dockerfile
+    image: hackerdogs/augustus-mcp:latest
+    container_name: augustus-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8101
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - COHERE_API_KEY=${COHERE_API_KEY:-}
+      - AZURE_OPENAI_API_KEY=${AZURE_OPENAI_API_KEY:-}
+      - GROQ_API_KEY=${GROQ_API_KEY:-}
+      - MISTRAL_API_KEY=${MISTRAL_API_KEY:-}
+      - TOGETHER_API_KEY=${TOGETHER_API_KEY:-}
+    ports:
+      - "8101:8101"
+    restart: unless-stopped
+
+  brutus-mcp:
+    build:
+      context: ./brutus-mcp
+      dockerfile: Dockerfile
+    image: hackerdogs/brutus-mcp:latest
+    container_name: brutus-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8102
+    ports:
+      - "8102:8102"
+    restart: unless-stopped
+
+  titus-mcp:
+    build:
+      context: ./titus-mcp
+      dockerfile: Dockerfile
+    image: hackerdogs/titus-mcp:latest
+    container_name: titus-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8103
+    ports:
+      - "8103:8103"
+    restart: unless-stopped
+
+  nerva-mcp:
+    build:
+      context: ./nerva-mcp
+      dockerfile: Dockerfile
+    image: hackerdogs/nerva-mcp:latest
+    container_name: nerva-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8104
+    ports:
+      - "8104:8104"
+    restart: unless-stopped
+
+  naabu-mcp:
+    build:
+      context: ./naabu-mcp
+      dockerfile: Dockerfile
+    image: hackerdogs/naabu-mcp:latest
+    container_name: naabu-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8105
+    ports:
+      - "8105:8105"
+    restart: unless-stopped
+
+  cvemap-mcp:
+    build:
+      context: ./cvemap-mcp
+      dockerfile: Dockerfile
+    image: hackerdogs/cvemap-mcp:latest
+    container_name: cvemap-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8106
+      - PDCP_API_KEY=${PDCP_API_KEY:-}
+    ports:
+      - "8106:8106"
+    restart: unless-stopped
+
+  uncover-mcp:
+    build:
+      context: ./uncover-mcp
+      dockerfile: Dockerfile
+    image: hackerdogs/uncover-mcp:latest
+    container_name: uncover-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8107
+      - SHODAN_API_KEY=${SHODAN_API_KEY:-}
+      - CENSYS_API_TOKEN=${CENSYS_API_TOKEN:-}
+      - CENSYS_ORGANIZATION_ID=${CENSYS_ORGANIZATION_ID:-}
+      - FOFA_EMAIL=${FOFA_EMAIL:-}
+      - FOFA_KEY=${FOFA_KEY:-}
+      - HUNTER_API_KEY=${HUNTER_API_KEY:-}
+      - ZOOMEYE_API_KEY=${ZOOMEYE_API_KEY:-}
+      - NETLAS_API_KEY=${NETLAS_API_KEY:-}
+      - CRIMINALIP_API_KEY=${CRIMINALIP_API_KEY:-}
+      - ONYPHE_API_KEY=${ONYPHE_API_KEY:-}
+    ports:
+      - "8107:8107"
+    restart: unless-stopped
+
+  dnsx-mcp:
+    build:
+      context: ./dnsx-mcp
+      dockerfile: Dockerfile
+    image: hackerdogs/dnsx-mcp:latest
+    container_name: dnsx-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8108
+    ports:
+      - "8108:8108"
+    restart: unless-stopped
+
+  tlsx-mcp:
+    build:
+      context: ./tlsx-mcp
+      dockerfile: Dockerfile
+    image: hackerdogs/tlsx-mcp:latest
+    container_name: tlsx-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8109
+    ports:
+      - "8109:8109"
+    restart: unless-stopped
+
+  asnmap-mcp:
+    build:
+      context: ./asnmap-mcp
+      dockerfile: Dockerfile
+    image: hackerdogs/asnmap-mcp:latest
+    container_name: asnmap-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8110
+      - PDCP_API_KEY=${PDCP_API_KEY}
+    ports:
+      - "8110:8110"
+    restart: unless-stopped
+
+  cloudlist-mcp:
+    build:
+      context: ./cloudlist-mcp
+      dockerfile: Dockerfile
+    image: hackerdogs/cloudlist-mcp:latest
+    container_name: cloudlist-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8111
+    ports:
+      - "8111:8111"
+    volumes:
+      - ./cloudlist-mcp/config:/app/config:ro
+    restart: unless-stopped
+
+  urlfinder-mcp:
+    build:
+      context: ./urlfinder-mcp
+      dockerfile: Dockerfile
+    image: hackerdogs/urlfinder-mcp:latest
+    container_name: urlfinder-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8112
+    ports:
+      - "8112:8112"
+    restart: unless-stopped
+
+  tldfinder-mcp:
+    build:
+      context: ./tldfinder-mcp
+      dockerfile: Dockerfile
+    image: hackerdogs/tldfinder-mcp:latest
+    container_name: tldfinder-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8113
+    ports:
+      - "8113:8113"
+    restart: unless-stopped
+
+  wappalyzergo-mcp:
+    build:
+      context: ./wappalyzergo-mcp
+      dockerfile: Dockerfile
+    image: hackerdogs/wappalyzergo-mcp:latest
+    container_name: wappalyzergo-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8114
+    ports:
+      - "8114:8114"
+    restart: unless-stopped
+
+  openrisk-mcp:
+    build:
+      context: ./openrisk-mcp
+      dockerfile: Dockerfile
+    image: hackerdogs/openrisk-mcp:latest
+    container_name: openrisk-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8115
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    ports:
+      - "8115:8115"
+    restart: unless-stopped
+
+  vulnx-mcp:
+    build:
+      context: ./vulnx-mcp
+      dockerfile: Dockerfile
+    image: hackerdogs/vulnx-mcp:latest
+    container_name: vulnx-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8116
+      - PDCP_API_KEY=${PDCP_API_KEY:-}
+    ports:
+      - "8116:8116"
+    restart: unless-stopped

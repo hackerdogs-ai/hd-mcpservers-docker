@@ -1,0 +1,12 @@
+services:
+  tldfinder-mcp:
+    image: hackerdogs/tldfinder-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8113:8113"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8113
+    restart: unless-stopped

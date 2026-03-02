@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "openrisk-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "OPENAI_API_KEY",
+        "hackerdogs/openrisk-mcp:latest"
+      ]
+    }
+  }
+}

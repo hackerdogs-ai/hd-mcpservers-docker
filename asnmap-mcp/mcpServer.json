@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "asnmap-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e", "PDCP_API_KEY",
+        "hackerdogs/asnmap-mcp:latest"
+      ],
+      "env": {
+        "PDCP_API_KEY": "<your-projectdiscovery-api-key>"
+      }
+    }
+  }
+}

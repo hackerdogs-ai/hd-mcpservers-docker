@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "cloudlist-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/cloudlist-mcp:latest"
+      ]
+    }
+  }
+}

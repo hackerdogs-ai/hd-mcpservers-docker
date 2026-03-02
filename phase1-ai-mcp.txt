@@ -1,0 +1,17 @@
+praetorian-inc/julius	https://github.com/praetorian-inc/julius
+praetorian-inc/augustus	https://github.com/praetorian-inc/augustus
+praetorian-inc/brutus	https://github.com/praetorian-inc/brutus
+praetorian-inc/titus	https://github.com/praetorian-inc/titus
+praetorian-inc/nerva	https://github.com/praetorian-inc/nerva
+projectdiscovery/naabu	https://github.com/projectdiscovery/naabu
+projectdiscovery/cvemap	https://github.com/projectdiscovery/cvemap
+projectdiscovery/uncover	https://github.com/projectdiscovery/uncover
+projectdiscovery/dnsx	https://github.com/projectdiscovery/dnsx
+projectdiscovery/tlsx	https://github.com/projectdiscovery/tlsx
+projectdiscovery/asnmap	https://github.com/projectdiscovery/asnmap
+projectdiscovery/cloudlist	https://github.com/projectdiscovery/cloudlist
+projectdiscovery/urlfinder	https://github.com/projectdiscovery/urlfinder
+projectdiscovery/tldfinder	https://github.com/projectdiscovery/tldfinder
+projectdiscovery/wappalyzergo	https://github.com/projectdiscovery/wappalyzergo
+projectdiscovery/openrisk	https://github.com/projectdiscovery/openrisk
+projectdiscovery/vulnx	https://github.com/projectdiscovery/vulnx

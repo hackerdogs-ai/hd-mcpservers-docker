@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  naabu-mcp:
+    image: hackerdogs/naabu-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: naabu-mcp
+    ports:
+      - "8105:8105"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8105
+    restart: unless-stopped

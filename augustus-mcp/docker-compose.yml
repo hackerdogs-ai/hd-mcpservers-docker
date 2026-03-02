@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  augustus-mcp:
+    image: hackerdogs/augustus-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: augustus-mcp
+    ports:
+      - "8101:8101"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8101
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - COHERE_API_KEY=${COHERE_API_KEY:-}
+      - AZURE_OPENAI_API_KEY=${AZURE_OPENAI_API_KEY:-}
+      - AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT:-}
+      - GROQ_API_KEY=${GROQ_API_KEY:-}
+      - MISTRAL_API_KEY=${MISTRAL_API_KEY:-}
+      - TOGETHER_API_KEY=${TOGETHER_API_KEY:-}
+    restart: unless-stopped

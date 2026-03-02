@@ -1,0 +1,54 @@
+# Nmap MCP Server - Hackerdogs Ready
+# Multi-arch build for linux/amd64 and linux/arm64
+
+FROM python:3.12-slim-bookworm
+
+LABEL org.opencontainers.image.source="https://github.com/hackerdogs-ai/hd-mcpservers-docker"
+LABEL org.opencontainers.image.description="Nmap MCP Server - Network reconnaissance and port scanning"
+LABEL org.opencontainers.image.vendor="Hackerdogs"
+LABEL "maintainer"="support@hackerdogs.ai"
+LABEL "mcp-server-scope"="remote"
+
+LABEL org.opencontainers.image.title="mcp-server-crtsh"
+LABEL org.opencontainers.image.version="6190e55"
+LABEL org.opencontainers.image.source="https://github.com/cyproxio/mcp-for-security/tree/HEAD/crtsh-mcp"
+LABEL org.opencontainers.image.licenses="MIT License"
+LABEL org.opencontainers.image.author="hackerdogs"
+LABEL org.opencontainers.image.created="2006-01-02T15:04:05Z07:00"
+
+
+# Security: Create non-root user
+RUN groupadd -g 1000 mcpuser && \
+    useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
+
+# Install nmap and runtime dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    nmap \
+    tini \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy requirements and install Python dependencies
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
+COPY server.py ./
+
+# Create output directory
+RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+
+# Switch to non-root user
+USER mcpuser
+
+# Environment variables
+ENV NMAP_OUTPUT_DIR=/app/output
+ENV PYTHONUNBUFFERED=1
+
+# Use tini for proper signal handling
+ENTRYPOINT ["/usr/bin/tini", "--"]
+
+# Start MCP server via stdio
+CMD ["python", "mcp_server.py"]

@@ -1,0 +1,14 @@
+services:
+  cloudlist-mcp:
+    image: hackerdogs/cloudlist-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8111:8111"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8111
+    volumes:
+      - ./config:/app/config:ro
+    restart: unless-stopped

@@ -1,0 +1,22 @@
+services:
+  uncover-mcp:
+    image: hackerdogs/uncover-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8107:8107"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8107
+      - SHODAN_API_KEY=${SHODAN_API_KEY:-}
+      - CENSYS_API_TOKEN=${CENSYS_API_TOKEN:-}
+      - CENSYS_ORGANIZATION_ID=${CENSYS_ORGANIZATION_ID:-}
+      - FOFA_EMAIL=${FOFA_EMAIL:-}
+      - FOFA_KEY=${FOFA_KEY:-}
+      - HUNTER_API_KEY=${HUNTER_API_KEY:-}
+      - ZOOMEYE_API_KEY=${ZOOMEYE_API_KEY:-}
+      - NETLAS_API_KEY=${NETLAS_API_KEY:-}
+      - CRIMINALIP_API_KEY=${CRIMINALIP_API_KEY:-}
+      - ONYPHE_API_KEY=${ONYPHE_API_KEY:-}
+    restart: unless-stopped

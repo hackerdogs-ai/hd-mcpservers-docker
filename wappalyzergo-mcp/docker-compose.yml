@@ -1,0 +1,12 @@
+services:
+  wappalyzergo-mcp:
+    image: hackerdogs/wappalyzergo-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8114:8114"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8114
+    restart: unless-stopped

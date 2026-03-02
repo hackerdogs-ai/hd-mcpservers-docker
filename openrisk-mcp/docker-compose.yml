@@ -1,0 +1,13 @@
+services:
+  openrisk-mcp:
+    image: hackerdogs/openrisk-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8115:8115"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8115
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    restart: unless-stopped

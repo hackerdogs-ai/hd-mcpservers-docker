@@ -1,0 +1,13 @@
+services:
+  julius-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hackerdogs/julius-mcp:latest
+    container_name: julius-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8100
+    ports:
+      - "8100:8100"
+    restart: unless-stopped

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "naabu-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/naabu-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

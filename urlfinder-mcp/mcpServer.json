@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "urlfinder-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/urlfinder-mcp:latest"
+      ]
+    }
+  }
+}

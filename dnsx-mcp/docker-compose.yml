@@ -1,0 +1,12 @@
+services:
+  dnsx-mcp:
+    image: hackerdogs/dnsx-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8108:8108"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8108
+    restart: unless-stopped
