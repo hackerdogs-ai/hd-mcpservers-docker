@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  wpscan-mcp:
+    image: hackerdogs/wpscan-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wpscan-mcp
+    ports:
+      - "8220:8220"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8220
+    restart: unless-stopped

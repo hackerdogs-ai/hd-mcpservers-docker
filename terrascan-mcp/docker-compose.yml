@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  terrascan-mcp:
+    image: hackerdogs/terrascan-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: terrascan-mcp
+    ports:
+      - "8273:8273"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8273
+    restart: unless-stopped

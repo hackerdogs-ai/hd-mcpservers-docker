@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  radare2-mcp:
+    image: hackerdogs/radare2-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: radare2-mcp
+    ports:
+      - "8239:8239"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8239
+    restart: unless-stopped

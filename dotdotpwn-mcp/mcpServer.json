@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "dotdotpwn-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/dotdotpwn-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

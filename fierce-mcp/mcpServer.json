@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "fierce-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/fierce-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

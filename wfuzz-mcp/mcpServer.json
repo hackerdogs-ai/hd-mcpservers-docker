@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "wfuzz-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/wfuzz-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

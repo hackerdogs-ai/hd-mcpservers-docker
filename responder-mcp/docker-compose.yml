@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  responder-mcp:
+    image: hackerdogs/responder-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: responder-mcp
+    ports:
+      - "8207:8207"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8207
+    restart: unless-stopped

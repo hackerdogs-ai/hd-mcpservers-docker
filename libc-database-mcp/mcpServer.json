@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "libc-database-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/libc-database-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

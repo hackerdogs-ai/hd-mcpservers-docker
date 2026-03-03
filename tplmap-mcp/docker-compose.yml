@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  tplmap-mcp:
+    image: hackerdogs/tplmap-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tplmap-mcp
+    ports:
+      - "8267:8267"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8267
+    restart: unless-stopped

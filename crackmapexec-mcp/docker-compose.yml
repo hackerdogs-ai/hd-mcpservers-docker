@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  crackmapexec-mcp:
+    image: hackerdogs/crackmapexec-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: crackmapexec-mcp
+    ports:
+      - "8208:8208"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8208
+    restart: unless-stopped

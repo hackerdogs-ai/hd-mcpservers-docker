@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "x8-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/x8-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

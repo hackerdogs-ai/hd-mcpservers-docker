@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  testssl-mcp:
+    image: hackerdogs/testssl-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: testssl-mcp
+    ports:
+      - "8279:8279"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8279
+    restart: unless-stopped

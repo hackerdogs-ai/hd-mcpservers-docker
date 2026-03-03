@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  hydra-mcp:
+    image: hackerdogs/hydra-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hydra-mcp
+    ports:
+      - "8233:8233"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8233
+    restart: unless-stopped

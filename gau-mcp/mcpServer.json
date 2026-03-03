@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "gau-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/gau-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

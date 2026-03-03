@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  patator-mcp:
+    image: hackerdogs/patator-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: patator-mcp
+    ports:
+      - "8262:8262"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8262
+    restart: unless-stopped

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "ghidra-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/ghidra-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

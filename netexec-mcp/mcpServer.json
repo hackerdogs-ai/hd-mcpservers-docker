@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "netexec-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/netexec-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

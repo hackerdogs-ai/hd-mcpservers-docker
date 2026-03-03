@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  hashcat-mcp:
+    image: hackerdogs/hashcat-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hashcat-mcp
+    ports:
+      - "8235:8235"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8235
+    restart: unless-stopped

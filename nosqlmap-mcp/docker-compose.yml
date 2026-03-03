@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  nosqlmap-mcp:
+    image: hackerdogs/nosqlmap-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nosqlmap-mcp
+    ports:
+      - "8266:8266"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8266
+    restart: unless-stopped

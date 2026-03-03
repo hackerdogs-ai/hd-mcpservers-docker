@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  dnsrecon-mcp:
+    image: hackerdogs/dnsrecon-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dnsrecon-mcp
+    ports:
+      - "8203:8203"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8203
+    restart: unless-stopped

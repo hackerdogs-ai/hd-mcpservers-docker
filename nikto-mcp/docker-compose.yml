@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  nikto-mcp:
+    image: hackerdogs/nikto-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nikto-mcp
+    ports:
+      - "8219:8219"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8219
+    restart: unless-stopped

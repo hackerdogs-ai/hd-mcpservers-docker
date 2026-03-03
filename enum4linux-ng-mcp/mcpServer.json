@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "enum4linux-ng-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/enum4linux-ng-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

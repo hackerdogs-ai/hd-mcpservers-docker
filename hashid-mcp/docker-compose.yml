@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  hashid-mcp:
+    image: hackerdogs/hashid-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hashid-mcp
+    ports:
+      - "8264:8264"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8264
+    restart: unless-stopped

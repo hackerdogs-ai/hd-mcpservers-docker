@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  rustscan-mcp:
+    image: hackerdogs/rustscan-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rustscan-mcp
+    ports:
+      - "8200:8200"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8200
+    restart: unless-stopped

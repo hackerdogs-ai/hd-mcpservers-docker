@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  dalfox-mcp:
+    image: hackerdogs/dalfox-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dalfox-mcp
+    ports:
+      - "8221:8221"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8221
+    restart: unless-stopped

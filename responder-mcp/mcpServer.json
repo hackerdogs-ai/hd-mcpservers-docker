@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "responder-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/responder-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

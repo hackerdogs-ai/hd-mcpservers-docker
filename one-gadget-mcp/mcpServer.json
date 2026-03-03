@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "one-gadget-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/one-gadget-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

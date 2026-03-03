@@ -1,0 +1,2 @@
+1. Creata a file all-docker-publish.txt that has links to all the publish_to_docker.sh links from their folder. One line per link
+1. Create a bulk-docker.sh that reads the file and then start one --build --publish hackerdogs process

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  kube-hunter-mcp:
+    image: hackerdogs/kube-hunter-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kube-hunter-mcp
+    ports:
+      - "8252:8252"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8252
+    restart: unless-stopped

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "theharvester-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/theharvester-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

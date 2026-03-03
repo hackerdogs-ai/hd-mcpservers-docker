@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  jwt-tool-mcp:
+    image: hackerdogs/jwt-tool-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jwt-tool-mcp
+    ports:
+      - "8265:8265"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8265
+    restart: unless-stopped

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "feroxbuster-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/feroxbuster-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  recon-ng-mcp:
+    image: hackerdogs/recon-ng-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: recon-ng-mcp
+    ports:
+      - "8256:8256"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8256
+    restart: unless-stopped

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "testdisk-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/testdisk-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "wafw00f-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/wafw00f-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

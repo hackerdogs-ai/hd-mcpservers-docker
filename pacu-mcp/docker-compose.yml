@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  pacu-mcp:
+    image: hackerdogs/pacu-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pacu-mcp
+    ports:
+      - "8269:8269"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8269
+    restart: unless-stopped

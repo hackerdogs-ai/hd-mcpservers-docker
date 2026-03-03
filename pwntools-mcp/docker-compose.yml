@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  pwntools-mcp:
+    image: hackerdogs/pwntools-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pwntools-mcp
+    ports:
+      - "8245:8245"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8245
+    restart: unless-stopped

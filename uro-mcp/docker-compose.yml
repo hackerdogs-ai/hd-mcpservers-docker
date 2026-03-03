@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  uro-mcp:
+    image: hackerdogs/uro-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: uro-mcp
+    ports:
+      - "8228:8228"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8228
+    restart: unless-stopped

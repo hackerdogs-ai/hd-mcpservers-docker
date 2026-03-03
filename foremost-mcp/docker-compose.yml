@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  foremost-mcp:
+    image: hackerdogs/foremost-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: foremost-mcp
+    ports:
+      - "8249:8249"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8249
+    restart: unless-stopped

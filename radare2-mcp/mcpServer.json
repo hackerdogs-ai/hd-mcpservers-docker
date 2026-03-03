@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "radare2-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/radare2-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  netexec-mcp:
+    image: hackerdogs/netexec-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: netexec-mcp
+    ports:
+      - "8212:8212"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8212
+    restart: unless-stopped

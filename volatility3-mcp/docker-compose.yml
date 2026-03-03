@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  volatility3-mcp:
+    image: hackerdogs/volatility3-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: volatility3-mcp
+    ports:
+      - "8247:8247"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8247
+    restart: unless-stopped

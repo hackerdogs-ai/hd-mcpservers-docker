@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  angr-mcp:
+    image: hackerdogs/angr-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: angr-mcp
+    ports:
+      - "8246:8246"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8246
+    restart: unless-stopped

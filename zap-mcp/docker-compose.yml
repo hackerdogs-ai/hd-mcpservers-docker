@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  zap-mcp:
+    image: hackerdogs/zap-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: zap-mcp
+    ports:
+      - "8231:8231"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8231
+    restart: unless-stopped

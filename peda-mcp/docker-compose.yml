@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  peda-mcp:
+    image: hackerdogs/peda-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: peda-mcp
+    ports:
+      - "8237:8237"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8237
+    restart: unless-stopped

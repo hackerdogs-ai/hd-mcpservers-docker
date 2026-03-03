@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "jwt-tool-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/jwt-tool-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

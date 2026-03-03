@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "falco-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/falco-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

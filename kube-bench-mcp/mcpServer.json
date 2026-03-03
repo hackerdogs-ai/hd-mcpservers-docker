@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "kube-bench-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/kube-bench-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

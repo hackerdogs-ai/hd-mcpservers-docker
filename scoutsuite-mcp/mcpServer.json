@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "scoutsuite-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/scoutsuite-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

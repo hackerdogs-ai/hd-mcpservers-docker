@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  trufflehog-mcp:
+    image: hackerdogs/trufflehog-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: trufflehog-mcp
+    ports:
+      - "8258:8258"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8258
+    restart: unless-stopped

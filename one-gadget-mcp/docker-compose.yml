@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  one-gadget-mcp:
+    image: hackerdogs/one-gadget-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: one-gadget-mcp
+    ports:
+      - "8276:8276"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8276
+    restart: unless-stopped

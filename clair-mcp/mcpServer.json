@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "clair-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/clair-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

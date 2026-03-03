@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  spiderfoot-mcp:
+    image: hackerdogs/spiderfoot-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: spiderfoot-mcp
+    ports:
+      - "8257:8257"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8257
+    restart: unless-stopped

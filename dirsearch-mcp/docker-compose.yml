@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  dirsearch-mcp:
+    image: hackerdogs/dirsearch-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dirsearch-mcp
+    ports:
+      - "8215:8215"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8215
+    restart: unless-stopped

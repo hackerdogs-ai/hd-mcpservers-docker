@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  checksec-mcp:
+    image: hackerdogs/checksec-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: checksec-mcp
+    ports:
+      - "8244:8244"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8244
+    restart: unless-stopped

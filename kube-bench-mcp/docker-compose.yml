@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  kube-bench-mcp:
+    image: hackerdogs/kube-bench-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kube-bench-mcp
+    ports:
+      - "8253:8253"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8253
+    restart: unless-stopped

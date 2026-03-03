@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "dalfox-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/dalfox-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

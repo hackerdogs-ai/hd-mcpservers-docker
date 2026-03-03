@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "social-analyzer-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/social-analyzer-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

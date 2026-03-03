@@ -1,0 +1,4 @@
+1. Follow the same pattern for all mcp servers like the successful ones from phase 1. (e.g. naabu). Use them as a template for code and documentation.
+2. Review the code and documentation 3 times to make sure you meet the standards
+3. If a server is already an mcp server, then update it to fit the project standards. All should be docker, no local file references
+4. Make sure all the build, deploy script are also built and follow the pattern

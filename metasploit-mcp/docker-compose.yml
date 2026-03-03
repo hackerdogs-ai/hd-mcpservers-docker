@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  metasploit-mcp:
+    image: hackerdogs/metasploit-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: metasploit-mcp
+    ports:
+      - "8236:8236"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8236
+    restart: unless-stopped

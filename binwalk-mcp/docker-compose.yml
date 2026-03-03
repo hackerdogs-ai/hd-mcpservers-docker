@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  binwalk-mcp:
+    image: hackerdogs/binwalk-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: binwalk-mcp
+    ports:
+      - "8241:8241"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8241
+    restart: unless-stopped

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  xsser-mcp:
+    image: hackerdogs/xsser-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: xsser-mcp
+    ports:
+      - "8222:8222"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8222
+    restart: unless-stopped

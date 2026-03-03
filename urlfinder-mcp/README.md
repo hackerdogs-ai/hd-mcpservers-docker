@@ -1,5 +1,11 @@
 <p align="center">
-  <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="200"/>
+  <a href="https://hackerdogs.ai">
+    <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
+  </a>
+  <br/>
+  <a href="https://hackerdogs.ai">
+    <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
+  </a>
 </p>
 
 # URLFinder MCP Server

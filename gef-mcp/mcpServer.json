@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "gef-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/gef-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

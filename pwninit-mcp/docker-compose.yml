@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  pwninit-mcp:
+    image: hackerdogs/pwninit-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pwninit-mcp
+    ports:
+      - "8278:8278"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8278
+    restart: unless-stopped

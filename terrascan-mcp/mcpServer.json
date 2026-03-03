@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "terrascan-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/terrascan-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

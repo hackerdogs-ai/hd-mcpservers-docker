@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "arp-scan-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/arp-scan-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

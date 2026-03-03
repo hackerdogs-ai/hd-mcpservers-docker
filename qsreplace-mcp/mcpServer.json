@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "qsreplace-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/qsreplace-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

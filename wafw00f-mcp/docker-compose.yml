@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  wafw00f-mcp:
+    image: hackerdogs/wafw00f-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wafw00f-mcp
+    ports:
+      - "8230:8230"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8230
+    restart: unless-stopped

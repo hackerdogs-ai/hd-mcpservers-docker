@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "nbtscan-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/nbtscan-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

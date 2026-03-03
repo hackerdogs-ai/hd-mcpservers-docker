@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  clair-mcp:
+    image: hackerdogs/clair-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: clair-mcp
+    ports:
+      - "8270:8270"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8270
+    restart: unless-stopped

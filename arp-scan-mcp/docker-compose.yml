@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  arp-scan-mcp:
+    image: hackerdogs/arp-scan-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: arp-scan-mcp
+    ports:
+      - "8205:8205"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8205
+    restart: unless-stopped

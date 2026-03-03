@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "medusa-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/medusa-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

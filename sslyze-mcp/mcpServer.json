@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "sslyze-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/sslyze-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

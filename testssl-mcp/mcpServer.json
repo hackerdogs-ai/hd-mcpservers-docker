@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "testssl-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/testssl-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

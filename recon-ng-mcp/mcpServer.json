@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "recon-ng-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/recon-ng-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

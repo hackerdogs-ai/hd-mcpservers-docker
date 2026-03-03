@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "aquatone-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/aquatone-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

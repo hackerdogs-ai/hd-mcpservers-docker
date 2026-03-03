@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "uro-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/uro-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

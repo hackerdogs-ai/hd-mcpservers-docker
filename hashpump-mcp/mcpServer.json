@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "hashpump-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/hashpump-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

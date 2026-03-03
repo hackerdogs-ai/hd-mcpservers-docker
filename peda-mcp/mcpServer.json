@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "peda-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/peda-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

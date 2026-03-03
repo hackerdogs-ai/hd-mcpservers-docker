@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  sslyze-mcp:
+    image: hackerdogs/sslyze-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sslyze-mcp
+    ports:
+      - "8280:8280"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8280
+    restart: unless-stopped

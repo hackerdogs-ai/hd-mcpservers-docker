@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "spiderfoot-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/spiderfoot-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

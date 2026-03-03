@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  falco-mcp:
+    image: hackerdogs/falco-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: falco-mcp
+    ports:
+      - "8271:8271"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8271
+    restart: unless-stopped

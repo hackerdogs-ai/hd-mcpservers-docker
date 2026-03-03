@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  whatweb-mcp:
+    image: hackerdogs/whatweb-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: whatweb-mcp
+    ports:
+      - "8281:8281"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8281
+    restart: unless-stopped

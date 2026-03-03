@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  enum4linux-mcp:
+    image: hackerdogs/enum4linux-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: enum4linux-mcp
+    ports:
+      - "8209:8209"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8209
+    restart: unless-stopped

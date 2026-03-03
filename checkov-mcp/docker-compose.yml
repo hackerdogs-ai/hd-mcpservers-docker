@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  checkov-mcp:
+    image: hackerdogs/checkov-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: checkov-mcp
+    ports:
+      - "8272:8272"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8272
+    restart: unless-stopped

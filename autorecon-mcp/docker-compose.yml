@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  autorecon-mcp:
+    image: hackerdogs/autorecon-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: autorecon-mcp
+    ports:
+      - "8201:8201"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8201
+    restart: unless-stopped

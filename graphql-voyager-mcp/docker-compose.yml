@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  graphql-voyager-mcp:
+    image: hackerdogs/graphql-voyager-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: graphql-voyager-mcp
+    ports:
+      - "8282:8282"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8282
+    restart: unless-stopped

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  steghide-mcp:
+    image: hackerdogs/steghide-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: steghide-mcp
+    ports:
+      - "8250:8250"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8250
+    restart: unless-stopped

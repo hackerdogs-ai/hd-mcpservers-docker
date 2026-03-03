@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "patator-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/patator-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

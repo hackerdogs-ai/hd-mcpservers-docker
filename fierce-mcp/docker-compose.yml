@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  fierce-mcp:
+    image: hackerdogs/fierce-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fierce-mcp
+    ports:
+      - "8202:8202"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8202
+    restart: unless-stopped

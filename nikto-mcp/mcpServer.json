@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "nikto-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/nikto-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

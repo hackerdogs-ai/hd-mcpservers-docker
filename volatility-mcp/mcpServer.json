@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "volatility-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/volatility-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "binwalk-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/binwalk-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

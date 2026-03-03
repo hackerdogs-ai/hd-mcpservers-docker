@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "checkov-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/checkov-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

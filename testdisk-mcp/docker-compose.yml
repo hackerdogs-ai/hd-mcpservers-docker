@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  testdisk-mcp:
+    image: hackerdogs/testdisk-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: testdisk-mcp
+    ports:
+      - "8283:8283"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8283
+    restart: unless-stopped

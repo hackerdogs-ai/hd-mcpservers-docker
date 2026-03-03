@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "gobuster-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/gobuster-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

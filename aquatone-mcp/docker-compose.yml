@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  aquatone-mcp:
+    image: hackerdogs/aquatone-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aquatone-mcp
+    ports:
+      - "8259:8259"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8259
+    restart: unless-stopped

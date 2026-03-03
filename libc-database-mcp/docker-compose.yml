@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  libc-database-mcp:
+    image: hackerdogs/libc-database-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: libc-database-mcp
+    ports:
+      - "8277:8277"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8277
+    restart: unless-stopped

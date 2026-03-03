@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "anew-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/anew-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

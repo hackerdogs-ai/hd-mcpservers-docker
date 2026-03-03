@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "checksec-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/checksec-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

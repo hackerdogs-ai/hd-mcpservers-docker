@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "kube-hunter-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/kube-hunter-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

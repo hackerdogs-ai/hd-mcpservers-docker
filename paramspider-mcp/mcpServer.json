@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "paramspider-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/paramspider-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  docker-bench-security-mcp:
+    image: hackerdogs/docker-bench-security-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: docker-bench-security-mcp
+    ports:
+      - "8254:8254"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8254
+    restart: unless-stopped

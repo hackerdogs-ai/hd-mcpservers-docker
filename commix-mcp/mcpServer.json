@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "commix-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/commix-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

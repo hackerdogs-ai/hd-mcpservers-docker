@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "pwninit-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/pwninit-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

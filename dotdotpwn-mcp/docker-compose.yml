@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  dotdotpwn-mcp:
+    image: hackerdogs/dotdotpwn-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dotdotpwn-mcp
+    ports:
+      - "8223:8223"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8223
+    restart: unless-stopped

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  ropper-mcp:
+    image: hackerdogs/ropper-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ropper-mcp
+    ports:
+      - "8243:8243"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8243
+    restart: unless-stopped

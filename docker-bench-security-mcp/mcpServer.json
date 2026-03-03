@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "docker-bench-security-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/docker-bench-security-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "angr-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/angr-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

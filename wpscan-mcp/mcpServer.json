@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "wpscan-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/wpscan-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "upx-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/upx-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

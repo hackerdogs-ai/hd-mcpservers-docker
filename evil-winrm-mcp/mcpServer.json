@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "evil-winrm-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/evil-winrm-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

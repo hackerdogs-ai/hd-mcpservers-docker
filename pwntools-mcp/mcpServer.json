@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "pwntools-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/pwntools-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

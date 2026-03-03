@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "dirsearch-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/dirsearch-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "ropper-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/ropper-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "graphql-voyager-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/graphql-voyager-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "hydra-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/hydra-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

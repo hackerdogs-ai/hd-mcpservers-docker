@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "ropgadget-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/ropgadget-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

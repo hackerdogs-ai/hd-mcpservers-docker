@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "nosqlmap-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/nosqlmap-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

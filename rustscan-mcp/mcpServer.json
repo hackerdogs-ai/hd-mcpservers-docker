@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "rustscan-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/rustscan-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

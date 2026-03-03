@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "cloudmapper-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/cloudmapper-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

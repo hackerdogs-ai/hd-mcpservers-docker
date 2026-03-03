@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "dirb-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/dirb-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

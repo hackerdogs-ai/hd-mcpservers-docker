@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  nbtscan-mcp:
+    image: hackerdogs/nbtscan-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nbtscan-mcp
+    ports:
+      - "8206:8206"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8206
+    restart: unless-stopped

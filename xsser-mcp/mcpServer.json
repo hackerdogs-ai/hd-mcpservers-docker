@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "xsser-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/xsser-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

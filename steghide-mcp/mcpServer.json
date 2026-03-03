@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "steghide-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/steghide-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

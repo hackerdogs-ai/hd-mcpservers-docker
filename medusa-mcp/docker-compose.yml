@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  medusa-mcp:
+    image: hackerdogs/medusa-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: medusa-mcp
+    ports:
+      - "8261:8261"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8261
+    restart: unless-stopped

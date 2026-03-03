@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "jaeles-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/jaeles-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

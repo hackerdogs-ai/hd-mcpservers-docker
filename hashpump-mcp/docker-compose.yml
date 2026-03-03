@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  hashpump-mcp:
+    image: hackerdogs/hashpump-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hashpump-mcp
+    ports:
+      - "8274:8274"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8274
+    restart: unless-stopped

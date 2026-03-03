@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  commix-mcp:
+    image: hackerdogs/commix-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: commix-mcp
+    ports:
+      - "8225:8225"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8225
+    restart: unless-stopped

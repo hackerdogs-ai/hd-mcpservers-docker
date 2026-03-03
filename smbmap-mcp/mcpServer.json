@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "smbmap-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/smbmap-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

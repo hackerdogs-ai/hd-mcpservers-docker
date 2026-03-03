@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  x8-mcp:
+    image: hackerdogs/x8-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: x8-mcp
+    ports:
+      - "8275:8275"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8275
+    restart: unless-stopped

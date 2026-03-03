@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  smbmap-mcp:
+    image: hackerdogs/smbmap-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: smbmap-mcp
+    ports:
+      - "8211:8211"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8211
+    restart: unless-stopped

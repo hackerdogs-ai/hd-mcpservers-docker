@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  anew-mcp:
+    image: hackerdogs/anew-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: anew-mcp
+    ports:
+      - "8229:8229"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8229
+    restart: unless-stopped

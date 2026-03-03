@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "autorecon-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/autorecon-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "trufflehog-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/trufflehog-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}
