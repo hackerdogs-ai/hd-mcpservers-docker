@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  rasn-mcp:
+    image: hackerdogs/rasn-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rasn-mcp
+    ports:
+      - "8353:8353"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8353
+    restart: unless-stopped

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  crowbar-mcp:
+    image: hackerdogs/crowbar-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: crowbar-mcp
+    ports:
+      - "8307:8307"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8307
+    restart: unless-stopped

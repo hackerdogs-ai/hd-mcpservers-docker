@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "sstimap-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/sstimap-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

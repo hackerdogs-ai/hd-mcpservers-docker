@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "trivy-neutr0n-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/trivy-neutr0n-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  zmap-mcp:
+    image: hackerdogs/zmap-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: zmap-mcp
+    ports:
+      - "8303:8303"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8303
+    restart: unless-stopped

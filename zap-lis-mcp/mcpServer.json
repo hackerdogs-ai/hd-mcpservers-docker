@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "zap-lis-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/zap-lis-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  ncrack-mcp:
+    image: hackerdogs/ncrack-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ncrack-mcp
+    ports:
+      - "8306:8306"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8306
+    restart: unless-stopped

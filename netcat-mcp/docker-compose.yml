@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  netcat-mcp:
+    image: hackerdogs/netcat-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: netcat-mcp
+    ports:
+      - "8327:8327"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8327
+    restart: unless-stopped

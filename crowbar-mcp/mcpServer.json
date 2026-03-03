@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "crowbar-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/crowbar-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

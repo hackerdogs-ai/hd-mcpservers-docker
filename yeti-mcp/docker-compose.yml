@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  yeti-mcp:
+    image: hackerdogs/yeti-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: yeti-mcp
+    ports:
+      - "8337:8337"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8337
+    restart: unless-stopped

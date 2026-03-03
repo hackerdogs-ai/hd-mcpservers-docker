@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "wifiphisher-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/wifiphisher-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

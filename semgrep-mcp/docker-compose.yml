@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  semgrep-mcp:
+    image: hackerdogs/semgrep-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: semgrep-mcp
+    ports:
+      - "8335:8335"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8335
+    restart: unless-stopped

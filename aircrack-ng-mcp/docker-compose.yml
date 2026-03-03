@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  aircrack-ng-mcp:
+    image: hackerdogs/aircrack-ng-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aircrack-ng-mcp
+    ports:
+      - "8321:8321"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8321
+    restart: unless-stopped

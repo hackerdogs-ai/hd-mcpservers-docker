@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "bloodhound-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/bloodhound-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

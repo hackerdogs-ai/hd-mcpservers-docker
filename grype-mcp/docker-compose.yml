@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  grype-mcp:
+    image: hackerdogs/grype-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: grype-mcp
+    ports:
+      - "8357:8357"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8357
+    restart: unless-stopped

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  cisco-mcp-scanner-mcp:
+    image: hackerdogs/cisco-mcp-scanner-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cisco-mcp-scanner-mcp
+    ports:
+      - "8342:8342"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8342
+    restart: unless-stopped

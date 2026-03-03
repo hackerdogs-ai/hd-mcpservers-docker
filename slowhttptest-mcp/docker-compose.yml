@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  slowhttptest-mcp:
+    image: hackerdogs/slowhttptest-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: slowhttptest-mcp
+    ports:
+      - "8316:8316"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8316
+    restart: unless-stopped

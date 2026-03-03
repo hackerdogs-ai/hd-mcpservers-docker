@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "smuggler-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/smuggler-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

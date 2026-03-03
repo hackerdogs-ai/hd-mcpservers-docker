@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "crlfuzz-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/crlfuzz-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  dnsreaper-mcp:
+    image: hackerdogs/dnsreaper-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dnsreaper-mcp
+    ports:
+      - "8293:8293"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8293
+    restart: unless-stopped

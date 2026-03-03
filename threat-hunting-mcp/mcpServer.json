@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "threat-hunting-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/threat-hunting-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

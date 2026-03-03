@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "joomscan-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/joomscan-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  wifiphisher-mcp:
+    image: hackerdogs/wifiphisher-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wifiphisher-mcp
+    ports:
+      - "8312:8312"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8312
+    restart: unless-stopped

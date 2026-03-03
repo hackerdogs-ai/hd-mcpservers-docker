@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  port-scanner-mcp:
+    image: hackerdogs/port-scanner-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: port-scanner-mcp
+    ports:
+      - "8354:8354"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8354
+    restart: unless-stopped

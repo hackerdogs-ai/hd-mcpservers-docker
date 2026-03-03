@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "aibom-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/aibom-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

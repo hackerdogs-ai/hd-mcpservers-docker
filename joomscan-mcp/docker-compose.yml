@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  joomscan-mcp:
+    image: hackerdogs/joomscan-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: joomscan-mcp
+    ports:
+      - "8305:8305"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8305
+    restart: unless-stopped

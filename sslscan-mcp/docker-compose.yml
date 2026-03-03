@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  sslscan-mcp:
+    image: hackerdogs/sslscan-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sslscan-mcp
+    ports:
+      - "8323:8323"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8323
+    restart: unless-stopped

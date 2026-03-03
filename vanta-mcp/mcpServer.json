@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "vanta-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/vanta-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

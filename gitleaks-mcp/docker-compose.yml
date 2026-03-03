@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  gitleaks-mcp:
+    image: hackerdogs/gitleaks-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gitleaks-mcp
+    ports:
+      - "8332:8332"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8332
+    restart: unless-stopped

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  bloodhound-mcp-ai-mcp:
+    image: hackerdogs/bloodhound-mcp-ai-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bloodhound-mcp-ai-mcp
+    ports:
+      - "8338:8338"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8338
+    restart: unless-stopped

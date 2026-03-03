@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "nova-framework-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/nova-framework-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

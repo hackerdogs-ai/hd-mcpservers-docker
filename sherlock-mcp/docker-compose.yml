@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  sherlock-mcp:
+    image: hackerdogs/sherlock-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sherlock-mcp
+    ports:
+      - "8317:8317"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8317
+    restart: unless-stopped

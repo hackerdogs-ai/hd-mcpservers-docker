@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  horusec-mcp:
+    image: hackerdogs/horusec-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: horusec-mcp
+    ports:
+      - "8359:8359"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8359
+    restart: unless-stopped

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  boofuzz-mcp:
+    image: hackerdogs/boofuzz-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: boofuzz-mcp
+    ports:
+      - "8333:8333"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8333
+    restart: unless-stopped

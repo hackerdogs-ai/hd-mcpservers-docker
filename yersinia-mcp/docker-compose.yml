@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  yersinia-mcp:
+    image: hackerdogs/yersinia-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: yersinia-mcp
+    ports:
+      - "8319:8319"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8319
+    restart: unless-stopped

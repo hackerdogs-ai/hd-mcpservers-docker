@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "knostic-mcp-scanner-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/knostic-mcp-scanner-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

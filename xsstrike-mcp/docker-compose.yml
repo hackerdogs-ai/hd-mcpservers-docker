@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  xsstrike-mcp:
+    image: hackerdogs/xsstrike-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: xsstrike-mcp
+    ports:
+      - "8349:8349"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8349
+    restart: unless-stopped

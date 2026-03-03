@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "horusec-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/horusec-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "mcpscan-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/mcpscan-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

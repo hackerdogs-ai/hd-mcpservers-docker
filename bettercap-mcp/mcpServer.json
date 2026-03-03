@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "bettercap-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/bettercap-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

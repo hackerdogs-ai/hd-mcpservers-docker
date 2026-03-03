@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  osv-mcp:
+    image: hackerdogs/osv-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: osv-mcp
+    ports:
+      - "8347:8347"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8347
+    restart: unless-stopped

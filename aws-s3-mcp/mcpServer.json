@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "aws-s3-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/aws-s3-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

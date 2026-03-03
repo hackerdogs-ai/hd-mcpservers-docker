@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "xsstrike-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/xsstrike-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "pixiewps-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/pixiewps-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

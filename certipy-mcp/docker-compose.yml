@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  certipy-mcp:
+    image: hackerdogs/certipy-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: certipy-mcp
+    ports:
+      - "8285:8285"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8285
+    restart: unless-stopped

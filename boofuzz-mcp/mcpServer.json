@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "boofuzz-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/boofuzz-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

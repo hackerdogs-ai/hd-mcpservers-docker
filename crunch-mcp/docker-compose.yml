@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  crunch-mcp:
+    image: hackerdogs/crunch-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: crunch-mcp
+    ports:
+      - "8324:8324"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8324
+    restart: unless-stopped

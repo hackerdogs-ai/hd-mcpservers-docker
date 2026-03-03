@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "dharma-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/dharma-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

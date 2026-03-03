@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "ncrack-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/ncrack-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

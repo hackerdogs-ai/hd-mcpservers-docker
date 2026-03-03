@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "netcat-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/netcat-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

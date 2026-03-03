@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "sherlock-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/sherlock-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

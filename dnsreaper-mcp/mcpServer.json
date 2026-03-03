@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "dnsreaper-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/dnsreaper-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

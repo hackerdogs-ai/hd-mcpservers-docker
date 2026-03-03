@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "rasn-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/rasn-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

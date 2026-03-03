@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  suricata-mcp:
+    image: hackerdogs/suricata-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: suricata-mcp
+    ports:
+      - "8365:8365"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8365
+    restart: unless-stopped

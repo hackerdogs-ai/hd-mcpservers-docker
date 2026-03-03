@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "roadtools-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/roadtools-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

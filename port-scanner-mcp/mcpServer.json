@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "port-scanner-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/port-scanner-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

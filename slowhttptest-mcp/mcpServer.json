@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "slowhttptest-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/slowhttptest-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

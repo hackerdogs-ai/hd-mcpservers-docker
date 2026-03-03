@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "capa-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/capa-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

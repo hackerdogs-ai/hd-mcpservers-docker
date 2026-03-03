@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  dependency-check-mcp:
+    image: hackerdogs/dependency-check-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dependency-check-mcp
+    ports:
+      - "8361:8361"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8361
+    restart: unless-stopped

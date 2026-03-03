@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "semgrep-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/semgrep-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

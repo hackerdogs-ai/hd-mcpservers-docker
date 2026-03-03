@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  fping-mcp:
+    image: hackerdogs/fping-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fping-mcp
+    ports:
+      - "8309:8309"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8309
+    restart: unless-stopped

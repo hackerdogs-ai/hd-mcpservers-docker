@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "ai-infra-guard-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/ai-infra-guard-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

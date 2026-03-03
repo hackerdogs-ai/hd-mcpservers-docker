@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  roadtools-mcp:
+    image: hackerdogs/roadtools-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: roadtools-mcp
+    ports:
+      - "8331:8331"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8331
+    restart: unless-stopped

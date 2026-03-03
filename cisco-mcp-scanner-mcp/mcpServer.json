@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "cisco-mcp-scanner-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/cisco-mcp-scanner-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

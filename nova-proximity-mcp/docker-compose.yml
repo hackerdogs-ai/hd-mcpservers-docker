@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  nova-proximity-mcp:
+    image: hackerdogs/nova-proximity-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nova-proximity-mcp
+    ports:
+      - "8298:8298"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8298
+    restart: unless-stopped

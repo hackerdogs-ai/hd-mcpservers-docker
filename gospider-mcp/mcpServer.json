@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "gospider-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/gospider-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

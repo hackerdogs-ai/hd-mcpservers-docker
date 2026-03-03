@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "a2a-scanner-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/a2a-scanner-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  pixiewps-mcp:
+    image: hackerdogs/pixiewps-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pixiewps-mcp
+    ports:
+      - "8311:8311"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8311
+    restart: unless-stopped

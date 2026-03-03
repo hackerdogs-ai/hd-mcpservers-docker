@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  bloodhound-mcp:
+    image: hackerdogs/bloodhound-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bloodhound-mcp
+    ports:
+      - "8286:8286"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8286
+    restart: unless-stopped

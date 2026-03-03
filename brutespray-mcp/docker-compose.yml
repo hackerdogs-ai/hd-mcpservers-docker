@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  brutespray-mcp:
+    image: hackerdogs/brutespray-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: brutespray-mcp
+    ports:
+      - "8308:8308"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8308
+    restart: unless-stopped

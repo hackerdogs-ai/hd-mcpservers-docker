@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "ipinfo-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/ipinfo-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

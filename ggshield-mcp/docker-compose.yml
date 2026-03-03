@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  ggshield-mcp:
+    image: hackerdogs/ggshield-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ggshield-mcp
+    ports:
+      - "8363:8363"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8363
+    restart: unless-stopped

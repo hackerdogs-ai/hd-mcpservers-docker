@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "psudohash-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/psudohash-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

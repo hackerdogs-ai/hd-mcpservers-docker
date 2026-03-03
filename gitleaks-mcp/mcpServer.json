@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "gitleaks-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/gitleaks-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

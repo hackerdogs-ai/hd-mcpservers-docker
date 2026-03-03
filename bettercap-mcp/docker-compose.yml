@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  bettercap-mcp:
+    image: hackerdogs/bettercap-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bettercap-mcp
+    ports:
+      - "8318:8318"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8318
+    restart: unless-stopped

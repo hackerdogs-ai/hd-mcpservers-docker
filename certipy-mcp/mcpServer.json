@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "certipy-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/certipy-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

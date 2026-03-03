@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "zmap-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/zmap-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

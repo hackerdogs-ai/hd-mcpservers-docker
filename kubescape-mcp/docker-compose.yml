@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  kubescape-mcp:
+    image: hackerdogs/kubescape-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kubescape-mcp
+    ports:
+      - "8362:8362"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8362
+    restart: unless-stopped

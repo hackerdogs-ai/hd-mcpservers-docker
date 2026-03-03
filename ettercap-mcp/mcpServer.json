@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "ettercap-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/ettercap-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

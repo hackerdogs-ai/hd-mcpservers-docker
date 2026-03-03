@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  nova-framework-mcp:
+    image: hackerdogs/nova-framework-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nova-framework-mcp
+    ports:
+      - "8299:8299"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8299
+    restart: unless-stopped

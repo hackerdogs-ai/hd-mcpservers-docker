@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  capa-mcp:
+    image: hackerdogs/capa-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: capa-mcp
+    ports:
+      - "8329:8329"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8329
+    restart: unless-stopped

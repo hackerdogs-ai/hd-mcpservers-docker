@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  wireshark-mcp:
+    image: hackerdogs/wireshark-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wireshark-mcp
+    ports:
+      - "8315:8315"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8315
+    restart: unless-stopped

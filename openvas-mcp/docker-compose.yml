@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  openvas-mcp:
+    image: hackerdogs/openvas-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: openvas-mcp
+    ports:
+      - "8300:8300"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8300
+    restart: unless-stopped

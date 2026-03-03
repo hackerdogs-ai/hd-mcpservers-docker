@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "nova-proximity-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/nova-proximity-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

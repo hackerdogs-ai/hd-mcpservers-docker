@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  knostic-mcp-scanner-mcp:
+    image: hackerdogs/knostic-mcp-scanner-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: knostic-mcp-scanner-mcp
+    ports:
+      - "8344:8344"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8344
+    restart: unless-stopped

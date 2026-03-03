@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "mcpserver-audit-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/mcpserver-audit-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

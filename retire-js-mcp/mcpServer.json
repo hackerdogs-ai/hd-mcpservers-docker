@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "retire-js-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/retire-js-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "brutespray-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/brutespray-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

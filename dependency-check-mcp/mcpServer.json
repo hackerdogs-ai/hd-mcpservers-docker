@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "dependency-check-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/dependency-check-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

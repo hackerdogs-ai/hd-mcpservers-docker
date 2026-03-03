@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "bearer-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/bearer-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

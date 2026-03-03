@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "ramparts-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/ramparts-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

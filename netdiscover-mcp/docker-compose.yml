@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  netdiscover-mcp:
+    image: hackerdogs/netdiscover-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: netdiscover-mcp
+    ports:
+      - "8322:8322"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8322
+    restart: unless-stopped

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  a2a-scanner-mcp:
+    image: hackerdogs/a2a-scanner-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: a2a-scanner-mcp
+    ports:
+      - "8341:8341"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8341
+    restart: unless-stopped

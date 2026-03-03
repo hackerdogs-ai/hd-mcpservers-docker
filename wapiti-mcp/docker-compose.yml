@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  wapiti-mcp:
+    image: hackerdogs/wapiti-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wapiti-mcp
+    ports:
+      - "8288:8288"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8288
+    restart: unless-stopped

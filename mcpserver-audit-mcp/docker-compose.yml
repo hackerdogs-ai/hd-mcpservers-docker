@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  mcpserver-audit-mcp:
+    image: hackerdogs/mcpserver-audit-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mcpserver-audit-mcp
+    ports:
+      - "8340:8340"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8340
+    restart: unless-stopped

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "corscanner-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/corscanner-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

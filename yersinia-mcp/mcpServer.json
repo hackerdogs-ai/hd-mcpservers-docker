@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "yersinia-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/yersinia-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

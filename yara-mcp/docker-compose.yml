@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  yara-mcp:
+    image: hackerdogs/yara-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: yara-mcp
+    ports:
+      - "8328:8328"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8328
+    restart: unless-stopped

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  syft-mcp:
+    image: hackerdogs/syft-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: syft-mcp
+    ports:
+      - "8358:8358"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8358
+    restart: unless-stopped

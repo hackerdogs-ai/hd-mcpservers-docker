@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "suricata-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/suricata-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

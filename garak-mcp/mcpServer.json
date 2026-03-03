@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "garak-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/garak-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

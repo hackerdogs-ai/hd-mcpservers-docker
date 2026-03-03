@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "sublist3r-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/sublist3r-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "yeti-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/yeti-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

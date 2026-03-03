@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  dnsenum-mcp:
+    image: hackerdogs/dnsenum-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dnsenum-mcp
+    ports:
+      - "8304:8304"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8304
+    restart: unless-stopped

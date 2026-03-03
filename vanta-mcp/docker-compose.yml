@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  vanta-mcp:
+    image: hackerdogs/vanta-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vanta-mcp
+    ports:
+      - "8348:8348"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8348
+    restart: unless-stopped

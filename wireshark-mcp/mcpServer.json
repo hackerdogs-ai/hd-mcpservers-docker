@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "wireshark-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/wireshark-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

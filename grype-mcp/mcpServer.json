@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "grype-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/grype-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

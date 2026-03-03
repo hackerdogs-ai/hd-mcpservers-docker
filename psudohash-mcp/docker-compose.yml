@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  psudohash-mcp:
+    image: hackerdogs/psudohash-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: psudohash-mcp
+    ports:
+      - "8287:8287"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8287
+    restart: unless-stopped

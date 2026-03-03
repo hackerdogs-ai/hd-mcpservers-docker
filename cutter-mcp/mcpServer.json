@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "cutter-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/cutter-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

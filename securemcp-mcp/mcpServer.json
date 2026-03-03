@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "securemcp-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/securemcp-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

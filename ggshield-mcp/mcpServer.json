@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "ggshield-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/ggshield-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

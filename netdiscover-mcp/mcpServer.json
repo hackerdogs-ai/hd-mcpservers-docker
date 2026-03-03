@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "netdiscover-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/netdiscover-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

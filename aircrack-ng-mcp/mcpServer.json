@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "aircrack-ng-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/aircrack-ng-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

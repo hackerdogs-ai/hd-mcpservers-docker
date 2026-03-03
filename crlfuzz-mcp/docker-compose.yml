@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  crlfuzz-mcp:
+    image: hackerdogs/crlfuzz-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: crlfuzz-mcp
+    ports:
+      - "8290:8290"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8290
+    restart: unless-stopped

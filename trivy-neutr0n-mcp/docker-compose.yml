@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  trivy-neutr0n-mcp:
+    image: hackerdogs/trivy-neutr0n-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: trivy-neutr0n-mcp
+    ports:
+      - "8356:8356"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8356
+    restart: unless-stopped

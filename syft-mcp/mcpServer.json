@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "syft-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/syft-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

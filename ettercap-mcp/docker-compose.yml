@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  ettercap-mcp:
+    image: hackerdogs/ettercap-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ettercap-mcp
+    ports:
+      - "8313:8313"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8313
+    restart: unless-stopped

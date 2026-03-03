@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "lynis-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/lynis-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

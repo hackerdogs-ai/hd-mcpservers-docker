@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  bully-mcp:
+    image: hackerdogs/bully-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bully-mcp
+    ports:
+      - "8310:8310"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8310
+    restart: unless-stopped

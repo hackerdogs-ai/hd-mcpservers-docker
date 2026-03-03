@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  dharma-mcp:
+    image: hackerdogs/dharma-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dharma-mcp
+    ports:
+      - "8334:8334"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8334
+    restart: unless-stopped

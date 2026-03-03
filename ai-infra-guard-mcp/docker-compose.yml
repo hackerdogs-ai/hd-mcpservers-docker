@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  ai-infra-guard-mcp:
+    image: hackerdogs/ai-infra-guard-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ai-infra-guard-mcp
+    ports:
+      - "8294:8294"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8294
+    restart: unless-stopped

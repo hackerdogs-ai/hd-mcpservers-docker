@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  zap-lis-mcp:
+    image: hackerdogs/zap-lis-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: zap-lis-mcp
+    ports:
+      - "8355:8355"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8355
+    restart: unless-stopped

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "yaraflux-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/yaraflux-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

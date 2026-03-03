@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "fping-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/fping-mcp:latest"
+      ],
+      "env": {}
+    }
+  }
+}

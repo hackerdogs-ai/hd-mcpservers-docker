@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  aws-s3-mcp:
+    image: hackerdogs/aws-s3-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aws-s3-mcp
+    ports:
+      - "8346:8346"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8346
+    restart: unless-stopped
