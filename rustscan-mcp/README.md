@@ -117,6 +117,23 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 | `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
 | `MCP_PORT` | `8200` | HTTP port (only used with `streamable-http`) |
 
+## Installing in Hackerdogs
+
+The fastest way to get started is through [Hackerdogs](https://hackerdogs.ai):
+
+1. **Log in** to your Hackerdogs account.
+2. Go to the **Tools Catalog**.
+3. **Search** for the tool by name (e.g. "nuclei", "naabu", "julius").
+4. Expand the tool card and click **Install** — you're ready to go.
+
+> Give it a couple of minutes to go live. Then start querying by asking Hackerdogs to use the tool explicitly (e.g. *"Use naabu to scan example.com"*). If you don't specify, Hackerdogs will automatically choose the best tool for the job — it may choose this one on its own.
+
+5. **Vendor API key required?** Add your key in the config environment variable field before clicking Install. Your key will be encrypted at rest.
+6. **Enable / Disable** the tool anytime from the **Enabled Tools** page.
+7. **Need to update a key or parameter?** Go to **My Tools** → toggle **Show Decrypted Values** → edit → **Save**.
+
+> **Want to contribute or chat with the team?** Join our [Discord](https://discord.gg/str9FcWuyM).
+
 ## Build
 
 ```bash

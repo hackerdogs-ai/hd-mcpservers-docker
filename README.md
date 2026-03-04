@@ -14,6 +14,23 @@ Registry of **183 containerized MCP servers** for security tools, ready for depl
 
 Each tool is wrapped as a [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server using [FastMCP](https://github.com/jlowin/fastmcp), supporting both **stdio** and **HTTP streamable** transports. All tools are packaged as multi-architecture Docker images (linux/amd64, linux/arm64).
 
+## Installing in Hackerdogs
+
+The fastest way to get started is through [Hackerdogs](https://hackerdogs.ai):
+
+1. **Log in** to your Hackerdogs account.
+2. Go to the **Tools Catalog**.
+3. **Search** for the tool by name (e.g. "nuclei", "naabu", "julius").
+4. Expand the tool card and click **Install** — you're ready to go.
+
+> Give it a couple of minutes to go live. Then start querying by asking Hackerdogs to use the tool explicitly (e.g. *"Use naabu to scan example.com"*). If you don't specify, Hackerdogs will automatically choose the best tool for the job — it may choose this one on its own.
+
+5. **Vendor API key required?** Add your key in the config environment variable field before clicking Install. Your key will be encrypted at rest.
+6. **Enable / Disable** the tool anytime from the **Enabled Tools** page.
+7. **Need to update a key or parameter?** Go to **My Tools** → toggle **Show Decrypted Values** → edit → **Save**.
+
+> **Want to contribute or chat with the team?** Join our [Discord](https://discord.gg/str9FcWuyM).
+
 ## Tool Registry
 
 ### Phase 1 — Core Security Tools (17 tools)
