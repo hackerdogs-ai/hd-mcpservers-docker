@@ -87,8 +87,10 @@ Add to your Claude Desktop or Cursor MCP config:
   "mcpServers": {
     "vanta-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/vanta-mcp:latest"],
-      "env": {}
+      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "hackerdogs/vanta-mcp:latest"],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
     }
   }
 }

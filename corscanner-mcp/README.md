@@ -87,8 +87,10 @@ Add to your Claude Desktop or Cursor MCP config:
   "mcpServers": {
     "corscanner-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/corscanner-mcp:latest"],
-      "env": {}
+      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "hackerdogs/corscanner-mcp:latest"],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
     }
   }
 }

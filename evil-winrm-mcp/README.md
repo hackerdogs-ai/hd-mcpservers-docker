@@ -87,8 +87,10 @@ Add to your Claude Desktop or Cursor MCP config:
   "mcpServers": {
     "evil-winrm-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/evil-winrm-mcp:latest"],
-      "env": {}
+      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "hackerdogs/evil-winrm-mcp:latest"],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
     }
   }
 }

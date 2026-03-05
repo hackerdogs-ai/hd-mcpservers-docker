@@ -87,8 +87,14 @@ Add to your Claude Desktop or Cursor MCP config:
   "mcpServers": {
     "knostic-mcp-scanner-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/knostic-mcp-scanner-mcp:latest"],
-      "env": {}
+      "args": [
+        "run", "-i", "--rm",
+        "-e", "MCP_TRANSPORT",
+        "hackerdogs/knostic-mcp-scanner-mcp:latest"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
     }
   }
 }

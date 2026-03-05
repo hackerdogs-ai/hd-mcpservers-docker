@@ -87,8 +87,10 @@ Add to your Claude Desktop or Cursor MCP config:
   "mcpServers": {
     "ropgadget-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/ropgadget-mcp:latest"],
-      "env": {}
+      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "hackerdogs/ropgadget-mcp:latest"],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
     }
   }
 }

@@ -131,11 +131,13 @@ Add to your Claude Desktop or Cursor MCP config:
         "run", "-i", "--rm",
         "-e", "OPENAI_API_KEY",
         "-e", "ANTHROPIC_API_KEY",
+        "-e", "MCP_TRANSPORT",
         "hackerdogs/augustus-mcp:latest"
       ],
       "env": {
         "OPENAI_API_KEY": "<your-openai-api-key>",
-        "ANTHROPIC_API_KEY": "<your-anthropic-api-key>"
+        "ANTHROPIC_API_KEY": "<your-anthropic-api-key>",
+        "MCP_TRANSPORT": "stdio"
       }
     }
   }

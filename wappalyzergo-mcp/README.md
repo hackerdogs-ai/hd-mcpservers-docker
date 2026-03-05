@@ -88,7 +88,11 @@ Add to your Claude Desktop or Cursor MCP config:
   "mcpServers": {
     "wappalyzergo-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/wappalyzergo-mcp:latest"],
+      "args": [
+        "run", "-i", "--rm",
+        "-e", "MCP_TRANSPORT",
+        "hackerdogs/wappalyzergo-mcp:latest"
+      ],
       "env": {
         "MCP_TRANSPORT": "stdio"
       }

@@ -87,8 +87,10 @@ Add to your Claude Desktop or Cursor MCP config:
   "mcpServers": {
     "arp-scan-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/arp-scan-mcp:latest"],
-      "env": {}
+      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "hackerdogs/arp-scan-mcp:latest"],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
     }
   }
 }

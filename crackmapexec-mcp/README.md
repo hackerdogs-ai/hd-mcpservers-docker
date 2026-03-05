@@ -87,8 +87,14 @@ Add to your Claude Desktop or Cursor MCP config:
   "mcpServers": {
     "crackmapexec-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/crackmapexec-mcp:latest"],
-      "env": {}
+      "args": [
+        "run", "-i", "--rm",
+        "-e", "MCP_TRANSPORT",
+        "hackerdogs/crackmapexec-mcp:latest"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
     }
   }
 }

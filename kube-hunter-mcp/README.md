@@ -87,8 +87,14 @@ Add to your Claude Desktop or Cursor MCP config:
   "mcpServers": {
     "kube-hunter-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/kube-hunter-mcp:latest"],
-      "env": {}
+      "args": [
+        "run", "-i", "--rm",
+        "-e", "MCP_TRANSPORT",
+        "hackerdogs/kube-hunter-mcp:latest"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
     }
   }
 }

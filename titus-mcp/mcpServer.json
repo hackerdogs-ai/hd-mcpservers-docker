@@ -1,7 +1,10 @@
 {
   "mcpServers": {
     "titus-mcp": {
-      "url": "http://localhost:8103/mcp"
+      "url": "http://localhost:8103/mcp",
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
     }
   }
 }

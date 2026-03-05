@@ -6,9 +6,13 @@
         "run",
         "-i",
         "--rm",
+        "-e",
+        "MCP_TRANSPORT",
         "hackerdogs/radare2-mcp:latest"
       ],
-      "env": {}
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
     }
   }
 }

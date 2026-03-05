@@ -1,1 +1,2 @@
 0.1,latest,local,2026-03-01T08:27:22Z,local
+1.0,linux/amd64,linux/arm64,2026-03-05T07:44:44Z,https://hub.docker.com/r/hackerdogs/julius-mcp/tags

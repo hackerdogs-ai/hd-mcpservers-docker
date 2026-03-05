@@ -8,8 +8,13 @@
         "--rm",
         "-e",
         "OPENAI_API_KEY",
+        "-e",
+        "MCP_TRANSPORT",
         "hackerdogs/openrisk-mcp:latest"
-      ]
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
     }
   }
 }

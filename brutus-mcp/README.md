@@ -109,7 +109,7 @@ Add to your Claude Desktop or Cursor MCP config:
   "mcpServers": {
     "brutus-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/brutus-mcp:latest"],
+      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "hackerdogs/brutus-mcp:latest"],
       "env": {
         "MCP_TRANSPORT": "stdio"
       }

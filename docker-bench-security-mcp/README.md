@@ -87,8 +87,14 @@ Add to your Claude Desktop or Cursor MCP config:
   "mcpServers": {
     "docker-bench-security-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/docker-bench-security-mcp:latest"],
-      "env": {}
+      "args": [
+        "run", "-i", "--rm",
+        "-e", "MCP_TRANSPORT",
+        "hackerdogs/docker-bench-security-mcp:latest"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
     }
   }
 }

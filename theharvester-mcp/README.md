@@ -87,8 +87,14 @@ Add to your Claude Desktop or Cursor MCP config:
   "mcpServers": {
     "theharvester-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/theharvester-mcp:latest"],
-      "env": {}
+      "args": [
+        "run", "-i", "--rm",
+        "-e", "MCP_TRANSPORT",
+        "hackerdogs/theharvester-mcp:latest"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
     }
   }
 }

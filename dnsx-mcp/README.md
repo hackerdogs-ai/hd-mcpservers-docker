@@ -102,7 +102,7 @@ Add to your Claude Desktop or Cursor MCP config:
   "mcpServers": {
     "dnsx-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/dnsx-mcp:latest"],
+      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "hackerdogs/dnsx-mcp:latest"],
       "env": {
         "MCP_TRANSPORT": "stdio"
       }

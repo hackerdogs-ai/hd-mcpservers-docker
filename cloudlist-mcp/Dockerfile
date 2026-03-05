@@ -25,6 +25,8 @@ RUN groupadd -g 1000 mcpuser && \
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
+    git \
+    unzip \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
@@ -36,8 +38,9 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY mcp_server.py ./
+COPY hd_fetch.py ./
 
-RUN mkdir -p /app/output /app/config && chown -R mcpuser:mcpuser /app
+RUN mkdir -p /app/output /app/config /app/workdir && chown -R mcpuser:mcpuser /app
 
 USER mcpuser
 

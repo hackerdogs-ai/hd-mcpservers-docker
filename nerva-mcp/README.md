@@ -93,7 +93,7 @@ Add to your Claude Desktop or Cursor MCP config:
   "mcpServers": {
     "nerva-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/nerva-mcp:latest"],
+      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "hackerdogs/nerva-mcp:latest"],
       "env": {
         "MCP_TRANSPORT": "stdio"
       }

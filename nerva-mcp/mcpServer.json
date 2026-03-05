@@ -1,7 +1,10 @@
 {
   "mcpServers": {
     "nerva-mcp": {
-      "url": "http://localhost:8104/mcp"
+      "url": "http://localhost:8104/mcp",
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
     }
   }
 }

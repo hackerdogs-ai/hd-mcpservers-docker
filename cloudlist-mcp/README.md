@@ -118,10 +118,13 @@ Add to your Claude Desktop or Cursor MCP config:
     "cloudlist-mcp": {
       "command": "docker",
       "args": [
-        "run", "-i", "--rm",
-        "-v", "/path/to/config:/app/config:ro",
+        "run", "-i", "--rm", "-v", "/path/to/config:/app/config:ro",
+        "-e", "MCP_TRANSPORT",
         "hackerdogs/cloudlist-mcp:latest"
-      ]
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
     }
   }
 }

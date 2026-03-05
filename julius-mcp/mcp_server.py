@@ -8,6 +8,7 @@ import sys
 import logging
 
 from fastmcp import FastMCP
+import hd_fetch
 
 logging.basicConfig(
     level=logging.INFO,
@@ -168,13 +169,50 @@ def validate_probes(path: str) -> dict:
     contains valid probe configurations that Julius can execute.
 
     Args:
-        path: File path to the probe definition file to validate.
+        path: Local path OR URL to the probe definition file to validate.
+              Accepts HTTP(S) URLs; files are downloaded automatically.
 
     Returns:
         Dictionary with validation results.
     """
     logger.info("validate_probes called with path=%s", path)
-    return _run_julius(["validate", path])
+    with hd_fetch.resolve(path) as local_path:
+        return _run_julius(["validate", local_path])
+
+
+
+@mcp.tool()
+def download_file(
+    url: str,
+    extract: bool = True,
+) -> dict:
+    """Download a file from a URL into the container workspace.
+
+    Args:
+        url: HTTP(S) URL, GitHub/GitLab repo URL, or data: URI.
+        extract: If True (default), automatically extract archives.
+
+    Returns:
+        Dictionary with 'path' and 'job_id'.
+    """
+    try:
+        return hd_fetch.fetch(url, extract=extract)
+    except hd_fetch.FetchError as exc:
+        return {"error": True, "message": str(exc)}
+
+
+@mcp.tool()
+def cleanup_downloads(job_id: str = "") -> dict:
+    """Clean up downloaded files from the container workspace.
+
+    Args:
+        job_id: Specific job ID to clean up.  If empty, removes all downloads.
+    """
+    if job_id:
+        hd_fetch.cleanup(job_id)
+        return {"cleaned": job_id}
+    hd_fetch.cleanup_all()
+    return {"cleaned": "all"}
 
 
 if __name__ == "__main__":

@@ -6,8 +6,13 @@
         "run",
         "-i",
         "--rm",
+        "-e",
+        "MCP_TRANSPORT",
         "hackerdogs/brutus-mcp:latest"
-      ]
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
     }
   }
 }

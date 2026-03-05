@@ -9,13 +9,14 @@ LABEL "maintainer"="support@hackerdogs.ai"
 LABEL "mcp-server-scope"="remote"
 
 RUN groupadd -g 1000 mcpuser && useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
-RUN apt-get update && apt-get install -y --no-install-recommends tini ca-certificates && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends unzip tini ca-certificates && rm -rf /var/lib/apt/lists/*
 COPY --from=builder /go/bin/julius /usr/local/bin/julius
 WORKDIR /app
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 COPY mcp_server.py ./
-RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+COPY hd_fetch.py ./
+RUN mkdir -p /app/output /app/workdir && chown -R mcpuser:mcpuser /app
 USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio

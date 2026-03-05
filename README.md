@@ -275,7 +275,7 @@ Each tool has a `mcpServer.json` file. Example for julius-mcp:
   "mcpServers": {
     "julius-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/julius-mcp:latest"],
+      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "hackerdogs/julius-mcp:latest"],
       "env": {
         "MCP_TRANSPORT": "stdio"
       }
@@ -291,6 +291,51 @@ Each tool has a `mcpServer.json` file. Example for julius-mcp:
 | `MCP_TRANSPORT` | Transport protocol: `stdio` or `streamable-http` | `stdio` |
 | `MCP_PORT` | HTTP port (when using streamable-http) | per-tool (see table) |
 | `OPENAI_API_KEY` | Required for openrisk-mcp only | — |
+| `HD_MAX_DOWNLOAD_MB` | Max file download size in MB (URL fetch) | `500` |
+| `HD_FETCH_TIMEOUT` | Download timeout in seconds (URL fetch) | `120` |
+| `HD_FETCH_ALLOW_PRIVATE` | Allow downloads from private/internal IPs | `false` |
+| `HD_FETCH_AUTH_HEADER` | Auth header for private URL downloads | — |
+
+### URL-Based File Ingestion
+
+Tools that analyze local files (source code scanners, binary analyzers, forensics tools, etc.) support downloading files directly from URLs — no host volume mounts required. This works in both cloud and local desktop deployments.
+
+**How it works:** 57 file-dependent tools include a shared `hd_fetch` module that handles HTTP(S) downloads, git clone, and archive extraction into the container workspace.
+
+**Supported URL types:**
+- Direct HTTP(S) file downloads
+- Archives (`.zip`, `.tar.gz`, `.tar.bz2`) — auto-extracted
+- GitHub/GitLab repository URLs — shallow-cloned via `git clone --depth=1`
+- `data:` URIs (base64-encoded) — for small inline payloads
+
+**Usage patterns:**
+
+1. **`source_url` parameter** (generic-argument tools like semgrep, trivy, radare2):
+
+```
+run_semgrep(
+  source_url="https://github.com/org/repo",
+  arguments="scan {source} --config auto"
+)
+```
+
+2. **Direct URL in path parameters** (explicit-path tools like titus):
+
+```
+scan_path(path="https://github.com/org/repo")
+```
+
+3. **`download_file` tool** (all file-dependent tools — download once, analyze multiple times):
+
+```
+download_file(url="https://example.com/firmware.bin")
+# Returns: {"path": "/app/workdir/abc123/firmware.bin", "job_id": "abc123"}
+
+run_binwalk(arguments="/app/workdir/abc123/firmware.bin")
+run_checksec(arguments="--file /app/workdir/abc123/firmware.bin")
+
+cleanup_downloads(job_id="abc123")
+```
 
 ## Directory Structure
 
@@ -300,6 +345,7 @@ Each tool follows this structure:
 <tool>-mcp/
 ├── Dockerfile              # Multi-stage Docker build
 ├── mcp_server.py           # FastMCP server wrapping the CLI tool
+├── hd_fetch.py             # URL download utility (file-dependent tools)
 ├── requirements.txt        # Python dependencies
 ├── publish_to_hackerdogs.sh # Build & publish script
 ├── mcpServer.json          # MCP client configuration

@@ -118,12 +118,14 @@ Add to your Claude Desktop or Cursor MCP config:
         "-e", "ZOOMEYE_API_KEY",
         "-e", "NETLAS_API_KEY",
         "-e", "CRIMINALIP_API_KEY",
+        "-e", "MCP_TRANSPORT",
         "hackerdogs/uncover-mcp:latest"
       ],
       "env": {
         "SHODAN_API_KEY": "<your-shodan-api-key>",
         "CENSYS_API_ID": "<your-censys-api-id>",
-        "CENSYS_API_SECRET": "<your-censys-api-secret>"
+        "CENSYS_API_SECRET": "<your-censys-api-secret>",
+        "MCP_TRANSPORT": "stdio"
       }
     }
   }

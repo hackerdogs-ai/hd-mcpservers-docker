@@ -99,10 +99,12 @@ Add to your Claude Desktop or Cursor MCP config:
       "args": [
         "run", "-i", "--rm",
         "-e", "OPENAI_API_KEY",
+        "-e", "MCP_TRANSPORT",
         "hackerdogs/openrisk-mcp:latest"
       ],
       "env": {
-        "OPENAI_API_KEY": "<your-openai-api-key>"
+        "OPENAI_API_KEY": "<your-openai-api-key>",
+        "MCP_TRANSPORT": "stdio"
       }
     }
   }

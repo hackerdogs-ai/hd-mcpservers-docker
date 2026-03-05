@@ -17,7 +17,7 @@ RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git tini ca-certificates \
+    git unzip tini ca-certificates \
     && rm -rf /var/lib/apt/lists/* \
     && git clone --depth 1 https://github.com/Mr-Neutr0n/trivy-mcp-server.git /opt/trivy-neutr0n-src \
     && cd /opt/trivy-neutr0n-src && (pip install --no-cache-dir -r requirements.txt 2>/dev/null || true) \
@@ -31,9 +31,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY mcp_server.py ./
+COPY hd_fetch.py ./
 
 # Create output directory
-RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+RUN mkdir -p /app/output /app/workdir && chown -R mcpuser:mcpuser /app
 
 # Switch to non-root user
 USER mcpuser

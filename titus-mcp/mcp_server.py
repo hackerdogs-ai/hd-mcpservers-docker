@@ -8,6 +8,7 @@ import sys
 import logging
 
 from fastmcp import FastMCP
+import hd_fetch
 
 logging.basicConfig(
     level=logging.INFO,
@@ -104,7 +105,9 @@ def scan_path(
     configuration files, and other text-based files.
 
     Args:
-        path: File or directory path to scan for secrets.
+        path: Local path OR URL to scan.  Accepts a file/directory path, an
+              HTTP(S) URL to a file or archive, or a GitHub/GitLab repo URL.
+              URLs are downloaded into the container automatically.
         validate: If True, attempt to validate discovered secrets against live services.
         output_format: Output format - "json" or "csv". Default "json".
         rules_include: Comma-separated rule IDs or tags to include (empty = all rules).
@@ -114,21 +117,23 @@ def scan_path(
         Dictionary with scan results including any detected secrets.
     """
     logger.info("scan_path called with path=%s", path)
-    args = ["scan", path]
 
-    if validate:
-        args.append("--validate")
+    with hd_fetch.resolve(path) as local_path:
+        args = ["scan", local_path]
 
-    if output_format:
-        args.extend(["--format", output_format])
+        if validate:
+            args.append("--validate")
 
-    if rules_include:
-        args.extend(["--rules-include", rules_include])
+        if output_format:
+            args.extend(["--format", output_format])
 
-    if rules_exclude:
-        args.extend(["--rules-exclude", rules_exclude])
+        if rules_include:
+            args.extend(["--rules-include", rules_include])
 
-    return _run_titus(args, timeout=300)
+        if rules_exclude:
+            args.extend(["--rules-exclude", rules_exclude])
+
+        return _run_titus(args, timeout=300)
 
 
 @mcp.tool()
@@ -145,7 +150,9 @@ def scan_git(
     committed and later removed but still exist in history.
 
     Args:
-        path: Path to a git repository to scan its history.
+        path: Local path OR URL to a git repository.  Accepts a directory path
+              or a GitHub/GitLab repo URL (e.g. https://github.com/org/repo).
+              URLs are cloned into the container automatically.
         validate: If True, attempt to validate discovered secrets against live services.
         output_format: Output format - "json" or "csv". Default "json".
         rules_include: Comma-separated rule IDs or tags to include (empty = all rules).
@@ -155,21 +162,23 @@ def scan_git(
         Dictionary with scan results from git history including detected secrets.
     """
     logger.info("scan_git called with path=%s", path)
-    args = ["scan", path, "--git"]
 
-    if validate:
-        args.append("--validate")
+    with hd_fetch.resolve(path) as local_path:
+        args = ["scan", local_path, "--git"]
 
-    if output_format:
-        args.extend(["--format", output_format])
+        if validate:
+            args.append("--validate")
 
-    if rules_include:
-        args.extend(["--rules-include", rules_include])
+        if output_format:
+            args.extend(["--format", output_format])
 
-    if rules_exclude:
-        args.extend(["--rules-exclude", rules_exclude])
+        if rules_include:
+            args.extend(["--rules-include", rules_include])
 
-    return _run_titus(args, timeout=600)
+        if rules_exclude:
+            args.extend(["--rules-exclude", rules_exclude])
+
+        return _run_titus(args, timeout=600)
 
 
 @mcp.tool()
@@ -207,6 +216,48 @@ def generate_report(
         args.extend(["--format", output_format])
 
     return _run_titus(args)
+
+
+@mcp.tool()
+def download_file(
+    url: str,
+    extract: bool = True,
+) -> dict:
+    """Download a file or repository from a URL into the container workspace.
+
+    Use this to pre-download files before scanning, or when you need to
+    download once and run multiple scans on the same content.
+
+    Args:
+        url: HTTP(S) URL, GitHub/GitLab repo URL, or data: URI.
+        extract: If True (default), automatically extract archives (.zip, .tar.gz, etc.).
+
+    Returns:
+        Dictionary with 'path' (local path to use in other tools) and
+        'job_id' (use with cleanup_downloads to free space).
+    """
+    logger.info("download_file called with url=%s", url)
+    try:
+        return hd_fetch.fetch(url, extract=extract)
+    except hd_fetch.FetchError as exc:
+        return {"error": True, "message": str(exc)}
+
+
+@mcp.tool()
+def cleanup_downloads(job_id: str = "") -> dict:
+    """Clean up downloaded files from the container workspace.
+
+    Args:
+        job_id: Specific job ID to clean up.  If empty, removes all downloads.
+
+    Returns:
+        Dictionary confirming the cleanup.
+    """
+    if job_id:
+        hd_fetch.cleanup(job_id)
+        return {"cleaned": job_id}
+    hd_fetch.cleanup_all()
+    return {"cleaned": "all"}
 
 
 if __name__ == "__main__":

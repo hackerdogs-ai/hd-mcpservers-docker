@@ -121,10 +121,12 @@ Add to your Claude Desktop or Cursor MCP config:
       "args": [
         "run", "-i", "--rm",
         "-e", "PDCP_API_KEY",
+        "-e", "MCP_TRANSPORT",
         "hackerdogs/vulnx-mcp:latest"
       ],
       "env": {
-        "PDCP_API_KEY": "<your-projectdiscovery-api-key>"
+        "PDCP_API_KEY": "<your-projectdiscovery-api-key>",
+        "MCP_TRANSPORT": "stdio"
       }
     }
   }

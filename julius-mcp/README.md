@@ -113,7 +113,7 @@ Add to your Claude Desktop or Cursor MCP config:
   "mcpServers": {
     "julius-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/julius-mcp:latest"],
+      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "hackerdogs/julius-mcp:latest"],
       "env": {
         "MCP_TRANSPORT": "stdio"
       }

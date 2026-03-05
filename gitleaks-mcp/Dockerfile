@@ -26,6 +26,8 @@ COPY --from=builder /go/bin/gitleaks /usr/local/bin/gitleaks
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
+    git \
+    unzip \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
@@ -37,9 +39,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY mcp_server.py ./
+COPY hd_fetch.py ./
 
 # Create output directory
-RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+RUN mkdir -p /app/output /app/workdir && chown -R mcpuser:mcpuser /app
 
 # Switch to non-root user
 USER mcpuser

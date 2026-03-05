@@ -87,8 +87,14 @@ Add to your Claude Desktop or Cursor MCP config:
   "mcpServers": {
     "bloodhound-mcp-ai-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/bloodhound-mcp-ai-mcp:latest"],
-      "env": {}
+      "args": [
+        "run", "-i", "--rm",
+        "-e", "MCP_TRANSPORT",
+        "hackerdogs/bloodhound-mcp-ai-mcp:latest"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
     }
   }
 }
