@@ -20,6 +20,14 @@ See [VirusTotal/yara](https://github.com/VirusTotal/yara) for full documentation
 
 **No API keys required** — YARA runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [YARA](https://github.com/VirusTotal/yara) — Pattern matching tool for malware researchers and classification.
+
+**Tools:**
+- `run_yara` — Run yara with the given arguments. Returns structured JSON output.
+- `download_file` — Download a file or repository from a URL into the container workspace. Use this to pre-download content before running multiple analyses on the same data.
+- `cleanup_downloads` — Remove downloaded files from the container workspace.
+
+
 ## Tools Reference
 
 ### `run_yara`
@@ -29,6 +37,7 @@ Run yara with the given arguments. Returns structured JSON output.
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
 | `arguments` | string | Yes | — | Command-line arguments (e.g. `"--help"`) |
+| `source_url` | string | No | `""` | URL to download files into the container before running. Supports HTTP(S) files, archives (auto-extracted), and GitHub/GitLab repo URLs. Use `{source}` in arguments as a placeholder for the downloaded path. |
 | `timeout_seconds` | integer | No | `600` | Maximum execution time in seconds |
 
 <details>
@@ -42,6 +51,25 @@ Run yara with the given arguments. Returns structured JSON output.
 
 </details>
 
+### `download_file`
+
+Download a file or repository from a URL into the container workspace. Use this to pre-download content before running multiple analyses on the same data.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `url` | string | Yes | — | HTTP(S) URL, GitHub/GitLab repo URL, or `data:` URI |
+| `extract` | boolean | No | `true` | Auto-extract archives (`.zip`, `.tar.gz`, etc.) |
+
+Returns JSON with `path` (local file path to use in other tools) and `job_id` (for cleanup).
+
+### `cleanup_downloads`
+
+Remove downloaded files from the container workspace.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `job_id` | string | No | `""` | Specific job ID to clean up. If empty, removes all downloads |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
@@ -52,6 +80,12 @@ Here are example prompts you can use with Claude (or any MCP client) when this t
 - "Run yara against example.com with default settings."
 - "Execute yara with verbose output enabled."
 - "Use the yara tool to analyze the target and report findings."
+
+**URL-based ingestion (no volume mounts needed):**
+
+- "Download YARA rules from https://example.com/rules.yar using source_url and use them to scan a suspect file."
+- "Fetch the malware sample from https://example.com/sample.bin and scan it with YARA rules."
+
 
 ## Deploy
 
@@ -118,6 +152,8 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 |----------|---------|-------------|
 | `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
 | `MCP_PORT` | `8328` | HTTP port (only used with `streamable-http`) |
+| `HD_MAX_DOWNLOAD_MB` | `500` | Max file download size in MB (URL fetch) |
+| `HD_FETCH_TIMEOUT` | `120` | Download timeout in seconds (URL fetch) |
 
 ## Installing in Hackerdogs
 

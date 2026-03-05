@@ -20,6 +20,12 @@ See [schweikert/fping](https://github.com/schweikert/fping) for full documentati
 
 **No API keys required** — Fping runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Fping](https://github.com/schweikert/fping) — High-performance ping utility for parallel host probing.
+
+**Tools:**
+- `run_fping` — Run fping with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_fping`

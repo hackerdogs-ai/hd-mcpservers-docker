@@ -20,6 +20,12 @@ See [wapiti-scanner/wapiti](https://github.com/wapiti-scanner/wapiti) for full d
 
 **No API keys required** — Wapiti runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Wapiti](https://github.com/wapiti-scanner/wapiti) — Web application vulnerability scanner with black-box testing.
+
+**Tools:**
+- `run_wapiti` — Run wapiti with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_wapiti`

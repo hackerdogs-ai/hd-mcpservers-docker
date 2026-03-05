@@ -42,6 +42,14 @@ Example provider config:
   gcp_service_account_key: '{...}'
 ```
 
+**Summary.** MCP server wrapper for [Cloudlist](https://github.com/projectdiscovery/cloudlist) — lists assets from multiple cloud providers (AWS, GCP, Azure, DigitalOcean, Fastly, etc.) for attack surface management and cloud asset discovery.
+
+**Tools:**
+- `list_cloud_assets` — List assets (hosts, IPs) from cloud providers (AWS, GCP, Azure, DigitalOcean, etc.).
+- `download_file` — Download a file or repository from a URL into the container workspace. Use this to pre-download content before running multiple analyses on the same data.
+- `cleanup_downloads` — Remove downloaded files from the container workspace.
+
+
 ## Tools Reference
 
 ### `list_cloud_assets`
@@ -69,6 +77,25 @@ List assets (hosts, IPs) from cloud providers (AWS, GCP, Azure, DigitalOcean, et
 
 </details>
 
+### `download_file`
+
+Download a file or repository from a URL into the container workspace. Use this to pre-download content before running multiple analyses on the same data.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `url` | string | Yes | — | HTTP(S) URL, GitHub/GitLab repo URL, or `data:` URI |
+| `extract` | boolean | No | `true` | Auto-extract archives (`.zip`, `.tar.gz`, etc.) |
+
+Returns JSON with `path` (local file path to use in other tools) and `job_id` (for cleanup).
+
+### `cleanup_downloads`
+
+Remove downloaded files from the container workspace.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `job_id` | string | No | `""` | Specific job ID to clean up. If empty, removes all downloads |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
@@ -79,6 +106,12 @@ Here are example prompts you can use with Claude (or any MCP client) when this t
 - "Get all assets from my GCP and Azure accounts, excluding private IPs."
 - "Show only hostnames from my DigitalOcean and Cloudflare providers."
 - "List all Route53 DNS records from my AWS configuration."
+
+**URL-based ingestion (no volume mounts needed):**
+
+- "Download the provider config from https://example.com/cloud-config.yaml using download_file and use it to list cloud assets."
+- "Fetch my cloud provider configuration from https://example.com/providers.yaml and list all AWS assets."
+
 
 ## Deploy
 
@@ -152,6 +185,8 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 |----------|---------|-------------|
 | `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
 | `MCP_PORT` | `8111` | Port for streamable-http transport |
+| `HD_MAX_DOWNLOAD_MB` | `500` | Max file download size in MB (URL fetch) |
+| `HD_FETCH_TIMEOUT` | `120` | Download timeout in seconds (URL fetch) |
 
 ## Installing in Hackerdogs
 

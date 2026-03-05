@@ -20,6 +20,12 @@ See [royhills/arp-scan](https://github.com/royhills/arp-scan) for full documenta
 
 **No API keys required** — Arp Scan runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Arp Scan](https://github.com/royhills/arp-scan) — Network discovery using ARP requests.
+
+**Tools:**
+- `run_arp_scan` — Run arp-scan with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_arp_scan`

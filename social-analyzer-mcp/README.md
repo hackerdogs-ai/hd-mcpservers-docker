@@ -20,6 +20,12 @@ See [qeeqbox/social-analyzer](https://github.com/qeeqbox/social-analyzer) for fu
 
 **No API keys required** — Social Analyzer runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Social Analyzer](https://github.com/qeeqbox/social-analyzer) — Social media analysis and OSINT.
+
+**Tools:**
+- `run_social_analyzer` — Run social-analyzer with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_social_analyzer`

@@ -20,6 +20,12 @@ See [copyleftdev/rasn](https://github.com/copyleftdev/rasn) for full documentati
 
 **No API keys required** — RASN runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [RASN](https://github.com/copyleftdev/rasn) — Rust-based ASN lookup and network intelligence tool.
+
+**Tools:**
+- `run_rasn` — Run rasn with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_rasn`

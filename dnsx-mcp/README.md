@@ -18,6 +18,13 @@ DNSx is a multi-purpose DNS toolkit for running queries across **A, AAAA, CNAME,
 
 **No API keys required** — DNSx queries DNS servers directly using standard DNS protocol.
 
+**Summary.** MCP server wrapper for [DNSx](https://github.com/projectdiscovery/dnsx) — multi-purpose DNS toolkit by ProjectDiscovery.
+
+**Tools:**
+- `resolve_domains` — Resolve DNS records for one or more domains. Supports A, AAAA, CNAME, NS, MX, TXT, PTR, SOA record types.
+- `bruteforce_subdomains` — Bruteforce subdomains using a wordlist.
+
+
 ## Tools Reference
 
 ### `resolve_domains`

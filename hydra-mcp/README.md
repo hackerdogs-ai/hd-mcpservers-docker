@@ -20,6 +20,12 @@ See [vanhauser-thc/thc-hydra](https://github.com/vanhauser-thc/thc-hydra) for fu
 
 **No API keys required** — Hydra runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Hydra](https://github.com/vanhauser-thc/thc-hydra) — Network login cracker (50+ protocols).
+
+**Tools:**
+- `run_hydra` — Run hydra with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_hydra`

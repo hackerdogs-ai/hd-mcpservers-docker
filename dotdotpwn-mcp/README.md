@@ -20,6 +20,12 @@ See [wireghoul/dotdotpwn](https://github.com/wireghoul/dotdotpwn) for full docum
 
 **No API keys required** — Dotdotpwn runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Dotdotpwn](https://github.com/wireghoul/dotdotpwn) — Directory traversal testing.
+
+**Tools:**
+- `run_dotdotpwn` — Run dotdotpwn with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_dotdotpwn`

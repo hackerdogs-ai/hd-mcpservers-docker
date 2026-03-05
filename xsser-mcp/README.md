@@ -20,6 +20,12 @@ See [epsylon/xsser](https://github.com/epsylon/xsser) for full documentation.
 
 **No API keys required** — Xsser runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Xsser](https://github.com/epsylon/xsser) — XSS vulnerability testing.
+
+**Tools:**
+- `run_xsser` — Run xsser with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_xsser`

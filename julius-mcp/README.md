@@ -18,6 +18,16 @@ Julius fingerprints **33+ LLM services** running on network endpoints. It sends 
 
 **No API keys required** — Julius runs entirely offline and only sends standard HTTP requests.
 
+**Summary.** MCP server wrapper for [Julius](https://github.com/praetorian-inc/julius) — LLM service fingerprinting tool by Praetorian.
+
+**Tools:**
+- `probe_targets` — Probe one or more target URLs to fingerprint which LLM service is running. Detects 33+ services including Ollama, vLLM, LiteLLM, HuggingFace TGI, LocalAI, LM Studio, NVIDIA NIM, and more.
+- `list_probes` — List all available probe definitions that Julius can use for fingerprinting LLM services.
+- `validate_probes` — Validate custom probe definition files (YAML/JSON).
+- `download_file` — Download a file or repository from a URL into the container workspace. Use this to pre-download content before running multiple analyses on the same data.
+- `cleanup_downloads` — Remove downloaded files from the container workspace.
+
+
 ## Tools Reference
 
 ### `probe_targets`
@@ -66,7 +76,26 @@ Validate custom probe definition files (YAML/JSON).
 
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
-| `path` | string | Yes | — | File path to the probe definition file to validate |
+| `path` | string | Yes | — | Local path **or URL** to the probe definition file to validate. HTTP(S) URLs are downloaded into the container automatically |
+
+### `download_file`
+
+Download a file or repository from a URL into the container workspace. Use this to pre-download content before running multiple analyses on the same data.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `url` | string | Yes | — | HTTP(S) URL, GitHub/GitLab repo URL, or `data:` URI |
+| `extract` | boolean | No | `true` | Auto-extract archives (`.zip`, `.tar.gz`, etc.) |
+
+Returns JSON with `path` (local file path to use in other tools) and `job_id` (for cleanup).
+
+### `cleanup_downloads`
+
+Remove downloaded files from the container workspace.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `job_id` | string | No | `""` | Specific job ID to clean up. If empty, removes all downloads |
 
 ## Example Prompts
 
@@ -78,6 +107,12 @@ Here are example prompts you can use with Claude (or any MCP client) when this t
 - "Probe https://api.example.com and identify if it's using vLLM, TGI, or another inference server."
 - "List all the probe types that Julius supports for fingerprinting LLM services."
 - "Scan my staging AI endpoints with high concurrency and a 10-second timeout per probe."
+
+**URL-based ingestion (no volume mounts needed):**
+
+- "Download custom probe definitions from https://example.com/custom-probes.yaml using download_file and validate them."
+- "Fetch the probe file from https://example.com/probes.json and validate it with julius."
+
 
 ## Deploy
 
@@ -144,6 +179,8 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 |----------|---------|-------------|
 | `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
 | `MCP_PORT` | `8100` | HTTP port (only used with `streamable-http`) |
+| `HD_MAX_DOWNLOAD_MB` | `500` | Max file download size in MB (URL fetch) |
+| `HD_FETCH_TIMEOUT` | `120` | Download timeout in seconds (URL fetch) |
 
 ## Installing in Hackerdogs
 

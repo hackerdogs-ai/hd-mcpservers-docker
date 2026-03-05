@@ -20,6 +20,12 @@ See [VantaInc/vanta-mcp-server](https://github.com/VantaInc/vanta-mcp-server) fo
 
 **No API keys required** — Vanta runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Vanta](https://github.com/VantaInc/vanta-mcp-server) — Vanta compliance and security monitoring MCP integration.
+
+**Tools:**
+- `run_vanta_mcp` — Run vanta-mcp with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_vanta_mcp`

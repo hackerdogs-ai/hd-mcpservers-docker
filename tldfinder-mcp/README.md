@@ -18,6 +18,13 @@ TLDFinder discovers **private TLDs and subdomains** using passive and active DNS
 
 **No API keys required** — TLDFinder uses passive data sources and standard DNS queries.
 
+**Summary.** MCP server wrapper for [TLDFinder](https://github.com/projectdiscovery/tldfinder) — TLD and subdomain discovery tool by ProjectDiscovery.
+
+**Tools:**
+- `find_tlds` — Discover TLDs and subdomains for domains using passive and active DNS.
+- `list_sources` — List all available TLD/subdomain discovery sources. _No parameters._
+
+
 ## Tools Reference
 
 ### `find_tlds`

@@ -20,6 +20,12 @@ See [aircrack-ng/aircrack-ng](https://github.com/aircrack-ng/aircrack-ng) for fu
 
 **No API keys required** — Aircrack-ng runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Aircrack-ng](https://github.com/aircrack-ng/aircrack-ng) — WiFi security auditing tools suite for WEP/WPA/WPA2 cracking.
+
+**Tools:**
+- `run_aircrack_ng` — Run aircrack-ng with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_aircrack_ng`

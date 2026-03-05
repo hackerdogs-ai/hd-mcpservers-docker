@@ -20,6 +20,12 @@ See [cddc/enum4linux-ng](https://github.com/cddc/enum4linux-ng) for full documen
 
 **No API keys required** — Enum4Linux Ng runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Enum4Linux Ng](https://github.com/cddc/enum4linux-ng) — Advanced SMB enumeration with enhanced logging.
+
+**Tools:**
+- `run_enum4linux_ng` — Run enum4linux-ng with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_enum4linux_ng`

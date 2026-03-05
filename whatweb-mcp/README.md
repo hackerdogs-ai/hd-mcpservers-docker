@@ -20,6 +20,12 @@ See [urbanadventurer/WhatWeb](https://github.com/urbanadventurer/WhatWeb) for fu
 
 **No API keys required** — Whatweb runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Whatweb](https://github.com/urbanadventurer/WhatWeb) — Web technology identification and fingerprinting.
+
+**Tools:**
+- `run_whatweb` — Run whatweb with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_whatweb`

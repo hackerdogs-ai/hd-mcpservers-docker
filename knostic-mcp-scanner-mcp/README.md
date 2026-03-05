@@ -20,6 +20,12 @@ See [knostic/MCP-Scanner](https://github.com/knostic/MCP-Scanner) for full docum
 
 **No API keys required** — Knostic Scanner runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Knostic Scanner](https://github.com/knostic/MCP-Scanner) — Security scanner for AI agent servers and configurations.
+
+**Tools:**
+- `run_mcp_scanner` — Run mcp-scanner with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_mcp_scanner`

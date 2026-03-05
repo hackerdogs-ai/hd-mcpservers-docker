@@ -20,6 +20,12 @@ See [wifiphisher/wifiphisher](https://github.com/wifiphisher/wifiphisher) for fu
 
 **No API keys required** — Wifiphisher runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Wifiphisher](https://github.com/wifiphisher/wifiphisher) — Automated WiFi phishing attacks and credential harvesting.
+
+**Tools:**
+- `run_wifiphisher` — Run wifiphisher with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_wifiphisher`

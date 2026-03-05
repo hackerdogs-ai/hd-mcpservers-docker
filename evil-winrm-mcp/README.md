@@ -20,6 +20,12 @@ See [Hackplayers/evil-winrm](https://github.com/Hackplayers/evil-winrm) for full
 
 **No API keys required** — Evil Winrm runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Evil Winrm](https://github.com/Hackplayers/evil-winrm) — Windows Remote Management shell.
+
+**Tools:**
+- `run_evil_winrm` — Run evil-winrm with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_evil_winrm`

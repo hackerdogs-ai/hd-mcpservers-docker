@@ -20,6 +20,12 @@ See [THORCollective/threat-hunting-mcp-server](https://github.com/THORCollective
 
 **No API keys required** — Threat Hunting runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Threat Hunting](https://github.com/THORCollective/threat-hunting-mcp-server) — Threat hunting and intelligence gathering MCP server.
+
+**Tools:**
+- `run_threat_hunting` — Run threat-hunting with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_threat_hunting`

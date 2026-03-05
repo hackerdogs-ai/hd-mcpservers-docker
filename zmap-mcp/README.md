@@ -20,6 +20,12 @@ See [zmap/zmap](https://github.com/zmap/zmap) for full documentation.
 
 **No API keys required** — ZMap runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [ZMap](https://github.com/zmap/zmap) — High-speed single-packet network scanner for internet-wide surveys.
+
+**Tools:**
+- `run_zmap` — Run zmap with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_zmap`

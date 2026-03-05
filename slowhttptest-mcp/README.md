@@ -20,6 +20,12 @@ See [shekyan/slowhttptest](https://github.com/shekyan/slowhttptest) for full doc
 
 **No API keys required** — SlowHTTPTest runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [SlowHTTPTest](https://github.com/shekyan/slowhttptest) — Application layer DoS attack simulator for slow HTTP attacks.
+
+**Tools:**
+- `run_slowhttptest` — Run slowhttptest with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_slowhttptest`

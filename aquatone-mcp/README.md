@@ -20,6 +20,12 @@ See [michenriksen/aquatone](https://github.com/michenriksen/aquatone) for full d
 
 **No API keys required** — Aquatone runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Aquatone](https://github.com/michenriksen/aquatone) — Visual inspection of websites across hosts.
+
+**Tools:**
+- `run_aquatone` — Run aquatone with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_aquatone`

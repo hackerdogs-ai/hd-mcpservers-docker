@@ -20,6 +20,12 @@ See [jmk-foofus/medusa](https://github.com/jmk-foofus/medusa) for full documenta
 
 **No API keys required** — Medusa runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Medusa](https://github.com/jmk-foofus/medusa) — Parallel modular login brute-forcer.
+
+**Tools:**
+- `run_medusa` — Run medusa with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_medusa`

@@ -20,6 +20,12 @@ See [t3l3machus/psudohash](https://github.com/t3l3machus/psudohash) for full doc
 
 **No API keys required** — Psudohash runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Psudohash](https://github.com/t3l3machus/psudohash) — Password list generator for targeted attacks based on known information.
+
+**Tools:**
+- `run_psudohash` — Run psudohash with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_psudohash`

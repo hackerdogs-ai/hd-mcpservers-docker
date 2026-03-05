@@ -20,6 +20,12 @@ See [epinna/tplmap](https://github.com/epinna/tplmap) for full documentation.
 
 **No API keys required** — Tplmap runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Tplmap](https://github.com/epinna/tplmap) — Server-side template injection exploitation.
+
+**Tools:**
+- `run_tplmap` — Run tplmap with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_tplmap`

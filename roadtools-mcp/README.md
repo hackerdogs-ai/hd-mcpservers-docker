@@ -20,6 +20,12 @@ See [dirkjanm/ROADtools](https://github.com/dirkjanm/ROADtools) for full documen
 
 **No API keys required** — ROADtools runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [ROADtools](https://github.com/dirkjanm/ROADtools) — Azure AD enumeration and attack tools for cloud security.
+
+**Tools:**
+- `run_roadrecon` — Run roadrecon with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_roadrecon`

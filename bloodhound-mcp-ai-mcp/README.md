@@ -20,6 +20,12 @@ See [stevenyu113228/BloodHound-MCP](https://github.com/stevenyu113228/BloodHound
 
 **No API keys required** — BloodHound AI runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [BloodHound AI](https://github.com/stevenyu113228/BloodHound-MCP) — AI-powered Active Directory attack path analysis.
+
+**Tools:**
+- `run_bloodhound_mcp` — Run bloodhound-mcp with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_bloodhound_mcp`

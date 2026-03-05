@@ -20,6 +20,12 @@ See [wpscanteam/wpscan](https://github.com/wpscanteam/wpscan) for full documenta
 
 **No API keys required** — Wpscan runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Wpscan](https://github.com/wpscanteam/wpscan) — WordPress security scanner.
+
+**Tools:**
+- `run_wpscan` — Run wpscan with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_wpscan`

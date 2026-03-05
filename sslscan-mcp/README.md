@@ -20,6 +20,12 @@ See [rbsec/sslscan](https://github.com/rbsec/sslscan) for full documentation.
 
 **No API keys required** — SSLScan runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [SSLScan](https://github.com/rbsec/sslscan) — SSL/TLS configuration and certificate scanner.
+
+**Tools:**
+- `run_sslscan` — Run sslscan with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_sslscan`

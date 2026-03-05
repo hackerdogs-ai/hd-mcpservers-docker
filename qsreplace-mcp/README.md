@@ -20,6 +20,12 @@ See [projectdiscovery/qsreplace](https://github.com/projectdiscovery/qsreplace) 
 
 **No API keys required** — Qsreplace runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Qsreplace](https://github.com/projectdiscovery/qsreplace) — Query string parameter replacement.
+
+**Tools:**
+- `run_qsreplace` — Run qsreplace with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_qsreplace`

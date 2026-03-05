@@ -20,6 +20,12 @@ See [dwisiswant0/crlfuzz](https://github.com/dwisiswant0/crlfuzz) for full docum
 
 **No API keys required** — CRLFuzz runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [CRLFuzz](https://github.com/dwisiswant0/crlfuzz) — CRLF injection vulnerability scanner.
+
+**Tools:**
+- `run_crlfuzz` — Run crlfuzz with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_crlfuzz`

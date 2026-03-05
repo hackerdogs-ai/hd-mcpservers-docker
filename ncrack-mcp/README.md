@@ -20,6 +20,12 @@ See [nmap/ncrack](https://github.com/nmap/ncrack) for full documentation.
 
 **No API keys required** — Ncrack runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Ncrack](https://github.com/nmap/ncrack) — High-speed network authentication cracking tool.
+
+**Tools:**
+- `run_ncrack` — Run ncrack with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_ncrack`

@@ -20,6 +20,12 @@ See [greenbone/openvas-scanner](https://github.com/greenbone/openvas-scanner) fo
 
 **No API keys required** — OpenVAS runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [OpenVAS](https://github.com/greenbone/openvas-scanner) — Open Vulnerability Assessment Scanner for comprehensive vulnerability scanning.
+
+**Tools:**
+- `run_openvas` — Run openvas with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_openvas`

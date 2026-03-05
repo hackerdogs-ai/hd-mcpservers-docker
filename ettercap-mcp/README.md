@@ -20,6 +20,12 @@ See [Ettercap/ettercap](https://github.com/Ettercap/ettercap) for full documenta
 
 **No API keys required** — Ettercap runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Ettercap](https://github.com/Ettercap/ettercap) — Comprehensive suite for man-in-the-middle attacks on LAN.
+
+**Tools:**
+- `run_ettercap` — Run ettercap with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_ettercap`

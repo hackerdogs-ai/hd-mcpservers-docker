@@ -20,6 +20,14 @@ See [semgrep/semgrep](https://github.com/semgrep/semgrep) for full documentation
 
 **No API keys required** — Semgrep runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Semgrep](https://github.com/semgrep/semgrep) — Lightweight static analysis for code security with 5000+ rules.
+
+**Tools:**
+- `run_semgrep` — Run semgrep with the given arguments. Returns structured JSON output.
+- `download_file` — Download a file or repository from a URL into the container workspace. Use this to pre-download content before running multiple analyses on the same data.
+- `cleanup_downloads` — Remove downloaded files from the container workspace.
+
+
 ## Tools Reference
 
 ### `run_semgrep`
@@ -29,6 +37,7 @@ Run semgrep with the given arguments. Returns structured JSON output.
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
 | `arguments` | string | Yes | — | Command-line arguments (e.g. `"--help"`) |
+| `source_url` | string | No | `""` | URL to download files into the container before running. Supports HTTP(S) files, archives (auto-extracted), and GitHub/GitLab repo URLs. Use `{source}` in arguments as a placeholder for the downloaded path. |
 | `timeout_seconds` | integer | No | `600` | Maximum execution time in seconds |
 
 <details>
@@ -42,6 +51,25 @@ Run semgrep with the given arguments. Returns structured JSON output.
 
 </details>
 
+### `download_file`
+
+Download a file or repository from a URL into the container workspace. Use this to pre-download content before running multiple analyses on the same data.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `url` | string | Yes | — | HTTP(S) URL, GitHub/GitLab repo URL, or `data:` URI |
+| `extract` | boolean | No | `true` | Auto-extract archives (`.zip`, `.tar.gz`, etc.) |
+
+Returns JSON with `path` (local file path to use in other tools) and `job_id` (for cleanup).
+
+### `cleanup_downloads`
+
+Remove downloaded files from the container workspace.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `job_id` | string | No | `""` | Specific job ID to clean up. If empty, removes all downloads |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
@@ -52,6 +80,13 @@ Here are example prompts you can use with Claude (or any MCP client) when this t
 - "Run semgrep against example.com with default settings."
 - "Execute semgrep with verbose output enabled."
 - "Use the semgrep tool to analyze the target and report findings."
+
+**URL-based ingestion (no volume mounts needed):**
+
+- "Scan the source code at https://github.com/juice-shop/juice-shop for security vulnerabilities using source_url and --config auto."
+- "Download the repo from https://github.com/org/api-server and run semgrep against it to find injection flaws."
+- "Use download_file to fetch https://example.com/source.tar.gz, then scan it with semgrep for hardcoded secrets."
+
 
 ## Deploy
 
@@ -118,6 +153,8 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 |----------|---------|-------------|
 | `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
 | `MCP_PORT` | `8335` | HTTP port (only used with `streamable-http`) |
+| `HD_MAX_DOWNLOAD_MB` | `500` | Max file download size in MB (URL fetch) |
+| `HD_FETCH_TIMEOUT` | `120` | Download timeout in seconds (URL fetch) |
 
 ## Installing in Hackerdogs
 

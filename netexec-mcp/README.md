@@ -20,6 +20,12 @@ See [PwnDexter/NetExec](https://github.com/PwnDexter/NetExec) for full documenta
 
 **No API keys required** — Netexec runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Netexec](https://github.com/PwnDexter/NetExec) — Network service exploitation (formerly CrackMapExec).
+
+**Tools:**
+- `run_netexec` — Run netexec with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_netexec`

@@ -20,6 +20,12 @@ See [RhinoSecurityLabs/pacu](https://github.com/RhinoSecurityLabs/pacu) for full
 
 **No API keys required** — Pacu runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Pacu](https://github.com/RhinoSecurityLabs/pacu) — AWS exploitation framework.
+
+**Tools:**
+- `run_pacu` — Run pacu with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_pacu`

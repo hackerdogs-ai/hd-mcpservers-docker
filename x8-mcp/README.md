@@ -20,6 +20,12 @@ See [sh1yo/x8](https://github.com/sh1yo/x8) for full documentation.
 
 **No API keys required** — X8 runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [X8](https://github.com/sh1yo/x8) — Hidden parameter discovery.
+
+**Tools:**
+- `run_x8` — Run x8 with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_x8`

@@ -20,6 +20,12 @@ See [cisco-ai-defense/a2a-scanner](https://github.com/cisco-ai-defense/a2a-scann
 
 **No API keys required** — A2A Scanner runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [A2A Scanner](https://github.com/cisco-ai-defense/a2a-scanner) — Agent-to-Agent communication security scanner.
+
+**Tools:**
+- `run_a2a_scanner` — Run a2a-scanner with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_a2a_scanner`

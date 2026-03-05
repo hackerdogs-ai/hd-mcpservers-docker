@@ -20,6 +20,12 @@ See [haccer/subjack](https://github.com/haccer/subjack) for full documentation.
 
 **No API keys required** — Subjack runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Subjack](https://github.com/haccer/subjack) — Subdomain takeover vulnerability checker.
+
+**Tools:**
+- `run_subjack` — Run subjack with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_subjack`

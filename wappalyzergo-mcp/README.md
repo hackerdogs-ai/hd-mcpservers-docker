@@ -18,6 +18,12 @@ Wappalyzergo detects **web technologies** (frameworks, CMS, servers, JavaScript 
 
 **No API keys required** — Wappalyzergo connects directly to target URLs using standard HTTP requests.
 
+**Summary.** MCP server wrapper for [Wappalyzergo](https://github.com/projectdiscovery/wappalyzergo) — web technology detection tool by ProjectDiscovery.
+
+**Tools:**
+- `detect_technologies` — Detect web technologies (frameworks, CMS, servers, libraries) on target URLs using HTTP headers and HTML fingerprinting.
+
+
 ## Tools Reference
 
 ### `detect_technologies`

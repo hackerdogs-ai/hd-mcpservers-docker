@@ -20,6 +20,14 @@ See [jeremylong/DependencyCheck](https://github.com/jeremylong/DependencyCheck) 
 
 **No API keys required** — Dependency-Check runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Dependency-Check](https://github.com/jeremylong/DependencyCheck) — Software composition analysis for known vulnerabilities in dependencies.
+
+**Tools:**
+- `run_dependency_check` — Run dependency-check with the given arguments. Returns structured JSON output.
+- `download_file` — Download a file or repository from a URL into the container workspace. Use this to pre-download content before running multiple analyses on the same data.
+- `cleanup_downloads` — Remove downloaded files from the container workspace.
+
+
 ## Tools Reference
 
 ### `run_dependency_check`
@@ -29,6 +37,7 @@ Run dependency-check with the given arguments. Returns structured JSON output.
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
 | `arguments` | string | Yes | — | Command-line arguments (e.g. `"--help"`) |
+| `source_url` | string | No | `""` | URL to download files into the container before running. Supports HTTP(S) files, archives (auto-extracted), and GitHub/GitLab repo URLs. Use `{source}` in arguments as a placeholder for the downloaded path. |
 | `timeout_seconds` | integer | No | `600` | Maximum execution time in seconds |
 
 <details>
@@ -42,6 +51,25 @@ Run dependency-check with the given arguments. Returns structured JSON output.
 
 </details>
 
+### `download_file`
+
+Download a file or repository from a URL into the container workspace. Use this to pre-download content before running multiple analyses on the same data.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `url` | string | Yes | — | HTTP(S) URL, GitHub/GitLab repo URL, or `data:` URI |
+| `extract` | boolean | No | `true` | Auto-extract archives (`.zip`, `.tar.gz`, etc.) |
+
+Returns JSON with `path` (local file path to use in other tools) and `job_id` (for cleanup).
+
+### `cleanup_downloads`
+
+Remove downloaded files from the container workspace.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `job_id` | string | No | `""` | Specific job ID to clean up. If empty, removes all downloads |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
@@ -52,6 +80,12 @@ Here are example prompts you can use with Claude (or any MCP client) when this t
 - "Run dependency-check against example.com with default settings."
 - "Execute dependency-check with verbose output enabled."
 - "Use the dependency-check tool to analyze the target and report findings."
+
+**URL-based ingestion (no volume mounts needed):**
+
+- "Scan https://github.com/org/java-app for known vulnerable dependencies using source_url."
+- "Download the project from https://example.com/app.tar.gz and check its dependencies for CVEs."
+
 
 ## Deploy
 
@@ -122,6 +156,8 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 |----------|---------|-------------|
 | `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
 | `MCP_PORT` | `8361` | HTTP port (only used with `streamable-http`) |
+| `HD_MAX_DOWNLOAD_MB` | `500` | Max file download size in MB (URL fetch) |
+| `HD_FETCH_TIMEOUT` | `120` | Download timeout in seconds (URL fetch) |
 
 ## Installing in Hackerdogs
 

@@ -35,6 +35,14 @@ Augustus scans LLMs for vulnerabilities, so it needs **API keys for the LLM prov
 
 See the full [Augustus docs](https://github.com/praetorian-inc/augustus) for all 28 supported providers.
 
+**Summary.** MCP server wrapper for [Augustus](https://github.com/praetorian-inc/augustus) — LLM adversarial vulnerability testing with 210+ probes and support for 28 LLM providers.
+
+**Tools:**
+- `scan_llm` — Run an adversarial vulnerability scan against an LLM using 210+ probes.
+- `list_components` — List available Augustus components (probes, detectors, generators, harnesses, buffs). _No parameters._
+- `get_version` — Get the installed Augustus version and build info. _No parameters._
+
+
 ## Tools Reference
 
 ### `scan_llm`

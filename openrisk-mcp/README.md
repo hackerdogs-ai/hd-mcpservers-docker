@@ -26,6 +26,12 @@ Get your key at: [platform.openai.com/api-keys](https://platform.openai.com/api-
 export OPENAI_API_KEY=sk-...
 ```
 
+**Summary.** MCP server wrapper for [OpenRisk](https://github.com/projectdiscovery/openrisk) — generates risk scores from Nuclei scan output using OpenAI GPT-4o for intelligent vulnerability risk assessment.
+
+**Tools:**
+- `analyze_risk` — Analyze Nuclei scan results and generate a risk score using OpenAI GPT-4o. Requires OPENAI_API_KEY.
+
+
 ## Tools Reference
 
 ### `analyze_risk`

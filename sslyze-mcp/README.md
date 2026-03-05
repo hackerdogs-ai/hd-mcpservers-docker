@@ -20,6 +20,12 @@ See [nablac0d3/sslyze](https://github.com/nablac0d3/sslyze) for full documentati
 
 **No API keys required** — Sslyze runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Sslyze](https://github.com/nablac0d3/sslyze) — SSL/TLS configuration analyzer.
+
+**Tools:**
+- `run_sslyze` — Run sslyze with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_sslyze`

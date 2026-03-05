@@ -20,6 +20,12 @@ See [ipinfo/cli](https://github.com/ipinfo/cli) for full documentation.
 
 **No API keys required** — IPInfo runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [IPInfo](https://github.com/ipinfo/cli) — IP address intelligence and geolocation lookup tool.
+
+**Tools:**
+- `run_ipinfo` — Run ipinfo with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_ipinfo`

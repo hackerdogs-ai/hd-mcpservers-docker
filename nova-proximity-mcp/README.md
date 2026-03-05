@@ -20,6 +20,12 @@ See [Nova-Hunting/nova-proximity](https://github.com/Nova-Hunting/nova-proximity
 
 **No API keys required** — Nova Proximity runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Nova Proximity](https://github.com/Nova-Hunting/nova-proximity) — Network proximity analysis and threat detection.
+
+**Tools:**
+- `run_nova_proximity` — Run nova-proximity with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_nova_proximity`

@@ -20,6 +20,12 @@ See [EdenYavin/Garak-MCP](https://github.com/EdenYavin/Garak-MCP) for full docum
 
 **No API keys required** — Garak runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Garak](https://github.com/EdenYavin/Garak-MCP) — AI red teaming and LLM vulnerability testing.
+
+**Tools:**
+- `run_garak_mcp` — Run garak-mcp with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_garak_mcp`

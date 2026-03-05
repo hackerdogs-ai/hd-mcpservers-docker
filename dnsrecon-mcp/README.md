@@ -20,6 +20,12 @@ See [darkoperator/dnsrecon](https://github.com/darkoperator/dnsrecon) for full d
 
 **No API keys required** — Dnsrecon runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Dnsrecon](https://github.com/darkoperator/dnsrecon) — DNS information gathering and brute forcing.
+
+**Tools:**
+- `run_dnsrecon` — Run dnsrecon with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_dnsrecon`

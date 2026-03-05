@@ -20,6 +20,12 @@ See [nccgroup/ScoutSuite](https://github.com/nccgroup/ScoutSuite) for full docum
 
 **No API keys required** — Scoutsuite runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Scoutsuite](https://github.com/nccgroup/ScoutSuite) — Multi-cloud security auditing.
+
+**Tools:**
+- `run_scoutsuite` — Run scout with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_scoutsuite`

@@ -20,6 +20,12 @@ See [Tib3rius/AutoRecon](https://github.com/Tib3rius/AutoRecon) for full documen
 
 **No API keys required** — Autorecon runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Autorecon](https://github.com/Tib3rius/AutoRecon) — Automated reconnaissance. Run AutoRecon with target and options.
+
+**Tools:**
+- `run_autorecon` — Run autorecon with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_autorecon`

@@ -20,6 +20,12 @@ See [pentestmonkey/smtp-user-enum](https://github.com/pentestmonkey/smtp-user-en
 
 **No API keys required** — SMTP User Enum runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [SMTP User Enum](https://github.com/pentestmonkey/smtp-user-enum) — SMTP username enumeration via VRFY, EXPN, and RCPT commands.
+
+**Tools:**
+- `run_smtp_user_enum` — Run smtp-user-enum with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_smtp_user_enum`

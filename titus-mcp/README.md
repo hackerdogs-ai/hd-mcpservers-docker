@@ -18,6 +18,17 @@ Titus scans source code, files, and git history for leaked API keys, tokens, cre
 
 **No API keys required** — Titus runs entirely locally against your files and repositories.
 
+**Summary.** MCP server wrapper for [Titus](https://github.com/praetorian-inc/titus) — secret detection tool by Praetorian that scans source code, files, and git history for leaked credentials.
+
+**Tools:**
+- `scan_path` — Scan files and directories for secrets (API keys, tokens, credentials) using 459 detection rules.
+- `scan_git` — Scan git history for secrets leaked in past commits.
+- `list_rules` — List all 459 available secret detection rules. _No parameters._
+- `generate_report` — Generate a report from the most recent scan.
+- `download_file` — Download a file or repository from a URL into the container workspace. Use this to pre-download content before running multiple analyses on the same data.
+- `cleanup_downloads` — Remove downloaded files from the container workspace.
+
+
 ## Tools Reference
 
 ### `scan_path`
@@ -26,7 +37,7 @@ Scan files and directories for secrets (API keys, tokens, credentials) using 459
 
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
-| `path` | string | Yes | — | File or directory path to scan |
+| `path` | string | Yes | — | Local path **or URL** to scan. Accepts a file/directory path, HTTP(S) URL, archive URL, or a GitHub/GitLab repo URL. URLs are downloaded into the container automatically |
 | `validate` | boolean | No | `false` | Validate discovered secrets against live services |
 | `output_format` | string | No | `"json"` | Output format: `"json"` or `"csv"` |
 | `rules_include` | string | No | `""` | Rule IDs or tags to include (empty = all) |
@@ -52,7 +63,7 @@ Scan git history for secrets leaked in past commits.
 
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
-| `path` | string | Yes | — | Path to a git repository |
+| `path` | string | Yes | — | Local path **or URL** to a git repo. Accepts a directory path or a GitHub/GitLab repo URL (e.g. `https://github.com/org/repo`). URLs are cloned into the container automatically |
 | `validate` | boolean | No | `false` | Validate discovered secrets |
 | `output_format` | string | No | `"json"` | Output format: `"json"` or `"csv"` |
 | `rules_include` | string | No | `""` | Rule IDs or tags to include |
@@ -70,6 +81,25 @@ Generate a report from the most recent scan.
 |-----------|------|----------|---------|-------------|
 | `output_format` | string | No | `"json"` | Output format: `"json"` or `"csv"` |
 
+### `download_file`
+
+Download a file or repository from a URL into the container workspace. Use this to pre-download content before running multiple analyses on the same data.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `url` | string | Yes | — | HTTP(S) URL, GitHub/GitLab repo URL, or `data:` URI |
+| `extract` | boolean | No | `true` | Auto-extract archives (`.zip`, `.tar.gz`, etc.) |
+
+Returns JSON with `path` (local file path to use in other tools) and `job_id` (for cleanup).
+
+### `cleanup_downloads`
+
+Remove downloaded files from the container workspace.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `job_id` | string | No | `""` | Specific job ID to clean up. If empty, removes all downloads |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
@@ -80,6 +110,13 @@ Here are example prompts you can use with Claude (or any MCP client) when this t
 - "List all the secret detection rules that Titus supports."
 - "Scan /app/config and validate any discovered secrets against live services to check if they're still active."
 - "Generate a report from the last scan in CSV format."
+
+**URL-based ingestion (no volume mounts needed):**
+
+- "Scan the repo at https://github.com/org/backend for leaked API keys, tokens, or secrets."
+- "Check https://github.com/org/repo git history for any secrets that were committed and later removed."
+- "Use download_file to fetch https://example.com/source.tar.gz, then scan the downloaded path for secrets."
+
 
 ## Deploy
 
@@ -146,6 +183,8 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 |----------|---------|-------------|
 | `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
 | `MCP_PORT` | `8103` | HTTP port (only used with `streamable-http`) |
+| `HD_MAX_DOWNLOAD_MB` | `500` | Max file download size in MB (URL fetch) |
+| `HD_FETCH_TIMEOUT` | `120` | Download timeout in seconds (URL fetch) |
 
 ## Installing in Hackerdogs
 

@@ -20,6 +20,12 @@ See [OWASP/joomscan](https://github.com/OWASP/joomscan) for full documentation.
 
 **No API keys required** — JoomScan runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [JoomScan](https://github.com/OWASP/joomscan) — OWASP Joomla vulnerability scanner.
+
+**Tools:**
+- `run_joomscan` — Run joomscan with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_joomscan`

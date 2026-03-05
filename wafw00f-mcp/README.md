@@ -20,6 +20,12 @@ See [EnableSecurity/wafw00f](https://github.com/EnableSecurity/wafw00f) for full
 
 **No API keys required** — Wafw00F runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Wafw00F](https://github.com/EnableSecurity/wafw00f) — Web application firewall fingerprinting.
+
+**Tools:**
+- `run_wafw00f` — Run wafw00f with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_wafw00f`

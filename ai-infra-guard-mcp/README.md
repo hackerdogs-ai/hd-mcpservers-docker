@@ -20,6 +20,12 @@ See [Tencent/AI-Infra-Guard](https://github.com/Tencent/AI-Infra-Guard) for full
 
 **No API keys required** — AI-Infra-Guard runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [AI-Infra-Guard](https://github.com/Tencent/AI-Infra-Guard) — AI infrastructure security scanning and assessment.
+
+**Tools:**
+- `run_ai_infra_guard` — Run ai-infra-guard with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_ai_infra_guard`

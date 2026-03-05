@@ -20,6 +20,12 @@ See [galkan/crowbar](https://github.com/galkan/crowbar) for full documentation.
 
 **No API keys required** — Crowbar runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Crowbar](https://github.com/galkan/crowbar) — Brute-forcing tool supporting protocols not commonly supported.
+
+**Tools:**
+- `run_crowbar` — Run crowbar with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_crowbar`

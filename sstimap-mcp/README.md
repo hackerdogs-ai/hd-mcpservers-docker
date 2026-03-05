@@ -20,6 +20,12 @@ See [vladko312/SSTImap](https://github.com/vladko312/SSTImap) for full documenta
 
 **No API keys required** — SSTImap runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [SSTImap](https://github.com/vladko312/SSTImap) — Server-Side Template Injection detection and exploitation tool.
+
+**Tools:**
+- `run_sstimap` — Run sstimap with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_sstimap`

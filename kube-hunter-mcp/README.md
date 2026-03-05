@@ -20,6 +20,12 @@ See [aquasecurity/kube-hunter](https://github.com/aquasecurity/kube-hunter) for 
 
 **No API keys required** — Kube Hunter runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Kube Hunter](https://github.com/aquasecurity/kube-hunter) — Kubernetes penetration testing.
+
+**Tools:**
+- `run_kube_hunter` — Run kube-hunter with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_kube_hunter`

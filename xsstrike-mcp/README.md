@@ -20,6 +20,12 @@ See [s0md3v/XSStrike](https://github.com/s0md3v/XSStrike) for full documentation
 
 **No API keys required** — XSStrike runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [XSStrike](https://github.com/s0md3v/XSStrike) — Advanced XSS detection and exploitation tool.
+
+**Tools:**
+- `run_xsstrike` — Run xsstrike with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_xsstrike`

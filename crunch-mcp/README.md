@@ -20,6 +20,12 @@ See [crunchsec/crunch](https://github.com/crunchsec/crunch) for full documentati
 
 **No API keys required** — Crunch runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Crunch](https://github.com/crunchsec/crunch) — Custom wordlist generator for password cracking.
+
+**Tools:**
+- `run_crunch` — Run crunch with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_crunch`

@@ -20,6 +20,12 @@ See [portcullislab/enum4linux](https://github.com/portcullislab/enum4linux) for 
 
 **No API keys required** — Enum4Linux runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Enum4Linux](https://github.com/portcullislab/enum4linux) — SMB enumeration (users, groups, shares).
+
+**Tools:**
+- `run_enum4linux` — Run enum4linux with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_enum4linux`

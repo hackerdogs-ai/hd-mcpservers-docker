@@ -20,6 +20,12 @@ See [jtpereyda/boofuzz](https://github.com/jtpereyda/boofuzz) for full documenta
 
 **No API keys required** — Boofuzz runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Boofuzz](https://github.com/jtpereyda/boofuzz) — Network protocol fuzzing framework for finding vulnerabilities.
+
+**Tools:**
+- `run_boofuzz` — Run boofuzz with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_boofuzz`

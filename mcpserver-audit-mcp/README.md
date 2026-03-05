@@ -20,6 +20,12 @@ See [ModelContextProtocol-Security/mcpserver-audit](https://github.com/ModelCont
 
 **No API keys required** — MCPServer Audit runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [MCPServer Audit](https://github.com/ModelContextProtocol-Security/mcpserver-audit) — Security auditing tool for MCP servers.
+
+**Tools:**
+- `run_mcpserver_audit` — Run mcpserver-audit with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_mcpserver_audit`

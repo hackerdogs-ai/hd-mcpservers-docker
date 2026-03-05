@@ -20,6 +20,12 @@ See [x90skysn3k/brutespray](https://github.com/x90skysn3k/brutespray) for full d
 
 **No API keys required** — BruteSpray runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [BruteSpray](https://github.com/x90skysn3k/brutespray) — Automated brute-forcing from Nmap or Nessus scan output.
+
+**Tools:**
+- `run_brutespray` — Run brutespray with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_brutespray`

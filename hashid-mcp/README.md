@@ -20,6 +20,12 @@ See [psypanda/hashid](https://github.com/psypanda/hashid) for full documentation
 
 **No API keys required** — Hashid runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Hashid](https://github.com/psypanda/hashid) — Hash algorithm identifier.
+
+**Tools:**
+- `run_hashid` — Run hashid with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_hashid`

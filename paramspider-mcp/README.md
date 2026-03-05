@@ -20,6 +20,12 @@ See [devanshbatham/ParamSpider](https://github.com/devanshbatham/ParamSpider) fo
 
 **No API keys required** — Paramspider runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Paramspider](https://github.com/devanshbatham/ParamSpider) — Parameter mining from web archives.
+
+**Tools:**
+- `run_paramspider` — Run paramspider with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_paramspider`

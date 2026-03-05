@@ -26,6 +26,15 @@ Get your free key at: [cloud.projectdiscovery.io](https://cloud.projectdiscovery
 export PDCP_API_KEY=your_api_key_here
 ```
 
+**Summary.** MCP server wrapper for [Cvemap](https://github.com/projectdiscovery/cvemap) — CVE and vulnerability search, filtering, and analysis.
+
+**Tools:**
+- `search_cves` — Search CVEs with filters (product, vendor, severity, CVSS score).
+- `get_cve_details` — Get details for specific CVE(s).
+- `list_filters` — List available CVE search filter fields. _No parameters._
+- `analyze_cves` — Aggregate and analyze CVEs by a field (severity, vendor, product, year).
+
+
 ## Tools Reference
 
 ### `search_cves`

@@ -20,6 +20,12 @@ See [yeti-platform/yeti-mcp](https://github.com/yeti-platform/yeti-mcp) for full
 
 **No API keys required** — Yeti runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Yeti](https://github.com/yeti-platform/yeti-mcp) — Threat intelligence platform MCP integration.
+
+**Tools:**
+- `run_yeti_mcp` — Run yeti-mcp with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_yeti_mcp`

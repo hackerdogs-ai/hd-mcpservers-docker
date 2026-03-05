@@ -20,6 +20,12 @@ See [StacklokLabs/osv-mcp](https://github.com/StacklokLabs/osv-mcp) for full doc
 
 **No API keys required** — OSV runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [OSV](https://github.com/StacklokLabs/osv-mcp) — Open Source Vulnerability database query tool via MCP.
+
+**Tools:**
+- `run_osv_mcp` — Run osv-mcp with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_osv_mcp`

@@ -20,6 +20,12 @@ See [highflame-ai/ramparts](https://github.com/highflame-ai/ramparts) for full d
 
 **No API keys required** — Ramparts runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Ramparts](https://github.com/highflame-ai/ramparts) — AI security guardrails and safety framework.
+
+**Tools:**
+- `run_ramparts` — Run ramparts with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_ramparts`

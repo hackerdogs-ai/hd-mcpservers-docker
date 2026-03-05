@@ -20,6 +20,12 @@ See [byt3bl33d3r/CrackMapExec](https://github.com/byt3bl33d3r/CrackMapExec) for 
 
 **No API keys required** — Crackmapexec runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Crackmapexec](https://github.com/byt3bl33d3r/CrackMapExec) — Network service exploitation (SMB, WinRM, etc.).
+
+**Tools:**
+- `run_crackmapexec` — Run crackmapexec with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_crackmapexec`

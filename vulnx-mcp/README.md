@@ -26,6 +26,15 @@ Get your free key at: [cloud.projectdiscovery.io](https://cloud.projectdiscovery
 export PDCP_API_KEY=your_api_key_here
 ```
 
+**Summary.** MCP server wrapper for [Vulnx](https://github.com/projectdiscovery/vulnx) — next-generation vulnerability search and analysis (successor to cvemap).
+
+**Tools:**
+- `search_vulnerabilities` — Search vulnerabilities with filters (product, vendor, severity, CVSS score).
+- `get_vulnerability_details` — Get details for specific CVE(s).
+- `list_search_filters` — List available search filter fields. _No parameters._
+- `analyze_vulnerabilities` — Aggregate vulnerabilities by a field.
+
+
 ## Tools Reference
 
 ### `search_vulnerabilities`

@@ -20,6 +20,12 @@ See [Nova-Hunting/nova-framework](https://github.com/Nova-Hunting/nova-framework
 
 **No API keys required** — Nova Framework runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Nova Framework](https://github.com/Nova-Hunting/nova-framework) — Automated security testing and orchestration framework.
+
+**Tools:**
+- `run_nova_framework` — Run nova-framework with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_nova_framework`

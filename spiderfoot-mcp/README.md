@@ -20,6 +20,12 @@ See [smicallef/spiderfoot](https://github.com/smicallef/spiderfoot) for full doc
 
 **No API keys required** — Spiderfoot runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Spiderfoot](https://github.com/smicallef/spiderfoot) — OSINT automation (200+ modules).
+
+**Tools:**
+- `run_spiderfoot` — Run sf.py with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_spiderfoot`

@@ -20,6 +20,12 @@ See [netdiscover-scanner/netdiscover](https://github.com/netdiscover-scanner/net
 
 **No API keys required** — Netdiscover runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Netdiscover](https://github.com/netdiscover-scanner/netdiscover) — Active/passive ARP reconnaissance tool for network discovery.
+
+**Tools:**
+- `run_netdiscover` — Run netdiscover with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_netdiscover`

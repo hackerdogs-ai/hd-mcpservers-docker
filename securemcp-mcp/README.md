@@ -20,6 +20,12 @@ See [makalin/SecureMCP](https://github.com/makalin/SecureMCP) for full documenta
 
 **No API keys required** — SecureMCP runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [SecureMCP](https://github.com/makalin/SecureMCP) — MCP server security hardening and validation tool.
+
+**Tools:**
+- `run_securemcp` — Run securemcp with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_securemcp`

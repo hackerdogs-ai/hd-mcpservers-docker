@@ -18,6 +18,13 @@ URLFinder passively discovers URLs for target domains using sources like **Wayba
 
 **No API keys required** — URLFinder queries public passive data sources to find known URLs for a domain.
 
+**Summary.** MCP server wrapper for [URLFinder](https://github.com/projectdiscovery/urlfinder) — passive URL discovery tool by ProjectDiscovery.
+
+**Tools:**
+- `find_urls` — Passively discover URLs for target domains using Wayback Machine, Common Crawl, URLScan, and more.
+- `list_sources` — List all available URL discovery sources. _No parameters._
+
+
 ## Tools Reference
 
 ### `find_urls`

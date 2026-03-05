@@ -20,6 +20,12 @@ See [SpecterOps/BloodHound](https://github.com/SpecterOps/BloodHound) for full d
 
 **No API keys required** — BloodHound runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [BloodHound](https://github.com/SpecterOps/BloodHound) — Active Directory attack path analysis and enumeration.
+
+**Tools:**
+- `run_bloodhound_python` — Run bloodhound-python with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_bloodhound_python`

@@ -20,6 +20,12 @@ See [samuraikun/aws-s3-mcp](https://github.com/samuraikun/aws-s3-mcp) for full d
 
 **No API keys required** — AWS S3 runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [AWS S3](https://github.com/samuraikun/aws-s3-mcp) — AWS S3 bucket security analysis and enumeration.
+
+**Tools:**
+- `run_aws_s3_mcp` — Run aws-s3-mcp with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_aws_s3_mcp`

@@ -20,6 +20,12 @@ See [APIs-guru/graphql-voyager](https://github.com/APIs-guru/graphql-voyager) fo
 
 **No API keys required** — Graphql Voyager runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Graphql Voyager](https://github.com/APIs-guru/graphql-voyager) — GraphQL schema exploration (use voyager CLI if available).
+
+**Tools:**
+- `run_graphql_voyager` — Run graphql-voyager with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_graphql_voyager`

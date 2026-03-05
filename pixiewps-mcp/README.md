@@ -20,6 +20,12 @@ See [wiire-a/pixiewps](https://github.com/wiire-a/pixiewps) for full documentati
 
 **No API keys required** — Pixiewps runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Pixiewps](https://github.com/wiire-a/pixiewps) — Offline WPS brute-force tool exploiting low/no entropy weakness.
+
+**Tools:**
+- `run_pixiewps` — Run pixiewps with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_pixiewps`

@@ -20,6 +20,12 @@ See [laramies/theHarvester](https://github.com/laramies/theHarvester) for full d
 
 **No API keys required** — Theharvester runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Theharvester](https://github.com/laramies/theHarvester) — Email and subdomain harvesting from multiple sources.
+
+**Tools:**
+- `run_theharvester` — Run theHarvester with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_theharvester`

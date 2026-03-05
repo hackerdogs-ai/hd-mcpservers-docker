@@ -20,6 +20,12 @@ See [ticarpi/jwt_tool](https://github.com/ticarpi/jwt_tool) for full documentati
 
 **No API keys required** — Jwt Tool runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Jwt Tool](https://github.com/ticarpi/jwt_tool) — JWT testing and algorithm confusion.
+
+**Tools:**
+- `run_jwt_tool` — Run jwt_tool.py with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_jwt_tool`

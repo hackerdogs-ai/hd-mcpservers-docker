@@ -32,6 +32,12 @@ Uncover supports multiple search engines, each with its own API key. All keys ar
 | Netlas | `NETLAS_API_KEY` | [netlas.io](https://netlas.io) |
 | CriminalIP | `CRIMINALIP_API_KEY` | [criminalip.io](https://www.criminalip.io) |
 
+**Summary.** MCP server wrapper for [Uncover](https://github.com/projectdiscovery/uncover) — discovers exposed hosts via internet search APIs including Shodan, Censys, FOFA, Hunter, Quake, ZoomEye, Netlas, and CriminalIP.
+
+**Tools:**
+- `search_hosts` — Search for exposed hosts using internet search engines (Shodan, Censys, FOFA, etc.).
+
+
 ## Tools Reference
 
 ### `search_hosts`

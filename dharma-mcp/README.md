@@ -20,6 +20,12 @@ See [MozillaSecurity/dharma](https://github.com/MozillaSecurity/dharma) for full
 
 **No API keys required** — Dharma runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Dharma](https://github.com/MozillaSecurity/dharma) — Grammar-based test case generation for fuzzing.
+
+**Tools:**
+- `run_dharma` — Run dharma with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_dharma`

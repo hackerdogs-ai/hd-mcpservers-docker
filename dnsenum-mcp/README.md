@@ -20,6 +20,12 @@ See [fwaeytens/dnsenum](https://github.com/fwaeytens/dnsenum) for full documenta
 
 **No API keys required** — dnsenum runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [dnsenum](https://github.com/fwaeytens/dnsenum) — DNS enumeration tool for discovering host information.
+
+**Tools:**
+- `run_dnsenum` — Run dnsenum with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_dnsenum`

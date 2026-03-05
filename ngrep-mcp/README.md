@@ -20,6 +20,12 @@ See [jpr5/ngrep](https://github.com/jpr5/ngrep) for full documentation.
 
 **No API keys required** — Ngrep runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Ngrep](https://github.com/jpr5/ngrep) — Network packet analyzer with grep-like pattern matching.
+
+**Tools:**
+- `run_ngrep` — Run ngrep with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_ngrep`

@@ -18,6 +18,12 @@ Naabu is a fast port scanner written in Go that performs **SYN, CONNECT, or UDP 
 
 **No API keys required** — Naabu sends network probes directly to target hosts.
 
+**Summary.** MCP server wrapper for [Naabu](https://github.com/projectdiscovery/naabu) — fast port scanner by ProjectDiscovery.
+
+**Tools:**
+- `scan_ports` — Scan ports on target hosts. Returns discovered open ports in JSON format.
+
+
 ## Tools Reference
 
 ### `scan_ports`

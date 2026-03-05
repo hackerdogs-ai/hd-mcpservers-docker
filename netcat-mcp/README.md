@@ -20,6 +20,12 @@ See [diegocr/netcat](https://github.com/diegocr/netcat) for full documentation.
 
 **No API keys required** — Netcat runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Netcat](https://github.com/diegocr/netcat) — TCP/UDP networking utility for port scanning and data transfer.
+
+**Tools:**
+- `run_nc` — Run nc with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_nc`

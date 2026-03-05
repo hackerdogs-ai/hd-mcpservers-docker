@@ -20,6 +20,12 @@ See [zaproxy/zap-core](https://github.com/zaproxy/zap-core) for full documentati
 
 **No API keys required** — Zap runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Zap](https://github.com/zaproxy/zap-core) — Automated security scanning proxy (headless).
+
+**Tools:**
+- `run_zap` — Run zap.sh with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_zap`

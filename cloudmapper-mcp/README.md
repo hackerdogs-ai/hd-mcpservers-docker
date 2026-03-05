@@ -20,6 +20,12 @@ See [duo-labs/cloudmapper](https://github.com/duo-labs/cloudmapper) for full doc
 
 **No API keys required** — Cloudmapper runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Cloudmapper](https://github.com/duo-labs/cloudmapper) — AWS network visualization and security.
+
+**Tools:**
+- `run_cloudmapper` — Run cloudmapper with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_cloudmapper`

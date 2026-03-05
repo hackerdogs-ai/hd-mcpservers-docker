@@ -20,6 +20,12 @@ See [LisBerndt/zap-mcp-server](https://github.com/LisBerndt/zap-mcp-server) for 
 
 **No API keys required** — ZAP Lis runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [ZAP Lis](https://github.com/LisBerndt/zap-mcp-server) — OWASP ZAP integration for web security testing.
+
+**Tools:**
+- `run_zap_mcp` — Run zap-mcp with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_zap_mcp`

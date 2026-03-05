@@ -20,6 +20,12 @@ See [tomac/yersinia](https://github.com/tomac/yersinia) for full documentation.
 
 **No API keys required** — Yersinia runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Yersinia](https://github.com/tomac/yersinia) — Network vulnerability exploitation tool for layer 2 attacks.
+
+**Tools:**
+- `run_yersinia` — Run yersinia with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_yersinia`

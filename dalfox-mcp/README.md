@@ -20,6 +20,12 @@ See [hahwul/dalfox](https://github.com/hahwul/dalfox) for full documentation.
 
 **No API keys required** — Dalfox runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Dalfox](https://github.com/hahwul/dalfox) — XSS vulnerability scanning with DOM analysis.
+
+**Tools:**
+- `run_dalfox` — Run dalfox with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_dalfox`

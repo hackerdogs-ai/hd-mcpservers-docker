@@ -20,6 +20,12 @@ See [codingo/NoSQLMap](https://github.com/codingo/NoSQLMap) for full documentati
 
 **No API keys required** — Nosqlmap runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Nosqlmap](https://github.com/codingo/NoSQLMap) — NoSQL injection testing.
+
+**Tools:**
+- `run_nosqlmap` — Run nosqlmap with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_nosqlmap`

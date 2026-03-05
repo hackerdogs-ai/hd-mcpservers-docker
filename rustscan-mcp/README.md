@@ -20,6 +20,12 @@ See [RustScan/RustScan](https://github.com/RustScan/RustScan) for full documenta
 
 **No API keys required** — Rustscan runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Rustscan](https://github.com/RustScan/RustScan) — Ultra-fast port scanning. Run rustscan with arguments (e.g. -a 192.168.1.1 -- -sV).
+
+**Tools:**
+- `run_rustscan` — Run rustscan with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_rustscan`

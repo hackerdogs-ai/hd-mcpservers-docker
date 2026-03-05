@@ -20,6 +20,12 @@ See [sullo/nikto](https://github.com/sullo/nikto) for full documentation.
 
 **No API keys required** — Nikto runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Nikto](https://github.com/sullo/nikto) — Web server vulnerability scanner.
+
+**Tools:**
+- `run_nikto` — Run nikto with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_nikto`

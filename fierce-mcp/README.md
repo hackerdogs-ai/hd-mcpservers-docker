@@ -20,6 +20,12 @@ See [msaffron/fierce](https://github.com/msaffron/fierce) for full documentation
 
 **No API keys required** — Fierce runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Fierce](https://github.com/msaffron/fierce) — DNS reconnaissance and zone transfer testing.
+
+**Tools:**
+- `run_fierce` — Run fierce with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_fierce`

@@ -20,6 +20,12 @@ See [xmendez/wfuzz](https://github.com/xmendez/wfuzz) for full documentation.
 
 **No API keys required** — Wfuzz runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Wfuzz](https://github.com/xmendez/wfuzz) — Web application fuzzer.
+
+**Tools:**
+- `run_wfuzz` — Run wfuzz with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_wfuzz`

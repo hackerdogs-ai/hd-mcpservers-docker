@@ -20,6 +20,12 @@ See [commixproject/commix](https://github.com/commixproject/commix) for full doc
 
 **No API keys required** — Commix runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Commix](https://github.com/commixproject/commix) — Command injection exploitation.
+
+**Tools:**
+- `run_commix` — Run commix with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_commix`

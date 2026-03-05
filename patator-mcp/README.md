@@ -20,6 +20,12 @@ See [lanjelot/patator](https://github.com/lanjelot/patator) for full documentati
 
 **No API keys required** — Patator runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Patator](https://github.com/lanjelot/patator) — Multi-purpose brute-forcer.
+
+**Tools:**
+- `run_patator` — Run patator with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_patator`

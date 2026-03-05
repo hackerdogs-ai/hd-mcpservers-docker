@@ -20,6 +20,12 @@ See [aboul3la/Sublist3r](https://github.com/aboul3la/Sublist3r) for full documen
 
 **No API keys required** — Sublist3r runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Sublist3r](https://github.com/aboul3la/Sublist3r) — Fast subdomain enumeration tool using OSINT.
+
+**Tools:**
+- `run_sublist3r` — Run sublist3r with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_sublist3r`

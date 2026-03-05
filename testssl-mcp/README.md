@@ -20,6 +20,12 @@ See [drwetter/testssl.sh](https://github.com/drwetter/testssl.sh) for full docum
 
 **No API keys required** — Testssl runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Testssl](https://github.com/drwetter/testssl.sh) — SSL/TLS configuration testing.
+
+**Tools:**
+- `run_testssl` — Run testssl.sh with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_testssl`

@@ -20,6 +20,12 @@ See [jaeles-project/gospider](https://github.com/jaeles-project/gospider) for fu
 
 **No API keys required** — Gospider runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Gospider](https://github.com/jaeles-project/gospider) — Fast web crawling and URL discovery tool.
+
+**Tools:**
+- `run_gospider` — Run gospider with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_gospider`

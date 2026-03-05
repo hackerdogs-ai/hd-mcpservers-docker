@@ -20,6 +20,12 @@ See [ly4k/Certipy](https://github.com/ly4k/Certipy) for full documentation.
 
 **No API keys required** — Certipy runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Certipy](https://github.com/ly4k/Certipy) — Active Directory certificate abuse and enumeration tool.
+
+**Tools:**
+- `run_certipy` — Run certipy with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_certipy`

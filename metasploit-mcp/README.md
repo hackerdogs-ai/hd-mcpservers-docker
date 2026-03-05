@@ -20,6 +20,12 @@ See [rapid7/metasploit-framework](https://github.com/rapid7/metasploit-framework
 
 **No API keys required** — Metasploit runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Metasploit](https://github.com/rapid7/metasploit-framework) — Exploitation framework (module runner).
+
+**Tools:**
+- `run_metasploit` — Run msfconsole with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_metasploit`

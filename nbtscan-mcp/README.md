@@ -20,6 +20,12 @@ See [residuum/nbtscan](https://github.com/residuum/nbtscan) for full documentati
 
 **No API keys required** — Nbtscan runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Nbtscan](https://github.com/residuum/nbtscan) — NetBIOS name scanning.
+
+**Tools:**
+- `run_nbtscan` — Run nbtscan with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_nbtscan`

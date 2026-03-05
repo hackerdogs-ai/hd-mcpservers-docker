@@ -20,6 +20,12 @@ See [projectdiscovery/anew](https://github.com/projectdiscovery/anew) for full d
 
 **No API keys required** — Anew runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Anew](https://github.com/projectdiscovery/anew) — Append new lines for efficient data processing.
+
+**Tools:**
+- `run_anew` — Run anew with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_anew`

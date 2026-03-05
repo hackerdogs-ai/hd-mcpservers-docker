@@ -20,6 +20,12 @@ See [ShaunBarton/smbmap](https://github.com/ShaunBarton/smbmap) for full documen
 
 **No API keys required** — Smbmap runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Smbmap](https://github.com/ShaunBarton/smbmap) — SMB share enumeration and exploitation.
+
+**Tools:**
+- `run_smbmap` — Run smbmap with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_smbmap`

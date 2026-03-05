@@ -20,6 +20,12 @@ See [sherlock-project/sherlock](https://github.com/sherlock-project/sherlock) fo
 
 **No API keys required** — Sherlock runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Sherlock](https://github.com/sherlock-project/sherlock) — Username hunting across social networks and websites.
+
+**Tools:**
+- `run_sherlock` — Run sherlock with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_sherlock`

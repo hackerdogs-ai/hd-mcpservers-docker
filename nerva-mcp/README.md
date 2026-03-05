@@ -18,6 +18,13 @@ Nerva identifies **120+ network services** on open ports and extracts version an
 
 **No API keys required** — Nerva connects directly to target services using standard network probes.
 
+**Summary.** MCP server wrapper for [Nerva](https://github.com/praetorian-inc/nerva) — network service fingerprinting tool by Praetorian.
+
+**Tools:**
+- `fingerprint_services` — Identify network services on open ports and extract version/config metadata. Detects 120+ service types.
+- `list_capabilities` — List all 120+ supported service detection plugins. _No parameters._
+
+
 ## Tools Reference
 
 ### `fingerprint_services`

@@ -20,6 +20,12 @@ See [lgandx/Responder](https://github.com/lgandx/Responder) for full documentati
 
 **No API keys required** — Responder runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Responder](https://github.com/lgandx/Responder) — LLMNR/NBT-NS/MDNS poisoner for credential harvesting.
+
+**Tools:**
+- `run_responder` — Run Responder with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_responder`

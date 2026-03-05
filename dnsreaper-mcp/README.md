@@ -20,6 +20,12 @@ See [punk-security/dnsReaper](https://github.com/punk-security/dnsReaper) for fu
 
 **No API keys required** — dnsReaper runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [dnsReaper](https://github.com/punk-security/dnsReaper) — Subdomain takeover vulnerability scanner via DNS.
+
+**Tools:**
+- `run_dnsreaper` — Run dnsreaper with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_dnsreaper`

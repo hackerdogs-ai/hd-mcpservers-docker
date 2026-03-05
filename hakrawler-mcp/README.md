@@ -20,6 +20,12 @@ See [hakluke/hakrawler](https://github.com/hakluke/hakrawler) for full documenta
 
 **No API keys required** — Hakrawler runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Hakrawler](https://github.com/hakluke/hakrawler) — Fast web endpoint discovery and crawling.
+
+**Tools:**
+- `run_hakrawler` — Run hakrawler with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_hakrawler`

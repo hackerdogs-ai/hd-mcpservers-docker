@@ -20,6 +20,12 @@ See [antgroup/MCPScan](https://github.com/antgroup/MCPScan) for full documentati
 
 **No API keys required** — MCPScan runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [MCPScan](https://github.com/antgroup/MCPScan) — MCP server security scanning and vulnerability detection.
+
+**Tools:**
+- `run_mcpscan` — Run mcpscan with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_mcpscan`

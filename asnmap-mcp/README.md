@@ -26,6 +26,15 @@ Get your free key at: [cloud.projectdiscovery.io](https://cloud.projectdiscovery
 export PDCP_API_KEY=your_api_key_here
 ```
 
+**Summary.** MCP server wrapper for [Asnmap](https://github.com/projectdiscovery/asnmap) — maps organization network ranges from ASN, IP, domain, and organization lookups for network reconnaissance and asset discovery.
+
+**Tools:**
+- `lookup_asn` — Look up network ranges associated with an ASN number.
+- `lookup_ip` — Look up ASN and network information for an IP address.
+- `lookup_domain` — Look up ASN and network information for a domain.
+- `lookup_org` — Look up ASN and network information for an organization.
+
+
 ## Tools Reference
 
 ### `lookup_asn`

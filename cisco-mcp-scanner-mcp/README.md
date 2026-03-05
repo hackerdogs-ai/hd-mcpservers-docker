@@ -20,6 +20,12 @@ See [cisco-ai-defense/mcp-scanner](https://github.com/cisco-ai-defense/mcp-scann
 
 **No API keys required** — Cisco AI Defense Scanner runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Cisco AI Defense Scanner](https://github.com/cisco-ai-defense/mcp-scanner) — AI defense protocol security scanning and analysis.
+
+**Tools:**
+- `run_mcp_scanner` — Run mcp-scanner with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_mcp_scanner`

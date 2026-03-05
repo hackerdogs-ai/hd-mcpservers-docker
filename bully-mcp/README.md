@@ -20,6 +20,12 @@ See [aanarchyy/bully](https://github.com/aanarchyy/bully) for full documentation
 
 **No API keys required** — Bully runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Bully](https://github.com/aanarchyy/bully) — WPS brute-force attack tool for WiFi networks.
+
+**Tools:**
+- `run_bully` — Run bully with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_bully`

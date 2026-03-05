@@ -20,6 +20,12 @@ See [bettercap/bettercap](https://github.com/bettercap/bettercap) for full docum
 
 **No API keys required** — Bettercap runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Bettercap](https://github.com/bettercap/bettercap) — Network attack and monitoring framework with MITM capabilities.
+
+**Tools:**
+- `run_bettercap` — Run bettercap with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_bettercap`

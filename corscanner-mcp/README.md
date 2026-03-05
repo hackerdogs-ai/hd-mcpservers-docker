@@ -20,6 +20,12 @@ See [chenjj/CORScanner](https://github.com/chenjj/CORScanner) for full documenta
 
 **No API keys required** — CORScanner runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [CORScanner](https://github.com/chenjj/CORScanner) — CORS misconfiguration detection tool.
+
+**Tools:**
+- `run_cors_scan` — Run cors_scan with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_cors_scan`

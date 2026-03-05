@@ -20,6 +20,12 @@ See [relaxcloud-cn/mcp-port-scanner](https://github.com/relaxcloud-cn/mcp-port-s
 
 **No API keys required** — Port Scanner runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Port Scanner](https://github.com/relaxcloud-cn/mcp-port-scanner) — Network port scanning tool.
+
+**Tools:**
+- `run_port_scanner` — Run port-scanner with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_port_scanner`

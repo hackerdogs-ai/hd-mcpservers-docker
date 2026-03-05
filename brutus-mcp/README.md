@@ -18,6 +18,14 @@ Brutus tests credentials against target hosts across **24 protocols** including 
 
 **No API keys required** — Brutus connects directly to target services using standard protocol handshakes.
 
+**Summary.** MCP server wrapper for [Brutus](https://github.com/praetorian-inc/brutus) — credential testing tool across 24 protocols by Praetorian.
+
+**Tools:**
+- `test_credentials` — Test credentials against a target host across 24 supported protocols (SSH, RDP, MySQL, PostgreSQL, Redis, SMB, HTTP Basic Auth, FTP, Telnet, LDAP, SNMP, VNC, etc.).
+- `check_rdp_nla` — Check if an RDP target has Network Level Authentication (NLA) enabled.
+- `detect_sticky_keys` — Detect RDP sticky keys backdoor on a target.
+
+
 ## Tools Reference
 
 ### `test_credentials`

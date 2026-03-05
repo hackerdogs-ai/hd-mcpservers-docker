@@ -20,6 +20,12 @@ See [projectdiscovery/uro](https://github.com/projectdiscovery/uro) for full doc
 
 **No API keys required** — Uro runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Uro](https://github.com/projectdiscovery/uro) — URL filtering and deduplication.
+
+**Tools:**
+- `run_uro` — Run uro with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_uro`

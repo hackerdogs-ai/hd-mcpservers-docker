@@ -20,6 +20,12 @@ See [lc/gau](https://github.com/lc/gau) for full documentation.
 
 **No API keys required** — Gau runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Gau](https://github.com/lc/gau) — Get All URLs (Wayback, Common Crawl, etc.).
+
+**Tools:**
+- `run_gau` — Run gau with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_gau`

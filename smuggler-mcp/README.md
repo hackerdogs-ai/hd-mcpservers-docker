@@ -20,6 +20,12 @@ See [defparam/smuggler](https://github.com/defparam/smuggler) for full documenta
 
 **No API keys required** — Smuggler runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Smuggler](https://github.com/defparam/smuggler) — HTTP request smuggling detection tool.
+
+**Tools:**
+- `run_smuggler` — Run smuggler with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_smuggler`

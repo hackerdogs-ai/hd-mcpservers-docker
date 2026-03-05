@@ -20,6 +20,12 @@ See [lanmaster53/recon-ng](https://github.com/lanmaster53/recon-ng) for full doc
 
 **No API keys required** — Recon Ng runs locally inside the Docker container.
 
+**Summary.** MCP server wrapper for [Recon Ng](https://github.com/lanmaster53/recon-ng) — Web reconnaissance framework (modular).
+
+**Tools:**
+- `run_recon_ng` — Run recon-ng with the given arguments. Returns structured JSON output.
+
+
 ## Tools Reference
 
 ### `run_recon_ng`

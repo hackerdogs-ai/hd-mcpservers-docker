@@ -18,6 +18,13 @@ TLSx is a fast TLS grabber for **certificate data collection, TLS configuration 
 
 **No API keys required** — TLSx connects directly to targets using standard TLS handshakes.
 
+**Summary.** MCP server wrapper for [TLSx](https://github.com/projectdiscovery/tlsx) — fast TLS grabber by ProjectDiscovery.
+
+**Tools:**
+- `scan_tls` — Scan TLS configuration and certificate data for one or more targets.
+- `check_misconfigurations` — Check for TLS certificate misconfigurations (expired, self-signed, hostname mismatch).
+
+
 ## Tools Reference
 
 ### `scan_tls`
