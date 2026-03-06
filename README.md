@@ -10,7 +10,7 @@
 
 # hd-mcpservers-docker
 
-Registry of **183 containerized MCP servers** for security tools, ready for deployment on [Hackerdogs](https://hackerdogs.ai).
+Registry of **184 containerized MCP servers** for security tools, ready for deployment on [Hackerdogs](https://hackerdogs.ai).
 
 Each tool is wrapped as a [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server using [FastMCP](https://github.com/jlowin/fastmcp), supporting both **stdio** and **HTTP streamable** transports. All tools are packaged as multi-architecture Docker images (linux/amd64, linux/arm64).
 
@@ -238,6 +238,7 @@ The fastest way to get started is through [Hackerdogs](https://hackerdogs.ai):
 | Phase 1 | 8100–8116 | 17 |
 | Phase 2 | 8200–8284 | 85 |
 | Phase 3 | 8285–8365 | 81 |
+| IVRE | 8366 | 1 |
 
 ### Reserved Ports (do not use)
 
@@ -375,6 +376,59 @@ Each tool has a `test.sh` script:
 cd julius-mcp
 ./test.sh
 ```
+
+## IVRE — Network Reconnaissance Platform
+
+[ivre-mcp](./ivre-mcp/) is architecturally different from every other tool above. Instead of wrapping a CLI binary, it acts as an **HTTP client** to an existing [IVRE](https://ivre.rocks/) deployment's Web API — a full network reconnaissance platform that combines active scanning (Nmap, Masscan, ZGrab2, Nuclei), passive intelligence (Zeek, p0f), passive DNS, network flows, and IP geolocation into a single queryable database.
+
+| | |
+|---|---|
+| **Directory** | [ivre-mcp](./ivre-mcp/) |
+| **Source** | [ivre/ivre](https://github.com/ivre/ivre) |
+| **Port** | 8366 |
+| **Image** | `hackerdogs/ivre-mcp` |
+| **Architecture** | Web API client (httpx) connecting to a running IVRE stack |
+| **Requires** | A deployed IVRE instance (`ivre/web` + `ivre/db` + `ivre/client`) |
+
+**Why it's different:**
+- Does **not** bundle a database or IVRE itself — it queries an external IVRE Web API over HTTP
+- Requires `IVRE_WEB_URL` environment variable pointing to a running IVRE web interface
+- Provides **12 tools**: host queries, passive recon, passive DNS, flow analysis, IP geolocation, aggregations (top/distinct values), and specialized views (IPs-only, IPs+ports, timeline)
+- Includes [DEPLOY_IVRE.md](./ivre-mcp/DEPLOY_IVRE.md) with a step-by-step guide to deploying IVRE with Docker
+
+```
+MCP Client (Cursor/Claude) ──MCP──▶ ivre-mcp ──HTTP──▶ IVRE Web (Nginx+uWSGI) ──▶ MongoDB
+```
+
+**stdio mode:**
+
+```json
+{
+  "mcpServers": {
+    "ivre-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "--network", "ivre-deployment_default",
+               "-e", "IVRE_WEB_URL", "-e", "MCP_TRANSPORT",
+               "hackerdogs/ivre-mcp:latest"],
+      "env": {
+        "IVRE_WEB_URL": "http://ivreweb:80",
+        "MCP_TRANSPORT": "stdio"
+      }
+    }
+  }
+}
+```
+
+**streamable-http mode:**
+
+```bash
+docker run -d --rm --network ivre-deployment_default \
+  -e IVRE_WEB_URL=http://ivreweb:80 \
+  -e MCP_TRANSPORT=streamable-http -e MCP_PORT=8366 \
+  -p 8366:8366 hackerdogs/ivre-mcp:latest
+```
+
+Then connect your MCP client to `http://localhost:8366/mcp`.
 
 ## License
 

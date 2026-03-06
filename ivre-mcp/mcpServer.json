@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "ivre-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "IVRE_WEB_URL",
+        "-e",
+        "MCP_TRANSPORT",
+        "hackerdogs/ivre-mcp:latest"
+      ],
+      "env": {
+        "IVRE_WEB_URL": "http://your-ivre-instance:80",
+        "MCP_TRANSPORT": "stdio"
+      }
+    }
+  }
+}

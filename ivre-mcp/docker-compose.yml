@@ -1,0 +1,14 @@
+services:
+  ivre-mcp:
+    image: hackerdogs/ivre-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8366:8366"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8366
+      - IVRE_WEB_URL=${IVRE_WEB_URL:-http://ivre-web:80}
+      - IVRE_VERIFY_SSL=${IVRE_VERIFY_SSL:-true}
+    restart: unless-stopped
