@@ -20,6 +20,10 @@ For more information, see [Hackerdogs Legal & Compliance](https://hackerdogs.ai/
 
 ---
 
+### 👉 **[Try Hackerdogs Here For Free](https://preview.hackerdogs.ai)**
+
+---
+
 # hd-mcpservers-docker
 
 Registry of **184 containerized MCP servers** for security tools, ready for deployment on [Hackerdogs](https://hackerdogs.ai).
