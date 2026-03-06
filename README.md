@@ -8,6 +8,18 @@
   </a>
 </p>
 
+---
+
+## Disclaimer
+
+**No liability.** Hackerdogs Inc. does not take any liability for the code in this repository. These MCP servers are provided for **educational purposes only**. Use at your own risk. We do not promise that any tool will work or be fit for any particular purpose.
+
+**By continuing,** you confirm that you will use [Hackerdogs.ai](https://hackerdogs.ai) lawfully, ethically, and responsibly. You acknowledge that the platform provides OSINT intelligence and AI-assisted outputs for informational purposes only, without guarantee of accuracy, and that AI-generated outputs may contain errors, omissions, or biases. Do not enter any private, sensitive, personal, or regulated data. Always apply appropriate human oversight before acting on outputs. You agree not to target minors, private individuals, or protected entities without legal authorization, and not to engage in harassment, doxxing, unauthorized access, or any illegal surveillance. You consent to automated/agentic processing, OSINT analysis, audit logging, and cross‑border data handling as described in our Terms, Privacy Policy, DPA, and Acceptable Use Policy. Content may be used to improve the service. Hackerdogs.ai may suspend accounts for misuse or violations of ethical or legal standards. Your use is subject to applicable international laws (including export controls) and our Shared Responsibility Model.
+
+For more information, see [Hackerdogs Legal & Compliance](https://hackerdogs.ai/legal).
+
+---
+
 # hd-mcpservers-docker
 
 Registry of **184 containerized MCP servers** for security tools, ready for deployment on [Hackerdogs](https://hackerdogs.ai).
