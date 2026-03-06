@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8250/mcp \
 ```bash
 docker stop steghide-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the steghide CLI in the same container by overriding the entrypoint to extract data from steganography without starting the MCP server.
+
+**Extract (mount file):**
+
+```bash
+docker run -i --rm --entrypoint steghide hackerdogs/steghide-mcp:latest extract -sf /path/to/file
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint steghide hackerdogs/steghide-mcp:latest --help
+```

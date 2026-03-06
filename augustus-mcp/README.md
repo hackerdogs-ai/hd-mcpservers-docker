@@ -265,3 +265,20 @@ curl -s --max-time 120 -X POST http://localhost:8101/mcp \
 ```bash
 docker stop augustus-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the augustus CLI in the same container by overriding the entrypoint for vulnerability and risk assessment without starting the MCP server.
+
+**Run vulnerability scan:**
+
+```bash
+docker run -i --rm --entrypoint augustus hackerdogs/augustus-mcp:latest -h
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint augustus hackerdogs/augustus-mcp:latest --help
+```

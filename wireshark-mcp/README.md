@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8315/mcp \
 ```bash
 docker stop wireshark-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the tshark CLI in the same container by overriding the entrypoint to analyze packets without starting the MCP server.
+
+**Read pcap (mount it):**
+
+```bash
+docker run -i --rm --entrypoint tshark hackerdogs/wireshark-mcp:latest -r /path/to/capture.pcap
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint tshark hackerdogs/wireshark-mcp:latest -h
+```

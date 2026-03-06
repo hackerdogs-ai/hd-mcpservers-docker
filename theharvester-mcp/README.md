@@ -201,3 +201,20 @@ curl -s -X POST http://localhost:8204/mcp \
 ```bash
 docker stop theharvester-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the theHarvester CLI in the same container by overriding the entrypoint to gather emails/subdomains without starting the MCP server.
+
+**Collect for domain:**
+
+```bash
+docker run -i --rm --entrypoint theHarvester hackerdogs/theharvester-mcp:latest -d example.com -b all
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint theHarvester hackerdogs/theharvester-mcp:latest -h
+```

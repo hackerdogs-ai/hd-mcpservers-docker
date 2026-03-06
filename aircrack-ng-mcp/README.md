@@ -201,3 +201,14 @@ curl -s -X POST http://localhost:8321/mcp \
 ```bash
 docker stop aircrack-ng-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the aircrack-ng suite in the same container by overriding the entrypoint to audit Wi-Fi or crack WEP/WPA without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint aircrack-ng hackerdogs/aircrack-ng-mcp:latest --help
+```

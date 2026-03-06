@@ -197,3 +197,14 @@ curl -s -X POST http://localhost:8231/mcp \
 ```bash
 docker stop zap-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the zap.sh (OWASP ZAP) CLI in the same container by overriding the entrypoint for headless passive or active scanning without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint zap.sh hackerdogs/zap-mcp:latest -h
+```

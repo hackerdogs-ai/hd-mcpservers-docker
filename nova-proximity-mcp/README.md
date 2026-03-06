@@ -201,3 +201,14 @@ curl -s -X POST http://localhost:8298/mcp \
 ```bash
 docker stop nova-proximity-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the nova-proximity CLI in the same container by overriding the entrypoint for Nova proximity scanning without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint nova-proximity hackerdogs/nova-proximity-mcp:latest --help
+```

@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8218/mcp \
 ```bash
 docker stop gau-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the gau CLI in the same container by overriding the entrypoint to fetch URLs from AlienVault/Wayback without starting the MCP server.
+
+**Get URLs for domain:**
+
+```bash
+docker run -i --rm --entrypoint gau hackerdogs/gau-mcp:latest example.com
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint gau hackerdogs/gau-mcp:latest --help
+```

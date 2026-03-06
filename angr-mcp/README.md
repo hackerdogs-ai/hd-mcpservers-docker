@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8246/mcp \
 ```bash
 docker stop angr-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run angr (Python) in the same container by overriding the entrypoint for binary analysis without starting the MCP server.
+
+**Python REPL:**
+
+```bash
+docker run -i --rm --entrypoint python3 hackerdogs/angr-mcp:latest -c "import angr; print(angr.__version__)"
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint python3 hackerdogs/angr-mcp:latest --help
+```

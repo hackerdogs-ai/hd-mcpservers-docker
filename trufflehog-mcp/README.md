@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8258/mcp \
 ```bash
 docker stop trufflehog-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the trufflehog CLI in the same container by overriding the entrypoint to find secrets in code/git without starting the MCP server.
+
+**Scan repo (mount it):**
+
+```bash
+docker run -i --rm --entrypoint trufflehog hackerdogs/trufflehog-mcp:latest filesystem /path/to/repo
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint trufflehog hackerdogs/trufflehog-mcp:latest --help
+```

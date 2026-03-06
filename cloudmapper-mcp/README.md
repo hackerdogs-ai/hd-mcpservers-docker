@@ -201,3 +201,14 @@ curl -s -X POST http://localhost:8268/mcp \
 ```bash
 docker stop cloudmapper-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the cloudmapper CLI in the same container by overriding the entrypoint to audit AWS environments without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint cloudmapper hackerdogs/cloudmapper-mcp:latest --help
+```

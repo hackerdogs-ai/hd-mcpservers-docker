@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8326/mcp \
 ```bash
 docker stop lynis-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the lynis CLI in the same container by overriding the entrypoint to audit system security without starting the MCP server.
+
+**Run audit:**
+
+```bash
+docker run -i --rm --entrypoint lynis hackerdogs/lynis-mcp:latest audit system
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint lynis hackerdogs/lynis-mcp:latest --help
+```

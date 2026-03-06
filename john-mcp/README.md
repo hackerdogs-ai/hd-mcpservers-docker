@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8234/mcp \
 ```bash
 docker stop john-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the john CLI in the same container by overriding the entrypoint to crack passwords (mount hashes/wordlists) without starting the MCP server.
+
+**Crack password file (mount it):**
+
+```bash
+docker run -i --rm --entrypoint john hackerdogs/john-mcp:latest /path/to/passwd
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint john hackerdogs/john-mcp:latest --help
+```

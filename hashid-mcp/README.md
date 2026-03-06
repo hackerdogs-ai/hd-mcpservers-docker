@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8264/mcp \
 ```bash
 docker stop hashid-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the hashid CLI in the same container by overriding the entrypoint to identify hash types without starting the MCP server.
+
+**Identify hash:**
+
+```bash
+docker run -i --rm --entrypoint hashid hackerdogs/hashid-mcp:latest -j '$2a$10$...'
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint hashid hackerdogs/hashid-mcp:latest -h
+```

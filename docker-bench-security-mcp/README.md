@@ -231,3 +231,20 @@ curl -s -X POST http://localhost:8254/mcp \
 ```bash
 docker stop docker-bench-security-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the docker-bench-security script in the same container by overriding the entrypoint to audit Docker configuration without starting the MCP server.
+
+**Run audit:**
+
+```bash
+docker run -i --rm --entrypoint docker-bench-security.sh hackerdogs/docker-bench-security-mcp:latest
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint docker-bench-security.sh hackerdogs/docker-bench-security-mcp:latest --help
+```

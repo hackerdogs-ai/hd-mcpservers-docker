@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8359/mcp \
 ```bash
 docker stop horusec-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the horusec CLI in the same container by overriding the entrypoint to scan code for security issues without starting the MCP server.
+
+**Scan directory (mount it):**
+
+```bash
+docker run -i --rm --entrypoint horusec hackerdogs/horusec-mcp:latest start -p /path/to/project
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint horusec hackerdogs/horusec-mcp:latest --help
+```

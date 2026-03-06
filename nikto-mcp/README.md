@@ -197,3 +197,25 @@ curl -s -X POST http://localhost:8219/mcp \
 ```bash
 docker stop nikto-mcp-test
 ```
+
+## Running the tool directly (bypassing MCP)
+
+You can run the underlying Nikto CLI in the same container by overriding the entrypoint. The MCP server is not started; the container runs the `nikto` binary directly.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint nikto hackerdogs/nikto-mcp:latest -Help
+```
+
+**Scan a target:**
+
+```bash
+docker run -i --rm --entrypoint nikto hackerdogs/nikto-mcp:latest -h https://example.com
+```
+
+**Scan with verbose output:**
+
+```bash
+docker run -i --rm --entrypoint nikto hackerdogs/nikto-mcp:latest -h https://example.com -V
+```

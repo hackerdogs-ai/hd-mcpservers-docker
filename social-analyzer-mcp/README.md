@@ -201,3 +201,14 @@ curl -s -X POST http://localhost:8255/mcp \
 ```bash
 docker stop social-analyzer-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the social-analyzer CLI in the same container by overriding the entrypoint to analyze social media without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint social-analyzer hackerdogs/social-analyzer-mcp:latest --help
+```

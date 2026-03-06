@@ -197,3 +197,14 @@ curl -s -X POST http://localhost:8295/mcp \
 ```bash
 docker stop ramparts-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the ramparts CLI in the same container by overriding the entrypoint for security or compliance checks without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint ramparts hackerdogs/ramparts-mcp:latest --help
+```

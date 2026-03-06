@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8240/mcp \
 ```bash
 docker stop ghidra-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the analyzeHeadless CLI in the same container by overriding the entrypoint to run Ghidra headless analysis without starting the MCP server.
+
+**Run headless analysis (project path and binary path):**
+
+```bash
+docker run -i --rm --entrypoint analyzeHeadless hackerdogs/ghidra-mcp:latest /path/to/project /path/to/binary
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint analyzeHeadless hackerdogs/ghidra-mcp:latest --help
+```

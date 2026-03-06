@@ -197,3 +197,14 @@ curl -s -X POST http://localhost:8331/mcp \
 ```bash
 docker stop roadtools-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the roadrecon CLI in the same container by overriding the entrypoint to explore Azure AD without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint roadrecon hackerdogs/roadtools-mcp:latest --help
+```

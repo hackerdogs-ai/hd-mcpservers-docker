@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8206/mcp \
 ```bash
 docker stop nbtscan-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the nbtscan CLI in the same container by overriding the entrypoint to scan NetBIOS without starting the MCP server.
+
+**Scan range:**
+
+```bash
+docker run -i --rm --entrypoint nbtscan hackerdogs/nbtscan-mcp:latest 192.168.1.0/24
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint nbtscan hackerdogs/nbtscan-mcp:latest -h
+```

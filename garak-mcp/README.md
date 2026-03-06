@@ -197,3 +197,14 @@ curl -s -X POST http://localhost:8352/mcp \
 ```bash
 docker stop garak-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the garak-mcp CLI in the same container by overriding the entrypoint to probe LLMs for vulnerabilities without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint garak-mcp hackerdogs/garak-mcp:latest --help
+```

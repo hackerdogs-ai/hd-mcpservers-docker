@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8324/mcp \
 ```bash
 docker stop crunch-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the crunch CLI in the same container by overriding the entrypoint to generate wordlists without starting the MCP server.
+
+**Generate wordlist:**
+
+```bash
+docker run -i --rm --entrypoint crunch hackerdogs/crunch-mcp:latest 8 8 0123456789 -o /tmp/out.txt
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint crunch hackerdogs/crunch-mcp:latest -h
+```

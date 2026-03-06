@@ -201,3 +201,14 @@ curl -s -X POST http://localhost:8344/mcp \
 ```bash
 docker stop knostic-mcp-scanner-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the mcp-scanner CLI in the same container by overriding the entrypoint to scan Kubernetes or MCP environments (Knostic) without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint mcp-scanner hackerdogs/knostic-mcp-scanner-mcp:latest --help
+```

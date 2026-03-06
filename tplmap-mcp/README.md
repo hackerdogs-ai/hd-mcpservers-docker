@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8267/mcp \
 ```bash
 docker stop tplmap-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the tplmap CLI in the same container by overriding the entrypoint to find server-side template injection without starting the MCP server.
+
+**Test URL:**
+
+```bash
+docker run -i --rm --entrypoint tplmap hackerdogs/tplmap-mcp:latest -u 'https://example.com/page?name=test'
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint tplmap hackerdogs/tplmap-mcp:latest --help
+```

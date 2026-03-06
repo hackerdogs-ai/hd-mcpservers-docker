@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8228/mcp \
 ```bash
 docker stop uro-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the uro CLI in the same container by overriding the entrypoint to normalize and filter URLs without starting the MCP server.
+
+**Normalize URLs from stdin:**
+
+```bash
+docker run -i --rm --entrypoint uro hackerdogs/uro-mcp:latest
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint uro hackerdogs/uro-mcp:latest -h
+```

@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8283/mcp \
 ```bash
 docker stop testdisk-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the testdisk CLI in the same container by overriding the entrypoint to recover partitions/files without starting the MCP server.
+
+**Analyze device (mount it):**
+
+```bash
+docker run -i --rm --entrypoint testdisk hackerdogs/testdisk-mcp:latest /path/to/disk
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint testdisk hackerdogs/testdisk-mcp:latest --help
+```

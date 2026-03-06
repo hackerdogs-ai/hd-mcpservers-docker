@@ -197,3 +197,14 @@ curl -s -X POST http://localhost:8314/mcp \
 ```bash
 docker stop ngrep-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the ngrep CLI in the same container by overriding the entrypoint to match packets by pattern without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint ngrep hackerdogs/ngrep-mcp:latest -h
+```

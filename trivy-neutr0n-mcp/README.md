@@ -231,3 +231,14 @@ curl -s -X POST http://localhost:8356/mcp \
 ```bash
 docker stop trivy-neutr0n-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the trivy-mcp CLI in the same container by overriding the entrypoint for Trivy Neutr0n scanning without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint trivy-mcp hackerdogs/trivy-neutr0n-mcp:latest --help
+```

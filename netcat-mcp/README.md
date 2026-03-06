@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8327/mcp \
 ```bash
 docker stop netcat-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the nc (netcat) CLI in the same container by overriding the entrypoint for network debugging without starting the MCP server.
+
+**Connect to host:**
+
+```bash
+docker run -i --rm --entrypoint nc hackerdogs/netcat-mcp:latest -v example.com 80
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint nc hackerdogs/netcat-mcp:latest -h
+```

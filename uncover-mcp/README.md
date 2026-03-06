@@ -244,3 +244,20 @@ curl -s -X POST http://localhost:8107/mcp \
 ```bash
 docker stop uncover-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the uncover CLI in the same container by overriding the entrypoint to discover hosts via search engines without starting the MCP server.
+
+**Query:**
+
+```bash
+docker run -i --rm --entrypoint uncover hackerdogs/uncover-mcp:latest -q example.com
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint uncover hackerdogs/uncover-mcp:latest -h
+```

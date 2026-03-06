@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8217/mcp \
 ```bash
 docker stop hakrawler-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the hakrawler CLI in the same container by overriding the entrypoint to crawl URLs without starting the MCP server.
+
+**Crawl URL:**
+
+```bash
+docker run -i --rm --entrypoint hakrawler hackerdogs/hakrawler-mcp:latest -url https://example.com
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint hakrawler hackerdogs/hakrawler-mcp:latest -h
+```

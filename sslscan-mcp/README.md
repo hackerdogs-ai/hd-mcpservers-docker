@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8323/mcp \
 ```bash
 docker stop sslscan-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the sslscan CLI in the same container by overriding the entrypoint to check SSL/TLS configuration without starting the MCP server.
+
+**Scan host:**
+
+```bash
+docker run -i --rm --entrypoint sslscan hackerdogs/sslscan-mcp:latest example.com
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint sslscan hackerdogs/sslscan-mcp:latest --help
+```

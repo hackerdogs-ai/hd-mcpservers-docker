@@ -201,3 +201,14 @@ curl -s -X POST http://localhost:8345/mcp \
 ```bash
 docker stop threat-hunting-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the threat-hunting CLI in the same container by overriding the entrypoint to run threat-hunting queries and detections without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint threat-hunting hackerdogs/threat-hunting-mcp:latest --help
+```

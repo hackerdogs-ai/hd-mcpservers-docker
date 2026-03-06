@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8305/mcp \
 ```bash
 docker stop joomscan-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the joomscan CLI in the same container by overriding the entrypoint to scan Joomla! sites without starting the MCP server.
+
+**Scan URL:**
+
+```bash
+docker run -i --rm --entrypoint joomscan hackerdogs/joomscan-mcp:latest -u https://example.com
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint joomscan hackerdogs/joomscan-mcp:latest -h
+```

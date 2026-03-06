@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8308/mcp \
 ```bash
 docker stop brutespray-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the brutespray CLI in the same container by overriding the entrypoint to brute-force from Nmap XML without starting the MCP server.
+
+**Run with Nmap XML (mount file):**
+
+```bash
+docker run -i --rm --entrypoint brutespray hackerdogs/brutespray-mcp:latest -f /path/to/nmap.xml
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint brutespray hackerdogs/brutespray-mcp:latest -h
+```

@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8364/mcp \
 ```bash
 docker stop retire-js-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the retire CLI in the same container by overriding the entrypoint to find vulnerable JavaScript libraries without starting the MCP server.
+
+**Scan path (mount it):**
+
+```bash
+docker run -i --rm --entrypoint retire hackerdogs/retire-js-mcp:latest /path/to/project
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint retire hackerdogs/retire-js-mcp:latest --help
+```

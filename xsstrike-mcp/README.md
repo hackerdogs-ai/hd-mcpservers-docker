@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8349/mcp \
 ```bash
 docker stop xsstrike-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the xsstrike CLI in the same container by overriding the entrypoint to find XSS without starting the MCP server.
+
+**Scan URL:**
+
+```bash
+docker run -i --rm --entrypoint xsstrike hackerdogs/xsstrike-mcp:latest -u https://example.com
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint xsstrike hackerdogs/xsstrike-mcp:latest --help
+```

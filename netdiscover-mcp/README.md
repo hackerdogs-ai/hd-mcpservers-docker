@@ -201,3 +201,20 @@ curl -s -X POST http://localhost:8322/mcp \
 ```bash
 docker stop netdiscover-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the netdiscover CLI in the same container by overriding the entrypoint to discover hosts (ARP) without starting the MCP server.
+
+**Active scan:**
+
+```bash
+docker run -i --rm --entrypoint netdiscover hackerdogs/netdiscover-mcp:latest -r 192.168.1.0/24
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint netdiscover hackerdogs/netdiscover-mcp:latest -h
+```

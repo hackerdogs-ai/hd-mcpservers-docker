@@ -197,3 +197,14 @@ curl -s -X POST http://localhost:8313/mcp \
 ```bash
 docker stop ettercap-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the ettercap CLI in the same container by overriding the entrypoint for ARP spoofing and MITM without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint ettercap hackerdogs/ettercap-mcp:latest --help
+```

@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8318/mcp \
 ```bash
 docker stop bettercap-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run bettercap in the same container by overriding the entrypoint for network attacks and monitoring without starting the MCP server.
+
+**Interactive caplet:**
+
+```bash
+docker run -i --rm --entrypoint bettercap hackerdogs/bettercap-mcp:latest -eval "help"
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint bettercap hackerdogs/bettercap-mcp:latest -h
+```

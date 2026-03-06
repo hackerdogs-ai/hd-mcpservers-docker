@@ -201,3 +201,20 @@ curl -s -X POST http://localhost:8341/mcp \
 ```bash
 docker stop a2a-scanner-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the a2a-scanner CLI in the same container by overriding the entrypoint to scan Agent-to-Agent communication security without starting the MCP server.
+
+**Scan an MCP or A2A endpoint URL:**
+
+```bash
+docker run -i --rm --entrypoint a2a-scanner hackerdogs/a2a-scanner-mcp:latest -h
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint a2a-scanner hackerdogs/a2a-scanner-mcp:latest --help
+```

@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8205/mcp \
 ```bash
 docker stop arp-scan-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run arp-scan in the same container by overriding the entrypoint to discover hosts on the local network without starting the MCP server.
+
+**Scan local network (needs --network=host):**
+
+```bash
+docker run -i --rm --entrypoint arp-scan hackerdogs/arp-scan-mcp:latest --localnet
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint arp-scan hackerdogs/arp-scan-mcp:latest --help
+```

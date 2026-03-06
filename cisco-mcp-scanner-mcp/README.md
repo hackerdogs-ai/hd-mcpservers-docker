@@ -201,3 +201,14 @@ curl -s -X POST http://localhost:8342/mcp \
 ```bash
 docker stop cisco-mcp-scanner-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the mcp-scanner CLI in the same container by overriding the entrypoint to scan MCP servers or Cisco environments without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint mcp-scanner hackerdogs/cisco-mcp-scanner-mcp:latest --help
+```

@@ -201,3 +201,14 @@ curl -s -X POST http://localhost:8316/mcp \
 ```bash
 docker stop slowhttptest-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the slowhttptest CLI in the same container by overriding the entrypoint to run slow HTTP DoS tests without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint slowhttptest hackerdogs/slowhttptest-mcp:latest -h
+```

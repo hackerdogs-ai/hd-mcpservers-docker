@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8221/mcp \
 ```bash
 docker stop dalfox-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the dalfox CLI in the same container by overriding the entrypoint to find XSS without starting the MCP server.
+
+**Scan URL:**
+
+```bash
+docker run -i --rm --entrypoint dalfox hackerdogs/dalfox-mcp:latest url https://example.com
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint dalfox hackerdogs/dalfox-mcp:latest --help
+```

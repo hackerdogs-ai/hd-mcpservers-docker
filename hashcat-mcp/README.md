@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8235/mcp \
 ```bash
 docker stop hashcat-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the hashcat CLI in the same container by overriding the entrypoint to crack hashes (mount wordlists/hashes) without starting the MCP server.
+
+**Show hash types:**
+
+```bash
+docker run -i --rm --entrypoint hashcat hackerdogs/hashcat-mcp:latest --help
+```
+
+**Example crack:**
+
+```bash
+docker run -i --rm --entrypoint hashcat hackerdogs/hashcat-mcp:latest -m 0 -a 0 hashes.txt wordlist.txt
+```

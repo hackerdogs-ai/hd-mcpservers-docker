@@ -197,3 +197,14 @@ curl -s -X POST http://localhost:8297/mcp \
 ```bash
 docker stop securemcp-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the securemcp CLI in the same container by overriding the entrypoint to audit or harden MCP server security without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint securemcp hackerdogs/securemcp-mcp:latest --help
+```

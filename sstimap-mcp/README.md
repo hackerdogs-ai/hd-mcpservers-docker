@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8289/mcp \
 ```bash
 docker stop sstimap-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the sstimap CLI in the same container by overriding the entrypoint to find server-side template injection without starting the MCP server.
+
+**Scan URL:**
+
+```bash
+docker run -i --rm --entrypoint sstimap hackerdogs/sstimap-mcp:latest -u https://example.com
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint sstimap hackerdogs/sstimap-mcp:latest --help
+```

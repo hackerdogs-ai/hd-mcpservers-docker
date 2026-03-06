@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8223/mcp \
 ```bash
 docker stop dotdotpwn-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the dotdotpwn CLI in the same container by overriding the entrypoint to find path traversal without starting the MCP server.
+
+**Test a URL:**
+
+```bash
+docker run -i --rm --entrypoint dotdotpwn hackerdogs/dotdotpwn-mcp:latest -u https://example.com/test -f /etc/passwd
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint dotdotpwn hackerdogs/dotdotpwn-mcp:latest -h
+```

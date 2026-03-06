@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8236/mcp \
 ```bash
 docker stop metasploit-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the msfconsole CLI in the same container by overriding the entrypoint to use Metasploit without starting the MCP server.
+
+**Start console:**
+
+```bash
+docker run -i --rm --entrypoint msfconsole hackerdogs/metasploit-mcp:latest -q
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint msfconsole hackerdogs/metasploit-mcp:latest -h
+```

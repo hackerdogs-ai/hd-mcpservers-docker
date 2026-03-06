@@ -227,3 +227,26 @@ curl -s -X POST http://localhost:8330/mcp \
 ```bash
 docker stop trivy-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the Trivy CLI in the same container by overriding the entrypoint to scan images, filesystems, or IaC for vulnerabilities without starting the MCP server.
+
+**Scan a container image:**
+
+```bash
+docker run -i --rm --entrypoint trivy hackerdogs/trivy-mcp:latest image alpine:latest
+```
+
+**Scan a filesystem path (e.g. current directory):**
+
+```bash
+docker run -i --rm -v "$(pwd)":/scan --entrypoint trivy hackerdogs/trivy-mcp:latest fs /scan
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint trivy hackerdogs/trivy-mcp:latest --help
+```

@@ -197,3 +197,14 @@ curl -s -X POST http://localhost:8306/mcp \
 ```bash
 docker stop ncrack-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the ncrack CLI in the same container by overriding the entrypoint to crack network services without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint ncrack hackerdogs/ncrack-mcp:latest -h
+```

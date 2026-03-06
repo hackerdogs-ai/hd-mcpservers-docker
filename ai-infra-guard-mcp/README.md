@@ -201,3 +201,20 @@ curl -s -X POST http://localhost:8294/mcp \
 ```bash
 docker stop ai-infra-guard-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the ai-infra-guard CLI in the same container by overriding the entrypoint to scan and assess AI infrastructure security without starting the MCP server.
+
+**Run AI infrastructure assessment:**
+
+```bash
+docker run -i --rm --entrypoint ai-infra-guard hackerdogs/ai-infra-guard-mcp:latest -h
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint ai-infra-guard hackerdogs/ai-infra-guard-mcp:latest --help
+```

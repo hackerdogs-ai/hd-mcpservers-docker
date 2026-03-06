@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8272/mcp \
 ```bash
 docker stop checkov-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the checkov CLI in the same container by overriding the entrypoint to scan IaC for misconfigurations without starting the MCP server.
+
+**Scan a directory (mount it):**
+
+```bash
+docker run -i --rm --entrypoint checkov hackerdogs/checkov-mcp:latest scan -d /path/to/iac
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint checkov hackerdogs/checkov-mcp:latest --help
+```

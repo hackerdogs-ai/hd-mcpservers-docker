@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8276/mcp \
 ```bash
 docker stop one-gadget-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the one_gadget CLI in the same container by overriding the entrypoint to find one-gadget RCE in libc without starting the MCP server.
+
+**Find gadgets (mount libc):**
+
+```bash
+docker run -i --rm --entrypoint one_gadget hackerdogs/one-gadget-mcp:latest /path/to/libc.so
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint one_gadget hackerdogs/one-gadget-mcp:latest -h
+```

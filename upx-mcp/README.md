@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8284/mcp \
 ```bash
 docker stop upx-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the upx CLI in the same container by overriding the entrypoint to pack/unpack executables without starting the MCP server.
+
+**Pack binary (mount it):**
+
+```bash
+docker run -i --rm --entrypoint upx hackerdogs/upx-mcp:latest /path/to/binary
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint upx hackerdogs/upx-mcp:latest --help
+```

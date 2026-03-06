@@ -206,3 +206,8 @@ docker run -i --rm \
 - [IVRE Web API](https://doc.ivre.rocks/en/latest/dev/web-api.html)
 - [IVRE GitHub](https://github.com/ivre/ivre)
 - [IVRE Docker Images](https://hub.docker.com/u/ivre/)
+
+
+## Running the tool directly (bypassing MCP)
+
+This MCP server does not wrap a single CLI binary; it talks to an **IVRE web API** (see `IVRE_WEB_URL`). To run IVRE CLI tools (e.g. `ivre run`, `ivre ipinfo`) directly, use the [official IVRE Docker images](https://hub.docker.com/u/ivre/) instead of this image.

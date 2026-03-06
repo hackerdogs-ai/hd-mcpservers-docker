@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8263/mcp \
 ```bash
 docker stop evil-winrm-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the evil-winrm CLI in the same container by overriding the entrypoint to get a WinRM shell without starting the MCP server.
+
+**Connect to host:**
+
+```bash
+docker run -i --rm --entrypoint evil-winrm hackerdogs/evil-winrm-mcp:latest -i 192.168.1.1 -u Administrator -p Pass
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint evil-winrm hackerdogs/evil-winrm-mcp:latest -h
+```

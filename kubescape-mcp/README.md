@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8362/mcp \
 ```bash
 docker stop kubescape-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the kubescape CLI in the same container by overriding the entrypoint to scan Kubernetes manifests and clusters for misconfigurations without starting the MCP server.
+
+**Scan current directory or cluster:**
+
+```bash
+docker run -i --rm --entrypoint kubescape hackerdogs/kubescape-mcp:latest scan
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint kubescape hackerdogs/kubescape-mcp:latest --help
+```

@@ -201,3 +201,20 @@ curl -s -X POST http://localhost:8325/mcp \
 ```bash
 docker stop smtp-user-enum-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the smtp-user-enum CLI in the same container by overriding the entrypoint to enumerate valid SMTP users on a server without starting the MCP server.
+
+**Enumerate users on SMTP server:**
+
+```bash
+docker run -i --rm --entrypoint smtp-user-enum hackerdogs/smtp-user-enum-mcp:latest -h
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint smtp-user-enum hackerdogs/smtp-user-enum-mcp:latest --help
+```

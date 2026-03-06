@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8286/mcp \
 ```bash
 docker stop bloodhound-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run bloodhound-python in the same container by overriding the entrypoint to collect Active Directory data without starting the MCP server.
+
+**Ingest from domain:**
+
+```bash
+docker run -i --rm --entrypoint bloodhound-python hackerdogs/bloodhound-mcp:latest -d example.com -u user -p pass -c All
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint bloodhound-python hackerdogs/bloodhound-mcp:latest -h
+```

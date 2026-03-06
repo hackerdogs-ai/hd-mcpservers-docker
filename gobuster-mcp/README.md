@@ -227,3 +227,26 @@ curl -s -X POST http://localhost:8213/mcp \
 ```bash
 docker stop gobuster-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the Gobuster CLI in the same container by overriding the entrypoint to perform directory, DNS, or vhost enumeration without starting the MCP server.
+
+**Directory brute-force (mount a wordlist):**
+
+```bash
+docker run -i --rm -v /path/to/wordlist.txt:/wordlist.txt --entrypoint gobuster hackerdogs/gobuster-mcp:latest dir -u https://example.com -w /wordlist.txt
+```
+
+**DNS subdomain enumeration:**
+
+```bash
+docker run -i --rm --entrypoint gobuster hackerdogs/gobuster-mcp:latest dns -d example.com -w /usr/share/wordlists/subdomains.txt
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint gobuster hackerdogs/gobuster-mcp:latest --help
+```

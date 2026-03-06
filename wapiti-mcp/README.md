@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8288/mcp \
 ```bash
 docker stop wapiti-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the wapiti CLI in the same container by overriding the entrypoint to scan web apps for vulnerabilities without starting the MCP server.
+
+**Scan URL:**
+
+```bash
+docker run -i --rm --entrypoint wapiti hackerdogs/wapiti-mcp:latest -u https://example.com
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint wapiti hackerdogs/wapiti-mcp:latest --help
+```

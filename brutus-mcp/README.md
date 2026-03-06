@@ -221,3 +221,14 @@ curl -s -X POST http://localhost:8102/mcp \
 ```bash
 docker stop brutus-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the brutus CLI in the same container by overriding the entrypoint for network brute-forcing without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint brutus hackerdogs/brutus-mcp:latest --help
+```

@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8212/mcp \
 ```bash
 docker stop netexec-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the netexec CLI in the same container by overriding the entrypoint to attack Windows/AD (successor to crackmapexec) without starting the MCP server.
+
+**List shares:**
+
+```bash
+docker run -i --rm --entrypoint netexec hackerdogs/netexec-mcp:latest -u user -p pass 192.168.1.0/24
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint netexec hackerdogs/netexec-mcp:latest -h
+```

@@ -231,3 +231,20 @@ curl -s -X POST http://localhost:8361/mcp \
 ```bash
 docker stop dependency-check-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the dependency-check CLI in the same container by overriding the entrypoint to scan dependencies for CVEs without starting the MCP server.
+
+**Scan project (mount it):**
+
+```bash
+docker run -i --rm --entrypoint dependency-check hackerdogs/dependency-check-mcp:latest --project myapp -s /path/to/project
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint dependency-check hackerdogs/dependency-check-mcp:latest --help
+```

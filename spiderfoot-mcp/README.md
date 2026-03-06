@@ -197,3 +197,14 @@ curl -s -X POST http://localhost:8257/mcp \
 ```bash
 docker stop spiderfoot-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the sf.py (SpiderFoot) CLI in the same container by overriding the entrypoint to run OSINT scans and automate footprinting without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint sf.py hackerdogs/spiderfoot-mcp:latest --help
+```

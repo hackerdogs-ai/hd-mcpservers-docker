@@ -239,3 +239,20 @@ curl -s -X POST http://localhost:8110/mcp \
 ```bash
 docker stop asnmap-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the asnmap CLI in the same container by overriding the entrypoint to map ASNs and IP ranges without starting the MCP server.
+
+**Query ASN:**
+
+```bash
+docker run -i --rm --entrypoint asnmap hackerdogs/asnmap-mcp:latest -asn 15169
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint asnmap hackerdogs/asnmap-mcp:latest -h
+```

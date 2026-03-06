@@ -201,3 +201,20 @@ curl -s -X POST http://localhost:8226/mcp \
 ```bash
 docker stop paramspider-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the paramspider CLI in the same container by overriding the entrypoint to find parameters from Wayback without starting the MCP server.
+
+**Find params for domain:**
+
+```bash
+docker run -i --rm --entrypoint paramspider hackerdogs/paramspider-mcp:latest -d example.com
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint paramspider hackerdogs/paramspider-mcp:latest --help
+```

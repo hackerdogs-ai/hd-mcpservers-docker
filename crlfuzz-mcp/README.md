@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8290/mcp \
 ```bash
 docker stop crlfuzz-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the crlfuzz CLI in the same container by overriding the entrypoint to find CRLF injection without starting the MCP server.
+
+**Fuzz a URL:**
+
+```bash
+docker run -i --rm --entrypoint crlfuzz hackerdogs/crlfuzz-mcp:latest -u https://example.com
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint crlfuzz hackerdogs/crlfuzz-mcp:latest -h
+```

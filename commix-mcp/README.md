@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8225/mcp \
 ```bash
 docker stop commix-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the commix CLI in the same container by overriding the entrypoint to test for command injection without starting the MCP server.
+
+**Test a URL:**
+
+```bash
+docker run -i --rm --entrypoint commix hackerdogs/commix-mcp:latest -u "https://example.com/page?cmd=test"
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint commix hackerdogs/commix-mcp:latest --help
+```

@@ -227,3 +227,14 @@ curl -s -X POST http://localhost:8270/mcp \
 ```bash
 docker stop clair-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the clair CLI in the same container by overriding the entrypoint to analyze container images for vulnerabilities without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint clair hackerdogs/clair-mcp:latest --help
+```

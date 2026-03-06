@@ -201,3 +201,14 @@ curl -s -X POST http://localhost:8340/mcp \
 ```bash
 docker stop mcpserver-audit-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the mcpserver-audit CLI in the same container by overriding the entrypoint to audit MCP server configurations without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint mcpserver-audit hackerdogs/mcpserver-audit-mcp:latest --help
+```

@@ -202,3 +202,20 @@ curl -s -X POST http://localhost:8114/mcp \
 ```bash
 docker stop wappalyzergo-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the wappalyzergo-cli in the same container by overriding the entrypoint to detect technologies without starting the MCP server.
+
+**Analyze URL:**
+
+```bash
+docker run -i --rm --entrypoint wappalyzergo-cli hackerdogs/wappalyzergo-mcp:latest https://example.com
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint wappalyzergo-cli hackerdogs/wappalyzergo-mcp:latest -h
+```

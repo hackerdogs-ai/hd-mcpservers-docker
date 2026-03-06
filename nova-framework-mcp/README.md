@@ -201,3 +201,14 @@ curl -s -X POST http://localhost:8299/mcp \
 ```bash
 docker stop nova-framework-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the nova-framework CLI in the same container by overriding the entrypoint for Nova security framework checks without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint nova-framework hackerdogs/nova-framework-mcp:latest --help
+```

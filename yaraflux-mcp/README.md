@@ -227,3 +227,14 @@ curl -s -X POST http://localhost:8336/mcp \
 ```bash
 docker stop yaraflux-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the yaraflux CLI in the same container by overriding the entrypoint to run Yara rules at scale without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint yaraflux hackerdogs/yaraflux-mcp:latest --help
+```

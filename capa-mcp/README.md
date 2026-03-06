@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8329/mcp \
 ```bash
 docker stop capa-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the capa CLI in the same container by overriding the entrypoint to identify capabilities in executables without starting the MCP server.
+
+**Analyze a binary (mount it):**
+
+```bash
+docker run -i --rm --entrypoint capa hackerdogs/capa-mcp:latest /path/to/binary
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint capa hackerdogs/capa-mcp:latest -h
+```

@@ -213,3 +213,20 @@ curl -s -X POST http://localhost:8108/mcp \
 ```bash
 docker stop dnsx-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the dnsx CLI in the same container by overriding the entrypoint to query DNS (A, AAAA, CNAME, etc.) without starting the MCP server.
+
+**Resolve domains from stdin:**
+
+```bash
+docker run -i --rm --entrypoint dnsx hackerdogs/dnsx-mcp:latest -silent
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint dnsx hackerdogs/dnsx-mcp:latest -h
+```

@@ -261,3 +261,20 @@ curl -s -X POST http://localhost:8111/mcp \
 ```bash
 docker stop cloudlist-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the cloudlist CLI in the same container by overriding the entrypoint to enumerate cloud provider assets without starting the MCP server.
+
+**Enumerate cloud assets (set cloud creds):**
+
+```bash
+docker run -i --rm --entrypoint cloudlist hackerdogs/cloudlist-mcp:latest -h
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint cloudlist hackerdogs/cloudlist-mcp:latest --help
+```

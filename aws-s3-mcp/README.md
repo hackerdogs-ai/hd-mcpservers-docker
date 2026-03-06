@@ -197,3 +197,14 @@ curl -s -X POST http://localhost:8346/mcp \
 ```bash
 docker stop aws-s3-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the aws-s3-mcp CLI in the same container by overriding the entrypoint (if the image includes it) without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint aws-s3-mcp hackerdogs/aws-s3-mcp:latest --help
+```

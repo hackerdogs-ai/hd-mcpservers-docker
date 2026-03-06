@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8232/mcp \
 ```bash
 docker stop jaeles-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the jaeles CLI in the same container by overriding the entrypoint to run signature-based web application scans without starting the MCP server.
+
+**Scan a target URL:**
+
+```bash
+docker run -i --rm --entrypoint jaeles hackerdogs/jaeles-mcp:latest -u https://example.com
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint jaeles hackerdogs/jaeles-mcp:latest -h
+```

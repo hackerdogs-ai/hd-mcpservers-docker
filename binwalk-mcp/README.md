@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8241/mcp \
 ```bash
 docker stop binwalk-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the binwalk CLI in the same container by overriding the entrypoint to analyze and extract firmware/binaries without starting the MCP server.
+
+**Scan a file (mount it):**
+
+```bash
+docker run -i --rm --entrypoint binwalk hackerdogs/binwalk-mcp:latest -B /path/to/file
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint binwalk hackerdogs/binwalk-mcp:latest --help
+```

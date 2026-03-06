@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8360/mcp \
 ```bash
 docker stop bearer-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the bearer CLI in the same container by overriding the entrypoint to scan code for secrets and misconfigurations without starting the MCP server.
+
+**Scan current directory:**
+
+```bash
+docker run -i --rm --entrypoint bearer hackerdogs/bearer-mcp:latest scan .
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint bearer hackerdogs/bearer-mcp:latest --help
+```

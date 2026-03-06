@@ -228,3 +228,20 @@ curl -s -X POST http://localhost:8335/mcp \
 ```bash
 docker stop semgrep-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the semgrep CLI in the same container by overriding the entrypoint to find bugs and secrets in code without starting the MCP server.
+
+**Scan path (mount it):**
+
+```bash
+docker run -i --rm --entrypoint semgrep hackerdogs/semgrep-mcp:latest scan --config auto /path/to/repo
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint semgrep hackerdogs/semgrep-mcp:latest --help
+```

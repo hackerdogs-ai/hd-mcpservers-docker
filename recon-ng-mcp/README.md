@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8256/mcp \
 ```bash
 docker stop recon-ng-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the recon-ng CLI in the same container by overriding the entrypoint for recon without starting the MCP server.
+
+**Start console:**
+
+```bash
+docker run -i --rm --entrypoint recon-ng hackerdogs/recon-ng-mcp:latest
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint recon-ng hackerdogs/recon-ng-mcp:latest --help
+```

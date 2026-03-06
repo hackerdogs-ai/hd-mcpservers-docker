@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8261/mcp \
 ```bash
 docker stop medusa-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the medusa CLI in the same container by overriding the entrypoint to brute-force services without starting the MCP server.
+
+**HTTP brute-force:**
+
+```bash
+docker run -i --rm --entrypoint medusa hackerdogs/medusa-mcp:latest -h 192.168.1.1 -M http -m DIR:/admin -u admin -P /path/to/pass.txt
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint medusa hackerdogs/medusa-mcp:latest -h
+```

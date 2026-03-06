@@ -204,3 +204,14 @@ curl -s -X POST http://localhost:8104/mcp \
 ```bash
 docker stop nerva-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the nerva CLI in the same container by overriding the entrypoint for vulnerability scanning and assessment without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint nerva hackerdogs/nerva-mcp:latest --help
+```

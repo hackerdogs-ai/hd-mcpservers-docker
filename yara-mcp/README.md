@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8328/mcp \
 ```bash
 docker stop yara-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the yara CLI in the same container by overriding the entrypoint to match rules against files without starting the MCP server.
+
+**Scan path (mount rules/file):**
+
+```bash
+docker run -i --rm --entrypoint yara hackerdogs/yara-mcp:latest -r /rules /path/to/file
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint yara hackerdogs/yara-mcp:latest --help
+```

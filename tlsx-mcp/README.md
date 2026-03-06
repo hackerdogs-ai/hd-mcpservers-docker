@@ -219,3 +219,20 @@ curl -s -X POST http://localhost:8109/mcp \
 ```bash
 docker stop tlsx-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the tlsx CLI in the same container by overriding the entrypoint to grab TLS data from hosts without starting the MCP server.
+
+**Grab from host:**
+
+```bash
+docker run -i --rm --entrypoint tlsx hackerdogs/tlsx-mcp:latest -u example.com
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint tlsx hackerdogs/tlsx-mcp:latest -h
+```

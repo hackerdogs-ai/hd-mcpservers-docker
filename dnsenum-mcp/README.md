@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8304/mcp \
 ```bash
 docker stop dnsenum-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the dnsenum CLI in the same container by overriding the entrypoint to enumerate DNS information without starting the MCP server.
+
+**Enumerate domain:**
+
+```bash
+docker run -i --rm --entrypoint dnsenum hackerdogs/dnsenum-mcp:latest example.com
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint dnsenum hackerdogs/dnsenum-mcp:latest --help
+```

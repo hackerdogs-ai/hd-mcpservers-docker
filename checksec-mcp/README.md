@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8244/mcp \
 ```bash
 docker stop checksec-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the checksec CLI in the same container by overriding the entrypoint to check binary security hardening without starting the MCP server.
+
+**Check a binary (mount it):**
+
+```bash
+docker run -i --rm --entrypoint checksec hackerdogs/checksec-mcp:latest --file=/path/to/binary
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint checksec hackerdogs/checksec-mcp:latest --help
+```

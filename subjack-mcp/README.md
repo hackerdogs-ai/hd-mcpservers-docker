@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8260/mcp \
 ```bash
 docker stop subjack-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the subjack CLI in the same container by overriding the entrypoint to find subdomain takeovers without starting the MCP server.
+
+**Check subdomains (from stdin):**
+
+```bash
+docker run -i --rm --entrypoint subjack hackerdogs/subjack-mcp:latest -w /path/to/wordlist -t target
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint subjack hackerdogs/subjack-mcp:latest -h
+```

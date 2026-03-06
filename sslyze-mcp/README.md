@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8280/mcp \
 ```bash
 docker stop sslyze-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the sslyze CLI in the same container by overriding the entrypoint to analyze SSL/TLS without starting the MCP server.
+
+**Scan host:**
+
+```bash
+docker run -i --rm --entrypoint sslyze hackerdogs/sslyze-mcp:latest --certinfo example.com
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint sslyze hackerdogs/sslyze-mcp:latest --help
+```

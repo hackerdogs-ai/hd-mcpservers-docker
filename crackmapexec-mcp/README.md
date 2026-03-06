@@ -201,3 +201,20 @@ curl -s -X POST http://localhost:8208/mcp \
 ```bash
 docker stop crackmapexec-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the crackmapexec CLI in the same container by overriding the entrypoint to attack Windows/AD networks without starting the MCP server.
+
+**List SMB shares:**
+
+```bash
+docker run -i --rm --entrypoint crackmapexec hackerdogs/crackmapexec-mcp:latest -u user -p pass 192.168.1.0/24
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint crackmapexec hackerdogs/crackmapexec-mcp:latest -h
+```

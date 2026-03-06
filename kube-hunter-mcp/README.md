@@ -201,3 +201,20 @@ curl -s -X POST http://localhost:8252/mcp \
 ```bash
 docker stop kube-hunter-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the kube-hunter CLI in the same container by overriding the entrypoint to find weaknesses in Kubernetes without starting the MCP server.
+
+**Hunt (remote):**
+
+```bash
+docker run -i --rm --entrypoint kube-hunter hackerdogs/kube-hunter-mcp:latest --remote 192.168.1.1
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint kube-hunter hackerdogs/kube-hunter-mcp:latest --help
+```

@@ -197,3 +197,14 @@ curl -s -X POST http://localhost:8347/mcp \
 ```bash
 docker stop osv-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the osv-mcp CLI in the same container by overriding the entrypoint to query OSV vulnerability data without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint osv-mcp hackerdogs/osv-mcp:latest --help
+```

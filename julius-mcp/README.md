@@ -254,3 +254,14 @@ curl -s -X POST http://localhost:8100/mcp \
 ```bash
 docker stop julius-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the julius CLI in the same container by overriding the entrypoint to run Julius security checks without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint julius hackerdogs/julius-mcp:latest --help
+```

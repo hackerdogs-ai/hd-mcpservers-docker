@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8239/mcp \
 ```bash
 docker stop radare2-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the r2 CLI in the same container by overriding the entrypoint for reverse engineering without starting the MCP server.
+
+**Analyze binary (mount it):**
+
+```bash
+docker run -i --rm --entrypoint r2 hackerdogs/radare2-mcp:latest -q -c 'aaa' /path/to/binary
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint r2 hackerdogs/radare2-mcp:latest -h
+```

@@ -201,3 +201,14 @@ curl -s -X POST http://localhost:8338/mcp \
 ```bash
 docker stop bloodhound-mcp-ai-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the bloodhound-mcp CLI in the same container by overriding the entrypoint to run BloodHound AI–powered analysis without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint bloodhound-mcp hackerdogs/bloodhound-mcp-ai-mcp:latest --help
+```

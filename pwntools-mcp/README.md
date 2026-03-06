@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8245/mcp \
 ```bash
 docker stop pwntools-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run Python with pwntools in the same container by overriding the entrypoint for exploit development without starting the MCP server.
+
+**Python REPL:**
+
+```bash
+docker run -i --rm --entrypoint python3 hackerdogs/pwntools-mcp:latest -c "from pwn import *; print(context)"
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint python3 hackerdogs/pwntools-mcp:latest --help
+```

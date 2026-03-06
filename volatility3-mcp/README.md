@@ -231,3 +231,20 @@ curl -s -X POST http://localhost:8247/mcp \
 ```bash
 docker stop volatility3-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the volatility CLI in the same container by overriding the entrypoint to analyze memory dumps without starting the MCP server.
+
+**List plugins:**
+
+```bash
+docker run -i --rm --entrypoint volatility hackerdogs/volatility3-mcp:latest -h
+```
+
+**Analyze (mount dump):**
+
+```bash
+docker run -i --rm --entrypoint volatility hackerdogs/volatility3-mcp:latest -f /path/to/dump windows.info
+```

@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8357/mcp \
 ```bash
 docker stop grype-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the grype CLI in the same container by overriding the entrypoint to scan images/filesystems for vulnerabilities without starting the MCP server.
+
+**Scan an image:**
+
+```bash
+docker run -i --rm --entrypoint grype hackerdogs/grype-mcp:latest image alpine:latest
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint grype hackerdogs/grype-mcp:latest --help
+```

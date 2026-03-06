@@ -240,3 +240,20 @@ curl -s -X POST http://localhost:8116/mcp \
 ```bash
 docker stop vulnx-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the vulnx CLI in the same container by overriding the entrypoint to scan for vulnerabilities without starting the MCP server.
+
+**Scan target:**
+
+```bash
+docker run -i --rm --entrypoint vulnx hackerdogs/vulnx-mcp:latest -u https://example.com
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint vulnx hackerdogs/vulnx-mcp:latest -h
+```

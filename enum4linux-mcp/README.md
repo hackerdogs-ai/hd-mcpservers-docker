@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8209/mcp \
 ```bash
 docker stop enum4linux-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the enum4linux CLI in the same container by overriding the entrypoint to enumerate SMB/Windows without starting the MCP server.
+
+**Enumerate host:**
+
+```bash
+docker run -i --rm --entrypoint enum4linux hackerdogs/enum4linux-mcp:latest 192.168.1.1
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint enum4linux hackerdogs/enum4linux-mcp:latest -h
+```

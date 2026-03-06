@@ -197,3 +197,14 @@ curl -s -X POST http://localhost:8287/mcp \
 ```bash
 docker stop psudohash-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the psudohash CLI in the same container by overriding the entrypoint to generate password variants without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint psudohash hackerdogs/psudohash-mcp:latest -h
+```

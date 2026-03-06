@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8363/mcp \
 ```bash
 docker stop ggshield-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the ggshield CLI in the same container by overriding the entrypoint to scan for secrets (e.g. GitGuardian) without starting the MCP server.
+
+**Scan repo (mount it):**
+
+```bash
+docker run -i --rm --entrypoint ggshield hackerdogs/ggshield-mcp:latest secret scan path /path/to/repo
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint ggshield hackerdogs/ggshield-mcp:latest --help
+```

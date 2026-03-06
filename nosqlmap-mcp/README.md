@@ -197,3 +197,14 @@ curl -s -X POST http://localhost:8266/mcp \
 ```bash
 docker stop nosqlmap-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the nosqlmap CLI in the same container by overriding the entrypoint to exploit NoSQL injection without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint nosqlmap hackerdogs/nosqlmap-mcp:latest -h
+```

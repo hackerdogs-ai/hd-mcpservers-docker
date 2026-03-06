@@ -197,3 +197,14 @@ curl -s -X POST http://localhost:8310/mcp \
 ```bash
 docker stop bully-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the bully CLI in the same container by overriding the entrypoint to attack WPS without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint bully hackerdogs/bully-mcp:latest --help
+```

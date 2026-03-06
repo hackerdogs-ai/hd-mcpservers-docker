@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8227/mcp \
 ```bash
 docker stop qsreplace-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the qsreplace CLI in the same container by overriding the entrypoint to replace query string values from stdin without starting the MCP server.
+
+**Replace with value:**
+
+```bash
+docker run -i --rm --entrypoint qsreplace hackerdogs/qsreplace-mcp:latest -a
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint qsreplace hackerdogs/qsreplace-mcp:latest -h
+```

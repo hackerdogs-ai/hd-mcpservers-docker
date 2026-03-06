@@ -231,3 +231,14 @@ curl -s -X POST http://localhost:8277/mcp \
 ```bash
 docker stop libc-database-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the find (libc-database) CLI in the same container by overriding the entrypoint to search libc database without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint find hackerdogs/libc-database-mcp:latest --help
+```

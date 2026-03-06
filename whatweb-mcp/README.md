@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8281/mcp \
 ```bash
 docker stop whatweb-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the whatweb CLI in the same container by overriding the entrypoint to identify web technologies without starting the MCP server.
+
+**Scan URL:**
+
+```bash
+docker run -i --rm --entrypoint whatweb hackerdogs/whatweb-mcp:latest https://example.com
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint whatweb hackerdogs/whatweb-mcp:latest --help
+```

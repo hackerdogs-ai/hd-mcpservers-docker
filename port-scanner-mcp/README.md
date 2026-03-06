@@ -201,3 +201,14 @@ curl -s -X POST http://localhost:8354/mcp \
 ```bash
 docker stop port-scanner-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the port-scanner CLI in the same container by overriding the entrypoint to scan target hosts for open ports without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint port-scanner hackerdogs/port-scanner-mcp:latest --help
+```

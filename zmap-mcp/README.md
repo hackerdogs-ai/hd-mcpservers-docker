@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8303/mcp \
 ```bash
 docker stop zmap-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the zmap CLI in the same container by overriding the entrypoint for fast internet-scale scanning without starting the MCP server.
+
+**Scan port (needs capabilities):**
+
+```bash
+docker run -i --rm --entrypoint zmap hackerdogs/zmap-mcp:latest -p 80 10.0.0.0/8
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint zmap hackerdogs/zmap-mcp:latest --help
+```

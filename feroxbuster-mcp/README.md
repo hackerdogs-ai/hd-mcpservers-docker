@@ -231,3 +231,26 @@ curl -s -X POST http://localhost:8216/mcp \
 ```bash
 docker stop feroxbuster-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the Feroxbuster CLI in the same container by overriding the entrypoint to perform recursive directory and content discovery without starting the MCP server.
+
+**Directory discovery against a URL:**
+
+```bash
+docker run -i --rm --entrypoint feroxbuster hackerdogs/feroxbuster-mcp:latest -u https://example.com
+```
+
+**With a custom wordlist (mount it):**
+
+```bash
+docker run -i --rm -v /path/to/wordlist.txt:/wordlist.txt --entrypoint feroxbuster hackerdogs/feroxbuster-mcp:latest -u https://example.com -w /wordlist.txt
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint feroxbuster hackerdogs/feroxbuster-mcp:latest --help
+```

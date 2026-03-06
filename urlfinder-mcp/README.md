@@ -207,3 +207,14 @@ curl -s -X POST http://localhost:8112/mcp \
 ```bash
 docker stop urlfinder-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the urlfinder CLI in the same container by overriding the entrypoint to find URLs in JS/code without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint urlfinder hackerdogs/urlfinder-mcp:latest -h
+```

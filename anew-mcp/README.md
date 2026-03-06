@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8229/mcp \
 ```bash
 docker stop anew-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the anew CLI in the same container by overriding the entrypoint to append new lines from stdin without starting the MCP server.
+
+**Filter new lines from stdin:**
+
+```bash
+docker run -i --rm --entrypoint anew hackerdogs/anew-mcp:latest
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint anew hackerdogs/anew-mcp:latest --help
+```

@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8214/mcp \
 ```bash
 docker stop dirb-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the dirb CLI in the same container by overriding the entrypoint to brute-force directories without starting the MCP server.
+
+**Scan a URL:**
+
+```bash
+docker run -i --rm --entrypoint dirb hackerdogs/dirb-mcp:latest https://example.com
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint dirb hackerdogs/dirb-mcp:latest -h
+```

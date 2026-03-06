@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8200/mcp \
 ```bash
 docker stop rustscan-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the rustscan CLI in the same container by overriding the entrypoint for fast port scanning without starting the MCP server.
+
+**Scan host and run Nmap:**
+
+```bash
+docker run -i --rm --entrypoint rustscan hackerdogs/rustscan-mcp:latest -a 192.168.1.1 -- -sV
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint rustscan hackerdogs/rustscan-mcp:latest --help
+```

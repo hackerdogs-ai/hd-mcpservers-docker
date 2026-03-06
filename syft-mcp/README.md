@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8358/mcp \
 ```bash
 docker stop syft-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the syft CLI in the same container by overriding the entrypoint to generate SBOMs from images/filesystems without starting the MCP server.
+
+**Generate SBOM for image:**
+
+```bash
+docker run -i --rm --entrypoint syft hackerdogs/syft-mcp:latest alpine:latest
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint syft hackerdogs/syft-mcp:latest --help
+```

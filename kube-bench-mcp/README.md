@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8253/mcp \
 ```bash
 docker stop kube-bench-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the kube-bench CLI in the same container by overriding the entrypoint to audit Kubernetes clusters without starting the MCP server.
+
+**Run audit:**
+
+```bash
+docker run -i --rm --entrypoint kube-bench hackerdogs/kube-bench-mcp:latest
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint kube-bench hackerdogs/kube-bench-mcp:latest --help
+```

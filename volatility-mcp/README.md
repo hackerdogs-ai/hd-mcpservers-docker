@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8248/mcp \
 ```bash
 docker stop volatility-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the vol.py (Volatility 2) CLI in the same container by overriding the entrypoint to analyze memory dumps without starting the MCP server.
+
+**List plugins:**
+
+```bash
+docker run -i --rm --entrypoint vol.py hackerdogs/volatility-mcp:latest -h
+```
+
+**Analyze image (mount it):**
+
+```bash
+docker run -i --rm --entrypoint vol.py hackerdogs/volatility-mcp:latest -f /path/to/dump imageinfo
+```

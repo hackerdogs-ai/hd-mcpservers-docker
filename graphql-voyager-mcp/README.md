@@ -201,3 +201,14 @@ curl -s -X POST http://localhost:8282/mcp \
 ```bash
 docker stop graphql-voyager-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the graphql-voyager CLI in the same container by overriding the entrypoint to introspect and explore GraphQL schemas without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint graphql-voyager hackerdogs/graphql-voyager-mcp:latest --help
+```

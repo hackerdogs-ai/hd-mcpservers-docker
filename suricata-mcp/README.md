@@ -227,3 +227,14 @@ curl -s -X POST http://localhost:8365/mcp \
 ```bash
 docker stop suricata-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the suricata-mcp CLI in the same container by overriding the entrypoint to run Suricata IDS/IPS or flow analysis without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint suricata-mcp hackerdogs/suricata-mcp:latest --help
+```

@@ -197,3 +197,14 @@ curl -s -X POST http://localhost:8311/mcp \
 ```bash
 docker stop pixiewps-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the pixiewps CLI in the same container by overriding the entrypoint to recover WPS PIN without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint pixiewps hackerdogs/pixiewps-mcp:latest --help
+```

@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8215/mcp \
 ```bash
 docker stop dirsearch-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the dirsearch CLI in the same container by overriding the entrypoint to discover directories and files without starting the MCP server.
+
+**Scan a URL:**
+
+```bash
+docker run -i --rm --entrypoint dirsearch hackerdogs/dirsearch-mcp:latest -u https://example.com
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint dirsearch hackerdogs/dirsearch-mcp:latest --help
+```

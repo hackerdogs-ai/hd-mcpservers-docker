@@ -197,3 +197,14 @@ curl -s -X POST http://localhost:8296/mcp \
 ```bash
 docker stop mcpscan-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the mcpscan CLI in the same container by overriding the entrypoint to scan or audit MCP servers without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint mcpscan hackerdogs/mcpscan-mcp:latest --help
+```

@@ -197,3 +197,26 @@ curl -s -X POST http://localhost:8220/mcp \
 ```bash
 docker stop wpscan-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the WPScan CLI in the same container by overriding the entrypoint to scan WordPress sites for themes, plugins, and vulnerabilities without starting the MCP server.
+
+**Scan a WordPress URL:**
+
+```bash
+docker run -i --rm --entrypoint wpscan hackerdogs/wpscan-mcp:latest --url https://example.com
+```
+
+**Enumerate plugins and themes:**
+
+```bash
+docker run -i --rm --entrypoint wpscan hackerdogs/wpscan-mcp:latest --url https://example.com --enumerate p,t
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint wpscan hackerdogs/wpscan-mcp:latest --help
+```

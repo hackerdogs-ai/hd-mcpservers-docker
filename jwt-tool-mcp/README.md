@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8265/mcp \
 ```bash
 docker stop jwt-tool-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the jwt_tool.py script in the same container by overriding the entrypoint to audit JWTs without starting the MCP server.
+
+**Decode a JWT:**
+
+```bash
+docker run -i --rm --entrypoint jwt_tool.py hackerdogs/jwt-tool-mcp:latest eyJhbGc...
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint jwt_tool.py hackerdogs/jwt-tool-mcp:latest -h
+```

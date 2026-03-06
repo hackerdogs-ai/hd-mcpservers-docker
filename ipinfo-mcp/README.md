@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8351/mcp \
 ```bash
 docker stop ipinfo-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the ipinfo CLI in the same container by overriding the entrypoint to look up IP info (API key may be required) without starting the MCP server.
+
+**Look up IP:**
+
+```bash
+docker run -i --rm --entrypoint ipinfo hackerdogs/ipinfo-mcp:latest 8.8.8.8
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint ipinfo hackerdogs/ipinfo-mcp:latest --help
+```

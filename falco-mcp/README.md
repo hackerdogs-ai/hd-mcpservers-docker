@@ -227,3 +227,14 @@ curl -s -X POST http://localhost:8271/mcp \
 ```bash
 docker stop falco-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the falco CLI in the same container by overriding the entrypoint to detect runtime security issues without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint falco hackerdogs/falco-mcp:latest --help
+```

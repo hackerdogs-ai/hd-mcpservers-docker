@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8237/mcp \
 ```bash
 docker stop peda-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run gdb with PEDA in the same container by overriding the entrypoint for exploit development without starting the MCP server.
+
+**Debug binary (mount it):**
+
+```bash
+docker run -i --rm --entrypoint gdb hackerdogs/peda-mcp:latest /path/to/binary
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint gdb hackerdogs/peda-mcp:latest --help
+```

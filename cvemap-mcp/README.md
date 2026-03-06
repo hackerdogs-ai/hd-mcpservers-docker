@@ -240,3 +240,20 @@ curl -s -X POST http://localhost:8106/mcp \
 ```bash
 docker stop cvemap-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the cvemap CLI in the same container by overriding the entrypoint to query CVE data without starting the MCP server.
+
+**Search CVE:**
+
+```bash
+docker run -i --rm --entrypoint cvemap hackerdogs/cvemap-mcp:latest -cve CVE-2024-1234
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint cvemap hackerdogs/cvemap-mcp:latest -h
+```

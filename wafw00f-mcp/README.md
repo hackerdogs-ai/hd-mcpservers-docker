@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8230/mcp \
 ```bash
 docker stop wafw00f-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the wafw00f CLI in the same container by overriding the entrypoint to detect WAFs without starting the MCP server.
+
+**Detect WAF:**
+
+```bash
+docker run -i --rm --entrypoint wafw00f hackerdogs/wafw00f-mcp:latest https://example.com
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint wafw00f hackerdogs/wafw00f-mcp:latest -h
+```

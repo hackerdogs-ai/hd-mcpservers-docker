@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8317/mcp \
 ```bash
 docker stop sherlock-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the sherlock CLI in the same container by overriding the entrypoint to find usernames across social networks without starting the MCP server.
+
+**Search username:**
+
+```bash
+docker run -i --rm --entrypoint sherlock hackerdogs/sherlock-mcp:latest username
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint sherlock hackerdogs/sherlock-mcp:latest --help
+```

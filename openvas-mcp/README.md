@@ -197,3 +197,14 @@ curl -s -X POST http://localhost:8300/mcp \
 ```bash
 docker stop openvas-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the gvm-cli (OpenVAS) in the same container by overriding the entrypoint to manage vulnerability scans and OpenVAS data without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint gvm-cli hackerdogs/openvas-mcp:latest --help
+```

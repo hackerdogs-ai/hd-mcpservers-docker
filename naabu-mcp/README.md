@@ -209,3 +209,31 @@ docker stop naabu-test
 ```
 
 > **Note:** The container runs as a non-root user, so naabu defaults to CONNECT scanning (`-s c`). For SYN scanning, run with `--cap-add=NET_RAW` and pass `scan_type: "s"`.
+
+## Running the tool directly (bypassing MCP)
+
+You can run the underlying Naabu CLI in the same container by overriding the entrypoint. The MCP server is not started; the container runs the `naabu` binary directly.
+
+**Scan top 100 ports on a host (CONNECT scan, default):**
+
+```bash
+docker run -i --rm --entrypoint naabu hackerdogs/naabu-mcp:latest -host scanme.nmap.org -top-ports 100
+```
+
+**Scan specific ports:**
+
+```bash
+docker run -i --rm --entrypoint naabu hackerdogs/naabu-mcp:latest -host 192.168.1.1 -port 80,443,8080 -s c
+```
+
+**SYN scan (requires root capabilities):**
+
+```bash
+docker run -i --rm --cap-add=NET_RAW --entrypoint naabu hackerdogs/naabu-mcp:latest -host 10.0.0.1 -top-ports 1000 -s s
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint naabu hackerdogs/naabu-mcp:latest -h
+```

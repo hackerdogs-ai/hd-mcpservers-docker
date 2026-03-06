@@ -197,3 +197,14 @@ curl -s -X POST http://localhost:8337/mcp \
 ```bash
 docker stop yeti-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the yeti-mcp CLI in the same container by overriding the entrypoint for Yeti threat intelligence or security workflows without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint yeti-mcp hackerdogs/yeti-mcp:latest --help
+```

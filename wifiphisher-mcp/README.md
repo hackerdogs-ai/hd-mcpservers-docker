@@ -201,3 +201,14 @@ curl -s -X POST http://localhost:8312/mcp \
 ```bash
 docker stop wifiphisher-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the wifiphisher CLI in the same container by overriding the entrypoint for Wi-Fi phishing (needs wireless) without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint wifiphisher hackerdogs/wifiphisher-mcp:latest -h
+```

@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8309/mcp \
 ```bash
 docker stop fping-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the fping CLI in the same container by overriding the entrypoint to ping multiple hosts without starting the MCP server.
+
+**Ping hosts:**
+
+```bash
+docker run -i --rm --entrypoint fping hackerdogs/fping-mcp:latest -g 192.168.1.0/24
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint fping hackerdogs/fping-mcp:latest -h
+```

@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8224/mcp \
 ```bash
 docker stop wfuzz-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the wfuzz CLI in the same container by overriding the entrypoint to fuzz web parameters without starting the MCP server.
+
+**Fuzz a URL:**
+
+```bash
+docker run -i --rm --entrypoint wfuzz hackerdogs/wfuzz-mcp:latest -u https://example.com/FUZZ -w /path/to/wordlist
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint wfuzz hackerdogs/wfuzz-mcp:latest --help
+```

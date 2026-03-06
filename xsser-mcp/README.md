@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8222/mcp \
 ```bash
 docker stop xsser-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the xsser CLI in the same container by overriding the entrypoint to find XSS without starting the MCP server.
+
+**Scan URL:**
+
+```bash
+docker run -i --rm --entrypoint xsser hackerdogs/xsser-mcp:latest -u https://example.com
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint xsser hackerdogs/xsser-mcp:latest --help
+```

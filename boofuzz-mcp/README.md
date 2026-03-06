@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8333/mcp \
 ```bash
 docker stop boofuzz-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the boofuzz CLI in the same container by overriding the entrypoint to fuzz network protocols or APIs without starting the MCP server.
+
+**Run fuzzer against target:**
+
+```bash
+docker run -i --rm --entrypoint boofuzz hackerdogs/boofuzz-mcp:latest -h
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint boofuzz hackerdogs/boofuzz-mcp:latest --help
+```

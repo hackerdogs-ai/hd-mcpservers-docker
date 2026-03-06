@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8251/mcp \
 ```bash
 docker stop scoutsuite-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the scout CLI in the same container by overriding the entrypoint to audit AWS, Azure, or GCP environments (set cloud credentials) without starting the MCP server.
+
+**Run cloud audit (pass provider and creds):**
+
+```bash
+docker run -i --rm --entrypoint scout hackerdogs/scoutsuite-mcp:latest --help
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint scout hackerdogs/scoutsuite-mcp:latest --help
+```

@@ -227,3 +227,14 @@ curl -s -X POST http://localhost:8320/mcp \
 ```bash
 docker stop cutter-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the cutter CLI in the same container by overriding the entrypoint for reverse engineering (GUI tool; may need display) without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint cutter hackerdogs/cutter-mcp:latest --help
+```

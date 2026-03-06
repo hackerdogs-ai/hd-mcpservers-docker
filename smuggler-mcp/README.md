@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8291/mcp \
 ```bash
 docker stop smuggler-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the smuggler CLI in the same container by overriding the entrypoint to detect HTTP request smuggling without starting the MCP server.
+
+**Scan URL:**
+
+```bash
+docker run -i --rm --entrypoint smuggler hackerdogs/smuggler-mcp:latest -u https://example.com
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint smuggler hackerdogs/smuggler-mcp:latest -h
+```

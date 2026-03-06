@@ -197,3 +197,14 @@ curl -s -X POST http://localhost:8285/mcp \
 ```bash
 docker stop certipy-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the certipy CLI in the same container by overriding the entrypoint to abuse Active Directory certificates without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint certipy hackerdogs/certipy-mcp:latest -h
+```

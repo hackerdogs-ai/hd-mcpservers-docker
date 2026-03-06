@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8211/mcp \
 ```bash
 docker stop smbmap-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the smbmap CLI in the same container by overriding the entrypoint to enumerate SMB shares without starting the MCP server.
+
+**List shares:**
+
+```bash
+docker run -i --rm --entrypoint smbmap hackerdogs/smbmap-mcp:latest -H 192.168.1.1 -u user -p pass
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint smbmap hackerdogs/smbmap-mcp:latest -h
+```

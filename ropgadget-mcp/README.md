@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8242/mcp \
 ```bash
 docker stop ropgadget-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the ROPgadget CLI in the same container by overriding the entrypoint to find ROP gadgets without starting the MCP server.
+
+**Analyze binary (mount it):**
+
+```bash
+docker run -i --rm --entrypoint ROPgadget hackerdogs/ropgadget-mcp:latest /path/to/binary
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint ROPgadget hackerdogs/ropgadget-mcp:latest --help
+```

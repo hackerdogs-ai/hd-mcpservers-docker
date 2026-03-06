@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8279/mcp \
 ```bash
 docker stop testssl-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the testssl.sh script in the same container by overriding the entrypoint to check SSL/TLS without starting the MCP server.
+
+**Check host:**
+
+```bash
+docker run -i --rm --entrypoint testssl.sh hackerdogs/testssl-mcp:latest https://example.com
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint testssl.sh hackerdogs/testssl-mcp:latest --help
+```

@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8243/mcp \
 ```bash
 docker stop ropper-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the ropper CLI in the same container by overriding the entrypoint to find ROP gadgets without starting the MCP server.
+
+**Show gadgets (mount binary):**
+
+```bash
+docker run -i --rm --entrypoint ropper hackerdogs/ropper-mcp:latest --file /path/to/binary
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint ropper hackerdogs/ropper-mcp:latest --help
+```

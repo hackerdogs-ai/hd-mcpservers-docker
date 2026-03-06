@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8249/mcp \
 ```bash
 docker stop foremost-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the foremost CLI in the same container by overriding the entrypoint to recover files from disk images without starting the MCP server.
+
+**Recover from image (mount it):**
+
+```bash
+docker run -i --rm --entrypoint foremost hackerdogs/foremost-mcp:latest -i /path/to/image -o /out
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint foremost hackerdogs/foremost-mcp:latest -h
+```

@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8259/mcp \
 ```bash
 docker stop aquatone-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the aquatone CLI in the same container by overriding the entrypoint to visualize and discover subdomains without starting the MCP server.
+
+**Scan subdomains (pipe domains on stdin):**
+
+```bash
+docker run -i --rm --entrypoint aquatone hackerdogs/aquatone-mcp:latest -scan
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint aquatone hackerdogs/aquatone-mcp:latest -h
+```

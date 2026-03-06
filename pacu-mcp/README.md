@@ -197,3 +197,14 @@ curl -s -X POST http://localhost:8269/mcp \
 ```bash
 docker stop pacu-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the pacu CLI in the same container by overriding the entrypoint to exploit AWS without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint pacu hackerdogs/pacu-mcp:latest --help
+```

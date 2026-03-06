@@ -197,3 +197,26 @@ curl -s -X POST http://localhost:8233/mcp \
 ```bash
 docker stop hydra-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the Hydra CLI in the same container by overriding the entrypoint to perform network login brute-forcing (HTTP, SSH, FTP, etc.) without starting the MCP server.
+
+**HTTP form login (mount your wordlist with `-v`):**
+
+```bash
+docker run -i --rm -v /path/to/passwords.txt:/passwords.txt --entrypoint hydra hackerdogs/hydra-mcp:latest -l admin -P /passwords.txt https://example.com login
+```
+
+**SSH brute-force:**
+
+```bash
+docker run -i --rm -v /path/to/passwords.txt:/passwords.txt --entrypoint hydra hackerdogs/hydra-mcp:latest -l root -P /passwords.txt ssh://192.168.1.1
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint hydra hackerdogs/hydra-mcp:latest --help
+```

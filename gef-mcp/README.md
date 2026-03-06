@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8238/mcp \
 ```bash
 docker stop gef-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run gdb with GEF in the same container by overriding the entrypoint for exploit development without starting the MCP server.
+
+**Debug a binary (mount it):**
+
+```bash
+docker run -i --rm --entrypoint gdb hackerdogs/gef-mcp:latest /path/to/binary
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint gdb hackerdogs/gef-mcp:latest --help
+```

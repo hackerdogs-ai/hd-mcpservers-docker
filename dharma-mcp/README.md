@@ -197,3 +197,14 @@ curl -s -X POST http://localhost:8334/mcp \
 ```bash
 docker stop dharma-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the dharma CLI in the same container by overriding the entrypoint to generate fuzzing grammars without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint dharma hackerdogs/dharma-mcp:latest -h
+```

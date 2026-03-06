@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8332/mcp \
 ```bash
 docker stop gitleaks-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the gitleaks CLI in the same container by overriding the entrypoint to detect secrets in Git repos without starting the MCP server.
+
+**Scan repo (mount it):**
+
+```bash
+docker run -i --rm --entrypoint gitleaks hackerdogs/gitleaks-mcp:latest detect -s /path/to/repo
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint gitleaks hackerdogs/gitleaks-mcp:latest --help
+```

@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8343/mcp \
 ```bash
 docker stop aibom-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the aibom CLI in the same container by overriding the entrypoint to generate AI/ML bill-of-materials without starting the MCP server.
+
+**Generate AI BOM for a path (mount repo):**
+
+```bash
+docker run -i --rm --entrypoint aibom hackerdogs/aibom-mcp:latest -h
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint aibom hackerdogs/aibom-mcp:latest --help
+```

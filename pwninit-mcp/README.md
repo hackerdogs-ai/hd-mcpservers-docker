@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8278/mcp \
 ```bash
 docker stop pwninit-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the pwninit CLI in the same container by overriding the entrypoint to set up pwn challenges without starting the MCP server.
+
+**Process binary (mount it):**
+
+```bash
+docker run -i --rm --entrypoint pwninit hackerdogs/pwninit-mcp:latest /path/to/binary
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint pwninit hackerdogs/pwninit-mcp:latest --help
+```

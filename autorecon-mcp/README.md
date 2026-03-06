@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8201/mcp \
 ```bash
 docker stop autorecon-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the autorecon CLI in the same container by overriding the entrypoint to perform automated recon without starting the MCP server.
+
+**Scan a target:**
+
+```bash
+docker run -i --rm --entrypoint autorecon hackerdogs/autorecon-mcp:latest example.com
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint autorecon hackerdogs/autorecon-mcp:latest --help
+```

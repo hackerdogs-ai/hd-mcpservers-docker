@@ -197,3 +197,14 @@ curl -s -X POST http://localhost:8275/mcp \
 ```bash
 docker stop x8-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the x8 CLI in the same container by overriding the entrypoint to find hidden parameters without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint x8 hackerdogs/x8-mcp:latest -h
+```

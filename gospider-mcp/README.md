@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8350/mcp \
 ```bash
 docker stop gospider-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the gospider CLI in the same container by overriding the entrypoint to crawl and discover URLs without starting the MCP server.
+
+**Crawl a domain:**
+
+```bash
+docker run -i --rm --entrypoint gospider hackerdogs/gospider-mcp:latest -s https://example.com
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint gospider hackerdogs/gospider-mcp:latest -h
+```

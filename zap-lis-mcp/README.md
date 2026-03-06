@@ -197,3 +197,14 @@ curl -s -X POST http://localhost:8355/mcp \
 ```bash
 docker stop zap-lis-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the zap-mcp CLI in the same container by overriding the entrypoint to run ZAP or MCP-related scans without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint zap-mcp hackerdogs/zap-lis-mcp:latest --help
+```

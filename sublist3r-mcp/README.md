@@ -197,3 +197,20 @@ curl -s -X POST http://localhost:8301/mcp \
 ```bash
 docker stop sublist3r-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the sublist3r CLI in the same container by overriding the entrypoint to enumerate subdomains without starting the MCP server.
+
+**Enumerate domain:**
+
+```bash
+docker run -i --rm --entrypoint sublist3r hackerdogs/sublist3r-mcp:latest -d example.com
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint sublist3r hackerdogs/sublist3r-mcp:latest -h
+```

@@ -227,3 +227,20 @@ curl -s -X POST http://localhost:8273/mcp \
 ```bash
 docker stop terrascan-mcp-test
 ```
+
+
+## Running the tool directly (bypassing MCP)
+
+You can run the terrascan CLI in the same container by overriding the entrypoint to scan IaC for misconfigurations without starting the MCP server.
+
+**Scan path (mount it):**
+
+```bash
+docker run -i --rm --entrypoint terrascan hackerdogs/terrascan-mcp:latest scan -d /path/to/iac
+```
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint terrascan hackerdogs/terrascan-mcp:latest --help
+```
