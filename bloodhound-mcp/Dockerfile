@@ -16,18 +16,21 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-RUN pip install --no-cache-dir bloodhound
-
+# Install system dependencies
+# krb5-user is critical for Kerberos authentication (-k flag)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     ca-certificates \
+    krb5-user \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
 # Copy requirements and install Python dependencies
+# Grouping the pip installs prevents layer bloat
 COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir bloodhound
 
 # Copy application code
 COPY mcp_server.py ./
@@ -42,6 +45,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8286
+# The pip package installs the binary as 'bloodhound-python'
+ENV BLOODHOUND_BIN=/usr/local/bin/bloodhound-python
 
 EXPOSE 8286
 

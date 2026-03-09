@@ -11,6 +11,7 @@ import logging
 import os
 import shutil
 import sys
+import shlex
 
 from fastmcp import FastMCP
 
@@ -27,42 +28,58 @@ MCP_PORT = int(os.environ.get("MCP_PORT", "8287"))
 mcp = FastMCP(
     "Psudohash MCP Server",
     instructions=(
-        "Password list generator for targeted attacks based on known information."
+        "Password list generator for targeted attacks based on known information. "
+        "Generated wordlists will be saved to the output directory."
     ),
 )
 
-BIN_NAME = os.environ.get("PSUDOHASH_BIN", "psudohash")
+# Point directly to the script instead of relying on symlinks or PATH
+PSUDOHASH_SCRIPT = os.environ.get("PSUDOHASH_SCRIPT", "/opt/psudohash/psudohash.py")
+OUTPUT_DIR = "/app/output"
 
 
-def _find_binary() -> str:
-    """Locate the psudohash binary, raising a clear error if missing."""
-    path = shutil.which(BIN_NAME)
-    if path is None:
-        logger.error("psudohash binary not found on PATH")
+def _find_script() -> str:
+    """Locate the psudohash script directly."""
+    if not os.path.exists(PSUDOHASH_SCRIPT):
+        logger.error(f"psudohash script not found at {PSUDOHASH_SCRIPT}")
         raise FileNotFoundError(
-            f"psudohash binary not found. Ensure it is installed and available "
-            f"on PATH, or set PSUDOHASH_BIN to the full path."
+            f"psudohash script not found at {PSUDOHASH_SCRIPT}. "
+            "Ensure the Dockerfile cloned the repository correctly."
         )
-    return path
+    return PSUDOHASH_SCRIPT
 
 
 async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
-    """Execute a psudohash command and return structured output.
+    """Execute a psudohash command and return structured output."""
+    script_path = _find_script()
+    
+    # Explicitly invoke with sys.executable (Python 3) to bypass shebang/PATH errors
+    cmd = [sys.executable, script_path] + args
 
-    Returns a dict with keys: stdout, stderr, return_code.
-    """
-    binary_path = _find_binary()
-    cmd = [binary_path] + args
+    # Ensure the output directory exists
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+    # FIX 1: Copy the required padding file into the CWD so psudohash can find it
+    padding_src = "/opt/psudohash/common_padding_values.txt"
+    padding_dst = os.path.join(OUTPUT_DIR, "common_padding_values.txt")
+    if os.path.exists(padding_src) and not os.path.exists(padding_dst):
+        try:
+            shutil.copy2(padding_src, padding_dst)
+        except Exception as e:
+            logger.warning("Failed to copy common_padding_values.txt: %s", e)
 
     try:
         proc = await asyncio.create_subprocess_exec(
             *cmd,
-            stdin=asyncio.subprocess.DEVNULL,
+            stdin=asyncio.subprocess.PIPE,  # FIX 2: Open stdin for interactive prompts
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
+            cwd=OUTPUT_DIR  # Force all generated wordlists to drop in /app/output!
         )
+        
+        # FIX 2: Send "y\n" to automatically bypass the interactive combination warning
         stdout_bytes, stderr_bytes = await asyncio.wait_for(
-            proc.communicate(), timeout=timeout_seconds
+            proc.communicate(input=b"y\n"), timeout=timeout_seconds
         )
     except asyncio.TimeoutError:
         proc.kill()
@@ -92,7 +109,7 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
 
 @mcp.tool()
 async def run_psudohash(
-    arguments: str,
+    arguments: str = "",
     timeout_seconds: int = 600,
 ) -> str:
     """Run psudohash with the given arguments.
@@ -100,46 +117,55 @@ async def run_psudohash(
     Pass arguments as you would on the command line.
 
     Args:
-        arguments: Command-line arguments string.
+        arguments: Command-line arguments string (e.g., "-w admin,1990 -o custom_wordlist.txt").
         timeout_seconds: Maximum execution time in seconds (default 600).
     """
-    import shlex
+    try:
+        if arguments is None:
+            arguments = ""
+            
+        logger.info("run_psudohash called with arguments=%s", arguments)
+        args = shlex.split(arguments) if arguments.strip() else []
+        
+        result = await _run_command(args, timeout_seconds=timeout_seconds)
 
-    logger.info("run_psudohash called with arguments=%s", arguments)
-    args = shlex.split(arguments) if arguments.strip() else []
-    result = await _run_command(args, timeout_seconds=timeout_seconds)
+        if result["return_code"] != 0:
+            logger.warning("psudohash command failed with exit code %d", result["return_code"])
+            error_detail = result["stderr"] or result["stdout"] or "Unknown error"
+            return json.dumps(
+                {
+                    "error": True,
+                    "message": f"psudohash failed (exit code {result['return_code']})",
+                    "detail": error_detail.strip(),
+                    "command": f"python3 psudohash.py {' '.join(args)}",
+                },
+                indent=2,
+            )
 
-    if result["return_code"] != 0:
-        logger.warning("psudohash command failed with exit code %d", result["return_code"])
-        error_detail = result["stderr"] or result["stdout"] or "Unknown error"
-        return json.dumps(
-            {
-                "error": True,
-                "message": f"psudohash failed (exit code {result['return_code']})",
-                "detail": error_detail.strip(),
-                "command": f"psudohash {' '.join(args)}",
-            },
-            indent=2,
-        )
+        stdout = result["stdout"].strip()
+        stderr = result["stderr"].strip()
 
-    stdout = result["stdout"].strip()
+        # Fallback to STDERR if STDOUT is empty
+        if not stdout and stderr:
+            stdout = stderr
 
-    if not stdout:
-        return json.dumps({"message": "Command completed with no output", "arguments": arguments})
+        if not stdout:
+            return json.dumps({"message": "Command completed with no output. Check the output directory.", "arguments": arguments})
 
-    results = []
-    for line in stdout.splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            results.append(json.loads(line))
-        except json.JSONDecodeError:
-            results.append({"raw": line})
+        return json.dumps({
+            "success": True,
+            "message": "Psudohash executed successfully.",
+            "stdout": stdout,
+            "instructions": "If a wordlist was generated, it is located in the mounted /app/output directory on the host."
+        }, indent=2)
 
-    if len(results) == 1:
-        return json.dumps(results[0], indent=2)
-    return json.dumps(results, indent=2)
+    except Exception as e:
+        logger.error("Unhandled exception in run_psudohash: %s", e)
+        return json.dumps({
+            "error": True,
+            "message": "Internal MCP wrapper error.",
+            "detail": str(e)
+        }, indent=2)
 
 
 def main():

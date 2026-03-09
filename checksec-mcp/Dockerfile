@@ -16,17 +16,10 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install checksec — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends checksec && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir checksec
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install checksec; then COPY --from=builder
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    tini \
-    ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
+# Install checksec, tini, and underlying binary analysis tools
+RUN apt-get update && \
+    apt-get install -y checksec tini binutils file && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -47,6 +40,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8244
+# Explicitly tell the MCP server where to find the checksec binary
+ENV CHECKSEC_BIN=/usr/bin/checksec
 
 EXPOSE 8244
 

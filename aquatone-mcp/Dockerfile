@@ -16,21 +16,29 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install aquatone — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends aquatone && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir aquatone
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install aquatone; then COPY --from=builder
+# Expose Docker's target architecture argument (amd64 or arm64)
+ARG TARGETARCH
 
+# Install system dependencies, including Chromium for headless browser screenshotting
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     ca-certificates \
+    wget \
+    unzip \
+    chromium \
     && rm -rf /var/lib/apt/lists/*
+
+# Download and extract the correct Aquatone release based on architecture
+ENV AQUATONE_VERSION=1.7.0
+RUN wget -q https://github.com/michenriksen/aquatone/releases/download/v${AQUATONE_VERSION}/aquatone_linux_${TARGETARCH}_${AQUATONE_VERSION}.zip -O /tmp/aquatone.zip && \
+    unzip -q /tmp/aquatone.zip aquatone -d /usr/local/bin/ && \
+    chmod +x /usr/local/bin/aquatone && \
+    rm /tmp/aquatone.zip
 
 WORKDIR /app
 
 # Copy requirements and install Python dependencies
+# Note: Ensure fastmcp==2.14.5 is pinned in your requirements.txt!
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -47,6 +55,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8259
+# Explicitly tell the server where to find the aquatone binary
+ENV AQUATONE_BIN=/usr/local/bin/aquatone
 
 EXPOSE 8259
 

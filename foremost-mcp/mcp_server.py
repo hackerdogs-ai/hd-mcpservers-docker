@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Foremost MCP Server — File carving and data recovery.
 
-Wraps the foremost CLI (kdz/foremost) to expose
-capabilities through the Model Context Protocol (MCP).
+Wraps the foremost CLI to expose capabilities through the Model Context Protocol (MCP).
 """
 
 import asyncio
@@ -11,6 +10,7 @@ import logging
 import os
 import shutil
 import sys
+import shlex
 
 from fastmcp import FastMCP
 
@@ -27,32 +27,36 @@ MCP_PORT = int(os.environ.get("MCP_PORT", "8249"))
 mcp = FastMCP(
     "Foremost MCP Server",
     instructions=(
-        "File carving and data recovery."
+        "File carving and data recovery tool. "
+        "IMPORTANT: Foremost will crash if its target output directory already exists. "
+        "Always use the '-T' flag to timestamp the output directory, or specify a unique "
+        "directory using '-o <name>'. Carved files and the audit.txt log will be saved "
+        "to the configured output volume."
     ),
 )
 
-FOREMOST_BIN = os.environ.get("FOREMOST_BIN", "foremost")
+BIN_NAME = os.environ.get("FOREMOST_BIN", "/usr/bin/foremost")
+OUTPUT_DIR = "/app/output"
 
 
 def _find_binary() -> str:
-    """Locate the foremost binary, raising a clear error if missing."""
-    path = shutil.which(FOREMOST_BIN)
+    """Locate the foremost binary directly."""
+    path = shutil.which(BIN_NAME)
     if path is None:
-        logger.error("foremost binary not found on PATH")
+        logger.error(f"{BIN_NAME} binary not found on PATH")
         raise FileNotFoundError(
-            f"foremost binary not found. Ensure it is installed and available "
-            f"on PATH, or set FOREMOST_BIN to the full path."
+            f"{BIN_NAME} binary not found. Ensure the Dockerfile installed the foremost package."
         )
-    return path
+    return BIN_NAME
 
 
 async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
-    """Execute a foremost command and return structured output.
+    """Execute a foremost command and return structured output."""
+    binary_path = _find_binary()
+    cmd = [binary_path] + args
 
-    Returns a dict with keys: stdout, stderr, return_code.
-    """
-    binary = _find_binary()
-    cmd = [binary] + args
+    # Ensure the output directory exists
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     try:
         proc = await asyncio.create_subprocess_exec(
@@ -60,6 +64,7 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
             stdin=asyncio.subprocess.DEVNULL,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
+            cwd=OUTPUT_DIR  # Route all carved files and audit.txt to the mounted volume
         )
         stdout_bytes, stderr_bytes = await asyncio.wait_for(
             proc.communicate(), timeout=timeout_seconds
@@ -92,55 +97,64 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
 
 @mcp.tool()
 async def run_foremost(
-    arguments: str,
+    arguments: str = "",
     timeout_seconds: int = 600,
 ) -> str:
     """Run foremost with the given arguments.
 
     Pass arguments as you would on the command line.
+    Example: "-t all -i /path/to/image.dd -T"
 
     Args:
         arguments: Command-line arguments string.
         timeout_seconds: Maximum execution time in seconds (default 600).
     """
-    import shlex
+    try:
+        if arguments is None:
+            arguments = ""
+            
+        logger.info("run_foremost called with arguments=%s", arguments)
+        args = shlex.split(arguments) if arguments.strip() else []
+        
+        result = await _run_command(args, timeout_seconds=timeout_seconds)
 
-    logger.info("run_foremost called with arguments=%s", arguments)
-    args = shlex.split(arguments) if arguments.strip() else []
-    result = await _run_command(args, timeout_seconds=timeout_seconds)
+        if result["return_code"] != 0:
+            logger.warning("foremost command failed with exit code %d", result["return_code"])
+            error_detail = result["stderr"] or result["stdout"] or "Unknown error"
+            return json.dumps(
+                {
+                    "error": True,
+                    "message": f"foremost failed (exit code {result['return_code']})",
+                    "detail": error_detail.strip(),
+                    "command": f"foremost {' '.join(args)}",
+                },
+                indent=2,
+            )
 
-    if result["return_code"] != 0:
-        logger.warning("foremost command failed with exit code %d", result["return_code"])
-        error_detail = result["stderr"] or result["stdout"] or "Unknown error"
-        return json.dumps(
-            {
-                "error": True,
-                "message": f"foremost failed (exit code {result['return_code']})",
-                "detail": error_detail.strip(),
-                "command": f"foremost {' '.join(args)}",
-            },
-            indent=2,
-        )
+        stdout = result["stdout"].strip()
+        stderr = result["stderr"].strip()
 
-    stdout = result["stdout"].strip()
+        # Fallback to STDERR if STDOUT is empty (common for help menus)
+        if not stdout and stderr:
+            stdout = stderr
 
-    if not stdout:
-        return json.dumps({"message": "Command completed with no output", "arguments": arguments})
+        if not stdout:
+            return json.dumps({"message": "Command completed with no output. Check the output directory for carved files.", "arguments": arguments})
 
-    # Try to parse as JSON/JSONL
-    results = []
-    for line in stdout.splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            results.append(json.loads(line))
-        except json.JSONDecodeError:
-            results.append({"raw": line})
+        return json.dumps({
+            "success": True,
+            "message": "Foremost executed successfully.",
+            "stdout": stdout,
+            "instructions": "Carved files and the audit.txt log are located in the mounted /app/output directory on the host."
+        }, indent=2)
 
-    if len(results) == 1:
-        return json.dumps(results[0], indent=2)
-    return json.dumps(results, indent=2)
+    except Exception as e:
+        logger.error("Unhandled exception in run_foremost: %s", e)
+        return json.dumps({
+            "error": True,
+            "message": "Internal MCP wrapper error.",
+            "detail": str(e)
+        }, indent=2)
 
 
 def main():

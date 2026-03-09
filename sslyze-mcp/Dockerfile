@@ -16,13 +16,7 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install sslyze — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends sslyze && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir sslyze
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install sslyze; then COPY --from=builder
-
+# Install basic system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     ca-certificates \
@@ -30,14 +24,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
-# Copy requirements and install Python dependencies
+# Copy requirements and install the base Python dependencies
+# Note: Ensure fastmcp==2.14.5 is pinned in your requirements.txt!
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Install SSLyze directly via pip (it will pull the correct 'nassl' binary wheel for the architecture)
+RUN pip install --no-cache-dir sslyze
 
 # Copy application code
 COPY mcp_server.py ./
 
-# Create output directory
+# Create output directory and grant permissions
 RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
 
 # Switch to non-root user
@@ -47,6 +45,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8280
+# Explicitly tell the server where to find the sslyze binary
+ENV SSLYZE_BIN=/usr/local/bin/sslyze
 
 EXPOSE 8280
 

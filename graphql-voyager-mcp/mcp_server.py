@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
-"""GraphQL-Voyager MCP Server — GraphQL schema exploration (use voyager CLI if available).
+"""GraphQL-Voyager MCP Server — GraphQL schema exploration.
 
-Wraps the graphql-voyager CLI (APIs-guru/graphql-voyager) to expose
-capabilities through the Model Context Protocol (MCP).
+Generates a standalone HTML file embedding GraphQL Voyager
+to visualize the target GraphQL schema.
 """
 
-import asyncio
 import json
 import logging
 import os
-import shutil
 import sys
 
 from fastmcp import FastMCP
@@ -27,121 +25,91 @@ MCP_PORT = int(os.environ.get("MCP_PORT", "8282"))
 mcp = FastMCP(
     "GraphQL-Voyager MCP Server",
     instructions=(
-        "GraphQL schema exploration (use voyager CLI if available)."
+        "GraphQL schema exploration. Generates interactive Voyager HTML reports."
     ),
 )
 
-GRAPHQL_VOYAGER_BIN = os.environ.get("GRAPHQL_VOYAGER_BIN", "graphql-voyager")
-
-
-def _find_binary() -> str:
-    """Locate the graphql-voyager binary, raising a clear error if missing."""
-    path = shutil.which(GRAPHQL_VOYAGER_BIN)
-    if path is None:
-        logger.error("graphql-voyager binary not found on PATH")
-        raise FileNotFoundError(
-            f"graphql-voyager binary not found. Ensure it is installed and available "
-            f"on PATH, or set GRAPHQL_VOYAGER_BIN to the full path."
-        )
-    return path
-
-
-async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
-    """Execute a graphql-voyager command and return structured output.
-
-    Returns a dict with keys: stdout, stderr, return_code.
-    """
-    binary = _find_binary()
-    cmd = [binary] + args
-
-    try:
-        proc = await asyncio.create_subprocess_exec(
-            *cmd,
-            stdin=asyncio.subprocess.DEVNULL,
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE,
-        )
-        stdout_bytes, stderr_bytes = await asyncio.wait_for(
-            proc.communicate(), timeout=timeout_seconds
-        )
-    except asyncio.TimeoutError:
-        proc.kill()
-        await proc.communicate()
-        logger.error("Command timed out after %ds: %s", timeout_seconds, " ".join(cmd))
-        return {
-            "stdout": "",
-            "stderr": f"Command timed out after {timeout_seconds}s: {' '.join(cmd)}",
-            "return_code": -1,
-        }
-    except Exception as exc:
-        logger.error("Command execution failed: %s", exc)
-        return {
-            "stdout": "",
-            "stderr": f"Failed to execute command: {exc}",
-            "return_code": -1,
-        }
-
-    stdout = stdout_bytes.decode("utf-8", errors="replace")
-    stderr = stderr_bytes.decode("utf-8", errors="replace")
-    return {
-        "stdout": stdout,
-        "stderr": stderr,
-        "return_code": proc.returncode,
-    }
-
+OUTPUT_DIR = "/app/output"
 
 @mcp.tool()
-async def run_graphql_voyager(
-    arguments: str,
-    timeout_seconds: int = 600,
+async def generate_voyager_report(
+    graphql_url: str,
+    output_filename: str = "voyager.html",
+    auth_header: str = ""
 ) -> str:
-    """Run graphql-voyager with the given arguments.
-
-    Pass arguments as you would on the command line.
+    """Generate an interactive GraphQL Voyager HTML report for a target API.
 
     Args:
-        arguments: Command-line arguments string.
-        timeout_seconds: Maximum execution time in seconds (default 600).
+        graphql_url: The full HTTP/HTTPS endpoint of the target GraphQL API.
+        output_filename: Name of the generated HTML file (default: voyager.html).
+        auth_header: Optional Authorization header value (e.g., 'Bearer <token>') if required.
     """
-    import shlex
+    logger.info(f"Generating Voyager report for {graphql_url}")
+    
+    # Ensure output directory exists
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+    file_path = os.path.join(OUTPUT_DIR, output_filename)
 
-    logger.info("run_graphql_voyager called with arguments=%s", arguments)
-    args = shlex.split(arguments) if arguments.strip() else []
-    result = await _run_command(args, timeout_seconds=timeout_seconds)
+    # Inject authentication into the JavaScript fetch request if provided
+    auth_script = f"headers['Authorization'] = '{auth_header}';" if auth_header else ""
 
-    if result["return_code"] != 0:
-        logger.warning("graphql-voyager command failed with exit code %d", result["return_code"])
-        error_detail = result["stderr"] or result["stdout"] or "Unknown error"
-        return json.dumps(
-            {
-                "error": True,
-                "message": f"graphql-voyager failed (exit code {result['return_code']})",
-                "detail": error_detail.strip(),
-                "command": f"graphql-voyager {' '.join(args)}",
-            },
-            indent=2,
-        )
+    # Generate the standalone HTML payload using CDNs to ensure it works beautifully on the host machine
+    html_content = f"""<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GraphQL Voyager - {graphql_url}</title>
+    <style>
+      body {{ padding: 0; margin: 0; width: 100%; height: 100vh; overflow: hidden; }}
+      #voyager {{ height: 100vh; width: 100vw; }}
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/graphql-voyager/dist/voyager.css" />
+    <script src="https://cdn.jsdelivr.net/npm/react@16/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/graphql-voyager/dist/voyager.min.js"></script>
+  </head>
+  <body>
+    <div id="voyager">Loading...</div>
+    <script>
+      function introspectionProvider(introspectionQuery) {{
+        const headers = {{
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }};
+        {auth_script}
 
-    stdout = result["stdout"].strip()
+        return fetch('{graphql_url}', {{
+          method: 'post',
+          headers: headers,
+          body: JSON.stringify({{query: introspectionQuery}}),
+        }}).then(response => response.json());
+      }}
 
-    if not stdout:
-        return json.dumps({"message": "Command completed with no output", "arguments": arguments})
-
-    # Try to parse as JSON/JSONL
-    results = []
-    for line in stdout.splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            results.append(json.loads(line))
-        except json.JSONDecodeError:
-            results.append({"raw": line})
-
-    if len(results) == 1:
-        return json.dumps(results[0], indent=2)
-    return json.dumps(results, indent=2)
-
+      GraphQLVoyager.init(document.getElementById('voyager'), {{
+        introspection: introspectionProvider
+      }});
+    </script>
+  </body>
+</html>
+"""
+    try:
+        with open(file_path, "w", encoding="utf-8") as f:
+            f.write(html_content)
+        
+        return json.dumps({
+            "success": True,
+            "message": f"Successfully generated Voyager report.",
+            "file_path": file_path,
+            "instructions": f"Open {file_path} in your host machine's browser to view the interactive schema."
+        }, indent=2)
+        
+    except Exception as e:
+        logger.error(f"Failed to write HTML file: {e}")
+        return json.dumps({
+            "error": True,
+            "message": f"Failed to write file: {str(e)}"
+        })
 
 def main():
     logger.info("Starting graphql-voyager-mcp server (transport=%s, port=%s)", MCP_TRANSPORT, MCP_PORT)
@@ -149,7 +117,6 @@ def main():
         mcp.run(transport="stdio", show_banner=False)
     else:
         mcp.run(transport="streamable-http", host="0.0.0.0", port=MCP_PORT)
-
 
 if __name__ == "__main__":
     main()

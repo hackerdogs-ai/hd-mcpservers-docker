@@ -16,25 +16,31 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
+# Install system dependencies, clone the repo, and set up the script
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git tini ca-certificates \
+    tini \
+    ca-certificates \
+    git \
     && rm -rf /var/lib/apt/lists/* \
     && git clone --depth 1 https://github.com/t3l3machus/psudohash.git /opt/psudohash \
-    && cd /opt/psudohash && (pip install --no-cache-dir -r requirements.txt 2>/dev/null || true) \
-    && (pip install --no-cache-dir . 2>/dev/null || true) \
-    && ln -sf /opt/psudohash/psudohash.py /usr/local/bin/psudohash 2>/dev/null || true
+    && chmod +x /opt/psudohash/psudohash.py \
+    && ln -s /opt/psudohash/psudohash.py /usr/local/bin/psudohash
 
 WORKDIR /app
 
-# Copy requirements and install Python dependencies
+# Copy requirements and install Python dependencies for the MCP server
+# Note: Ensure fastmcp==2.14.5 is pinned in your requirements.txt!
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Explicitly install the dependencies Psudohash needs to run
+RUN pip install --no-cache-dir tqdm
 
 # Copy application code
 COPY mcp_server.py ./
 
-# Create output directory
-RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+# Create output directory and grant permissions to mcpuser
+RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app /opt/psudohash
 
 # Switch to non-root user
 USER mcpuser
@@ -43,6 +49,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8287
+# Explicitly tell the server where to find the symlinked script
+ENV PSUDOHASH_BIN=/usr/local/bin/psudohash
 
 EXPOSE 8287
 

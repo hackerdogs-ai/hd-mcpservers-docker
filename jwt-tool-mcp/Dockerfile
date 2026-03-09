@@ -16,29 +16,34 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install jwt_tool.py — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends jwt_tool.py && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir jwt_tool.py
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install jwt_tool.py; then COPY --from=builder
-
+# Install system dependencies, including git to clone the repository
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     ca-certificates \
+    git \
     && rm -rf /var/lib/apt/lists/*
+
+# Clone the JWT-Tool repository directly from GitHub
+RUN git clone --depth 1 https://github.com/ticarpi/jwt_tool.git /opt/jwt_tool && \
+    chmod +x /opt/jwt_tool/jwt_tool.py && \
+    ln -s /opt/jwt_tool/jwt_tool.py /usr/local/bin/jwt_tool.py
 
 WORKDIR /app
 
 # Copy requirements and install Python dependencies
+# Note: Ensure fastmcp==2.14.5 is pinned in your requirements.txt!
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Install JWT-Tool's specific Python dependencies
+RUN pip install --no-cache-dir -r /opt/jwt_tool/requirements.txt
 
 # Copy application code
 COPY mcp_server.py ./
 
-# Create output directory
-RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+# Create output directory and grant permissions to the jwt_tool folder
+RUN mkdir -p /app/output && \
+    chown -R mcpuser:mcpuser /app /opt/jwt_tool
 
 # Switch to non-root user
 USER mcpuser
@@ -47,6 +52,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8265
+# Explicitly tell the server where to find the jwt_tool.py script
+ENV JWT_TOOL_BIN=/usr/local/bin/jwt_tool.py
 
 EXPOSE 8265
 

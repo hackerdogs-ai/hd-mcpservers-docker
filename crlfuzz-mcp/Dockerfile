@@ -1,6 +1,7 @@
 # ---- Stage 1: Build crlfuzz from source ----
 FROM golang:1.24-bookworm AS builder
 
+# Install the latest version of crlfuzz
 RUN go install -v github.com/dwisiswant0/crlfuzz/cmd/crlfuzz@latest
 
 # ---- Stage 2: Runtime ----
@@ -22,23 +23,26 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-COPY --from=builder /go/bin/crlfuzz /usr/local/bin/crlfuzz
-
+# Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
+# Copy the statically linked binary from the Go builder stage
+COPY --from=builder /go/bin/crlfuzz /usr/local/bin/crlfuzz
+
 WORKDIR /app
 
 # Copy requirements and install Python dependencies
+# Note: Ensure fastmcp==2.14.5 is pinned in your requirements.txt!
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY mcp_server.py ./
 
-# Create output directory
+# Create output directory and set ownership
 RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
 
 # Switch to non-root user
@@ -48,6 +52,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8290
+# Explicitly tell the server where to find the binary
+ENV CRLFUZZ_BIN=/usr/local/bin/crlfuzz
 
 EXPOSE 8290
 

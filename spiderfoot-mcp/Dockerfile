@@ -16,29 +16,35 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install sf.py — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends sf.py && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir sf.py
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install sf.py; then COPY --from=builder
-
+# Install system dependencies, git, and build tools for SpiderFoot's Python requirements
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     ca-certificates \
+    git \
+    build-essential \
+    python3-dev \
     && rm -rf /var/lib/apt/lists/*
+
+# Clone the SpiderFoot repository
+RUN git clone --depth 1 https://github.com/smicallef/spiderfoot.git /opt/spiderfoot && \
+    chmod +x /opt/spiderfoot/sf.py
 
 WORKDIR /app
 
 # Copy requirements and install Python dependencies
+# Note: Ensure fastmcp==2.14.5 is pinned in your requirements.txt!
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Install SpiderFoot's specific Python dependencies
+RUN pip install --no-cache-dir -r /opt/spiderfoot/requirements.txt
 
 # Copy application code
 COPY mcp_server.py ./
 
-# Create output directory
-RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+# Create output directory and ensure mcpuser owns the spiderfoot directory (for local DB/logs)
+RUN mkdir -p /app/output && \
+    chown -R mcpuser:mcpuser /app /opt/spiderfoot
 
 # Switch to non-root user
 USER mcpuser
@@ -47,6 +53,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8257
+# Explicitly tell the server where to find the sf.py script
+ENV SPIDERFOOT_BIN=/opt/spiderfoot/sf.py
 
 EXPOSE 8257
 

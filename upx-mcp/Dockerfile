@@ -16,29 +16,36 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install upx — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends upx && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir upx
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install upx; then COPY --from=builder
-
+# Install system dependencies (wget and xz-utils are needed for the download/extraction)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     ca-certificates \
+    wget \
+    xz-utils \
     && rm -rf /var/lib/apt/lists/*
+
+# Download and install the latest UPX directly from GitHub releases
+RUN ARCH=$(uname -m) && \
+    if [ "$ARCH" = "x86_64" ]; then UPX_ARCH="amd64"; elif [ "$ARCH" = "aarch64" ]; then UPX_ARCH="arm64"; else UPX_ARCH="amd64"; fi && \
+    UPX_VERSION="4.2.4" && \
+    wget -q "https://github.com/upx/upx/releases/download/v${UPX_VERSION}/upx-${UPX_VERSION}-${UPX_ARCH}_linux.tar.xz" && \
+    tar -xJf "upx-${UPX_VERSION}-${UPX_ARCH}_linux.tar.xz" && \
+    cp "upx-${UPX_VERSION}-${UPX_ARCH}_linux/upx" /usr/local/bin/upx && \
+    chmod +x /usr/local/bin/upx && \
+    rm -rf "upx-${UPX_VERSION}-${UPX_ARCH}_linux"* "upx-${UPX_VERSION}-${UPX_ARCH}_linux.tar.xz"
 
 WORKDIR /app
 
 # Copy requirements and install Python dependencies
+# Note: Ensure fastmcp==2.14.5 is pinned in your requirements.txt!
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY mcp_server.py ./
 
-# Create output directory
-RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+# Create output and temp directories
+RUN mkdir -p /app/output /app/temp_workspace && chown -R mcpuser:mcpuser /app
 
 # Switch to non-root user
 USER mcpuser
@@ -47,6 +54,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8284
+# Explicitly tell the server where to find the manually installed binary
+ENV UPX_BIN=/usr/local/bin/upx
 
 EXPOSE 8284
 

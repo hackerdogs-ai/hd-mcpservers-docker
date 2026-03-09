@@ -16,8 +16,7 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-RUN pip install --no-cache-dir sublist3r
-
+# Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     ca-certificates \
@@ -26,13 +25,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /app
 
 # Copy requirements and install Python dependencies
+# We group the fastmcp requirements and the sublist3r tool installation together
 COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir sublist3r
 
 # Copy application code
 COPY mcp_server.py ./
 
-# Create output directory
+# Create output directory and grant permissions
 RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
 
 # Switch to non-root user
@@ -42,6 +43,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8301
+# pip automatically drops the executable here
+ENV SUBLIST3R_BIN=/usr/local/bin/sublist3r
 
 EXPOSE 8301
 

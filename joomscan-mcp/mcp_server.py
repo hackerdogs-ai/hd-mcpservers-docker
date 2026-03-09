@@ -11,6 +11,7 @@ import logging
 import os
 import shutil
 import sys
+import shlex
 
 from fastmcp import FastMCP
 
@@ -27,32 +28,34 @@ MCP_PORT = int(os.environ.get("MCP_PORT", "8305"))
 mcp = FastMCP(
     "JoomScan MCP Server",
     instructions=(
-        "OWASP Joomla vulnerability scanner."
+        "OWASP Joomla vulnerability scanner. "
+        "Use this to enumerate Joomla versions, components, and misconfigurations. "
+        "IMPORTANT: Generated HTML and text reports are automatically saved to "
+        "the configured output directory on the host."
     ),
 )
 
-BIN_NAME = os.environ.get("JOOMSCAN_BIN", "joomscan")
+BIN_NAME = os.environ.get("JOOMSCAN_BIN", "/opt/joomscan/joomscan.pl")
+EXEC_DIR = "/opt/joomscan"
 
 
 def _find_binary() -> str:
-    """Locate the joomscan binary, raising a clear error if missing."""
-    path = shutil.which(BIN_NAME)
-    if path is None:
-        logger.error("joomscan binary not found on PATH")
+    """Locate the joomscan script directly."""
+    if not os.path.exists(BIN_NAME):
+        logger.error(f"joomscan script not found at {BIN_NAME}")
         raise FileNotFoundError(
-            f"joomscan binary not found. Ensure it is installed and available "
-            f"on PATH, or set JOOMSCAN_BIN to the full path."
+            f"joomscan script not found at {BIN_NAME}. "
+            "Ensure the Dockerfile cloned the repository correctly."
         )
-    return path
+    return BIN_NAME
 
 
 async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
-    """Execute a joomscan command and return structured output.
-
-    Returns a dict with keys: stdout, stderr, return_code.
-    """
+    """Execute a joomscan command and return structured output."""
     binary_path = _find_binary()
-    cmd = [binary_path] + args
+    
+    # We explicitly invoke via the Perl interpreter to bypass CRLF shebang issues!
+    cmd = ["perl", binary_path] + args
 
     try:
         proc = await asyncio.create_subprocess_exec(
@@ -60,6 +63,7 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
             stdin=asyncio.subprocess.DEVNULL,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
+            cwd=EXEC_DIR  # Must run from its own directory to find internal databases
         )
         stdout_bytes, stderr_bytes = await asyncio.wait_for(
             proc.communicate(), timeout=timeout_seconds
@@ -92,54 +96,64 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
 
 @mcp.tool()
 async def run_joomscan(
-    arguments: str,
+    arguments: str = "",
     timeout_seconds: int = 600,
 ) -> str:
     """Run joomscan with the given arguments.
 
     Pass arguments as you would on the command line.
+    Example: "--url http://example.com --enumerate-components"
 
     Args:
         arguments: Command-line arguments string.
         timeout_seconds: Maximum execution time in seconds (default 600).
     """
-    import shlex
+    try:
+        if arguments is None:
+            arguments = ""
+            
+        logger.info("run_joomscan called with arguments=%s", arguments)
+        args = shlex.split(arguments) if arguments.strip() else []
+        
+        result = await _run_command(args, timeout_seconds=timeout_seconds)
 
-    logger.info("run_joomscan called with arguments=%s", arguments)
-    args = shlex.split(arguments) if arguments.strip() else []
-    result = await _run_command(args, timeout_seconds=timeout_seconds)
+        if result["return_code"] != 0:
+            logger.warning("joomscan command failed with exit code %d", result["return_code"])
+            error_detail = result["stderr"] or result["stdout"] or "Unknown error"
+            return json.dumps(
+                {
+                    "error": True,
+                    "message": f"joomscan failed (exit code {result['return_code']})",
+                    "detail": error_detail.strip(),
+                    "command": f"perl joomscan.pl {' '.join(args)}",
+                },
+                indent=2,
+            )
 
-    if result["return_code"] != 0:
-        logger.warning("joomscan command failed with exit code %d", result["return_code"])
-        error_detail = result["stderr"] or result["stdout"] or "Unknown error"
-        return json.dumps(
-            {
-                "error": True,
-                "message": f"joomscan failed (exit code {result['return_code']})",
-                "detail": error_detail.strip(),
-                "command": f"joomscan {' '.join(args)}",
-            },
-            indent=2,
-        )
+        stdout = result["stdout"].strip()
+        stderr = result["stderr"].strip()
 
-    stdout = result["stdout"].strip()
+        # FIX: If the tool returns 0 but prints its help menu/output entirely to STDERR, fallback to it!
+        if not stdout and stderr:
+            stdout = stderr
 
-    if not stdout:
-        return json.dumps({"message": "Command completed with no output", "arguments": arguments})
+        if not stdout:
+            return json.dumps({"message": "Command completed with no output", "arguments": arguments})
 
-    results = []
-    for line in stdout.splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            results.append(json.loads(line))
-        except json.JSONDecodeError:
-            results.append({"raw": line})
+        return json.dumps({
+            "success": True,
+            "message": "JoomScan executed successfully.",
+            "stdout": stdout,
+            "instructions": "If a report was generated, it is located in the mounted /app/output directory on the host."
+        }, indent=2)
 
-    if len(results) == 1:
-        return json.dumps(results[0], indent=2)
-    return json.dumps(results, indent=2)
+    except Exception as e:
+        logger.error("Unhandled exception in run_joomscan: %s", e)
+        return json.dumps({
+            "error": True,
+            "message": "Internal MCP wrapper error.",
+            "detail": str(e)
+        }, indent=2)
 
 
 def main():

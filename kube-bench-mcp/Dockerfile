@@ -16,21 +16,30 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install kube-bench — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends kube-bench && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir kube-bench
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install kube-bench; then COPY --from=builder
+# Expose Docker's target architecture argument (amd64 or arm64)
+ARG TARGETARCH
 
+# Install system dependencies (added wget and tar for downloading the release)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     ca-certificates \
+    wget \
+    tar \
     && rm -rf /var/lib/apt/lists/*
+
+# Download and extract the correct Kube-Bench release based on architecture
+ENV KUBE_BENCH_VERSION=0.8.0
+RUN mkdir -p /opt/kube-bench && \
+    wget -q https://github.com/aquasecurity/kube-bench/releases/download/v${KUBE_BENCH_VERSION}/kube-bench_${KUBE_BENCH_VERSION}_linux_${TARGETARCH}.tar.gz -O /tmp/kube-bench.tar.gz && \
+    tar -xzf /tmp/kube-bench.tar.gz -C /opt/kube-bench && \
+    ln -s /opt/kube-bench/kube-bench /usr/local/bin/kube-bench && \
+    chmod -R 755 /opt/kube-bench && \
+    rm /tmp/kube-bench.tar.gz
 
 WORKDIR /app
 
 # Copy requirements and install Python dependencies
+# Note: Ensure fastmcp==2.14.5 is pinned in your requirements.txt!
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -47,6 +56,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8253
+# Explicitly tell the server where to find the kube-bench binary
+ENV KUBE_BENCH_BIN=/usr/local/bin/kube-bench
 
 EXPOSE 8253
 
