@@ -1,0 +1,9 @@
+# Tools Web Service - PRD compliance
+fastapi>=0.115.0,<1
+uvicorn[standard]>=0.32.0,<1
+boto3>=1.35.0,<2
+cachetools>=5.5.0,<6
+mcp>=1.0.0
+py-ocsf-models>=0.8.0
+pydantic>=2.0,<3
+pydantic-settings>=2.0,<3
