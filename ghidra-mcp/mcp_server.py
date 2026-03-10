@@ -11,6 +11,7 @@ import logging
 import os
 import shutil
 import sys
+import shlex
 
 from fastmcp import FastMCP
 
@@ -27,32 +28,35 @@ MCP_PORT = int(os.environ.get("MCP_PORT", "8240"))
 mcp = FastMCP(
     "Ghidra MCP Server",
     instructions=(
-        "NSA reverse engineering suite (headless)."
+        "NSA reverse engineering suite (headless). "
+        "IMPORTANT: analyzeHeadless requires a project directory and a project name as the first two arguments. "
+        "Always use /app/output as the project directory! "
+        "Example: /app/output MyProject -import target_binary.exe -postScript my_script.py"
     ),
 )
 
-GHIDRA_BIN = os.environ.get("GHIDRA_BIN", "analyzeHeadless")
+BIN_NAME = os.environ.get("GHIDRA_BIN", "/usr/local/bin/analyzeHeadless")
+OUTPUT_DIR = "/app/output"
 
 
 def _find_binary() -> str:
-    """Locate the analyzeHeadless binary, raising a clear error if missing."""
-    path = shutil.which(GHIDRA_BIN)
+    """Locate the analyzeHeadless bash script directly."""
+    path = shutil.which(BIN_NAME)
     if path is None:
-        logger.error("analyzeHeadless binary not found on PATH")
+        logger.error(f"{BIN_NAME} binary not found on PATH")
         raise FileNotFoundError(
-            f"analyzeHeadless binary not found. Ensure it is installed and available "
-            f"on PATH, or set GHIDRA_BIN to the full path."
+            f"{BIN_NAME} binary not found. Ensure the Dockerfile installed Ghidra and Java correctly."
         )
     return path
 
 
-async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
-    """Execute a analyzeHeadless command and return structured output.
+async def _run_command(args: list[str], timeout_seconds: int = 1800) -> dict:
+    """Execute analyzeHeadless and return structured output. Note: Ghidra takes a long time!"""
+    binary_path = _find_binary()
+    cmd = [binary_path] + args
 
-    Returns a dict with keys: stdout, stderr, return_code.
-    """
-    binary = _find_binary()
-    cmd = [binary] + args
+    # Ensure the output directory exists
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     try:
         proc = await asyncio.create_subprocess_exec(
@@ -60,6 +64,7 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
             stdin=asyncio.subprocess.DEVNULL,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
+            cwd=OUTPUT_DIR  # Route all Ghidra project files (.rep) to the mounted volume
         )
         stdout_bytes, stderr_bytes = await asyncio.wait_for(
             proc.communicate(), timeout=timeout_seconds
@@ -92,55 +97,65 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
 
 @mcp.tool()
 async def run_ghidra(
-    arguments: str,
-    timeout_seconds: int = 600,
+    arguments: str = "",
+    timeout_seconds: int = 1800, # Increased default timeout to 30 mins because Ghidra is slow
 ) -> str:
     """Run analyzeHeadless with the given arguments.
 
     Pass arguments as you would on the command line.
+    Example: "/app/output TempProject -import my_malware.bin"
 
     Args:
         arguments: Command-line arguments string.
-        timeout_seconds: Maximum execution time in seconds (default 600).
+        timeout_seconds: Maximum execution time in seconds (default 1800s / 30m).
     """
-    import shlex
+    try:
+        if arguments is None:
+            arguments = ""
+            
+        logger.info("run_ghidra called with arguments=%s", arguments)
+        args = shlex.split(arguments) if arguments.strip() else []
+        
+        result = await _run_command(args, timeout_seconds=timeout_seconds)
 
-    logger.info("run_ghidra called with arguments=%s", arguments)
-    args = shlex.split(arguments) if arguments.strip() else []
-    result = await _run_command(args, timeout_seconds=timeout_seconds)
+        if result["return_code"] != 0:
+            logger.warning("analyzeHeadless command failed with exit code %d", result["return_code"])
+            error_detail = result["stderr"] or result["stdout"] or "Unknown error"
+            return json.dumps(
+                {
+                    "error": True,
+                    "message": f"analyzeHeadless failed (exit code {result['return_code']})",
+                    "detail": error_detail.strip(),
+                    "command": f"analyzeHeadless {' '.join(args)}",
+                },
+                indent=2,
+            )
 
-    if result["return_code"] != 0:
-        logger.warning("analyzeHeadless command failed with exit code %d", result["return_code"])
-        error_detail = result["stderr"] or result["stdout"] or "Unknown error"
-        return json.dumps(
-            {
-                "error": True,
-                "message": f"analyzeHeadless failed (exit code {result['return_code']})",
-                "detail": error_detail.strip(),
-                "command": f"analyzeHeadless {' '.join(args)}",
-            },
-            indent=2,
-        )
+        stdout = result["stdout"].strip()
+        stderr = result["stderr"].strip()
 
-    stdout = result["stdout"].strip()
+        # Fallback to STDERR if STDOUT is empty (common for help menus)
+        if not stdout and stderr:
+            stdout = stderr
 
-    if not stdout:
-        return json.dumps({"message": "Command completed with no output", "arguments": arguments})
+        if not stdout:
+            return json.dumps({"message": "Command completed with no output. Note: Ghidra requires a project path and name.", "arguments": arguments})
 
-    # Try to parse as JSON/JSONL
-    results = []
-    for line in stdout.splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            results.append(json.loads(line))
-        except json.JSONDecodeError:
-            results.append({"raw": line})
+        # Return standard text response instead of attempting to JSON parse Ghidra's massive logs
+        return json.dumps({
+            "success": True,
+            "message": "Ghidra analysis executed successfully.",
+            "stdout": stdout,
+            "instructions": "Ghidra project files (.gpr and .rep) are located in the mounted /app/output directory."
+        }, indent=2)
 
-    if len(results) == 1:
-        return json.dumps(results[0], indent=2)
-    return json.dumps(results, indent=2)
+    except Exception as e:
+        logger.error("Unhandled exception in run_ghidra: %s", e)
+        return json.dumps({
+            "error": True,
+            "message": "Internal MCP wrapper error.",
+            "detail": str(e)
+        }, indent=2)
 
 
 def main():

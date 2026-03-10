@@ -11,6 +11,7 @@ import logging
 import os
 import shutil
 import sys
+import shlex
 
 from fastmcp import FastMCP
 
@@ -27,42 +28,49 @@ MCP_PORT = int(os.environ.get("MCP_PORT", "8236"))
 mcp = FastMCP(
     "Metasploit MCP Server",
     instructions=(
-        "Exploitation framework (module runner)."
+        "Metasploit Framework (msfconsole). "
+        "IMPORTANT: msfconsole is interactive and will hang if run normally! "
+        "You MUST use the '-q' (quiet) flag and the '-x' flag to execute commands headlessly. "
+        "Always append '; exit -y' to your -x commands to ensure the process terminates. "
+        "Example: msfconsole -q -x 'use exploit/windows/smb/ms17_010_eternalblue; show options; exit -y'"
     ),
 )
 
-METASPLOIT_BIN = os.environ.get("METASPLOIT_BIN", "msfconsole")
+BIN_NAME = os.environ.get("METASPLOIT_BIN", "/opt/metasploit-framework/bin/msfconsole")
+OUTPUT_DIR = "/app/output"
 
 
 def _find_binary() -> str:
-    """Locate the msfconsole binary, raising a clear error if missing."""
-    path = shutil.which(METASPLOIT_BIN)
+    """Locate the msfconsole binary directly."""
+    path = shutil.which(BIN_NAME)
     if path is None:
-        logger.error("msfconsole binary not found on PATH")
+        logger.error(f"{BIN_NAME} binary not found on PATH")
         raise FileNotFoundError(
-            f"msfconsole binary not found. Ensure it is installed and available "
-            f"on PATH, or set METASPLOIT_BIN to the full path."
+            f"{BIN_NAME} binary not found. Ensure the Dockerfile installed Metasploit."
         )
     return path
 
 
 async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
-    """Execute a msfconsole command and return structured output.
+    """Execute a msfconsole command and return structured output."""
+    binary_path = _find_binary()
+    cmd = [binary_path] + args
 
-    Returns a dict with keys: stdout, stderr, return_code.
-    """
-    binary = _find_binary()
-    cmd = [binary] + args
+    # Ensure the output directory exists
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     try:
         proc = await asyncio.create_subprocess_exec(
             *cmd,
-            stdin=asyncio.subprocess.DEVNULL,
+            stdin=asyncio.subprocess.PIPE,  # Open stdin to catch interactive hangs
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
+            cwd=OUTPUT_DIR
         )
+        
+        # Inject 'exit -y\n' just in case the LLM drops into the msf6 > prompt!
         stdout_bytes, stderr_bytes = await asyncio.wait_for(
-            proc.communicate(), timeout=timeout_seconds
+            proc.communicate(input=b"exit -y\n"), timeout=timeout_seconds
         )
     except asyncio.TimeoutError:
         proc.kill()
@@ -92,55 +100,64 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
 
 @mcp.tool()
 async def run_metasploit(
-    arguments: str,
+    arguments: str = "",
     timeout_seconds: int = 600,
 ) -> str:
     """Run msfconsole with the given arguments.
 
     Pass arguments as you would on the command line.
+    Example: "-q -x 'search eternalblue; exit -y'"
 
     Args:
         arguments: Command-line arguments string.
         timeout_seconds: Maximum execution time in seconds (default 600).
     """
-    import shlex
+    try:
+        if arguments is None:
+            arguments = ""
+            
+        logger.info("run_metasploit called with arguments=%s", arguments)
+        args = shlex.split(arguments) if arguments.strip() else []
+        
+        result = await _run_command(args, timeout_seconds=timeout_seconds)
 
-    logger.info("run_metasploit called with arguments=%s", arguments)
-    args = shlex.split(arguments) if arguments.strip() else []
-    result = await _run_command(args, timeout_seconds=timeout_seconds)
+        if result["return_code"] != 0:
+            logger.warning("msfconsole command failed with exit code %d", result["return_code"])
+            error_detail = result["stderr"] or result["stdout"] or "Unknown error"
+            return json.dumps(
+                {
+                    "error": True,
+                    "message": f"msfconsole failed (exit code {result['return_code']})",
+                    "detail": error_detail.strip(),
+                    "command": f"msfconsole {' '.join(args)}",
+                },
+                indent=2,
+            )
 
-    if result["return_code"] != 0:
-        logger.warning("msfconsole command failed with exit code %d", result["return_code"])
-        error_detail = result["stderr"] or result["stdout"] or "Unknown error"
-        return json.dumps(
-            {
-                "error": True,
-                "message": f"msfconsole failed (exit code {result['return_code']})",
-                "detail": error_detail.strip(),
-                "command": f"msfconsole {' '.join(args)}",
-            },
-            indent=2,
-        )
+        stdout = result["stdout"].strip()
+        stderr = result["stderr"].strip()
 
-    stdout = result["stdout"].strip()
+        # Fallback to STDERR if STDOUT is empty
+        if not stdout and stderr:
+            stdout = stderr
 
-    if not stdout:
-        return json.dumps({"message": "Command completed with no output", "arguments": arguments})
+        if not stdout:
+            return json.dumps({"message": "Command completed with no output", "arguments": arguments})
 
-    # Try to parse as JSON/JSONL
-    results = []
-    for line in stdout.splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            results.append(json.loads(line))
-        except json.JSONDecodeError:
-            results.append({"raw": line})
+        # Return standard text response instead of JSON parsing the Metasploit console output
+        return json.dumps({
+            "success": True,
+            "message": "Metasploit executed successfully.",
+            "stdout": stdout
+        }, indent=2)
 
-    if len(results) == 1:
-        return json.dumps(results[0], indent=2)
-    return json.dumps(results, indent=2)
+    except Exception as e:
+        logger.error("Unhandled exception in run_metasploit: %s", e)
+        return json.dumps({
+            "error": True,
+            "message": "Internal MCP wrapper error.",
+            "detail": str(e)
+        }, indent=2)
 
 
 def main():

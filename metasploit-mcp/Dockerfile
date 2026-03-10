@@ -16,28 +16,32 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install msfconsole — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends msfconsole && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir msfconsole
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install msfconsole; then COPY --from=builder
-
+# Install system dependencies, nmap (often used with msf), and the Rapid7 Omnibus installer
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    wget \
+    gnupg2 \
+    nmap \
     tini \
+    sudo \
     ca-certificates \
+    && curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb > msfinstall \
+    && chmod 755 msfinstall \
+    && ./msfinstall \
+    && rm msfinstall \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Copy requirements and install Python dependencies
+# Copy requirements and install Python dependencies for the wrapper
+# Note: Ensure fastmcp==2.14.5 is pinned in your requirements.txt!
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY mcp_server.py ./
 
-# Create output directory
+# Create output directory and grant permissions
 RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
 
 # Switch to non-root user
@@ -47,6 +51,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8236
+# The omnibus installer places the binary here
+ENV METASPLOIT_BIN=/opt/metasploit-framework/bin/msfconsole
 
 EXPOSE 8236
 

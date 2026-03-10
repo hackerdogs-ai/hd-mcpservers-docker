@@ -2,6 +2,17 @@
 
 Name | Test Result | comment
 -----|-------------|--------
+hydra|working
+john|working
+hashcat|working
+metasploit|working
+peda|working
+gef|working
+radare2|working
+ghidra|working
+binwalk|working
+ropgadget|working
+ropper|working
 checksec|working
 angr|working
 pwntools|working

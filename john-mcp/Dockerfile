@@ -1,4 +1,4 @@
-# John the Ripper MCP Server - Hackerdogs Ready
+# John the Ripper (Jumbo) MCP Server - Hackerdogs Ready
 # Multi-arch build for linux/amd64 and linux/arm64
 
 FROM python:3.12-slim-bookworm
@@ -16,17 +16,25 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install john — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends john && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir john
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install john; then COPY --from=builder
-
+# Install build dependencies for JtR Jumbo
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    build-essential \
+    libssl-dev \
+    zlib1g-dev \
+    yasm \
+    pkg-config \
     tini \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
+
+# Clone and compile the bleeding-jumbo branch from Openwall
+RUN git clone --depth 1 -b bleeding-jumbo https://github.com/openwall/john.git /opt/john && \
+    cd /opt/john/src && \
+    ./configure && \
+    make -s clean && \
+    make -sj4 && \
+    chown -R mcpuser:mcpuser /opt/john
 
 WORKDIR /app
 
@@ -37,7 +45,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY mcp_server.py ./
 
-# Create output directory
+# Create output directory and grant permissions
 RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
 
 # Switch to non-root user
@@ -47,6 +55,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8234
+# The compiled Jumbo binary lives here
+ENV JOHN_BIN=/opt/john/run/john
 
 EXPOSE 8234
 

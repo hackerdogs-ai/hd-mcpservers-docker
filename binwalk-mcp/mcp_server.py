@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Binwalk MCP Server — Firmware analysis and extraction.
 
-Wraps the binwalk CLI (ReFirmLabs/binwalk) to expose
-capabilities through the Model Context Protocol (MCP).
+Wraps the binwalk CLI to expose capabilities through the Model Context Protocol (MCP).
 """
 
 import asyncio
@@ -11,6 +10,7 @@ import logging
 import os
 import shutil
 import sys
+import shlex
 
 from fastmcp import FastMCP
 
@@ -27,32 +27,35 @@ MCP_PORT = int(os.environ.get("MCP_PORT", "8241"))
 mcp = FastMCP(
     "Binwalk MCP Server",
     instructions=(
-        "Firmware analysis and extraction."
+        "Firmware analysis and extraction tool. "
+        "IMPORTANT: Place target firmware/binaries in the mounted /app/output directory. "
+        "If you use the '-e' (extract) flag, the extracted files will automatically "
+        "be saved into a new folder within the output directory."
     ),
 )
 
-BINWALK_BIN = os.environ.get("BINWALK_BIN", "binwalk")
+BIN_NAME = os.environ.get("BINWALK_BIN", "/usr/bin/binwalk")
+OUTPUT_DIR = "/app/output"
 
 
 def _find_binary() -> str:
-    """Locate the binwalk binary, raising a clear error if missing."""
-    path = shutil.which(BINWALK_BIN)
+    """Locate the binwalk binary directly."""
+    path = shutil.which(BIN_NAME)
     if path is None:
-        logger.error("binwalk binary not found on PATH")
+        logger.error(f"{BIN_NAME} binary not found on PATH")
         raise FileNotFoundError(
-            f"binwalk binary not found. Ensure it is installed and available "
-            f"on PATH, or set BINWALK_BIN to the full path."
+            f"{BIN_NAME} binary not found. Ensure the Dockerfile installed the binwalk package."
         )
     return path
 
 
 async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
-    """Execute a binwalk command and return structured output.
+    """Execute a binwalk command and return structured output."""
+    binary_path = _find_binary()
+    cmd = [binary_path] + args
 
-    Returns a dict with keys: stdout, stderr, return_code.
-    """
-    binary = _find_binary()
-    cmd = [binary] + args
+    # Ensure the output directory exists
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     try:
         proc = await asyncio.create_subprocess_exec(
@@ -60,6 +63,7 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
             stdin=asyncio.subprocess.DEVNULL,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
+            cwd=OUTPUT_DIR  # Route all firmware extraction (-e) to the mounted volume
         )
         stdout_bytes, stderr_bytes = await asyncio.wait_for(
             proc.communicate(), timeout=timeout_seconds
@@ -92,55 +96,65 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
 
 @mcp.tool()
 async def run_binwalk(
-    arguments: str,
+    arguments: str = "",
     timeout_seconds: int = 600,
 ) -> str:
     """Run binwalk with the given arguments.
 
     Pass arguments as you would on the command line.
+    Example: "-e firmware.bin"
 
     Args:
         arguments: Command-line arguments string.
         timeout_seconds: Maximum execution time in seconds (default 600).
     """
-    import shlex
+    try:
+        if arguments is None:
+            arguments = ""
+            
+        logger.info("run_binwalk called with arguments=%s", arguments)
+        args = shlex.split(arguments) if arguments.strip() else []
+        
+        result = await _run_command(args, timeout_seconds=timeout_seconds)
 
-    logger.info("run_binwalk called with arguments=%s", arguments)
-    args = shlex.split(arguments) if arguments.strip() else []
-    result = await _run_command(args, timeout_seconds=timeout_seconds)
+        if result["return_code"] != 0:
+            logger.warning("binwalk command failed with exit code %d", result["return_code"])
+            error_detail = result["stderr"] or result["stdout"] or "Unknown error"
+            return json.dumps(
+                {
+                    "error": True,
+                    "message": f"binwalk failed (exit code {result['return_code']})",
+                    "detail": error_detail.strip(),
+                    "command": f"binwalk {' '.join(args)}",
+                },
+                indent=2,
+            )
 
-    if result["return_code"] != 0:
-        logger.warning("binwalk command failed with exit code %d", result["return_code"])
-        error_detail = result["stderr"] or result["stdout"] or "Unknown error"
-        return json.dumps(
-            {
-                "error": True,
-                "message": f"binwalk failed (exit code {result['return_code']})",
-                "detail": error_detail.strip(),
-                "command": f"binwalk {' '.join(args)}",
-            },
-            indent=2,
-        )
+        stdout = result["stdout"].strip()
+        stderr = result["stderr"].strip()
 
-    stdout = result["stdout"].strip()
+        # Fallback to STDERR if STDOUT is empty (common for help menus)
+        if not stdout and stderr:
+            stdout = stderr
 
-    if not stdout:
-        return json.dumps({"message": "Command completed with no output", "arguments": arguments})
+        if not stdout:
+            return json.dumps({"message": "Command completed with no output. Did you specify a target file?", "arguments": arguments})
 
-    # Try to parse as JSON/JSONL
-    results = []
-    for line in stdout.splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            results.append(json.loads(line))
-        except json.JSONDecodeError:
-            results.append({"raw": line})
+        # Return standard text response instead of attempting to JSON parse ASCII tables
+        return json.dumps({
+            "success": True,
+            "message": "Binwalk executed successfully.",
+            "stdout": stdout,
+            "instructions": "If you used the extraction flag (-e), check the output directory for the extracted files."
+        }, indent=2)
 
-    if len(results) == 1:
-        return json.dumps(results[0], indent=2)
-    return json.dumps(results, indent=2)
+    except Exception as e:
+        logger.error("Unhandled exception in run_binwalk: %s", e)
+        return json.dumps({
+            "error": True,
+            "message": "Internal MCP wrapper error.",
+            "detail": str(e)
+        }, indent=2)
 
 
 def main():

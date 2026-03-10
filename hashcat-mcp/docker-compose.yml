@@ -7,6 +7,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: hashcat-mcp
+    volumes:
+      - ./output:/app/output
     ports:
       - "8235:8235"
     environment:
