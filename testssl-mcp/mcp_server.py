@@ -31,7 +31,7 @@ mcp = FastMCP(
     ),
 )
 
-TESTSSL_BIN = os.environ.get("TESTSSL_BIN", "testssl.sh")
+TESTSSL_BIN = os.environ.get("TESTSSL_BIN", "testssl")
 
 
 def _find_binary() -> str:

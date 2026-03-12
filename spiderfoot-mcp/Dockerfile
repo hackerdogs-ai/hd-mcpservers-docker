@@ -16,18 +16,16 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install sf.py — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends sf.py && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir sf.py
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install sf.py; then COPY --from=builder
-
+# Install SpiderFoot from GitHub (no PyPI package)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    tini \
-    ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
-
+    git tini ca-certificates \
+    && rm -rf /var/lib/apt/lists/* \
+    && git clone --depth 1 https://github.com/smicallef/spiderfoot.git /opt/spiderfoot \
+    && pip install --no-cache-dir -r /opt/spiderfoot/requirements.txt \
+    && chmod +x /opt/spiderfoot/sf.py \
+    && test -f /opt/spiderfoot/sf.py \
+    && ln -sf /opt/spiderfoot/sf.py /usr/local/bin/spiderfoot \
+    && chown -R mcpuser:mcpuser /opt/spiderfoot
 WORKDIR /app
 
 # Copy requirements and install Python dependencies
@@ -43,7 +41,8 @@ RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
 # Switch to non-root user
 USER mcpuser
 
-# Environment variables
+# Environment variables (so mcp_server.py finds the binary)
+ENV SPIDERFOOT_BIN=/opt/spiderfoot/sf.py
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8257

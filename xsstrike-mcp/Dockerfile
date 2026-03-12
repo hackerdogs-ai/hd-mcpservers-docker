@@ -22,7 +22,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && git clone --depth 1 https://github.com/s0md3v/XSStrike.git /opt/xsstrike \
     && cd /opt/xsstrike && (pip install --no-cache-dir -r requirements.txt 2>/dev/null || true) \
     && (pip install --no-cache-dir . 2>/dev/null || true) \
-    && ln -sf /opt/xsstrike/xsstrike.py /usr/local/bin/xsstrike 2>/dev/null || true
+    && echo '#!/bin/sh\ncd /opt/xsstrike && exec python3 xsstrike.py "$@"' > /usr/local/bin/xsstrike \
+    && chmod +x /usr/local/bin/xsstrike
 
 WORKDIR /app
 

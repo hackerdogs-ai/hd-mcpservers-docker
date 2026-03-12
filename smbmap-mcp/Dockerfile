@@ -16,12 +16,8 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install smbmap — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends smbmap && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir smbmap
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install smbmap; then COPY --from=builder
+# Install smbmap
+RUN pip install --no-cache-dir smbmap
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \

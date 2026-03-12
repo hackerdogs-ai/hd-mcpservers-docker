@@ -36,6 +36,8 @@ SPIDERFOOT_BIN = os.environ.get("SPIDERFOOT_BIN", "sf.py")
 
 def _find_binary() -> str:
     """Locate the sf.py binary, raising a clear error if missing."""
+    if os.path.isabs(SPIDERFOOT_BIN) and os.path.isfile(SPIDERFOOT_BIN):
+        return SPIDERFOOT_BIN
     path = shutil.which(SPIDERFOOT_BIN)
     if path is None:
         logger.error("sf.py binary not found on PATH")
@@ -46,13 +48,25 @@ def _find_binary() -> str:
     return path
 
 
+def _build_command(args: list[str]) -> list[str]:
+    """Build the command list. Run .py scripts with python interpreter."""
+    binary_path = _find_binary()
+    if os.path.islink(binary_path):
+        target = os.readlink(binary_path)
+        link_target = os.path.normpath(os.path.join(os.path.dirname(binary_path), target)) if not os.path.isabs(target) else target
+        if os.path.isfile(link_target):
+            binary_path = link_target
+    if binary_path.endswith(".py") and os.path.isfile(binary_path):
+        return [sys.executable, binary_path] + args
+    return [binary_path] + args
+
+
 async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
     """Execute a sf.py command and return structured output.
 
     Returns a dict with keys: stdout, stderr, return_code.
     """
-    binary = _find_binary()
-    cmd = [binary] + args
+    cmd = _build_command(args)
 
     try:
         proc = await asyncio.create_subprocess_exec(

@@ -16,6 +16,7 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
+# zmap binary and dependencies from Debian package
 RUN apt-get update && apt-get install -y --no-install-recommends \
     zmap \
     tini \

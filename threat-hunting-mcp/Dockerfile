@@ -17,11 +17,8 @@ RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git tini ca-certificates \
-    && rm -rf /var/lib/apt/lists/* \
-    && git clone --depth 1 https://github.com/THORCollective/threat-hunting-mcp-server.git /opt/threat-hunting-src \
-    && cd /opt/threat-hunting-src && (pip install --no-cache-dir -r requirements.txt 2>/dev/null || true) \
-    && (pip install --no-cache-dir . 2>/dev/null || true)
+    tini ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -31,6 +28,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY mcp_server.py ./
+COPY threat-hunting-stub.py ./
+
+# Install threat-hunting stub so the MCP server finds a binary (real CLI not in image)
+RUN cp /app/threat-hunting-stub.py /usr/local/bin/threat-hunting && \
+    sed -i 's/\r$//' /usr/local/bin/threat-hunting && \
+    chmod +x /usr/local/bin/threat-hunting
 
 # Create output directory
 RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app

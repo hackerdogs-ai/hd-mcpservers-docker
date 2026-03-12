@@ -15,7 +15,9 @@ LABEL org.opencontainers.image.author="hackerdogs"
 # Security: Create non-root user
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
-
+    RUN apt-get update && apt-get install -y --no-install-recommends \
+    testdisk \
+    && rm -rf /var/lib/apt/lists/*
 # TODO: Install testdisk — add your install steps here.
 # Examples:
 #   apt:   RUN apt-get update && apt-get install -y --no-install-recommends testdisk && rm -rf /var/lib/apt/lists/*

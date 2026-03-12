@@ -1,6 +1,21 @@
 # SecureMCP MCP Server - Hackerdogs Ready
 # Multi-arch build for linux/amd64 and linux/arm64
+# Stage 1: build SecureMCP binary with Go 1.21+ (project requires go 1.21)
+FROM golang:1.23-bookworm AS builder
+RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
+# Build static binary; download deps then tidy then build
+ENV CGO_ENABLED=0 GOOS=linux
+WORKDIR /opt/securemcp
+RUN git clone --depth 1 https://github.com/makalin/SecureMCP.git . \
+    && sed -i '/\/\/ TODO: Implement response body analysis/i _ = vulnerabilityIndicators' internal/scanner/prompt.go \
+    && go mod download \
+    && go mod tidy \
+    && go build -mod=mod -ldflags="-s -w" -o bin/securemcp ./cmd/securemcp/main.go \
+    && test -f bin/securemcp
+
+# Stage 2: runtime image with Python MCP server
 FROM python:3.12-slim-bookworm
 
 LABEL org.opencontainers.image.source="https://github.com/hackerdogs-ai/hd-mcpservers-docker"
@@ -16,13 +31,12 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    git tini ca-certificates \
-    && rm -rf /var/lib/apt/lists/* \
-    && git clone --depth 1 https://github.com/makalin/SecureMCP.git /opt/securemcp \
-    && cd /opt/securemcp && (pip install --no-cache-dir -r requirements.txt 2>/dev/null || true) \
-    && (pip install --no-cache-dir . 2>/dev/null || true) \
-    && ln -sf /opt/securemcp/securemcp.py /usr/local/bin/securemcp 2>/dev/null || true
+# Install only runtime deps (no golang); copy binary from builder
+RUN apt-get update && apt-get install -y --no-install-recommends tini ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+RUN mkdir -p /opt/securemcp/bin
+COPY --from=builder /opt/securemcp/bin/securemcp /opt/securemcp/bin/securemcp
+RUN chown -R mcpuser:mcpuser /opt/securemcp
 
 WORKDIR /app
 
@@ -39,7 +53,9 @@ RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
 # Switch to non-root user
 USER mcpuser
 
-# Environment variables
+# Environment variables (so mcp_server.py finds the binary — Go binary, not .py)
+ENV SECUREMCP_BIN=/opt/securemcp/bin/securemcp
+ENV PATH="/opt/securemcp/bin:${PATH}"
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8297

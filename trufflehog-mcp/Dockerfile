@@ -1,6 +1,11 @@
 # TruffleHog MCP Server - Hackerdogs Ready
+# Multi-stage build: TruffleHog binary + Python MCP server
 # Multi-arch build for linux/amd64 and linux/arm64
 
+# Stage 1: Obtain TruffleHog binary from official image
+FROM trufflesecurity/trufflehog:latest AS trufflehog-bin
+
+# Stage 2: Runtime with Python MCP server
 FROM python:3.12-slim-bookworm
 
 LABEL org.opencontainers.image.source="https://github.com/hackerdogs-ai/hd-mcpservers-docker"
@@ -16,12 +21,8 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install trufflehog — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends trufflehog && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir trufflehog
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install trufflehog; then COPY --from=builder
+# Copy TruffleHog binary from official image
+COPY --from=trufflehog-bin /usr/bin/trufflehog /usr/local/bin/trufflehog
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \

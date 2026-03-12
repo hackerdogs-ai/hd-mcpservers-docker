@@ -11,6 +11,8 @@ import logging
 import os
 import shutil
 import sys
+import tempfile
+import uuid
 
 from fastmcp import FastMCP
 
@@ -50,44 +52,58 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
     """Execute a zap.sh command and return structured output.
 
     Returns a dict with keys: stdout, stderr, return_code.
+    Uses a unique HOME per run so ZAP does not hit "another instance is locking" in the same container.
     """
     binary = _find_binary()
     cmd = [binary] + args
 
-    try:
-        proc = await asyncio.create_subprocess_exec(
-            *cmd,
-            stdin=asyncio.subprocess.DEVNULL,
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE,
-        )
-        stdout_bytes, stderr_bytes = await asyncio.wait_for(
-            proc.communicate(), timeout=timeout_seconds
-        )
-    except asyncio.TimeoutError:
-        proc.kill()
-        await proc.communicate()
-        logger.error("Command timed out after %ds: %s", timeout_seconds, " ".join(cmd))
-        return {
-            "stdout": "",
-            "stderr": f"Command timed out after {timeout_seconds}s: {' '.join(cmd)}",
-            "return_code": -1,
-        }
-    except Exception as exc:
-        logger.error("Command execution failed: %s", exc)
-        return {
-            "stdout": "",
-            "stderr": f"Failed to execute command: {exc}",
-            "return_code": -1,
-        }
+    # Unique ZAP home per invocation to avoid "another ZAP instance is already running" lock
+    zap_home = os.path.join(tempfile.gettempdir(), f"zap-run-{uuid.uuid4().hex[:12]}")
+    os.makedirs(zap_home, exist_ok=True)
+    env = os.environ.copy()
+    env["HOME"] = zap_home
 
-    stdout = stdout_bytes.decode("utf-8", errors="replace")
-    stderr = stderr_bytes.decode("utf-8", errors="replace")
-    return {
-        "stdout": stdout,
-        "stderr": stderr,
-        "return_code": proc.returncode,
-    }
+    try:
+        try:
+            proc = await asyncio.create_subprocess_exec(
+                *cmd,
+                stdin=asyncio.subprocess.DEVNULL,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
+                env=env,
+            )
+            stdout_bytes, stderr_bytes = await asyncio.wait_for(
+                proc.communicate(), timeout=timeout_seconds
+            )
+        except asyncio.TimeoutError:
+            proc.kill()
+            await proc.communicate()
+            logger.error("Command timed out after %ds: %s", timeout_seconds, " ".join(cmd))
+            return {
+                "stdout": "",
+                "stderr": f"Command timed out after {timeout_seconds}s: {' '.join(cmd)}",
+                "return_code": -1,
+            }
+        except Exception as exc:
+            logger.error("Command execution failed: %s", exc)
+            return {
+                "stdout": "",
+                "stderr": f"Failed to execute command: {exc}",
+                "return_code": -1,
+            }
+
+        stdout = stdout_bytes.decode("utf-8", errors="replace")
+        stderr = stderr_bytes.decode("utf-8", errors="replace")
+        return {
+            "stdout": stdout,
+            "stderr": stderr,
+            "return_code": proc.returncode,
+        }
+    finally:
+        try:
+            shutil.rmtree(zap_home, ignore_errors=True)
+        except Exception:
+            pass
 
 
 @mcp.tool()
@@ -107,6 +123,16 @@ async def run_zap(
 
     logger.info("run_zap called with arguments=%s", arguments)
     args = shlex.split(arguments) if arguments.strip() else []
+    # Help/version only: do not add -daemon so ZAP prints and exits quickly (avoids timeout)
+    help_version = {"-help", "--help", "-h", "-version", "--version", "-v"}
+    if args and set(a.strip().lower() for a in args) <= help_version:
+        pass  # run as-is: zap.sh -help exits with output
+    else:
+        # Force daemon/headless when no mode flag (avoids "ZAP GUI is not supported on a headless environment")
+        mode_flags = {"-daemon", "-cmd", "-quickurl", "-script", "-regression"}
+        has_mode = any(a in mode_flags or a.lstrip("-").startswith("daemon") for a in args)
+        if not has_mode:
+            args = ["-daemon"] + args
     result = await _run_command(args, timeout_seconds=timeout_seconds)
 
     if result["return_code"] != 0:
@@ -123,9 +149,31 @@ async def run_zap(
         )
 
     stdout = result["stdout"].strip()
+    stderr = result["stderr"].strip()
 
-    if not stdout:
+    # Many CLI tools (including zap.sh) send help/version to stderr; always include both so output is visible
+    if not stdout and stderr:
+        return json.dumps(
+            {
+                "message": "Output (from stderr):",
+                "stdout": "",
+                "stderr": stderr,
+                "arguments": arguments,
+            },
+            indent=2,
+        )
+    if not stdout and not stderr:
         return json.dumps({"message": "Command completed with no output", "arguments": arguments})
+    if stderr:
+        # Success but we have both stdout and stderr (e.g. help on stderr, other on stdout)
+        return json.dumps(
+            {
+                "stdout": stdout,
+                "stderr": stderr,
+                "arguments": arguments,
+            },
+            indent=2,
+        )
 
     # Try to parse as JSON/JSONL
     results = []

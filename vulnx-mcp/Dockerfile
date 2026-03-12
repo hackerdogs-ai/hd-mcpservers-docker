@@ -5,7 +5,7 @@
 # ---- Stage 1: Build vulnx from source ----
 FROM golang:1.24-bookworm AS builder
 
-RUN go install github.com/projectdiscovery/cvemap/cmd/vulnx@latest
+RUN go install github.com/projectdiscovery/cvemap/cmd/cvemap@latest
 
 # ---- Stage 2: Runtime ----
 FROM python:3.12-slim-bookworm
@@ -29,8 +29,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy vulnx binary from builder
-COPY --from=builder /go/bin/vulnx /usr/local/bin/vulnx
+# Copy cvemap binary from builder (exposed as vulnx for MCP server compatibility)
+COPY --from=builder /go/bin/cvemap /usr/local/bin/vulnx
 
 WORKDIR /app
 

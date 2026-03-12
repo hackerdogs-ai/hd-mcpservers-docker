@@ -16,17 +16,22 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install wpscan — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends wpscan && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir wpscan
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install wpscan; then COPY --from=builder
-
+# Install wpscan (Ruby gem) and runtime deps — keep libcurl4 for wpscan (ethon/typhoeus)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
+    ruby \
+    ruby-dev \
+    build-essential \
+    libcurl4 \
+    libcurl4-openssl-dev \
+    libffi-dev \
+    procps \
+    && gem install --bindir /usr/local/bin wpscan \
+    && apt-get purge -y ruby-dev build-essential libffi-dev \
+    && apt-get purge -y libcurl4-openssl-dev \
+    && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/* /root/.gem
 
 WORKDIR /app
 

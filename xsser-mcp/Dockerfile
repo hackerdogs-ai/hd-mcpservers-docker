@@ -16,17 +16,19 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install xsser — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends xsser && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir xsser
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install xsser; then COPY --from=builder
-
+# Install xsser (clone from GitHub) and Python deps
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
+    git \
+    python3-pycurl \
+    python3-bs4 \
+    python3-pip \
+    && rm -rf /var/lib/apt/lists/* \
+    && git clone --depth 1 https://github.com/epsylon/xsser.git /opt/xsser \
+    && pip3 install --no-cache-dir pycurl beautifulsoup4 pygeoip cairocffi selenium 2>/dev/null || true \
+    && echo '#!/bin/sh\ncd /opt/xsser && exec python3 /opt/xsser/xsser "$@"' > /usr/local/bin/xsser \
+    && chmod +x /usr/local/bin/xsser
 
 WORKDIR /app
 

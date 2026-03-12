@@ -20,8 +20,23 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git tini ca-certificates \
     && rm -rf /var/lib/apt/lists/* \
     && git clone --depth 1 https://github.com/LisBerndt/zap-mcp-server.git /opt/zap-lis-src \
-    && cd /opt/zap-lis-src && (pip install --no-cache-dir -r requirements.txt 2>/dev/null || true) \
-    && (pip install --no-cache-dir . 2>/dev/null || true)
+    && cd /opt/zap-lis-src && (pip install --no-cache-dir -r requirements.txt || true) \
+    && pip install --no-cache-dir .
+
+# Upstream installs "zap-custom-mcp" (not "zap-mcp"); add wrapper so the MCP server finds "zap-mcp"
+# Handle --help, -h, -help, and no args so we return immediately instead of starting the server (which would timeout)
+RUN printf '%s\n' \
+    '#!/bin/sh' \
+    'if [ $# -eq 0 ] || [ "$1" = "--help" ] || [ "$1" = "-h" ] || [ "$1" = "-help" ]; then' \
+    '  echo "zap-mcp: ZAP Custom MCP server. Use the run_zap_mcp MCP tool with arguments."' \
+    '  exit 0' \
+    'fi' \
+    'exec zap-custom-mcp "$@"' \
+    > /usr/local/bin/zap-mcp && chmod +x /usr/local/bin/zap-mcp
+
+# Ensure CLI is on PATH for mcpuser (stdio runs in container)
+ENV PATH="/usr/local/bin:${PATH}"
+ENV ZAP_MCP_BIN=zap-mcp
 
 WORKDIR /app
 

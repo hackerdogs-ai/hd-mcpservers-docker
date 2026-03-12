@@ -17,11 +17,10 @@ RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git build-essential autoconf automake libpcap-dev libnet1-dev tini ca-certificates \
-    && rm -rf /var/lib/apt/lists/* \
-    && git clone --depth 1 https://github.com/tomac/yersinia.git /tmp/yersinia-src \
-    && cd /tmp/yersinia-src && autoreconf -fi && ./configure --with-pcap-includes=/usr/include/pcap && make && make install \
-    && rm -rf /tmp/yersinia-src
+    yersinia \
+    tini \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 

@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 # Build and Publish SMTP User Enum MCP Server Docker Image to Docker Hub
 # Image name: smtp-user-enum-mcp
 

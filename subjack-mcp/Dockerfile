@@ -1,6 +1,18 @@
 # Subjack MCP Server - Hackerdogs Ready
 # Multi-arch build for linux/amd64 and linux/arm64
+# Subjack has no pre-built release assets; build from Go source.
 
+# Stage 1: Build subjack binary (use Go modules; GOTOOLCHAIN=auto for deps requiring Go 1.24+)
+FROM golang:1.23-alpine AS subjack-builder
+RUN apk add --no-cache git ca-certificates
+ENV GOTOOLCHAIN=auto
+RUN git clone --depth 1 https://github.com/haccer/subjack.git /build \
+    && cd /build \
+    && go mod init github.com/haccer/subjack 2>/dev/null || true \
+    && go mod tidy \
+    && go build -o /subjack .
+
+# Stage 2: MCP server runtime
 FROM python:3.12-slim-bookworm
 
 LABEL org.opencontainers.image.source="https://github.com/hackerdogs-ai/hd-mcpservers-docker"
@@ -16,13 +28,11 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install subjack — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends subjack && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir subjack
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install subjack; then COPY --from=builder
+# Copy subjack binary from builder
+COPY --from=subjack-builder /subjack /usr/local/bin/subjack
+RUN chmod +x /usr/local/bin/subjack
 
+# Install tini and ca-certificates
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     ca-certificates \

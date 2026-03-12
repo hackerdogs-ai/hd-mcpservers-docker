@@ -3,7 +3,7 @@
 # Multi-arch build for linux/amd64 and linux/arm64
 
 # Stage 1: Build wappalyzergo-cli from source
-FROM golang:1.24-bookworm AS builder
+FROM golang:1.23-bookworm AS builder
 
 WORKDIR /app
 COPY go.mod ./

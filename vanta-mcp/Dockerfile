@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git nodejs npm tini ca-certificates \
     && rm -rf /var/lib/apt/lists/* \
     && git clone --depth 1 https://github.com/VantaInc/vanta-mcp-server.git /opt/vanta-src \
-    && cd /opt/vanta-src && npm install 2>/dev/null || true
+    && cd /opt/vanta-src && npm install
 
 WORKDIR /app
 

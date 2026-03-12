@@ -1,7 +1,8 @@
 # YaraFlux MCP Server - Hackerdogs Ready
 # Multi-arch build for linux/amd64 and linux/arm64
+# YaraFlux requires Python >=3.13
 
-FROM python:3.12-slim-bookworm
+FROM python:3.13-slim-bookworm
 
 LABEL org.opencontainers.image.source="https://github.com/hackerdogs-ai/hd-mcpservers-docker"
 LABEL org.opencontainers.image.description="YaraFlux MCP Server - YARA-based MCP server for malware scanning and rule management"
@@ -20,8 +21,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git unzip tini ca-certificates \
     && rm -rf /var/lib/apt/lists/* \
     && git clone --depth 1 https://github.com/ThreatFlux/YaraFlux.git /opt/yaraflux-src \
-    && cd /opt/yaraflux-src && (pip install --no-cache-dir -r requirements.txt 2>/dev/null || true) \
-    && (pip install --no-cache-dir . 2>/dev/null || true)
+    && cd /opt/yaraflux-src && pip install --no-cache-dir -r requirements.txt \
+    && pip install --no-cache-dir . \
+    && ln -sf /usr/local/bin/yaraflux-mcp-server /usr/local/bin/yaraflux
 
 WORKDIR /app
 

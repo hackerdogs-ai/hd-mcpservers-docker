@@ -1,6 +1,11 @@
 # OWASP ZAP MCP Server - Hackerdogs Ready
 # Multi-arch build for linux/amd64 and linux/arm64
 
+# Stage 1: get OWASP ZAP (zap.sh) from official image
+ARG ZAP_IMAGE=ghcr.io/zaproxy/zaproxy:stable
+FROM ${ZAP_IMAGE} AS zap
+
+# Stage 2: Python + MCP server + ZAP runtime
 FROM python:3.12-slim-bookworm
 
 LABEL org.opencontainers.image.source="https://github.com/hackerdogs-ai/hd-mcpservers-docker"
@@ -16,17 +21,16 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install zap.sh — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends zap.sh && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir zap.sh
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install zap.sh; then COPY --from=builder
-
+# Install Java (required by zap.sh), tini, and ca-certificates; copy ZAP from official image
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    openjdk-17-jre-headless \
     tini \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
+
+COPY --from=zap /zap /zap
+ENV PATH="/zap:${PATH}"
+ENV ZAP_HOME=/zap
 
 WORKDIR /app
 

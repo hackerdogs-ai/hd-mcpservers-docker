@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 # Build and Publish Sherlock MCP Server Docker Image to Docker Hub
 # Image name: sherlock-mcp
 

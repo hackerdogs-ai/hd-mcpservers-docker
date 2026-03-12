@@ -16,6 +16,11 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git ca-certificates \
+    && rm -rf /var/lib/apt/lists/* \
+    && git clone --depth 1 https://github.com/laramies/theHarvester.git /opt/theHarvester \
+    && pip install --no-cache-dir /opt/theHarvester
 # TODO: Install theHarvester — add your install steps here.
 # Examples:
 #   apt:   RUN apt-get update && apt-get install -y --no-install-recommends theHarvester && rm -rf /var/lib/apt/lists/*

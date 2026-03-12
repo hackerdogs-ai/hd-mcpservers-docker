@@ -16,13 +16,17 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
+# Install smuggler from GitHub
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git tini ca-certificates \
     && rm -rf /var/lib/apt/lists/* \
     && git clone --depth 1 https://github.com/defparam/smuggler.git /opt/smuggler \
-    && cd /opt/smuggler && (pip install --no-cache-dir -r requirements.txt 2>/dev/null || true) \
-    && (pip install --no-cache-dir . 2>/dev/null || true) \
-    && ln -sf /opt/smuggler/smuggler.py /usr/local/bin/smuggler 2>/dev/null || true
+    && cd /opt/smuggler \
+    && (test -f requirements.txt && pip install --no-cache-dir -r requirements.txt || true) \
+    && test -f /opt/smuggler/smuggler.py \
+    && chmod +x /opt/smuggler/smuggler.py \
+    && chown -R mcpuser:mcpuser /opt/smuggler \
+    && ln -sf /opt/smuggler/smuggler.py /usr/local/bin/smuggler
 
 WORKDIR /app
 
@@ -39,7 +43,8 @@ RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
 # Switch to non-root user
 USER mcpuser
 
-# Environment variables
+# Environment variables (so mcp_server.py finds the binary)
+ENV SMUGGLER_BIN=/opt/smuggler/smuggler.py
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8291

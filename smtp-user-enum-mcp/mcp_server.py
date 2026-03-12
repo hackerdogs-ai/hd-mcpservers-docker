@@ -36,6 +36,8 @@ BIN_NAME = os.environ.get("SMTP_USER_ENUM_BIN", "smtp-user-enum")
 
 def _find_binary() -> str:
     """Locate the smtp-user-enum binary, raising a clear error if missing."""
+    if os.path.isabs(BIN_NAME) and os.path.isfile(BIN_NAME):
+        return BIN_NAME
     path = shutil.which(BIN_NAME)
     if path is None:
         logger.error("smtp-user-enum binary not found on PATH")
@@ -46,13 +48,27 @@ def _find_binary() -> str:
     return path
 
 
+def _build_command(args: list[str]) -> list[str]:
+    """Build the command list. Run .pl (Perl) scripts with perl interpreter."""
+    binary_path = _find_binary()
+    # Resolve symlinks to get the real script path
+    if os.path.islink(binary_path):
+        target = os.readlink(binary_path)
+        link_target = os.path.normpath(os.path.join(os.path.dirname(binary_path), target)) if not os.path.isabs(target) else target
+        if os.path.isfile(link_target):
+            binary_path = link_target
+    if binary_path.endswith(".pl") and os.path.isfile(binary_path):
+        perl = shutil.which("perl") or "perl"
+        return [perl, binary_path] + args
+    return [binary_path] + args
+
+
 async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
     """Execute a smtp-user-enum command and return structured output.
 
     Returns a dict with keys: stdout, stderr, return_code.
     """
-    binary_path = _find_binary()
-    cmd = [binary_path] + args
+    cmd = _build_command(args)
 
     try:
         proc = await asyncio.create_subprocess_exec(

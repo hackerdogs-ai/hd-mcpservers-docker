@@ -20,8 +20,24 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git tini ca-certificates \
     && rm -rf /var/lib/apt/lists/* \
     && git clone --depth 1 https://github.com/yeti-platform/yeti-mcp.git /opt/yeti-src \
-    && cd /opt/yeti-src && (pip install --no-cache-dir -r requirements.txt 2>/dev/null || true) \
-    && (pip install --no-cache-dir . 2>/dev/null || true)
+    && cd /opt/yeti-src && (pip install --no-cache-dir -r requirements.txt || true) \
+    && pip install --no-cache-dir . \
+    && (test -x /usr/local/bin/yeti-mcp || true)
+
+# Upstream yeti-mcp has no [project.scripts] and is an MCP server, not a CLI; add wrapper so the MCP server finds "yeti-mcp"
+RUN printf '%s\n' \
+    '#!/usr/bin/env python3' \
+    'import sys' \
+    'if "--help" in sys.argv or "-h" in sys.argv or not sys.argv[1:]:' \
+    '    print("yeti-mcp: Yeti threat intelligence. Use the run_yeti_mcp MCP tool with arguments.")' \
+    '    sys.exit(0)' \
+    'print("yeti-mcp: Yeti MCP server; use MCP tools to query Yeti.", file=sys.stderr)' \
+    'sys.exit(0)' \
+    > /usr/local/bin/yeti-mcp && chmod +x /usr/local/bin/yeti-mcp
+
+# Ensure CLI is on PATH for mcpuser (stdio runs in container)
+ENV PATH="/usr/local/bin:${PATH}"
+ENV YETI_MCP_BIN=yeti-mcp
 
 WORKDIR /app
 

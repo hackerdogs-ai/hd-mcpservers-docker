@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 # Build and Publish SMBMap MCP Server Docker Image to Docker Hub
 # Image name: smbmap-mcp
 

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Trivy Neutr0n MCP Server — Trivy-based container and filesystem vulnerability scanning.
 
-Wraps the trivy-mcp CLI (Mr-Neutr0n/trivy-mcp-server) to expose
-capabilities through the Model Context Protocol (MCP).
+Wraps the Trivy CLI to expose scanning capabilities through the Model Context Protocol (MCP).
+Uses the trivy binary (Aqua Security). Set TRIVY_BIN to use a different path.
 """
 
 import asyncio
@@ -32,23 +32,23 @@ mcp = FastMCP(
     ),
 )
 
-BIN_NAME = os.environ.get("TRIVY_MCP_BIN", "trivy-mcp")
+BIN_NAME = os.environ.get("TRIVY_BIN", "trivy")
 
 
 def _find_binary() -> str:
-    """Locate the trivy-mcp binary, raising a clear error if missing."""
+    """Locate the trivy binary, raising a clear error if missing."""
     path = shutil.which(BIN_NAME)
     if path is None:
-        logger.error("trivy-mcp binary not found on PATH")
+        logger.error("trivy binary not found on PATH")
         raise FileNotFoundError(
-            f"trivy-mcp binary not found. Ensure it is installed and available "
-            f"on PATH, or set TRIVY_MCP_BIN to the full path."
+            f"trivy binary not found. Ensure Trivy is installed and available "
+            f"on PATH, or set TRIVY_BIN to the full path."
         )
     return path
 
 
 async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
-    """Execute a trivy-mcp command and return structured output.
+    """Execute a trivy command and return structured output.
 
     Returns a dict with keys: stdout, stderr, return_code.
     """
@@ -97,15 +97,17 @@ async def run_trivy_mcp(
     source_url: str = "",
     timeout_seconds: int = 600,
 ) -> str:
-    """Run trivy-mcp with the given arguments.
+    """Run Trivy with the given arguments.
 
-    Pass arguments as you would on the command line.  Use ``source_url`` to
+    Pass arguments as you would on the command line after 'trivy'.
+    Examples: "image alpine:latest", "image --severity HIGH,CRITICAL alpine:latest",
+    "fs /path/to/dir", "sbom alpine:latest". Use ``source_url`` to
     have the server download files from a URL before processing.
 
     Args:
-        arguments: Command-line arguments string.  Use ``{source}`` as a
-                   placeholder for the downloaded file path when using
-                   *source_url*.
+        arguments: Command-line arguments string (e.g. "image alpine:latest").
+                   Use ``{source}`` as a placeholder for the downloaded file path
+                   when using *source_url*.
         source_url: Optional HTTP(S) URL, GitHub/GitLab repo URL, or archive
                     URL.  Downloaded into the container; local path replaces
                     ``{source}`` in *arguments* or is appended.
@@ -131,14 +133,14 @@ async def run_trivy_mcp(
         result = await _run_command(args, timeout_seconds=timeout_seconds)
 
         if result["return_code"] != 0:
-            logger.warning("trivy-mcp command failed with exit code %d", result["return_code"])
+            logger.warning("trivy command failed with exit code %d", result["return_code"])
             error_detail = result["stderr"] or result["stdout"] or "Unknown error"
             return json.dumps(
                 {
                     "error": True,
-                    "message": f"trivy-mcp failed (exit code {result['return_code']})",
+                    "message": f"trivy failed (exit code {result['return_code']})",
                     "detail": error_detail.strip(),
-                    "command": f"trivy-mcp {' '.join(args)}",
+                    "command": f"trivy {' '.join(args)}",
                 },
                 indent=2,
             )
