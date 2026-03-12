@@ -23,10 +23,23 @@ RUN groupadd -g 1000 mcpuser && \
 #   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
 #   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install Responder; then COPY --from=builder
 
+# Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     ca-certificates \
+    git \
+    gcc \
+    python3-dev \
     && rm -rf /var/lib/apt/lists/*
+
+# Install netifaces in the same Python environment
+RUN pip install --no-cache-dir netifaces
+RUN pip install --no-cache-dir aioquic
+
+# Install Responder
+RUN git clone --depth 1 https://github.com/lgandx/Responder /opt/responder \
+    && ln -s /opt/responder/Responder.py /usr/local/bin/Responder \
+    && chmod +x /usr/local/bin/Responder
 
 WORKDIR /app
 
