@@ -24,9 +24,8 @@ RUN groupadd -g 1000 mcpuser && \
 #   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install dirb; then COPY --from=builder
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    dirb \
     tini \
-    git \
-    unzip \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
@@ -38,10 +37,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY mcp_server.py ./
-COPY hd_fetch.py ./
 
 # Create output directory
-RUN mkdir -p /app/output /app/workdir && chown -R mcpuser:mcpuser /app
+RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
 
 # Switch to non-root user
 USER mcpuser
@@ -55,6 +53,10 @@ EXPOSE 8214
 
 # Use tini for proper signal handling
 ENTRYPOINT ["/usr/bin/tini", "--"]
+
+# Start MCP server
+CMD ["python", "mcp_server.py"]
+
 
 # Start MCP server
 CMD ["python", "mcp_server.py"]
