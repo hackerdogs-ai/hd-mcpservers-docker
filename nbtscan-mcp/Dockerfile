@@ -26,6 +26,7 @@ RUN groupadd -g 1000 mcpuser && \
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     ca-certificates \
+    nbtscan \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
