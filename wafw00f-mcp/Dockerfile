@@ -6,51 +6,52 @@ FROM python:3.12-slim-bookworm
 LABEL org.opencontainers.image.source="https://github.com/hackerdogs-ai/hd-mcpservers-docker"
 LABEL org.opencontainers.image.description="Wafw00f MCP Server - Web application firewall fingerprinting."
 LABEL org.opencontainers.image.vendor="Hackerdogs"
+LABEL "maintainer"="support@hackerdogs.ai"
+LABEL "mcp-server-scope"="remote"
 LABEL org.opencontainers.image.title="wafw00f-mcp"
 LABEL org.opencontainers.image.licenses="Apache-2.0"
-LABEL org.opencontainers.image.authors="hackerdogs"
-LABEL maintainer="support@hackerdogs.ai"
-LABEL mcp-server-scope="remote"
+LABEL org.opencontainers.image.author="hackerdogs"
 
-# Prevent Python from writing pyc files
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-
-# Install minimal system packages
-RUN apt-get update && apt-get install -y --no-install-recommends \
-        tini \
-        ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
-
-# Create non-root user
+# Security: Create non-root user
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
+# TODO: Install wafw00f — add your install steps here.
+# Examples:
+#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends wafw00f && rm -rf /var/lib/apt/lists/*
+#   pip:   RUN pip install --no-cache-dir wafw00f
+#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
+#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install wafw00f; then COPY --from=builder
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    tini \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
-# Copy requirements first for caching
-COPY requirements.txt .
+# Copy requirements and install Python dependencies
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Install Python dependencies
-RUN pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir -r requirements.txt \
-    && pip install --no-cache-dir wafw00f
-
-# Copy application
-COPY mcp_server.py .
+# Copy application code
+COPY mcp_server.py ./
 
 # Create output directory
 RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
 
-# Switch to non-root
+# Switch to non-root user
 USER mcpuser
 
+# Environment variables
+ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8230
 
 EXPOSE 8230
 
-# Proper signal handling
+# Use tini for proper signal handling
 ENTRYPOINT ["/usr/bin/tini", "--"]
 
+# Start MCP server
 CMD ["python", "mcp_server.py"]
