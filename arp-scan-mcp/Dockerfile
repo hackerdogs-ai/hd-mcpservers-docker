@@ -24,6 +24,7 @@ RUN groupadd -g 1000 mcpuser && \
 #   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install arp-scan; then COPY --from=builder
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    arp-scan \
     tini \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
