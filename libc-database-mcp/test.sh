@@ -14,7 +14,7 @@ PASS=0
 FAIL=0
 IMAGE="hackerdogs/libc-database-mcp:latest"
 PORT=8277
-BINARY="find"
+BINARY="libc-find"
 CONTAINER_NAME="libc-database-mcp-test"
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 

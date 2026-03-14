@@ -8,6 +8,10 @@
         "--rm",
         "-e",
         "MCP_TRANSPORT",
+        "-v",
+        "/var/run/docker.sock:/var/run/docker.sock",
+        "--group-add",
+        "0",
         "hackerdogs/docker-bench-security-mcp:latest"
       ],
       "env": {

@@ -9,7 +9,7 @@
   - [x] Support stdio and streamable-http transports
   - [x] Robust error handling and timeouts
   - [x] JSON output parsing
-- [ ] Add cloudmapper install steps to `Dockerfile` (see [duo-labs/cloudmapper](https://github.com/duo-labs/cloudmapper))
+- [x] Add cloudmapper install steps to `Dockerfile` (see [duo-labs/cloudmapper](https://github.com/duo-labs/cloudmapper))
 - [x] Create `publish_to_hackerdogs.sh` — build/publish script with multi-arch support
 - [x] Create `mcpServer.json` — MCP server config for Claude/Cursor installation
 - [x] Create `docker-compose.yml` — port 8268

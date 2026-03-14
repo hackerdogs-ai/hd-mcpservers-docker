@@ -52,12 +52,12 @@ Run nosqlmap with the given arguments. Returns structured JSON output.
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Run nosqlmap with --help to see all available options."
-- "Use nosqlmap to scan the target 192.168.1.1."
-- "What options does nosqlmap support? Show me its help output."
-- "Run nosqlmap against example.com with default settings."
-- "Execute nosqlmap with verbose output enabled."
-- "Use the nosqlmap tool to analyze the target and report findings."
+- "Show me all available NoSQLMap options."
+- "Use NoSQLMap to test MongoDB at 192.168.1.100 for default access (attack 1)."
+- "Run NoSQLMap web app attack against http://target.com/login with POST method."
+- "Scan a subnet for anonymous MongoDB access using NoSQLMap (attack 3)."
+- "Test CouchDB at 192.168.1.50 for NoSQL injection vulnerabilities."
+- "Run NoSQLMap against a target with verbose output enabled."
 
 ## Deploy
 
@@ -206,5 +206,5 @@ You can run the nosqlmap CLI in the same container by overriding the entrypoint 
 **Show help:**
 
 ```bash
-docker run -i --rm --entrypoint nosqlmap hackerdogs/nosqlmap-mcp:latest -h
+docker run -i --rm --entrypoint nosqlmap hackerdogs/nosqlmap-mcp:latest --help
 ```

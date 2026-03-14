@@ -1,7 +1,7 @@
 # CloudMapper MCP Server - Hackerdogs Ready
 # Multi-arch build for linux/amd64 and linux/arm64
 
-FROM python:3.12-slim-bookworm
+FROM python:3.11-slim-bookworm
 
 LABEL org.opencontainers.image.source="https://github.com/hackerdogs-ai/hd-mcpservers-docker"
 LABEL org.opencontainers.image.description="CloudMapper MCP Server - AWS network visualization and security."
@@ -16,17 +16,31 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install cloudmapper — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends cloudmapper && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir cloudmapper
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install cloudmapper; then COPY --from=builder
-
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
+    git \
     ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
+    build-essential \
+    autoconf \
+    automake \
+    libtool \
+    jq \
+    libjq-dev \
+    libonig-dev \
+    && rm -rf /var/lib/apt/lists/* \
+    && git clone --depth 1 https://github.com/duo-labs/cloudmapper.git /opt/cloudmapper \
+    && pip install --no-cache-dir \
+        boto3 botocore jinja2 netaddr pyyaml requests \
+        pyjq policyuniverse parliament \
+        json-cfg kwonly-args six \
+    && chown -R 1000:1000 /opt/cloudmapper
+
+COPY <<'WRAPPER' /usr/local/bin/cloudmapper
+#!/bin/bash
+cd /opt/cloudmapper
+exec python cloudmapper.py "$@"
+WRAPPER
+RUN chmod +x /usr/local/bin/cloudmapper
 
 WORKDIR /app
 

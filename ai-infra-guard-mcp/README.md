@@ -52,12 +52,12 @@ Run ai-infra-guard with the given arguments. Returns structured JSON output.
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Run ai-infra-guard with --help to see all available options."
-- "Use ai-infra-guard to scan the target 192.168.1.1."
-- "What options does ai-infra-guard support? Show me its help output."
-- "Run ai-infra-guard against example.com with default settings."
-- "Execute ai-infra-guard with verbose output enabled."
-- "Use the ai-infra-guard tool to analyze the target and report findings."
+- "Use ai-infra-guard to scan my Ollama instance at http://192.168.1.10:11434 for vulnerabilities."
+- "Run ai-infra-guard scan --localscan to detect all local AI services and check for CVEs."
+- "Scan my vLLM deployment at http://gpu-server:8000 for known vulnerabilities."
+- "List all vulnerability templates that ai-infra-guard knows about using scan --list-vul."
+- "Scan multiple targets: my Dify instance at port 80 and my ComfyUI at port 8188."
+- "Check my n8n instance at http://10.0.0.5:5678 for security issues with English output (--lang en)."
 
 ## Deploy
 
@@ -207,14 +207,26 @@ docker stop ai-infra-guard-mcp-test
 
 You can run the ai-infra-guard CLI in the same container by overriding the entrypoint to scan and assess AI infrastructure security without starting the MCP server.
 
-**Run AI infrastructure assessment:**
-
-```bash
-docker run -i --rm --entrypoint ai-infra-guard hackerdogs/ai-infra-guard-mcp:latest -h
-```
-
 **Show help:**
 
 ```bash
-docker run -i --rm --entrypoint ai-infra-guard hackerdogs/ai-infra-guard-mcp:latest --help
+docker run --rm --entrypoint ai-infra-guard hackerdogs/ai-infra-guard-mcp:latest --help
+```
+
+**Scan a target:**
+
+```bash
+docker run --rm --entrypoint ai-infra-guard hackerdogs/ai-infra-guard-mcp:latest scan -t http://target:11434
+```
+
+**Local scan (detect local AI services):**
+
+```bash
+docker run --rm --network host --entrypoint ai-infra-guard hackerdogs/ai-infra-guard-mcp:latest scan --localscan
+```
+
+**List vulnerability database:**
+
+```bash
+docker run --rm --entrypoint ai-infra-guard hackerdogs/ai-infra-guard-mcp:latest scan --list-vul
 ```

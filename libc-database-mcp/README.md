@@ -70,16 +70,30 @@ Remove downloaded files from the container workspace.
 |-----------|------|----------|---------|-------------|
 | `job_id` | string | No | `""` | Specific job ID to clean up. If empty, removes all downloads |
 
+## Populating the Database
+
+The libc-database ships empty. You need to download libc symbol databases before `find` can match anything. Run inside the container:
+
+```bash
+docker run --rm -v libc-db:/opt/libc-database/db hackerdogs/libc-database-mcp:latest libc-get ubuntu debian
+```
+
+Or for all categories (takes longer):
+
+```bash
+docker run --rm -v libc-db:/opt/libc-database/db hackerdogs/libc-database-mcp:latest libc-get all
+```
+
+Then mount the volume when running the MCP server so the database persists.
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Run find with --help to see all available options."
-- "Use libc-database to scan the target 192.168.1.1."
-- "What options does find support? Show me its help output."
-- "Run libc-database against example.com with default settings."
-- "Execute find with verbose output enabled."
-- "Use the libc-database tool to analyze the target and report findings."
+- "Find the libc version where printf is at offset 260 and puts is at f30."
+- "Look up the libc where __libc_start_main_ret has offset a83."
+- "Use libc-database find with printf 49670 to identify the libc."
+- "Search for a libc by its leaked function addresses: system 3a940 and read e6670."
 
 **URL-based ingestion (no volume mounts needed):**
 
@@ -156,6 +170,7 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 |----------|---------|-------------|
 | `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
 | `MCP_PORT` | `8277` | HTTP port (only used with `streamable-http`) |
+| `LIBC_DATABASE_BIN` | `libc-find` | Path to the libc-database `find` wrapper script |
 | `HD_MAX_DOWNLOAD_MB` | `500` | Max file download size in MB (URL fetch) |
 | `HD_FETCH_TIMEOUT` | `120` | Download timeout in seconds (URL fetch) |
 
@@ -239,6 +254,20 @@ You can run the find (libc-database) CLI in the same container by overriding the
 
 **Show help:**
 
+**Find a libc by symbol offsets:**
+
 ```bash
-docker run -i --rm --entrypoint find hackerdogs/libc-database-mcp:latest --help
+docker run -i --rm --entrypoint libc-find hackerdogs/libc-database-mcp:latest printf 260 puts f30
+```
+
+**Dump offsets for a known libc:**
+
+```bash
+docker run -i --rm --entrypoint libc-dump hackerdogs/libc-database-mcp:latest libc6_2.19-0ubuntu6.6_i386
+```
+
+**Identify a libc binary:**
+
+```bash
+docker run -i --rm --entrypoint libc-identify hackerdogs/libc-database-mcp:latest /path/to/libc.so.6
 ```

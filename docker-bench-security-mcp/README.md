@@ -18,7 +18,7 @@ Docker Bench Security (docker-bench-security.sh) is a security tool that provide
 
 See [docker/docker-bench-security](https://github.com/docker/docker-bench-security) for full documentation.
 
-**No API keys required** — Docker Bench Security runs locally inside the Docker container.
+**No API keys required** — Docker Bench Security runs locally inside the Docker container. Requires access to the Docker socket (`/var/run/docker.sock`) to audit the host's Docker configuration.
 
 **Summary.** MCP server wrapper for [Docker Bench Security](https://github.com/docker/docker-bench-security) — Docker security assessment (CIS).
 
@@ -74,12 +74,12 @@ Remove downloaded files from the container workspace.
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Run docker-bench-security.sh with --help to see all available options."
-- "Use docker-bench-security to scan the target 192.168.1.1."
-- "What options does docker-bench-security.sh support? Show me its help output."
-- "Run docker-bench-security against example.com with default settings."
-- "Execute docker-bench-security.sh with verbose output enabled."
-- "Use the docker-bench-security tool to analyze the target and report findings."
+- "Run a full Docker Bench Security scan on my Docker host."
+- "Run only the host configuration checks (section 1) using docker-bench-security."
+- "Check my Docker daemon configuration for security issues (section 2)."
+- "Audit my container runtime settings with docker-bench-security (section 5)."
+- "Run docker-bench-security but skip the Swarm checks (section 7)."
+- "What is my overall Docker security score according to CIS benchmarks?"
 
 **URL-based ingestion (no volume mounts needed):**
 
@@ -98,7 +98,10 @@ docker-compose up -d
 ### Docker Run (stdio mode)
 
 ```bash
-docker run -i --rm hackerdogs/docker-bench-security-mcp:latest
+docker run -i --rm \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  --group-add 0 \
+  hackerdogs/docker-bench-security-mcp:latest
 ```
 
 ### Docker Run (HTTP streamable mode)
@@ -107,6 +110,8 @@ docker run -i --rm hackerdogs/docker-bench-security-mcp:latest
 docker run -d -p 8254:8254 \
   -e MCP_TRANSPORT=streamable-http \
   -e MCP_PORT=8254 \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  --group-add 0 \
   hackerdogs/docker-bench-security-mcp:latest
 ```
 
@@ -124,6 +129,8 @@ Add to your Claude Desktop or Cursor MCP config:
       "args": [
         "run", "-i", "--rm",
         "-e", "MCP_TRANSPORT",
+        "-v", "/var/run/docker.sock:/var/run/docker.sock",
+        "--group-add", "0",
         "hackerdogs/docker-bench-security-mcp:latest"
       ],
       "env": {
@@ -197,6 +204,8 @@ docker build -t hackerdogs/docker-bench-security-mcp:latest .
 ```bash
 docker run -d --rm --name docker-bench-security-mcp-test -p 8254:8254 \
   -e MCP_TRANSPORT=streamable-http \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  --group-add 0 \
   hackerdogs/docker-bench-security-mcp:latest
 ```
 
@@ -240,11 +249,19 @@ You can run the docker-bench-security script in the same container by overriding
 **Run audit:**
 
 ```bash
-docker run -i --rm --entrypoint docker-bench-security.sh hackerdogs/docker-bench-security-mcp:latest
+docker run -i --rm \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  --group-add 0 \
+  --entrypoint docker-bench-security.sh \
+  hackerdogs/docker-bench-security-mcp:latest
 ```
 
-**Show help:**
+**Run a specific check section:**
 
 ```bash
-docker run -i --rm --entrypoint docker-bench-security.sh hackerdogs/docker-bench-security-mcp:latest --help
+docker run -i --rm \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  --group-add 0 \
+  --entrypoint docker-bench-security.sh \
+  hackerdogs/docker-bench-security-mcp:latest -c check_2
 ```

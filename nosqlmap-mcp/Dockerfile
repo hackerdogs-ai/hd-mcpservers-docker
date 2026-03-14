@@ -16,17 +16,31 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install nosqlmap — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends nosqlmap && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir nosqlmap
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install nosqlmap; then COPY --from=builder
-
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
+    git \
     ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && git clone --depth 1 https://github.com/codingo/NoSQLMap.git /opt/NoSQLMap \
+    && 2to3 -w -n /opt/NoSQLMap/*.py 2>/dev/null || true \
+    && sed -i 's/\.database_names()/.list_database_names()/g' /opt/NoSQLMap/*.py \
+    && sed -i 's/\.collection_names()/.list_collection_names()/g' /opt/NoSQLMap/*.py \
+    && sed -i "s/except NoSQLMapException, e:/except NoSQLMapException as e:/g" /opt/NoSQLMap/*.py \
+    && pip install --no-cache-dir \
+        'pymongo>=3.7,<5.0' \
+        'httplib2>=0.19.0' \
+        'ipcalc>=1.1.3' \
+        'pbkdf2>=1.3' \
+        'requests' \
+        'CouchDB>=1.1' \
+        'six'
+
+COPY <<'WRAPPER' /usr/local/bin/nosqlmap
+#!/bin/bash
+cd /opt/NoSQLMap
+exec python nosqlmap.py "$@"
+WRAPPER
+RUN chmod +x /usr/local/bin/nosqlmap
 
 WORKDIR /app
 

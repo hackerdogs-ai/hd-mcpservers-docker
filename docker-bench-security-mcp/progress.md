@@ -9,7 +9,7 @@
   - [x] Support stdio and streamable-http transports
   - [x] Robust error handling and timeouts
   - [x] JSON output parsing
-- [ ] Add docker-bench-security.sh install steps to `Dockerfile` (see [docker/docker-bench-security](https://github.com/docker/docker-bench-security))
+- [x] Add docker-bench-security.sh install steps to `Dockerfile` (see [docker/docker-bench-security](https://github.com/docker/docker-bench-security))
 - [x] Create `publish_to_hackerdogs.sh` — build/publish script with multi-arch support
 - [x] Create `mcpServer.json` — MCP server config for Claude/Cursor installation
 - [x] Create `docker-compose.yml` — port 8254

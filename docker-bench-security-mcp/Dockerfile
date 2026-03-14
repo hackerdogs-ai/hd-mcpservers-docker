@@ -16,19 +16,27 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install docker-bench-security.sh — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends docker-bench-security.sh && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir docker-bench-security.sh
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install docker-bench-security.sh; then COPY --from=builder
+COPY --from=docker:27-cli /usr/local/bin/docker /usr/local/bin/docker
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     git \
     unzip \
     ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
+    procps \
+    iproute2 \
+    && rm -rf /var/lib/apt/lists/* \
+    && git clone --depth 1 https://github.com/docker/docker-bench-security.git /opt/docker-bench-security \
+    && chmod +x /opt/docker-bench-security/docker-bench-security.sh \
+    && mkdir -p /opt/docker-bench-security/log \
+    && chown -R 1000:1000 /opt/docker-bench-security/log
+
+COPY <<'WRAPPER' /usr/local/bin/docker-bench-security.sh
+#!/bin/bash
+cd /opt/docker-bench-security
+exec ./docker-bench-security.sh "$@"
+WRAPPER
+RUN chmod +x /usr/local/bin/docker-bench-security.sh
 
 WORKDIR /app
 

@@ -12,4 +12,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8254
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    group_add:
+      - "0"
     restart: unless-stopped

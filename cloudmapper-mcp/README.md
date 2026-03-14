@@ -18,7 +18,7 @@ Cloudmapper (cloudmapper) is a security tool that provides: **AWS network visual
 
 See [duo-labs/cloudmapper](https://github.com/duo-labs/cloudmapper) for full documentation.
 
-**No API keys required** — Cloudmapper runs locally inside the Docker container.
+**AWS credentials required** — CloudMapper needs AWS access keys or IAM role credentials to collect and audit AWS environments.
 
 **Summary.** MCP server wrapper for [Cloudmapper](https://github.com/duo-labs/cloudmapper) — AWS network visualization and security.
 
@@ -52,12 +52,13 @@ Run cloudmapper with the given arguments. Returns structured JSON output.
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Run cloudmapper with --help to see all available options."
-- "Use cloudmapper to scan the target 192.168.1.1."
-- "What options does cloudmapper support? Show me its help output."
-- "Run cloudmapper against example.com with default settings."
-- "Execute cloudmapper with verbose output enabled."
-- "Use the cloudmapper tool to analyze the target and report findings."
+- "Show me all available CloudMapper commands."
+- "Run a CloudMapper audit on my AWS account 'my-account'."
+- "Use CloudMapper to collect data from my AWS account."
+- "Run CloudMapper to find publicly exposed services in my AWS account."
+- "Use CloudMapper to generate an IAM report for my account."
+- "Find unused resources in my AWS environment with CloudMapper."
+- "Run CloudMapper stats to show resource counts for my account."
 
 ## Deploy
 
@@ -70,7 +71,11 @@ docker-compose up -d
 ### Docker Run (stdio mode)
 
 ```bash
-docker run -i --rm hackerdogs/cloudmapper-mcp:latest
+docker run -i --rm \
+  -e AWS_ACCESS_KEY_ID \
+  -e AWS_SECRET_ACCESS_KEY \
+  -e AWS_DEFAULT_REGION \
+  hackerdogs/cloudmapper-mcp:latest
 ```
 
 ### Docker Run (HTTP streamable mode)
@@ -79,6 +84,9 @@ docker run -i --rm hackerdogs/cloudmapper-mcp:latest
 docker run -d -p 8268:8268 \
   -e MCP_TRANSPORT=streamable-http \
   -e MCP_PORT=8268 \
+  -e AWS_ACCESS_KEY_ID \
+  -e AWS_SECRET_ACCESS_KEY \
+  -e AWS_DEFAULT_REGION \
   hackerdogs/cloudmapper-mcp:latest
 ```
 
@@ -96,6 +104,10 @@ Add to your Claude Desktop or Cursor MCP config:
       "args": [
         "run", "-i", "--rm",
         "-e", "MCP_TRANSPORT",
+        "-e", "AWS_ACCESS_KEY_ID",
+        "-e", "AWS_SECRET_ACCESS_KEY",
+        "-e", "AWS_SESSION_TOKEN",
+        "-e", "AWS_DEFAULT_REGION",
         "hackerdogs/cloudmapper-mcp:latest"
       ],
       "env": {
@@ -128,6 +140,10 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 |----------|---------|-------------|
 | `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
 | `MCP_PORT` | `8268` | HTTP port (only used with `streamable-http`) |
+| `AWS_ACCESS_KEY_ID` | — | AWS access key ID |
+| `AWS_SECRET_ACCESS_KEY` | — | AWS secret access key |
+| `AWS_SESSION_TOKEN` | — | AWS session token (optional, for temporary credentials) |
+| `AWS_DEFAULT_REGION` | `us-east-1` | AWS region |
 
 ## Installing in Hackerdogs
 
@@ -167,6 +183,7 @@ docker build -t hackerdogs/cloudmapper-mcp:latest .
 ```bash
 docker run -d --rm --name cloudmapper-mcp-test -p 8268:8268 \
   -e MCP_TRANSPORT=streamable-http \
+  -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_DEFAULT_REGION \
   hackerdogs/cloudmapper-mcp:latest
 ```
 
@@ -210,5 +227,7 @@ You can run the cloudmapper CLI in the same container by overriding the entrypoi
 **Show help:**
 
 ```bash
-docker run -i --rm --entrypoint cloudmapper hackerdogs/cloudmapper-mcp:latest --help
+docker run -i --rm --entrypoint cloudmapper \
+  -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_DEFAULT_REGION \
+  hackerdogs/cloudmapper-mcp:latest --help
 ```

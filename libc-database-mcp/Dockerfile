@@ -16,19 +16,57 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install find — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends find && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir find
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install find; then COPY --from=builder
-
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     git \
     unzip \
     ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
+    binutils \
+    file \
+    perl \
+    wget \
+    tar \
+    zstd \
+    jq \
+    && rm -rf /var/lib/apt/lists/* \
+    && git clone --depth 1 https://github.com/niklasb/libc-database.git /opt/libc-database \
+    && chmod +x /opt/libc-database/find /opt/libc-database/dump /opt/libc-database/identify \
+       /opt/libc-database/download /opt/libc-database/get /opt/libc-database/add 2>/dev/null || true \
+    && mkdir -p /opt/libc-database/db /opt/libc-database/libs \
+    && chown -R 1000:1000 /opt/libc-database/db /opt/libc-database/libs
+
+COPY <<'WRAPPER' /usr/local/bin/libc-find
+#!/bin/bash
+cd /opt/libc-database
+exec ./find "$@"
+WRAPPER
+
+COPY <<'WRAPPER' /usr/local/bin/libc-dump
+#!/bin/bash
+cd /opt/libc-database
+exec ./dump "$@"
+WRAPPER
+
+COPY <<'WRAPPER' /usr/local/bin/libc-identify
+#!/bin/bash
+cd /opt/libc-database
+exec ./identify "$@"
+WRAPPER
+
+COPY <<'WRAPPER' /usr/local/bin/libc-download
+#!/bin/bash
+cd /opt/libc-database
+exec ./download "$@"
+WRAPPER
+
+COPY <<'WRAPPER' /usr/local/bin/libc-get
+#!/bin/bash
+cd /opt/libc-database
+exec ./get "$@"
+WRAPPER
+
+RUN chmod +x /usr/local/bin/libc-find /usr/local/bin/libc-dump \
+    /usr/local/bin/libc-identify /usr/local/bin/libc-download /usr/local/bin/libc-get
 
 WORKDIR /app
 
@@ -50,6 +88,7 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8277
+ENV LIBC_DATABASE_BIN=libc-find
 
 EXPOSE 8277
 

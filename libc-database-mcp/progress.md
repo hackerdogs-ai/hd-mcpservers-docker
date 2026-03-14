@@ -9,7 +9,7 @@
   - [x] Support stdio and streamable-http transports
   - [x] Robust error handling and timeouts
   - [x] JSON output parsing
-- [ ] Add find install steps to `Dockerfile` (see [niklasb/libc-database](https://github.com/niklasb/libc-database))
+- [x] Add find install steps to `Dockerfile` (see [niklasb/libc-database](https://github.com/niklasb/libc-database))
 - [x] Create `publish_to_hackerdogs.sh` — build/publish script with multi-arch support
 - [x] Create `mcpServer.json` — MCP server config for Claude/Cursor installation
 - [x] Create `docker-compose.yml` — port 8277

@@ -49,7 +49,7 @@ echo ""
 
 # Test 2: CLI binary available
 info "[Test 2] CLI binary inside container"
-BINARY_OUTPUT=$(docker run --rm "$IMAGE" $BINARY --version 2>&1 | head -5 || docker run --rm "$IMAGE" $BINARY -version 2>&1 | head -5 || docker run --rm "$IMAGE" $BINARY -h 2>&1 | head -5 || true)
+BINARY_OUTPUT=$(docker run --rm -v /var/run/docker.sock:/var/run/docker.sock --group-add 0 "$IMAGE" $BINARY --version 2>&1 | head -5 || docker run --rm -v /var/run/docker.sock:/var/run/docker.sock --group-add 0 "$IMAGE" $BINARY -version 2>&1 | head -5 || docker run --rm -v /var/run/docker.sock:/var/run/docker.sock --group-add 0 "$IMAGE" $BINARY -h 2>&1 | head -5 || true)
 if [ -n "$BINARY_OUTPUT" ]; then
     pass "$BINARY binary responds"
     echo "       ${BINARY_OUTPUT%%$'\n'*}"
@@ -65,7 +65,7 @@ INIT_NOTIF='{"jsonrpc":"2.0","method":"notifications/initialized"}'
 LIST_REQ='{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}'
 
 STDIO_OUT=$(printf '%s\n%s\n%s\n' "$INIT_REQ" "$INIT_NOTIF" "$LIST_REQ" | \
-    docker run -i --rm -e MCP_TRANSPORT=stdio "$IMAGE" 2>/dev/null || true)
+    docker run -i --rm -e MCP_TRANSPORT=stdio -v /var/run/docker.sock:/var/run/docker.sock --group-add 0 "$IMAGE" 2>/dev/null || true)
 
 if echo "$STDIO_OUT" | grep -q '"tools"'; then
     TOOL_COUNT=$(echo "$STDIO_OUT" | grep -o '"name"' | wc -l)
@@ -81,6 +81,7 @@ info "[Test 4] MCP HTTP streamable mode — initialize"
 cleanup
 docker run -d --name "$CONTAINER_NAME" \
     -e MCP_TRANSPORT=streamable-http -e MCP_PORT=$PORT \
+    -v /var/run/docker.sock:/var/run/docker.sock --group-add 0 \
     -p "$PORT:$PORT" "$IMAGE" > /dev/null
 
 SESSION_ID=""
