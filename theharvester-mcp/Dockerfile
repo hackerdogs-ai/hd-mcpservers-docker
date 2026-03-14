@@ -6,36 +6,35 @@ FROM python:3.12-slim-bookworm
 LABEL org.opencontainers.image.source="https://github.com/hackerdogs-ai/hd-mcpservers-docker"
 LABEL org.opencontainers.image.description="theHarvester MCP Server - Email and subdomain harvesting from multiple sources."
 LABEL org.opencontainers.image.vendor="Hackerdogs"
-LABEL maintainer="support@hackerdogs.ai"
-LABEL mcp-server-scope="remote"
+LABEL "maintainer"="support@hackerdogs.ai"
+LABEL "mcp-server-scope"="remote"
 LABEL org.opencontainers.image.title="theharvester-mcp"
 LABEL org.opencontainers.image.licenses="Apache-2.0"
 LABEL org.opencontainers.image.author="hackerdogs"
 
-# Create non-root user
+# Security: Create non-root user
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# Install dependencies
+# TODO: Install theHarvester — add your install steps here.
+# Examples:
+#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends theHarvester && rm -rf /var/lib/apt/lists/*
+#   pip:   RUN pip install --no-cache-dir theHarvester
+#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
+#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install theHarvester; then COPY --from=builder
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     ca-certificates \
-    git \
-    curl \
-    dnsutils \
-    netcat-openbsd \
     && rm -rf /var/lib/apt/lists/*
-
-# Install theHarvester from source
-RUN pip install --no-cache-dir git+https://github.com/laramies/theHarvester.git
 
 WORKDIR /app
 
-# Install MCP server dependencies
+# Copy requirements and install Python dependencies
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy MCP server
+# Copy application code
 COPY mcp_server.py ./
 
 # Create output directory
@@ -51,6 +50,8 @@ ENV MCP_PORT=8204
 
 EXPOSE 8204
 
+# Use tini for proper signal handling
 ENTRYPOINT ["/usr/bin/tini", "--"]
 
+# Start MCP server
 CMD ["python", "mcp_server.py"]

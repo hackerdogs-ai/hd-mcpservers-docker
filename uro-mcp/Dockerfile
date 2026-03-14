@@ -25,8 +25,7 @@ RUN groupadd -g 1000 mcpuser && \
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
-    ca-certificates \ 
-    && pip install --no-cache-dir uro \
+    ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
