@@ -15,7 +15,11 @@ LABEL org.opencontainers.image.author="hackerdogs"
 # Security: Create non-root user
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
-
+    RUN apt-get update && apt-get install -y --no-install-recommends \
+    git curl ca-certificates bsdextrautils procps \
+    && rm -rf /var/lib/apt/lists/* \
+    && git clone --depth 1 https://github.com/drwetter/testssl.sh.git /opt/testssl \
+    && ln -sf /opt/testssl/testssl.sh /usr/local/bin/testssl
 # TODO: Install testssl.sh — add your install steps here.
 # Examples:
 #   apt:   RUN apt-get update && apt-get install -y --no-install-recommends testssl.sh && rm -rf /var/lib/apt/lists/*

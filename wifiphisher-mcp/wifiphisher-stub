@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+"""Stub for wifiphisher in Docker.
+
+The full wifiphisher tool and its dependencies (e.g. roguehostapd) rely on
+Python 2 and host WiFi/network access, so they are not installed in this
+container. This stub allows the MCP server to start and respond to --help.
+"""
+import sys
+
+HELP_TEXT = """Wifiphisher - Rogue Access Point Framework (stub in Docker)
+
+Usage: wifiphisher [OPTIONS]
+
+In this Docker image, only the MCP server wrapper is available. The full
+wifiphisher CLI (WiFi phishing, evil twin, etc.) requires:
+  - Python 2–compatible dependencies (roguehostapd, etc.)
+  - Host network and WiFi interfaces
+
+To run the full tool, use a native or Kali install: https://github.com/wifiphisher/wifiphisher
+
+Options:
+  --help     Show this message
+  --version  Show version (stub)
+"""
+
+VERSION = "1.4 (stub in container)"
+
+
+def main():
+    args = sys.argv[1:]
+    if "--help" in args or "-h" in args or not args:
+        print(HELP_TEXT, file=sys.stderr)
+        print(HELP_TEXT)
+        sys.exit(0)
+    if "--version" in args or "-v" in args:
+        print(f"Wifiphisher {VERSION}", file=sys.stderr)
+        print(f"Wifiphisher {VERSION}")
+        sys.exit(0)
+    print("This container provides the wifiphisher MCP server only. Full CLI not available.", file=sys.stderr)
+    print(HELP_TEXT)
+    sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()

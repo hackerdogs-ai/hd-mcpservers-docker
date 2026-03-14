@@ -1,6 +1,11 @@
 # OWASP ZAP MCP Server - Hackerdogs Ready
 # Multi-arch build for linux/amd64 and linux/arm64
 
+# Stage 1: get OWASP ZAP (zap.sh) from official image
+ARG ZAP_IMAGE=ghcr.io/zaproxy/zaproxy:stable
+FROM ${ZAP_IMAGE} AS zap
+
+# Stage 2: Python + MCP server + ZAP runtime
 FROM python:3.12-slim-bookworm
 
 LABEL org.opencontainers.image.source="https://github.com/hackerdogs-ai/hd-mcpservers-docker"
@@ -13,6 +18,7 @@ RUN groupadd -g 1000 mcpuser && \
 # 2. Install System Dependencies & Java Runtime
 # Added 'wget' as it's sometimes more stable than curl for large tars
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    openjdk-17-jre-headless \
     tini \
     ca-certificates \
     wget \

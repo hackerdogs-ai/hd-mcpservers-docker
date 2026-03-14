@@ -22,9 +22,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Install syft — download the latest release binary
 # See https://github.com/anchore/syft/releases for installation
-RUN curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin 2>/dev/null || \
-    (echo "Auto-install failed. Manual install may be required for syft." && which syft || true)
-
+RUN curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin \
+    && syft --version
 WORKDIR /app
 
 # Copy requirements and install Python dependencies

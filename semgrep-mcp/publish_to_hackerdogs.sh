@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 # Build and Publish Semgrep MCP Server Docker Image to Docker Hub
 # Image name: semgrep-mcp
 

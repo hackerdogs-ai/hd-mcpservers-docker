@@ -1,6 +1,12 @@
 # X8 MCP Server - Hackerdogs Ready
 # Multi-arch build for linux/amd64 and linux/arm64
 
+# Build x8 (Rust) in builder stage
+FROM rust:1-slim-bookworm AS x8-builder
+RUN apt-get update && apt-get install -y --no-install-recommends pkg-config libssl-dev \
+    && rm -rf /var/lib/apt/lists/*
+RUN cargo install x8
+
 FROM python:3.12-slim-bookworm
 
 LABEL org.opencontainers.image.source="https://github.com/hackerdogs-ai/hd-mcpservers-docker"
@@ -12,16 +18,12 @@ LABEL org.opencontainers.image.title="x8-mcp"
 LABEL org.opencontainers.image.licenses="Apache-2.0"
 LABEL org.opencontainers.image.author="hackerdogs"
 
+# Copy x8 binary from builder
+COPY --from=x8-builder /usr/local/cargo/bin/x8 /usr/local/bin/x8
+
 # Security: Create non-root user
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
-
-# TODO: Install x8 — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends x8 && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir x8
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install x8; then COPY --from=builder
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \

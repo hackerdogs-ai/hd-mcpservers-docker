@@ -1,0 +1,7 @@
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git ca-certificates \
+    && rm -rf /var/lib/apt/lists/* \
+    && git clone --depth 1 https://github.com/laramies/theHarvester.git /opt/theHarvester \
+    && pip install --no-cache-dir -r /opt/theHarvester/requirements/base.txt \
+    && ln -sf /opt/theHarvester/theHarvester.py /usr/local/bin/theHarvester \
+    && chmod +x /opt/theHarvester/theHarvester.py

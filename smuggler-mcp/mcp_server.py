@@ -36,6 +36,8 @@ BIN_NAME = os.environ.get("SMUGGLER_BIN", "smuggler")
 
 def _find_binary() -> str:
     """Locate the smuggler binary, raising a clear error if missing."""
+    if os.path.isabs(BIN_NAME) and os.path.isfile(BIN_NAME):
+        return BIN_NAME
     path = shutil.which(BIN_NAME)
     if path is None:
         logger.error("smuggler binary not found on PATH")
@@ -46,13 +48,26 @@ def _find_binary() -> str:
     return path
 
 
+def _build_command(args: list[str]) -> list[str]:
+    """Build the command list to run smuggler. Use python for .py scripts."""
+    binary_path = _find_binary()
+    # Resolve symlinks (e.g. /usr/local/bin/smuggler -> /opt/smuggler/smuggler.py)
+    if os.path.islink(binary_path):
+        target = os.readlink(binary_path)
+        link_target = os.path.normpath(os.path.join(os.path.dirname(binary_path), target)) if not os.path.isabs(target) else target
+        if os.path.isfile(link_target):
+            binary_path = link_target
+    if binary_path.endswith(".py") and os.path.isfile(binary_path):
+        return [sys.executable, binary_path] + args
+    return [binary_path] + args
+
+
 async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
     """Execute a smuggler command and return structured output.
 
     Returns a dict with keys: stdout, stderr, return_code.
     """
-    binary_path = _find_binary()
-    cmd = [binary_path] + args
+    cmd = _build_command(args)
 
     try:
         proc = await asyncio.create_subprocess_exec(

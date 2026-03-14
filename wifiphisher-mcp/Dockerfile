@@ -16,12 +16,15 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-RUN pip install --no-cache-dir wifiphisher
-
+# Full wifiphisher has Python 2 deps (roguehostapd: ConfigParser). Use stub so image builds.
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
+
+# Stub provides wifiphisher on PATH; responds to --help/--version so MCP server works.
+COPY wifiphisher-stub /usr/local/bin/wifiphisher
+RUN chmod +x /usr/local/bin/wifiphisher
 
 WORKDIR /app
 

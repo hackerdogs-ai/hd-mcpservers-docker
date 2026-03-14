@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 # Build and Publish SlowHTTPTest MCP Server Docker Image to Docker Hub
 # Image name: slowhttptest-mcp
 

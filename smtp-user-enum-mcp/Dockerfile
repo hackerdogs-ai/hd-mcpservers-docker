@@ -16,13 +16,15 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
+# Install smtp-user-enum from GitHub (Perl script)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     perl libnet-dns-perl libxml-libxml-perl git tini ca-certificates \
     && rm -rf /var/lib/apt/lists/* \
     && git clone --depth 1 https://github.com/pentestmonkey/smtp-user-enum.git /opt/smtp-user-enum \
-    && chmod +x /opt/smtp-user-enum/*.pl 2>/dev/null || true \
-    && ln -sf /opt/smtp-user-enum/smtp-user-enum.pl /usr/local/bin/smtp-user-enum 2>/dev/null; \
-    ln -sf /opt/smtp-user-enum/smtp-user-enum /usr/local/bin/smtp-user-enum 2>/dev/null || true
+    && test -f /opt/smtp-user-enum/smtp-user-enum.pl \
+    && chmod +x /opt/smtp-user-enum/smtp-user-enum.pl \
+    && chown -R mcpuser:mcpuser /opt/smtp-user-enum \
+    && ln -sf /opt/smtp-user-enum/smtp-user-enum.pl /usr/local/bin/smtp-user-enum
 
 WORKDIR /app
 
@@ -39,7 +41,8 @@ RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
 # Switch to non-root user
 USER mcpuser
 
-# Environment variables
+# Environment variables (so mcp_server.py finds the binary)
+ENV SMTP_USER_ENUM_BIN=/opt/smtp-user-enum/smtp-user-enum.pl
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8325

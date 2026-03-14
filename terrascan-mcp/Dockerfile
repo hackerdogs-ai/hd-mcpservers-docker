@@ -15,7 +15,12 @@ LABEL org.opencontainers.image.author="hackerdogs"
 # Security: Create non-root user
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
-
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl wget ca-certificates \
+    && rm -rf /var/lib/apt/lists/* \
+    && curl -L "https://github.com/tenable/terrascan/releases/download/v1.19.9/terrascan_1.19.9_Linux_x86_64.tar.gz" \
+    | tar -xz -C /usr/local/bin terrascan \
+    && chmod +x /usr/local/bin/terrascan
 # TODO: Install terrascan — add your install steps here.
 # Examples:
 #   apt:   RUN apt-get update && apt-get install -y --no-install-recommends terrascan && rm -rf /var/lib/apt/lists/*

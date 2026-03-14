@@ -7,12 +7,9 @@
         "-i",
         "--rm",
         "-e",
-        "MCP_TRANSPORT",
+        "MCP_TRANSPORT=stdio",
         "hackerdogs/tldfinder-mcp:latest"
-      ],
-      "env": {
-        "MCP_TRANSPORT": "stdio"
-      }
+      ]
     }
   }
 }

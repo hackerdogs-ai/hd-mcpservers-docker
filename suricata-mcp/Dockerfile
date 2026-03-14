@@ -16,13 +16,18 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
+# Install SuricataMCP from GitHub (no setup.py; use script + requirements)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git unzip tini ca-certificates \
     && rm -rf /var/lib/apt/lists/* \
     && git clone --depth 1 https://github.com/Medinios/SuricataMCP.git /opt/suricata-src \
-    && cd /opt/suricata-src && (pip install --no-cache-dir -r requirements.txt 2>/dev/null || true) \
-    && (pip install --no-cache-dir . 2>/dev/null || true)
-
+    && pip install --no-cache-dir -r /opt/suricata-src/requirements.txt \
+    && test -f /opt/suricata-src/suricata-mcp.py \
+    && sed -i 's/\r$$//' /opt/suricata-src/suricata-mcp.py \
+    && sed -i '1s|.*|#!/usr/bin/env python3|' /opt/suricata-src/suricata-mcp.py \
+    && chmod +x /opt/suricata-src/suricata-mcp.py \
+    && chown -R mcpuser:mcpuser /opt/suricata-src \
+    && ln -sf /opt/suricata-src/suricata-mcp.py /usr/local/bin/suricata-mcp
 WORKDIR /app
 
 # Copy requirements and install Python dependencies
@@ -39,7 +44,8 @@ RUN mkdir -p /app/output /app/workdir && chown -R mcpuser:mcpuser /app
 # Switch to non-root user
 USER mcpuser
 
-# Environment variables
+# Environment variables (so mcp_server.py finds the binary)
+ENV SURICATA_MCP_BIN=/opt/suricata-src/suricata-mcp.py
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8365

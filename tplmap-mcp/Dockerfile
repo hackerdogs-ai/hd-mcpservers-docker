@@ -1,5 +1,6 @@
 # Tplmap MCP Server - Hackerdogs Ready
 # Multi-arch build for linux/amd64 and linux/arm64
+# Uses Python 3.12; tplmap's requirements install excludes wsgiref (Python 2-only, built-in to Py3).
 
 FROM python:3.12-slim-bookworm
 
@@ -16,17 +17,15 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install tplmap — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends tplmap && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir tplmap
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install tplmap; then COPY --from=builder
-
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    tini \
-    ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
+git tini ca-certificates \
+&& rm -rf /var/lib/apt/lists/* \
+&& git clone --depth 1 https://github.com/epinna/tplmap.git /opt/tplmap \
+&& grep -v '^wsgiref' /opt/tplmap/requirements.txt > /tmp/tplmap-requirements.txt \
+&& pip install --no-cache-dir -r /tmp/tplmap-requirements.txt \
+&& ln -sf /opt/tplmap/tplmap.py /usr/local/bin/tplmap \
+&& chmod +x /opt/tplmap/tplmap.py
+
 
 WORKDIR /app
 

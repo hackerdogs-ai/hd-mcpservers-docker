@@ -26,6 +26,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     unzip \
     ca-certificates \
+    libhyperscan5 \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /titus/dist/titus /usr/local/bin/titus

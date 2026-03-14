@@ -37,6 +37,8 @@ BIN_NAME = os.environ.get("SURICATA_MCP_BIN", "suricata-mcp")
 
 def _find_binary() -> str:
     """Locate the suricata-mcp binary, raising a clear error if missing."""
+    if os.path.isabs(BIN_NAME) and os.path.isfile(BIN_NAME):
+        return BIN_NAME
     path = shutil.which(BIN_NAME)
     if path is None:
         logger.error("suricata-mcp binary not found on PATH")
@@ -47,13 +49,26 @@ def _find_binary() -> str:
     return path
 
 
+def _build_command(args: list[str]) -> list[str]:
+    """Build the command list to run suricata-mcp. Use python for .py scripts to avoid Exec format error."""
+    binary_path = _find_binary()
+    # Resolve symlinks (e.g. /usr/local/bin/suricata-mcp -> /opt/suricata-src/suricata-mcp.py)
+    if os.path.islink(binary_path):
+        target = os.readlink(binary_path)
+        link_target = os.path.normpath(os.path.join(os.path.dirname(binary_path), target)) if not os.path.isabs(target) else target
+        if os.path.isfile(link_target):
+            binary_path = link_target
+    if binary_path.endswith(".py") and os.path.isfile(binary_path):
+        return [sys.executable, binary_path] + args
+    return [binary_path] + args
+
+
 async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
     """Execute a suricata-mcp command and return structured output.
 
     Returns a dict with keys: stdout, stderr, return_code.
     """
-    binary_path = _find_binary()
-    cmd = [binary_path] + args
+    cmd = _build_command(args)
 
     try:
         proc = await asyncio.create_subprocess_exec(

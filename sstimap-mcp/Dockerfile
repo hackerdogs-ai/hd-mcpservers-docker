@@ -16,13 +16,14 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+    RUN apt-get update && apt-get install -y --no-install-recommends \
     git tini ca-certificates \
     && rm -rf /var/lib/apt/lists/* \
     && git clone --depth 1 https://github.com/vladko312/SSTImap.git /opt/sstimap \
-    && cd /opt/sstimap && (pip install --no-cache-dir -r requirements.txt 2>/dev/null || true) \
-    && (pip install --no-cache-dir . 2>/dev/null || true) \
-    && ln -sf /opt/sstimap/sstimap.py /usr/local/bin/sstimap 2>/dev/null || true
+    && cd /opt/sstimap \
+    && pip install --no-cache-dir -r requirements.txt \
+    && chmod +x /opt/sstimap/sstimap.py \
+    && ln -sf /opt/sstimap/sstimap.py /usr/local/bin/sstimap
 
 WORKDIR /app
 

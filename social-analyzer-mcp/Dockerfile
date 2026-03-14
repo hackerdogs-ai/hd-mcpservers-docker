@@ -16,12 +16,8 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install social-analyzer — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends social-analyzer && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir social-analyzer
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install social-analyzer; then COPY --from=builder
+# Install social-analyzer
+RUN pip install --no-cache-dir social-analyzer
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \

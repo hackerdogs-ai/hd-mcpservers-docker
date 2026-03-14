@@ -1,1 +1,2 @@
+pydantic>=2.0,<2.12
 fastmcp>=2.0.0

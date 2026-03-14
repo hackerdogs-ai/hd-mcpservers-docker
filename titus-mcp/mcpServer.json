@@ -1,10 +1,15 @@
 {
   "mcpServers": {
     "titus-mcp": {
-      "url": "http://localhost:8103/mcp",
-      "env": {
-        "MCP_TRANSPORT": "stdio"
-      }
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "MCP_TRANSPORT=stdio",
+        "hackerdogs/titus-mcp:latest"
+      ]
     }
   }
 }
