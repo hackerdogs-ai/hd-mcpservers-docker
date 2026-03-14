@@ -24,9 +24,18 @@ RUN groupadd -g 1000 mcpuser && \
 #   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install enum4linux; then COPY --from=builder
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    samba \
+    smbclient \
+    ldap-utils \
+    perl \
     tini \
     ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && pip install --no-cache-dir impacket \
+    && git clone https://github.com/CiscoCXSecurity/enum4linux.git /opt/enum4linux \
+    && ln -s /opt/enum4linux/enum4linux.pl /usr/local/bin/enum4linux \
+    && chmod +x /usr/local/bin/enum4linux
 
 WORKDIR /app
 

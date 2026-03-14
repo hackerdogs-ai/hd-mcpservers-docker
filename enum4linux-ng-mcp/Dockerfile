@@ -23,10 +23,20 @@ RUN groupadd -g 1000 mcpuser && \
 #   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
 #   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install enum4linux-ng; then COPY --from=builder
 
+# Install dependencies for enum4linux-ng
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    samba \
+    smbclient \
+    ldap-utils \
     tini \
     ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && pip install --no-cache-dir impacket \
+    && git clone https://github.com/cddmp/enum4linux-ng.git /opt/enum4linux-ng \
+    && sed -i '1s|.*|#!/usr/bin/env python3|' /opt/enum4linux-ng/enum4linux-ng.py \
+    && ln -s /opt/enum4linux-ng/enum4linux-ng.py /usr/local/bin/enum4linux-ng \
+    && chmod +x /usr/local/bin/enum4linux-ng
 
 WORKDIR /app
 
@@ -54,4 +64,4 @@ EXPOSE 8210
 ENTRYPOINT ["/usr/bin/tini", "--"]
 
 # Start MCP server
-CMD ["python", "mcp_server.py"]
+CMD ["python", "-u", "mcp_server.py"]

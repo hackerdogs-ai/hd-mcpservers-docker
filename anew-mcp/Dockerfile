@@ -1,6 +1,13 @@
 # Anew MCP Server - Hackerdogs Ready
 # Multi-arch build for linux/amd64 and linux/arm64
 
+# -------- Build anew --------
+FROM golang:1.24-bookworm AS builder
+
+RUN go install github.com/tomnomnom/anew@latest
+
+
+# -------- Runtime --------
 FROM python:3.12-slim-bookworm
 
 LABEL org.opencontainers.image.source="https://github.com/hackerdogs-ai/hd-mcpservers-docker"
@@ -16,42 +23,35 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install anew — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends anew && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir anew
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install anew; then COPY --from=builder
-
+# Runtime utilities
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
+# Copy anew binary
+COPY --from=builder /go/bin/anew /usr/local/bin/anew
+
 WORKDIR /app
 
-# Copy requirements and install Python dependencies
+# Python dependencies for MCP server
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
+# MCP server
 COPY mcp_server.py ./
 
-# Create output directory
+# Output directory
 RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
 
-# Switch to non-root user
 USER mcpuser
 
-# Environment variables
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8229
 
 EXPOSE 8229
 
-# Use tini for proper signal handling
 ENTRYPOINT ["/usr/bin/tini", "--"]
 
-# Start MCP server
 CMD ["python", "mcp_server.py"]
