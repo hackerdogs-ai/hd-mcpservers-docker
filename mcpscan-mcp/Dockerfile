@@ -54,7 +54,7 @@ ENV MCPSCAN_BIN=/usr/local/bin/mcpscan
 
 # FIX: Provide a dummy key to bypass the global LLMClient instantiation crash at import time!
 # You must pass your real key at runtime via your MCP client configuration.
-ENV DEEPSEEK_API_KEY="sk-e0049f34f86e4a73b56a38bc701ef1ec"
+ENV DEEPSEEK_API_KEY="sk-xxxxxx"
 
 EXPOSE 8296
 
