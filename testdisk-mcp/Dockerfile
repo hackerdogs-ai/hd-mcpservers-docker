@@ -4,7 +4,7 @@
 FROM python:3.12-slim-bookworm
 
 LABEL org.opencontainers.image.source="https://github.com/hackerdogs-ai/hd-mcpservers-docker"
-LABEL org.opencontainers.image.description="TestDisk MCP Server - Disk partition recovery and file carving."
+LABEL org.opencontainers.image.description="TestDisk MCP Server - Stateless disk analysis via URL."
 LABEL org.opencontainers.image.vendor="Hackerdogs"
 LABEL "maintainer"="support@hackerdogs.ai"
 LABEL "mcp-server-scope"="remote"
@@ -15,26 +15,21 @@ LABEL org.opencontainers.image.author="hackerdogs"
 # Security: Create non-root user
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
-    RUN apt-get update && apt-get install -y --no-install-recommends \
-    testdisk \
-    && rm -rf /var/lib/apt/lists/*
-# TODO: Install testdisk — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends testdisk && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir testdisk
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install testdisk; then COPY --from=builder
 
+# Install system dependencies including wget for downloading images
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     git \
     unzip \
     ca-certificates \
+    testdisk \
+    wget \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
 # Copy requirements and install Python dependencies
+# Note: Ensure fastmcp==2.14.5 is pinned in your requirements.txt!
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -42,8 +37,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY mcp_server.py ./
 COPY hd_fetch.py ./
 
-# Create output directory
-RUN mkdir -p /app/output /app/workdir && chown -R mcpuser:mcpuser /app
+# Create output and temp directories
+RUN mkdir -p /app/output /app/temp_workspace && chown -R mcpuser:mcpuser /app
 
 # Switch to non-root user
 USER mcpuser
@@ -52,6 +47,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8283
+ENV TESTDISK_BIN=/usr/bin/testdisk
+ENV PHOTOREC_BIN=/usr/bin/photorec
 
 EXPOSE 8283
 

@@ -16,25 +16,31 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
+# Install system dependencies and cleanly clone the repo
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git tini ca-certificates \
+    tini \
+    ca-certificates \
+    git \
     && rm -rf /var/lib/apt/lists/* \
-    && git clone --depth 1 https://github.com/Nova-Hunting/nova-proximity.git /opt/nova-proximity \
-    && cd /opt/nova-proximity && (pip install --no-cache-dir -r requirements.txt 2>/dev/null || true) \
-    && (pip install --no-cache-dir . 2>/dev/null || true) \
-    && ln -sf /opt/nova-proximity/nova-proximity.py /usr/local/bin/nova-proximity 2>/dev/null || true
+    && git clone --depth 1 https://github.com/Nova-Hunting/nova-proximity.git /opt/nova-proximity
 
 WORKDIR /app
 
-# Copy requirements and install Python dependencies
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+# Upgrade pip to handle complex dependency resolution efficiently
+RUN pip install --no-cache-dir --upgrade pip
 
-# Copy application code
+# FIX: We are bypassing the host's requirements.txt to avoid the uvicorn conflict loop.
+# We explicitly install fastmcp and nova-hunting together so pip resolves them cleanly.
+RUN pip install --no-cache-dir fastmcp "uvicorn>=0.35" nova-hunting
+
+# Safely install Nova Proximity's internal tool requirements
+RUN if [ -f "/opt/nova-proximity/requirements.txt" ]; then pip install --no-cache-dir -r /opt/nova-proximity/requirements.txt; fi
+
+# Copy application code (Make sure your mcp_server.py is in the same directory!)
 COPY mcp_server.py ./
 
-# Create output directory
-RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+# Create output directory and grant permissions to mcpuser
+RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app /opt/nova-proximity
 
 # Switch to non-root user
 USER mcpuser
@@ -43,6 +49,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8298
+# Pointing directly to the correct script name
+ENV NOVA_PROXIMITY_SCRIPT=/opt/nova-proximity/novaprox.py
 
 EXPOSE 8298
 

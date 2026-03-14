@@ -16,13 +16,7 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install scout — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends scout && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir scout
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install scout; then COPY --from=builder
-
+# Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     ca-certificates \
@@ -32,7 +26,11 @@ WORKDIR /app
 
 # Copy requirements and install Python dependencies
 COPY requirements.txt ./
+
+# Install requirements, then explicitly install scoutsuite
+# Note: Ensure fastmcp==2.14.5 is pinned in your requirements.txt to avoid the v3 resolver crash!
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir scoutsuite
 
 # Copy application code
 COPY mcp_server.py ./
@@ -47,6 +45,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8251
+# Explicitly tell the server where to find the scout binary installed by pip
+ENV SCOUT_BIN=/usr/local/bin/scout
 
 EXPOSE 8251
 

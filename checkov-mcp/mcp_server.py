@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Checkov MCP Server — Infrastructure as code security scanning.
+"""Checkov MCP Server — Stateless Infrastructure as Code security scanning.
 
-Wraps the checkov CLI (bridgecrewio/checkov) to expose
-capabilities through the Model Context Protocol (MCP).
+Clones a remote Git repository, runs Checkov to find misconfigurations,
+returns the report, and securely deletes the repository.
 """
 
 import asyncio
@@ -11,6 +11,8 @@ import logging
 import os
 import shutil
 import sys
+import uuid
+import shlex
 
 from fastmcp import FastMCP
 import hd_fetch
@@ -28,33 +30,41 @@ MCP_PORT = int(os.environ.get("MCP_PORT", "8272"))
 mcp = FastMCP(
     "Checkov MCP Server",
     instructions=(
-        "Infrastructure as code security scanning."
+        "Stateless Infrastructure as Code (IaC) security scanning. "
+        "Provide a public Git repository URL. The server will clone it, scan it with Checkov, and return the findings."
     ),
 )
 
 CHECKOV_BIN = os.environ.get("CHECKOV_BIN", "checkov")
+WORKSPACE_DIR = "/tmp/checkov_workspace"
 
 
-def _find_binary() -> str:
-    """Locate the checkov binary, raising a clear error if missing."""
-    path = shutil.which(CHECKOV_BIN)
-    if path is None:
-        logger.error("checkov binary not found on PATH")
-        raise FileNotFoundError(
-            f"checkov binary not found. Ensure it is installed and available "
-            f"on PATH, or set CHECKOV_BIN to the full path."
+async def _clone_repo(repo_url: str, dest_path: str, timeout_seconds: int = 120) -> bool:
+    """Clone a git repository with depth=1 for speed."""
+    logger.info(f"Cloning repository from {repo_url}...")
+    try:
+        proc = await asyncio.create_subprocess_exec(
+            "git", "clone", "--depth", "1", repo_url, dest_path,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
         )
-    return path
+        await asyncio.wait_for(proc.communicate(), timeout=timeout_seconds)
+        if proc.returncode == 0 and os.path.exists(dest_path):
+            return True
+        logger.error(f"Git clone failed with exit code {proc.returncode}")
+        return False
+    except asyncio.TimeoutError:
+        logger.error(f"Clone timed out after {timeout_seconds}s")
+        if proc:
+            proc.kill()
+        return False
+    except Exception as e:
+        logger.error(f"Clone exception: {e}")
+        return False
 
 
-async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
-    """Execute a checkov command and return structured output.
-
-    Returns a dict with keys: stdout, stderr, return_code.
-    """
-    binary = _find_binary()
-    cmd = [binary] + args
-
+async def _run_command(cmd: list[str], timeout_seconds: int = 600) -> dict:
+    """Execute a command and return structured output."""
     try:
         proc = await asyncio.create_subprocess_exec(
             *cmd,
@@ -68,145 +78,85 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
     except asyncio.TimeoutError:
         proc.kill()
         await proc.communicate()
-        logger.error("Command timed out after %ds: %s", timeout_seconds, " ".join(cmd))
         return {
             "stdout": "",
-            "stderr": f"Command timed out after {timeout_seconds}s: {' '.join(cmd)}",
+            "stderr": f"Command timed out after {timeout_seconds}s.",
             "return_code": -1,
         }
     except Exception as exc:
-        logger.error("Command execution failed: %s", exc)
         return {
             "stdout": "",
             "stderr": f"Failed to execute command: {exc}",
             "return_code": -1,
         }
 
-    stdout = stdout_bytes.decode("utf-8", errors="replace")
-    stderr = stderr_bytes.decode("utf-8", errors="replace")
     return {
-        "stdout": stdout,
-        "stderr": stderr,
+        "stdout": stdout_bytes.decode("utf-8", errors="replace"),
+        "stderr": stderr_bytes.decode("utf-8", errors="replace"),
         "return_code": proc.returncode,
     }
 
 
 @mcp.tool()
-async def run_checkov(
-    arguments: str,
-    source_url: str = "",
+async def scan_remote_repo(
+    repo_url: str,
+    arguments: str = "--output json",
     timeout_seconds: int = 600,
 ) -> str:
-    """Run checkov with the given arguments.
-
-    Pass arguments as you would on the command line.  Use ``source_url`` to
-    have the server download files from a URL before processing.
+    """Clone a Git repository, scan it with Checkov, and return the results.
 
     Args:
-        arguments: Command-line arguments string.  Use ``{source}`` as a
-                   placeholder for the downloaded file path when using
-                   *source_url*.
-        source_url: Optional HTTP(S) URL, GitHub/GitLab repo URL, or archive
-                    URL.  Downloaded into the container; local path replaces
-                    ``{source}`` in *arguments* or is appended.
+        repo_url: Public HTTPS Git repository URL to scan.
+        arguments: Additional Checkov arguments (default: "--output json"). Do not provide the directory flag (-d).
         timeout_seconds: Maximum execution time in seconds (default 600).
     """
-    import shlex
+    if not shutil.which(CHECKOV_BIN):
+        return json.dumps({"error": True, "message": f"{CHECKOV_BIN} binary not found in container."})
 
-    logger.info("run_checkov called with arguments=%s source_url=%s", arguments, source_url)
+    os.makedirs(WORKSPACE_DIR, exist_ok=True)
+    temp_repo_path = os.path.join(WORKSPACE_DIR, f"repo_{uuid.uuid4().hex[:8]}")
 
-    job_info = None
+    # 1. Clone the repository
+    success = await _clone_repo(repo_url, temp_repo_path)
+    if not success:
+        return json.dumps({"error": True, "message": f"Failed to clone repository from {repo_url}."})
+
+    # 2. Prepare Checkov command
+    args = shlex.split(arguments) if arguments.strip() else []
+    
+    # Force Checkov not to exit with 1 if it finds vulnerabilities, so our wrapper doesn't panic
+    if "--soft-fail" not in args:
+        args.append("--soft-fail")
+
+    cmd = [CHECKOV_BIN] + args + ["-d", temp_repo_path]
+    logger.info(f"Running command: {' '.join(cmd)}")
+
+    # 3. Execute Checkov
+    result = await _run_command(cmd, timeout_seconds=timeout_seconds)
+
+    # 4. Clean up the cloned repository immediately
+    if os.path.exists(temp_repo_path):
+        shutil.rmtree(temp_repo_path)
+        logger.info(f"Cleaned up temporary repository: {temp_repo_path}")
+
+    # If it completely crashed (e.g. invalid arguments), return the error
+    if result["return_code"] != 0:
+        return json.dumps({
+            "error": True,
+            "message": f"Checkov crashed (exit code {result['return_code']})",
+            "detail": result["stderr"] or result["stdout"],
+        }, indent=2)
+
+    stdout = result["stdout"].strip()
+    if not stdout:
+        return json.dumps({"message": "Scan completed with no output."})
+
+    # Checkov outputs JSON if requested. We try to parse it so the LLM gets a clean object.
     try:
-        if source_url:
-            try:
-                job_info = hd_fetch.fetch(source_url)
-            except hd_fetch.FetchError as exc:
-                return json.dumps({"error": True, "message": str(exc)}, indent=2)
-            if "{source}" in arguments:
-                arguments = arguments.replace("{source}", job_info["path"])
-            else:
-                arguments = f"{arguments} {job_info['path']}".strip()
-
-        args = shlex.split(arguments) if arguments.strip() else []
-        result = await _run_command(args, timeout_seconds=timeout_seconds)
-
-        if result["return_code"] != 0:
-            logger.warning("checkov command failed with exit code %d", result["return_code"])
-            error_detail = result["stderr"] or result["stdout"] or "Unknown error"
-            return json.dumps(
-                {
-                    "error": True,
-                    "message": f"checkov failed (exit code {result['return_code']})",
-                    "detail": error_detail.strip(),
-                    "command": f"checkov {' '.join(args)}",
-                },
-                indent=2,
-            )
-
-        stdout = result["stdout"].strip()
-
-        if not stdout:
-            return json.dumps({"message": "Command completed with no output", "arguments": arguments})
-
-        results = []
-        for line in stdout.splitlines():
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                results.append(json.loads(line))
-            except json.JSONDecodeError:
-                results.append({"raw": line})
-
-        if len(results) == 1:
-            return json.dumps(results[0], indent=2)
-        return json.dumps(results, indent=2)
-    finally:
-        if job_info:
-            hd_fetch.cleanup(job_info["job_id"])
-
-
-
-@mcp.tool()
-async def download_file(
-    url: str,
-    extract: bool = True,
-) -> str:
-    """Download a file or repository from a URL into the container workspace.
-
-    Use this to pre-download files before analysis, or when you need to
-    download once and run multiple analyses on the same content.
-
-    Args:
-        url: HTTP(S) URL, GitHub/GitLab repo URL, or data: URI.
-        extract: If True (default), automatically extract archives (.zip, .tar.gz, etc.).
-
-    Returns:
-        JSON with 'path' (local path to use in other tools) and
-        'job_id' (use with cleanup_downloads to free space).
-    """
-    try:
-        info = hd_fetch.fetch(url, extract=extract)
-        return json.dumps(info, indent=2)
-    except hd_fetch.FetchError as exc:
-        return json.dumps({"error": True, "message": str(exc)}, indent=2)
-
-
-@mcp.tool()
-async def cleanup_downloads(job_id: str = "") -> str:
-    """Clean up downloaded files from the container workspace.
-
-    Args:
-        job_id: Specific job ID to clean up.  If empty, removes all downloads.
-
-    Returns:
-        JSON confirming the cleanup.
-    """
-    if job_id:
-        hd_fetch.cleanup(job_id)
-        return json.dumps({"cleaned": job_id})
-    hd_fetch.cleanup_all()
-    return json.dumps({"cleaned": "all"})
+        parsed_json = json.loads(stdout)
+        return json.dumps(parsed_json, indent=2)
+    except json.JSONDecodeError:
+        return json.dumps({"raw_output": stdout}, indent=2)
 
 
 def main():

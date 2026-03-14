@@ -16,7 +16,7 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# Install steghide
+# Install steghide alongside tini and certs
 RUN apt-get update && apt-get install -y --no-install-recommends \
     steghide \
     tini \
@@ -45,6 +45,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8250
+# Explicitly tell the server where to find the steghide binary
+ENV STEGHIDE_BIN=/usr/bin/steghide
 
 EXPOSE 8250
 

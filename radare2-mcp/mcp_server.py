@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Radare2 MCP Server — Reverse engineering framework.
 
-Wraps the r2 CLI (radareorg/radare2) to expose
-capabilities through the Model Context Protocol (MCP).
+Wraps the r2 CLI (radareorg/radare2) to expose capabilities through the Model Context Protocol (MCP).
 """
 
 import asyncio
@@ -11,6 +10,7 @@ import logging
 import os
 import shutil
 import sys
+import shlex
 
 from fastmcp import FastMCP
 import hd_fetch
@@ -28,42 +28,49 @@ MCP_PORT = int(os.environ.get("MCP_PORT", "8239"))
 mcp = FastMCP(
     "Radare2 MCP Server",
     instructions=(
-        "Reverse engineering framework."
+        "Reverse engineering framework (radare2/r2). "
+        "IMPORTANT: Radare2 is highly interactive by default! You MUST use the '-q' flag "
+        "to make it quit after executing commands, otherwise it will hang. "
+        "Use '-c' to pass commands. Example: 'r2 -q -c aaa -c afl target_binary'. "
+        "Target binaries must be placed in the mounted /app/output directory."
     ),
 )
 
-RADARE2_BIN = os.environ.get("RADARE2_BIN", "r2")
+BIN_NAME = os.environ.get("RADARE2_BIN", "/usr/bin/r2")
+OUTPUT_DIR = "/app/output"
 
 
 def _find_binary() -> str:
-    """Locate the r2 binary, raising a clear error if missing."""
-    path = shutil.which(RADARE2_BIN)
+    """Locate the r2 binary directly."""
+    path = shutil.which(BIN_NAME)
     if path is None:
-        logger.error("r2 binary not found on PATH")
+        logger.error(f"{BIN_NAME} binary not found on PATH")
         raise FileNotFoundError(
-            f"r2 binary not found. Ensure it is installed and available "
-            f"on PATH, or set RADARE2_BIN to the full path."
+            f"{BIN_NAME} binary not found. Ensure the Dockerfile installed radare2."
         )
     return path
 
 
 async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
-    """Execute a r2 command and return structured output.
+    """Execute a r2 command and return structured output."""
+    binary_path = _find_binary()
+    cmd = [binary_path] + args
 
-    Returns a dict with keys: stdout, stderr, return_code.
-    """
-    binary = _find_binary()
-    cmd = [binary] + args
+    # Ensure the output directory exists
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     try:
         proc = await asyncio.create_subprocess_exec(
             *cmd,
-            stdin=asyncio.subprocess.DEVNULL,
+            stdin=asyncio.subprocess.PIPE,  # Open stdin to catch interactive hangs
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
+            cwd=OUTPUT_DIR  # Route binary reads/writes to the mounted volume
         )
+        
+        # Send 'q\n' to force quit if it accidentally drops into the interactive prompt!
         stdout_bytes, stderr_bytes = await asyncio.wait_for(
-            proc.communicate(), timeout=timeout_seconds
+            proc.communicate(input=b"q\n"), timeout=timeout_seconds
         )
     except asyncio.TimeoutError:
         proc.kill()
@@ -93,14 +100,13 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
 
 @mcp.tool()
 async def run_radare2(
-    arguments: str,
-    source_url: str = "",
+    arguments: str = "",
     timeout_seconds: int = 600,
 ) -> str:
     """Run r2 with the given arguments.
 
-    Pass arguments as you would on the command line.  Use ``source_url`` to
-    have the server download files from a URL before processing.
+    Pass arguments as you would on the command line.
+    Example: "-q -c aaa -c afl /app/output/target_binary"
 
     Args:
         arguments: Command-line arguments string.  Use ``{source}`` as a
@@ -111,23 +117,13 @@ async def run_radare2(
                     ``{source}`` in *arguments* or is appended.
         timeout_seconds: Maximum execution time in seconds (default 600).
     """
-    import shlex
-
-    logger.info("run_radare2 called with arguments=%s source_url=%s", arguments, source_url)
-
-    job_info = None
     try:
-        if source_url:
-            try:
-                job_info = hd_fetch.fetch(source_url)
-            except hd_fetch.FetchError as exc:
-                return json.dumps({"error": True, "message": str(exc)}, indent=2)
-            if "{source}" in arguments:
-                arguments = arguments.replace("{source}", job_info["path"])
-            else:
-                arguments = f"{arguments} {job_info['path']}".strip()
-
+        if arguments is None:
+            arguments = ""
+            
+        logger.info("run_radare2 called with arguments=%s", arguments)
         args = shlex.split(arguments) if arguments.strip() else []
+        
         result = await _run_command(args, timeout_seconds=timeout_seconds)
 
         if result["return_code"] != 0:
@@ -144,69 +140,34 @@ async def run_radare2(
             )
 
         stdout = result["stdout"].strip()
+        stderr = result["stderr"].strip()
+
+        # Fallback to STDERR if STDOUT is empty (common for help menus)
+        if not stdout and stderr:
+            stdout = stderr
 
         if not stdout:
-            return json.dumps({"message": "Command completed with no output", "arguments": arguments})
+            return json.dumps({"message": "Command completed with no output. Did you forget the target file?", "arguments": arguments})
 
-        results = []
-        for line in stdout.splitlines():
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                results.append(json.loads(line))
-            except json.JSONDecodeError:
-                results.append({"raw": line})
+        # Radare2 outputs JSON if the LLM uses a `j` command (e.g., -c "ij").
+        # We attempt to parse the entire stdout block.
+        try:
+            parsed = json.loads(stdout)
+            return json.dumps(parsed, indent=2)
+        except json.JSONDecodeError:
+            return json.dumps({
+                "success": True,
+                "message": "Radare2 executed successfully.",
+                "stdout": stdout
+            }, indent=2)
 
-        if len(results) == 1:
-            return json.dumps(results[0], indent=2)
-        return json.dumps(results, indent=2)
-    finally:
-        if job_info:
-            hd_fetch.cleanup(job_info["job_id"])
-
-
-
-@mcp.tool()
-async def download_file(
-    url: str,
-    extract: bool = True,
-) -> str:
-    """Download a file or repository from a URL into the container workspace.
-
-    Use this to pre-download files before analysis, or when you need to
-    download once and run multiple analyses on the same content.
-
-    Args:
-        url: HTTP(S) URL, GitHub/GitLab repo URL, or data: URI.
-        extract: If True (default), automatically extract archives (.zip, .tar.gz, etc.).
-
-    Returns:
-        JSON with 'path' (local path to use in other tools) and
-        'job_id' (use with cleanup_downloads to free space).
-    """
-    try:
-        info = hd_fetch.fetch(url, extract=extract)
-        return json.dumps(info, indent=2)
-    except hd_fetch.FetchError as exc:
-        return json.dumps({"error": True, "message": str(exc)}, indent=2)
-
-
-@mcp.tool()
-async def cleanup_downloads(job_id: str = "") -> str:
-    """Clean up downloaded files from the container workspace.
-
-    Args:
-        job_id: Specific job ID to clean up.  If empty, removes all downloads.
-
-    Returns:
-        JSON confirming the cleanup.
-    """
-    if job_id:
-        hd_fetch.cleanup(job_id)
-        return json.dumps({"cleaned": job_id})
-    hd_fetch.cleanup_all()
-    return json.dumps({"cleaned": "all"})
+    except Exception as e:
+        logger.error("Unhandled exception in run_radare2: %s", e)
+        return json.dumps({
+            "error": True,
+            "message": "Internal MCP wrapper error.",
+            "detail": str(e)
+        }, indent=2)
 
 
 def main():

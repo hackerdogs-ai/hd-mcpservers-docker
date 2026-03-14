@@ -11,6 +11,7 @@ import logging
 import os
 import shutil
 import sys
+import shlex
 
 from fastmcp import FastMCP
 
@@ -27,32 +28,36 @@ MCP_PORT = int(os.environ.get("MCP_PORT", "8304"))
 mcp = FastMCP(
     "dnsenum MCP Server",
     instructions=(
-        "DNS enumeration tool for discovering host information."
+        "DNS enumeration tool for discovering host information (zone transfers, brute forcing, reverse lookups). "
+        "IMPORTANT: A default dictionary for brute forcing is located at /opt/dnsenum/dns.txt. "
+        "If you use the '-o' flag to output an XML file, it will be saved to the configured output directory."
     ),
 )
 
-BIN_NAME = os.environ.get("DNSENUM_BIN", "dnsenum")
+BIN_NAME = os.environ.get("DNSENUM_BIN", "/usr/local/bin/dnsenum")
+OUTPUT_DIR = "/app/output"
 
 
 def _find_binary() -> str:
-    """Locate the dnsenum binary, raising a clear error if missing."""
+    """Locate the dnsenum binary directly."""
     path = shutil.which(BIN_NAME)
     if path is None:
-        logger.error("dnsenum binary not found on PATH")
+        logger.error(f"{BIN_NAME} binary not found on PATH")
         raise FileNotFoundError(
-            f"dnsenum binary not found. Ensure it is installed and available "
-            f"on PATH, or set DNSENUM_BIN to the full path."
+            f"{BIN_NAME} binary not found. Ensure the Dockerfile cloned and symlinked it correctly."
         )
     return path
 
 
 async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
-    """Execute a dnsenum command and return structured output.
-
-    Returns a dict with keys: stdout, stderr, return_code.
-    """
+    """Execute a dnsenum command and return structured output."""
     binary_path = _find_binary()
+    
+    # Execute the Perl script directly
     cmd = [binary_path] + args
+
+    # Ensure the output directory exists
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     try:
         proc = await asyncio.create_subprocess_exec(
@@ -60,6 +65,7 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
             stdin=asyncio.subprocess.DEVNULL,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
+            cwd=OUTPUT_DIR  # Route all local XML output (-o) to the mounted volume
         )
         stdout_bytes, stderr_bytes = await asyncio.wait_for(
             proc.communicate(), timeout=timeout_seconds
@@ -98,15 +104,15 @@ async def run_dnsenum(
     """Run dnsenum with the given arguments.
 
     Pass arguments as you would on the command line.
+    Example: "example.com -f /opt/dnsenum/dns.txt -o results.xml"
 
     Args:
         arguments: Command-line arguments string.
         timeout_seconds: Maximum execution time in seconds (default 600).
     """
-    import shlex
-
     logger.info("run_dnsenum called with arguments=%s", arguments)
     args = shlex.split(arguments) if arguments.strip() else []
+    
     result = await _run_command(args, timeout_seconds=timeout_seconds)
 
     if result["return_code"] != 0:
@@ -127,19 +133,12 @@ async def run_dnsenum(
     if not stdout:
         return json.dumps({"message": "Command completed with no output", "arguments": arguments})
 
-    results = []
-    for line in stdout.splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            results.append(json.loads(line))
-        except json.JSONDecodeError:
-            results.append({"raw": line})
-
-    if len(results) == 1:
-        return json.dumps(results[0], indent=2)
-    return json.dumps(results, indent=2)
+    return json.dumps({
+        "success": True,
+        "message": "dnsenum executed successfully.",
+        "stdout": stdout,
+        "instructions": "If you used the -o flag, the XML file is located in the mounted /app/output directory on the host."
+    }, indent=2)
 
 
 def main():

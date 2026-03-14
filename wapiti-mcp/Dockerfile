@@ -16,8 +16,7 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-RUN pip install --no-cache-dir wapiti3
-
+# Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     ca-certificates \
@@ -26,13 +25,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /app
 
 # Copy requirements and install Python dependencies
+# Grouping the pip installs prevents layer bloat
 COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir wapiti3
 
 # Copy application code
 COPY mcp_server.py ./
 
-# Create output directory
+# Create output directory and set ownership
 RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
 
 # Switch to non-root user
@@ -42,6 +43,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8288
+# The pip package installs the binary as 'wapiti'
+ENV WAPITI_BIN=/usr/local/bin/wapiti
 
 EXPOSE 8288
 

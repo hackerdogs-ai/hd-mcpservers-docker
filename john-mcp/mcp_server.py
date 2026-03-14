@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """John the Ripper MCP Server — Password hash cracking with custom rules.
 
-Wraps the john CLI (openwall/john) to expose
-capabilities through the Model Context Protocol (MCP).
+Wraps the john CLI (openwall/john) to expose capabilities through the Model Context Protocol (MCP).
 """
 
 import asyncio
@@ -11,6 +10,7 @@ import logging
 import os
 import shutil
 import sys
+import shlex
 
 from fastmcp import FastMCP
 import hd_fetch
@@ -28,32 +28,34 @@ MCP_PORT = int(os.environ.get("MCP_PORT", "8234"))
 mcp = FastMCP(
     "John the Ripper MCP Server",
     instructions=(
-        "Password hash cracking with custom rules."
+        "CPU-based password cracking tool (John the Ripper). "
+        "IMPORTANT: Place target hash files and wordlists in the mounted /app/output directory. "
+        "Use '--show' to display previously cracked passwords from the potfile."
     ),
 )
 
-JOHN_BIN = os.environ.get("JOHN_BIN", "john")
+BIN_NAME = os.environ.get("JOHN_BIN", "/opt/john/run/john")
+OUTPUT_DIR = "/app/output"
 
 
 def _find_binary() -> str:
-    """Locate the john binary, raising a clear error if missing."""
-    path = shutil.which(JOHN_BIN)
+    """Locate the john binary directly."""
+    path = shutil.which(BIN_NAME)
     if path is None:
-        logger.error("john binary not found on PATH")
+        logger.error(f"{BIN_NAME} binary not found on PATH")
         raise FileNotFoundError(
-            f"john binary not found. Ensure it is installed and available "
-            f"on PATH, or set JOHN_BIN to the full path."
+            f"{BIN_NAME} binary not found. Ensure the Dockerfile installed john."
         )
     return path
 
 
 async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
-    """Execute a john command and return structured output.
+    """Execute a john command and return structured output."""
+    binary_path = _find_binary()
+    cmd = [binary_path] + args
 
-    Returns a dict with keys: stdout, stderr, return_code.
-    """
-    binary = _find_binary()
-    cmd = [binary] + args
+    # Ensure the output directory exists
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     try:
         proc = await asyncio.create_subprocess_exec(
@@ -61,6 +63,7 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
             stdin=asyncio.subprocess.DEVNULL,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
+            cwd=OUTPUT_DIR  # Route all hash reads to the mounted volume
         )
         stdout_bytes, stderr_bytes = await asyncio.wait_for(
             proc.communicate(), timeout=timeout_seconds
@@ -93,14 +96,13 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
 
 @mcp.tool()
 async def run_john(
-    arguments: str,
-    source_url: str = "",
+    arguments: str = "",
     timeout_seconds: int = 600,
 ) -> str:
     """Run john with the given arguments.
 
-    Pass arguments as you would on the command line.  Use ``source_url`` to
-    have the server download files from a URL before processing.
+    Pass arguments as you would on the command line.
+    Example: "--wordlist=words.txt hashes.txt" or "--show hashes.txt"
 
     Args:
         arguments: Command-line arguments string.  Use ``{source}`` as a
@@ -111,26 +113,17 @@ async def run_john(
                     ``{source}`` in *arguments* or is appended.
         timeout_seconds: Maximum execution time in seconds (default 600).
     """
-    import shlex
-
-    logger.info("run_john called with arguments=%s source_url=%s", arguments, source_url)
-
-    job_info = None
     try:
-        if source_url:
-            try:
-                job_info = hd_fetch.fetch(source_url)
-            except hd_fetch.FetchError as exc:
-                return json.dumps({"error": True, "message": str(exc)}, indent=2)
-            if "{source}" in arguments:
-                arguments = arguments.replace("{source}", job_info["path"])
-            else:
-                arguments = f"{arguments} {job_info['path']}".strip()
-
+        if arguments is None:
+            arguments = ""
+            
+        logger.info("run_john called with arguments=%s", arguments)
         args = shlex.split(arguments) if arguments.strip() else []
+        
         result = await _run_command(args, timeout_seconds=timeout_seconds)
 
-        if result["return_code"] != 0:
+        # FIX: JtR often returns 1 if it finishes without cracking all hashes.
+        if result["return_code"] not in [0, 1]:
             logger.warning("john command failed with exit code %d", result["return_code"])
             error_detail = result["stderr"] or result["stdout"] or "Unknown error"
             return json.dumps(
@@ -144,69 +137,31 @@ async def run_john(
             )
 
         stdout = result["stdout"].strip()
+        stderr = result["stderr"].strip()
 
-        if not stdout:
-            return json.dumps({"message": "Command completed with no output", "arguments": arguments})
+        # FIX: John outputs "Loaded X password hashes" to STDERR, and cracked passwords to STDOUT.
+        # We must combine them so the LLM gets the full context.
+        combined_output = stdout
+        if stderr:
+            combined_output = f"{stderr}\n{stdout}".strip()
 
-        results = []
-        for line in stdout.splitlines():
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                results.append(json.loads(line))
-            except json.JSONDecodeError:
-                results.append({"raw": line})
+        if not combined_output:
+            return json.dumps({"message": "Command completed with no output. Did you provide a valid hash file?", "arguments": arguments})
 
-        if len(results) == 1:
-            return json.dumps(results[0], indent=2)
-        return json.dumps(results, indent=2)
-    finally:
-        if job_info:
-            hd_fetch.cleanup(job_info["job_id"])
+        # Return standard text response instead of JSON parsing
+        return json.dumps({
+            "success": True,
+            "message": "John the Ripper executed successfully.",
+            "stdout": combined_output
+        }, indent=2)
 
-
-
-@mcp.tool()
-async def download_file(
-    url: str,
-    extract: bool = True,
-) -> str:
-    """Download a file or repository from a URL into the container workspace.
-
-    Use this to pre-download files before analysis, or when you need to
-    download once and run multiple analyses on the same content.
-
-    Args:
-        url: HTTP(S) URL, GitHub/GitLab repo URL, or data: URI.
-        extract: If True (default), automatically extract archives (.zip, .tar.gz, etc.).
-
-    Returns:
-        JSON with 'path' (local path to use in other tools) and
-        'job_id' (use with cleanup_downloads to free space).
-    """
-    try:
-        info = hd_fetch.fetch(url, extract=extract)
-        return json.dumps(info, indent=2)
-    except hd_fetch.FetchError as exc:
-        return json.dumps({"error": True, "message": str(exc)}, indent=2)
-
-
-@mcp.tool()
-async def cleanup_downloads(job_id: str = "") -> str:
-    """Clean up downloaded files from the container workspace.
-
-    Args:
-        job_id: Specific job ID to clean up.  If empty, removes all downloads.
-
-    Returns:
-        JSON confirming the cleanup.
-    """
-    if job_id:
-        hd_fetch.cleanup(job_id)
-        return json.dumps({"cleaned": job_id})
-    hd_fetch.cleanup_all()
-    return json.dumps({"cleaned": "all"})
+    except Exception as e:
+        logger.error("Unhandled exception in run_john: %s", e)
+        return json.dumps({
+            "error": True,
+            "message": "Internal MCP wrapper error.",
+            "detail": str(e)
+        }, indent=2)
 
 
 def main():

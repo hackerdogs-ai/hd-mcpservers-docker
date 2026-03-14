@@ -15,22 +15,23 @@ LABEL org.opencontainers.image.author="hackerdogs"
 # Security: Create non-root user
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
-    RUN apt-get update && apt-get install -y --no-install-recommends \
-    git curl ca-certificates bsdextrautils procps \
-    && rm -rf /var/lib/apt/lists/* \
-    && git clone --depth 1 https://github.com/drwetter/testssl.sh.git /opt/testssl \
-    && ln -sf /opt/testssl/testssl.sh /usr/local/bin/testssl
-# TODO: Install testssl.sh — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends testssl.sh && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir testssl.sh
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install testssl.sh; then COPY --from=builder
 
+# Install system dependencies required by testssl.sh
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     ca-certificates \
+    git \
+    bsdmainutils \
+    dnsutils \
+    procps \
+    curl \
     && rm -rf /var/lib/apt/lists/*
+
+# Clone the official repository to get the script and its custom OpenSSL binaries
+RUN git clone --depth 1 https://github.com/drwetter/testssl.sh.git /opt/testssl
+
+# Create a clean symlink for easy access
+RUN ln -s /opt/testssl/testssl.sh /usr/local/bin/testssl
 
 WORKDIR /app
 
@@ -41,8 +42,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY mcp_server.py ./
 
-# Create output directory
-RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+# Create output directory and grant permissions
+RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app /opt/testssl
 
 # Switch to non-root user
 USER mcpuser
@@ -51,6 +52,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8279
+# Explicitly tell the server where to find the symlinked script
+ENV TESTSSL_BIN=/usr/local/bin/testssl
 
 EXPOSE 8279
 

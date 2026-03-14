@@ -1,3 +1,22 @@
+# ---- Stage 1: Build SecureMCP from source via Go ----
+FROM golang:bookworm AS builder
+
+# Clone the repository manually so we can patch the upstream bugs
+RUN git clone https://github.com/makalin/SecureMCP.git /src
+WORKDIR /src
+
+# FIX 1: The upstream repo has an unused variable declared with `:=`.
+# We safely convert the declaration to `var _ =` to satisfy the Go compiler's strict unused-variable rules.
+RUN sed -i 's/vulnerabilityIndicators :=/var _ =/g' internal/scanner/prompt.go
+
+# FIX 2: The upstream repo forgot to sync their go.sum file before committing!
+# We run `go mod tidy` to securely fetch the missing Gin and Cobra checksums.
+RUN go mod tidy
+
+# Build the binary manually
+RUN go build -o /go/bin/securemcp ./cmd/securemcp
+
+# ---- Stage 2: Runtime ----
 # SecureMCP MCP Server - Hackerdogs Ready
 # Multi-arch build for linux/amd64 and linux/arm64
 # Stage 1: build SecureMCP binary with Go 1.21+ (project requires go 1.21)
@@ -31,23 +50,26 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# Install only runtime deps (no golang); copy binary from builder
-RUN apt-get update && apt-get install -y --no-install-recommends tini ca-certificates \
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    tini \
+    ca-certificates \
     && rm -rf /var/lib/apt/lists/*
-RUN mkdir -p /opt/securemcp/bin
-COPY --from=builder /opt/securemcp/bin/securemcp /opt/securemcp/bin/securemcp
-RUN chown -R mcpuser:mcpuser /opt/securemcp
+
+# Copy the successfully patched and compiled binary from the Go builder stage
+COPY --from=builder /go/bin/securemcp /usr/local/bin/securemcp
 
 WORKDIR /app
 
-# Copy requirements and install Python dependencies
+# Copy requirements and install Python dependencies for the wrapper
+# Note: Ensure fastmcp==2.14.5 is pinned in your requirements.txt!
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY mcp_server.py ./
 
-# Create output directory
+# Create output directory and set ownership
 RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
 
 # Switch to non-root user
@@ -59,6 +81,8 @@ ENV PATH="/opt/securemcp/bin:${PATH}"
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8297
+# Explicitly tell the server where to find the Go binary
+ENV SECUREMCP_BIN=/usr/local/bin/securemcp
 
 EXPOSE 8297
 

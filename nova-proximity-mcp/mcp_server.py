@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Nova Proximity MCP Server — Network proximity analysis and threat detection.
 
-Wraps the nova-proximity CLI (Nova-Hunting/nova-proximity) to expose
+Wraps the novaprox.py CLI (Nova-Hunting/nova-proximity) to expose
 capabilities through the Model Context Protocol (MCP).
 """
 
@@ -9,8 +9,8 @@ import asyncio
 import json
 import logging
 import os
-import shutil
 import sys
+import shlex
 
 from fastmcp import FastMCP
 
@@ -27,32 +27,33 @@ MCP_PORT = int(os.environ.get("MCP_PORT", "8298"))
 mcp = FastMCP(
     "Nova Proximity MCP Server",
     instructions=(
-        "Network proximity analysis and threat detection."
+        "Network proximity analysis and threat detection. "
+        "IMPORTANT: When generating reports using --json-report or --md-report, "
+        "you MUST explicitly provide the path as /app/output/filename.json to save them to the host volume."
     ),
 )
 
-BIN_NAME = os.environ.get("NOVA_PROXIMITY_BIN", "nova-proximity")
+# Correct script name
+NOVA_PROXIMITY_SCRIPT = os.environ.get("NOVA_PROXIMITY_SCRIPT", "/opt/nova-proximity/novaprox.py")
 
 
-def _find_binary() -> str:
-    """Locate the nova-proximity binary, raising a clear error if missing."""
-    path = shutil.which(BIN_NAME)
-    if path is None:
-        logger.error("nova-proximity binary not found on PATH")
+def _find_script() -> str:
+    """Locate the novaprox script directly."""
+    if not os.path.exists(NOVA_PROXIMITY_SCRIPT):
+        logger.error(f"nova-proximity script not found at {NOVA_PROXIMITY_SCRIPT}")
         raise FileNotFoundError(
-            f"nova-proximity binary not found. Ensure it is installed and available "
-            f"on PATH, or set NOVA_PROXIMITY_BIN to the full path."
+            f"nova-proximity script not found at {NOVA_PROXIMITY_SCRIPT}. "
+            "Ensure the Dockerfile cloned the repository correctly and you built with --no-cache."
         )
-    return path
+    return NOVA_PROXIMITY_SCRIPT
 
 
 async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
-    """Execute a nova-proximity command and return structured output.
-
-    Returns a dict with keys: stdout, stderr, return_code.
-    """
-    binary_path = _find_binary()
-    cmd = [binary_path] + args
+    """Execute a novaprox command via the Python interpreter and return structured output."""
+    script_path = _find_script()
+    
+    # Explicitly invoke with sys.executable (Python 3) to bypass shebang errors
+    cmd = [sys.executable, script_path] + args
 
     try:
         proc = await asyncio.create_subprocess_exec(
@@ -60,6 +61,7 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
             stdin=asyncio.subprocess.DEVNULL,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
+            cwd="/opt/nova-proximity"  # Must run here to find default .nov rule files
         )
         stdout_bytes, stderr_bytes = await asyncio.wait_for(
             proc.communicate(), timeout=timeout_seconds
@@ -100,13 +102,12 @@ async def run_nova_proximity(
     Pass arguments as you would on the command line.
 
     Args:
-        arguments: Command-line arguments string.
+        arguments: Command-line arguments string (e.g., "-n -r my_rule.nov --json-report /app/output/report.json").
         timeout_seconds: Maximum execution time in seconds (default 600).
     """
-    import shlex
-
     logger.info("run_nova_proximity called with arguments=%s", arguments)
     args = shlex.split(arguments) if arguments.strip() else []
+    
     result = await _run_command(args, timeout_seconds=timeout_seconds)
 
     if result["return_code"] != 0:
@@ -117,7 +118,7 @@ async def run_nova_proximity(
                 "error": True,
                 "message": f"nova-proximity failed (exit code {result['return_code']})",
                 "detail": error_detail.strip(),
-                "command": f"nova-proximity {' '.join(args)}",
+                "command": f"python3 novaprox.py {' '.join(args)}",
             },
             indent=2,
         )
@@ -127,19 +128,12 @@ async def run_nova_proximity(
     if not stdout:
         return json.dumps({"message": "Command completed with no output", "arguments": arguments})
 
-    results = []
-    for line in stdout.splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            results.append(json.loads(line))
-        except json.JSONDecodeError:
-            results.append({"raw": line})
-
-    if len(results) == 1:
-        return json.dumps(results[0], indent=2)
-    return json.dumps(results, indent=2)
+    # Return structured JSON for the LLM
+    return json.dumps({
+        "success": True,
+        "message": "Nova Proximity executed successfully.",
+        "stdout": stdout,
+    }, indent=2)
 
 
 def main():

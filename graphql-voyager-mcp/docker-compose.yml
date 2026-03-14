@@ -9,6 +9,8 @@ services:
     container_name: graphql-voyager-mcp
     ports:
       - "8282:8282"
+    volumes:
+    - ./graphql-voyager-mcp/output:/app/output
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8282

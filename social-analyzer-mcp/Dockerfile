@@ -16,19 +16,21 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# Install social-analyzer
-RUN pip install --no-cache-dir social-analyzer
-
+# Install system dependencies, including tools required by social-analyzer for OCR and web scraping
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     ca-certificates \
+    firefox-esr \
+    tesseract-ocr \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
 # Copy requirements and install Python dependencies
+# Note: Ensure fastmcp==2.14.5 is pinned in your requirements.txt!
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir social-analyzer
 
 # Copy application code
 COPY mcp_server.py ./
@@ -43,6 +45,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8255
+# Explicitly tell the server where to find the social-analyzer binary
+ENV SOCIAL_ANALYZER_BIN=/usr/local/bin/social-analyzer
 
 EXPOSE 8255
 

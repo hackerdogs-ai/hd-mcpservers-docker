@@ -16,32 +16,31 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install checkov — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends checkov && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir checkov
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install checkov; then COPY --from=builder
-
+# Install system dependencies (git is highly recommended for Checkov to fetch remote modules)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     git \
     unzip \
     ca-certificates \
+    git \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
 # Copy requirements and install Python dependencies
+# Note: Ensure fastmcp==2.14.5 is pinned in your requirements.txt!
 COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --default-timeout=100 --no-cache-dir -r requirements.txt
+
+# Install Checkov directly from PyPI (using extended timeout for its large dependency tree)
+RUN pip install --default-timeout=100 --no-cache-dir checkov
 
 # Copy application code
 COPY mcp_server.py ./
 COPY hd_fetch.py ./
 
-# Create output directory
-RUN mkdir -p /app/output /app/workdir && chown -R mcpuser:mcpuser /app
+# Create output directory and set permissions
+RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
 
 # Switch to non-root user
 USER mcpuser
@@ -50,6 +49,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8272
+# Explicitly tell the server where to find the checkov binary
+ENV CHECKOV_BIN=/usr/local/bin/checkov
 
 EXPOSE 8272
 

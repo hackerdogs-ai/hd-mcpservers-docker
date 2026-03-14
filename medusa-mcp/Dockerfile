@@ -16,21 +16,17 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install medusa — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends medusa && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir medusa
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install medusa; then COPY --from=builder
-
+# Install system dependencies, including the medusa package
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     ca-certificates \
+    medusa \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
 # Copy requirements and install Python dependencies
+# Note: Ensure fastmcp==2.14.5 is pinned in your requirements.txt!
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -47,6 +43,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8261
+# Explicitly tell the server where to find the medusa binary
+ENV MEDUSA_BIN=/usr/bin/medusa
 
 EXPOSE 8261
 

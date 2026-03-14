@@ -16,23 +16,30 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install gdb — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends gdb && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir gdb
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install gdb; then COPY --from=builder
-
+# Install GDB, Git (to download PEDA), file, and binutils
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    gdb \
+    git \
+    file \
+    binutils \
+    procps \
     tini \
     git \
     unzip \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
+# Clone PEDA and inject it into .gdbinit for the mcpuser
+# FIX: PEDA has a hardcoded color output setting in its lib/config.py. We use sed to switch it to 'off' so the LLM can read the text!
+RUN git clone https://github.com/longld/peda.git /home/mcpuser/peda && \
+    echo "source /home/mcpuser/peda/peda.py" > /home/mcpuser/.gdbinit && \
+    sed -i "s/'color'       : ('on',/'color'       : ('off',/g" /home/mcpuser/peda/lib/config.py && \
+    chown -R mcpuser:mcpuser /home/mcpuser
+
 WORKDIR /app
 
-# Copy requirements and install Python dependencies
+# Copy requirements and install Python dependencies for the wrapper
+# Note: Ensure fastmcp==2.14.5 is pinned in your requirements.txt!
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -40,8 +47,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY mcp_server.py ./
 COPY hd_fetch.py ./
 
-# Create output directory
-RUN mkdir -p /app/output /app/workdir && chown -R mcpuser:mcpuser /app
+# Create output directory and grant permissions
+RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
 
 # Switch to non-root user
 USER mcpuser
@@ -50,6 +57,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8237
+# native gdb binary path
+ENV PEDA_BIN=/usr/bin/gdb
 
 EXPOSE 8237
 

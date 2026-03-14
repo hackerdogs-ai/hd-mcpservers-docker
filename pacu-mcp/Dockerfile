@@ -12,17 +12,11 @@ LABEL org.opencontainers.image.title="pacu-mcp"
 LABEL org.opencontainers.image.licenses="Apache-2.0"
 LABEL org.opencontainers.image.author="hackerdogs"
 
-# Security: Create non-root user
+# Security: Create non-root user (creates /home/mcpuser for Pacu session databases)
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install pacu — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends pacu && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir pacu
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install pacu; then COPY --from=builder
-
+# Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     ca-certificates \
@@ -30,14 +24,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
-# Copy requirements and install Python dependencies
+# Copy requirements and install Python dependencies with extended timeout
+# Note: Ensure fastmcp==2.14.5 is pinned in your requirements.txt!
 COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --default-timeout=100 --no-cache-dir -r requirements.txt
+
+# Install Pacu directly from PyPI with extended timeout to prevent connection drops
+RUN pip install --default-timeout=100 --no-cache-dir pacu
 
 # Copy application code
 COPY mcp_server.py ./
 
-# Create output directory
+# Create output directory and set ownership
 RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
 
 # Switch to non-root user
@@ -47,6 +45,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8269
+# Explicitly tell the server where to find the pacu binary
+ENV PACU_BIN=/usr/local/bin/pacu
 
 EXPOSE 8269
 

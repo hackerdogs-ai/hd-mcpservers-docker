@@ -16,23 +16,34 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install analyzeHeadless — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends analyzeHeadless && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir analyzeHeadless
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install analyzeHeadless; then COPY --from=builder
-
+# Install system dependencies, wget, unzip, and OpenJDK 17 (Required by Ghidra 11+)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     git \
     unzip \
     ca-certificates \
+    wget \
+    unzip \
+    openjdk-17-jdk-headless \
     && rm -rf /var/lib/apt/lists/*
+
+# Download and install Ghidra
+# We are hardcoding to 11.0.1, but this can be updated to the latest release URL
+ENV GHIDRA_VERSION=11.0.1_PUBLIC
+ENV GHIDRA_ZIP=ghidra_11.0.1_PUBLIC_20240130.zip
+ENV GHIDRA_URL=https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_11.0.1_build/${GHIDRA_ZIP}
+
+RUN wget -q ${GHIDRA_URL} -O /tmp/ghidra.zip && \
+    unzip -q /tmp/ghidra.zip -d /opt && \
+    rm /tmp/ghidra.zip && \
+    mv /opt/ghidra_${GHIDRA_VERSION} /opt/ghidra && \
+    chmod +x /opt/ghidra/support/analyzeHeadless && \
+    ln -sf /opt/ghidra/support/analyzeHeadless /usr/local/bin/analyzeHeadless
 
 WORKDIR /app
 
-# Copy requirements and install Python dependencies
+# Copy requirements and install Python dependencies for the wrapper
+# Note: Ensure fastmcp==2.14.5 is pinned in your requirements.txt!
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -40,8 +51,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY mcp_server.py ./
 COPY hd_fetch.py ./
 
-# Create output directory
-RUN mkdir -p /app/output /app/workdir && chown -R mcpuser:mcpuser /app
+# Create output directory and grant permissions
+RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
 
 # Switch to non-root user
 USER mcpuser
@@ -50,6 +61,7 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8240
+ENV GHIDRA_BIN=/usr/local/bin/analyzeHeadless
 
 EXPOSE 8240
 

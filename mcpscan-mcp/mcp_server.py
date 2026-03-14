@@ -9,8 +9,8 @@ import asyncio
 import json
 import logging
 import os
-import shutil
 import sys
+import shlex
 
 from fastmcp import FastMCP
 
@@ -27,32 +27,35 @@ MCP_PORT = int(os.environ.get("MCP_PORT", "8296"))
 mcp = FastMCP(
     "MCPScan MCP Server",
     instructions=(
-        "MCP server security scanning and vulnerability detection."
+        "MCP server security scanning and vulnerability detection. "
+        "Generated reports (like triage_report.json) will be saved to the configured output directory."
     ),
 )
 
-BIN_NAME = os.environ.get("MCPSCAN_BIN", "mcpscan")
+MCPSCAN_BIN = os.environ.get("MCPSCAN_BIN", "/usr/local/bin/mcpscan")
+OUTPUT_DIR = "/app/output"
 
 
 def _find_binary() -> str:
-    """Locate the mcpscan binary, raising a clear error if missing."""
-    path = shutil.which(BIN_NAME)
-    if path is None:
-        logger.error("mcpscan binary not found on PATH")
+    """Locate the mcpscan script directly."""
+    if not os.path.exists(MCPSCAN_BIN):
+        logger.error(f"mcpscan binary not found at {MCPSCAN_BIN}")
         raise FileNotFoundError(
-            f"mcpscan binary not found. Ensure it is installed and available "
-            f"on PATH, or set MCPSCAN_BIN to the full path."
+            f"mcpscan binary not found at {MCPSCAN_BIN}. "
+            "Ensure the Dockerfile built the package correctly."
         )
-    return path
+    return MCPSCAN_BIN
 
 
 async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
-    """Execute a mcpscan command and return structured output.
-
-    Returns a dict with keys: stdout, stderr, return_code.
-    """
+    """Execute an mcpscan command via the Python interpreter and return structured output."""
     binary_path = _find_binary()
-    cmd = [binary_path] + args
+    
+    # Explicitly invoke with sys.executable (Python 3) to bypass shebang issues
+    cmd = [sys.executable, binary_path] + args
+
+    # Ensure the output directory exists
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     try:
         proc = await asyncio.create_subprocess_exec(
@@ -60,6 +63,7 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
             stdin=asyncio.subprocess.DEVNULL,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
+            cwd=OUTPUT_DIR  # Route all local output/logs (like triage_report.json) to the mounted volume
         )
         stdout_bytes, stderr_bytes = await asyncio.wait_for(
             proc.communicate(), timeout=timeout_seconds
@@ -100,13 +104,12 @@ async def run_mcpscan(
     Pass arguments as you would on the command line.
 
     Args:
-        arguments: Command-line arguments string.
+        arguments: Command-line arguments string (e.g., "scan https://github.com/user/repo").
         timeout_seconds: Maximum execution time in seconds (default 600).
     """
-    import shlex
-
     logger.info("run_mcpscan called with arguments=%s", arguments)
     args = shlex.split(arguments) if arguments.strip() else []
+    
     result = await _run_command(args, timeout_seconds=timeout_seconds)
 
     if result["return_code"] != 0:
@@ -117,7 +120,7 @@ async def run_mcpscan(
                 "error": True,
                 "message": f"mcpscan failed (exit code {result['return_code']})",
                 "detail": error_detail.strip(),
-                "command": f"mcpscan {' '.join(args)}",
+                "command": f"python3 mcpscan {' '.join(args)}",
             },
             indent=2,
         )
@@ -127,19 +130,13 @@ async def run_mcpscan(
     if not stdout:
         return json.dumps({"message": "Command completed with no output", "arguments": arguments})
 
-    results = []
-    for line in stdout.splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            results.append(json.loads(line))
-        except json.JSONDecodeError:
-            results.append({"raw": line})
-
-    if len(results) == 1:
-        return json.dumps(results[0], indent=2)
-    return json.dumps(results, indent=2)
+    # Return structured JSON for the LLM
+    return json.dumps({
+        "success": True,
+        "message": "MCPScan executed successfully.",
+        "stdout": stdout,
+        "instructions": "If a report was generated (e.g., triage_report.json), it will be located in the mounted /app/output directory on the host."
+    }, indent=2)
 
 
 def main():

@@ -16,23 +16,34 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install falco — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends falco && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir falco
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install falco; then COPY --from=builder
-
+# 1. Install system prerequisites
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     git \
     unzip \
     ca-certificates \
+    curl \
+    gnupg \
+    && rm -rf /var/lib/apt/lists/*
+
+# 2. Add Falco's GPG key and official repository
+RUN mkdir -p /etc/apt/keyrings && \
+    curl -fsSL https://falco.org/repo/falcosecurity-packages.asc | gpg --dearmor -o /etc/apt/keyrings/falco.gpg && \
+    echo "deb [signed-by=/etc/apt/keyrings/falco.gpg] https://download.falco.org/packages/deb stable main" > /etc/apt/sources.list.d/falcosecurity.list
+
+# 3. Prevent apt-get from pausing for user input and explicitly disable driver compilation
+ENV FALCO_FRONTEND=noninteractive
+ENV FALCO_DRIVER_CHOICE=none
+
+# 4. Install the standard falco package (which will now skip the kernel DKMS build)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    falco \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
 # Copy requirements and install Python dependencies
+# Note: Ensure fastmcp==2.14.5 is pinned in your requirements.txt!
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -40,8 +51,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY mcp_server.py ./
 COPY hd_fetch.py ./
 
-# Create output directory
-RUN mkdir -p /app/output /app/workdir && chown -R mcpuser:mcpuser /app
+# Create output directory and ensure mcpuser has access to Falco's rule directories
+RUN mkdir -p /app/output && \
+    chown -R mcpuser:mcpuser /app /etc/falco
 
 # Switch to non-root user
 USER mcpuser
@@ -50,6 +62,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8271
+# Explicitly tell the server where to find the falco binary
+ENV FALCO_BIN=/usr/bin/falco
 
 EXPOSE 8271
 

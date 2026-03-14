@@ -16,25 +16,32 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
+# Install system dependencies, cleanly clone the repo, and set up the script
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git tini ca-certificates \
+    tini \
+    ca-certificates \
+    git \
     && rm -rf /var/lib/apt/lists/* \
-    && git clone --depth 1 https://github.com/punk-security/dnsReaper.git /opt/dnsreaper \
-    && cd /opt/dnsreaper && (pip install --no-cache-dir -r requirements.txt 2>/dev/null || true) \
-    && (pip install --no-cache-dir . 2>/dev/null || true) \
-    && ln -sf /opt/dnsreaper/dnsreaper.py /usr/local/bin/dnsreaper 2>/dev/null || true
+    && git clone --depth 1 https://github.com/punk-security/dnsReaper.git /opt/dnsreaper
 
 WORKDIR /app
 
-# Copy requirements and install Python dependencies
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
+
+# 1. Explicitly install dnsReaper's required dependencies FIRST
+# (This will install the older, broken version of google-cloud-dns)
+RUN pip install --no-cache-dir -r /opt/dnsreaper/requirements.txt
+
+# 2. THEN apply the FIX: Upgrade google-cloud-dns and install setuptools 
+# to resolve the Python 3.12 pkg_resources import error permanently
+RUN pip install --no-cache-dir --upgrade setuptools "google-cloud-dns>=0.34.0"
 
 # Copy application code
 COPY mcp_server.py ./
 
-# Create output directory
-RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+# Create output directory and grant permissions to mcpuser
+RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app /opt/dnsreaper
 
 # Switch to non-root user
 USER mcpuser
@@ -43,6 +50,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8293
+# Provide the direct script path (it's main.py, not dnsreaper.py!)
+ENV DNSREAPER_SCRIPT=/opt/dnsreaper/main.py
 
 EXPOSE 8293
 

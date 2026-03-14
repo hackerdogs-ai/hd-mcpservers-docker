@@ -16,25 +16,32 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
+# Install system dependencies and cleanly clone the repo
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git tini ca-certificates \
+    tini \
+    ca-certificates \
+    git \
     && rm -rf /var/lib/apt/lists/* \
-    && git clone --depth 1 https://github.com/antgroup/MCPScan.git /opt/mcpscan \
-    && cd /opt/mcpscan && (pip install --no-cache-dir -r requirements.txt 2>/dev/null || true) \
-    && (pip install --no-cache-dir . 2>/dev/null || true) \
-    && ln -sf /opt/mcpscan/mcpscan.py /usr/local/bin/mcpscan 2>/dev/null || true
+    && git clone --depth 1 https://github.com/antgroup/MCPScan.git /opt/mcpscan
 
 WORKDIR /app
 
-# Copy requirements and install Python dependencies
+# Copy requirements and install Python dependencies for the MCP server wrapper
 COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+# Explicitly install Semgrep, which is the core engine for MCPScan's taint analysis
+RUN pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir semgrep
+
+# Install MCPScan cleanly without silent failure masking
+RUN cd /opt/mcpscan && \
+    if [ -f "requirements.txt" ]; then pip install --no-cache-dir -r requirements.txt; fi && \
+    pip install --no-cache-dir .
 
 # Copy application code
 COPY mcp_server.py ./
 
-# Create output directory
-RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+# Create output directory and grant permissions
+RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app /opt/mcpscan
 
 # Switch to non-root user
 USER mcpuser
@@ -43,6 +50,11 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8296
+ENV MCPSCAN_BIN=/usr/local/bin/mcpscan
+
+# FIX: Provide a dummy key to bypass the global LLMClient instantiation crash at import time!
+# You must pass your real key at runtime via your MCP client configuration.
+ENV DEEPSEEK_API_KEY="sk-e0049f34f86e4a73b56a38bc701ef1ec"
 
 EXPOSE 8296
 

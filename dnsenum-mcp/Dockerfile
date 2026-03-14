@@ -16,25 +16,38 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
+# Install system dependencies AND the required Perl network/XML modules
+# FIX: Added libxml-writer-perl to prevent the XML::Writer compile-time crash!
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    perl libnet-dns-perl libxml-libxml-perl git tini ca-certificates \
-    && rm -rf /var/lib/apt/lists/* \
-    && git clone --depth 1 https://github.com/fwaeytens/dnsenum.git /opt/dnsenum \
-    && chmod +x /opt/dnsenum/*.pl 2>/dev/null || true \
-    && ln -sf /opt/dnsenum/dnsenum.pl /usr/local/bin/dnsenum 2>/dev/null; \
-    ln -sf /opt/dnsenum/dnsenum /usr/local/bin/dnsenum 2>/dev/null || true
+    perl \
+    libnet-dns-perl \
+    libnet-ip-perl \
+    libnet-netmask-perl \
+    libxml-libxml-perl \
+    libxml-writer-perl \
+    libstring-random-perl \
+    git \
+    tini \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Cleanly clone the repository, make the Perl script executable, and symlink it
+RUN git clone --depth 1 https://github.com/fwaeytens/dnsenum.git /opt/dnsenum && \
+    chmod +x /opt/dnsenum/dnsenum.pl && \
+    ln -sf /opt/dnsenum/dnsenum.pl /usr/local/bin/dnsenum
 
 WORKDIR /app
 
-# Copy requirements and install Python dependencies
+# Copy requirements and install Python dependencies for the MCP wrapper
+# Note: Ensure fastmcp==2.14.5 is pinned in your requirements.txt!
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY mcp_server.py ./
 
-# Create output directory
-RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+# Create output directory and grant permissions
+RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app /opt/dnsenum
 
 # Switch to non-root user
 USER mcpuser
@@ -43,6 +56,7 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8304
+ENV DNSENUM_BIN=/usr/local/bin/dnsenum
 
 EXPOSE 8304
 

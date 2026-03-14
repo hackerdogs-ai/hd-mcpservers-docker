@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Binwalk MCP Server — Firmware analysis and extraction.
 
-Wraps the binwalk CLI (ReFirmLabs/binwalk) to expose
-capabilities through the Model Context Protocol (MCP).
+Wraps the binwalk CLI to expose capabilities through the Model Context Protocol (MCP).
 """
 
 import asyncio
@@ -11,6 +10,7 @@ import logging
 import os
 import shutil
 import sys
+import shlex
 
 from fastmcp import FastMCP
 import hd_fetch
@@ -28,32 +28,35 @@ MCP_PORT = int(os.environ.get("MCP_PORT", "8241"))
 mcp = FastMCP(
     "Binwalk MCP Server",
     instructions=(
-        "Firmware analysis and extraction."
+        "Firmware analysis and extraction tool. "
+        "IMPORTANT: Place target firmware/binaries in the mounted /app/output directory. "
+        "If you use the '-e' (extract) flag, the extracted files will automatically "
+        "be saved into a new folder within the output directory."
     ),
 )
 
-BINWALK_BIN = os.environ.get("BINWALK_BIN", "binwalk")
+BIN_NAME = os.environ.get("BINWALK_BIN", "/usr/bin/binwalk")
+OUTPUT_DIR = "/app/output"
 
 
 def _find_binary() -> str:
-    """Locate the binwalk binary, raising a clear error if missing."""
-    path = shutil.which(BINWALK_BIN)
+    """Locate the binwalk binary directly."""
+    path = shutil.which(BIN_NAME)
     if path is None:
-        logger.error("binwalk binary not found on PATH")
+        logger.error(f"{BIN_NAME} binary not found on PATH")
         raise FileNotFoundError(
-            f"binwalk binary not found. Ensure it is installed and available "
-            f"on PATH, or set BINWALK_BIN to the full path."
+            f"{BIN_NAME} binary not found. Ensure the Dockerfile installed the binwalk package."
         )
     return path
 
 
 async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
-    """Execute a binwalk command and return structured output.
+    """Execute a binwalk command and return structured output."""
+    binary_path = _find_binary()
+    cmd = [binary_path] + args
 
-    Returns a dict with keys: stdout, stderr, return_code.
-    """
-    binary = _find_binary()
-    cmd = [binary] + args
+    # Ensure the output directory exists
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     try:
         proc = await asyncio.create_subprocess_exec(
@@ -61,6 +64,7 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
             stdin=asyncio.subprocess.DEVNULL,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
+            cwd=OUTPUT_DIR  # Route all firmware extraction (-e) to the mounted volume
         )
         stdout_bytes, stderr_bytes = await asyncio.wait_for(
             proc.communicate(), timeout=timeout_seconds
@@ -93,15 +97,13 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
 
 @mcp.tool()
 async def run_binwalk(
-    arguments: str,
-    source_url: str = "",
+    arguments: str = "",
     timeout_seconds: int = 600,
 ) -> str:
     """Run binwalk with the given arguments.
 
-    Pass arguments as you would on the command line.  Use ``source_url`` to
-    have the server download a firmware image or binary from a URL before
-    analysis.
+    Pass arguments as you would on the command line.
+    Example: "-e firmware.bin"
 
     Args:
         arguments: Command-line arguments string.  Use ``{source}`` as a
@@ -113,23 +115,13 @@ async def run_binwalk(
                     *arguments*, or is appended if no placeholder is present.
         timeout_seconds: Maximum execution time in seconds (default 600).
     """
-    import shlex
-
-    logger.info("run_binwalk called with arguments=%s source_url=%s", arguments, source_url)
-
-    job_info = None
     try:
-        if source_url:
-            try:
-                job_info = hd_fetch.fetch(source_url, extract=False)
-            except hd_fetch.FetchError as exc:
-                return json.dumps({"error": True, "message": str(exc)}, indent=2)
-            if "{source}" in arguments:
-                arguments = arguments.replace("{source}", job_info["path"])
-            else:
-                arguments = f"{arguments} {job_info['path']}".strip()
-
+        if arguments is None:
+            arguments = ""
+            
+        logger.info("run_binwalk called with arguments=%s", arguments)
         args = shlex.split(arguments) if arguments.strip() else []
+        
         result = await _run_command(args, timeout_seconds=timeout_seconds)
 
         if result["return_code"] != 0:
@@ -146,70 +138,30 @@ async def run_binwalk(
             )
 
         stdout = result["stdout"].strip()
+        stderr = result["stderr"].strip()
+
+        # Fallback to STDERR if STDOUT is empty (common for help menus)
+        if not stdout and stderr:
+            stdout = stderr
 
         if not stdout:
-            return json.dumps({"message": "Command completed with no output", "arguments": arguments})
+            return json.dumps({"message": "Command completed with no output. Did you specify a target file?", "arguments": arguments})
 
-        results = []
-        for line in stdout.splitlines():
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                results.append(json.loads(line))
-            except json.JSONDecodeError:
-                results.append({"raw": line})
+        # Return standard text response instead of attempting to JSON parse ASCII tables
+        return json.dumps({
+            "success": True,
+            "message": "Binwalk executed successfully.",
+            "stdout": stdout,
+            "instructions": "If you used the extraction flag (-e), check the output directory for the extracted files."
+        }, indent=2)
 
-        if len(results) == 1:
-            return json.dumps(results[0], indent=2)
-        return json.dumps(results, indent=2)
-    finally:
-        if job_info:
-            hd_fetch.cleanup(job_info["job_id"])
-
-
-@mcp.tool()
-async def download_file(
-    url: str,
-    extract: bool = True,
-) -> str:
-    """Download a file from a URL into the container workspace.
-
-    Use this to pre-download firmware or binaries before running analysis,
-    or when you need to download once and run multiple analyses on the same file.
-
-    Args:
-        url: HTTP(S) URL or data: URI pointing to a firmware image or binary.
-        extract: If True (default), automatically extract archives (.zip, .tar.gz, etc.).
-                 Set to False for raw binary files you want to analyze directly.
-
-    Returns:
-        JSON with 'path' (local path to use in other tools) and
-        'job_id' (use with cleanup_downloads to free space).
-    """
-    logger.info("download_file called with url=%s", url)
-    try:
-        info = hd_fetch.fetch(url, extract=extract)
-        return json.dumps(info, indent=2)
-    except hd_fetch.FetchError as exc:
-        return json.dumps({"error": True, "message": str(exc)}, indent=2)
-
-
-@mcp.tool()
-async def cleanup_downloads(job_id: str = "") -> str:
-    """Clean up downloaded files from the container workspace.
-
-    Args:
-        job_id: Specific job ID to clean up.  If empty, removes all downloads.
-
-    Returns:
-        JSON confirming the cleanup.
-    """
-    if job_id:
-        hd_fetch.cleanup(job_id)
-        return json.dumps({"cleaned": job_id})
-    hd_fetch.cleanup_all()
-    return json.dumps({"cleaned": "all"})
+    except Exception as e:
+        logger.error("Unhandled exception in run_binwalk: %s", e)
+        return json.dumps({
+            "error": True,
+            "message": "Internal MCP wrapper error.",
+            "detail": str(e)
+        }, indent=2)
 
 
 def main():

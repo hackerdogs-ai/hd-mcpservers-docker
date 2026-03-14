@@ -16,23 +16,23 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install kube-hunter — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends kube-hunter && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir kube-hunter
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install kube-hunter; then COPY --from=builder
-
+# Install system dependencies AND build tools required for netifaces C-extensions
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     ca-certificates \
+    build-essential \
+    python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
 # Copy requirements and install Python dependencies
 COPY requirements.txt ./
+
+# Install fastmcp from requirements, then explicitly install kube-hunter
+# Note: Ensure fastmcp==2.14.5 is pinned in your requirements.txt!
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir kube-hunter
 
 # Copy application code
 COPY mcp_server.py ./
@@ -47,6 +47,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8252
+# Explicitly tell the server where to find the kube-hunter binary
+ENV KUBE_HUNTER_BIN=/usr/local/bin/kube-hunter
 
 EXPOSE 8252
 

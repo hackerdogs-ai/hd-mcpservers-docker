@@ -16,25 +16,31 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
+# Install system dependencies, cleanly clone the repo, and set up the script
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git tini ca-certificates \
+    tini \
+    ca-certificates \
+    git \
     && rm -rf /var/lib/apt/lists/* \
     && git clone --depth 1 https://github.com/chenjj/CORScanner.git /opt/cors_scan \
-    && cd /opt/cors_scan && (pip install --no-cache-dir -r requirements.txt 2>/dev/null || true) \
-    && (pip install --no-cache-dir . 2>/dev/null || true) \
-    && ln -sf /opt/cors_scan/cors_scan.py /usr/local/bin/cors_scan 2>/dev/null || true
+    && chmod +x /opt/cors_scan/cors_scan.py \
+    && ln -s /opt/cors_scan/cors_scan.py /usr/local/bin/cors_scan
 
 WORKDIR /app
 
-# Copy requirements and install Python dependencies
+# Copy requirements and install Python dependencies for the MCP server wrapper
+# Note: Ensure fastmcp==2.14.5 is pinned in your requirements.txt!
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Explicitly install CORScanner's required dependencies so it doesn't fail silently
+RUN pip install --no-cache-dir -r /opt/cors_scan/requirements.txt
 
 # Copy application code
 COPY mcp_server.py ./
 
-# Create output directory
-RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+# Create output directory and grant permissions to mcpuser
+RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app /opt/cors_scan
 
 # Switch to non-root user
 USER mcpuser
@@ -43,6 +49,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8292
+# Provide the direct script path to bypass potential shebang issues
+ENV CORSCANNER_SCRIPT=/opt/cors_scan/cors_scan.py
 
 EXPOSE 8292
 

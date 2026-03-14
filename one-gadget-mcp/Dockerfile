@@ -16,23 +16,23 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install one_gadget — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends one_gadget && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir one_gadget
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install one_gadget; then COPY --from=builder
-
+# Install system dependencies, including Ruby and binutils-multiarch for objdump
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     git \
     unzip \
     ca-certificates \
+    ruby \
+    binutils-multiarch \
     && rm -rf /var/lib/apt/lists/*
+
+# Install one_gadget directly via RubyGems
+RUN gem install one_gadget
 
 WORKDIR /app
 
 # Copy requirements and install Python dependencies
+# Note: Ensure fastmcp==2.14.5 is pinned in your requirements.txt!
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -40,8 +40,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY mcp_server.py ./
 COPY hd_fetch.py ./
 
-# Create output directory
-RUN mkdir -p /app/output /app/workdir && chown -R mcpuser:mcpuser /app
+# Create output directory and set ownership
+RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
 
 # Switch to non-root user
 USER mcpuser
@@ -50,6 +50,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8276
+# Explicitly tell the server where to find the one_gadget binary
+ENV ONE_GADGET_BIN=/usr/local/bin/one_gadget
 
 EXPOSE 8276
 

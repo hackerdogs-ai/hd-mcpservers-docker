@@ -11,6 +11,7 @@ import logging
 import os
 import shutil
 import sys
+import shlex
 
 from fastmcp import FastMCP
 
@@ -27,32 +28,34 @@ MCP_PORT = int(os.environ.get("MCP_PORT", "8303"))
 mcp = FastMCP(
     "ZMap MCP Server",
     instructions=(
-        "High-speed single-packet network scanner for internet-wide surveys."
+        "High-speed single-packet network scanner for internet-wide surveys. "
+        "IMPORTANT: When generating output using the '-o' flag, the file will be "
+        "saved directly to the configured output directory."
     ),
 )
 
-BIN_NAME = os.environ.get("ZMAP_BIN", "zmap")
+BIN_NAME = os.environ.get("ZMAP_BIN", "/usr/sbin/zmap")
+OUTPUT_DIR = "/app/output"
 
 
 def _find_binary() -> str:
-    """Locate the zmap binary, raising a clear error if missing."""
+    """Locate the zmap binary directly."""
     path = shutil.which(BIN_NAME)
     if path is None:
-        logger.error("zmap binary not found on PATH")
+        logger.error(f"{BIN_NAME} binary not found on PATH")
         raise FileNotFoundError(
-            f"zmap binary not found. Ensure it is installed and available "
-            f"on PATH, or set ZMAP_BIN to the full path."
+            f"{BIN_NAME} binary not found. Ensure the Dockerfile built the package correctly."
         )
     return path
 
 
 async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
-    """Execute a zmap command and return structured output.
-
-    Returns a dict with keys: stdout, stderr, return_code.
-    """
+    """Execute a zmap command and return structured output."""
     binary_path = _find_binary()
     cmd = [binary_path] + args
+
+    # Ensure output directory exists so generated reports aren't lost
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     try:
         proc = await asyncio.create_subprocess_exec(
@@ -60,6 +63,7 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
             stdin=asyncio.subprocess.DEVNULL,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
+            cwd=OUTPUT_DIR  # Route all local output/logs (-o) to the mounted volume
         )
         stdout_bytes, stderr_bytes = await asyncio.wait_for(
             proc.communicate(), timeout=timeout_seconds
@@ -98,15 +102,15 @@ async def run_zmap(
     """Run zmap with the given arguments.
 
     Pass arguments as you would on the command line.
+    Example: "-p 80 192.168.1.0/24 -o results.csv"
 
     Args:
         arguments: Command-line arguments string.
         timeout_seconds: Maximum execution time in seconds (default 600).
     """
-    import shlex
-
     logger.info("run_zmap called with arguments=%s", arguments)
     args = shlex.split(arguments) if arguments.strip() else []
+    
     result = await _run_command(args, timeout_seconds=timeout_seconds)
 
     if result["return_code"] != 0:
@@ -127,19 +131,17 @@ async def run_zmap(
     if not stdout:
         return json.dumps({"message": "Command completed with no output", "arguments": arguments})
 
-    results = []
-    for line in stdout.splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            results.append(json.loads(line))
-        except json.JSONDecodeError:
-            results.append({"raw": line})
-
-    if len(results) == 1:
-        return json.dumps(results[0], indent=2)
-    return json.dumps(results, indent=2)
+    # Try to parse as JSON, else return standard string
+    try:
+        parsed = json.loads(stdout)
+        return json.dumps(parsed, indent=2)
+    except json.JSONDecodeError:
+        return json.dumps({
+            "success": True,
+            "message": "ZMap executed successfully.",
+            "stdout": stdout,
+            "instructions": "If you used the -o flag, the file is located in the mounted /app/output directory on the host."
+        }, indent=2)
 
 
 def main():

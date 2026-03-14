@@ -16,6 +16,9 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
+# volatility3 is installed via requirements.txt; pip exposes the CLI as "vol"
+ENV VOLATILITY3_BIN=vol
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     git \

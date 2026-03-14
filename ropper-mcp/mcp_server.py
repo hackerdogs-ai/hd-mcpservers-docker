@@ -11,6 +11,7 @@ import logging
 import os
 import shutil
 import sys
+import shlex
 
 from fastmcp import FastMCP
 import hd_fetch
@@ -28,32 +29,37 @@ MCP_PORT = int(os.environ.get("MCP_PORT", "8243"))
 mcp = FastMCP(
     "Ropper MCP Server",
     instructions=(
-        "ROP gadget finder and exploit dev tool."
+        "ROP gadget finder and exploit dev tool. "
+        "Use this tool to find gadgets in binaries for Return-Oriented Programming. "
+        "IMPORTANT: Place target binaries in the mounted /app/output directory. "
+        "If you save a generated ROP chain, it will also be saved to this directory."
     ),
 )
 
-ROPPER_BIN = os.environ.get("ROPPER_BIN", "ropper")
+BIN_NAME = os.environ.get("ROPPER_BIN", "/usr/local/bin/ropper")
+OUTPUT_DIR = "/app/output"
 
 
 def _find_binary() -> str:
-    """Locate the ropper binary, raising a clear error if missing."""
-    path = shutil.which(ROPPER_BIN)
+    """Locate the ropper binary directly."""
+    path = shutil.which(BIN_NAME)
     if path is None:
-        logger.error("ropper binary not found on PATH")
+        logger.error(f"{BIN_NAME} binary not found on PATH")
         raise FileNotFoundError(
-            f"ropper binary not found. Ensure it is installed and available "
-            f"on PATH, or set ROPPER_BIN to the full path."
+            f"{BIN_NAME} binary not found. Ensure the Dockerfile installed the ropper package."
         )
     return path
 
 
 async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
-    """Execute a ropper command and return structured output.
+    """Execute a ropper command and return structured output."""
+    binary_path = _find_binary()
+    
+    # Run the Python-based CLI directly
+    cmd = [binary_path] + args
 
-    Returns a dict with keys: stdout, stderr, return_code.
-    """
-    binary = _find_binary()
-    cmd = [binary] + args
+    # Ensure the output directory exists
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     try:
         proc = await asyncio.create_subprocess_exec(
@@ -61,6 +67,7 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
             stdin=asyncio.subprocess.DEVNULL,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
+            cwd=OUTPUT_DIR  # Route all binary reads/writes to the mounted volume
         )
         stdout_bytes, stderr_bytes = await asyncio.wait_for(
             proc.communicate(), timeout=timeout_seconds
@@ -93,14 +100,13 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
 
 @mcp.tool()
 async def run_ropper(
-    arguments: str,
-    source_url: str = "",
+    arguments: str = "",
     timeout_seconds: int = 600,
 ) -> str:
     """Run ropper with the given arguments.
 
-    Pass arguments as you would on the command line.  Use ``source_url`` to
-    have the server download files from a URL before processing.
+    Pass arguments as you would on the command line.
+    Example: "--file binary.bin --search 'pop rdi'"
 
     Args:
         arguments: Command-line arguments string.  Use ``{source}`` as a
@@ -111,23 +117,13 @@ async def run_ropper(
                     ``{source}`` in *arguments* or is appended.
         timeout_seconds: Maximum execution time in seconds (default 600).
     """
-    import shlex
-
-    logger.info("run_ropper called with arguments=%s source_url=%s", arguments, source_url)
-
-    job_info = None
     try:
-        if source_url:
-            try:
-                job_info = hd_fetch.fetch(source_url)
-            except hd_fetch.FetchError as exc:
-                return json.dumps({"error": True, "message": str(exc)}, indent=2)
-            if "{source}" in arguments:
-                arguments = arguments.replace("{source}", job_info["path"])
-            else:
-                arguments = f"{arguments} {job_info['path']}".strip()
-
+        if arguments is None:
+            arguments = ""
+            
+        logger.info("run_ropper called with arguments=%s", arguments)
         args = shlex.split(arguments) if arguments.strip() else []
+        
         result = await _run_command(args, timeout_seconds=timeout_seconds)
 
         if result["return_code"] != 0:
@@ -144,69 +140,33 @@ async def run_ropper(
             )
 
         stdout = result["stdout"].strip()
+        stderr = result["stderr"].strip()
+
+        # Fallback to STDERR if STDOUT is empty (common for help menus)
+        if not stdout and stderr:
+            stdout = stderr
 
         if not stdout:
-            return json.dumps({"message": "Command completed with no output", "arguments": arguments})
+            return json.dumps({"message": "Command completed with no output. Ropper might require a target binary.", "arguments": arguments})
 
-        results = []
-        for line in stdout.splitlines():
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                results.append(json.loads(line))
-            except json.JSONDecodeError:
-                results.append({"raw": line})
+        # Try to parse as JSON (Ropper rarely outputs native JSON, but just in case)
+        try:
+            parsed = json.loads(stdout)
+            return json.dumps(parsed, indent=2)
+        except json.JSONDecodeError:
+            return json.dumps({
+                "success": True,
+                "message": "Ropper executed successfully.",
+                "stdout": stdout
+            }, indent=2)
 
-        if len(results) == 1:
-            return json.dumps(results[0], indent=2)
-        return json.dumps(results, indent=2)
-    finally:
-        if job_info:
-            hd_fetch.cleanup(job_info["job_id"])
-
-
-
-@mcp.tool()
-async def download_file(
-    url: str,
-    extract: bool = True,
-) -> str:
-    """Download a file or repository from a URL into the container workspace.
-
-    Use this to pre-download files before analysis, or when you need to
-    download once and run multiple analyses on the same content.
-
-    Args:
-        url: HTTP(S) URL, GitHub/GitLab repo URL, or data: URI.
-        extract: If True (default), automatically extract archives (.zip, .tar.gz, etc.).
-
-    Returns:
-        JSON with 'path' (local path to use in other tools) and
-        'job_id' (use with cleanup_downloads to free space).
-    """
-    try:
-        info = hd_fetch.fetch(url, extract=extract)
-        return json.dumps(info, indent=2)
-    except hd_fetch.FetchError as exc:
-        return json.dumps({"error": True, "message": str(exc)}, indent=2)
-
-
-@mcp.tool()
-async def cleanup_downloads(job_id: str = "") -> str:
-    """Clean up downloaded files from the container workspace.
-
-    Args:
-        job_id: Specific job ID to clean up.  If empty, removes all downloads.
-
-    Returns:
-        JSON confirming the cleanup.
-    """
-    if job_id:
-        hd_fetch.cleanup(job_id)
-        return json.dumps({"cleaned": job_id})
-    hd_fetch.cleanup_all()
-    return json.dumps({"cleaned": "all"})
+    except Exception as e:
+        logger.error("Unhandled exception in run_ropper: %s", e)
+        return json.dumps({
+            "error": True,
+            "message": "Internal MCP wrapper error.",
+            "detail": str(e)
+        }, indent=2)
 
 
 def main():

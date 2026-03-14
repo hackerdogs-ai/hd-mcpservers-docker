@@ -21,19 +21,31 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# Copy TruffleHog binary from official image
-COPY --from=trufflehog-bin /usr/bin/trufflehog /usr/local/bin/trufflehog
+# Expose Docker's target architecture argument (amd64 or arm64)
+ARG TARGETARCH
 
+# Install system dependencies (wget/tar for downloading, git for scanning repos)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     git \
     unzip \
     ca-certificates \
+    wget \
+    tar \
+    git \
     && rm -rf /var/lib/apt/lists/*
+
+# Download and extract the correct TruffleHog v3 release based on architecture
+ENV TRUFFLEHOG_VERSION=3.93.7
+RUN wget -q https://github.com/trufflesecurity/trufflehog/releases/download/v${TRUFFLEHOG_VERSION}/trufflehog_${TRUFFLEHOG_VERSION}_linux_${TARGETARCH}.tar.gz -O /tmp/trufflehog.tar.gz && \
+    tar -xzf /tmp/trufflehog.tar.gz -C /usr/local/bin trufflehog && \
+    chmod +x /usr/local/bin/trufflehog && \
+    rm /tmp/trufflehog.tar.gz
 
 WORKDIR /app
 
 # Copy requirements and install Python dependencies
+# Note: Ensure fastmcp==2.14.5 is pinned in your requirements.txt!
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -51,6 +63,8 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8258
+# Explicitly tell the server where to find the trufflehog binary
+ENV TRUFFLEHOG_BIN=/usr/local/bin/trufflehog
 
 EXPOSE 8258
 

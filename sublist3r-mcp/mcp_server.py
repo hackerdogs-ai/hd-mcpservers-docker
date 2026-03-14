@@ -11,6 +11,7 @@ import logging
 import os
 import shutil
 import sys
+import shlex
 
 from fastmcp import FastMCP
 
@@ -27,32 +28,36 @@ MCP_PORT = int(os.environ.get("MCP_PORT", "8301"))
 mcp = FastMCP(
     "Sublist3r MCP Server",
     instructions=(
-        "Fast subdomain enumeration tool using OSINT."
+        "Fast subdomain enumeration tool using OSINT. "
+        "IMPORTANT: If you use the '-o' or '--output' flag to save results to a text file, "
+        "the file will be saved in the configured output directory."
     ),
 )
 
-BIN_NAME = os.environ.get("SUBLIST3R_BIN", "sublist3r")
+BIN_NAME = os.environ.get("SUBLIST3R_BIN", "/usr/local/bin/sublist3r")
+OUTPUT_DIR = "/app/output"
 
 
 def _find_binary() -> str:
-    """Locate the sublist3r binary, raising a clear error if missing."""
+    """Locate the sublist3r binary directly."""
     path = shutil.which(BIN_NAME)
     if path is None:
-        logger.error("sublist3r binary not found on PATH")
+        logger.error(f"{BIN_NAME} binary not found on PATH")
         raise FileNotFoundError(
-            f"sublist3r binary not found. Ensure it is installed and available "
-            f"on PATH, or set SUBLIST3R_BIN to the full path."
+            f"{BIN_NAME} binary not found. Ensure the Dockerfile built the package correctly."
         )
     return path
 
 
 async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
-    """Execute a sublist3r command and return structured output.
-
-    Returns a dict with keys: stdout, stderr, return_code.
-    """
+    """Execute a sublist3r command via the Python interpreter and return structured output."""
     binary_path = _find_binary()
-    cmd = [binary_path] + args
+    
+    # We explicitly invoke with sys.executable (Python 3) to bypass shebang errors
+    cmd = [sys.executable, binary_path] + args
+
+    # Ensure the output directory exists
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     try:
         proc = await asyncio.create_subprocess_exec(
@@ -60,6 +65,7 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
             stdin=asyncio.subprocess.DEVNULL,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
+            cwd=OUTPUT_DIR  # Route all local output/logs to the mounted volume
         )
         stdout_bytes, stderr_bytes = await asyncio.wait_for(
             proc.communicate(), timeout=timeout_seconds
@@ -98,15 +104,15 @@ async def run_sublist3r(
     """Run sublist3r with the given arguments.
 
     Pass arguments as you would on the command line.
+    Example: "-d example.com -p 80,443 -o results.txt"
 
     Args:
         arguments: Command-line arguments string.
         timeout_seconds: Maximum execution time in seconds (default 600).
     """
-    import shlex
-
     logger.info("run_sublist3r called with arguments=%s", arguments)
     args = shlex.split(arguments) if arguments.strip() else []
+    
     result = await _run_command(args, timeout_seconds=timeout_seconds)
 
     if result["return_code"] != 0:
@@ -117,7 +123,7 @@ async def run_sublist3r(
                 "error": True,
                 "message": f"sublist3r failed (exit code {result['return_code']})",
                 "detail": error_detail.strip(),
-                "command": f"sublist3r {' '.join(args)}",
+                "command": f"python3 {BIN_NAME} {' '.join(args)}",
             },
             indent=2,
         )
@@ -127,19 +133,13 @@ async def run_sublist3r(
     if not stdout:
         return json.dumps({"message": "Command completed with no output", "arguments": arguments})
 
-    results = []
-    for line in stdout.splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            results.append(json.loads(line))
-        except json.JSONDecodeError:
-            results.append({"raw": line})
-
-    if len(results) == 1:
-        return json.dumps(results[0], indent=2)
-    return json.dumps(results, indent=2)
+    # Sublist3r primarily outputs plain text (ASCII art + lines of subdomains)
+    return json.dumps({
+        "success": True,
+        "message": "Sublist3r executed successfully.",
+        "stdout": stdout,
+        "instructions": "If you used the -o flag, the file is located in the mounted /app/output directory on the host."
+    }, indent=2)
 
 
 def main():

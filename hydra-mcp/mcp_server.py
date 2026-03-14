@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Hydra MCP Server — Network login cracker (50+ protocols).
 
-Wraps the hydra CLI (vanhauser-thc/thc-hydra) to expose
-capabilities through the Model Context Protocol (MCP).
+Wraps the hydra CLI (vanhauser-thc/thc-hydra) to expose capabilities through the Model Context Protocol (MCP).
 """
 
 import asyncio
@@ -11,6 +10,7 @@ import logging
 import os
 import shutil
 import sys
+import shlex
 
 from fastmcp import FastMCP
 
@@ -27,32 +27,34 @@ MCP_PORT = int(os.environ.get("MCP_PORT", "8233"))
 mcp = FastMCP(
     "Hydra MCP Server",
     instructions=(
-        "Network login cracker (50+ protocols)."
+        "Network login cracker for brute-forcing authentication services. "
+        "IMPORTANT: Place wordlists and username files in the mounted /app/output directory. "
+        "Example: '-l admin -P passwords.txt ssh://192.168.1.100'"
     ),
 )
 
-HYDRA_BIN = os.environ.get("HYDRA_BIN", "hydra")
+BIN_NAME = os.environ.get("HYDRA_BIN", "/usr/bin/hydra")
+OUTPUT_DIR = "/app/output"
 
 
 def _find_binary() -> str:
-    """Locate the hydra binary, raising a clear error if missing."""
-    path = shutil.which(HYDRA_BIN)
+    """Locate the hydra binary directly."""
+    path = shutil.which(BIN_NAME)
     if path is None:
-        logger.error("hydra binary not found on PATH")
+        logger.error(f"{BIN_NAME} binary not found on PATH")
         raise FileNotFoundError(
-            f"hydra binary not found. Ensure it is installed and available "
-            f"on PATH, or set HYDRA_BIN to the full path."
+            f"{BIN_NAME} binary not found. Ensure the Dockerfile installed hydra."
         )
     return path
 
 
 async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
-    """Execute a hydra command and return structured output.
+    """Execute a hydra command and return structured output."""
+    binary_path = _find_binary()
+    cmd = [binary_path] + args
 
-    Returns a dict with keys: stdout, stderr, return_code.
-    """
-    binary = _find_binary()
-    cmd = [binary] + args
+    # Ensure the output directory exists
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     try:
         proc = await asyncio.create_subprocess_exec(
@@ -60,6 +62,7 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
             stdin=asyncio.subprocess.DEVNULL,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
+            cwd=OUTPUT_DIR  # Route execution to where wordlists are mounted
         )
         stdout_bytes, stderr_bytes = await asyncio.wait_for(
             proc.communicate(), timeout=timeout_seconds
@@ -92,55 +95,68 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
 
 @mcp.tool()
 async def run_hydra(
-    arguments: str,
+    arguments: str = "",
     timeout_seconds: int = 600,
 ) -> str:
     """Run hydra with the given arguments.
 
     Pass arguments as you would on the command line.
+    Example: "-l admin -P passwords.txt ftp://10.0.0.5"
 
     Args:
         arguments: Command-line arguments string.
         timeout_seconds: Maximum execution time in seconds (default 600).
     """
-    import shlex
+    try:
+        if arguments is None:
+            arguments = ""
+            
+        logger.info("run_hydra called with arguments=%s", arguments)
+        args = shlex.split(arguments) if arguments.strip() else []
+        
+        result = await _run_command(args, timeout_seconds=timeout_seconds)
 
-    logger.info("run_hydra called with arguments=%s", arguments)
-    args = shlex.split(arguments) if arguments.strip() else []
-    result = await _run_command(args, timeout_seconds=timeout_seconds)
+        if result["return_code"] != 0 and not result["stdout"].strip():
+            logger.warning("hydra command failed with exit code %d", result["return_code"])
+            error_detail = result["stderr"] or result["stdout"] or "Unknown error"
+            return json.dumps(
+                {
+                    "error": True,
+                    "message": f"hydra failed (exit code {result['return_code']})",
+                    "detail": error_detail.strip(),
+                    "command": f"hydra {' '.join(args)}",
+                },
+                indent=2,
+            )
 
-    if result["return_code"] != 0:
-        logger.warning("hydra command failed with exit code %d", result["return_code"])
-        error_detail = result["stderr"] or result["stdout"] or "Unknown error"
-        return json.dumps(
-            {
-                "error": True,
-                "message": f"hydra failed (exit code {result['return_code']})",
-                "detail": error_detail.strip(),
-                "command": f"hydra {' '.join(args)}",
-            },
-            indent=2,
-        )
+        stdout = result["stdout"].strip()
+        stderr = result["stderr"].strip()
 
-    stdout = result["stdout"].strip()
+        # Combine stdout and stderr if needed (hydra sometimes splits its startup banners)
+        combined_output = stdout
+        if stderr and not stdout:
+            combined_output = stderr
+        elif stderr and stdout:
+            # Only append stderr if it looks like actual errors and not just the help banner
+            combined_output = f"{stdout}\n\n[STDERR/LOGS]:\n{stderr}"
 
-    if not stdout:
-        return json.dumps({"message": "Command completed with no output", "arguments": arguments})
+        if not combined_output:
+            return json.dumps({"message": "Command completed with no output", "arguments": arguments})
 
-    # Try to parse as JSON/JSONL
-    results = []
-    for line in stdout.splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            results.append(json.loads(line))
-        except json.JSONDecodeError:
-            results.append({"raw": line})
+        # Return standard text response instead of JSON parsing
+        return json.dumps({
+            "success": True,
+            "message": "Hydra executed successfully.",
+            "stdout": combined_output.strip()
+        }, indent=2)
 
-    if len(results) == 1:
-        return json.dumps(results[0], indent=2)
-    return json.dumps(results, indent=2)
+    except Exception as e:
+        logger.error("Unhandled exception in run_hydra: %s", e)
+        return json.dumps({
+            "error": True,
+            "message": "Internal MCP wrapper error.",
+            "detail": str(e)
+        }, indent=2)
 
 
 def main():

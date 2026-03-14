@@ -16,21 +16,17 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# TODO: Install patator — add your install steps here.
-# Examples:
-#   apt:   RUN apt-get update && apt-get install -y --no-install-recommends patator && rm -rf /var/lib/apt/lists/*
-#   pip:   RUN pip install --no-cache-dir patator
-#   go:    (use multi-stage) FROM golang:1.24-bookworm AS builder; RUN go install ...@latest; then COPY --from=builder
-#   cargo: (use multi-stage) FROM rust:1.77 AS builder; RUN cargo install patator; then COPY --from=builder
-
+# Install system dependencies, including the patator package and its required C-libraries
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     ca-certificates \
+    patator \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
 # Copy requirements and install Python dependencies
+# Note: Ensure fastmcp==2.14.5 is pinned in your requirements.txt!
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -47,6 +43,10 @@ USER mcpuser
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8262
+# Explicitly tell the server where to find the patator binary
+ENV PATATOR_BIN=/usr/bin/patator
+# Suppress Python warnings (like telnetlib deprecation) to prevent MCP stdio corruption
+ENV PYTHONWARNINGS="ignore::DeprecationWarning"
 
 EXPOSE 8262
 
