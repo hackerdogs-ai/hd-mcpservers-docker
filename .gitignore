@@ -1,1 +1,4 @@
 __pycache__/
+/webservice/.venv
+webservice/2026-03-07T20-14_export.csv
+webservice/catalog.json
