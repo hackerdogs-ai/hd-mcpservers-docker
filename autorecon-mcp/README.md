@@ -199,6 +199,13 @@ docker stop autorecon-mcp-test
 ```
 
 
+## Troubleshooting
+
+- **Build failures:** The image is based on **Kali Linux** (`kalilinux/kali-rolling`) and installs AutoRecon's full tool set (nmap, nikto, feroxbuster, gobuster, seclists, etc.) plus AutoRecon via pip in a venv. If build fails, ensure Docker has network access and retry.
+- **MCP server not working:** The server runs in Docker; your MCP client must be able to run `docker run ... hackerdogs/autorecon-mcp:latest`. Run `./test.sh` on a host with Docker to verify.
+- **Scans run robustly:** The image includes the tools AutoRecon needs; the MCP server runs autorecon with a PTY so it works when invoked without a real terminal (e.g. from MCP tools/call).
+
+
 ## Running the tool directly (bypassing MCP)
 
 You can run the autorecon CLI in the same container by overriding the entrypoint to perform automated recon without starting the MCP server.

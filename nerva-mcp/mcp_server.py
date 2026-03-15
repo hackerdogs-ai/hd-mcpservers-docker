@@ -18,10 +18,14 @@ logger = logging.getLogger("nerva-mcp")
 
 mcp = FastMCP(
     "nerva-mcp",
-    instructions="MCP server for Nerva - identifies 120+ network services on open ports and extracts version/config metadata.",
+    instructions=(
+        "MCP server for Nerva - identifies 120+ network services on open ports and extracts version/config metadata. "
+        "Runs in Docker. Output is JSON by default. Callers (e.g. AI agents) pass comma-separated host:port targets (e.g. example.com:80,10.0.0.1:443); targets must be reachable from the container network."
+    ),
 )
 
 NERVA_BIN = shutil.which("nerva") or "nerva"
+NERVA_CWD = os.environ.get("NERVA_CWD", "/app")
 
 
 def _run_nerva(args: list[str], timeout: int = 120) -> dict:
@@ -33,6 +37,7 @@ def _run_nerva(args: list[str], timeout: int = 120) -> dict:
             capture_output=True,
             text=True,
             timeout=timeout,
+            cwd=NERVA_CWD,
         )
         output = result.stdout.strip()
         stderr = result.stderr.strip()
@@ -100,28 +105,37 @@ def fingerprint_services(
 ) -> dict:
     """Identify network services running on open ports and extract version/config metadata.
 
-    Nerva probes the specified host:port targets to fingerprint 120+ service types
-    including HTTP servers, databases, message queues, caches, and more.
+    Output is JSON by default. Nerva probes host:port targets to fingerprint 120+ service types
+    (HTTP servers, databases, message queues, caches, etc.).
 
     Args:
-        targets: Comma-separated list of host:port pairs to fingerprint (e.g. "10.0.0.1:80,10.0.0.1:443").
-        output_format: Output format - "json" or "csv". Default "json".
-        fast_mode: If True, use fast mode for quicker but less thorough scanning.
+        targets: Comma-separated host:port pairs (e.g. "example.com:80,10.0.0.1:443"). Must be reachable from the container.
+        output_format: "json" (default) or "csv". Default is always JSON when not specified.
+        fast_mode: If True, use fast mode (default ports only).
         udp: If True, also probe UDP ports.
         timeout: Connection timeout in milliseconds. Default 2000.
 
     Returns:
-        Dictionary with fingerprinting results including identified services and versions.
+        Dict with success, output (JSON array of fingerprint results or parsed JSON), stderr, exit_code.
     """
     logger.info("fingerprint_services called with targets=%s", targets)
     target_list = [t.strip() for t in targets.split(",") if t.strip()]
 
+    if not target_list:
+        return {
+            "success": False,
+            "output": None,
+            "stderr": "No targets provided. Pass comma-separated host:port pairs (e.g. example.com:80,10.0.0.1:443).",
+            "exit_code": -1,
+        }
+
     args = ["-t", ",".join(target_list)]
 
-    if output_format == "json":
-        args.append("--json")
-    elif output_format == "csv":
+    # Default output is JSON; only use CSV when explicitly requested
+    if (output_format or "").strip().lower() == "csv":
         args.append("--csv")
+    else:
+        args.append("--json")
 
     if fast_mode:
         args.append("--fast")

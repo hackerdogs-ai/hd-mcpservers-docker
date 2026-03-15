@@ -18,7 +18,7 @@ Vanta (vanta-mcp) is a security tool that provides: **Vanta compliance and secur
 
 See [VantaInc/vanta-mcp-server](https://github.com/VantaInc/vanta-mcp-server) for full documentation.
 
-**No API keys required** — Vanta runs locally inside the Docker container.
+**Vanta API credentials required for real use** — Vanta is a paid compliance/security platform. Without `VANTA_ENV_FILE` (OAuth credentials), this image runs a stub so the MCP server starts and the tool is callable; tool output will direct you to configure credentials for full functionality.
 
 **Summary.** MCP server wrapper for [Vanta](https://github.com/VantaInc/vanta-mcp-server) — Vanta compliance and security monitoring MCP integration.
 
@@ -124,6 +124,7 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 |----------|---------|-------------|
 | `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
 | `MCP_PORT` | `8348` | HTTP port (only used with `streamable-http`) |
+| `VANTA_ENV_FILE` | — | *(For full Vanta integration)* Path to JSON file with OAuth `client_id` and `client_secret`. Required by upstream [VantaInc/vanta-mcp-server](https://github.com/VantaInc/vanta-mcp-server); without it this image runs a stub only. |
 
 ## Installing in Hackerdogs
 

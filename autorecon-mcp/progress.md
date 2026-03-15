@@ -9,7 +9,7 @@
   - [x] Support stdio and streamable-http transports
   - [x] Robust error handling and timeouts
   - [x] JSON output parsing
-- [ ] Add autorecon install steps to `Dockerfile` (see [Tib3rius/AutoRecon](https://github.com/Tib3rius/AutoRecon))
+- [x] Add autorecon install steps to `Dockerfile` — **robust image**: Kali base + full tool stack (nmap, nikto, feroxbuster, gobuster, seclists, etc.), venv with AutoRecon; MCP server runs autorecon with PTY for non-interactive use
 - [x] Create `publish_to_hackerdogs.sh` — build/publish script with multi-arch support
 - [x] Create `mcpServer.json` — MCP server config for Claude/Cursor installation
 - [x] Create `docker-compose.yml` — port 8201
@@ -26,4 +26,4 @@
 
 - Source: https://github.com/Tib3rius/AutoRecon
 - Binary: `autorecon`
-- Install: see https://github.com/Tib3rius/AutoRecon for installation instructions
+- Install: in Dockerfile, `pip install git+https://github.com/Tib3rius/AutoRecon.git`

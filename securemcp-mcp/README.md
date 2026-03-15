@@ -199,6 +199,11 @@ docker stop securemcp-mcp-test
 ```
 
 
+## Troubleshooting
+
+- **"Container can't find the securemcp binary":** The Dockerfile copies the built binary from the builder stage to `/usr/local/bin/securemcp` and sets `SECUREMCP_BIN=/usr/local/bin/securemcp`. Ensure you rebuild the image after any Dockerfile change: `docker build -t hackerdogs/securemcp-mcp:latest .` then run `./test.sh` to verify.
+
+
 ## Running the tool directly (bypassing MCP)
 
 You can run the securemcp CLI in the same container by overriding the entrypoint to audit or harden MCP server security without starting the MCP server.

@@ -9,6 +9,7 @@ import asyncio
 import json
 import logging
 import os
+import pty
 import shutil
 import sys
 
@@ -31,42 +32,50 @@ mcp = FastMCP(
     ),
 )
 
-AUTORECON_BIN = os.environ.get("AUTORECON_BIN", "autorecon")
+AUTORECON_BIN = os.environ.get("AUTORECON_BIN", "")
 
 
-def _find_binary() -> str:
-    """Locate the autorecon binary, raising a clear error if missing."""
-    path = shutil.which(AUTORECON_BIN)
-    if path is None:
-        logger.error("autorecon binary not found on PATH")
-        raise FileNotFoundError(
-            f"autorecon binary not found. Ensure it is installed and available "
-            f"on PATH, or set AUTORECON_BIN to the full path."
-        )
-    return path
+def _get_autorecon_cmd_base() -> list[str]:
+    """Return argv for autorecon (binary or python -m). Prefer explicit AUTORECON_BIN, then PATH, then python -m."""
+    if AUTORECON_BIN:
+        path = shutil.which(AUTORECON_BIN) or AUTORECON_BIN
+        if path:
+            return [path]
+    if shutil.which("autorecon"):
+        return ["autorecon"]
+    # Fallback: run as module (e.g. when installed via pip for python3 and script not on PATH)
+    return [sys.executable, "-m", "autorecon"]
 
 
 async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
-    """Execute a autorecon command and return structured output.
+    """Execute an autorecon command and return structured output.
 
+    Runs autorecon with a PTY so it sees a TTY (avoids termios error when stdin is not a terminal).
     Returns a dict with keys: stdout, stderr, return_code.
     """
-    binary = _find_binary()
-    cmd = [binary] + args
+    base = _get_autorecon_cmd_base()
+    cmd = base + args
+    master_fd = slave_fd = None
+    proc = None
 
     try:
+        master_fd, slave_fd = pty.openpty()
         proc = await asyncio.create_subprocess_exec(
             *cmd,
-            stdin=asyncio.subprocess.DEVNULL,
+            stdin=slave_fd,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
         )
+        if slave_fd is not None:
+            os.close(slave_fd)
+            slave_fd = None
         stdout_bytes, stderr_bytes = await asyncio.wait_for(
             proc.communicate(), timeout=timeout_seconds
         )
     except asyncio.TimeoutError:
-        proc.kill()
-        await proc.communicate()
+        if proc is not None:
+            proc.kill()
+            await proc.communicate()
         logger.error("Command timed out after %ds: %s", timeout_seconds, " ".join(cmd))
         return {
             "stdout": "",
@@ -75,11 +84,27 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
         }
     except Exception as exc:
         logger.error("Command execution failed: %s", exc)
+        if proc is not None:
+            try:
+                proc.kill()
+            except ProcessLookupError:
+                pass
         return {
             "stdout": "",
             "stderr": f"Failed to execute command: {exc}",
             "return_code": -1,
         }
+    finally:
+        if slave_fd is not None:
+            try:
+                os.close(slave_fd)
+            except OSError:
+                pass
+        if master_fd is not None:
+            try:
+                os.close(master_fd)
+            except OSError:
+                pass
 
     stdout = stdout_bytes.decode("utf-8", errors="replace")
     stderr = stderr_bytes.decode("utf-8", errors="replace")
