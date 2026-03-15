@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  ghunt-mcp:
+    image: hackerdogs/ghunt-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ghunt-mcp
+    ports:
+      - "8218:8218"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8218
+    restart: unless-stopped

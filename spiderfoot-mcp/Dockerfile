@@ -32,12 +32,20 @@ RUN git clone --depth 1 https://github.com/smicallef/spiderfoot.git /opt/spiderf
 WORKDIR /app
 
 # Copy requirements and install Python dependencies
-# Note: Ensure fastmcp==2.14.5 is pinned in your requirements.txt!
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Install SpiderFoot's specific Python dependencies
-RUN pip install --no-cache-dir -r /opt/spiderfoot/requirements.txt
+# Install SpiderFoot's specific Python dependencies (allow cryptography upgrade for FastMCP compat)
+RUN pip install --no-cache-dir -r /opt/spiderfoot/requirements.txt && \
+    pip install --no-cache-dir 'cryptography>=41.0.0' 'pyOpenSSL>=23.0.0'
+
+# Create wrapper script so spiderfoot is available on PATH
+COPY <<'WRAPPER' /usr/local/bin/spiderfoot
+#!/bin/bash
+cd /opt/spiderfoot
+exec python sf.py "$@"
+WRAPPER
+RUN chmod +x /usr/local/bin/spiderfoot
 
 # Copy application code
 COPY mcp_server.py ./
@@ -49,13 +57,11 @@ RUN mkdir -p /app/output && \
 # Switch to non-root user
 USER mcpuser
 
-# Environment variables (so mcp_server.py finds the binary)
-ENV SPIDERFOOT_BIN=/opt/spiderfoot/sf.py
+# Environment variables
+ENV SPIDERFOOT_BIN=spiderfoot
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8257
-# Explicitly tell the server where to find the sf.py script
-ENV SPIDERFOOT_BIN=/opt/spiderfoot/sf.py
 
 EXPOSE 8257
 

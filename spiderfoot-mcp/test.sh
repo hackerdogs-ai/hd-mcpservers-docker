@@ -14,7 +14,7 @@ PASS=0
 FAIL=0
 IMAGE="hackerdogs/spiderfoot-mcp:latest"
 PORT=8257
-BINARY="sf.py"
+BINARY="spiderfoot"
 CONTAINER_NAME="spiderfoot-mcp-test"
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 

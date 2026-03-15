@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  subfinder-mcp:
+    image: hackerdogs/subfinder-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: subfinder-mcp
+    ports:
+      - "8367:8367"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8367
+    restart: unless-stopped

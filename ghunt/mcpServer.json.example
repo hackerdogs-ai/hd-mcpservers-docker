@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "ghunt-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "hackerdogs/ghunt-mcp-server:latest"
+      ],
+      "env": {
+        "PYTHONUNBUFFERED": "1",
+        "GOOGLE_API_KEY": "your_google_api_key_here",
+        "GOOGLE_CX": "your_google_custom_search_engine_id_here",
+        "GOOGLE_CLIENT_ID": "your_google_client_id_here",
+        "GOOGLE_CLIENT_SECRET": "your_google_client_secret_here"
+      }
+    }
+  }
+}

@@ -9,7 +9,7 @@
   - [x] Support stdio and streamable-http transports
   - [x] Robust error handling and timeouts
   - [x] JSON output parsing
-- [ ] Add sf.py install steps to `Dockerfile` (see [smicallef/spiderfoot](https://github.com/smicallef/spiderfoot))
+- [x] Add sf.py install steps to `Dockerfile` (cloned from [smicallef/spiderfoot](https://github.com/smicallef/spiderfoot), wrapper script, cryptography fix)
 - [x] Create `publish_to_hackerdogs.sh` — build/publish script with multi-arch support
 - [x] Create `mcpServer.json` — MCP server config for Claude/Cursor installation
 - [x] Create `docker-compose.yml` — port 8257
@@ -25,5 +25,7 @@
 ## Notes
 
 - Source: https://github.com/smicallef/spiderfoot
-- Binary: `sf.py`
-- Install: see https://github.com/smicallef/spiderfoot for installation instructions
+- Binary: `spiderfoot` (wrapper around `/opt/spiderfoot/sf.py`)
+- SpiderFoot 4.0.0 with 231 OSINT modules
+- SpiderFoot's `cryptography<4` pin conflicts with FastMCP; resolved by re-upgrading after install
+- No API keys required for basic scans (some modules need keys for external services)

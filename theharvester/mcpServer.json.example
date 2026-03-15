@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "theharvester-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "hackerdogs/theharvester-mcp-server:latest"
+      ],
+      "env": {
+        "PYTHONUNBUFFERED": "1",
+        "HUNTER_API_KEY": "your_hunter_io_api_key_here",
+        "BING_API_KEY": "your_bing_api_key_here",
+        "SHODAN_API_KEY": "your_shodan_api_key_here",
+        "SECURITYTRAILS_API_KEY": "your_securitytrails_api_key_here"
+      }
+    }
+  }
+}
