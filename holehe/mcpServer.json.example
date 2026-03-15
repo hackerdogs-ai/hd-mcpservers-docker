@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "holehe-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "hackerdogs/holehe-mcp-server:latest"
+      ],
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  dnsdumpster-mcp:
+    image: hackerdogs/dnsdumpster-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dnsdumpster-mcp
+    ports:
+      - "8216:8216"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8216
+    restart: unless-stopped

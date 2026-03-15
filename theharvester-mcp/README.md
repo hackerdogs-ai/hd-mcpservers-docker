@@ -52,12 +52,12 @@ Run theHarvester with the given arguments. Returns structured JSON output.
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Run theHarvester with --help to see all available options."
-- "Use theharvester to scan the target 192.168.1.1."
-- "What options does theHarvester support? Show me its help output."
-- "Run theharvester against example.com with default settings."
-- "Execute theHarvester with verbose output enabled."
-- "Use the theharvester tool to analyze the target and report findings."
+- "Use theHarvester to gather emails and subdomains for example.com using all sources."
+- "Run theHarvester with -d target.com -b google to harvest from Google."
+- "Find all email addresses associated with company.com using theHarvester."
+- "Use theHarvester to enumerate subdomains for target.org with -b crtsh."
+- "Show me all available theHarvester data sources with --help."
+- "Run theHarvester against example.com and output results in JSON format."
 
 ## Deploy
 
@@ -128,6 +128,7 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 |----------|---------|-------------|
 | `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
 | `MCP_PORT` | `8204` | HTTP port (only used with `streamable-http`) |
+| `THEHARVESTER_BIN` | `theHarvester` | Path or name of the theHarvester binary |
 
 ## Installing in Hackerdogs
 

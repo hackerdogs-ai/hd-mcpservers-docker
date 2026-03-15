@@ -52,12 +52,12 @@ Run sherlock with the given arguments. Returns structured JSON output.
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Run sherlock with --help to see all available options."
-- "Use sherlock to scan the target 192.168.1.1."
-- "What options does sherlock support? Show me its help output."
-- "Run sherlock against example.com with default settings."
-- "Execute sherlock with verbose output enabled."
-- "Use the sherlock tool to analyze the target and report findings."
+- "Use sherlock to find all social media accounts for username 'johndoe'."
+- "Search for username 'target_user' across social networks using sherlock."
+- "Run sherlock on 'suspicious_user' with verbose output enabled."
+- "Check if username 'analyst01' exists on Twitter, GitHub, and Reddit using sherlock."
+- "Show me all available sherlock options with --help."
+- "Use sherlock to hunt for username 'admin' across all supported sites."
 
 ## Deploy
 
@@ -124,6 +124,7 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 |----------|---------|-------------|
 | `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
 | `MCP_PORT` | `8317` | HTTP port (only used with `streamable-http`) |
+| `SHERLOCK_BIN` | `sherlock` | Path or name of the Sherlock binary |
 
 ## Installing in Hackerdogs
 

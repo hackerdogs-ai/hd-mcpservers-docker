@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "maigret-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "hackerdogs/maigret-mcp-server:latest"
+      ],
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      }
+    }
+  }
+}

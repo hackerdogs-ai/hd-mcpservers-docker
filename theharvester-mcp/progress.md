@@ -9,7 +9,7 @@
   - [x] Support stdio and streamable-http transports
   - [x] Robust error handling and timeouts
   - [x] JSON output parsing
-- [ ] Add theHarvester install steps to `Dockerfile` (see [laramies/theHarvester](https://github.com/laramies/theHarvester))
+- [x] Add theHarvester install steps to `Dockerfile` (pip install from [laramies/theHarvester](https://github.com/laramies/theHarvester))
 - [x] Create `publish_to_hackerdogs.sh` — build/publish script with multi-arch support
 - [x] Create `mcpServer.json` — MCP server config for Claude/Cursor installation
 - [x] Create `docker-compose.yml` — port 8204

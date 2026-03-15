@@ -52,12 +52,12 @@ Run sf.py with the given arguments. Returns structured JSON output.
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Run sf.py with --help to see all available options."
-- "Use spiderfoot to scan the target 192.168.1.1."
-- "What options does sf.py support? Show me its help output."
-- "Run spiderfoot against example.com with default settings."
-- "Execute sf.py with verbose output enabled."
-- "Use the spiderfoot tool to analyze the target and report findings."
+- "Use SpiderFoot to do a passive footprint scan on example.com."
+- "Run SpiderFoot against my-company.com and collect all email addresses and subdomains."
+- "List all available SpiderFoot modules with -M."
+- "Use SpiderFoot to investigate the IP address 8.8.8.8 with passive modules only."
+- "Run SpiderFoot on target.com with JSON output using -o json."
+- "What event types can SpiderFoot collect? Show me with -T."
 
 ## Deploy
 
@@ -124,6 +124,7 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 |----------|---------|-------------|
 | `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
 | `MCP_PORT` | `8257` | HTTP port (only used with `streamable-http`) |
+| `SPIDERFOOT_BIN` | `spiderfoot` | Path or name of the SpiderFoot wrapper binary |
 
 ## Installing in Hackerdogs
 
@@ -201,10 +202,22 @@ docker stop spiderfoot-mcp-test
 
 ## Running the tool directly (bypassing MCP)
 
-You can run the sf.py (SpiderFoot) CLI in the same container by overriding the entrypoint to run OSINT scans and automate footprinting without starting the MCP server.
+You can run SpiderFoot directly in the same container by overriding the entrypoint to run OSINT scans without starting the MCP server.
 
 **Show help:**
 
 ```bash
-docker run -i --rm --entrypoint sf.py hackerdogs/spiderfoot-mcp:latest --help
+docker run --rm --entrypoint spiderfoot hackerdogs/spiderfoot-mcp:latest --help
+```
+
+**List available modules:**
+
+```bash
+docker run --rm --entrypoint spiderfoot hackerdogs/spiderfoot-mcp:latest -M
+```
+
+**Passive scan a target:**
+
+```bash
+docker run --rm --entrypoint spiderfoot hackerdogs/spiderfoot-mcp:latest -s example.com -u passive -o json
 ```

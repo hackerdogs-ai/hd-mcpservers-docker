@@ -31,7 +31,7 @@ mcp = FastMCP(
     ),
 )
 
-SPIDERFOOT_BIN = os.environ.get("SPIDERFOOT_BIN", "sf.py")
+SPIDERFOOT_BIN = os.environ.get("SPIDERFOOT_BIN", "spiderfoot")
 
 
 def _find_binary() -> str:

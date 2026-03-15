@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "blackbird-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "hackerdogs/blackbird-mcp-server:latest"
+      ],
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      }
+    }
+  }
+}
