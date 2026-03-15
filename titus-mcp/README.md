@@ -14,18 +14,22 @@ MCP server wrapper for [Titus](https://github.com/praetorian-inc/titus) — secr
 
 ## What is Titus?
 
-Titus scans source code, files, and git history for leaked API keys, tokens, credentials, and other secrets using **459 detection rules**. It supports scanning local directories as well as full git commit history to find secrets that may have been committed and later removed.
+Titus scans source code, files, and git history for leaked API keys, tokens, credentials, and other secrets using **487 detection rules**. It supports scanning local directories as well as full git commit history to find secrets that may have been committed and later removed.
 
 **No API keys required** — Titus runs entirely locally against your files and repositories.
+
+### Docker & AI agents
+
+This MCP server **runs in Docker**, not on the host. Callers (e.g. AI agents) should **pass URLs**, not host machine paths. For `scan_path` and `scan_git`, pass any **file URL** (e.g. `https://example.com/code.zip`) or **repo URL** (e.g. `https://github.com/org/repo`); the server **downloads the content inside the container** and runs the scan. No volume mounts or local paths are required. If a non-URL path is given and it does not exist in the container, the server returns a clear error asking for a URL.
 
 **Summary.** MCP server wrapper for [Titus](https://github.com/praetorian-inc/titus) — secret detection tool by Praetorian that scans source code, files, and git history for leaked credentials.
 
 **Tools:**
-- `scan_path` — Scan files and directories for secrets (API keys, tokens, credentials) using 459 detection rules.
-- `scan_git` — Scan git history for secrets leaked in past commits.
-- `list_rules` — List all 459 available secret detection rules. _No parameters._
+- `scan_path` — Scan for secrets in files/directories. **Pass a URL** (file or repo); server downloads and scans. 487 rules.
+- `scan_git` — Scan git history for leaked secrets. **Pass a repo URL**; server clones and scans history.
+- `list_rules` — List all 487 available secret detection rules. _No parameters._
 - `generate_report` — Generate a report from the most recent scan.
-- `download_file` — Download a file or repository from a URL into the container workspace. Use this to pre-download content before running multiple analyses on the same data.
+- `download_file` — Download a file or repo from a URL into the container (optional; use when you need multiple scans on the same content).
 - `cleanup_downloads` — Remove downloaded files from the container workspace.
 
 
@@ -33,11 +37,11 @@ Titus scans source code, files, and git history for leaked API keys, tokens, cre
 
 ### `scan_path`
 
-Scan files and directories for secrets (API keys, tokens, credentials) using 459 detection rules.
+Scan files and directories for secrets (API keys, tokens, credentials) using 487 detection rules.
 
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
-| `path` | string | Yes | — | Local path **or URL** to scan. Accepts a file/directory path, HTTP(S) URL, archive URL, or a GitHub/GitLab repo URL. URLs are downloaded into the container automatically |
+| `path` | string | Yes | — | **URL recommended:** file URL (e.g. `https://example.com/code.zip`) or GitHub/GitLab repo URL. Server downloads inside the container and scans. Or a path inside the container (e.g. from `download_file`). |
 | `validate` | boolean | No | `false` | Validate discovered secrets against live services |
 | `output_format` | string | No | `"json"` | Output format: `"json"` or `"csv"` |
 | `rules_include` | string | No | `""` | Rule IDs or tags to include (empty = all) |
@@ -63,7 +67,7 @@ Scan git history for secrets leaked in past commits.
 
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
-| `path` | string | Yes | — | Local path **or URL** to a git repo. Accepts a directory path or a GitHub/GitLab repo URL (e.g. `https://github.com/org/repo`). URLs are cloned into the container automatically |
+| `path` | string | Yes | — | **URL recommended:** GitHub/GitLab repo URL (e.g. `https://github.com/org/repo`). Server clones inside the container and scans full git history. Or a path inside the container if already cloned. |
 | `validate` | boolean | No | `false` | Validate discovered secrets |
 | `output_format` | string | No | `"json"` | Output format: `"json"` or `"csv"` |
 | `rules_include` | string | No | `""` | Rule IDs or tags to include |
@@ -71,7 +75,7 @@ Scan git history for secrets leaked in past commits.
 
 ### `list_rules`
 
-List all 459 available secret detection rules. _No parameters._
+List all 487 available secret detection rules. _No parameters._
 
 ### `generate_report`
 
@@ -258,6 +262,12 @@ curl -s -X POST http://localhost:8103/mcp \
 ```bash
 docker stop titus-test
 ```
+
+
+## Troubleshooting
+
+- **"MCP server not working" in Claude / Cursor:** The server runs inside Docker. If your environment cannot run Docker (e.g. no `docker` in PATH or no Docker daemon), the MCP client cannot start the container. Run `./test.sh` on a host that has Docker to verify the image; use a Cursor/Claude setup that is configured to run Docker for MCP.
+- **Scan path not found:** When using the container, only paths inside the container exist. Use a **URL** (e.g. `https://github.com/org/repo`) so the server downloads and scans it, or mount your repo: `docker run ... -v /host/path:/app/mount hackerdogs/titus-mcp` and pass `path="/app/mount"`.
 
 
 ## Running the tool directly (bypassing MCP)

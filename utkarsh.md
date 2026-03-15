@@ -23,7 +23,7 @@ steghide|working
 scoutesuite|working
 kube-hunter|working
 kube-bench|working
-docker-bench-security|not working|Installed but Docker daemon not running
+docker-bench-security|working|Installed but Docker daemon not running (Fixed by Tej)
 social-analyzer|working
 recon-ng|working
 spiderfoot|working
@@ -35,9 +35,9 @@ patator|working
 evil-winrm-working|working
 hashid|working
 jwt-tool|working
-nosqlmap|not working|ipcalc SyntaxError
+nosqlmap|working|ipcalc SyntaxError (Fixed by Tej)
 tplmap|working
-cloudmapper|not working|too much errors
+cloudmapper|working|too much errors (Fixed by Tej)
 pacu|working
 clair|working
 falco|working
@@ -46,7 +46,7 @@ terrascan|working
 hashpump|working
 x8|working
 one-gadget|working
-libc-database|not working|multiple errors
+libc-database|working|multiple errors (Fixed by Tej)
 pwninit|working
 testssl|working
 sslyze|working
@@ -63,7 +63,7 @@ crlfuzz|working
 smuggler|working
 corscanner|working
 dnsreaper|working
-ai-infra-guard|not working|MCP client works, backend daemon not running at host.docker.internal:8088
+ai-infra-guard|working|MCP client works, backend daemon not running at host.docker.internal:8088 (Fixed by Tej)
 ramparts|working
 mcpscan|working
 securemcp|working

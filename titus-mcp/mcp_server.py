@@ -19,10 +19,15 @@ logger = logging.getLogger("titus-mcp")
 
 mcp = FastMCP(
     "titus-mcp",
-    instructions="MCP server for Titus - scans source code, files, and git history for secrets (API keys, tokens, credentials) using 459 detection rules.",
+    instructions=(
+        "MCP server for Titus - scans source code, files, and git history for secrets (API keys, tokens, credentials) using 487 detection rules. "
+        "Runs in Docker: callers (e.g. AI agents) must pass URLs, not host paths. For scan_path and scan_git, pass a file URL (e.g. https://example.com/archive.zip) or a repo URL (e.g. https://github.com/org/repo); the server downloads the content inside the container and runs the scan. No mounting or local paths required."
+    ),
 )
 
 TITUS_BIN = shutil.which("titus") or "titus"
+# Ensure scan/report use the same datastore (titus.ds in this directory)
+TITUS_CWD = os.environ.get("TITUS_CWD", "/app")
 
 
 def _run_titus(args: list[str], timeout: int = 120) -> dict:
@@ -34,6 +39,7 @@ def _run_titus(args: list[str], timeout: int = 120) -> dict:
             capture_output=True,
             text=True,
             timeout=timeout,
+            cwd=TITUS_CWD,
         )
         output = result.stdout.strip()
         stderr = result.stderr.strip()
@@ -91,6 +97,19 @@ def _run_titus(args: list[str], timeout: int = 120) -> dict:
         }
 
 
+def _path_or_url_ok(path: str) -> tuple[bool, str | None]:
+    """Return (True, None) if path is a URL or exists in container; else (False, error_message)."""
+    if hd_fetch.is_url(path):
+        return True, None
+    if os.path.exists(path):
+        return True, None
+    return (
+        False,
+        "Path does not exist in the container. This server runs in Docker: pass a URL instead, "
+        "e.g. https://github.com/org/repo or https://example.com/archive.zip — the server will download and scan it.",
+    )
+
+
 @mcp.tool()
 def scan_path(
     path: str,
@@ -99,24 +118,30 @@ def scan_path(
     rules_include: str = "",
     rules_exclude: str = "",
 ) -> dict:
-    """Scan files and directories for secrets such as API keys, tokens, and credentials.
+    """Scan files and directories for secrets (API keys, tokens, credentials).
 
-    Titus uses 459 detection rules to find hardcoded secrets in source code,
-    configuration files, and other text-based files.
+    Designed for Docker and AI agents: pass a URL and the server downloads and scans it.
+    Titus uses 487 detection rules on source code, config files, and text files.
 
     Args:
-        path: Local path OR URL to scan.  Accepts a file/directory path, an
-              HTTP(S) URL to a file or archive, or a GitHub/GitLab repo URL.
-              URLs are downloaded into the container automatically.
-        validate: If True, attempt to validate discovered secrets against live services.
-        output_format: Output format - "json" or "csv". Default "json".
-        rules_include: Comma-separated rule IDs or tags to include (empty = all rules).
+        path: URL to scan (recommended). HTTP(S) file or archive URL, or GitHub/GitLab repo URL
+              (e.g. https://github.com/org/repo, https://example.com/code.zip). The server downloads
+              the content inside the container and runs the scan. Alternatively, a path inside the
+              container (e.g. from download_file) if content was already downloaded.
+        validate: If True, validate discovered secrets against live services.
+        output_format: "json" or "csv". Default "json".
+        rules_include: Comma-separated rule IDs or tags to include (empty = all).
         rules_exclude: Comma-separated rule IDs or tags to exclude.
 
     Returns:
-        Dictionary with scan results including any detected secrets.
+        Dict with success, output (scan results/findings), stderr, exit_code.
     """
     logger.info("scan_path called with path=%s", path)
+
+    ok, err = _path_or_url_ok(path)
+    if not ok:
+        logger.warning("scan_path rejected path (not URL and not in container): %s", path)
+        return {"success": False, "output": None, "stderr": err, "exit_code": -1}
 
     with hd_fetch.resolve(path) as local_path:
         args = ["scan", local_path]
@@ -146,25 +171,30 @@ def scan_git(
 ) -> dict:
     """Scan git history of a repository for secrets leaked in past commits.
 
-    Examines every commit in the git log to find secrets that may have been
-    committed and later removed but still exist in history.
+    Designed for Docker and AI agents: pass a repo URL and the server clones and scans history.
+    Examines every commit to find secrets that were committed and later removed.
 
     Args:
-        path: Local path OR URL to a git repository.  Accepts a directory path
-              or a GitHub/GitLab repo URL (e.g. https://github.com/org/repo).
-              URLs are cloned into the container automatically.
-        validate: If True, attempt to validate discovered secrets against live services.
-        output_format: Output format - "json" or "csv". Default "json".
-        rules_include: Comma-separated rule IDs or tags to include (empty = all rules).
+        path: URL to a git repository (recommended). GitHub/GitLab URL (e.g. https://github.com/org/repo).
+              The server clones the repo inside the container and scans full git history.
+              Alternatively, a path inside the container (e.g. from download_file) if already cloned.
+        validate: If True, validate discovered secrets against live services.
+        output_format: "json" or "csv". Default "json".
+        rules_include: Comma-separated rule IDs or tags to include (empty = all).
         rules_exclude: Comma-separated rule IDs or tags to exclude.
 
     Returns:
-        Dictionary with scan results from git history including detected secrets.
+        Dict with success, output (findings from git history), stderr, exit_code.
     """
     logger.info("scan_git called with path=%s", path)
 
+    ok, err = _path_or_url_ok(path)
+    if not ok:
+        logger.warning("scan_git rejected path (not URL and not in container): %s", path)
+        return {"success": False, "output": None, "stderr": err, "exit_code": -1}
+
     with hd_fetch.resolve(path) as local_path:
-        args = ["scan", local_path, "--git"]
+        args = ["scan", "--git", local_path]
 
         if validate:
             args.append("--validate")
@@ -185,7 +215,7 @@ def scan_git(
 def list_rules() -> dict:
     """List all available secret detection rules.
 
-    Returns the full set of 459 built-in detection rules that Titus uses to
+    Returns the full set of 487 built-in detection rules that Titus uses to
     identify secrets, including rule IDs, descriptions, and patterns.
 
     Returns:
@@ -225,16 +255,16 @@ def download_file(
 ) -> dict:
     """Download a file or repository from a URL into the container workspace.
 
-    Use this to pre-download files before scanning, or when you need to
-    download once and run multiple scans on the same content.
+    Use when you need to download once and run multiple scans (scan_path, scan_git) on the same
+    content, or to inspect the path before scanning. For a single scan, passing the URL directly
+    to scan_path or scan_git is simpler; they download and scan in one step.
 
     Args:
-        url: HTTP(S) URL, GitHub/GitLab repo URL, or data: URI.
+        url: Any HTTP(S) file URL, GitHub/GitLab repo URL (e.g. https://github.com/org/repo), or data: URI.
         extract: If True (default), automatically extract archives (.zip, .tar.gz, etc.).
 
     Returns:
-        Dictionary with 'path' (local path to use in other tools) and
-        'job_id' (use with cleanup_downloads to free space).
+        Dict with 'path' (use this path in scan_path/scan_git) and 'job_id' (pass to cleanup_downloads when done).
     """
     logger.info("download_file called with url=%s", url)
     try:

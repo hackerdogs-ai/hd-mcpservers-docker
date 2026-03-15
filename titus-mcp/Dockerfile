@@ -3,6 +3,7 @@
 # Multi-arch build for linux/amd64 and linux/arm64
 
 # Stage 1: Build titus from source
+# Titus go.mod requires go >= 1.25.3 (see https://github.com/praetorian-inc/titus)
 FROM golang:1.25-bookworm AS builder
 RUN apt-get update && apt-get install -y make git libhyperscan-dev pkg-config
 RUN git clone https://github.com/praetorian-inc/titus.git /titus
