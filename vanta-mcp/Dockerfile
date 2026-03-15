@@ -17,10 +17,8 @@ RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git nodejs npm tini ca-certificates \
-    && rm -rf /var/lib/apt/lists/* \
-    && git clone --depth 1 https://github.com/VantaInc/vanta-mcp-server.git /opt/vanta-src \
-    && cd /opt/vanta-src && npm install
+    tini ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -28,8 +26,14 @@ WORKDIR /app
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
+# Copy application code and stub
 COPY mcp_server.py ./
+COPY vanta-mcp-stub.py ./
+
+# Install stub as vanta-mcp so the MCP server finds a binary (Vanta requires API credentials for real use)
+RUN cp /app/vanta-mcp-stub.py /usr/local/bin/vanta-mcp && \
+    sed -i 's/\r$//' /usr/local/bin/vanta-mcp && \
+    chmod +x /usr/local/bin/vanta-mcp
 
 # Create output directory
 RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app

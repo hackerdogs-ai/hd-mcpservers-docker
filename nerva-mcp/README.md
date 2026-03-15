@@ -18,6 +18,10 @@ Nerva identifies **120+ network services** on open ports and extracts version an
 
 **No API keys required** — Nerva connects directly to target services using standard network probes.
 
+### Docker & default JSON output
+
+This MCP server **runs in Docker**. Tool output is **JSON by default** for easy consumption by AI agents. Pass comma-separated `host:port` targets (e.g. `example.com:80,10.0.0.1:443`); targets must be **reachable from the container** (e.g. public IPs or hosts on the same network as the container). Use `output_format: "csv"` only when you explicitly need CSV.
+
 **Summary.** MCP server wrapper for [Nerva](https://github.com/praetorian-inc/nerva) — network service fingerprinting tool by Praetorian.
 
 **Tools:**
@@ -34,7 +38,7 @@ Identify network services on open ports and extract version/config metadata. Det
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
 | `targets` | string | Yes | — | Comma-separated `host:port` pairs (e.g. `"10.0.0.1:80,10.0.0.1:443"`) |
-| `output_format` | string | No | `"json"` | Output format: `"json"` or `"csv"` |
+| `output_format` | string | No | `"json"` | Output format: `"json"` (default) or `"csv"`. Default is always JSON. |
 | `fast_mode` | boolean | No | `false` | Use fast mode (quicker, less thorough) |
 | `udp` | boolean | No | `false` | Also probe UDP ports |
 | `timeout` | integer | No | `2000` | Connection timeout in milliseconds |
@@ -204,6 +208,13 @@ curl -s -X POST http://localhost:8104/mcp \
 ```bash
 docker stop nerva-test
 ```
+
+
+## Troubleshooting
+
+- **"MCP server not working" in Claude / Cursor:** The server runs in Docker. If your environment cannot run Docker (no `docker` in PATH or no daemon), the MCP client cannot start the container. Run `./test.sh` on a host with Docker to verify the image.
+- **No results / empty output:** Targets must be **reachable from the container**. Use public host:port (e.g. `scanme.nmap.org:22`) or ensure the container has network access to private IPs. Ports must be open; Nerva only fingerprints, it does not discover ports.
+- **Default output is JSON:** All tool responses use JSON by default. Pass `output_format: "csv"` only when you need CSV.
 
 
 ## Running the tool directly (bypassing MCP)

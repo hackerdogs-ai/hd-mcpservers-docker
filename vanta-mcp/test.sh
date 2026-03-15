@@ -145,7 +145,7 @@ echo ""
 
 # Test 6: MCP HTTP — tools/call
 info "[Test 6] MCP HTTP — tools/call (run_vanta_mcp)"
-CALL_REQ='{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"run_vanta","arguments":{"arguments":"--help"}}}'
+CALL_REQ='{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"run_vanta_mcp","arguments":{"arguments":"--help"}}}'
 CALL_RESP=$(curl -s -X POST "http://localhost:${PORT}/mcp" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json, text/event-stream" \
