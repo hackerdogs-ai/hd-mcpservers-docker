@@ -1,9 +1,0 @@
-{
-  "mcpServers": {
-    "MCP_DOCKER": {
-      "url": "http://localhost:8811/mcp",
-      "transport": "streamable-http",
-      "description": "Docker MCP Toolkit Gateway - Remote HTTP connection. Run gateway on host with: docker mcp gateway run --transport streaming --port 8811"
-    }
-  }
-}

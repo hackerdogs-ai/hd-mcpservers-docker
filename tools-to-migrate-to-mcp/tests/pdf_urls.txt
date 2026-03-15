@@ -1,9 +1,0 @@
-https://raw.githubusercontent.com/py-pdf/sample-files/main/004-pdflatex-4-pages/pdflatex-4-pages.pdf
-https://raw.githubusercontent.com/py-pdf/sample-files/main/008-reportlab-inline-image/inline-image.pdf
-https://raw.githubusercontent.com/py-pdf/sample-files/main/009-pdflatex-geotopo/GeoTopo.pdf
-https://raw.githubusercontent.com/py-pdf/sample-files/main/009-pdflatex-geotopo/GeoTopo-komprimiert.pdf
-https://raw.githubusercontent.com/py-pdf/sample-files/main/011-google-doc-document/google-doc-document.pdf
-https://raw.githubusercontent.com/py-pdf/sample-files/main/013-reportlab-overlay/reportlab-overlay.pdf
-https://raw.githubusercontent.com/py-pdf/sample-files/main/026-latex-multicolumn/multicolumn.pdf
-
-
