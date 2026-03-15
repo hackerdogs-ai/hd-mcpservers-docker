@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  onionsearch-mcp:
+    image: hackerdogs/onionsearch-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: onionsearch-mcp
+    ports:
+      - "8372:8372"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8372
+      - TOR_PROXY=${TOR_PROXY:-tor-proxy:9050}
+    restart: unless-stopped

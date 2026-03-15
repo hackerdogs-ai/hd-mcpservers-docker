@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  virustotal-mcp:
+    image: hackerdogs/virustotal-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: virustotal-mcp
+    ports:
+      - "8369:8369"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8369
+      - VT_API_KEY=${VT_API_KEY}
+    restart: unless-stopped

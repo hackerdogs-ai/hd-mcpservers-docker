@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "builtwith": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "--env",
+        "BUILTWITH_API_KEY=your-api-key-here",
+        "hackerdogs/hackerdogs-mcp-builtwith:latest"
+      ],
+      "description": "MCP BuiltWith Server - Identify technology stack behind websites using BuiltWith API. Provides domain lookup to discover frameworks, analytics tools, hosting services, CMS platforms, and more. Published Docker image from hackerdogs Docker Hub."
+    }
+  }
+}
+
+

@@ -1,0 +1,33 @@
+{
+  "name": "mcp-pagespeed-server",
+  "version": "1.0.2",
+  "description": "MCP server for performing PageSpeed Audits",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "Model Context Protocol",
+    "SEO",
+    "Pagespeed",
+    "agentics",
+    "core web vitals"
+  ],
+  "author": "Phiality",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.0.1",
+    "glob": "^10.3.10",
+    "node-fetch": "^3.3.2",
+    "zod-to-json-schema": "^3.23.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "shx": "^0.3.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}

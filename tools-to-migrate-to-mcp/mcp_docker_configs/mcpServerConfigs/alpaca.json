@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "alpaca-mcp-server": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "-e",
+        "ALPACA_API_KEY=your_key",
+        "-e",
+        "ALPACA_SECRET_KEY=your_secret",
+        "-e",
+        "ALPACA_PAPER_TRADE=True",
+        "mcp/alpaca:latest"
+      ],
+      "description": "Alpaca MCP Server - Trading API (stocks, ETF, options, crypto). Image must be built locally; not published to Docker Hub. See alpaca.README.md."
+    }
+  }
+}

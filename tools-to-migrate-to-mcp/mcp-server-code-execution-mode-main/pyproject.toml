@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "code-execution"
+version = "0.3.0"
+description = "An MCP server that executes Python code in isolated rootless containers with optional MCP server proxying."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+	"mcp>=1.0.0",
+	"pydantic>=2.10.0,<3.0",
+	"anyio>=4.0.0",
+	"packaging>=23.0",
+	"toon-format>=0.9.0b1",
+	"fastmcp>=2.12.5",
+]
+
+[project.optional-dependencies]
+dev = [
+	"mypy>=1.18.2",
+	"pytest>=9.0.1",
+	"pytest-asyncio>=1.3.0",
+	"pytest-timeout>=2.3.1",
+]
+
+[tool.setuptools]
+py-modules = ["mcp_server_code_execution_mode", "main"]
+
+[project.scripts]
+# This creates the command: mcp-server-code-execution-mode
+mcp-server-code-execution-mode = "main:main"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+timeout = 60

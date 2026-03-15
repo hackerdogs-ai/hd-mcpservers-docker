@@ -26,7 +26,7 @@ For more information, see [Hackerdogs Legal & Compliance](https://hackerdogs.ai/
 
 # hd-mcpservers-docker
 
-Registry of **184 containerized MCP servers** for security tools, ready for deployment on [Hackerdogs](https://hackerdogs.ai).
+Registry of **194 containerized MCP servers** for security tools, ready for deployment on [Hackerdogs](https://hackerdogs.ai).
 
 Each tool is wrapped as a [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server using [FastMCP](https://github.com/jlowin/fastmcp), supporting both **stdio** and **HTTP streamable** transports. All tools are packaged as multi-architecture Docker images (linux/amd64, linux/arm64).
 
@@ -247,6 +247,22 @@ The fastest way to get started is through [Hackerdogs](https://hackerdogs.ai):
 | 182 | [retire-js-mcp](./retire-js-mcp/) | [RetireJS/retire.js](https://github.com/RetireJS/retire.js) | JavaScript library vulnerability scanner | 8364 | `hackerdogs/retire-js-mcp` |
 | 183 | [suricata-mcp](./suricata-mcp/) | [Medinios/SuricataMCP](https://github.com/Medinios/SuricataMCP) | Network intrusion detection and monitoring | 8365 | `hackerdogs/suricata-mcp` |
 
+### Phase 4 — Threat Intelligence & OSINT (11 tools)
+
+| # | Tool | Source | Description | Port | Image |
+|---|------|--------|-------------|------|-------|
+| 184 | [ivre-mcp](./ivre-mcp/) | [ivre/ivre](https://github.com/ivre/ivre) | Network recon framework (passive/active) | 8366 | `hackerdogs/ivre-mcp` |
+| 185 | [dnsdumpster-mcp](./dnsdumpster-mcp/) | [PaulSec/API-dnsdumpster.com](https://github.com/PaulSec/API-dnsdumpster.com) | Passive DNS reconnaissance and subdomain enumeration | 8216 | `hackerdogs/dnsdumpster-mcp` |
+| 186 | [otx-mcp](./otx-mcp/) | [AlienVault/OTX-Python-SDK](https://github.com/AlienVault/OTX-Python-SDK) | AlienVault OTX threat intelligence API | 8368 | `hackerdogs/otx-mcp` |
+| 187 | [virustotal-mcp](./virustotal-mcp/) | [VirusTotal API v3](https://www.virustotal.com/) | File, URL, domain & IP threat intelligence | 8369 | `hackerdogs/virustotal-mcp` |
+| 188 | [opencti-mcp](./opencti-mcp/) | [OpenCTI-Platform/opencti](https://github.com/OpenCTI-Platform/opencti) | OpenCTI threat intelligence platform queries | 8370 | `hackerdogs/opencti-mcp` |
+| 189 | [misp-mcp](./misp-mcp/) | [MISP/MISP](https://github.com/MISP/MISP) | MISP threat intelligence sharing platform | 8371 | `hackerdogs/misp-mcp` |
+| 190 | [onionsearch-mcp](./onionsearch-mcp/) | [megadose/OnionSearch](https://github.com/megadose/OnionSearch) | Dark Web .onion search engine scraper | 8372 | `hackerdogs/onionsearch-mcp` |
+| 191 | [ghunt-mcp](./ghunt-mcp/) | [mxrch/GHunt](https://github.com/mxrch/GHunt) | Google account OSINT (emails, Gaia IDs) | 8218 | `hackerdogs/ghunt-mcp` |
+| 192 | [holehe-mcp](./holehe-mcp/) | [megadose/holehe](https://github.com/megadose/holehe) | Email registration checker across 120+ sites | 8219 | `hackerdogs/holehe-mcp` |
+| 193 | [blackbird-mcp](./blackbird-mcp/) | [p1ngul1n0/blackbird](https://github.com/p1ngul1n0/blackbird) | Username OSINT across 500+ sites | 8220 | `hackerdogs/blackbird-mcp` |
+| 194 | [maigret-mcp](./maigret-mcp/) | [soxoj/maigret](https://github.com/soxoj/maigret) | Username OSINT across 3000+ sites | 8221 | `hackerdogs/maigret-mcp` |
+
 ### Port Allocation
 
 | Phase | Range | Count |
@@ -254,7 +270,7 @@ The fastest way to get started is through [Hackerdogs](https://hackerdogs.ai):
 | Phase 1 | 8100–8116 | 17 |
 | Phase 2 | 8200–8284 | 85 |
 | Phase 3 | 8285–8365 | 81 |
-| IVRE | 8366 | 1 |
+| Phase 4 | 8366–8372+ | 11 |
 
 ### Reserved Ports (do not use)
 

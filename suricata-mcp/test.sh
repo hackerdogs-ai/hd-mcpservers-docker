@@ -14,7 +14,7 @@ PASS=0
 FAIL=0
 IMAGE="hackerdogs/suricata-mcp:latest"
 PORT=8365
-BINARY="suricata-mcp"
+BINARY="suricata"
 CONTAINER_NAME="suricata-mcp-test"
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -49,7 +49,7 @@ echo ""
 
 # Test 2: CLI binary available
 info "[Test 2] CLI binary inside container"
-BINARY_OUTPUT=$(docker run --rm "$IMAGE" $BINARY --help 2>&1 | head -5 || docker run --rm "$IMAGE" $BINARY --version 2>&1 | head -5 || docker run --rm "$IMAGE" $BINARY -h 2>&1 | head -5 || true)
+BINARY_OUTPUT=$(docker run --rm --entrypoint $BINARY "$IMAGE" -V 2>&1 | head -5 || docker run --rm --entrypoint $BINARY "$IMAGE" --build-info 2>&1 | head -5 || true)
 if [ -n "$BINARY_OUTPUT" ]; then
     pass "$BINARY binary responds"
     echo "       ${BINARY_OUTPUT%%$'\n'*}"
@@ -144,8 +144,8 @@ fi
 echo ""
 
 # Test 6: MCP HTTP — tools/call
-info "[Test 6] MCP HTTP — tools/call (run_suricata_mcp)"
-CALL_REQ='{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"run_suricata_mcp","arguments":{"arguments":"--help"}}}'
+info "[Test 6] MCP HTTP — tools/call (run_suricata)"
+CALL_REQ='{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"run_suricata","arguments":{"arguments":"-V"}}}'
 CALL_RESP=$(curl -s -X POST "http://localhost:${PORT}/mcp" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json, text/event-stream" \
@@ -153,11 +153,11 @@ CALL_RESP=$(curl -s -X POST "http://localhost:${PORT}/mcp" \
     -d "$CALL_REQ" 2>/dev/null || true)
 
 if echo "$CALL_RESP" | grep -q '"result"'; then
-    pass "tools/call run_suricata_mcp returned a result"
+    pass "tools/call run_suricata returned a result"
 elif echo "$CALL_RESP" | grep -q '"content"'; then
-    pass "tools/call run_suricata_mcp returned content"
+    pass "tools/call run_suricata returned content"
 else
-    fail "tools/call run_suricata_mcp did not return expected response"
+    fail "tools/call run_suricata did not return expected response"
     [ -n "$CALL_RESP" ] && echo "       Response: ${CALL_RESP:0:500}"
 fi
 echo ""

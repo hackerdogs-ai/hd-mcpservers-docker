@@ -1,0 +1,2 @@
+next, migreate the attached spiderfoot plugins to langchain agents adhering to the existing standards on:
+docstrings, descriptions, logging, exception handling and code quality and env variables passed using ToolRuntime. Make sure you use the existing hd_logging package that is already installed in the root venv from PyPi. Keep it simple, efficient and efffective. Don't do any over-engineering. Then test each tools. 

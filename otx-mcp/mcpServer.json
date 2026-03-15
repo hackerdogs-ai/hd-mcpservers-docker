@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "otx-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "-e", "OTX_API_KEY", "hackerdogs/otx-mcp:latest"],
+      "env": {
+        "MCP_TRANSPORT": "stdio",
+        "OTX_API_KEY": ""
+      }
+    }
+  }
+}

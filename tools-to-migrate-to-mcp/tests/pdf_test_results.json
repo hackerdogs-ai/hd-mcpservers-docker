@@ -1,0 +1,66 @@
+{
+  "test_timestamp": "2026-01-01 13:49:53",
+  "total_pdfs": 7,
+  "successful": 7,
+  "failed": 0,
+  "total_text_chars": 6350,
+  "total_words": 438,
+  "results": [
+    {
+      "url": "https://raw.githubusercontent.com/py-pdf/sample-files/main/004-pdflatex-4-pages/pdflatex-4-pages.pdf",
+      "status": "success",
+      "text_length": 926,
+      "word_count": 63,
+      "line_count": 31,
+      "text_preview": "{\n  \"results\": [\n    {\n      \"source\": \"https://raw.githubusercontent.com/py-pdf/sample-files/main/004-pdflatex-4-pages/pdflatex-4-pages.pdf\",\n      \"success\": true,\n      \"data\": {\n        \"num_pages..."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/py-pdf/sample-files/main/008-reportlab-inline-image/inline-image.pdf",
+      "status": "success",
+      "text_length": 964,
+      "word_count": 64,
+      "line_count": 32,
+      "text_preview": "{\n  \"results\": [\n    {\n      \"source\": \"https://raw.githubusercontent.com/py-pdf/sample-files/main/008-reportlab-inline-image/inline-image.pdf\",\n      \"success\": true,\n      \"data\": {\n        \"num_pag..."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/py-pdf/sample-files/main/009-pdflatex-geotopo/GeoTopo.pdf",
+      "status": "success",
+      "text_length": 1095,
+      "word_count": 78,
+      "line_count": 35,
+      "text_preview": "{\n  \"results\": [\n    {\n      \"source\": \"https://raw.githubusercontent.com/py-pdf/sample-files/main/009-pdflatex-geotopo/GeoTopo.pdf\",\n      \"success\": true,\n      \"data\": {\n        \"num_pages\": 117,\n ..."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/py-pdf/sample-files/main/009-pdflatex-geotopo/GeoTopo-komprimiert.pdf",
+      "status": "success",
+      "text_length": 1154,
+      "word_count": 83,
+      "line_count": 35,
+      "text_preview": "{\n  \"results\": [\n    {\n      \"source\": \"https://raw.githubusercontent.com/py-pdf/sample-files/main/009-pdflatex-geotopo/GeoTopo-komprimiert.pdf\",\n      \"success\": true,\n      \"data\": {\n        \"num_pa..."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/py-pdf/sample-files/main/011-google-doc-document/google-doc-document.pdf",
+      "status": "success",
+      "text_length": 647,
+      "word_count": 45,
+      "line_count": 23,
+      "text_preview": "{\n  \"results\": [\n    {\n      \"source\": \"https://raw.githubusercontent.com/py-pdf/sample-files/main/011-google-doc-document/google-doc-document.pdf\",\n      \"success\": true,\n      \"data\": {\n        \"num..."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/py-pdf/sample-files/main/013-reportlab-overlay/reportlab-overlay.pdf",
+      "status": "success",
+      "text_length": 643,
+      "word_count": 42,
+      "line_count": 25,
+      "text_preview": "{\n  \"results\": [\n    {\n      \"source\": \"https://raw.githubusercontent.com/py-pdf/sample-files/main/013-reportlab-overlay/reportlab-overlay.pdf\",\n      \"success\": true,\n      \"data\": {\n        \"num_pag..."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/py-pdf/sample-files/main/026-latex-multicolumn/multicolumn.pdf",
+      "status": "success",
+      "text_length": 921,
+      "word_count": 63,
+      "line_count": 31,
+      "text_preview": "{\n  \"results\": [\n    {\n      \"source\": \"https://raw.githubusercontent.com/py-pdf/sample-files/main/026-latex-multicolumn/multicolumn.pdf\",\n      \"success\": true,\n      \"data\": {\n        \"num_pages\": 3..."
+    }
+  ]
+}

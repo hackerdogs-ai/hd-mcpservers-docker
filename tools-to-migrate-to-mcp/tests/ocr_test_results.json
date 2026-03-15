@@ -1,0 +1,74 @@
+{
+  "test_timestamp": "2026-01-01 12:39:11",
+  "total_images": 8,
+  "successful": 8,
+  "failed": 0,
+  "total_text_chars": 4713,
+  "total_words": 900,
+  "results": [
+    {
+      "url": "https://media.istockphoto.com/id/1480574526/photo/happy-multigenerational-people-having-fun-sitting-on-grass-in-a-public-park.jpg?s=612x612&w=0&k=20&c=iIzSiY2FK9mWTCmV8Ip8zpvXma7f1Qbd-UuKXNJodPg=",
+      "status": "success",
+      "text_length": 32,
+      "word_count": 12,
+      "line_count": 3,
+      "text_preview": "2 AW Mak\nAY Re y > a. 6;\nme 2 ee"
+    },
+    {
+      "url": "https://digital-photography-school.com/wp-content/themes/sassy-dps/build/image13-large.jpeg",
+      "status": "success",
+      "text_length": 227,
+      "word_count": 65,
+      "line_count": 14,
+      "text_preview": "oe ys oS ig ee Se\nee \u00ae eos\n\nST AO ee Sn SS Nate ee eee oe\n\ner, fg Nee gle oS Sat Nigeate: & tii te Balle Oe gee jen ee\n\nag Ge S haga <1 sl\n\na: ee he Ea te, Sie Pee Se ees\n\nBe ge Sey NG Une ss Re: ins ..."
+    },
+    {
+      "url": "https://live.staticflickr.com/2815/12382975864_2cd7755b03_b.jpg",
+      "status": "success",
+      "text_length": 39,
+      "word_count": 14,
+      "line_count": 2,
+      "text_preview": "at nat f 1 Tr mn yal re |\na ai ~ |e \u2014\u2014\u2014"
+    },
+    {
+      "url": "https://signaturely.com/wp-content/uploads/2022/08/non-disclosure-agreement-uplead-791x1024.jpg",
+      "status": "success",
+      "text_length": 1649,
+      "word_count": 248,
+      "line_count": 40,
+      "text_preview": "PARTIES\n\n- This Non-Disclosure Agreement (hereinafter referred to as the \u201cAgreement\u201d) is entered into\non (the \u201cEffective Date\u201d), by and between q\nwith an address of. = (hereinafter referred to as the ..."
+    },
+    {
+      "url": "https://s3.us-west-1.wasabisys.com/idbwmedia.com/images/2011/10/setupquideqrg.png",
+      "status": "success",
+      "text_length": 1307,
+      "word_count": 219,
+      "line_count": 31,
+      "text_preview": "\u2014\u2014\noclup\n\u2018The calendar require both administrators and build\ning schedulers to complete three steps to setup the\ncalendar in preparation for members to begin using\ntt\nDefault calendar administrators a..."
+    },
+    {
+      "url": "https://c8.alamy.com/comp/G39R54/handwriting-of-philosopher-john-locke-date-1632-1704-G39R54.jpg",
+      "status": "success",
+      "text_length": 623,
+      "word_count": 141,
+      "line_count": 17,
+      "text_preview": "Sint ve Lom ne me here sendy wh\n\nf pepe? above a hrelve month price he referminy F\nou YOR, hi for he chon cf an Vi dey wicyofe, Ke errr\nC sae ff we foe On mn OUN-08 WL Differ he niegp fear\nShe remerl ..."
+    },
+    {
+      "url": "https://i.pinimg.com/originals/ab/92/e0/ab92e0bc80aaa280f73bef31d099bf39.jpg",
+      "status": "success",
+      "text_length": 149,
+      "word_count": 32,
+      "line_count": 7,
+      "text_preview": "Cag , Laying Ning seasty |\n\nLy exereloy Fawcl La Atmos ane\nRt nice esr Ning thik stands\n\nout sw Mock Spending Aso much\ndocs a (ot of the wok foot me."
+    },
+    {
+      "url": "https://jvns.ca/images/flct.png",
+      "status": "success",
+      "text_length": 687,
+      "word_count": 169,
+      "line_count": 21,
+      "text_preview": "LIMMS& SERIES) ERD og\nuf fp re npers US ote? SS de kas\nx70 x is the. essen Sor it?\nN \u201cTRE REASON: ened : y,\n| SN X _ | X- Bele 2 No \\\nKE] TRE TAYLOR, SERIES ABOUT 4-0 18+ LE HET X\nGIZA UL, os ss ol to..."
+    }
+  ]
+}

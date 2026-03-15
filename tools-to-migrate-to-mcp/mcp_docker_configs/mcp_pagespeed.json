@@ -1,0 +1,20 @@
+{
+  "name": "pagespeed",
+  "base_image": "node:20-slim",
+  "dockerfile": "FROM node:20-slim\n\n# Set working directory\nWORKDIR /app\n\n# Copy package.json and package-lock.json\nCOPY shared/modules/tools/osint/pagespeed-mcp/package.json ./package.json\nCOPY shared/modules/tools/osint/pagespeed-mcp/package-lock.json ./package-lock.json\n\n# Install production dependencies only, skip prepare script (which tries to build)\n# The dist directory is already compiled, so we don't need to build\nRUN npm ci --production --ignore-scripts\n\n# Copy the pre-compiled dist directory\nCOPY shared/modules/tools/osint/pagespeed-mcp/dist ./dist\n\n# Run the MCP server\nENTRYPOINT [\"node\", \"dist/index.js\"]",
+  "description": "MCP PageSpeed Server - Perform comprehensive web performance analysis using Google PageSpeed Insights API. Provides performance metrics, Core Web Vitals, SEO analysis, accessibility audits, and best practices assessment.",
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "capabilities": [
+    "osint",
+    "performance-analysis",
+    "pagespeed-insights",
+    "seo-audit",
+    "accessibility-audit",
+    "web-vitals",
+    "website-performance"
+  ],
+  "build_context": "."
+}
+

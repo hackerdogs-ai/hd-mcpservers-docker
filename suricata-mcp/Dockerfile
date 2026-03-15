@@ -4,7 +4,7 @@
 FROM python:3.12-slim-bookworm
 
 LABEL org.opencontainers.image.source="https://github.com/hackerdogs-ai/hd-mcpservers-docker"
-LABEL org.opencontainers.image.description="Suricata MCP Server - Suricata network intrusion detection and monitoring"
+LABEL org.opencontainers.image.description="Suricata MCP Server - Network intrusion detection and prevention"
 LABEL org.opencontainers.image.vendor="Hackerdogs"
 LABEL "maintainer"="support@hackerdogs.ai"
 LABEL "mcp-server-scope"="remote"
@@ -16,18 +16,19 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# Install SuricataMCP from GitHub (no setup.py; use script + requirements)
+# Install Suricata IDS and dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git unzip tini ca-certificates \
-    && rm -rf /var/lib/apt/lists/* \
-    && git clone --depth 1 https://github.com/Medinios/SuricataMCP.git /opt/suricata-src \
-    && pip install --no-cache-dir -r /opt/suricata-src/requirements.txt \
-    && test -f /opt/suricata-src/suricata-mcp.py \
-    && sed -i 's/\r$$//' /opt/suricata-src/suricata-mcp.py \
-    && sed -i '1s|.*|#!/usr/bin/env python3|' /opt/suricata-src/suricata-mcp.py \
-    && chmod +x /opt/suricata-src/suricata-mcp.py \
-    && chown -R mcpuser:mcpuser /opt/suricata-src \
-    && ln -sf /opt/suricata-src/suricata-mcp.py /usr/local/bin/suricata-mcp
+    tini ca-certificates \
+    suricata \
+    && rm -rf /var/lib/apt/lists/*
+
+# Update Suricata rules (best-effort; container can run without rules)
+RUN suricata-update 2>/dev/null || true
+
+# Create working directories for output and pcap analysis
+RUN mkdir -p /app/output /app/pcaps /var/log/suricata \
+    && chown -R mcpuser:mcpuser /app /var/log/suricata /var/lib/suricata 2>/dev/null || true
+
 WORKDIR /app
 
 # Copy requirements and install Python dependencies
@@ -38,14 +39,14 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY mcp_server.py ./
 COPY hd_fetch.py ./
 
-# Create output directory
-RUN mkdir -p /app/output /app/workdir && chown -R mcpuser:mcpuser /app
+# Ensure mcpuser owns /app
+RUN chown -R mcpuser:mcpuser /app
 
 # Switch to non-root user
 USER mcpuser
 
-# Environment variables (so mcp_server.py finds the binary)
-ENV SURICATA_MCP_BIN=/opt/suricata-src/suricata-mcp.py
+# Environment variables
+ENV SURICATA_BIN=suricata
 ENV PYTHONUNBUFFERED=1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8365

@@ -1,0 +1,31 @@
+{
+  "name": "opencv",
+  "package_name": "opencv-mcp-server",
+  "base_image": "python:3.11-slim",
+  "additional_packages": [
+    "wget",
+    "libgl1",
+    "libglib2.0-0",
+    "libsm6",
+    "libxext6",
+    "libxrender-dev",
+    "libgomp1"
+  ],
+  "entrypoint": "python -m opencv_mcp_server.main",
+  "description": "MCP OpenCV Server - Image and video processing with OpenCV, including object detection with YOLO",
+  "env": {
+    "MCP_TRANSPORT": "stdio",
+    "PYTHONUNBUFFERED": "1",
+    "OPENCV_DNN_MODELS_DIR": "/app/OPENCV_DNN_MODELS_DIR"
+  },
+  "dockerfile": "FROM python:3.11-slim\n\n# Install system dependencies\nRUN apt-get update && apt-get install -y \\\n    wget \\\n    libgl1 \\\n    libglib2.0-0 \\\n    libsm6 \\\n    libxext6 \\\n    libxrender-dev \\\n    libgomp1 \\\n    && rm -rf /var/lib/apt/lists/*\n\n# Set working directory\nWORKDIR /app\n\n# Install Python package\nRUN pip install --no-cache-dir opencv-mcp-server\n\n# CRITICAL FIX: Remove 'description' parameter from FastMCP initialization\n# The opencv-mcp-server 0.1.1 package uses FastMCP(description=...) which is NOT supported\n# in MCP SDK 1.25.0. This causes TypeError and server crash on startup.\n# DO NOT ADD 'description' PARAMETER - it does not exist in FastMCP.__init__()\n# Available parameters: name, instructions, website_url, icons, auth_server_provider, etc.\n# See: mcp.server.fastmcp.FastMCP for supported parameters\nRUN sed -i '/description=\"/d' /usr/local/lib/python3.11/site-packages/opencv_mcp_server/main.py\n\n# Create models directory\nRUN mkdir -p /app/OPENCV_DNN_MODELS_DIR\n\n# Download YOLOv3 model files (weights, config, and class names)\nRUN cd /app/OPENCV_DNN_MODELS_DIR && \\\n    wget -q https://pjreddie.com/media/files/yolov3.weights && \\\n    wget -q https://raw.githubusercontent.com/pjreddie/darknet/master/cfg/yolov3.cfg && \\\n    wget -q https://raw.githubusercontent.com/pjreddie/darknet/master/data/coco.names && \\\n    ls -lh yolov3.* coco.names\n\n# Set environment variables\nENV MCP_TRANSPORT=stdio\nENV PYTHONUNBUFFERED=1\nENV OPENCV_DNN_MODELS_DIR=/app/OPENCV_DNN_MODELS_DIR\n\n# Set entrypoint\nENTRYPOINT [\"python\", \"-m\", \"opencv_mcp_server.main\"]",
+  "capabilities": [
+    "opencv",
+    "image-processing",
+    "video-processing",
+    "object-detection",
+    "face-detection",
+    "computer-vision"
+  ]
+}
+

@@ -1,0 +1,58 @@
+# Docker Compose for Tor Proxy Service
+# 
+# This is a standalone Tor proxy service for Dark Web access.
+# Used by OnionSearch and other tools that need Tor network connectivity.
+#
+# Usage:
+#   # Start Tor proxy
+#   docker-compose -f docker-compose-tor-proxy.yaml up -d
+#
+#   # Stop Tor proxy
+#   docker-compose -f docker-compose-tor-proxy.yaml down
+#
+#   # View logs
+#   docker-compose -f docker-compose-tor-proxy.yaml logs -f tor-proxy
+#
+#   # Check status
+#   docker-compose -f docker-compose-tor-proxy.yaml ps
+#
+# Network:
+#   - Uses 'hd-tools' network (same as osint-tools)
+#   - Other containers can connect via: tor-proxy:9050
+#   - Host can access via: 127.0.0.1:9050 (if ports are exposed)
+
+services:
+  # Tor Proxy Service (required for OnionSearch and Dark Web tools)
+  tor-proxy:
+    image: dperson/torproxy:latest
+    container_name: tor-proxy
+    ports:
+      - "9050:9050"  # SOCKS5 proxy port (for Dark Web access)
+      - "8118:8118"  # HTTP proxy port (optional, for HTTP-based tools)
+    networks:
+      - hd-tools
+    restart: unless-stopped
+    # Tor takes time to bootstrap - wait for it to be ready
+    healthcheck:
+      test: ["CMD", "curl", "-f", "--socks5-hostname", "127.0.0.1:9050", "https://check.torproject.org/api/ip"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s  # Allow 60 seconds for Tor to bootstrap
+    # Resource limits (optional but recommended)
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+networks:
+  hd-tools:
+    driver: bridge
+    # Note: This network will be shared with docker-compose.yml if both are used
+    # Docker Compose automatically shares networks with the same name
+    # If the network already exists from docker-compose.yml, it will be reused
+

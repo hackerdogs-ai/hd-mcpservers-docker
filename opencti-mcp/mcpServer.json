@@ -1,0 +1,24 @@
+{
+  "mcpServers": {
+    "opencti-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "MCP_TRANSPORT",
+        "-e",
+        "OPENCTI_API_KEY",
+        "-e",
+        "OPENCTI_URL",
+        "hackerdogs/opencti-mcp:latest"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio",
+        "OPENCTI_API_KEY": "",
+        "OPENCTI_URL": ""
+      }
+    }
+  }
+}

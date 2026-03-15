@@ -1,0 +1,18 @@
+{
+  "name": "pdf-reader-sylphx",
+  "npm_package": "@sylphx/pdf-reader-mcp",
+  "base_image": "node:20-slim",
+  "entrypoint": "npx @sylphx/pdf-reader-mcp",
+  "description": "MCP PDF Reader Server - Extract text from PDF files using @sylphx/pdf-reader-mcp npm package",
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "capabilities": [
+    "pdf",
+    "pdf-reader",
+    "text-extraction",
+    "document-processing"
+  ]
+}
+
+

@@ -1,0 +1,30 @@
+version: "3.8"
+
+# Tor SOCKS5 Proxy for OnionSearch MCP Server
+#
+# Run this alongside the MCP server to provide Tor network access:
+#   docker-compose -f docker-compose.tor.yml up -d
+#
+# Then configure the MCP server to use it:
+#   TOR_PROXY=tor-proxy:9050  (if on the same Docker network)
+#   TOR_PROXY=127.0.0.1:9050  (if using host networking / port mapping)
+#
+# To run both together:
+#   docker-compose -f docker-compose.yml -f docker-compose.tor.yml up -d
+
+services:
+  tor-proxy:
+    image: dperson/torproxy:latest
+    container_name: tor-proxy
+    ports:
+      - "9050:9050"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "--socks5-hostname", "127.0.0.1:9050", "https://check.torproject.org/api/ip"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  default:
+    name: onionsearch-net

@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  misp-mcp:
+    image: hackerdogs/misp-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: misp-mcp
+    ports:
+      - "8371:8371"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8371
+      - MISP_API_KEY=${MISP_API_KEY}
+      - MISP_URL=${MISP_URL}
+    restart: unless-stopped

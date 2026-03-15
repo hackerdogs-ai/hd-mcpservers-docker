@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  opencti-mcp:
+    image: hackerdogs/opencti-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: opencti-mcp
+    ports:
+      - "8370:8370"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8370
+      - OPENCTI_API_KEY=${OPENCTI_API_KEY:-}
+      - OPENCTI_URL=${OPENCTI_URL:-}
+    restart: unless-stopped

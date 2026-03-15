@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  otx-mcp:
+    image: hackerdogs/otx-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: otx-mcp
+    ports:
+      - "8368:8368"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8368
+      - OTX_API_KEY=${OTX_API_KEY:-}
+    restart: unless-stopped

@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "youtube": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "--env",
+        "NODE_ENV=production",
+        "--env",
+        "YOUTUBE_API_KEY=your-youtube-api-key-here",
+        "--env",
+        "YOUTUBE_TRANSCRIPT_LANG=en",
+        "hackerdogs/hackerdogs-mcp-youtube:latest"
+      ],
+      "description": "MCP YouTube Server - Interact with YouTube content through Model Context Protocol. Enables video information retrieval, transcript management, channel management, and playlist operations. Source: https://github.com/ZubeidHendricks/youtube-mcp-server. Published Docker image from hackerdogs Docker Hub."
+    }
+  }
+}
+
+

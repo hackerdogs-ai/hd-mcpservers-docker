@@ -1,0 +1,42 @@
+# Productivity Tools (prodx) - Required Python Packages
+# Install with: pip install -r streamlit_app/modules/tools/prodx/requirements.txt
+
+# Excel Operations
+openpyxl>=3.1.0          # Excel file manipulation (.xlsx files)
+pandas>=2.0.0            # Data operations and Excel reading
+xlsxwriter>=3.1.0        # Alternative Excel library (optional, for advanced features)
+
+# PowerPoint Operations
+python-pptx>=0.6.21      # PowerPoint file generation and manipulation
+
+# Visualization
+plotly>=5.17.0           # Interactive chart creation
+plotly.express>=5.17.0   # High-level Plotly interface
+
+# OCR (Optical Character Recognition)
+pytesseract>=0.3.10      # Tesseract OCR wrapper (requires Tesseract binary)
+easyocr>=1.7.0           # EasyOCR library (80+ languages, better accuracy)
+Pillow>=10.0.0           # Image processing (PIL)
+opencv-python>=4.8.0     # Image preprocessing for better OCR results
+pdf2image>=1.16.0        # PDF to image conversion for OCR
+
+# Document Processing
+unstructured>=0.10.0     # Document parsing with OCR support (optional)
+PyPDF2>=3.0.0            # PDF file reading and manipulation
+python-docx>=1.1.0       # Word document processing
+
+# LangChain (should already be installed)
+langchain>=0.1.0         # LangChain framework
+langchain-core>=0.1.0   # LangChain core components
+
+# System Dependencies (not installable via pip - install separately)
+# Tesseract OCR binary:
+#   macOS: brew install tesseract
+#   Ubuntu/Debian: sudo apt-get install tesseract-ocr
+#   Windows: Download from https://github.com/UB-Mannheim/tesseract/wiki
+#
+# poppler (for pdf2image):
+#   macOS: brew install poppler
+#   Ubuntu/Debian: sudo apt-get install poppler-utils
+#   Windows: Download from https://github.com/oschwartz10612/poppler-windows/releases
+

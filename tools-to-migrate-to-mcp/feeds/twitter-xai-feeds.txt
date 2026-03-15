@@ -1,0 +1,57 @@
+To feed X (formerly Twitter) data into an LLM in 2025, you should use the X API v2 or a specialized aggregator like TweetFeed to handle the data programmatically.
+The following 50 accounts are the "gold standard" for real-time cybersecurity and OSINT intelligence.
+Threat Intelligence & Malware Analysis
+@vxunderground: Largest repository of malware source code and papers.
+@malwrhunterteam: Real-time tracking of new ransomware and malware families.
+@MBazaar_: Automated updates on new malware samples uploaded to MalwareBazaar.
+@urlhaus: Real-time feed of malicious URLs being used in the wild.
+@Unit42_Intel: High-fidelity threat actor research from Palo Alto Networks.
+@TalosSecurity: Real-time vulnerability and threat research from Cisco Talos.
+@CrowdStrike: Critical updates on APT actors and global threat trends.
+@Mandiant: Incident response-driven intel (Google Cloud Security).
+@GossiTheDog: Kevin Beaumont; critical for breaking analysis of major exploits (e.g., Log4j, ScreenConnect).
+@The_Yellow_Fall: Deep dives into APT campaigns and Chinese threat actors.
+@DailyDarkWeb: Daily monitoring of dark web forums for data leaks and ransom posts.
+@RansomwareMap: Automated tracking of ransomware victim announcements.
+@Pancak3lullz: Visual and technical breakdowns of threat actor infrastructure.
+@0xAmit: In-depth malware analysis and reverse engineering.
+@cyb3rops: Florian Roth; creator of Nextron Systems and YARA rule expert.
+Vulnerability & Exploit Research
+@CISACyber: Official feed for US Federal vulnerability and threat advisories.
+@CVEnew: Automated bot posting every newly assigned CVE ID.
+@ProjectZero: High-end exploit research on 0-day vulnerabilities from Google.
+@Hacker0x01: Real-time feed of public bug bounty disclosures.
+@Bugcrowd: News on crowdsourced security and vulnerability trends.
+@TheHackersNews: Breaking cybersecurity news and vulnerability explainers.
+@BleepinComputer: Real-time reporting on breaches, ransomware, and patches.
+@taviso: Tavis Ormandy; Google Project Zero researcher and elite bug hunter.
+@wdormann: Vulnerability analyst; expert on software misconfigurations.
+@0xor0ne: Focused on low-level exploits and firmware security.
+OSINT & Investigative Intelligence
+@bellingcat: Open-source investigative journalism and geo-location experts.
+@OsintCurious: Community-driven OSINT tips and methodology updates.
+@Sector035: Author of the "Week in OSINT" digest; essential for new tools.
+@NixIntel: Advanced OSINT techniques and digital forensic guides.
+@IntelTechniques: Michael Bazzell; the authority on privacy and OSINT lookups.
+@henkvaness: Expert on social media verification and search logic.
+@Z_N_OSINT: Advanced geo-location and flight/vessel tracking intelligence.
+@OSINT_Tactical: Focuses on physical security and situational awareness OSINT.
+@quiztime: Daily OSINT challenges to verify and track geolocation skills.
+@Aviation_Intel: Tyler Rogoway; expert on defense and military aviation OSINT.
+Infrastructure & Technical Monitoring
+@shodanhq: Updates on internet-wide device exposures and new filters.
+@censysio: Deep data on certificates, hosts, and network infrastructure.
+@GreyNoiseIO: Real-time analysis of "internet noise" and mass scanners.
+@olesovhcom: Octave Klaba (OVHcloud); critical for cloud infrastructure outage/threat alerts.
+@Cloudflare: Real-time data on global DDoS trends and internet outages.
+@HaveIBeenPwned: Troy Hunt; real-time alerts on new data breach uploads.
+@TeamCymru: High-level infrastructure and BGP hijacking intelligence.
+@BadPackets: Botnet scanning and honeypot detection alerts.
+@Shadowserver: Global network health and remediation intelligence.
+@Scamadviser: Real-time tracking of fraudulent websites and scams.
+Industry Leaders & Contextual Analysis
+@schneierblog: Bruce Schneier; essential for security theory and policy.
+@briankrebs: Investigative reporter focusing on cybercrime and carding.
+@RiskyBusiness: High-level industry context and technical podcasts.
+@campuscodi: Catalin Cimpanu; the most prolific reporter on APTs and technical breaches.
+@kimzetter: Long-form investigative reporter on cyber warfare and election security.

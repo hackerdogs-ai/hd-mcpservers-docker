@@ -1,0 +1,314 @@
+# Updated OWASP Amass LLM Agent Cheatsheet
+
+## **Core Functionality & 4 Key Modules**
+Based on Daniel Miessler's blog, Amass has **4 primary modules** (not 3 as previously documented):
+
+### **1. `intel` - Intelligence Gathering Module**
+**Purpose**: Discover **root domains** and targets before enumeration
+
+**Key Insight**: This is the **first step** - find what domains belong to an organization before enumerating subdomains.
+
+**Common Commands**:
+```bash
+# Find domains via whois/reverse whois
+amass intel -whois -d example.com
+
+# Search ASN descriptions for organization names
+amass intel -org "Facebook" -whois
+
+# Discover domains via IP space
+amass intel -addr 192.168.1.1-254
+amass intel -cidr 104.154.0.0/15
+amass intel -asn 13374
+
+# Combine methods
+amass intel -org "Target Corp" -whois -ip
+```
+
+**Essential Flags**:
+- `-whois`: **Critical** - enables reverse whois lookups
+- `-org <string>`: Search organization names in ASN/RIR data
+- `-ip`/`-ipv4`/`-ipv6`: Include IP addresses in output
+- `-active`: Add active methods (TLS certs, port scans)
+- `-list`: Show all available data sources
+
+**Workflow**: Use `intel` to build your target list, then feed those domains to `enum`.
+
+---
+
+### **2. `enum` - Enumeration Module**
+**Purpose**: Discover **subdomains** for given root domains
+
+**Key Insight**: This is the **main discovery engine** - takes root domains and finds all subdomains.
+
+**Modes of Operation**:
+```bash
+# Passive only (data sources only)
+amass enum -passive -d example.com
+
+# Normal (passive + DNS validation) - DEFAULT
+amass enum -d example.com
+
+# Active (passive + DNS + active techniques)
+amass enum -active -d example.com -p 80,443,8080
+```
+
+**Brute Force Options**:
+```bash
+# Enable brute force guessing
+amass enum -brute -d example.com
+
+# Control recursive brute forcing
+amass enum -brute -min-for-recursive 2 -d example.com
+
+# Use custom wordlist
+amass enum -brute -w /path/to/wordlist.txt -d example.com
+```
+
+**Essential Flags**:
+- `-brute`: Enable brute force subdomain guessing
+- `-active`: Add TLS certs, zone transfers, web crawling
+- `-passive`: Stealth mode - data sources only
+- `-oA <prefix>`: Output all formats (TXT, JSON, etc.)
+- `-ip`: Include IP addresses
+
+---
+
+### **3. `viz` - Visualization Module** (NEW)
+**Purpose**: Create network graphs and visualizations of discovered assets
+
+**Key Insight**: This module helps **understand relationships** between discovered assets.
+
+**Common Commands**:
+```bash
+# Generate a network graph from database
+amass viz -d3 -dir /path/to/db
+
+# Output in different formats
+amass viz -dir /path/to/db -graphistry
+amass viz -dir /path/to/db -maltego
+
+# Filter visualization
+amass viz -dir /path/to/db -d example.com
+```
+
+**Use Cases**:
+- Visualize attack surface
+- Identify relationships between assets
+- Create reports and presentations
+- Export to other tools (Maltego, Graphistry)
+
+---
+
+### **4. `track` - Tracking Module** (NEW)
+**Purpose**: Track changes in attack surface over time
+
+**Key Insight**: This is for **continuous monitoring** - compare current vs previous enumerations.
+
+**Common Commands**:
+```bash
+# Track changes between two enumerations
+amass track -dir /path/to/db -d example.com -last 2
+
+# Show history of discoveries
+amass track -dir /path/to/db -d example.com -history
+
+# Compare specific snapshots
+amass track -dir /path/to/db -d example.com -snapshots 1,3
+```
+
+**Use Cases**:
+- Monitor for new subdomains
+- Detect removed/expired assets
+- Track infrastructure changes
+- Compliance and audit trails
+
+---
+
+## **Execution Workflow for LLM Agent**
+
+### **Complete Attack Surface Mapping**:
+```bash
+# Step 1: Find ALL domains for organization
+amass intel -org "Target Company" -whois -o discovered_domains.txt
+
+# Step 2: Enumerate subdomains for each domain
+amass enum -df discovered_domains.txt -brute -active -oA full_enum
+
+# Step 3: Visualize the results
+amass viz -dir ~/.config/amass/ -d3 -o network.html
+
+# Step 4: Set up tracking for future changes
+amass track -dir ~/.config/amass/ -d target.com -last 1
+```
+
+---
+
+## **Advanced Techniques from Daniel Miessler's Blog**
+
+### **1. Comprehensive Intel Gathering**:
+```bash
+# Find domains via multiple methods
+amass intel -org "Acme Corp" -whois -asn 12345 -cidr 192.168.0.0/16
+
+# Get IPs for discovered domains
+amass intel -whois -d example.com -ip -o ips_and_domains.txt
+
+# Use custom resolvers for accuracy
+amass intel -r 1.1.1.1,8.8.8.8 -whois -d example.com
+```
+
+### **2. Aggressive Enumeration**:
+```bash
+# Maximum discovery with all techniques
+amass enum -active -brute -alts -d example.com \
+  -p 80,443,8080,8443 \
+  -w /usr/share/wordlists/subdomains.txt \
+  -oA aggressive_scan
+```
+
+### **3. Smart Brute Forcing**:
+```bash
+# Recursive brute forcing with threshold
+amass enum -brute -min-for-recursive 3 -max-depth 4 -d example.com
+
+# Use wordlist masks (hashcat-style)
+amass enum -brute -wm ?l?l?l -d example.com  # 3-letter subdomains
+```
+
+### **4. Data Source Management**:
+```bash
+# List all available sources
+amass enum -list
+
+# Include/exclude specific sources
+amass enum -include crtsh,shodan -exclude virustotal -d example.com
+
+# Use config files for API keys
+amass enum -config /path/to/config.yaml -d example.com
+```
+
+---
+
+## **Configuration Essentials**
+
+### **Data Source Configuration** (`datasources.yaml`):
+```yaml
+# API keys for various sources
+[data_sources]
+  [data_sources.Shodan]
+    [data_sources.Shodan.default]
+      api_key = "your_shodan_key"
+      
+  [data_sources.GitHub]
+    [data_sources.GitHub.default]
+      username = "your_username"
+      token = "your_github_token"
+```
+
+### **Main Configuration** (`config.yaml`):
+```yaml
+# Brute force settings
+[bruteforce]
+  enabled = true
+  recursive = true
+  minimum_for_recursive = 2
+  wordlist_file = "/path/to/wordlist.txt"
+
+# Alterations (permutations)
+[alterations]
+  enabled = true
+  edit_distance = 1
+  
+# Scope definition
+[scope]
+  [[scope.domains]]
+    domain = "example.com"
+  
+  [[scope.blacklisted]]
+    subdomain = "test.example.com"
+```
+
+---
+
+## **Practical Use Cases for LLM Agent**
+
+### **Case 1: Initial Reconnaissance**
+```bash
+# Find organization's digital footprint
+amass intel -org "Victim Corp" -whois -ip -o targets.txt
+
+# Quick passive scan of discovered domains
+amass enum -passive -df targets.txt -silent -json initial_footprint.json
+```
+
+### **Case 2: Deep Enumeration**
+```bash
+# Full active enumeration with tracking
+amass enum -active -brute -d target.com -oA deep_scan
+amass track -dir ~/.config/amass/ -d target.com
+```
+
+### **Case 3: Continuous Monitoring**
+```bash
+# Regular scans with change detection
+amass enum -d target.com -oA scan_$(date +%Y%m%d)
+amass track -dir ~/.config/amass/ -d target.com -last 7
+```
+
+### **Case 4: Reporting and Visualization**
+```bash
+# Generate visual report
+amass viz -dir ~/.config/amass/ -d target.com -graphistry
+amass viz -dir ~/.config/amass/ -d3 -o attack_surface.html
+```
+
+---
+
+## **Pro Tips from Daniel Miessler**
+
+1. **Start with Intel**: Always run `intel` first to find all root domains
+2. **Use Tracking**: `track` is essential for professional engagements
+3. **Visualize**: `viz` helps understand complex infrastructures
+4. **Combine Modules**: Use all four modules for comprehensive assessment
+
+**Sample Complete Command**:
+```bash
+# All-in-one: Intel → Enum → Track → Viz
+amass intel -org "Target" -whois | tee domains.txt && \
+amass enum -df domains.txt -active -brute -oA results && \
+amass track -dir ./amass_db -df domains.txt && \
+amass viz -dir ./amass_db -d3 -o network_graph.html
+```
+
+---
+
+## **Quick Reference Card**
+
+| Module | Purpose | Key Flags |
+|--------|---------|-----------|
+| **intel** | Find root domains | `-whois`, `-org`, `-ip`, `-active` |
+| **enum** | Find subdomains | `-brute`, `-active`, `-passive`, `-oA` |
+| **viz** | Visualize assets | `-d3`, `-graphistry`, `-maltego` |
+| **track** | Track changes | `-last`, `-history`, `-snapshots` |
+
+**Common Global Flags**:
+- `-dir <path>`: Database directory
+- `-config <file>`: Config file
+- `-silent`: Quiet mode
+- `-nocolor`: Plain text output
+
+**Output Formats**:
+- `-o <file>`: Text output
+- `-oA <prefix>`: All formats (TXT, JSON, etc.)
+- `-json <file>`: JSON output
+- `-csv <file>`: CSV output
+
+---
+
+## **Remember**:
+1. **Intel → Enum → Track → Viz** is the complete workflow
+2. Use `-whois` flag with `intel` for best results
+3. Store results in database (`-dir`) for tracking
+4. Visualizations (`viz`) help communicate findings
+5. Tracking (`track`) is crucial for ongoing assessments
