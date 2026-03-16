@@ -1,0 +1,26 @@
+{
+  "mcpServers": {
+    "cortex": {
+      "env": {
+        "RUST_LOG": "info",
+        "CORTEX_API_KEY": "",
+        "CORTEX_ENDPOINT": ""
+      },
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "--platform",
+        "linux/amd64",
+        "-e",
+        "CORTEX_ENDPOINT",
+        "-e",
+        "CORTEX_API_KEY",
+        "-e",
+        "RUST_LOG",
+        "hackerdogs/mcp-server-cortex:latest"
+      ],
+      "command": "docker"
+    }
+  }
+}

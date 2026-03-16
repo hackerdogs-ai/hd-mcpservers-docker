@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "globalping": {
+      "args": [
+        "mcp-remote",
+        "https://mcp.globalping.dev/sse"
+      ],
+      "command": "npx"
+    }
+  }
+}

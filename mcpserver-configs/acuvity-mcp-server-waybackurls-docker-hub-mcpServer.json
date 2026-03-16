@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-waybackurls": {
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--read-only",
+        "docker.io/acuvity/mcp-server-waybackurls:6190e55"
+      ],
+      "command": "docker"
+    }
+  }
+}

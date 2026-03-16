@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-sentry": {
+      "env": {
+        "SENTRY_TOKEN": "TO_BE_SET"
+      },
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--read-only",
+        "-e",
+        "SENTRY_TOKEN",
+        "docker.io/acuvity/mcp-server-sentry:2025.1.14"
+      ],
+      "command": "docker"
+    }
+  }
+}

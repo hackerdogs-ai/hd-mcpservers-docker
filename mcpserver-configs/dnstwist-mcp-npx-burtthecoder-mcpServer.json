@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "dnstwist-mcp": {
+      "args": [
+        "-y",
+        "@burtthecoder/mcp-dnstwist"
+      ],
+      "command": "npx"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "prowler": {
+      "url": "https://mcp.prowler.com/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key-here>"
+      }
+    }
+  }
+}

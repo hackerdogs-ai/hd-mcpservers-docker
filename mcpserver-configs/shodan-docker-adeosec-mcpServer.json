@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "shodan": {
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--platform",
+        "linux/amd64",
+        "--entrypoint",
+        "node",
+        "utkarshsinghal04/mcp-shodan",
+        "build/index.js",
+        "--shodan-api-key",
+        "8d1E2S1ibhdQ8uRP6ELU0Bnis1B2QptI"
+      ],
+      "command": "docker"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "mcpServers": {
+    "rss-mcp": {
+      "env": {
+        "NODE_ENV": "production",
+        "NODE_OPTIONS": "--no-warnings"
+      },
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "--env",
+        "NODE_ENV=production",
+        "--env",
+        "NODE_OPTIONS=--no-warnings",
+        "--env",
+        "PYTHONUNBUFFERED=1",
+        "hackerdogs/rss-mcp:latest"
+      ],
+      "command": "docker"
+    }
+  }
+}

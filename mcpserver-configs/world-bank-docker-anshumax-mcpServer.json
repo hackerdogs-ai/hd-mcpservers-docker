@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "world-bank": {
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "utkarshsinghal04/world-bank-mcp:latest"
+      ],
+      "command": "docker"
+    }
+  }
+}

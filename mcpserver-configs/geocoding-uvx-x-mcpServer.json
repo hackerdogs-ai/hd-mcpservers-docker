@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "geocoding": {
+      "args": [
+        "geocode-mcp"
+      ],
+      "command": "uvx"
+    }
+  }
+}

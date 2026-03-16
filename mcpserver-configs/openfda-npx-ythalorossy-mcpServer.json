@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "openfda": {
+      "env": {
+        "OPENFDA_API_KEY": "${OPENFDA_API_KEY}"
+      },
+      "args": [
+        "@ythalorossy/openfda"
+      ],
+      "command": "npx",
+      "timeout": 60000
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-hyperbrowser": {
+      "env": {
+        "HYPERBROWSER_API_KEY": "hb_5a836320a97b932fac85725f2201"
+      },
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--read-only",
+        "-e",
+        "HYPERBROWSER_API_KEY",
+        "docker.io/acuvity/mcp-server-hyperbrowser:1.0.25"
+      ],
+      "command": "docker"
+    }
+  }
+}

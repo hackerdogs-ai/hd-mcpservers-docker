@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "n2yo": {
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "N2YO_API_KEY=your_actual_api_key",
+        "utkarshsinghal04/n2yo-mcp-server:latest"
+      ],
+      "command": "docker"
+    }
+  }
+}

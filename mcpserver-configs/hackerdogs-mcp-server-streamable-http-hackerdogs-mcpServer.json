@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "hackerdogs-mcp-server": {
+      "url": "http://preview.hackerdogs.ai/mcp/",
+      "headers": {
+        "Authorization": "Bearer YOUR_HACKERDOGS_API_KEY"
+      },
+      "_comment": "URL must end with /. Direct dev: http://192.168.5.15/mcp/ (Caddy). Production: https://preview.hackerdogs.ai/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}

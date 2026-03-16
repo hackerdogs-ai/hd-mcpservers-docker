@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "MapboxServer": {
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "MAPBOX_ACCESS_TOKEN=YOUR_TOKEN",
+        "mcp/mapbox"
+      ],
+      "command": "docker"
+    }
+  }
+}

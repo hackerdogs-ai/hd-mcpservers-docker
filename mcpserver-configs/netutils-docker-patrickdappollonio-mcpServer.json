@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "netutils": {
+      "env": {},
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "ghcr.io/patrickdappollonio/mcp-netutils:latest"
+      ],
+      "command": "docker"
+    }
+  }
+}

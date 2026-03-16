@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "s3-mcp-server": {
+      "env": {
+        "AWS_REGION": "us-east-1",
+        "S3_BUCKET_NAME": "my-test-bucket",
+        "AWS_ACCESS_KEY_ID": "YOUR_AWS_ACCESS_KEY_ID",
+        "AWS_SECRET_ACCESS_KEY": "YOUR_AWS_SECRET_ACCESS_KEY"
+      },
+      "args": [
+        "-y",
+        "@geunoh/s3-mcp-server"
+      ],
+      "command": "npx"
+    }
+  }
+}

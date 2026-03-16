@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "flights": {
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "FLIGHTS_AVIASALES_API_TOKEN=your_api_token_here",
+        "-e",
+        "FLIGHTS_AVIASALES_MARKER=your_marker_id_here",
+        "utkarshsinghal04/flights-mcp:latest"
+      ],
+      "command": "docker"
+    }
+  }
+}

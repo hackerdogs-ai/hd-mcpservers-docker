@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-grafana": {
+      "env": {
+        "GRAFANA_URL": "TO_BE_SET",
+        "GRAFANA_API_KEY": "TO_BE_SET"
+      },
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--read-only",
+        "-e",
+        "GRAFANA_API_KEY",
+        "-e",
+        "GRAFANA_URL",
+        "docker.io/acuvity/mcp-server-grafana:v0.8.2"
+      ],
+      "command": "docker"
+    }
+  }
+}

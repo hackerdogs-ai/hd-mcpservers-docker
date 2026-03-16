@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "scc": {
+      "env": {},
+      "args": [
+        "--from",
+        "scc-mcp",
+        "scc_mcp"
+      ],
+      "command": "uvx"
+    }
+  }
+}

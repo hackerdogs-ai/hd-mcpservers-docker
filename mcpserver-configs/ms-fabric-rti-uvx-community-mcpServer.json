@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "ms-fabric-rti": {
+      "args": [
+        "microsoft-fabric-rti-mcp"
+      ],
+      "command": "uvx"
+    }
+  }
+}

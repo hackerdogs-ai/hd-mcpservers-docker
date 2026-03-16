@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "HIBP-MCP": {
+      "env": {
+        "HIBP_API_KEY": "649e1042fa6d44e7b9ee090e3c0e7b50",
+        "HIBP_SUBSCRIPTION_PLAN": "Pwned 1"
+      },
+      "args": [
+        "-y",
+        "@darrenjrobinson/hibp-mcp"
+      ],
+      "command": "npx"
+    }
+  }
+}

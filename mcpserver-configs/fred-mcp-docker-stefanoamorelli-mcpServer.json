@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "fred-mcp": {
+      "env": {
+        "FRED_API_KEY": "16ca190c385118b631fbe5f1541a77e7 "
+      },
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "FRED_API_KEY",
+        "stefanoamorelli/fred-mcp-server:latest"
+      ],
+      "command": "docker"
+    }
+  }
+}

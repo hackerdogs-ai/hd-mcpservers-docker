@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-harness": {
+      "env": {
+        "HARNESS_API_KEY": "TO_BE_SET"
+      },
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--read-only",
+        "-e",
+        "HARNESS_API_KEY",
+        "docker.io/acuvity/mcp-server-harness:v1.0.0-beta.16"
+      ],
+      "command": "docker"
+    }
+  }
+}

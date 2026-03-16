@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "winston-ai-mcp": {
+      "env": {
+        "WINSTONAI_API_KEY": "your-api-key"
+      },
+      "args": [
+        "-y",
+        "winston-ai-mcp"
+      ],
+      "command": "npx"
+    }
+  }
+}

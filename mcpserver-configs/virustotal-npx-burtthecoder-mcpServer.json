@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "virustotal": {
+      "env": {
+        "VIRUSTOTAL_API_KEY": "37d44a9d187ac3ae6787b6e944272346ce8dc39a135a78af2ec916a7d0e5d5e6"
+      },
+      "args": [
+        "-y",
+        "@burtthecoder/mcp-virustotal"
+      ],
+      "command": "npx"
+    }
+  }
+}

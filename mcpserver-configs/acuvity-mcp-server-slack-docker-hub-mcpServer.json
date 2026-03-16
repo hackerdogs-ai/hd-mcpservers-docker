@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-slack": {
+      "env": {
+        "SLACK_TEAM_ID": "TO_BE_SET",
+        "SLACK_BOT_TOKEN": "TO_BE_SET"
+      },
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--read-only",
+        "-e",
+        "SLACK_BOT_TOKEN",
+        "-e",
+        "SLACK_TEAM_ID",
+        "docker.io/acuvity/mcp-server-slack:2025.4.25"
+      ],
+      "command": "docker"
+    }
+  }
+}

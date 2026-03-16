@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "sentry": {
+      "env": {
+        "SENTRY_ORG_SLUG": "hackerdogs",
+        "SENTRY_AUTH_TOKEN": "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"
+      },
+      "args": [
+        "-y",
+        "@sentry/mcp-server"
+      ],
+      "command": "npx"
+    }
+  }
+}

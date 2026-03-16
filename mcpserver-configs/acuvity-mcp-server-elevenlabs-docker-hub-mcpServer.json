@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-elevenlabs": {
+      "env": {
+        "ELEVENLABS_API_KEY": "TO_BE_SET"
+      },
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--read-only",
+        "-e",
+        "ELEVENLABS_API_KEY",
+        "docker.io/acuvity/mcp-server-elevenlabs:0.9.1"
+      ],
+      "command": "docker"
+    }
+  }
+}

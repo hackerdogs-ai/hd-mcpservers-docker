@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-masscan": {
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--read-only",
+        "docker.io/acuvity/mcp-server-masscan:6190e55"
+      ],
+      "command": "docker"
+    }
+  }
+}

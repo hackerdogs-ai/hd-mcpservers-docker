@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-brave-search": {
+      "env": {
+        "BRAVE_API_KEY": "TO_BE_SET"
+      },
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--read-only",
+        "-e",
+        "BRAVE_API_KEY",
+        "docker.io/acuvity/mcp-server-brave-search:0.6.2"
+      ],
+      "command": "docker"
+    }
+  }
+}

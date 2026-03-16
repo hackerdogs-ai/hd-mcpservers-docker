@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "mcp-server-code-runner": {
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "formulahendry/mcp-server-code-runner"
+      ],
+      "command": "docker"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-chroma": {
+      "env": {
+        "CHROMA_HOST": "TO_BE_SET",
+        "CHROMA_PORT": "TO_BE_SET",
+        "CHROMA_TENANT": "TO_BE_SET",
+        "CHROMA_DATABASE": "TO_BE_SET",
+        "CHROMA_CLIENT_TYPE": "TO_BE_SET"
+      },
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--read-only",
+        "-e",
+        "CHROMA_CLIENT_TYPE",
+        "-e",
+        "CHROMA_DATABASE",
+        "-e",
+        "CHROMA_HOST",
+        "-e",
+        "CHROMA_PORT",
+        "-e",
+        "CHROMA_TENANT",
+        "docker.io/acuvity/mcp-server-chroma:0.2.6"
+      ],
+      "command": "docker"
+    }
+  }
+}

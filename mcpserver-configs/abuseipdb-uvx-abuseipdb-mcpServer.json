@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "abuseipdb": {
+      "env": {
+        "ABUSEIPDB_API_KEY": "6838d5c747e705c7baf6533b8b730aade285bbbea42fdf21da8600609def34dba3b016e55c628b29"
+      },
+      "args": [
+        "--directory",
+        "{{project_root}}/shared/modules/tools/osint/mcp-abuseipdb-main",
+        "run",
+        "abusedb.py"
+      ],
+      "command": "uv"
+    }
+  }
+}

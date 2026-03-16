@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-alterx": {
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--read-only",
+        "--tmpfs",
+        "/tmp:rw,nosuid,nodev",
+        "docker.io/acuvity/mcp-server-alterx:6190e55"
+      ],
+      "command": "docker"
+    }
+  }
+}

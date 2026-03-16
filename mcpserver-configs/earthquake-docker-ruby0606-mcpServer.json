@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "earthquake": {
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "utkarshsinghal04/earthquake-mcp:latest"
+      ],
+      "command": "docker"
+    }
+  }
+}

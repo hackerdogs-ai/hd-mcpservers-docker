@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-everything": {
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--read-only",
+        "docker.io/acuvity/mcp-server-everything:2026.1.14"
+      ],
+      "command": "docker"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "open-legal": {
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "GOVINFO_API_KEY=your_govinfo_key",
+        "-e",
+        "COURTLISTENER_API_KEY=your_optional_courtlistener_key",
+        "-e",
+        "CONGRESS_GOV_API_KEY=your_optional_congress_key",
+        "-e",
+        "OPEN_STATES_API_KEY=your_optional_openstates_key",
+        "utkarshsinghal04/legal-compliance-mcp:latest"
+      ],
+      "command": "docker"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "baidu-search-mcp-server": {
+      "args": [
+        "baidu-mcp-server"
+      ],
+      "command": "uvx"
+    }
+  }
+}

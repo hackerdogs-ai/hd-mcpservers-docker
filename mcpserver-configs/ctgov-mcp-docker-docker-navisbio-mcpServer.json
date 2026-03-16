@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "CTGOV-MCP-DOCKER": {
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "--env",
+        "DB_USER=YOUR_USERNAME",
+        "--env",
+        "DB_PASSWORD=YOUR_PASSWORD",
+        "navisbio/mcp-server-aact:latest"
+      ],
+      "command": "docker"
+    }
+  }
+}

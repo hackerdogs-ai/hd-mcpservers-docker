@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "wiremcp": {
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--platform",
+        "linux/amd64",
+        "--net=host",
+        "--cap-add=NET_ADMIN",
+        "utkarshsinghal04/wiremcp:latest"
+      ],
+      "command": "docker"
+    }
+  }
+}

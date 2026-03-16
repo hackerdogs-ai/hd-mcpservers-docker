@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "jira": {
+      "env": {
+        "JIRA_URL": "your-jira-url",
+        "JIRA_USERNAME": "your-jira-username",
+        "JIRA_API_TOKEN": "your-jira-api-token"
+      },
+      "args": [
+        "mcp-atlassian"
+      ],
+      "command": "uvx"
+    }
+  }
+}

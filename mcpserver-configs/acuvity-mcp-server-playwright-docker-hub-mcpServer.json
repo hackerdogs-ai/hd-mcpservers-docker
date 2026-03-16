@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-playwright": {
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--read-only",
+        "--tmpfs",
+        "/tmp:rw,nosuid,nodev",
+        "docker.io/acuvity/mcp-server-playwright:0.0.56"
+      ],
+      "command": "docker"
+    }
+  }
+}

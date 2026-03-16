@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "sec-edgar-mcp": {
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "SEC_EDGAR_USER_AGENT=Your Name (hackerdogsai@gmail.com)",
+        "stefanoamorelli/sec-edgar-mcp:latest"
+      ],
+      "command": "docker"
+    }
+  }
+}

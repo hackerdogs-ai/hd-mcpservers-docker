@@ -1,0 +1,27 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-azure": {
+      "env": {
+        "AZURE_CLIENT_ID": "TO_BE_SET",
+        "AZURE_TENANT_ID": "TO_BE_SET",
+        "AZURE_CLIENT_SECRET": "TO_BE_SET"
+      },
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--read-only",
+        "--tmpfs",
+        "/tmp:rw,nosuid,nodev",
+        "-e",
+        "AZURE_CLIENT_ID",
+        "-e",
+        "AZURE_CLIENT_SECRET",
+        "-e",
+        "AZURE_TENANT_ID",
+        "docker.io/acuvity/mcp-server-azure:2.0.0-beta.12"
+      ],
+      "command": "docker"
+    }
+  }
+}

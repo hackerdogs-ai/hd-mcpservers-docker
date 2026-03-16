@@ -1,0 +1,34 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-atlassian": {
+      "env": {
+        "JIRA_URL": "TO_BE_SET",
+        "JIRA_USERNAME": "TO_BE_SET",
+        "CONFLUENCE_URL": "TO_BE_SET",
+        "JIRA_API_TOKEN": "TO_BE_SET",
+        "CONFLUENCE_USERNAME": "TO_BE_SET",
+        "CONFLUENCE_API_TOKEN": "TO_BE_SET"
+      },
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--read-only",
+        "-e",
+        "CONFLUENCE_API_TOKEN",
+        "-e",
+        "CONFLUENCE_URL",
+        "-e",
+        "CONFLUENCE_USERNAME",
+        "-e",
+        "JIRA_API_TOKEN",
+        "-e",
+        "JIRA_URL",
+        "-e",
+        "JIRA_USERNAME",
+        "docker.io/acuvity/mcp-server-atlassian:0.13.0"
+      ],
+      "command": "docker"
+    }
+  }
+}

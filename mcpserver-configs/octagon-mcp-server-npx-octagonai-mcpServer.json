@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "octagon-mcp-server": {
+      "env": {
+        "OCTAGON_API_KEY": "YOUR_API_KEY_HERE"
+      },
+      "args": [
+        "-y",
+        "octagon-mcp@latest"
+      ],
+      "command": "npx"
+    }
+  }
+}

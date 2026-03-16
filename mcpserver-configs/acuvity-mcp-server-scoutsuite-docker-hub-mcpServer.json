@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-scoutsuite": {
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--read-only",
+        "docker.io/acuvity/mcp-server-scoutsuite:6190e55"
+      ],
+      "command": "docker"
+    }
+  }
+}

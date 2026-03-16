@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-bing-search": {
+      "env": {
+        "BING_API_KEY": "TO_BE_SET"
+      },
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--read-only",
+        "-e",
+        "BING_API_KEY",
+        "docker.io/acuvity/mcp-server-bing-search:0.1.0"
+      ],
+      "command": "docker"
+    }
+  }
+}

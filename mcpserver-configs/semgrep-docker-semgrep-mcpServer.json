@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "semgrep": {
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "semgrep/semgrep",
+        "semgrep",
+        "mcp",
+        "-t",
+        "stdio"
+      ],
+      "command": "docker"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "pubmed": {
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "PUBMED_EMAIL=your_email@example.com",
+        "-e",
+        "PUBMED_API_KEY=your_optional_api_key",
+        "utkarshsinghal04/pubmed-mcp:latest"
+      ],
+      "command": "docker"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "stripe": {
+      "env": {
+        "STRIPE_SECRET_KEY": "rk_test_51Stya8EnBiQdIBNMsLLbL6WXmdx2hnW0lRk2fZoWxF03GZxkfjNYLDZtShADhDZklbUxEnwTI5QqvfgzA0Ae5tgq00Q09A0voA"
+      },
+      "args": [
+        "-y",
+        "@stripe/mcp",
+        "--tools=all"
+      ],
+      "command": "npx"
+    }
+  }
+}

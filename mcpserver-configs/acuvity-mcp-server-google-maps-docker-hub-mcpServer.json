@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-google-maps": {
+      "env": {
+        "GOOGLE_MAPS_API_KEY": "TO_BE_SET"
+      },
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--read-only",
+        "-e",
+        "GOOGLE_MAPS_API_KEY",
+        "docker.io/acuvity/mcp-server-google-maps:0.6.2"
+      ],
+      "command": "docker"
+    }
+  }
+}

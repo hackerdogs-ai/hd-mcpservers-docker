@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "greynoise": {
+      "env": {
+        "GREYNOISE_API_KEY": "your-greynoise-api-key"
+      },
+      "args": [
+        "@greynoise/greynoise-mcp-server"
+      ],
+      "command": "npx"
+    }
+  }
+}

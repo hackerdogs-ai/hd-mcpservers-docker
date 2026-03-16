@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "bitbucket": {
+      "env": {
+        "BITBUCKET_URL": "https://api.bitbucket.org/2.0",
+        "BITBUCKET_PASSWORD": "your-app-password",
+        "BITBUCKET_USERNAME": "your-username",
+        "BITBUCKET_WORKSPACE": "your-workspace"
+      },
+      "args": [
+        "-y",
+        "bitbucket-mcp@latest"
+      ],
+      "command": "npx"
+    }
+  }
+}

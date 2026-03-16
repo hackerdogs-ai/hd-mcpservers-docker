@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "mitre-attack-remote": {
+      "url": "http://hd-mitre-attack-mcp:8032/mcp"
+    }
+  }
+}

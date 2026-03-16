@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-microsoft-graph": {
+      "env": {
+        "MCP_SERVER_MICROSOFT_GRAPH_CLIENT_ID": "TO_BE_SET",
+        "MCP_SERVER_MICROSOFT_GRAPH_TENANT_ID": "TO_BE_SET",
+        "MCP_SERVER_MICROSOFT_GRAPH_CLIENT_SECRET": "TO_BE_SET"
+      },
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--read-only",
+        "-e",
+        "MCP_SERVER_MICROSOFT_GRAPH_TENANT_ID",
+        "-e",
+        "MCP_SERVER_MICROSOFT_GRAPH_CLIENT_ID",
+        "-e",
+        "MCP_SERVER_MICROSOFT_GRAPH_CLIENT_SECRET",
+        "docker.io/acuvity/mcp-server-microsoft-graph:1.0.1"
+      ],
+      "command": "docker"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "edu-data": {
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "--platform",
+        "linux/amd64",
+        "hackerdogs/edu-data-mcp-server:latest"
+      ],
+      "command": "docker"
+    }
+  }
+}

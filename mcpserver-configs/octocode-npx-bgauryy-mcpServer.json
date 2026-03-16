@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "octocode": {
+      "env": {
+        "GITHUB_TOKEN": "ghp_your_token_here"
+      },
+      "args": [
+        "octocode-mcp"
+      ],
+      "command": "npx"
+    }
+  }
+}

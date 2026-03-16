@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "pdf-reader": {
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "--env",
+        "NODE_ENV=production",
+        "--env",
+        "PYTHONUNBUFFERED=1",
+        "hackerdogs/hackerdogs-mcp-pdf-reader-sylphx:latest"
+      ],
+      "command": "docker",
+      "description": "MCP PDF Reader Server - Extract text from PDF files using @sylphx/pdf-reader-mcp. Supports PDF URLs via sources array. Dynamically built Docker image from npm package."
+    }
+  }
+}

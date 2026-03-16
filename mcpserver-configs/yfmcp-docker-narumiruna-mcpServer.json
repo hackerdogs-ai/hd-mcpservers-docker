@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "yfmcp": {
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "narumi/yfinance-mcp"
+      ],
+      "command": "docker"
+    }
+  }
+}

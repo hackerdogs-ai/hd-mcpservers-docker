@@ -1,0 +1,23 @@
+{
+  "mcpServers": {
+    "reddit_mcp_server": {
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "-e",
+        "REDDIT_CLIENT_ID=your_client_id",
+        "-e",
+        "REDDIT_CLIENT_SECRET=your_client_secret",
+        "-e",
+        "REDDIT_USERNAME=your_username",
+        "-e",
+        "REDDIT_PASSWORD=your_password",
+        "-e",
+        "REDDIT_USER_AGENT=mcp-reddit-agent/0.1",
+        "mcp/reddit-mcp:latest"
+      ],
+      "command": "docker"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "variflight": {
+      "env": {
+        "VARIFLIGHT_API_KEY": "sk-czYro70I7A-P_EXNLdnyeuxBsoc5A6L5SNHZXN9ncO0"
+      },
+      "args": [
+        "-y",
+        "@variflight-ai/variflight-mcp"
+      ],
+      "command": "npx"
+    }
+  }
+}

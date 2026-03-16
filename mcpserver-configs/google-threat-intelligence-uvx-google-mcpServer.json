@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "google-threat-intelligence": {
+      "env": {
+        "VT_APIKEY": "YOUR_VIRUSTOTAL_API_KEY"
+      },
+      "args": [
+        "--from",
+        "gti-mcp",
+        "gti_mcp"
+      ],
+      "command": "uvx"
+    }
+  }
+}

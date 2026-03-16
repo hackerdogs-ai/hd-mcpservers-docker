@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "pagespeed": {
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "hackerdogs/hackerdogs-mcp-pagespeed:latest"
+      ],
+      "command": "docker",
+      "description": "MCP PageSpeed Server - Perform comprehensive web performance analysis using Google PageSpeed Insights API. Provides performance metrics, Core Web Vitals, SEO analysis, accessibility audits, and best practices assessment. Published Docker image from hackerdogs Docker Hub."
+    }
+  }
+}

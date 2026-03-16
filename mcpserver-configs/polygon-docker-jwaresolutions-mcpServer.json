@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "polygon": {
+      "env": {
+        "NODE_ENV": "production",
+        "POLYGON_API_KEY": "ENTER_API_KEY_HERE"
+      },
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "--platform",
+        "linux/amd64",
+        "-e",
+        "POLYGON_API_KEY",
+        "hackerdogs/polygon-mcp-server:latest"
+      ],
+      "command": "docker"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "edgartools-mcp-server": {
+      "env": {
+        "EDGAR_IDENTITY": "Your Name hackerdogsai@gmail.com"
+      },
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/edgartools-mcp:latest"
+      ],
+      "command": "docker"
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "mcpServers": {
+    "aistor": {
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--network",
+        "hdnet",
+        "-v",
+        "mcp-aistor-data:/Downloads",
+        "-e",
+        "MINIO_ENDPOINT=http://minio-server:9000",
+        "-e",
+        "MINIO_ACCESS_KEY=REPLACE_WITH_ACCESS_KEY",
+        "-e",
+        "MINIO_SECRET_KEY=REPLACE_WITH_SECRET_KEY",
+        "-e",
+        "MINIO_USE_SSL=false",
+        "quay.io/minio/aistor/mcp-server-aistor:latest",
+        "--allowed-directories",
+        "/Downloads",
+        "--allow-write",
+        "--allow-delete",
+        "--allow-admin"
+      ],
+      "command": "docker"
+    }
+  }
+}

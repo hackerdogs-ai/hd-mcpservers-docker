@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "trivy-security": {
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/trivy-mcp:latest",
+        "python",
+        "server.py"
+      ],
+      "command": "docker"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "RapidAPI Hub - Reverse image search by Copyseeker": {
+      "args": [
+        "mcp-remote",
+        "https://mcp.rapidapi.com",
+        "--header",
+        "x-api-host: reverse-image-search-by-copyseeker.p.rapidapi.com",
+        "--header",
+        "x-api-key: [YOUR_RAPIDAPI_KEY]"
+      ],
+      "command": "npx"
+    }
+  }
+}

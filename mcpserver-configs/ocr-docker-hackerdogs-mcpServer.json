@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "ocr": {
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "--env",
+        "PYTHONUNBUFFERED=1",
+        "hackerdogs/hackerdogs-mcp-ocr:latest"
+      ],
+      "command": "docker",
+      "description": "MCP OCR Server - Extract text from images using Tesseract OCR. Supports local files, URLs, and image bytes. Dynamically built Docker image from mcp-ocr PyPI package."
+    }
+  }
+}

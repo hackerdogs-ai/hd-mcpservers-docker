@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "Exiftool-agent": {
+      "args": [
+        "-y",
+        "exiftool-mcp-ai-agent"
+      ],
+      "command": "npx"
+    }
+  }
+}

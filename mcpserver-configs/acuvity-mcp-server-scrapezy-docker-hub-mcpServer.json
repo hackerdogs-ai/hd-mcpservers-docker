@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-scrapezy": {
+      "env": {
+        "SCRAPEZY_API_KEY": "TO_BE_SET"
+      },
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--read-only",
+        "-e",
+        "SCRAPEZY_API_KEY",
+        "docker.io/acuvity/mcp-server-scrapezy:0.1.1"
+      ],
+      "command": "docker"
+    }
+  }
+}

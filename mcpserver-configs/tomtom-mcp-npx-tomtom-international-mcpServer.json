@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "tomtom-mcp": {
+      "env": {
+        "TOMTOM_API_KEY": "k5WEgqPPOUaRHpE1RDjDSAMqVG8eKCQD"
+      },
+      "args": [
+        "-y",
+        "@tomtom-org/tomtom-mcp@latest"
+      ],
+      "command": "npx"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-firecrawl": {
+      "env": {
+        "FIRECRAWL_API_KEY": "TO_BE_SET"
+      },
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--read-only",
+        "-e",
+        "FIRECRAWL_API_KEY",
+        "docker.io/acuvity/mcp-server-firecrawl:3.7.4"
+      ],
+      "command": "docker"
+    }
+  }
+}

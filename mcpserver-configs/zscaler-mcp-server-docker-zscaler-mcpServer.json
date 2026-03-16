@@ -1,0 +1,29 @@
+{
+  "mcpServers": {
+    "zscaler-mcp-server": {
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "ZSCALER_CLIENT_ID=your-client-id",
+        "-e",
+        "ZSCALER_CLIENT_SECRET=your-client-secret",
+        "-e",
+        "ZSCALER_CUSTOMER_ID=your-customer-id",
+        "-e",
+        "ZSCALER_VANITY_DOMAIN=your-vanity-domain",
+        "-e",
+        "ZIA_USERNAME=your-username",
+        "-e",
+        "ZIA_PASSWORD=your-password",
+        "-e",
+        "ZIA_API_KEY=your-api-key",
+        "-e",
+        "ZIA_CLOUD=zscalerone",
+        "quay.io/zscaler/zscaler-mcp-server:latest"
+      ],
+      "command": "docker"
+    }
+  }
+}

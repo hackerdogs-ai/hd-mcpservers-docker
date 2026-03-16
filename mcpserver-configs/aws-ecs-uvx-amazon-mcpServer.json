@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "aws-ecs": {
+      "env": {
+        "AWS_REGION": "us-east-1",
+        "AWS_ACCESS_KEY_ID": "YOUR_AWS_ACCESS_KEY_ID",
+        "AWS_SECRET_ACCESS_KEY": "YOUR_AWS_SECRET_ACCESS_KEY"
+      },
+      "args": [
+        "--from",
+        "awslabs.ecs-mcp-server@latest",
+        "ecs-mcp-server"
+      ],
+      "command": "uvx"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-duckduckgo": {
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--read-only",
+        "docker.io/acuvity/mcp-server-duckduckgo:0.1.1"
+      ],
+      "command": "docker"
+    }
+  }
+}

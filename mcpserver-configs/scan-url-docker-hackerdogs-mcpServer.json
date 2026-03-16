@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "scan-url": {
+      "env": {
+        "NODE_ENV": "production",
+        "URLSCAN_API_KEY": ""
+      },
+      "args": [
+        "run",
+        "--platform",
+        "linux/amd64",
+        "--rm",
+        "-i",
+        "-e",
+        "URLSCAN_API_KEY",
+        "hackerdogs/scan-url-mcp-server:latest"
+      ],
+      "command": "docker"
+    }
+  }
+}

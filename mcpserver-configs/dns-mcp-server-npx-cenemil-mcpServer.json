@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "dns-mcp-server": {
+      "env": {},
+      "args": [
+        "@cenemiljezweb/dns-mcp-server"
+      ],
+      "command": "npx"
+    }
+  }
+}

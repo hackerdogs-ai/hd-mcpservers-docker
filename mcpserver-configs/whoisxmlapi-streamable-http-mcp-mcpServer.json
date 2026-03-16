@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "whoisxmlapi": {
+      "url": "https://mcp-hosted.whoisxmlapi.com/mcp",
+      "headers": {
+        "Authorization": "Bearer [YOUR API KEY]"
+      }
+    }
+  }
+}

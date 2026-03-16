@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "builtwith": {
+      "url": "https://api.builtwith.com/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_BUILTWITH_API_KEY"
+      }
+    }
+  }
+}

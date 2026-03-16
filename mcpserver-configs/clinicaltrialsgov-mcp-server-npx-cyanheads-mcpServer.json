@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "clinicaltrialsgov-mcp-server": {
+      "env": {
+        "MCP_LOG_LEVEL": "info",
+        "MCP_TRANSPORT_TYPE": "stdio"
+      },
+      "args": [
+        "clinicaltrialsgov-mcp-server@latest"
+      ],
+      "type": "stdio",
+      "command": "bunx"
+    }
+  }
+}

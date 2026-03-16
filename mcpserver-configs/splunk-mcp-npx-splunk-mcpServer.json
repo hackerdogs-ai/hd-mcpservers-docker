@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "splunk-mcp": {
+      "env": {
+        "SPLUNK_HOST": "https://prd-p-zpalc.splunkcloud.com",
+        "SPLUNK_PORT": "8089",
+        "SPLUNK_TOKEN": "<OPTIONAL_AUTH_TOKEN>",
+        "SPLUNK_PASSWORD": "klo6huz7octq9d6w",
+        "SPLUNK_USERNAME": "sc_admin"
+      },
+      "args": [
+        "-y",
+        "splunk-mcp"
+      ],
+      "type": "stdio",
+      "command": "npx"
+    }
+  }
+}

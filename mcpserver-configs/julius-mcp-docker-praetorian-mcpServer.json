@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "julius-mcp": {
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      },
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "MCP_TRANSPORT",
+        "hackerdogs/julius-mcp:latest"
+      ],
+      "command": "docker"
+    }
+  }
+}

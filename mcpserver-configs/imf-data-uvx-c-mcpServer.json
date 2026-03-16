@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "imf-data": {
+      "args": [
+        "--from",
+        "git+https://github.com/c-cf/imf-data-mcp",
+        "imf-data-mcp"
+      ],
+      "command": "uvx"
+    }
+  }
+}

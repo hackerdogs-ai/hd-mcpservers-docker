@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "marinetraffic": {
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "MARINETRAFFIC_API_KEY=your_actual_api_key",
+        "utkarshsinghal04/marinetraffic-mcp:latest"
+      ],
+      "command": "docker"
+    }
+  }
+}

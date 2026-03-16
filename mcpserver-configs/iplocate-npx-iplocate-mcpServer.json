@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "iplocate": {
+      "env": {
+        "IPLOCATE_API_KEY": "b352f17d06b9a6dd1548a7f85469f7b8"
+      },
+      "args": [
+        "-y",
+        "@iplocate/mcp-server"
+      ],
+      "command": "npx"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-katana": {
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--read-only",
+        "--tmpfs",
+        "/tmp:rw,nosuid,nodev",
+        "docker.io/acuvity/mcp-server-katana:6190e55"
+      ],
+      "command": "docker"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "brightdata_mcp_server": {
+      "args": [
+        "mcp-remote",
+        "https://mcp.brightdata.com/mcp?token=[your api key]"
+      ],
+      "command": "npx"
+    }
+  }
+}

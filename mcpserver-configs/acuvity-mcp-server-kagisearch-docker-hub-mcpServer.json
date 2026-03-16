@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-kagisearch": {
+      "env": {
+        "KAGI_API_KEY": "URIXa3Qme1KIFiMe39E4e62qFF6H29nz-A0-6SK2-AA.l_imrAZcn7zJz4A6Hh55RFi_Pzk0sQZVtc9nfXxSuYA",
+        "KAGI_SUMMARIZER_ENGINE": "TO_BE_SET"
+      },
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--read-only",
+        "-e",
+        "KAGI_API_KEY",
+        "-e",
+        "KAGI_SUMMARIZER_ENGINE",
+        "docker.io/acuvity/mcp-server-kagisearch:0.1.3"
+      ],
+      "command": "docker"
+    }
+  }
+}

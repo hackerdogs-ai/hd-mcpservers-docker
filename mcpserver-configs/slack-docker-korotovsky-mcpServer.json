@@ -1,0 +1,24 @@
+{
+  "mcpServers": {
+    "slack": {
+      "env": {
+        "SLACK_MCP_XOXC_TOKEN": "xoxc-7402188785909-7441142068643-10326893608163-86f84f0a3c4cf6d1373fb03582f06feb2ccad0ec7f3c207e0fe1b56b765873f8",
+        "SLACK_MCP_XOXD_TOKEN": "xoxd-zenEwyl7NpDN7xpTy0cllFBYXwoiYEbFHo+LLJXqd4WDcGS2RVPSsnDF6oRrTrpuiua2N2uu1a9GGRFXHtzaPgnyr4dh50AmheiPcPTHPgR8K0FUFFXb/YMUQaKhvJ/nOu3/dcziSelOUKRLr6fu5JRwCPx7qfNcpE8K6mG9FHCI+RnHicWKHAYK1Hcug1109oPrD3cT"
+      },
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "SLACK_MCP_XOXC_TOKEN",
+        "-e",
+        "SLACK_MCP_XOXD_TOKEN",
+        "ghcr.io/korotovsky/slack-mcp-server",
+        "mcp-server",
+        "--transport",
+        "stdio"
+      ],
+      "command": "docker"
+    }
+  }
+}
