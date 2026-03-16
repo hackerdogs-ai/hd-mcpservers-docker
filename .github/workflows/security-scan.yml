@@ -18,6 +18,7 @@ permissions:
   security-events: write
   pull-requests: write
   actions: read
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Job 1 — Secret & Credential Scanning (Gitleaks + TruffleHog)
 # ─────────────────────────────────────────────────────────────────────────────
@@ -45,6 +46,13 @@ jobs:
           trufflehog3 filesystem hd-mcpservers-docker/ \
             --json > trufflehog-report.json 2>/dev/null || true
           echo "TruffleHog scan complete: $(wc -l < trufflehog-report.json) findings"
+
+      - name: Upload Gitleaks SARIF to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: results.sarif
+        continue-on-error: true
 
       - uses: actions/upload-artifact@v4
         if: always()
