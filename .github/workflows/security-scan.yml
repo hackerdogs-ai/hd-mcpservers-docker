@@ -4,7 +4,7 @@ on:
   push:
     branches: [main, develop, "release/*"]
     paths:
-      - "hd-mcpservers-docker/**"
+      - "**"
       - ".github/workflows/security-scan.yml"
       - "scan-mcp-server.py"
   pull_request:
@@ -43,7 +43,7 @@ jobs:
       - name: Run TruffleHog on MCP server directory
         continue-on-error: true
         run: |
-          trufflehog3 filesystem hd-mcpservers-docker/ \
+          trufflehog3 filesystem . \
             --json > trufflehog-report.json 2>/dev/null || true
           echo "TruffleHog scan complete: $(wc -l < trufflehog-report.json) findings"
 
@@ -83,10 +83,10 @@ jobs:
       - name: Run hadolint on all MCP Dockerfiles
         continue-on-error: true
         run: |
-          DOCKERFILE_COUNT=$(find hd-mcpservers-docker -name 'Dockerfile' | wc -l)
+          DOCKERFILE_COUNT=$(find . -name 'Dockerfile' | wc -l)
           echo "Found ${DOCKERFILE_COUNT} Dockerfiles"
           echo "[]" > hadolint-report.json
-          find hd-mcpservers-docker -name 'Dockerfile' | while read -r f; do
+          find . -name 'Dockerfile' | while read -r f; do
             hadolint --format json "$f" >> hadolint-raw.jsonl 2>/dev/null || true
           done
           # Wrap individual JSON lines into an array
@@ -120,7 +120,7 @@ jobs:
       - name: Run Checkov on all MCP Dockerfiles
         continue-on-error: true
         run: |
-          checkov -d hd-mcpservers-docker \
+          checkov -d . \
             --framework dockerfile \
             --output json \
             --compact \
@@ -130,7 +130,7 @@ jobs:
       - name: Run Checkov on all docker-compose files
         continue-on-error: true
         run: |
-          checkov -d hd-mcpservers-docker \
+          checkov -d . \
             --framework docker_compose \
             --output json \
             --compact \
@@ -167,9 +167,9 @@ jobs:
       - name: Run Bandit on all MCP Python files
         continue-on-error: true
         run: |
-          PYTHON_COUNT=$(find hd-mcpservers-docker -name 'mcp_server.py' | wc -l)
+          PYTHON_COUNT=$(find . -name 'mcp_server.py' | wc -l)
           echo "Scanning ${PYTHON_COUNT} mcp_server.py files with Bandit"
-          bandit -r hd-mcpservers-docker \
+          bandit -r . \
             --severity-level medium \
             --confidence-level medium \
             --skip B101,B603 \
@@ -185,7 +185,7 @@ jobs:
             --config p/docker \
             --json \
             --output semgrep-report.json \
-            hd-mcpservers-docker || true
+            . || true
 
       - uses: actions/upload-artifact@v4
         if: always()
@@ -217,9 +217,9 @@ jobs:
         continue-on-error: true
         run: |
           mkdir -p dep-reports
-          REQ_COUNT=$(find hd-mcpservers-docker -name 'requirements.txt' | wc -l)
+          REQ_COUNT=$(find . -name 'requirements.txt' | wc -l)
           echo "Found ${REQ_COUNT} requirements.txt files"
-          find hd-mcpservers-docker -name 'requirements.txt' | while read -r req; do
+          find . -name 'requirements.txt' | while read -r req; do
             server_name=$(basename "$(dirname "$req")")
             echo "  Auditing: ${server_name}"
             pip-audit -r "$req" --desc --format json \
@@ -237,7 +237,7 @@ jobs:
       - name: Run Trivy filesystem scan on MCP repo
         continue-on-error: true
         run: |
-          trivy fs hd-mcpservers-docker \
+          trivy fs . \
             --severity HIGH,CRITICAL \
             --format json \
             --output trivy-fs-report.json || true
@@ -276,7 +276,7 @@ jobs:
           issues = []
           validated = 0
 
-          for config_file in sorted(Path("hd-mcpservers-docker").rglob("mcpServer.json")):
+          for config_file in sorted(Path(".").rglob("mcpServer.json")):
               validated += 1
               try:
                   with open(config_file, encoding="utf-8", errors="replace") as f:
@@ -323,7 +323,7 @@ jobs:
           from pathlib import Path
 
           issues = []
-          compose_files = sorted(Path("hd-mcpservers-docker").rglob("docker-compose*.yml"))
+          compose_files = sorted(Path(".").rglob("docker-compose*.yml"))
 
           for compose_file in compose_files:
               content = compose_file.read_text(encoding="utf-8", errors="replace")
@@ -394,14 +394,14 @@ jobs:
         continue-on-error: true
         id: build
         run: |
-          if [ -d "hd-mcpservers-docker/${{ matrix.mcp_server }}" ]; then
+          if [ -d "${{ matrix.mcp_server }}" ]; then
             docker build \
               -t hackerdogs/${{ matrix.mcp_server }}:scan-test \
-              hd-mcpservers-docker/${{ matrix.mcp_server }}/ \
+              ${{ matrix.mcp_server }}/ \
               && echo "build_ok=true" >> "$GITHUB_OUTPUT" \
               || echo "build_ok=false" >> "$GITHUB_OUTPUT"
           else
-            echo "Directory not found: hd-mcpservers-docker/${{ matrix.mcp_server }}"
+            echo "Directory not found: ${{ matrix.mcp_server }}"
             echo "build_ok=false" >> "$GITHUB_OUTPUT"
           fi
 
@@ -437,10 +437,6 @@ jobs:
   supply-chain:
     name: "Supply Chain (OSSF Scorecard)"
     runs-on: ubuntu-latest
-    # Scorecard requires full push/schedule events (not PRs from forks)
-    if: >
-      github.event_name != 'pull_request' &&
-      github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -492,7 +488,7 @@ jobs:
           from pathlib import Path
 
           mcp_servers = [
-              d.name for d in Path("hd-mcpservers-docker").iterdir()
+              d.name for d in Path(".").iterdir()
               if d.is_dir() and d.name.endswith("-mcp")
           ]
 
@@ -534,10 +530,10 @@ jobs:
 
       - name: Generate HTML summary
         run: |
-          MCP_COUNT=$(find hd-mcpservers-docker -maxdepth 1 -type d -name '*-mcp' | wc -l)
-          DOCKERFILE_COUNT=$(find hd-mcpservers-docker -name 'Dockerfile' | wc -l)
-          PYTHON_COUNT=$(find hd-mcpservers-docker -name 'mcp_server.py' | wc -l)
-          REQ_COUNT=$(find hd-mcpservers-docker -name 'requirements.txt' | wc -l)
+          MCP_COUNT=$(find . -maxdepth 1 -type d -name '*-mcp' | wc -l)
+          DOCKERFILE_COUNT=$(find . -name 'Dockerfile' | wc -l)
+          PYTHON_COUNT=$(find . -name 'mcp_server.py' | wc -l)
+          REQ_COUNT=$(find . -name 'requirements.txt' | wc -l)
 
           cat > security-report.html << HTMLEOF
           <!DOCTYPE html>
@@ -611,15 +607,15 @@ jobs:
           script: |
             const { execSync } = require('child_process');
             const mcpCount = execSync(
-              "find hd-mcpservers-docker -maxdepth 1 -type d -name '*-mcp' | wc -l",
+              "find . -maxdepth 1 -type d -name '*-mcp' | wc -l",
               { encoding: 'utf8' }
             ).trim();
             const dfCount = execSync(
-              "find hd-mcpservers-docker -name 'Dockerfile' | wc -l",
+              "find . -name 'Dockerfile' | wc -l",
               { encoding: 'utf8' }
             ).trim();
             const pyCount = execSync(
-              "find hd-mcpservers-docker -name 'mcp_server.py' | wc -l",
+              "find . -name 'mcp_server.py' | wc -l",
               { encoding: 'utf8' }
             ).trim();
 
