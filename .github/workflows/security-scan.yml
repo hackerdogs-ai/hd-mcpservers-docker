@@ -17,7 +17,7 @@ permissions:
   contents: read
   security-events: write
   pull-requests: write
-
+  actions: read
 # ─────────────────────────────────────────────────────────────────────────────
 # Job 1 — Secret & Credential Scanning (Gitleaks + TruffleHog)
 # ─────────────────────────────────────────────────────────────────────────────
