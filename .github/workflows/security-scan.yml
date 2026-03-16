@@ -356,25 +356,11 @@ jobs:
           retention-days: 30
 
   # ─────────────────────────────────────────────────────────────────────────────
-  # Job 6 — Container Image Scanning: build key MCP servers & run Trivy + Syft
+  # Job 6 — Container Image Scanning: ALL *-mcp servers (Trivy + Syft)
   # ─────────────────────────────────────────────────────────────────────────────
   container-image-scanning:
-    name: "Container Image Scan (${{ matrix.mcp_server }})"
+    name: "Container Image Scanning (All MCP Servers)"
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        mcp_server:
-          - a2a-scanner-mcp
-          - cisco-mcp-scanner-mcp
-          - trivy-mcp
-          - checkov-mcp
-          - gitleaks-mcp
-          - semgrep-mcp
-          - grype-mcp
-          - bearer-mcp
-          - horusec-mcp
-          - trufflehog-mcp
     steps:
       - uses: actions/checkout@v4
 
@@ -383,52 +369,77 @@ jobs:
           curl -sfL \
             https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh \
             | sh -s -- -b /usr/local/bin
+          trivy --version
 
       - name: Install Syft
         run: |
           curl -sSfL \
             https://raw.githubusercontent.com/anchore/syft/main/install.sh \
             | sh -s -- -b /usr/local/bin
+          syft --version
 
-      - name: Build MCP Docker image
-        continue-on-error: true
-        id: build
-        run: |
-          if [ -d "${{ matrix.mcp_server }}" ]; then
-            docker build \
-              -t hackerdogs/${{ matrix.mcp_server }}:scan-test \
-              ${{ matrix.mcp_server }}/ \
-              && echo "build_ok=true" >> "$GITHUB_OUTPUT" \
-              || echo "build_ok=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "Directory not found: ${{ matrix.mcp_server }}"
-            echo "build_ok=false" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Trivy image scan
-        if: steps.build.outputs.build_ok == 'true'
+      - name: Build, scan and generate SBOM for all MCP servers
         continue-on-error: true
         run: |
-          trivy image \
-            --severity HIGH,CRITICAL \
-            --format json \
-            --output ${{ matrix.mcp_server }}-trivy-image.json \
-            hackerdogs/${{ matrix.mcp_server }}:scan-test || true
+          mkdir -p container-scan-reports
+          TOTAL=0
+          BUILT=0
+          FAILED=0
 
-      - name: Generate SBOM with Syft
-        if: steps.build.outputs.build_ok == 'true'
-        continue-on-error: true
-        run: |
-          syft hackerdogs/${{ matrix.mcp_server }}:scan-test \
-            -o spdx-json=${{ matrix.mcp_server }}-sbom.json || true
+          for server_dir in $(find . -maxdepth 1 -type d -name '*-mcp' | sort); do
+            server=$(basename "$server_dir")
+            TOTAL=$((TOTAL + 1))
+
+            if [ ! -f "$server_dir/Dockerfile" ]; then
+              echo "  [SKIP] $server — no Dockerfile"
+              continue
+            fi
+
+            echo "──────────────────────────────────────────"
+            echo "  [BUILD] $server"
+
+            # Build image
+            if docker build \
+                -t "hackerdogs/${server}:scan-test" \
+                "$server_dir/" \
+                --quiet 2>/dev/null; then
+              BUILT=$((BUILT + 1))
+              echo "  [OK] Built hackerdogs/${server}:scan-test"
+
+              # Trivy image scan
+              trivy image \
+                --severity HIGH,CRITICAL \
+                --format json \
+                --output "container-scan-reports/${server}-trivy.json" \
+                "hackerdogs/${server}:scan-test" 2>/dev/null || true
+
+              # Syft SBOM
+              syft "hackerdogs/${server}:scan-test" \
+                -o spdx-json="container-scan-reports/${server}-sbom.json" \
+                2>/dev/null || true
+
+              echo "  [OK] Scanned $server"
+
+              # Remove image to free disk space
+              docker rmi "hackerdogs/${server}:scan-test" --force 2>/dev/null || true
+            else
+              FAILED=$((FAILED + 1))
+              echo "  [FAIL] Build failed for $server"
+            fi
+          done
+
+          echo "══════════════════════════════════════════"
+          echo "Container scan complete:"
+          echo "  Total MCP servers : $TOTAL"
+          echo "  Successfully built: $BUILT"
+          echo "  Build failures    : $FAILED"
+          echo "  Reports saved to  : container-scan-reports/"
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: container-scan-${{ matrix.mcp_server }}
-          path: |
-            ${{ matrix.mcp_server }}-trivy-image.json
-            ${{ matrix.mcp_server }}-sbom.json
+          name: container-image-scan-results
+          path: container-scan-reports/
           retention-days: 30
 
   # ─────────────────────────────────────────────────────────────────────────────
