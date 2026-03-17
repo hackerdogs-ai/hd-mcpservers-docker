@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  secops-mcp:
+    image: hackerdogs/secops-mcp:latest
+    build: { context: ., dockerfile: Dockerfile }
+    container_name: secops-mcp
+    ports: ["8379:8379"]
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8379
+    restart: unless-stopped

@@ -26,7 +26,7 @@ For more information, see [Hackerdogs Legal & Compliance](https://hackerdogs.ai/
 
 # hd-mcpservers-docker
 
-Registry of **194 containerized MCP servers** for security tools, ready for deployment on [Hackerdogs](https://hackerdogs.ai).
+Registry of **202 containerized MCP servers** for security tools, ready for deployment on [Hackerdogs](https://hackerdogs.ai).
 
 Each tool is wrapped as a [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server using [FastMCP](https://github.com/jlowin/fastmcp), supporting both **stdio** and **HTTP streamable** transports. All tools are packaged as multi-architecture Docker images (linux/amd64, linux/arm64).
 
@@ -247,7 +247,7 @@ The fastest way to get started is through [Hackerdogs](https://hackerdogs.ai):
 | 182 | [retire-js-mcp](./retire-js-mcp/) | [RetireJS/retire.js](https://github.com/RetireJS/retire.js) | JavaScript library vulnerability scanner | 8364 | `hackerdogs/retire-js-mcp` |
 | 183 | [suricata-mcp](./suricata-mcp/) | [Medinios/SuricataMCP](https://github.com/Medinios/SuricataMCP) | Network intrusion detection and monitoring | 8365 | `hackerdogs/suricata-mcp` |
 
-### Phase 4 — Threat Intelligence & OSINT (11 tools)
+### Phase 4 — Threat Intelligence & OSINT (19 tools)
 
 | # | Tool | Source | Description | Port | Image |
 |---|------|--------|-------------|------|-------|
@@ -258,10 +258,18 @@ The fastest way to get started is through [Hackerdogs](https://hackerdogs.ai):
 | 188 | [opencti-mcp](./opencti-mcp/) | [OpenCTI-Platform/opencti](https://github.com/OpenCTI-Platform/opencti) | OpenCTI threat intelligence platform queries | 8370 | `hackerdogs/opencti-mcp` |
 | 189 | [misp-mcp](./misp-mcp/) | [MISP/MISP](https://github.com/MISP/MISP) | MISP threat intelligence sharing platform | 8371 | `hackerdogs/misp-mcp` |
 | 190 | [onionsearch-mcp](./onionsearch-mcp/) | [megadose/OnionSearch](https://github.com/megadose/OnionSearch) | Dark Web .onion search engine scraper | 8372 | `hackerdogs/onionsearch-mcp` |
-| 191 | [ghunt-mcp](./ghunt-mcp/) | [mxrch/GHunt](https://github.com/mxrch/GHunt) | Google account OSINT (emails, Gaia IDs) | 8218 | `hackerdogs/ghunt-mcp` |
-| 192 | [holehe-mcp](./holehe-mcp/) | [megadose/holehe](https://github.com/megadose/holehe) | Email registration checker across 120+ sites | 8219 | `hackerdogs/holehe-mcp` |
-| 193 | [blackbird-mcp](./blackbird-mcp/) | [p1ngul1n0/blackbird](https://github.com/p1ngul1n0/blackbird) | Username OSINT across 500+ sites | 8220 | `hackerdogs/blackbird-mcp` |
-| 194 | [maigret-mcp](./maigret-mcp/) | [soxoj/maigret](https://github.com/soxoj/maigret) | Username OSINT across 3000+ sites | 8221 | `hackerdogs/maigret-mcp` |
+| 191 | [subfinder-mcp](./subfinder-mcp/) | [projectdiscovery/subfinder](https://github.com/projectdiscovery/subfinder) | Passive subdomain enumeration | 8367 | `hackerdogs/subfinder-mcp` |
+| 192 | [abusech-mcp](./abusech-mcp/) | [Abuse.ch](https://abuse.ch/) | URLhaus, MalwareBazaar, ThreatFox APIs | 8373 | `hackerdogs/abusech-mcp` |
+| 193 | [abuseipdb-mcp](./abuseipdb-mcp/) | [AbuseIPDB](https://www.abuseipdb.com/) | IP reputation and abuse reporting | 8374 | `hackerdogs/abuseipdb-mcp` |
+| 194 | [builtwith-mcp](./builtwith-mcp/) | [BuiltWith](https://builtwith.com/) | Website technology stack detection (stub) | 8375 | `hackerdogs/builtwith-mcp` |
+| 195 | [code-execution-mcp](./code-execution-mcp/) | [code-execution-mode](https://github.com/modelcontextprotocol/servers) | Safe code execution (stub) | 8376 | `hackerdogs/code-execution-mcp` |
+| 196 | [deepwebresearch-mcp](./deepwebresearch-mcp/) | [DEEPwebresearch](https://github.com/nickspaargaren/mcp-DEEPwebresearch) | Deep web research (stub) | 8377 | `hackerdogs/deepwebresearch-mcp` |
+| 197 | [pagespeed-mcp](./pagespeed-mcp/) | [PageSpeed Insights](https://pagespeed.web.dev/) | Google PageSpeed Insights (stub) | 8378 | `hackerdogs/pagespeed-mcp` |
+| 198 | [secops-mcp](./secops-mcp/) | [secops-mcp](https://github.com) | SecOps: nuclei, ffuf, wfuzz, sqlmap, nmap (stub) | 8379 | `hackerdogs/secops-mcp` |
+| 199 | [ghunt-mcp](./ghunt-mcp/) | [mxrch/GHunt](https://github.com/mxrch/GHunt) | Google account OSINT (emails, Gaia IDs) | 8218 | `hackerdogs/ghunt-mcp` |
+| 200 | [holehe-mcp](./holehe-mcp/) | [megadose/holehe](https://github.com/megadose/holehe) | Email registration checker across 120+ sites | 8219 | `hackerdogs/holehe-mcp` |
+| 201 | [blackbird-mcp](./blackbird-mcp/) | [p1ngul1n0/blackbird](https://github.com/p1ngul1n0/blackbird) | Username OSINT across 500+ sites | 8220 | `hackerdogs/blackbird-mcp` |
+| 202 | [maigret-mcp](./maigret-mcp/) | [soxoj/maigret](https://github.com/soxoj/maigret) | Username OSINT across 3000+ sites | 8221 | `hackerdogs/maigret-mcp` |
 
 ### Port Allocation
 
@@ -270,7 +278,7 @@ The fastest way to get started is through [Hackerdogs](https://hackerdogs.ai):
 | Phase 1 | 8100–8116 | 17 |
 | Phase 2 | 8200–8284 | 85 |
 | Phase 3 | 8285–8365 | 81 |
-| Phase 4 | 8366–8372+ | 11 |
+| Phase 4 | 8366–8379 | 19 |
 
 ### Reserved Ports (do not use)
 
