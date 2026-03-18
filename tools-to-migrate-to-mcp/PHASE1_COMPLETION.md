@@ -35,9 +35,11 @@ The 7 Phase 1 servers are in the root **README.md** under **Phase 4 — Threat I
 ## Review, build & test (done)
 
 - **Review:** All 7 servers have the §2.2 file set; `mcp_server.py` uses `MCP_TRANSPORT` / `MCP_PORT` and supports stdio + streamable-http.
-- **Build:** `docker build -t hackerdogs/<name>:latest ./<name>` succeeded for all 7.
-- **Test:** `./<server>/test.sh` run for all 7; stdio and HTTP streamable pass.
-  - **Fix applied:** HTTP tests required `Accept: application/json, text/event-stream` (406 otherwise). Stub tests were updated to capture stdio output before grepping to avoid pipe buffering issues.
+- **Build:** All 7 are built locally with Docker: `docker build -t hackerdogs/<name>:latest ./<name>`.
+- **Test:** `./<server>/test.sh` for each server:
+  - Image build/exists, **stdio** (initialize + tools/list → response contains `"tools"`), **HTTP streamable** (POST /mcp returns 200/202).
+  - **tools/call** (actual tool invocation) added for **code-execution-mcp** (`run_python` with `print(2+2)`) and **secops-mcp** (`list_tools`). Stdin is kept open briefly after sending the call so the server can respond.
+- **Fixes applied:** HTTP tests use `Accept: application/json, text/event-stream` (406 otherwise). Stub tests capture stdio in a variable before grepping to avoid pipe buffering. Secops HTTP test uses a retry loop for readiness.
 
 ## Next Steps
 

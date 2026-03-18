@@ -8,5 +8,5 @@
     e) Every tool must support stdio and http-streamable protocol. Port if configurable and has default that doesn't conflict with other tools in the repo. Maintain the list of tool and ports in the root README.md (Cannot use ports: 80, 8501-8510, 8000-8010, 9000-9010, and other well known ports of popular apps.)
     e) mcpServer.json file that will be used to install the mcpServer in Claude or Cursor. See example_mcpServer.json in the sample-file folder.
 2. A docker-compose file that include installing and starting the file
-3. test.sh to test the mcp server using the mcp client. 
+3. test.sh to test the mcp server using the mcp client. **Compliance:** test.sh must include all five areas in `.cursor/rules/mcp-server-test-compliance.mdc`: (1) install, (2) stdio tools/list, (3) stdio tools/call, (4) HTTP streamable tools/list, (5) HTTP streamable tools/call. 
 4. Create progress.md in the folder to track the progress of each step.

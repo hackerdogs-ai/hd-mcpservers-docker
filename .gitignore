@@ -3,3 +3,5 @@ __pycache__/
 webservice/2026-03-07T20-14_export.csv
 webservice/catalog.json
 */logs/*
+/tools-to-migrate-to-mcp/cyproxio
+/tools-to-migrate-to-mcp/acuvity

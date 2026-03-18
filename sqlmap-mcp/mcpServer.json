@@ -1,0 +1,1 @@
+{"mcpServers":{"sqlmap-mcp":{"command":"docker","args":["run","-i","--rm","-e","MCP_TRANSPORT","-e","MCP_PORT","hackerdogs/sqlmap-mcp:latest"],"env":{"MCP_TRANSPORT":"stdio","MCP_PORT":"8394"}}}}

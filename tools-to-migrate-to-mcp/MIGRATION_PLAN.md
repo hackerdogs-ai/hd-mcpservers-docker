@@ -46,7 +46,7 @@ Each server directory `[tool-name]-mcp/` must contain:
 | **README.md** | Hackerdogs logo (https://hackerdogs.ai/images/logo.png); description of the tool and MCP wrapper; build, deployment, and usage steps; **Docker Run (stdio)** and **Docker Run (HTTP streamable mode)** examples; MCP client configuration (stdio and HTTP); env vars (e.g. `MCP_TRANSPORT`, `MCP_PORT`, any API keys); tools reference and example prompts. |
 | **mcpServer.json** | Config for Claude/Cursor; includes `MCP_TRANSPORT` (and `MCP_PORT` if needed) in env; docker command/args pattern. |
 | **docker-compose.yml** | Service definition; port mapping for HTTP streamable; env `MCP_TRANSPORT=streamable-http` (or document override). |
-| **test.sh** | Tests: Docker image build, CLI/binary availability, **MCP stdio** (e.g. init + tools/list), **MCP HTTP streamable** (init + tools/list and/or tools/call); proper cleanup; pass/fail summary. |
+| **test.sh** | **Compliance:** Must include all five areas per `.cursor/rules/mcp-server-test-compliance.mdc`: (1) install, (2) stdio tools/list, (3) stdio tools/call (simple tool), (4) HTTP streamable tools/list, (5) HTTP streamable tools/call (simple tool). Use `Accept: application/json, text/event-stream` on HTTP; capture session id for HTTP; proper cleanup; pass/fail summary. |
 | **requirements.txt** | Python deps (e.g. `fastmcp`); pinned versions where appropriate. |
 | **progress.md** | Optional but recommended: checklist of setup steps and port assignment for tracking. |
 

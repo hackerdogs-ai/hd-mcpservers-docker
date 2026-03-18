@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-atlas-docs-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "acuvity/mcp-server-atlas-docs:latest"],
+      "env": {}
+    }
+  }
+}
