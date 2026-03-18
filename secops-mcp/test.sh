@@ -22,8 +22,11 @@ CALL_REQ='{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"list_t
 echo "========== secops-mcp test (compliance) =========="
 
 info "[1] Install"
-docker build -t "$IMAGE" "$PROJECT_DIR" 2>/dev/null || true
-if docker image inspect "$IMAGE" >/dev/null 2>&1; then pass "image exists"; else fail "image build"; exit 1; fi
+if ! docker image inspect "$IMAGE" >/dev/null 2>&1; then
+  echo "Build first: docker build -t $IMAGE $PROJECT_DIR" >&2
+  exit 1
+fi
+pass "image exists"
 
 info "[2] Stdio tools/list"
 STDIO_OUT=$(printf '%s\n%s\n%s\n' "$INIT_REQ" "$INIT_NOTIF" "$LIST_REQ" | docker run -i --rm -e MCP_TRANSPORT=stdio "$IMAGE" 2>/dev/null) || true

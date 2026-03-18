@@ -32,18 +32,13 @@ echo -e "${BLUE}OpenCTI MCP Server — Test Suite${NC}"
 echo "================================================================================="
 echo ""
 
-# Test 1: Build/verify Docker image
+# Test 1: Verify Docker image exists (build separately: docker build -t $IMAGE $PROJECT_DIR)
 info "[Test 1] Docker image"
-if ! docker image inspect "$IMAGE" > /dev/null 2>&1; then
-    echo "  Image not found. Building..."
-    docker build -t "$IMAGE" "$PROJECT_DIR"
+if ! docker image inspect "$IMAGE" >/dev/null 2>&1; then
+  echo "Build first: docker build -t $IMAGE $PROJECT_DIR" >&2
+  exit 1
 fi
-if docker image inspect "$IMAGE" > /dev/null 2>&1; then
-    pass "Docker image $IMAGE exists"
-else
-    fail "Docker image $IMAGE could not be built"
-    exit 1
-fi
+pass "Docker image $IMAGE exists"
 echo ""
 
 # Test 2: pycti library available inside container

@@ -4,6 +4,22 @@ This plan is based on **migration_audit.csv** and **g-tools-audit.csv**. It list
 
 ---
 
+## 0. Current state (updated)
+
+| Milestone | Status | Notes |
+|-----------|--------|--------|
+| **Acuvity/Cyproxio 23** | **Done** | All 23 migrated to root `*-mcp/` (e.g. alterx-mcp, amass-mcp, …). FastMCP, stdio + streamable-http. Image built and `test.sh` passed for all. See **ACUVITY_CYPROXIO_AUDIT.md** §2.1. |
+| **Phase 0 (13 ALREADY_BUILT)** | **Verified** | All 13 present; files complete; stdio + HTTP streamable; test.sh has 5 areas; test.sh inspect-only, "Build first" if image missing. See **PHASE0_PHASE1_AUDIT.md**. |
+| **Phase 1 (7 COPY_AND_DOCKERIZE)** | **Verified** | All 7 present; files complete; stdio + HTTP streamable; test.sh has 5 areas; test.sh drift fixed. See **PHASE0_PHASE1_AUDIT.md**. |
+| **Phase 2 (80 COPY_DOCKER_CONFIG)** | Partial | 23 Acuvity/Cyproxio servers done (root names: alterx-mcp … wpscan-mcp). ~57 remaining from export CSV. |
+| **Phase 3 (112 BUILD_NEW)** | Pending | New FastMCP servers from LangChain/CSV. |
+| **Phase 4 (75 REFACTOR_TO_DOCKER)** | Pending | npx/uvx → Docker. |
+| **Phase 5 (10 REMOTE_ONLY)** | Pending | Document only. |
+
+**Acuvity 23 root folders (done):** alterx-mcp, amass-mcp, arjun-mcp, assetfinder-mcp, cero-mcp, commix-mcp, crtsh-mcp, ffuf-mcp, gowitness-mcp, http-headers-security-mcp, httpx-mcp, katana-mcp, masscan-mcp, mobsf-mcp, nmap-mcp, nuclei-mcp, scoutsuite-mcp, shuffledns-mcp, smuggler-mcp, sqlmap-mcp, sslscan-mcp, waybackurls-mcp, wpscan-mcp.
+
+---
+
 ## 1. Audit Summary
 
 | Action | Count | Description |
@@ -71,7 +87,7 @@ Before marking any migrated server as **done**:
 
 ## 3. Phase 0 — ALREADY_BUILT (Verify Only)
 
-**The 13 servers below are already in the repo.** Confirm each exists, is in the main README, and builds; fix any doc/port/env drift.
+**The 13 servers below are already in the repo.** Audit completed: see **PHASE0_PHASE1_AUDIT.md**. All 13 have required files, dual transport, test.sh with 5 areas; test.sh now inspect-only, "Build first" if image missing.
 
 | # | Tool name (audit) | mcp_server_name | Source / notes |
 |---|-------------------|-----------------|----------------|
@@ -89,11 +105,13 @@ Before marking any migrated server as **done**:
 | 12 | virustotal | **virustotal-mcp** | LangChain → migrated |
 | 13 | zmap | **zmap-mcp** | LangChain → migrated |
 
-**Action:** For each of the 13, check presence under `/<mcp_server_name>/`, main README entry, and image build/publish.
+**Action:** Audit done; test.sh drift fixed. Re-run test.sh after building image to confirm all 5 areas pass.
 
 ---
 
 ## 4. Phase 1 — COPY_AND_DOCKERIZE (7 servers)
+
+**Audit completed:** see **PHASE0_PHASE1_AUDIT.md**. All 7 present with required files and dual transport; test.sh drift fixed.
 
 Source code exists in repo; add Dockerfile and align with FastMCP pattern.
 
@@ -115,90 +133,92 @@ Source code exists in repo; add Dockerfile and align with FastMCP pattern.
 
 Docker config is in export CSV. Obtain image/env/command and add `/<mcp_server_name>/` with README, mcpServer.json, and optional Dockerfile or upstream image reference.
 
+**Done (23):** Acuvity/Cyproxio intersection — migrated as root folders **alterx-mcp**, **amass-mcp**, **arjun-mcp**, **assetfinder-mcp**, **cero-mcp**, **commix-mcp**, **crtsh-mcp**, **ffuf-mcp**, **gowitness-mcp**, **http-headers-security-mcp**, **httpx-mcp**, **katana-mcp**, **masscan-mcp**, **mobsf-mcp**, **nmap-mcp**, **nuclei-mcp**, **scoutsuite-mcp**, **shuffledns-mcp**, **smuggler-mcp**, **sqlmap-mcp**, **sslscan-mcp**, **waybackurls-mcp**, **wpscan-mcp**. See **ACUVITY_CYPROXIO_AUDIT.md**.
+
 ### Full list (80)
 
-| # | Tool name (audit) | mcp_server_name |
-|---|-------------------|-----------------|
-| 1 | AACT Clinical Trials MCP Server | ctgov-mcp-docker-mcp |
-| 2 | Alpha Vantage MCP | alphavantage-mcp |
-| 3 | Alterx MCP | acuvity-mcp-server-alterx-mcp |
-| 4 | Amass MCP Server | acuvity-mcp-server-amass-mcp |
-| 5 | Arjun MCP Server | acuvity-mcp-server-arjun-mcp |
-| 6 | Assetfinder MCP Server | acuvity-mcp-server-assetfinder-mcp |
-| 7 | Atlas Docs MCP Server | acuvity-mcp-server-atlas-docs-mcp |
-| 8 | Atlassian MCP Server | acuvity-mcp-server-atlassian-mcp |
-| 9 | Bing Search MCP server | acuvity-mcp-server-bing-search-mcp |
-| 10 | Brave Search MCP Server | acuvity-mcp-server-brave-search-mcp |
-| 11 | Calculator MCP Server | acuvity-mcp-server-calculator-mcp |
-| 12 | Chroma MCP Server | acuvity-mcp-server-chroma-mcp |
-| 13 | Code Runner MCP Server | mcp-server-code-runner-mcp |
-| 14 | Cortex MCP server | cortex-mcp |
-| 15 | Crtsh MCP Server | acuvity-mcp-server-crtsh-mcp |
-| 16 | Crunchbase MCP Server | crunchbase-mcp |
-| 17 | Docker MCP server | acuvity-mcp-server-docker-mcp |
-| 18 | DuckDuckGo MCP server | duckduckgo-mcp |
-| 19 | DuckDuckGo Search MCP Server (Acuvity) | acuvity-mcp-server-duckduckgo-mcp |
-| 20 | Edgar Tools MCP Server | edgartools-mcp-server-mcp |
-| 21 | EduData Mcp Server | edu-data-mcp |
-| 22 | Eleven Labs MCP Server | acuvity-mcp-server-elevenlabs-mcp |
-| 23 | Everything Wrong MCP Server | acuvity-mcp-server-everything-wrong-mcp |
-| 24 | Fetch Mcp Server | acuvity-mcp-server-fetch-mcp |
-| 25 | FFUF MCP Server | acuvity-mcp-server-ffuf-mcp |
-| 26 | Financial Datasets MCP | financial-datasets-mcp |
-| 27 | Firecrawl MCP Server | acuvity-mcp-server-firecrawl-mcp |
-| 28 | Flights MCP | flights-mcp |
-| 29 | FRED MCP SERVER | fred-mcp |
-| 30 | Google Maps MCP Server | acuvity-mcp-server-google-maps-mcp |
-| 31 | Grafana MCP Server | acuvity-mcp-server-grafana-mcp |
-| 32 | Harness MCP Server | acuvity-mcp-server-harness-mcp |
-| 33 | httpx MCP | acuvity-mcp-server-httpx-mcp |
-| 34 | Hyperbrowser MCP Server | acuvity-mcp-server-hyperbrowser-mcp |
-| 35 | Kagi Search MCP Server | acuvity-mcp-server-kagisearch-mcp |
-| 36 | Katana MCP Server | acuvity-mcp-server-katana-mcp |
-| 37 | Mapbox MCP Server | mapboxserver-mcp |
-| 38 | Marine Traffic MCP | marinetraffic-mcp |
-| 39 | Masscan MCP | acuvity-mcp-server-masscan-mcp |
-| 40 | MCP Server Everything | acuvity-mcp-server-everything-mcp |
-| 41 | Microsoft Azure MCP Server | acuvity-mcp-server-azure-mcp |
-| 42 | Microsoft Graph MCP Server | acuvity-mcp-server-microsoft-graph-mcp |
-| 43 | Minio AIStor MCP Server (Official) | aistor-mcp |
-| 44 | N2YO MCP | n2yo-mcp |
-| 45 | NetUtils | netutils-mcp |
-| 46 | Nmap MCP Server | acuvity-mcp-server-nmap-mcp |
-| 47 | Notion MCP Server | acuvity-mcp-server-notion-mcp |
-| 48 | Nuclei MCP Server | acuvity-mcp-server-nuclei-mcp |
-| 49 | OCR MCP Server | ocr-mcp |
-| 50 | Open Legal Compliance MCP | open-legal-mcp |
-| 51 | OpenCV MCP Server | opencv-mcp-server-mcp |
-| 52 | OSHP MCP Server | acuvity-mcp-server-oshp-mcp |
-| 53 | PDF Reader MCP Server (Sylphx) | pdf-reader-mcp |
-| 54 | PentestAgent MCP | pentest-agent-mcp |
-| 55 | Playwright MCP Server | acuvity-mcp-server-playwright-mcp |
-| 56 | Polygon MCP server | polygon-mcp |
-| 57 | PubMed MCP | pubmed-mcp |
-| 58 | Reddit MCP Server | reddit-mcp-server-mcp |
-| 59 | RSS MCP Server | rss-mcp |
-| 60 | Scan URL MCP server | scan-url-mcp |
-| 61 | Scout Suite MCP | acuvity-mcp-server-scoutsuite-mcp |
-| 62 | Scrapezy MCP Server | acuvity-mcp-server-scrapezy-mcp |
-| 63 | SEC Edgar MCP Server | sec-edgar-mcp |
-| 64 | Sentry MCP Server | acuvity-mcp-server-sentry-mcp |
-| 65 | Shodan MCP | shodan-mcp |
-| 66 | shuffledns MCP Server | acuvity-mcp-server-shuffledns-mcp |
-| 67 | Slack MCP Server | slack-mcp |
-| 68 | Slack MCP Server (Acuvity) | acuvity-mcp-server-slack-mcp |
-| 69 | Smuggler MCP Server | acuvity-mcp-server-smuggler-mcp |
-| 70 | SQLMAP MCP Server | acuvity-mcp-server-sqlmap-mcp |
-| 71 | SSLScan MCP | acuvity-mcp-server-sslscan-mcp |
-| 72 | Trivy Security MCP server | trivy-security-mcp |
-| 73 | USGS MCP | earthquake-mcp |
-| 74 | Waybackurls MCP | acuvity-mcp-server-waybackurls-mcp |
-| 75 | Wiremcp | wiremcp-mcp |
-| 76 | World Bank MCP | world-bank-mcp |
-| 77 | Yahoo Finance MCP SERVER | yfmcp-mcp |
-| 78 | YaraFlux MCP server | yaraflux-mcp-server-mcp |
-| 79 | YouTube MCP Server | youtube-mcp |
-| 80 | Zscaler MCP Server | zscaler-mcp-server-mcp |
+| # | Tool name (audit) | mcp_server_name | Status |
+|---|-------------------|-----------------|--------|
+| 1 | AACT Clinical Trials MCP Server | ctgov-mcp-docker-mcp | Pending |
+| 2 | Alpha Vantage MCP | alphavantage-mcp | Pending |
+| 3 | Alterx MCP | alterx-mcp (root) | Done |
+| 4 | Amass MCP Server | amass-mcp (root) | Done |
+| 5 | Arjun MCP Server | arjun-mcp (root) | Done |
+| 6 | Assetfinder MCP Server | assetfinder-mcp (root) | Done |
+| 7 | Atlas Docs MCP Server | acuvity-mcp-server-atlas-docs-mcp | Pending |
+| 8 | Atlassian MCP Server | acuvity-mcp-server-atlassian-mcp | Pending |
+| 9 | Bing Search MCP server | acuvity-mcp-server-bing-search-mcp | Pending |
+| 10 | Brave Search MCP Server | acuvity-mcp-server-brave-search-mcp | Pending |
+| 11 | Calculator MCP Server | acuvity-mcp-server-calculator-mcp | Pending |
+| 12 | Chroma MCP Server | acuvity-mcp-server-chroma-mcp | Pending |
+| 13 | Code Runner MCP Server | mcp-server-code-runner-mcp | Pending |
+| 14 | Cortex MCP server | cortex-mcp | Pending |
+| 15 | Crtsh MCP Server | crtsh-mcp (root) | Done |
+| 16 | Crunchbase MCP Server | crunchbase-mcp | Pending |
+| 17 | Docker MCP server | acuvity-mcp-server-docker-mcp | Pending |
+| 18 | DuckDuckGo MCP server | duckduckgo-mcp | Pending |
+| 19 | DuckDuckGo Search MCP Server (Acuvity) | acuvity-mcp-server-duckduckgo-mcp | Pending |
+| 20 | Edgar Tools MCP Server | edgartools-mcp-server-mcp | Pending |
+| 21 | EduData Mcp Server | edu-data-mcp | Pending |
+| 22 | Eleven Labs MCP Server | acuvity-mcp-server-elevenlabs-mcp | Pending |
+| 23 | Everything Wrong MCP Server | acuvity-mcp-server-everything-wrong-mcp | Pending |
+| 24 | Fetch Mcp Server | acuvity-mcp-server-fetch-mcp | Pending |
+| 25 | FFUF MCP Server | ffuf-mcp (root) | Done |
+| 26 | Financial Datasets MCP | financial-datasets-mcp | Pending |
+| 27 | Firecrawl MCP Server | acuvity-mcp-server-firecrawl-mcp | Pending |
+| 28 | Flights MCP | flights-mcp | Pending |
+| 29 | FRED MCP SERVER | fred-mcp | Pending |
+| 30 | Google Maps MCP Server | acuvity-mcp-server-google-maps-mcp | Pending |
+| 31 | Grafana MCP Server | acuvity-mcp-server-grafana-mcp | Pending |
+| 32 | Harness MCP Server | acuvity-mcp-server-harness-mcp | Pending |
+| 33 | httpx MCP | httpx-mcp (root) | Done |
+| 34 | Hyperbrowser MCP Server | acuvity-mcp-server-hyperbrowser-mcp | Pending |
+| 35 | Kagi Search MCP Server | acuvity-mcp-server-kagisearch-mcp | Pending |
+| 36 | Katana MCP Server | katana-mcp (root) | Done |
+| 37 | Mapbox MCP Server | mapboxserver-mcp | Pending |
+| 38 | Marine Traffic MCP | marinetraffic-mcp | Pending |
+| 39 | Masscan MCP | masscan-mcp (root) | Done |
+| 40 | MCP Server Everything | acuvity-mcp-server-everything-mcp | Pending |
+| 41 | Microsoft Azure MCP Server | acuvity-mcp-server-azure-mcp | Pending |
+| 42 | Microsoft Graph MCP Server | acuvity-mcp-server-microsoft-graph-mcp | Pending |
+| 43 | Minio AIStor MCP Server (Official) | aistor-mcp | Pending |
+| 44 | N2YO MCP | n2yo-mcp | Pending |
+| 45 | NetUtils | netutils-mcp | Pending |
+| 46 | Nmap MCP Server | nmap-mcp (root) | Done |
+| 47 | Notion MCP Server | acuvity-mcp-server-notion-mcp | Pending |
+| 48 | Nuclei MCP Server | nuclei-mcp (root) | Done |
+| 49 | OCR MCP Server | ocr-mcp | Pending |
+| 50 | Open Legal Compliance MCP | open-legal-mcp | Pending |
+| 51 | OpenCV MCP Server | opencv-mcp-server-mcp | Pending |
+| 52 | OSHP MCP Server | acuvity-mcp-server-oshp-mcp | Pending |
+| 53 | PDF Reader MCP Server (Sylphx) | pdf-reader-mcp | Pending |
+| 54 | PentestAgent MCP | pentest-agent-mcp | Pending |
+| 55 | Playwright MCP Server | acuvity-mcp-server-playwright-mcp | Pending |
+| 56 | Polygon MCP server | polygon-mcp | Pending |
+| 57 | PubMed MCP | pubmed-mcp | Pending |
+| 58 | Reddit MCP Server | reddit-mcp-server-mcp | Pending |
+| 59 | RSS MCP Server | rss-mcp | Pending |
+| 60 | Scan URL MCP server | scan-url-mcp | Pending |
+| 61 | Scout Suite MCP | scoutsuite-mcp (root) | Done |
+| 62 | Scrapezy MCP Server | acuvity-mcp-server-scrapezy-mcp | Pending |
+| 63 | SEC Edgar MCP Server | sec-edgar-mcp | Pending |
+| 64 | Sentry MCP Server | acuvity-mcp-server-sentry-mcp | Pending |
+| 65 | Shodan MCP | shodan-mcp | Pending |
+| 66 | shuffledns MCP Server | shuffledns-mcp (root) | Done |
+| 67 | Slack MCP Server | slack-mcp | Pending |
+| 68 | Slack MCP Server (Acuvity) | acuvity-mcp-server-slack-mcp | Pending |
+| 69 | Smuggler MCP Server | smuggler-mcp (root) | Done |
+| 70 | SQLMAP MCP Server | sqlmap-mcp (root) | Done |
+| 71 | SSLScan MCP | sslscan-mcp (root) | Done |
+| 72 | Trivy Security MCP server | trivy-security-mcp | Pending |
+| 73 | USGS MCP | earthquake-mcp | Pending |
+| 74 | Waybackurls MCP | waybackurls-mcp (root) | Done |
+| 75 | Wiremcp | wiremcp-mcp | Pending |
+| 76 | World Bank MCP | world-bank-mcp | Pending |
+| 77 | Yahoo Finance MCP SERVER | yfmcp-mcp | Pending |
+| 78 | YaraFlux MCP server | yaraflux-mcp-server-mcp | Pending |
+| 79 | YouTube MCP Server | youtube-mcp | Pending |
+| 80 | Zscaler MCP Server | zscaler-mcp-server-mcp | Pending |
 
 **Priority for Phase 2:** Start with OSS/high-demand: duckduckgo-mcp, shodan-mcp, acuvity-mcp-server-nuclei-mcp, acuvity-mcp-server-nmap-mcp, acuvity-mcp-server-ffuf-mcp, acuvity-mcp-server-sqlmap-mcp, ocr-mcp, pdf-reader-mcp, cortex-mcp, netutils-mcp; then the rest.
 
@@ -294,9 +314,23 @@ Docker config is in export CSV. Obtain image/env/command and add `/<mcp_server_n
 ## 12. File References
 
 - **Project requirements:** `Instructions.md` (root) — directory structure, required files, stdio + http-streamable requirement, port rules.
+- **Phase 0 & Phase 1 audit:** `tools-to-migrate-to-mcp/PHASE0_PHASE1_AUDIT.md` — completion and drift for the 13 ALREADY_BUILT and 7 COPY_AND_DOCKERIZE servers.
 - Audit: `tools-to-migrate-to-mcp/migration_audit.csv`
 - Tool/catalog: `tools-to-migrate-to-mcp/g-tools-audit.csv`
 - LangChain sources: `tools-to-migrate-to-mcp/osint/*.py`, `tools-to-migrate-to-mcp/ti/*.py`, `tools-to-migrate-to-mcp/prodx/*.py`, `tools-to-migrate-to-mcp/*.py`, `tools-to-migrate-to-mcp/feeds/*.py`
 - Existing server example: `holehe-mcp/` (README, Dockerfile, mcp_server.py with dual transport, mcpServer.json, docker-compose, test.sh for stdio + HTTP streamable)
+
+---
+
+## 13. Current state & suggested next steps
+
+**Current state:** See **§0** above. Acuvity/Cyproxio 23 are **done** (image built, test.sh passed, dual transport). Phase 0–5 are otherwise pending.
+
+**Suggested next steps (in order):**
+
+1. **Phase 0** — Verify the 13 ALREADY_BUILT servers (dnsdumpster-mcp, holehe-mcp, julius-mcp, maigret-mcp, misp-mcp, onionsearch-mcp, opencti-mcp, otx-mcp, semgrep-mcp, sherlock-mcp, subfinder-mcp, virustotal-mcp, zmap-mcp): confirm presence, README, image builds, stdio + HTTP streamable, and test.sh (no build inside test; fail with “Build first” if image missing). Fix any drift.
+2. **Phase 1** — Complete the 7 COPY_AND_DOCKERIZE servers (abusech-mcp, abuseipdb-mcp, builtwith-mcp, code-execution-mcp, deepwebresearch-mcp, pagespeed-mcp, secops-mcp) per §2: Dockerfile, dual transport, README, mcpServer.json, docker-compose, test.sh.
+3. **Phase 2** — Continue COPY_DOCKER_CONFIG for the remaining ~57 (see table in §5; 23 already done). For each, add or align with §2 (HTTP streamable, checklist, test.sh).
+4. **Tracking** — Optionally add `migration_phase` and `status` columns to `migration_audit.csv` (§11) and keep in sync with §0 and §5 table.
 
 End of migration plan.

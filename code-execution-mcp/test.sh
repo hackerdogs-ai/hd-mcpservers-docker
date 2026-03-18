@@ -23,8 +23,11 @@ echo "========== code-execution-mcp test (compliance) =========="
 
 # 1. Install
 info "[1] Install"
-docker build -t "$IMAGE" "$PROJECT_DIR" 2>/dev/null || true
-if docker image inspect "$IMAGE" >/dev/null 2>&1; then pass "image exists"; else fail "image build"; exit 1; fi
+if ! docker image inspect "$IMAGE" >/dev/null 2>&1; then
+  echo "Build first: docker build -t $IMAGE $PROJECT_DIR" >&2
+  exit 1
+fi
+pass "image exists"
 
 # 2. Stdio — load tools
 info "[2] Stdio tools/list"
