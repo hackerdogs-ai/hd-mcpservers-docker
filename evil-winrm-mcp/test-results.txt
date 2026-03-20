@@ -1,0 +1,33 @@
+MCP test run - evil-winrm-mcp
+Generated (UTC): 2026-03-20T18:29:25Z
+Exit code: 1
+Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
+---------------------------------------------------------------------------------
+=================================================================================
+[0;34mEvil-WinRM MCP Server — Test Suite[0m
+=================================================================================
+
+[0;34m[Test 1] Docker image[0m
+  [0;32m✅ PASS: Docker image hackerdogs/evil-winrm-mcp:latest exists[0m
+
+[0;34m[Test 2] CLI binary inside container[0m
+  [0;31m❌ FAIL: evil-winrm binary not found or not responding[0m
+
+[0;34m[Test 3] MCP stdio mode — initialize + tools/list[0m
+  [0;31m❌ FAIL: stdio mode did not return a valid tools/list response[0m
+
+[0;34m[Test 4] MCP HTTP streamable mode — initialize[0m
+  [0;31m❌ FAIL: HTTP streamable mode did not respond (status 000 after 30s)[0m
+/bin/sh: 1: [python,: not found
+
+[0;34m[Test 5] MCP HTTP — tools/list[0m
+  [0;31m❌ FAIL: HTTP tools/list did not return tools[0m
+
+[0;34m[Test 6] MCP HTTP — tools/call (run_evil_winrm)[0m
+  [0;31m❌ FAIL: tools/call run_evil_winrm did not return expected response[0m
+
+=================================================================================
+[0;34mResults: [0;32m1 passed[0m, [0;31m5 failed[0m
+=================================================================================
+evil-winrm-mcp-test
+evil-winrm-mcp-test

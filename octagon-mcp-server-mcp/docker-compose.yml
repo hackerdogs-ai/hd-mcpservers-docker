@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  octagon-mcp-server-mcp:
+    image: hackerdogs/octagon-mcp-server-mcp:latest
+    build: .
+    ports:
+      - "8653:8653"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8653
+

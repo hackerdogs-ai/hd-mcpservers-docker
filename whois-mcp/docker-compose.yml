@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  whois-mcp:
+    image: hackerdogs/whois-mcp:latest
+    build: .
+    ports:
+      - "8673:8673"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8673
+

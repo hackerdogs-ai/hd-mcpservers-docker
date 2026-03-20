@@ -1,0 +1,48 @@
+MCP test run - opencti-mcp
+Generated (UTC): 2026-03-20T19:05:05Z
+Exit code: 0
+Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
+---------------------------------------------------------------------------------
+=================================================================================
+[0;34mOpenCTI MCP Server — Test Suite[0m
+=================================================================================
+
+[0;34m[Test 1] Docker image[0m
+  [0;32m✅ PASS: Docker image hackerdogs/opencti-mcp:latest exists[0m
+
+[0;34m[Test 2] pycti library inside container[0m
+  [0;32m✅ PASS: pycti library imports successfully[0m
+
+[0;34m[Test 3] MCP stdio mode — initialize + tools/list[0m
+  [0;32m✅ PASS: stdio mode returned tools/list response (       1 tool names found)[0m
+
+[0;34m[Test 4] MCP HTTP streamable mode — initialize[0m
+  [0;32m✅ PASS: HTTP streamable mode responded (status 200)[0m
+       Session ID: 3a9c65e8e18e4200...
+
+[0;34m[Test 5] MCP HTTP — tools/list[0m
+  [0;32m✅ PASS: HTTP tools/list returned tools[0m
+       - opencti_search_indicators: Search for indicators of compromise (IOCs) in OpenCTI.
+
+Returns matching indicat
+       - opencti_search_malware: Search for malware entries in OpenCTI.
+
+Returns matching malware families, strai
+       - opencti_search_threat_actors: Search for threat actors (groups) in OpenCTI.
+
+Returns matching threat actor pro
+       - opencti_get_report: Get a specific report by ID or search reports in OpenCTI.
+
+Provide report_id to 
+       - opencti_list_attack_patterns: List MITRE ATT&CK techniques (attack patterns) from OpenCTI.
+
+Returns matching A
+
+[0;34m[Test 6] MCP HTTP — tools/call (opencti_search_indicators)[0m
+  [0;32m✅ PASS: tools/call opencti_search_indicators returned a result[0m
+
+=================================================================================
+[0;34mResults: [0;32m6 passed[0m, [0;31m0 failed[0m
+=================================================================================
+opencti-mcp-test
+opencti-mcp-test

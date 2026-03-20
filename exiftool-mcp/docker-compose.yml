@@ -1,0 +1,8 @@
+services:
+  exiftool-mcp:
+    build: .
+    ports:
+      - "8502:8502"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8502

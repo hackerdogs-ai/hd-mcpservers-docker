@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  alphavantage-mcp:
+    image: hackerdogs/alphavantage-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: alphavantage-mcp
+    ports:
+      - "8402:8402"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8402
+    restart: unless-stopped

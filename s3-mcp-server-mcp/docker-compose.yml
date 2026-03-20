@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  s3-mcp-server-mcp:
+    image: hackerdogs/s3-mcp-server-mcp:latest
+    build: .
+    ports:
+      - "8662:8662"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8662
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-}

@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  steampipe-mcp:
+    image: hackerdogs/steampipe-mcp:latest
+    build: .
+    ports:
+      - "8668:8668"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8668
+

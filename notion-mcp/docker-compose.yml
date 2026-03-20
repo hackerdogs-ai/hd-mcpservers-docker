@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  notion-mcp:
+    image: hackerdogs/notion-mcp:latest
+    build: .
+    ports:
+      - "8652:8652"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8652
+      - NOTION_API_KEY=${NOTION_API_KEY:-}

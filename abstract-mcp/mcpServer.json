@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "abstract-mcp": {
+      "url": "http://localhost:8501/mcp"
+    }
+  }
+}

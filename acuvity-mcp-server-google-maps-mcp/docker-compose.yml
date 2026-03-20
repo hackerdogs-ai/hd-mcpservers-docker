@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  acuvity-mcp-server-google-maps-mcp:
+    image: hackerdogs/acuvity-mcp-server-google-maps-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: acuvity-mcp-server-google-maps-mcp
+    ports:
+      - "8424:8424"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8424
+    restart: unless-stopped

@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  jira-mcp:
+    image: hackerdogs/jira-mcp:latest
+    build: .
+    ports:
+      - "8649:8649"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8649
+      - JIRA_URL=${JIRA_URL:-}
+      - JIRA_EMAIL=${JIRA_EMAIL:-}
+      - JIRA_API_TOKEN=${JIRA_API_TOKEN:-}

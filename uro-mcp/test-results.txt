@@ -1,0 +1,358 @@
+MCP test run - uro-mcp
+Generated (UTC): 2026-03-20T20:01:15Z
+Exit code: 0
+Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
+---------------------------------------------------------------------------------
+=================================================================================
+[0;34mUro MCP Server — Test Suite[0m
+=================================================================================
+
+[0;34m[Test 1] Docker image[0m
+  Image not found. Building...
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.51kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#2 DONE 0.8s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/9] FROM docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0
+#4 resolve docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0 done
+#4 DONE 0.0s
+
+#5 [2/9] RUN groupadd -g 1000 mcpuser &&     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
+#5 CACHED
+
+#6 [internal] load build context
+#6 transferring context: 4.58kB done
+#6 DONE 0.0s
+
+#7 [3/9] RUN apt-get update && apt-get install -y --no-install-recommends     tini     ca-certificates     && pip install --no-cache-dir uro     && rm -rf /var/lib/apt/lists/*
+#7 0.307 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#7 0.488 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#7 0.647 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [48.0 kB]
+#7 0.659 Get:4 http://deb.debian.org/debian bookworm/main arm64 Packages [8691 kB]
+#7 1.249 Get:5 http://deb.debian.org/debian bookworm-updates/main arm64 Packages [6936 B]
+#7 1.257 Get:6 http://deb.debian.org/debian-security bookworm-security/main arm64 Packages [291 kB]
+#7 1.941 Fetched 9243 kB in 2s (5119 kB/s)
+#7 1.941 Reading package lists...
+#7 2.275 Reading package lists...
+#7 2.562 Building dependency tree...
+#7 2.637 Reading state information...
+#7 2.739 ca-certificates is already the newest version (20230311+deb12u1).
+#7 2.739 The following NEW packages will be installed:
+#7 2.739   tini
+#7 2.768 0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.
+#7 2.768 Need to get 224 kB of archives.
+#7 2.768 After this operation, 681 kB of additional disk space will be used.
+#7 2.768 Get:1 http://deb.debian.org/debian bookworm/main arm64 tini arm64 0.19.0-1+b3 [224 kB]
+#7 2.871 debconf: delaying package configuration, since apt-utils is not installed
+#7 2.883 Fetched 224 kB in 0s (3376 kB/s)
+#7 2.891 Selecting previously unselected package tini.
+#7 2.891 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6689 files and directories currently installed.)
+#7 2.902 Preparing to unpack .../tini_0.19.0-1+b3_arm64.deb ...
+#7 2.904 Unpacking tini (0.19.0-1+b3) ...
+#7 2.925 Setting up tini (0.19.0-1+b3) ...
+#7 4.047 Collecting uro
+#7 4.124   Downloading uro-1.0.2.tar.gz (10 kB)
+#7 4.130   Installing build dependencies: started
+#7 4.990   Installing build dependencies: finished with status 'done'
+#7 4.991   Getting requirements to build wheel: started
+#7 5.110   Getting requirements to build wheel: finished with status 'done'
+#7 5.110   Preparing metadata (pyproject.toml): started
+#7 5.201   Preparing metadata (pyproject.toml): finished with status 'done'
+#7 5.203 Building wheels for collected packages: uro
+#7 5.203   Building wheel for uro (pyproject.toml): started
+#7 5.303   Building wheel for uro (pyproject.toml): finished with status 'done'
+#7 5.304   Created wheel for uro: filename=uro-1.0.2-py3-none-any.whl size=11013 sha256=60ede1e17a54797fda13ae0581102e73908ab109af7242b3cd52982f8443c684
+#7 5.304   Stored in directory: /tmp/pip-ephem-wheel-cache-uno2l4n6/wheels/38/09/4b/fa1c0a311add61db343b644e67dc284a18e179e5e28e19c8ad
+#7 5.306 Successfully built uro
+#7 5.308 Installing collected packages: uro
+#7 5.315 Successfully installed uro-1.0.2
+#7 5.316 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#7 5.437 
+#7 5.437 [notice] A new release of pip is available: 25.0.1 -> 26.0.1
+#7 5.437 [notice] To update, run: pip install --upgrade pip
+#7 DONE 5.5s
+
+#8 [4/9] RUN pip install --no-cache-dir uro
+#8 0.413 Requirement already satisfied: uro in /usr/local/lib/python3.12/site-packages (1.0.2)
+#8 0.416 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#8 0.521 
+#8 0.521 [notice] A new release of pip is available: 25.0.1 -> 26.0.1
+#8 0.521 [notice] To update, run: pip install --upgrade pip
+#8 DONE 0.6s
+
+#9 [5/9] WORKDIR /app
+#9 DONE 0.0s
+
+#10 [6/9] COPY requirements.txt ./
+#10 DONE 0.0s
+
+#11 [7/9] RUN pip install --no-cache-dir -r requirements.txt
+#11 0.486 Collecting fastmcp>=2.0.0 (from -r requirements.txt (line 1))
+#11 0.537   Downloading fastmcp-3.1.1-py3-none-any.whl.metadata (8.1 kB)
+#11 0.562 Collecting authlib>=1.6.5 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 0.572   Downloading authlib-1.6.9-py2.py3-none-any.whl.metadata (9.8 kB)
+#11 0.598 Collecting cyclopts>=4.0.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 0.607   Downloading cyclopts-4.10.0-py3-none-any.whl.metadata (12 kB)
+#11 0.623 Collecting exceptiongroup>=1.2.2 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 0.629   Downloading exceptiongroup-1.3.1-py3-none-any.whl.metadata (6.7 kB)
+#11 0.645 Collecting httpx<1.0,>=0.28.1 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 0.655   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#11 0.667 Collecting jsonref>=1.1.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 0.674   Downloading jsonref-1.1.0-py3-none-any.whl.metadata (2.7 kB)
+#11 0.687 Collecting jsonschema-path>=0.3.4 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 0.696   Downloading jsonschema_path-0.4.5-py3-none-any.whl.metadata (5.9 kB)
+#11 0.712 Collecting mcp<2.0,>=1.24.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 0.722   Downloading mcp-1.26.0-py3-none-any.whl.metadata (89 kB)
+#11 0.842 Collecting openapi-pydantic>=0.5.1 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 0.851   Downloading openapi_pydantic-0.5.1-py3-none-any.whl.metadata (10 kB)
+#11 0.870 Collecting opentelemetry-api>=1.20.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 0.878   Downloading opentelemetry_api-1.40.0-py3-none-any.whl.metadata (1.5 kB)
+#11 0.896 Collecting packaging>=24.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 0.905   Downloading packaging-26.0-py3-none-any.whl.metadata (3.3 kB)
+#11 0.921 Collecting platformdirs>=4.0.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 0.930   Downloading platformdirs-4.9.4-py3-none-any.whl.metadata (4.7 kB)
+#11 0.941 Collecting py-key-value-aio<0.5.0,>=0.4.4 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 0.950   Downloading py_key_value_aio-0.4.4-py3-none-any.whl.metadata (15 kB)
+#11 1.034 Collecting pydantic>=2.11.7 (from pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.043   Downloading pydantic-2.12.5-py3-none-any.whl.metadata (90 kB)
+#11 1.060 Collecting pyperclip>=1.9.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.069   Downloading pyperclip-1.11.0-py3-none-any.whl.metadata (2.4 kB)
+#11 1.082 Collecting python-dotenv>=1.1.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.091   Downloading python_dotenv-1.2.2-py3-none-any.whl.metadata (27 kB)
+#11 1.113 Collecting pyyaml<7.0,>=6.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.120   Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (2.4 kB)
+#11 1.142 Collecting rich>=13.9.4 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.151   Downloading rich-14.3.3-py3-none-any.whl.metadata (18 kB)
+#11 1.160 Collecting uncalled-for>=0.2.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.166   Downloading uncalled_for-0.2.0-py3-none-any.whl.metadata (2.9 kB)
+#11 1.184 Collecting uvicorn>=0.35 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.193   Downloading uvicorn-0.42.0-py3-none-any.whl.metadata (6.7 kB)
+#11 1.231 Collecting watchfiles>=1.0.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.239   Downloading watchfiles-1.1.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (4.9 kB)
+#11 1.280 Collecting websockets>=15.0.1 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.288   Downloading websockets-16.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (6.8 kB)
+#11 1.362 Collecting cryptography (from authlib>=1.6.5->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.371   Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_aarch64.whl.metadata (5.7 kB)
+#11 1.385 Collecting attrs>=23.1.0 (from cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.392   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+#11 1.403 Collecting docstring-parser<4.0,>=0.15 (from cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.409   Downloading docstring_parser-0.17.0-py3-none-any.whl.metadata (3.5 kB)
+#11 1.420 Collecting rich-rst<2.0.0,>=1.3.1 (from cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.428   Downloading rich_rst-1.3.2-py3-none-any.whl.metadata (6.1 kB)
+#11 1.448 Collecting typing-extensions>=4.6.0 (from exceptiongroup>=1.2.2->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.456   Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+#11 1.471 Collecting anyio (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.479   Downloading anyio-4.12.1-py3-none-any.whl.metadata (4.3 kB)
+#11 1.495 Collecting certifi (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.501   Downloading certifi-2026.2.25-py3-none-any.whl.metadata (2.5 kB)
+#11 1.516 Collecting httpcore==1.* (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.524   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#11 1.535 Collecting idna (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.543   Downloading idna-3.11-py3-none-any.whl.metadata (8.4 kB)
+#11 1.557 Collecting h11>=0.16 (from httpcore==1.*->httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.565   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#11 1.577 Collecting pathable<0.6.0,>=0.5.0 (from jsonschema-path>=0.3.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.585   Downloading pathable-0.5.0-py3-none-any.whl.metadata (5.9 kB)
+#11 1.605 Collecting referencing<0.38.0 (from jsonschema-path>=0.3.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.612   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+#11 1.623 Collecting httpx-sse>=0.4 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.631   Downloading httpx_sse-0.4.3-py3-none-any.whl.metadata (9.7 kB)
+#11 1.650 Collecting jsonschema>=4.20.0 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.658   Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+#11 1.672 Collecting pydantic-settings>=2.5.2 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.678   Downloading pydantic_settings-2.13.1-py3-none-any.whl.metadata (3.4 kB)
+#11 1.698 Collecting pyjwt>=2.10.1 (from pyjwt[crypto]>=2.10.1->mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.706   Downloading pyjwt-2.12.1-py3-none-any.whl.metadata (4.1 kB)
+#11 1.718 Collecting python-multipart>=0.0.9 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.725   Downloading python_multipart-0.0.22-py3-none-any.whl.metadata (1.8 kB)
+#11 1.754 Collecting sse-starlette>=1.6.1 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.763   Downloading sse_starlette-3.3.3-py3-none-any.whl.metadata (14 kB)
+#11 1.785 Collecting starlette>=0.27 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.794   Downloading starlette-0.52.1-py3-none-any.whl.metadata (6.3 kB)
+#11 1.806 Collecting typing-inspection>=0.4.1 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.814   Downloading typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+#11 1.846 Collecting importlib-metadata<8.8.0,>=6.0 (from opentelemetry-api>=1.20.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.854   Downloading importlib_metadata-8.7.1-py3-none-any.whl.metadata (4.7 kB)
+#11 1.874 Collecting beartype>=0.20.0 (from py-key-value-aio<0.5.0,>=0.4.4->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.882   Downloading beartype-0.22.9-py3-none-any.whl.metadata (37 kB)
+#11 1.910 Collecting aiofile>=3.5.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.917   Downloading aiofile-3.9.0-py3-none-any.whl.metadata (14 kB)
+#11 1.941 Collecting keyring>=25.6.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.949   Downloading keyring-25.7.0-py3-none-any.whl.metadata (21 kB)
+#11 1.965 Collecting cachetools>=5.0.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.972   Downloading cachetools-7.0.5-py3-none-any.whl.metadata (5.6 kB)
+#11 1.983 Collecting annotated-types>=0.6.0 (from pydantic>=2.11.7->pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.991   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+#11 2.276 Collecting pydantic-core==2.41.5 (from pydantic>=2.11.7->pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.286   Downloading pydantic_core-2.41.5-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (7.3 kB)
+#11 2.303 Collecting email-validator>=2.0.0 (from pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.316   Downloading email_validator-2.3.0-py3-none-any.whl.metadata (26 kB)
+#11 2.328 Collecting markdown-it-py>=2.2.0 (from rich>=13.9.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.336   Downloading markdown_it_py-4.0.0-py3-none-any.whl.metadata (7.3 kB)
+#11 2.352 Collecting pygments<3.0.0,>=2.13.0 (from rich>=13.9.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.360   Downloading pygments-2.19.2-py3-none-any.whl.metadata (2.5 kB)
+#11 2.374 Collecting click>=7.0 (from uvicorn>=0.35->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.382   Downloading click-8.3.1-py3-none-any.whl.metadata (2.6 kB)
+#11 2.407 Collecting caio<0.10.0,>=0.9.0 (from aiofile>=3.5.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.415   Downloading caio-0.9.25-cp312-cp312-manylinux_2_34_aarch64.whl.metadata (3.3 kB)
+#11 2.433 Collecting dnspython>=2.0.0 (from email-validator>=2.0.0->pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.441   Downloading dnspython-2.8.0-py3-none-any.whl.metadata (5.7 kB)
+#11 2.460 Collecting zipp>=3.20 (from importlib-metadata<8.8.0,>=6.0->opentelemetry-api>=1.20.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.470   Downloading zipp-3.23.0-py3-none-any.whl.metadata (3.6 kB)
+#11 2.482 Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.20.0->mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.491   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+#11 2.605 Collecting rpds-py>=0.25.0 (from jsonschema>=4.20.0->mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.612   Downloading rpds_py-0.30.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (4.1 kB)
+#11 2.624 Collecting SecretStorage>=3.2 (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.635   Downloading secretstorage-3.5.0-py3-none-any.whl.metadata (4.0 kB)
+#11 2.645 Collecting jeepney>=0.4.2 (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.651   Downloading jeepney-0.9.0-py3-none-any.whl.metadata (1.2 kB)
+#11 2.663 Collecting jaraco.classes (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.669   Downloading jaraco.classes-3.4.0-py3-none-any.whl.metadata (2.6 kB)
+#11 2.682 Collecting jaraco.functools (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.691   Downloading jaraco_functools-4.4.0-py3-none-any.whl.metadata (3.0 kB)
+#11 2.702 Collecting jaraco.context (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.709   Downloading jaraco_context-6.1.1-py3-none-any.whl.metadata (4.3 kB)
+#11 2.720 Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich>=13.9.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.726   Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+#11 2.788 Collecting cffi>=2.0.0 (from cryptography->authlib>=1.6.5->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.796   Downloading cffi-2.0.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.whl.metadata (2.6 kB)
+#11 2.814 Collecting docutils (from rich-rst<2.0.0,>=1.3.1->cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.821   Downloading docutils-0.22.4-py3-none-any.whl.metadata (15 kB)
+#11 2.853 Collecting pycparser (from cffi>=2.0.0->cryptography->authlib>=1.6.5->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.860   Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+#11 2.895 Collecting more-itertools (from jaraco.classes->keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.904   Downloading more_itertools-10.8.0-py3-none-any.whl.metadata (39 kB)
+#11 2.917 Downloading fastmcp-3.1.1-py3-none-any.whl (633 kB)
+#11 2.936    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 633.8/633.8 kB 43.1 MB/s eta 0:00:00
+#11 2.944 Downloading authlib-1.6.9-py2.py3-none-any.whl (244 kB)
+#11 2.956 Downloading cyclopts-4.10.0-py3-none-any.whl (204 kB)
+#11 2.966 Downloading exceptiongroup-1.3.1-py3-none-any.whl (16 kB)
+#11 2.974 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#11 2.984 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#11 2.992 Downloading jsonref-1.1.0-py3-none-any.whl (9.4 kB)
+#11 3.001 Downloading jsonschema_path-0.4.5-py3-none-any.whl (19 kB)
+#11 3.008 Downloading mcp-1.26.0-py3-none-any.whl (233 kB)
+#11 3.019 Downloading openapi_pydantic-0.5.1-py3-none-any.whl (96 kB)
+#11 3.028 Downloading opentelemetry_api-1.40.0-py3-none-any.whl (68 kB)
+#11 3.037 Downloading packaging-26.0-py3-none-any.whl (74 kB)
+#11 3.045 Downloading platformdirs-4.9.4-py3-none-any.whl (21 kB)
+#11 3.054 Downloading py_key_value_aio-0.4.4-py3-none-any.whl (152 kB)
+#11 3.063 Downloading pydantic-2.12.5-py3-none-any.whl (463 kB)
+#11 3.079 Downloading pydantic_core-2.41.5-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (1.9 MB)
+#11 3.151    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.9/1.9 MB 25.2 MB/s eta 0:00:00
+#11 3.161 Downloading pyperclip-1.11.0-py3-none-any.whl (11 kB)
+#11 3.170 Downloading python_dotenv-1.2.2-py3-none-any.whl (22 kB)
+#11 3.180 Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (775 kB)
+#11 3.214    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 775.1/775.1 kB 18.6 MB/s eta 0:00:00
+#11 3.223 Downloading rich-14.3.3-py3-none-any.whl (310 kB)
+#11 3.244 Downloading uncalled_for-0.2.0-py3-none-any.whl (11 kB)
+#11 3.251 Downloading uvicorn-0.42.0-py3-none-any.whl (68 kB)
+#11 3.260 Downloading watchfiles-1.1.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (449 kB)
+#11 3.286 Downloading websockets-16.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (186 kB)
+#11 3.303 Downloading aiofile-3.9.0-py3-none-any.whl (19 kB)
+#11 3.312 Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+#11 3.320 Downloading anyio-4.12.1-py3-none-any.whl (113 kB)
+#11 3.330 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+#11 3.337 Downloading beartype-0.22.9-py3-none-any.whl (1.3 MB)
+#11 3.416    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 15.0 MB/s eta 0:00:00
+#11 3.426 Downloading cachetools-7.0.5-py3-none-any.whl (13 kB)
+#11 3.437 Downloading click-8.3.1-py3-none-any.whl (108 kB)
+#11 3.449 Downloading docstring_parser-0.17.0-py3-none-any.whl (36 kB)
+#11 3.459 Downloading email_validator-2.3.0-py3-none-any.whl (35 kB)
+#11 3.469 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#11 3.478 Downloading httpx_sse-0.4.3-py3-none-any.whl (9.0 kB)
+#11 3.488 Downloading idna-3.11-py3-none-any.whl (71 kB)
+#11 3.497 Downloading importlib_metadata-8.7.1-py3-none-any.whl (27 kB)
+#11 3.505 Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+#11 3.514 Downloading keyring-25.7.0-py3-none-any.whl (39 kB)
+#11 3.522 Downloading markdown_it_py-4.0.0-py3-none-any.whl (87 kB)
+#11 3.530 Downloading pathable-0.5.0-py3-none-any.whl (16 kB)
+#11 3.538 Downloading pydantic_settings-2.13.1-py3-none-any.whl (58 kB)
+#11 3.547 Downloading pygments-2.19.2-py3-none-any.whl (1.2 MB)
+#11 3.567    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 64.1 MB/s eta 0:00:00
+#11 3.576 Downloading pyjwt-2.12.1-py3-none-any.whl (29 kB)
+#11 3.583 Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_aarch64.whl (4.3 MB)
+#11 3.887    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.3/4.3 MB 13.7 MB/s eta 0:00:00
+#11 3.899 Downloading python_multipart-0.0.22-py3-none-any.whl (24 kB)
+#11 3.911 Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+#11 3.922 Downloading rich_rst-1.3.2-py3-none-any.whl (12 kB)
+#11 3.933 Downloading sse_starlette-3.3.3-py3-none-any.whl (14 kB)
+#11 3.943 Downloading starlette-0.52.1-py3-none-any.whl (74 kB)
+#11 3.954 Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+#11 3.964 Downloading typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+#11 3.973 Downloading certifi-2026.2.25-py3-none-any.whl (153 kB)
+#11 3.984 Downloading caio-0.9.25-cp312-cp312-manylinux_2_34_aarch64.whl (81 kB)
+#11 3.994 Downloading cffi-2.0.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.whl (220 kB)
+#11 4.005 Downloading dnspython-2.8.0-py3-none-any.whl (331 kB)
+#11 4.017 Downloading jeepney-0.9.0-py3-none-any.whl (49 kB)
+#11 4.027 Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+#11 4.036 Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+#11 4.043 Downloading rpds_py-0.30.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (390 kB)
+#11 4.058 Downloading secretstorage-3.5.0-py3-none-any.whl (15 kB)
+#11 4.066 Downloading zipp-3.23.0-py3-none-any.whl (10 kB)
+#11 4.073 Downloading docutils-0.22.4-py3-none-any.whl (633 kB)
+#11 4.083    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 633.2/633.2 kB 61.3 MB/s eta 0:00:00
+#11 4.090 Downloading jaraco.classes-3.4.0-py3-none-any.whl (6.8 kB)
+#11 4.098 Downloading jaraco_context-6.1.1-py3-none-any.whl (7.0 kB)
+#11 4.106 Downloading jaraco_functools-4.4.0-py3-none-any.whl (10 kB)
+#11 4.113 Downloading more_itertools-10.8.0-py3-none-any.whl (69 kB)
+#11 4.121 Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+#11 4.208 Installing collected packages: pyperclip, zipp, websockets, uncalled-for, typing-extensions, rpds-py, pyyaml, python-multipart, python-dotenv, pyjwt, pygments, pycparser, platformdirs, pathable, packaging, more-itertools, mdurl, jsonref, jeepney, jaraco.context, idna, httpx-sse, h11, docutils, docstring-parser, dnspython, click, certifi, caio, cachetools, beartype, attrs, annotated-types, uvicorn, typing-inspection, referencing, pydantic-core, py-key-value-aio, markdown-it-py, jaraco.functools, jaraco.classes, importlib-metadata, httpcore, exceptiongroup, email-validator, cffi, anyio, aiofile, watchfiles, starlette, rich, pydantic, opentelemetry-api, jsonschema-specifications, jsonschema-path, httpx, cryptography, sse-starlette, SecretStorage, rich-rst, pydantic-settings, openapi-pydantic, jsonschema, authlib, mcp, keyring, cyclopts, fastmcp
+#11 6.920 Successfully installed SecretStorage-3.5.0 aiofile-3.9.0 annotated-types-0.7.0 anyio-4.12.1 attrs-26.1.0 authlib-1.6.9 beartype-0.22.9 cachetools-7.0.5 caio-0.9.25 certifi-2026.2.25 cffi-2.0.0 click-8.3.1 cryptography-46.0.5 cyclopts-4.10.0 dnspython-2.8.0 docstring-parser-0.17.0 docutils-0.22.4 email-validator-2.3.0 exceptiongroup-1.3.1 fastmcp-3.1.1 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 httpx-sse-0.4.3 idna-3.11 importlib-metadata-8.7.1 jaraco.classes-3.4.0 jaraco.context-6.1.1 jaraco.functools-4.4.0 jeepney-0.9.0 jsonref-1.1.0 jsonschema-4.26.0 jsonschema-path-0.4.5 jsonschema-specifications-2025.9.1 keyring-25.7.0 markdown-it-py-4.0.0 mcp-1.26.0 mdurl-0.1.2 more-itertools-10.8.0 openapi-pydantic-0.5.1 opentelemetry-api-1.40.0 packaging-26.0 pathable-0.5.0 platformdirs-4.9.4 py-key-value-aio-0.4.4 pycparser-3.0 pydantic-2.12.5 pydantic-core-2.41.5 pydantic-settings-2.13.1 pygments-2.19.2 pyjwt-2.12.1 pyperclip-1.11.0 python-dotenv-1.2.2 python-multipart-0.0.22 pyyaml-6.0.3 referencing-0.37.0 rich-14.3.3 rich-rst-1.3.2 rpds-py-0.30.0 sse-starlette-3.3.3 starlette-0.52.1 typing-extensions-4.15.0 typing-inspection-0.4.2 uncalled-for-0.2.0 uvicorn-0.42.0 watchfiles-1.1.1 websockets-16.0 zipp-3.23.0
+#11 6.921 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#11 7.005 
+#11 7.005 [notice] A new release of pip is available: 25.0.1 -> 26.0.1
+#11 7.005 [notice] To update, run: pip install --upgrade pip
+#11 DONE 7.2s
+
+#12 [8/9] COPY mcp_server.py ./
+#12 DONE 0.0s
+
+#13 [9/9] RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+#13 DONE 0.1s
+
+#14 exporting to image
+#14 exporting layers
+#14 exporting layers 1.9s done
+#14 exporting manifest sha256:e785005c768077faafc4b8ff4cbb9aa823bfbb4e20a46e8b32644a5cf95ac54c done
+#14 exporting config sha256:ae32bbdea7d90c31839a0731ca6fde0ed7c391357f1117a2edbf9ed707d4761c done
+#14 exporting attestation manifest sha256:6eb7c18f05cf48c33ac50fa3ce8544ba9b21e2f177d162346ee07c70c5387a37 done
+#14 exporting manifest list sha256:edae3ef49c5c953c921bfa4ef80004085b0bd327e6b382ac006ffd388e66f072 done
+#14 naming to docker.io/hackerdogs/uro-mcp:latest done
+#14 unpacking to docker.io/hackerdogs/uro-mcp:latest
+#14 unpacking to docker.io/hackerdogs/uro-mcp:latest 0.6s done
+#14 DONE 2.6s
+  [0;32m✅ PASS: Docker image hackerdogs/uro-mcp:latest exists[0m
+
+[0;34m[Test 2] CLI binary inside container[0m
+  [0;32m✅ PASS: uro binary responds[0m
+       usage: uro [-h] [-i INPUT_FILE] [-o OUTPUT_FILE]
+
+[0;34m[Test 3] MCP stdio mode — initialize + tools/list[0m
+  [0;32m✅ PASS: stdio mode returned tools/list response (       2 tool names found)[0m
+
+[0;34m[Test 4] MCP HTTP streamable mode — initialize[0m
+  [0;32m✅ PASS: HTTP streamable mode responded (status 200)[0m
+       Session ID: 45d37424e7d4464b...
+
+[0;34m[Test 5] MCP HTTP — tools/list[0m
+  [0;32m✅ PASS: HTTP tools/list returned tools[0m
+
+[0;34m[Test 6] MCP HTTP — tools/call (run_uro)[0m
+  [0;32m✅ PASS: tools/call run_uro returned a result[0m
+
+=================================================================================
+[0;34mResults: [0;32m6 passed[0m, [0;31m0 failed[0m
+=================================================================================
+uro-mcp-test
+uro-mcp-test

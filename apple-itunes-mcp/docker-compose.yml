@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  apple-itunes-mcp:
+    image: hackerdogs/apple-itunes-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: apple-itunes-mcp
+    ports:
+      - "8511:8511"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8511
+    restart: unless-stopped

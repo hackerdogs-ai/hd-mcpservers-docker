@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  bevigil-mcp:
+    image: hackerdogs/bevigil-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bevigil-mcp
+    ports:
+      - "8515:8515"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8515
+      - BEVIGIL_API_KEY=${BEVIGIL_API_KEY:-}
+    restart: unless-stopped

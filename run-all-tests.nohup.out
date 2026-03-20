@@ -1,0 +1,475 @@
+=================================================================================
+MCP test sweep — all */test.sh under /Users/tredkar/Documents/GitHub/hd-mcpservers-docker
+Started (UTC): 2026-03-20T15:29:13Z
+RUN_MAX=unset (all)  RUN_START=1
+=================================================================================
+
+[1 executed / ~386 dirs] (1 index) a2a-scanner-mcp
+
+[2 executed / ~386 dirs] (2 index) abstract-mcp
+
+[3 executed / ~386 dirs] (3 index) abusech-mcp
+
+[4 executed / ~386 dirs] (4 index) abuseipdb-mcp
+
+[5 executed / ~386 dirs] (5 index) acuvity-mcp-server-atlas-docs-mcp
+
+[6 executed / ~386 dirs] (6 index) acuvity-mcp-server-atlassian-mcp
+
+[7 executed / ~386 dirs] (7 index) acuvity-mcp-server-azure-mcp
+
+[8 executed / ~386 dirs] (8 index) acuvity-mcp-server-bing-search-mcp
+
+[9 executed / ~386 dirs] (9 index) acuvity-mcp-server-brave-search-mcp
+
+[10 executed / ~386 dirs] (10 index) acuvity-mcp-server-calculator-mcp
+
+[11 executed / ~386 dirs] (11 index) acuvity-mcp-server-chroma-mcp
+
+[12 executed / ~386 dirs] (12 index) acuvity-mcp-server-docker-mcp
+
+[13 executed / ~386 dirs] (13 index) acuvity-mcp-server-duckduckgo-mcp
+
+[14 executed / ~386 dirs] (14 index) acuvity-mcp-server-elevenlabs-mcp
+
+[15 executed / ~386 dirs] (15 index) acuvity-mcp-server-everything-mcp
+
+[16 executed / ~386 dirs] (16 index) acuvity-mcp-server-everything-wrong-mcp
+
+[17 executed / ~386 dirs] (17 index) acuvity-mcp-server-fetch-mcp
+
+[18 executed / ~386 dirs] (18 index) acuvity-mcp-server-firecrawl-mcp
+
+[19 executed / ~386 dirs] (19 index) acuvity-mcp-server-google-maps-mcp
+
+[20 executed / ~386 dirs] (20 index) acuvity-mcp-server-grafana-mcp
+
+[21 executed / ~386 dirs] (21 index) acuvity-mcp-server-harness-mcp
+
+[22 executed / ~386 dirs] (22 index) acuvity-mcp-server-hyperbrowser-mcp
+
+[23 executed / ~386 dirs] (23 index) acuvity-mcp-server-kagisearch-mcp
+
+[24 executed / ~386 dirs] (24 index) acuvity-mcp-server-microsoft-graph-mcp
+
+[25 executed / ~386 dirs] (25 index) acuvity-mcp-server-notion-mcp
+
+[26 executed / ~386 dirs] (26 index) acuvity-mcp-server-oshp-mcp
+
+[27 executed / ~386 dirs] (27 index) acuvity-mcp-server-playwright-mcp
+
+[28 executed / ~386 dirs] (28 index) acuvity-mcp-server-scrapezy-mcp
+
+[29 executed / ~386 dirs] (29 index) acuvity-mcp-server-sentry-mcp
+
+[30 executed / ~386 dirs] (30 index) acuvity-mcp-server-slack-mcp
+
+[31 executed / ~386 dirs] (31 index) adblock-mcp
+
+[32 executed / ~386 dirs] (32 index) adguard-dns-mcp
+
+[33 executed / ~386 dirs] (33 index) ahmia-mcp
+
+[34 executed / ~386 dirs] (34 index) ai-humanizer-mcp
+
+[35 executed / ~386 dirs] (35 index) ai-infra-guard-mcp
+
+[36 executed / ~386 dirs] (36 index) aibom-mcp
+
+[37 executed / ~386 dirs] (37 index) aircrack-ng-mcp
+
+[38 executed / ~386 dirs] (38 index) aistor-mcp
+
+[39 executed / ~386 dirs] (39 index) alphavantage-mcp
+
+[40 executed / ~386 dirs] (40 index) alterx-mcp
+
+[41 executed / ~386 dirs] (41 index) amass-mcp
+
+[42 executed / ~386 dirs] (42 index) anew-mcp
+
+[43 executed / ~386 dirs] (43 index) angr-mcp
+
+[44 executed / ~386 dirs] (44 index) apple-itunes-mcp
+
+[45 executed / ~386 dirs] (45 index) aquatone-mcp
+
+[46 executed / ~386 dirs] (46 index) archiveorg-mcp
+
+[47 executed / ~386 dirs] (47 index) arin-mcp
+
+[48 executed / ~386 dirs] (48 index) arjun-mcp
+
+[49 executed / ~386 dirs] (49 index) arp-scan-mcp
+
+[50 executed / ~386 dirs] (50 index) asnmap-mcp
+
+[51 executed / ~386 dirs] (51 index) assetfinder-mcp
+
+[52 executed / ~386 dirs] (52 index) augustus-mcp
+
+[53 executed / ~386 dirs] (53 index) autorecon-mcp
+
+[54 executed / ~386 dirs] (54 index) aws-api-mcp
+
+[55 executed / ~386 dirs] (55 index) aws-aurora-dsql-mcp
+
+[56 executed / ~386 dirs] (56 index) aws-bedrock-agentcore-mcp
+
+[57 executed / ~386 dirs] (57 index) aws-bedrock-custom-model-mcp
+
+[58 executed / ~386 dirs] (58 index) aws-cloudtrail-mcp
+
+[59 executed / ~386 dirs] (59 index) aws-cloudwatch-appsignals-mcp
+
+[60 executed / ~386 dirs] (60 index) aws-cloudwatch-mcp
+
+[61 executed / ~386 dirs] (61 index) aws-core-mcp
+
+[62 executed / ~386 dirs] (62 index) aws-documentation-mcp
+
+[63 executed / ~386 dirs] (63 index) aws-documentdb-mcp
+
+[64 executed / ~386 dirs] (64 index) aws-dynamodb-mcp
+
+[65 executed / ~386 dirs] (65 index) aws-ecs-mcp
+
+[66 executed / ~386 dirs] (66 index) aws-eks-mcp
+
+[67 executed / ~386 dirs] (67 index) aws-iam-mcp
+
+[68 executed / ~386 dirs] (68 index) aws-mq-mcp
+
+[69 executed / ~386 dirs] (69 index) aws-neptune-mcp
+
+[70 executed / ~386 dirs] (70 index) aws-network-mcp
+
+[71 executed / ~386 dirs] (71 index) aws-postgres-mcp
+
+[72 executed / ~386 dirs] (72 index) aws-prometheus-mcp
+
+[73 executed / ~386 dirs] (73 index) aws-redshift-mcp
+
+[74 executed / ~386 dirs] (74 index) aws-s3-mcp
+
+[75 executed / ~386 dirs] (75 index) aws-s3-tables-mcp
+
+[76 executed / ~386 dirs] (76 index) aws-serverless-mcp
+
+[77 executed / ~386 dirs] (77 index) aws-sns-sqs-mcp
+
+[78 executed / ~386 dirs] (78 index) aws-stepfunctions-mcp
+
+[79 executed / ~386 dirs] (79 index) aws-well-architected-security-mcp
+
+[80 executed / ~386 dirs] (80 index) azure-mcp
+
+[81 executed / ~386 dirs] (81 index) baidu-search-mcp-server-mcp
+
+[82 executed / ~386 dirs] (82 index) baidusearch-mcp
+
+[83 executed / ~386 dirs] (83 index) bearer-mcp
+
+[84 executed / ~386 dirs] (84 index) bettercap-mcp
+
+[85 executed / ~386 dirs] (85 index) bevigil-mcp
+
+[86 executed / ~386 dirs] (86 index) binwalk-mcp
+
+[87 executed / ~386 dirs] (87 index) bitbucket-mcp
+
+[88 executed / ~386 dirs] (88 index) blackbird-mcp
+
+[89 executed / ~386 dirs] (89 index) bloodhound-mcp-ai-mcp
+
+[90 executed / ~386 dirs] (90 index) bloodhound-mcp
+
+[91 executed / ~386 dirs] (91 index) boofuzz-mcp
+
+[92 executed / ~386 dirs] (92 index) brave-search-mcp
+
+[93 executed / ~386 dirs] (93 index) bravesearch-mcp
+
+[94 executed / ~386 dirs] (94 index) brightdata-mcp-server-mcp
+
+[95 executed / ~386 dirs] (95 index) browserless-mcp
+
+[96 executed / ~386 dirs] (96 index) brutespray-mcp
+
+[97 executed / ~386 dirs] (97 index) brutus-mcp
+
+[98 executed / ~386 dirs] (98 index) builtwith-mcp
+
+[99 executed / ~386 dirs] (99 index) bully-mcp
+
+[100 executed / ~386 dirs] (100 index) capa-mcp
+
+[101 executed / ~386 dirs] (101 index) cero-mcp
+
+[102 executed / ~386 dirs] (102 index) certgraph-mcp
+
+[103 executed / ~386 dirs] (103 index) certipy-mcp
+
+[104 executed / ~386 dirs] (104 index) checkov-mcp
+
+[105 executed / ~386 dirs] (105 index) checksec-mcp
+
+[106 executed / ~386 dirs] (106 index) chrome-devtools-mcp
+
+[107 executed / ~386 dirs] (107 index) cisco-mcp-scanner-mcp
+
+[108 executed / ~386 dirs] (108 index) clair-mcp
+
+[109 executed / ~386 dirs] (109 index) clinicaltrialsgov-mcp-server-mcp
+
+[110 executed / ~386 dirs] (110 index) cloud-datacenter-mcp
+
+[111 executed / ~386 dirs] (111 index) cloudflare-mcp
+
+[112 executed / ~386 dirs] (112 index) cloudlist-mcp
+
+[113 executed / ~386 dirs] (113 index) cloudmapper-mcp
+
+[114 executed / ~386 dirs] (114 index) code-execution-mcp
+
+[115 executed / ~386 dirs] (115 index) commix-mcp
+
+[116 executed / ~386 dirs] (116 index) context7-mcp
+
+[117 executed / ~386 dirs] (117 index) corscanner-mcp
+
+[118 executed / ~386 dirs] (118 index) cortex-mcp
+
+[119 executed / ~386 dirs] (119 index) crackmapexec-mcp
+
+[120 executed / ~386 dirs] (120 index) crawl4ai-mcp
+
+[121 executed / ~386 dirs] (121 index) crlfuzz-mcp
+
+[122 executed / ~386 dirs] (122 index) crowbar-mcp
+
+[123 executed / ~386 dirs] (123 index) crtsh-mcp
+
+[124 executed / ~386 dirs] (124 index) crunch-mcp
+
+[125 executed / ~386 dirs] (125 index) crunchbase-mcp
+
+[126 executed / ~386 dirs] (126 index) ctgov-mcp-docker-mcp
+
+[127 executed / ~386 dirs] (127 index) cutter-mcp
+
+[128 executed / ~386 dirs] (128 index) cvemap-mcp
+
+[129 executed / ~386 dirs] (129 index) dalfox-mcp
+
+[130 executed / ~386 dirs] (130 index) deepwebresearch-mcp
+
+[131 executed / ~386 dirs] (131 index) dependency-check-mcp
+
+[132 executed / ~386 dirs] (132 index) dharma-mcp
+
+[133 executed / ~386 dirs] (133 index) dirb-mcp
+
+[134 executed / ~386 dirs] (134 index) dirsearch-mcp
+
+[135 executed / ~386 dirs] (135 index) dns-mcp-server-mcp
+
+[136 executed / ~386 dirs] (136 index) dnsdumpster-mcp
+
+[137 executed / ~386 dirs] (137 index) dnsenum-mcp
+
+[138 executed / ~386 dirs] (138 index) dnsreaper-mcp
+
+[139 executed / ~386 dirs] (139 index) dnsrecon-mcp
+
+[140 executed / ~386 dirs] (140 index) dnstwist-mcp
+
+[141 executed / ~386 dirs] (141 index) dnsx-mcp
+
+[142 executed / ~386 dirs] (142 index) docker-bench-security-mcp
+
+[143 executed / ~386 dirs] (143 index) dotdotpwn-mcp
+
+[144 executed / ~386 dirs] (144 index) duckduckgo-mcp
+
+[145 executed / ~386 dirs] (145 index) earthquake-mcp
+
+[146 executed / ~386 dirs] (146 index) edgartools-mcp-server-mcp
+
+[147 executed / ~386 dirs] (147 index) edu-data-mcp
+
+[148 executed / ~386 dirs] (148 index) enum4linux-mcp
+
+[149 executed / ~386 dirs] (149 index) enum4linux-ng-mcp
+
+[150 executed / ~386 dirs] (150 index) ettercap-mcp
+
+[151 executed / ~386 dirs] (151 index) evil-winrm-mcp
+
+[152 executed / ~386 dirs] (152 index) exa-mcp
+
+[153 executed / ~386 dirs] (153 index) excel-tools-mcp
+
+[154 executed / ~386 dirs] (154 index) exiftool-agent-mcp
+
+[155 executed / ~386 dirs] (155 index) exiftool-mcp
+
+[156 executed / ~386 dirs] (156 index) exploitdb-mcp
+
+[157 executed / ~386 dirs] (157 index) falco-mcp
+
+[158 executed / ~386 dirs] (158 index) feroxbuster-mcp
+
+[159 executed / ~386 dirs] (159 index) fetch-mcp
+
+[160 executed / ~386 dirs] (160 index) ffuf-mcp
+
+[161 executed / ~386 dirs] (161 index) fierce-mcp
+
+[162 executed / ~386 dirs] (162 index) file-operations-mcp
+
+[163 executed / ~386 dirs] (163 index) financial-datasets-mcp
+
+[164 executed / ~386 dirs] (164 index) firecrawl-mcp
+
+[165 executed / ~386 dirs] (165 index) flights-mcp
+
+[166 executed / ~386 dirs] (166 index) foremost-mcp
+
+[167 executed / ~386 dirs] (167 index) fping-mcp
+
+[168 executed / ~386 dirs] (168 index) fred-mcp
+
+[169 executed / ~386 dirs] (169 index) garak-mcp
+
+[170 executed / ~386 dirs] (170 index) gau-mcp
+
+[171 executed / ~386 dirs] (171 index) gef-mcp
+
+[172 executed / ~386 dirs] (172 index) geocoding-mcp
+
+[173 executed / ~386 dirs] (173 index) ggshield-mcp
+
+[174 executed / ~386 dirs] (174 index) ghidra-mcp
+
+[175 executed / ~386 dirs] (175 index) ghunt-mcp
+
+[176 executed / ~386 dirs] (176 index) gitlab-mcp
+
+[177 executed / ~386 dirs] (177 index) gitleaks-mcp
+
+[178 executed / ~386 dirs] (178 index) globalping-mcp
+
+[179 executed / ~386 dirs] (179 index) gobuster-mcp
+
+[180 executed / ~386 dirs] (180 index) google-threat-intelligence-mcp
+
+[181 executed / ~386 dirs] (181 index) gospider-mcp
+
+[182 executed / ~386 dirs] (182 index) gowitness-mcp
+
+[183 executed / ~386 dirs] (183 index) graphql-voyager-mcp
+
+[184 executed / ~386 dirs] (184 index) graphviz-dot-mcp
+
+[185 executed / ~386 dirs] (185 index) greynoise-mcp
+
+[186 executed / ~386 dirs] (186 index) grype-mcp
+
+[187 executed / ~386 dirs] (187 index) hakrawler-mcp
+
+[188 executed / ~386 dirs] (188 index) hashcat-mcp
+
+[189 executed / ~386 dirs] (189 index) hashid-mcp
+
+[190 executed / ~386 dirs] (190 index) hashpump-mcp
+
+[191 executed / ~386 dirs] (191 index) hibp-mcp
+
+[192 executed / ~386 dirs] (192 index) holehe-mcp
+
+[193 executed / ~386 dirs] (193 index) horusec-mcp
+
+[194 executed / ~386 dirs] (194 index) http-headers-security-mcp
+
+[195 executed / ~386 dirs] (195 index) httpx-mcp
+
+[196 executed / ~386 dirs] (196 index) hydra-mcp
+
+[197 executed / ~386 dirs] (197 index) imf-data-mcp
+
+[198 executed / ~386 dirs] (198 index) ipinfo-mcp
+
+[199 executed / ~386 dirs] (199 index) iplocate-mcp
+
+[200 executed / ~386 dirs] (200 index) ivre-mcp
+
+[201 executed / ~386 dirs] (201 index) jaeles-mcp
+
+[202 executed / ~386 dirs] (202 index) jira-mcp
+
+[203 executed / ~386 dirs] (203 index) john-mcp
+
+[204 executed / ~386 dirs] (204 index) joomscan-mcp
+
+[205 executed / ~386 dirs] (205 index) julius-mcp
+
+[206 executed / ~386 dirs] (206 index) jwt-tool-mcp
+
+[207 executed / ~386 dirs] (207 index) katana-mcp
+
+[208 executed / ~386 dirs] (208 index) knostic-mcp-scanner-mcp
+
+[209 executed / ~386 dirs] (209 index) kube-bench-mcp
+
+[210 executed / ~386 dirs] (210 index) kube-hunter-mcp
+
+[211 executed / ~386 dirs] (211 index) kubescape-mcp
+
+[212 executed / ~386 dirs] (212 index) libc-database-mcp
+
+[213 executed / ~386 dirs] (213 index) lynis-mcp
+
+[214 executed / ~386 dirs] (214 index) maigret-mcp
+
+[215 executed / ~386 dirs] (215 index) mapboxserver-mcp
+
+[216 executed / ~386 dirs] (216 index) marinetraffic-mcp
+
+[217 executed / ~386 dirs] (217 index) masscan-mcp
+
+[218 executed / ~386 dirs] (218 index) mcp-server-code-runner-mcp
+
+[219 executed / ~386 dirs] (219 index) mcpscan-mcp
+
+[220 executed / ~386 dirs] (220 index) mcpserver-audit-mcp
+
+[221 executed / ~386 dirs] (221 index) medusa-mcp
+
+[222 executed / ~386 dirs] (222 index) mermaid-mcp
+
+[223 executed / ~386 dirs] (223 index) metasploit-mcp
+
+[224 executed / ~386 dirs] (224 index) misp-mcp
+
+[225 executed / ~386 dirs] (225 index) mobsf-mcp
+
+[226 executed / ~386 dirs] (226 index) ms-fabric-rti-mcp
+
+[227 executed / ~386 dirs] (227 index) n2yo-mcp
+
+[228 executed / ~386 dirs] (228 index) naabu-mcp
+
+[229 executed / ~386 dirs] (229 index) name-server-mcp
+
+[230 executed / ~386 dirs] (230 index) nasa-mcp
+
+[231 executed / ~386 dirs] (231 index) nbtscan-mcp
+
+[232 executed / ~386 dirs] (232 index) ncrack-mcp
+
+[233 executed / ~386 dirs] (233 index) nerva-mcp
+
+[234 executed / ~386 dirs] (234 index) netcat-mcp
+
+[235 executed / ~386 dirs] (235 index) netdiscover-mcp

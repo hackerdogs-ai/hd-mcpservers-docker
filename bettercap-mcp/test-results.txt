@@ -1,0 +1,245 @@
+MCP test run - bettercap-mcp
+Generated (UTC): 2026-03-20T18:04:02Z
+Exit code: 1
+Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
+---------------------------------------------------------------------------------
+=================================================================================
+[0;34mBettercap MCP Server — Test Suite[0m
+=================================================================================
+
+[0;34m[Test 1] Docker image[0m
+  Image not found. Building...
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.91kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/golang:1.24-bookworm
+#2 ...
+
+#3 [auth] library/python:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#4 [auth] library/golang:pull token for registry-1.docker.io
+#4 DONE 0.0s
+
+#5 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#5 ...
+
+#2 [internal] load metadata for docker.io/library/golang:1.24-bookworm
+#2 DONE 1.5s
+
+#5 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#5 DONE 1.8s
+
+#6 [internal] load .dockerignore
+#6 transferring context:
+#6 transferring context: 2B done
+#6 DONE 0.2s
+
+#7 [stage-1 1/9] FROM docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0
+#7 resolve docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0 done
+#7 DONE 0.0s
+
+#8 [builder 1/3] FROM docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
+#8 resolve docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac done
+#8 CACHED
+
+#9 [stage-1 2/9] RUN groupadd -g 1000 mcpuser &&     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
+#9 CACHED
+
+#10 [internal] load build context
+#10 transferring context: 4.73kB done
+#10 DONE 0.0s
+
+#11 [builder 2/3] RUN apt-get update && apt-get install -y --no-install-recommends     libpcap-dev libnetfilter-queue-dev libusb-1.0-0-dev     && rm -rf /var/lib/apt/lists/*
+#11 0.371 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#11 0.555 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#11 0.712 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [48.0 kB]
+#11 0.719 Get:4 http://deb.debian.org/debian bookworm/main arm64 Packages [8691 kB]
+#11 1.293 Get:5 http://deb.debian.org/debian bookworm-updates/main arm64 Packages [6936 B]
+#11 1.300 Get:6 http://deb.debian.org/debian-security bookworm-security/main arm64 Packages [291 kB]
+#11 1.962 Fetched 9243 kB in 2s (5054 kB/s)
+#11 1.962 Reading package lists...
+#11 2.218 Reading package lists...
+#11 2.464 Building dependency tree...
+#11 2.522 Reading state information...
+#11 2.595 The following additional packages will be installed:
+#11 2.595   libdbus-1-3 libdbus-1-dev libmnl0 libnetfilter-queue1 libnfnetlink-dev
+#11 2.595   libnfnetlink0 libpcap0.8 libpcap0.8-dev libusb-1.0-0 sgml-base xml-core
+#11 2.596 Suggested packages:
+#11 2.596   libnetfilter-queue-doc sgml-base-doc debhelper
+#11 2.596 Recommended packages:
+#11 2.596   dbus libusb-1.0-doc
+#11 2.661 The following NEW packages will be installed:
+#11 2.661   libdbus-1-3 libdbus-1-dev libmnl0 libnetfilter-queue-dev libnetfilter-queue1
+#11 2.661   libnfnetlink-dev libnfnetlink0 libpcap-dev libpcap0.8 libpcap0.8-dev
+#11 2.661   libusb-1.0-0 libusb-1.0-0-dev sgml-base xml-core
+#11 2.697 0 upgraded, 14 newly installed, 0 to remove and 2 not upgraded.
+#11 2.697 Need to get 1130 kB of archives.
+#11 2.697 After this operation, 3781 kB of additional disk space will be used.
+#11 2.697 Get:1 http://deb.debian.org/debian bookworm/main arm64 sgml-base all 1.31 [15.4 kB]
+#11 2.717 Get:2 http://deb.debian.org/debian bookworm/main arm64 libdbus-1-3 arm64 1.14.10-1~deb12u1 [193 kB]
+#11 2.743 Get:3 http://deb.debian.org/debian bookworm/main arm64 xml-core all 0.18+nmu1 [23.8 kB]
+#11 2.743 Get:4 http://deb.debian.org/debian bookworm/main arm64 libdbus-1-dev arm64 1.14.10-1~deb12u1 [241 kB]
+#11 2.753 Get:5 http://deb.debian.org/debian bookworm/main arm64 libmnl0 arm64 1.0.4-3 [12.1 kB]
+#11 2.753 Get:6 http://deb.debian.org/debian bookworm/main arm64 libnfnetlink0 arm64 1.0.2-2 [14.5 kB]
+#11 2.754 Get:7 http://deb.debian.org/debian bookworm/main arm64 libnetfilter-queue1 arm64 1.0.5-3 [14.0 kB]
+#11 2.754 Get:8 http://deb.debian.org/debian bookworm/main arm64 libnfnetlink-dev arm64 1.0.2-2 [8768 B]
+#11 2.754 Get:9 http://deb.debian.org/debian bookworm/main arm64 libnetfilter-queue-dev arm64 1.0.5-3 [18.0 kB]
+#11 2.754 Get:10 http://deb.debian.org/debian bookworm/main arm64 libpcap0.8 arm64 1.10.3-1 [148 kB]
+#11 2.758 Get:11 http://deb.debian.org/debian bookworm/main arm64 libpcap0.8-dev arm64 1.10.3-1 [271 kB]
+#11 2.762 Get:12 http://deb.debian.org/debian bookworm/main arm64 libpcap-dev arm64 1.10.3-1 [28.2 kB]
+#11 2.763 Get:13 http://deb.debian.org/debian bookworm/main arm64 libusb-1.0-0 arm64 2:1.0.26-1 [60.0 kB]
+#11 2.764 Get:14 http://deb.debian.org/debian bookworm/main arm64 libusb-1.0-0-dev arm64 2:1.0.26-1 [83.0 kB]
+#11 2.840 debconf: delaying package configuration, since apt-utils is not installed
+#11 2.853 Fetched 1130 kB in 0s (11.1 MB/s)
+#11 2.865 Selecting previously unselected package sgml-base.
+#11 2.865 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 15641 files and directories currently installed.)
+#11 2.884 Preparing to unpack .../00-sgml-base_1.31_all.deb ...
+#11 2.886 Unpacking sgml-base (1.31) ...
+#11 2.904 Selecting previously unselected package libdbus-1-3:arm64.
+#11 2.905 Preparing to unpack .../01-libdbus-1-3_1.14.10-1~deb12u1_arm64.deb ...
+#11 2.907 Unpacking libdbus-1-3:arm64 (1.14.10-1~deb12u1) ...
+#11 2.928 Selecting previously unselected package xml-core.
+#11 2.929 Preparing to unpack .../02-xml-core_0.18+nmu1_all.deb ...
+#11 2.931 Unpacking xml-core (0.18+nmu1) ...
+#11 2.945 Selecting previously unselected package libdbus-1-dev:arm64.
+#11 2.946 Preparing to unpack .../03-libdbus-1-dev_1.14.10-1~deb12u1_arm64.deb ...
+#11 2.946 Unpacking libdbus-1-dev:arm64 (1.14.10-1~deb12u1) ...
+#11 2.969 Selecting previously unselected package libmnl0:arm64.
+#11 2.969 Preparing to unpack .../04-libmnl0_1.0.4-3_arm64.deb ...
+#11 2.970 Unpacking libmnl0:arm64 (1.0.4-3) ...
+#11 2.982 Selecting previously unselected package libnfnetlink0:arm64.
+#11 2.982 Preparing to unpack .../05-libnfnetlink0_1.0.2-2_arm64.deb ...
+#11 2.983 Unpacking libnfnetlink0:arm64 (1.0.2-2) ...
+#11 2.994 Selecting previously unselected package libnetfilter-queue1:arm64.
+#11 2.995 Preparing to unpack .../06-libnetfilter-queue1_1.0.5-3_arm64.deb ...
+#11 2.996 Unpacking libnetfilter-queue1:arm64 (1.0.5-3) ...
+#11 3.005 Selecting previously unselected package libnfnetlink-dev:arm64.
+#11 3.006 Preparing to unpack .../07-libnfnetlink-dev_1.0.2-2_arm64.deb ...
+#11 3.007 Unpacking libnfnetlink-dev:arm64 (1.0.2-2) ...
+#11 3.016 Selecting previously unselected package libnetfilter-queue-dev:arm64.
+#11 3.017 Preparing to unpack .../08-libnetfilter-queue-dev_1.0.5-3_arm64.deb ...
+#11 3.018 Unpacking libnetfilter-queue-dev:arm64 (1.0.5-3) ...
+#11 3.029 Selecting previously unselected package libpcap0.8:arm64.
+#11 3.029 Preparing to unpack .../09-libpcap0.8_1.10.3-1_arm64.deb ...
+#11 3.031 Unpacking libpcap0.8:arm64 (1.10.3-1) ...
+#11 3.046 Selecting previously unselected package libpcap0.8-dev:arm64.
+#11 3.046 Preparing to unpack .../10-libpcap0.8-dev_1.10.3-1_arm64.deb ...
+#11 3.048 Unpacking libpcap0.8-dev:arm64 (1.10.3-1) ...
+#11 3.070 Selecting previously unselected package libpcap-dev:arm64.
+#11 3.071 Preparing to unpack .../11-libpcap-dev_1.10.3-1_arm64.deb ...
+#11 3.072 Unpacking libpcap-dev:arm64 (1.10.3-1) ...
+#11 3.083 Selecting previously unselected package libusb-1.0-0:arm64.
+#11 3.084 Preparing to unpack .../12-libusb-1.0-0_2%3a1.0.26-1_arm64.deb ...
+#11 3.085 Unpacking libusb-1.0-0:arm64 (2:1.0.26-1) ...
+#11 3.096 Selecting previously unselected package libusb-1.0-0-dev:arm64.
+#11 3.097 Preparing to unpack .../13-libusb-1.0-0-dev_2%3a1.0.26-1_arm64.deb ...
+#11 3.098 Unpacking libusb-1.0-0-dev:arm64 (2:1.0.26-1) ...
+#11 3.112 Setting up libdbus-1-3:arm64 (1.14.10-1~deb12u1) ...
+#11 3.116 Setting up libmnl0:arm64 (1.0.4-3) ...
+#11 3.118 Setting up libnfnetlink0:arm64 (1.0.2-2) ...
+#11 3.120 Setting up sgml-base (1.31) ...
+#11 3.132 Setting up libusb-1.0-0:arm64 (2:1.0.26-1) ...
+#11 3.135 Setting up libnfnetlink-dev:arm64 (1.0.2-2) ...
+#11 3.139 Setting up libusb-1.0-0-dev:arm64 (2:1.0.26-1) ...
+#11 3.141 Setting up libpcap0.8:arm64 (1.10.3-1) ...
+#11 3.143 Setting up libnetfilter-queue1:arm64 (1.0.5-3) ...
+#11 3.147 Setting up libnetfilter-queue-dev:arm64 (1.0.5-3) ...
+#11 3.149 Setting up xml-core (0.18+nmu1) ...
+#11 3.221 Processing triggers for libc-bin (2.36-9+deb12u13) ...
+#11 3.233 Processing triggers for sgml-base (1.31) ...
+#11 3.238 Setting up libdbus-1-dev:arm64 (1.14.10-1~deb12u1) ...
+#11 3.301 Setting up libpcap0.8-dev:arm64 (1.10.3-1) ...
+#11 3.305 Setting up libpcap-dev:arm64 (1.10.3-1) ...
+#11 DONE 3.3s
+
+#12 [builder 3/3] RUN go install -v github.com/bettercap/bettercap@latest
+#12 2.727 go: downloading github.com/bettercap/bettercap v2.24.1+incompatible
+#12 3.325 go: finding module for package github.com/malfunkt/iprange
+#12 3.325 go: finding module for package github.com/evilsocket/islazy/data
+#12 3.325 go: finding module for package github.com/evilsocket/islazy/tui
+#12 3.325 go: finding module for package github.com/evilsocket/islazy/fs
+#12 3.325 go: finding module for package github.com/evilsocket/islazy/ops
+#12 3.325 go: finding module for package github.com/evilsocket/islazy/log
+#12 3.325 go: finding module for package github.com/bettercap/recording
+#12 3.325 go: finding module for package github.com/gorilla/mux
+#12 3.325 go: finding module for package github.com/bettercap/readline
+#12 3.325 go: finding module for package github.com/evilsocket/islazy/str
+#12 3.325 go: finding module for package github.com/dustin/go-humanize
+#12 3.325 go: finding module for package github.com/gorilla/websocket
+#12 4.007 go: downloading github.com/gorilla/websocket v1.5.3
+#12 4.043 go: downloading github.com/dustin/go-humanize v1.0.1
+#12 4.053 go: finding module for package github.com/bettercap/gatt
+#12 4.076 go: finding module for package github.com/evilsocket/islazy/zip
+#12 4.329 go: downloading github.com/gorilla/mux v1.8.1
+#12 4.361 go: finding module for package github.com/google/gopacket
+#12 4.571 go: downloading github.com/malfunkt/iprange v0.9.0
+#12 4.609 go: downloading github.com/bettercap/readline v0.0.0-20210228151553-655e48bcb7bf
+#12 4.641 go: downloading github.com/bettercap/recording v0.0.0-20190408083647-3ce1dcf032e3
+#12 4.662 go: downloading github.com/google/gopacket v1.1.19
+#12 4.756 go: finding module for package github.com/google/gopacket/layers
+#12 4.757 go: downloading github.com/evilsocket/islazy v1.11.0
+#12 4.788 go: finding module for package github.com/google/gopacket/pcap
+#12 4.798 go: finding module for package github.com/mdlayher/dhcp6
+#12 4.805 go: finding module for package github.com/mdlayher/dhcp6/dhcp6opts
+#12 4.889 go: finding module for package github.com/gobwas/glob
+#12 4.900 go: downloading github.com/bettercap/gatt v0.0.0-20240808115956-ec4935e8c4a0
+#12 4.958 go: finding module for package github.com/antchfx/jsonquery
+#12 5.066 go: finding module for package github.com/google/go-github/github
+#12 5.066 go: finding module for package github.com/adrianmo/go-nmea
+#12 5.066 go: finding module for package github.com/tarm/serial
+#12 5.067 go: finding module for package github.com/bettercap/nrf24
+#12 5.067 go: finding module for package github.com/google/gousb
+#12 5.067 go: finding module for package github.com/elazarl/goproxy
+#12 5.067 go: finding module for package github.com/evilsocket/islazy/plugin
+#12 5.150 go: finding module for package github.com/inconshreveable/go-vhost
+#12 5.282 go: finding module for package github.com/jpillora/go-tld
+#12 5.387 go: downloading github.com/gobwas/glob v0.2.3
+#12 5.402 go: downloading github.com/google/go-github v17.0.0+incompatible
+#12 5.431 go: finding module for package github.com/robertkrimen/otto
+#12 5.470 go: finding module for package github.com/hashicorp/mdns
+#12 5.624 go: downloading github.com/tarm/serial v0.0.0-20180830185346-98f6abe2eb07
+#12 5.761 go: downloading github.com/bettercap/nrf24 v0.0.0-20190219153547-aa37e6d0e0eb
+#12 5.767 go: downloading github.com/mdlayher/dhcp6 v0.0.0-20190311162359-2a67805d7d0b
+#12 5.793 go: finding module for package github.com/google/gopacket/pcapgo
+#12 5.809 go: downloading github.com/antchfx/jsonquery v1.3.6
+#12 5.960 go: finding module for package github.com/evilsocket/islazy/async
+#12 5.966 go: downloading github.com/adrianmo/go-nmea v1.10.0
+#12 5.999 go: finding module for package github.com/miekg/dns
+#12 6.000 go: finding module for package golang.org/x/net/html
+#12 6.104 go: downloading github.com/inconshreveable/go-vhost v1.0.0
+#12 6.149 go: downloading github.com/hashicorp/mdns v1.0.6
+#12 6.152 go: downloading github.com/google/gousb v1.1.3
+#12 6.158 go: downloading github.com/elazarl/goproxy v1.8.2
+#12 6.190 go: downloading github.com/jpillora/go-tld v1.2.1
+#12 6.297 go: downloading github.com/robertkrimen/otto v0.5.1
+#12 6.307 go: downloading golang.org/x/net v0.52.0
+#12 6.335 go: downloading github.com/miekg/dns v1.1.72
+#12 6.502 go: toolchain upgrade needed to resolve golang.org/x/net/html
+#12 6.502 go: golang.org/x/net@v0.52.0 requires go >= 1.25.0 (running go 1.24.13; GOTOOLCHAIN=local)
+#12 ERROR: process "/bin/sh -c go install -v github.com/bettercap/bettercap@latest" did not complete successfully: exit code: 1
+------
+ > [builder 3/3] RUN go install -v github.com/bettercap/bettercap@latest:
+6.104 go: downloading github.com/inconshreveable/go-vhost v1.0.0
+6.149 go: downloading github.com/hashicorp/mdns v1.0.6
+6.152 go: downloading github.com/google/gousb v1.1.3
+6.158 go: downloading github.com/elazarl/goproxy v1.8.2
+6.190 go: downloading github.com/jpillora/go-tld v1.2.1
+6.297 go: downloading github.com/robertkrimen/otto v0.5.1
+6.307 go: downloading golang.org/x/net v0.52.0
+6.335 go: downloading github.com/miekg/dns v1.1.72
+6.502 go: toolchain upgrade needed to resolve golang.org/x/net/html
+6.502 go: golang.org/x/net@v0.52.0 requires go >= 1.25.0 (running go 1.24.13; GOTOOLCHAIN=local)
+------
+Dockerfile:7
+--------------------
+   5 |         libpcap-dev libnetfilter-queue-dev libusb-1.0-0-dev \
+   6 |         && rm -rf /var/lib/apt/lists/*
+   7 | >>> RUN go install -v github.com/bettercap/bettercap@latest
+   8 |     
+   9 |     # ---- Stage 2: Runtime ----
+--------------------
+ERROR: failed to build: failed to solve: process "/bin/sh -c go install -v github.com/bettercap/bettercap@latest" did not complete successfully: exit code: 1

@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "chrome-devtools-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "MCP_TRANSPORT",
+        "hackerdogs/chrome-devtools-mcp:latest"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
+    }
+  }
+}

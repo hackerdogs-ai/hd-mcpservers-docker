@@ -1,0 +1,145 @@
+AI-Infra-Guard MCP — test evidence
+Generated (UTC): 2026-03-20T17:45:00Z
+Image: hackerdogs/ai-infra-guard-mcp:latest
+HTTP port: 8294
+Container (HTTP): ai-infra-guard-mcp-test
+
+Below: raw outputs from each step (not only PASS/FAIL).
+
+=================================================================================
+[Test 1] Docker image
+Status: PASS
+---------------------------------------------------------------------------------
+(Image hackerdogs/ai-infra-guard-mcp:latest already present locally — docker build was skipped.)
+
+Id=sha256:66992292e440d58687d29e4bfb55a99918dd747b6d77f257865bb22e49011ec2
+Created=2026-03-20T14:28:12.972915296Z
+Size=134734846
+Architecture=arm64
+---------------------------------------------------------------------------------
+
+=================================================================================
+[Test 2] CLI binary (docker run ... ai-infra-guard --help)
+Status: PASS
+---------------------------------------------------------------------------------
+    _    ___   ___        __              ____                     _ 
+   / \  |_ _| |_ _|_ __  / _|_ __ __ _   / ___|_   _  __ _ _ __ __| |
+  / _ \  | |   | || '_ \| |_| '__/ _` | | |  _| | | |/ _` | '__/ _` |
+ / ___ \ | |   | || | | |  _| | | (_| | | |_| | |_| | (_| | | | (_| |
+/_/   \_\___| |___|_| |_|_| |_|  \__,_|  \____|\__,_|\__,_|_|  \__,_|
+
+AI Infrastructure Guard System v4.0
+
+AI-Infra-Guard是一个针对AI基础设施的安全检测工具，包含扫描、MCP检测功能,支持webui操作。
+
+Usage:
+  ai-infra-guard [command]
+
+Available Commands:
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
+  scan        执行原始扫描功能
+  webserver   启动Web服务器
+
+Flags:
+  -h, --help   help for ai-infra-guard
+
+Use "ai-infra-guard [command] --help" for more information about a command.
+---------------------------------------------------------------------------------
+
+=================================================================================
+[Test 3] MCP stdio — full docker stdout/stderr
+Status: PASS
+---------------------------------------------------------------------------------
+2026-03-20 17:45:04,482 [ai-infra-guard-mcp] INFO: Starting ai-infra-guard-mcp server (transport=stdio, port=8294)
+[03/20/26 17:45:04] INFO     Starting MCP server                transport.py:183
+                             'AI-Infra-Guard MCP Server' with                   
+                             transport 'stdio'                                  
+2026-03-20 17:45:04,505 [mcp.server.lowlevel.server] INFO: Processing request of type ListToolsRequest
+{"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"prompts":{"listChanged":false},"resources":{"subscribe":false,"listChanged":false},"tools":{"listChanged":true},"extensions":{"io.modelcontextprotocol/ui":{}}},"serverInfo":{"name":"AI-Infra-Guard MCP Server","version":"3.1.1"},"instructions":"AI infrastructure security scanning and assessment."}}
+{"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"run_ai_infra_guard","description":"Run ai-infra-guard with the given arguments.\n\nPass arguments as you would on the command line.\n\nArgs:\n    arguments: Command-line arguments string.\n    timeout_seconds: Maximum execution time in seconds (default 600).","inputSchema":{"additionalProperties":false,"properties":{"arguments":{"type":"string"},"timeout_seconds":{"default":600,"type":"integer"}},"required":["arguments"],"type":"object"},"outputSchema":{"properties":{"result":{"type":"string"}},"required":["result"],"type":"object","x-fastmcp-wrap-result":true},"_meta":{"fastmcp":{"tags":[]}}}]}}
+---------------------------------------------------------------------------------
+
+=================================================================================
+[Test 4] HTTP initialize — headers + body + docker logs (tail)
+Status: PASS
+---------------------------------------------------------------------------------
+--- Response headers (initialize) ---
+HTTP/1.1 200 OK
+date: Fri, 20 Mar 2026 17:45:06 GMT
+server: uvicorn
+cache-control: no-cache, no-transform
+connection: keep-alive
+content-type: text/event-stream
+mcp-session-id: fc9785faab3d49339299cd7cc67e4de8
+x-accel-buffering: no
+Transfer-Encoding: chunked
+
+
+--- Response body (initialize) ---
+event: message
+data: {"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"prompts":{"listChanged":true},"resources":{"subscribe":false,"listChanged":true},"tools":{"listChanged":true},"extensions":{"io.modelcontextprotocol/ui":{}}},"serverInfo":{"name":"AI-Infra-Guard MCP Server","version":"3.1.1"},"instructions":"AI infrastructure security scanning and assessment."}}
+
+
+--- docker logs (last 80 lines) ---
+2026-03-20 17:45:06,797 [ai-infra-guard-mcp] INFO: Starting ai-infra-guard-mcp server (transport=streamable-http, port=8294)
+2026-03-20 17:45:06,887 [httpx] INFO: HTTP Request: GET https://pypi.org/pypi/fastmcp/json "HTTP/1.1 200 OK"
+
+
+╭──────────────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│                                                                              │
+│                         ▄▀▀ ▄▀█ █▀▀ ▀█▀ █▀▄▀█ █▀▀ █▀█                        │
+│                         █▀  █▀█ ▄▄█  █  █ ▀ █ █▄▄ █▀▀                        │
+│                                                                              │
+│                                                                              │
+│                                FastMCP 3.1.1                                 │
+│                            https://gofastmcp.com                             │
+│                                                                              │
+│               🖥  Server:      AI-Infra-Guard MCP Server, 3.1.1               │
+│               🚀 Deploy free: https://fastmcp.cloud                          │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+[03/20/26 17:45:06] INFO     Starting MCP server                transport.py:273
+                             'AI-Infra-Guard MCP Server' with                   
+                             transport 'streamable-http' on                     
+                             http://0.0.0.0:8294/mcp                            
+INFO:     Started server process [6]
+INFO:     Waiting for application startup.
+2026-03-20 17:45:06,914 [mcp.server.streamable_http_manager] INFO: StreamableHTTP session manager started
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8294 (Press CTRL+C to quit)
+2026-03-20 17:45:07,830 [mcp.server.streamable_http_manager] INFO: Created new transport with session ID: fc9785faab3d49339299cd7cc67e4de8
+INFO:     172.67.143.105:22939 - "POST /mcp HTTP/1.1" 200 OK
+---------------------------------------------------------------------------------
+
+=================================================================================
+[Test 5] HTTP tools/list — raw response
+Status: PASS
+---------------------------------------------------------------------------------
+event: message
+data: {"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"run_ai_infra_guard","description":"Run ai-infra-guard with the given arguments.\n\nPass arguments as you would on the command line.\n\nArgs:\n    arguments: Command-line arguments string.\n    timeout_seconds: Maximum execution time in seconds (default 600).","inputSchema":{"additionalProperties":false,"properties":{"arguments":{"type":"string"},"timeout_seconds":{"default":600,"type":"integer"}},"required":["arguments"],"type":"object"},"outputSchema":{"properties":{"result":{"type":"string"}},"required":["result"],"type":"object","x-fastmcp-wrap-result":true},"_meta":{"fastmcp":{"tags":[]}}}]}}
+
+---------------------------------------------------------------------------------
+
+=================================================================================
+[Test 6] HTTP tools/call — request JSON + raw response
+Status: PASS
+---------------------------------------------------------------------------------
+--- tools/call request ---
+{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"run_ai_infra_guard","arguments":{"arguments":"--help"}}}
+
+--- tools/call response ---
+event: message
+data: {"jsonrpc":"2.0","id":3,"result":{"content":[{"type":"text","text":"[\n  {\n    \"raw\": \"_    ___   ___        __              ____                     _\"\n  },\n  {\n    \"raw\": \"/ \\\\  |_ _| |_ _|_ __  / _|_ __ __ _   / ___|_   _  __ _ _ __ __| |\"\n  },\n  {\n    \"raw\": \"/ _ \\\\  | |   | || '_ \\\\| |_| '__/ _` | | |  _| | | |/ _` | '__/ _` |\"\n  },\n  {\n    \"raw\": \"/ ___ \\\\ | |   | || | | |  _| | | (_| | | |_| | |_| | (_| | | | (_| |\"\n  },\n  {\n    \"raw\": \"/_/   \\\\_\\\\___| |___|_| |_|_| |_|  \\\\__,_|  \\\\____|\\\\__,_|\\\\__,_|_|  \\\\__,_|\"\n  },\n  {\n    \"raw\": \"AI Infrastructure Guard System v4.0\"\n  },\n  {\n    \"raw\": \"AI-Infra-Guard\\u662f\\u4e00\\u4e2a\\u9488\\u5bf9AI\\u57fa\\u7840\\u8bbe\\u65bd\\u7684\\u5b89\\u5168\\u68c0\\u6d4b\\u5de5\\u5177\\uff0c\\u5305\\u542b\\u626b\\u63cf\\u3001MCP\\u68c0\\u6d4b\\u529f\\u80fd,\\u652f\\u6301webui\\u64cd\\u4f5c\\u3002\"\n  },\n  {\n    \"raw\": \"Usage:\"\n  },\n  {\n    \"raw\": \"ai-infra-guard [command]\"\n  },\n  {\n    \"raw\": \"Available Commands:\"\n  },\n  {\n    \"raw\": \"completion  Generate the autocompletion script for the specified shell\"\n  },\n  {\n    \"raw\": \"help        Help about any command\"\n  },\n  {\n    \"raw\": \"scan        \\u6267\\u884c\\u539f\\u59cb\\u626b\\u63cf\\u529f\\u80fd\"\n  },\n  {\n    \"raw\": \"webserver   \\u542f\\u52a8Web\\u670d\\u52a1\\u5668\"\n  },\n  {\n    \"raw\": \"Flags:\"\n  },\n  {\n    \"raw\": \"-h, --help   help for ai-infra-guard\"\n  },\n  {\n    \"raw\": \"Use \\\"ai-infra-guard [command] --help\\\" for more information about a command.\"\n  }\n]"}],"structuredContent":{"result":"[\n  {\n    \"raw\": \"_    ___   ___        __              ____                     _\"\n  },\n  {\n    \"raw\": \"/ \\\\  |_ _| |_ _|_ __  / _|_ __ __ _   / ___|_   _  __ _ _ __ __| |\"\n  },\n  {\n    \"raw\": \"/ _ \\\\  | |   | || '_ \\\\| |_| '__/ _` | | |  _| | | |/ _` | '__/ _` |\"\n  },\n  {\n    \"raw\": \"/ ___ \\\\ | |   | || | | |  _| | | (_| | | |_| | |_| | (_| | | | (_| |\"\n  },\n  {\n    \"raw\": \"/_/   \\\\_\\\\___| |___|_| |_|_| |_|  \\\\__,_|  \\\\____|\\\\__,_|\\\\__,_|_|  \\\\__,_|\"\n  },\n  {\n    \"raw\": \"AI Infrastructure Guard System v4.0\"\n  },\n  {\n    \"raw\": \"AI-Infra-Guard\\u662f\\u4e00\\u4e2a\\u9488\\u5bf9AI\\u57fa\\u7840\\u8bbe\\u65bd\\u7684\\u5b89\\u5168\\u68c0\\u6d4b\\u5de5\\u5177\\uff0c\\u5305\\u542b\\u626b\\u63cf\\u3001MCP\\u68c0\\u6d4b\\u529f\\u80fd,\\u652f\\u6301webui\\u64cd\\u4f5c\\u3002\"\n  },\n  {\n    \"raw\": \"Usage:\"\n  },\n  {\n    \"raw\": \"ai-infra-guard [command]\"\n  },\n  {\n    \"raw\": \"Available Commands:\"\n  },\n  {\n    \"raw\": \"completion  Generate the autocompletion script for the specified shell\"\n  },\n  {\n    \"raw\": \"help        Help about any command\"\n  },\n  {\n    \"raw\": \"scan        \\u6267\\u884c\\u539f\\u59cb\\u626b\\u63cf\\u529f\\u80fd\"\n  },\n  {\n    \"raw\": \"webserver   \\u542f\\u52a8Web\\u670d\\u52a1\\u5668\"\n  },\n  {\n    \"raw\": \"Flags:\"\n  },\n  {\n    \"raw\": \"-h, --help   help for ai-infra-guard\"\n  },\n  {\n    \"raw\": \"Use \\\"ai-infra-guard [command] --help\\\" for more information about a command.\"\n  }\n]"},"isError":false}}
+
+---------------------------------------------------------------------------------
+
+=================================================================================
+SUMMARY
+=================================================================================
+Steps passed: 6  Steps failed: 0
+Overall: PASS
+=================================================================================

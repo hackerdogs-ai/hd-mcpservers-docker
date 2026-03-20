@@ -1,0 +1,752 @@
+[
+  {
+    "server": "ai-humanizer-mcp",
+    "port": 8601,
+    "stdio_pass": true,
+    "stdio_tools": 1,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 1,
+    "http_err": ""
+  },
+  {
+    "server": "aws-api-mcp",
+    "port": 8602,
+    "stdio_pass": true,
+    "stdio_tools": 2,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 2,
+    "http_err": ""
+  },
+  {
+    "server": "aws-aurora-dsql-mcp",
+    "port": 8603,
+    "stdio_pass": true,
+    "stdio_tools": 6,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 6,
+    "http_err": ""
+  },
+  {
+    "server": "aws-bedrock-agentcore-mcp",
+    "port": 8604,
+    "stdio_pass": true,
+    "stdio_tools": 30,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 30,
+    "http_err": ""
+  },
+  {
+    "server": "aws-bedrock-custom-model-mcp",
+    "port": 8605,
+    "stdio_pass": true,
+    "stdio_tools": 6,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 6,
+    "http_err": ""
+  },
+  {
+    "server": "aws-cloudtrail-mcp",
+    "port": 8606,
+    "stdio_pass": true,
+    "stdio_tools": 5,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 5,
+    "http_err": ""
+  },
+  {
+    "server": "aws-cloudwatch-appsignals-mcp",
+    "port": 8607,
+    "stdio_pass": true,
+    "stdio_tools": 13,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 13,
+    "http_err": ""
+  },
+  {
+    "server": "aws-cloudwatch-mcp",
+    "port": 8608,
+    "stdio_pass": true,
+    "stdio_tools": 11,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 11,
+    "http_err": ""
+  },
+  {
+    "server": "aws-core-mcp",
+    "port": 8609,
+    "stdio_pass": true,
+    "stdio_tools": 1,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 1,
+    "http_err": ""
+  },
+  {
+    "server": "aws-documentation-mcp",
+    "port": 8610,
+    "stdio_pass": true,
+    "stdio_tools": 4,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 4,
+    "http_err": ""
+  },
+  {
+    "server": "aws-documentdb-mcp",
+    "port": 8611,
+    "stdio_pass": true,
+    "stdio_tools": 16,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 16,
+    "http_err": ""
+  },
+  {
+    "server": "aws-dynamodb-mcp",
+    "port": 8612,
+    "stdio_pass": true,
+    "stdio_tools": 8,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 8,
+    "http_err": ""
+  },
+  {
+    "server": "aws-ecs-mcp",
+    "port": 8613,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=1 https://knowledge-mcp.global.api.aws \"HTTP/1.1 202 Accepted\"\n2026-03-20 02:26:08,617 - httpx - INFO - HTTP Request: POST https://knowledge-mcp.global.api.aws \"HTTP/1.1 200 OK\"\n2026-03-20 02:26:08,625 - ecs-mcp-server - ERROR - Error starting server: unhandled errors in a TaskGroup (1 sub-exception)\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "curl timeout"
+  },
+  {
+    "server": "aws-eks-mcp",
+    "port": 8614,
+    "stdio_pass": true,
+    "stdio_tools": 16,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 16,
+    "http_err": ""
+  },
+  {
+    "server": "aws-iam-mcp",
+    "port": 8615,
+    "stdio_pass": true,
+    "stdio_tools": 29,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 29,
+    "http_err": ""
+  },
+  {
+    "server": "aws-mq-mcp",
+    "port": 8616,
+    "stdio_pass": true,
+    "stdio_tools": 34,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 34,
+    "http_err": ""
+  },
+  {
+    "server": "aws-neptune-mcp",
+    "port": 8617,
+    "stdio_pass": true,
+    "stdio_tools": 4,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 4,
+    "http_err": ""
+  },
+  {
+    "server": "aws-network-mcp",
+    "port": 8618,
+    "stdio_pass": true,
+    "stdio_tools": 27,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "curl timeout"
+  },
+  {
+    "server": "aws-postgres-mcp",
+    "port": 8619,
+    "stdio_pass": true,
+    "stdio_tools": 7,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 7,
+    "http_err": ""
+  },
+  {
+    "server": "aws-prometheus-mcp",
+    "port": 8620,
+    "stdio_pass": true,
+    "stdio_tools": 5,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 5,
+    "http_err": ""
+  },
+  {
+    "server": "aws-redshift-mcp",
+    "port": 8621,
+    "stdio_pass": true,
+    "stdio_tools": 6,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 6,
+    "http_err": ""
+  },
+  {
+    "server": "aws-s3-tables-mcp",
+    "port": 8622,
+    "stdio_pass": true,
+    "stdio_tools": 16,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 16,
+    "http_err": ""
+  },
+  {
+    "server": "aws-serverless-mcp",
+    "port": 8623,
+    "stdio_pass": true,
+    "stdio_tools": 25,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 25,
+    "http_err": ""
+  },
+  {
+    "server": "aws-sns-sqs-mcp",
+    "port": 8624,
+    "stdio_pass": true,
+    "stdio_tools": 43,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 43,
+    "http_err": ""
+  },
+  {
+    "server": "aws-stepfunctions-mcp",
+    "port": 8625,
+    "stdio_pass": true,
+    "stdio_tools": 2,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "curl timeout"
+  },
+  {
+    "server": "aws-well-architected-security-mcp",
+    "port": 8626,
+    "stdio_pass": true,
+    "stdio_tools": 6,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 6,
+    "http_err": ""
+  },
+  {
+    "server": "azure-mcp",
+    "port": 8627,
+    "stdio_pass": true,
+    "stdio_tools": 60,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 60,
+    "http_err": ""
+  },
+  {
+    "server": "baidu-search-mcp-server-mcp",
+    "port": 8628,
+    "stdio_pass": true,
+    "stdio_tools": 1,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 1,
+    "http_err": ""
+  },
+  {
+    "server": "brave-search-mcp",
+    "port": 8629,
+    "stdio_pass": true,
+    "stdio_tools": 2,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 2,
+    "http_err": ""
+  },
+  {
+    "server": "brightdata-mcp-server-mcp",
+    "port": 8630,
+    "stdio_pass": true,
+    "stdio_tools": 4,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 4,
+    "http_err": ""
+  },
+  {
+    "server": "chrome-devtools-mcp",
+    "port": 8631,
+    "stdio_pass": true,
+    "stdio_tools": 31,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 31,
+    "http_err": ""
+  },
+  {
+    "server": "clinicaltrialsgov-mcp-server-mcp",
+    "port": 8632,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "TIMEOUT",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "curl timeout"
+  },
+  {
+    "server": "cloudflare-mcp",
+    "port": 8633,
+    "stdio_pass": true,
+    "stdio_tools": 89,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 89,
+    "http_err": ""
+  },
+  {
+    "server": "context7-mcp",
+    "port": 8634,
+    "stdio_pass": true,
+    "stdio_tools": 2,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 2,
+    "http_err": ""
+  },
+  {
+    "server": "dns-mcp-server-mcp",
+    "port": 8635,
+    "stdio_pass": true,
+    "stdio_tools": 4,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 4,
+    "http_err": ""
+  },
+  {
+    "server": "dnstwist-mcp",
+    "port": 8636,
+    "stdio_pass": true,
+    "stdio_tools": 1,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "curl timeout"
+  },
+  {
+    "server": "exa-mcp",
+    "port": 8637,
+    "stdio_pass": true,
+    "stdio_tools": 2,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 2,
+    "http_err": ""
+  },
+  {
+    "server": "exiftool-agent-mcp",
+    "port": 8638,
+    "stdio_pass": true,
+    "stdio_tools": 4,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 4,
+    "http_err": ""
+  },
+  {
+    "server": "fetch-mcp",
+    "port": 8639,
+    "stdio_pass": true,
+    "stdio_tools": 1,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 1,
+    "http_err": ""
+  },
+  {
+    "server": "firecrawl-mcp",
+    "port": 8640,
+    "stdio_pass": true,
+    "stdio_tools": 12,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 12,
+    "http_err": ""
+  },
+  {
+    "server": "geocoding-mcp",
+    "port": 8641,
+    "stdio_pass": true,
+    "stdio_tools": 1,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 1,
+    "http_err": ""
+  },
+  {
+    "server": "gitlab-mcp",
+    "port": 8642,
+    "stdio_pass": true,
+    "stdio_tools": 114,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 114,
+    "http_err": ""
+  },
+  {
+    "server": "globalping-mcp",
+    "port": 8643,
+    "stdio_pass": true,
+    "stdio_tools": 6,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 6,
+    "http_err": ""
+  },
+  {
+    "server": "google-threat-intelligence-mcp",
+    "port": 8644,
+    "stdio_pass": true,
+    "stdio_tools": 35,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 35,
+    "http_err": ""
+  },
+  {
+    "server": "greynoise-mcp",
+    "port": 8645,
+    "stdio_pass": true,
+    "stdio_tools": 12,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 12,
+    "http_err": ""
+  },
+  {
+    "server": "hibp-mcp",
+    "port": 8646,
+    "stdio_pass": true,
+    "stdio_tools": 3,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 3,
+    "http_err": ""
+  },
+  {
+    "server": "imf-data-mcp",
+    "port": 8647,
+    "stdio_pass": true,
+    "stdio_tools": 10,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 10,
+    "http_err": ""
+  },
+  {
+    "server": "iplocate-mcp",
+    "port": 8648,
+    "stdio_pass": true,
+    "stdio_tools": 6,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 6,
+    "http_err": ""
+  },
+  {
+    "server": "jira-mcp",
+    "port": 8649,
+    "stdio_pass": true,
+    "stdio_tools": 5,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 5,
+    "http_err": ""
+  },
+  {
+    "server": "ms-fabric-rti-mcp",
+    "port": 8650,
+    "stdio_pass": true,
+    "stdio_tools": 36,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 36,
+    "http_err": ""
+  },
+  {
+    "server": "nasa-mcp",
+    "port": 8651,
+    "stdio_pass": true,
+    "stdio_tools": 23,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools in response: event: message\ndata: {\"method\":\"notifications/message\",\"params\":{\"level\":\"info\",\"data\":\"Server started with stdio transport\"},\"jsonrpc\":\"2.0\"}\n\n"
+  },
+  {
+    "server": "notion-mcp",
+    "port": 8652,
+    "stdio_pass": true,
+    "stdio_tools": 22,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 22,
+    "http_err": ""
+  },
+  {
+    "server": "octagon-mcp-server-mcp",
+    "port": 8653,
+    "stdio_pass": true,
+    "stdio_tools": 4,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 4,
+    "http_err": ""
+  },
+  {
+    "server": "octocode-mcp",
+    "port": 8654,
+    "stdio_pass": true,
+    "stdio_tools": 6,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools in response: event: message\ndata: {\"result\":{\"protocolVersion\":\"2024-11-05\",\"capabilities\":{\"tools\":{\"listChanged\":true},\"logging\":{},\"prompts\":{\"listChanged\":true"
+  },
+  {
+    "server": "openfda-mcp",
+    "port": 8655,
+    "stdio_pass": true,
+    "stdio_tools": 7,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 7,
+    "http_err": ""
+  },
+  {
+    "server": "osm-mcp-server-mcp",
+    "port": 8656,
+    "stdio_pass": true,
+    "stdio_tools": 12,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 12,
+    "http_err": ""
+  },
+  {
+    "server": "pinecone-mcp",
+    "port": 8657,
+    "stdio_pass": true,
+    "stdio_tools": 1,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 1,
+    "http_err": ""
+  },
+  {
+    "server": "postman-mcp",
+    "port": 8658,
+    "stdio_pass": true,
+    "stdio_tools": 41,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "curl timeout"
+  },
+  {
+    "server": "puppeteer-mcp",
+    "port": 8659,
+    "stdio_pass": true,
+    "stdio_tools": 7,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 7,
+    "http_err": ""
+  },
+  {
+    "server": "rapidapi-hub-reverse-image-search-by-copyseeker-mcp",
+    "port": 8660,
+    "stdio_pass": true,
+    "stdio_tools": 1,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 1,
+    "http_err": ""
+  },
+  {
+    "server": "reddit-mcp",
+    "port": 8661,
+    "stdio_pass": true,
+    "stdio_tools": 8,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 8,
+    "http_err": ""
+  },
+  {
+    "server": "s3-mcp-server-mcp",
+    "port": 8662,
+    "stdio_pass": true,
+    "stdio_tools": 3,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 3,
+    "http_err": ""
+  },
+  {
+    "server": "scc-mcp",
+    "port": 8663,
+    "stdio_pass": true,
+    "stdio_tools": 2,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 2,
+    "http_err": ""
+  },
+  {
+    "server": "search1api-mcp",
+    "port": 8664,
+    "stdio_pass": true,
+    "stdio_tools": 6,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 6,
+    "http_err": ""
+  },
+  {
+    "server": "sentry-mcp",
+    "port": 8665,
+    "stdio_pass": true,
+    "stdio_tools": 21,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 21,
+    "http_err": ""
+  },
+  {
+    "server": "serper-search-mcp",
+    "port": 8666,
+    "stdio_pass": true,
+    "stdio_tools": 2,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 2,
+    "http_err": ""
+  },
+  {
+    "server": "splunk-mcp",
+    "port": 8667,
+    "stdio_pass": true,
+    "stdio_tools": 11,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 11,
+    "http_err": ""
+  },
+  {
+    "server": "steampipe-mcp",
+    "port": 8668,
+    "stdio_pass": true,
+    "stdio_tools": 4,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "curl timeout"
+  },
+  {
+    "server": "stripe-mcp",
+    "port": 8669,
+    "stdio_pass": true,
+    "stdio_tools": 1,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 1,
+    "http_err": ""
+  },
+  {
+    "server": "terraform-mcp",
+    "port": 8670,
+    "stdio_pass": true,
+    "stdio_tools": 10,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 10,
+    "http_err": ""
+  },
+  {
+    "server": "tomtom-mcp",
+    "port": 8671,
+    "stdio_pass": true,
+    "stdio_tools": 10,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 10,
+    "http_err": ""
+  },
+  {
+    "server": "variflight-mcp",
+    "port": 8672,
+    "stdio_pass": true,
+    "stdio_tools": 8,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 8,
+    "http_err": ""
+  },
+  {
+    "server": "whois-mcp",
+    "port": 8673,
+    "stdio_pass": true,
+    "stdio_tools": 3,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 3,
+    "http_err": ""
+  },
+  {
+    "server": "winston-ai-mcp",
+    "port": 8674,
+    "stdio_pass": true,
+    "stdio_tools": 4,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools in response: event: message\ndata: {\"result\":{\"protocolVersion\":\"2024-11-05\",\"capabilities\":{\"tools\":{\"listChanged\":true}},\"serverInfo\":{\"name\":\"Winston AI MCP Serv"
+  },
+  {
+    "server": "youtube-transcript-mcp",
+    "port": 8675,
+    "stdio_pass": true,
+    "stdio_tools": 1,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 1,
+    "http_err": ""
+  }
+]

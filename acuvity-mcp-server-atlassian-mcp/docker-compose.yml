@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  acuvity-mcp-server-atlassian-mcp:
+    image: hackerdogs/acuvity-mcp-server-atlassian-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: acuvity-mcp-server-atlassian-mcp
+    ports:
+      - "8404:8404"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8404
+    restart: unless-stopped

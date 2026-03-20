@@ -1,0 +1,51 @@
+MCP test run - julius-mcp
+Generated (UTC): 2026-03-20T18:49:56Z
+Exit code: 0
+Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
+---------------------------------------------------------------------------------
+=================================================================================
+[0;34mJulius MCP Server — Test Suite[0m
+=================================================================================
+
+[0;34m[Test 1] Docker image[0m
+  [0;32m✅ PASS: Docker image hackerdogs/julius-mcp:latest exists[0m
+
+[0;34m[Test 2] CLI binary inside container[0m
+  [0;32m✅ PASS: julius binary responds[0m
+       Julius is a tool for fingerprinting LLM services by sending HTTP probes
+
+[0;34m[Test 3] MCP stdio mode — initialize + tools/list[0m
+  [0;32m✅ PASS: stdio mode returned tools/list response (6 tool names found)[0m
+
+[0;34m[Test 4] MCP HTTP streamable mode — initialize[0m
+  [0;32m✅ PASS: HTTP streamable mode responded (status 200)[0m
+       Session ID: 4690557cd5ad495a...
+
+[0;34m[Test 5] MCP HTTP — tools/list[0m
+  [0;32m✅ PASS: HTTP tools/list returned tools[0m
+       - probe_targets: Probe one or more target URLs to fingerprint which LLM service is running.
+
+Juli
+       - list_probes: List all available probe definitions that Julius can use.
+
+Returns the set of bu
+       - validate_probes: Validate custom probe definition files.
+
+Checks that a probe definition file (YA
+       - download_file: Download a file from a URL into the container workspace.
+
+Args:
+    url: HTTP(S)
+       - cleanup_downloads: Clean up downloaded files from the container workspace.
+
+Args:
+    job_id: Speci
+
+[0;34m[Test 6] MCP HTTP — tools/call (list_probes)[0m
+  [0;32m✅ PASS: tools/call list_probes returned a result[0m
+
+=================================================================================
+[0;34mResults: [0;32m6 passed[0m, [0;31m0 failed[0m
+=================================================================================
+julius-mcp-test
+julius-mcp-test

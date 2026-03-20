@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "exiftool-mcp": {
+      "url": "http://localhost:8502/mcp"
+    }
+  }
+}

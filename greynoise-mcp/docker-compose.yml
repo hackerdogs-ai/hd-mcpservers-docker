@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  greynoise-mcp:
+    image: hackerdogs/greynoise-mcp:latest
+    build: .
+    ports:
+      - "8645:8645"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8645
+      - GREYNOISE_API_KEY=${GREYNOISE_API_KEY:-}

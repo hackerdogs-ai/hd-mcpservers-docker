@@ -1,0 +1,20 @@
+MCP test run - http-headers-security-mcp
+Generated (UTC): 2026-03-20T18:48:28Z
+Exit code: 0
+Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
+---------------------------------------------------------------------------------
+========== http-headers-security-mcp test (compliance) ==========
+[0;34m[1] Install[0m
+  [0;32mPASS: image exists[0m
+[0;34m[2] Stdio tools/list[0m
+  [0;32mPASS: stdio tools/list[0m
+[0;34m[3] Stdio tools/call run_http_headers_security[0m
+  [0;32mPASS: stdio tools/call run_http_headers_security[0m
+[0;34m[4] HTTP streamable tools/list[0m
+  [0;32mPASS: HTTP tools/list[0m
+[0;34m[5] HTTP streamable tools/call run_http_headers_security[0m
+  [0;32mPASS: HTTP tools/call run_http_headers_security[0m
+
+Total: 5 passed, 0 failed
+http-headers-security-mcp-test
+http-headers-security-mcp-test

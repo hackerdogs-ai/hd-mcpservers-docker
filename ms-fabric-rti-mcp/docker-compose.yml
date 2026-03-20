@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  ms-fabric-rti-mcp:
+    image: hackerdogs/ms-fabric-rti-mcp:latest
+    build: .
+    ports:
+      - "8650:8650"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8650
+      - FABRIC_API_KEY=${FABRIC_API_KEY:-}

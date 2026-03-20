@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  acuvity-mcp-server-fetch-mcp:
+    image: hackerdogs/acuvity-mcp-server-fetch-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: acuvity-mcp-server-fetch-mcp
+    ports:
+      - "8419:8419"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8419
+    restart: unless-stopped

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  name-server-mcp:
+    image: hackerdogs/name-server-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: name-server-mcp
+    ports:
+      - "8525:8525"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8525
+    restart: unless-stopped

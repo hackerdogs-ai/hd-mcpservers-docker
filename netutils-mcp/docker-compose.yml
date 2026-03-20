@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  netutils-mcp:
+    image: hackerdogs/netutils-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: netutils-mcp
+    ports:
+      - "8436:8436"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8436
+    restart: unless-stopped

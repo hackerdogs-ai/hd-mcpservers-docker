@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  geocoding-mcp:
+    image: hackerdogs/geocoding-mcp:latest
+    build: .
+    ports:
+      - "8641:8641"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8641
+

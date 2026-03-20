@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  slack-mcp:
+    image: hackerdogs/slack-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: slack-mcp
+    ports:
+      - "8454:8454"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8454
+    restart: unless-stopped

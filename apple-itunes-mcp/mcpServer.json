@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "apple-itunes-mcp": {
+      "url": "http://localhost:8511/mcp"
+    }
+  }
+}

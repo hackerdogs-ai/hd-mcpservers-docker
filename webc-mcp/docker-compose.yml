@@ -1,0 +1,8 @@
+services:
+  webc-mcp:
+    build: .
+    ports:
+      - "8504:8504"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8504

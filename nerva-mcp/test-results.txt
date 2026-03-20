@@ -1,0 +1,38 @@
+MCP test run - nerva-mcp
+Generated (UTC): 2026-03-20T18:54:30Z
+Exit code: 0
+Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
+---------------------------------------------------------------------------------
+=================================================================================
+[0;34mNerva MCP Server — Test Suite[0m
+=================================================================================
+
+[0;34m[Test 1] Docker image[0m
+  [0;32m✅ PASS: Docker image hackerdogs/nerva-mcp:latest exists[0m
+
+[0;34m[Test 2] CLI binary inside container[0m
+  [0;32m✅ PASS: nerva binary responds[0m
+       Usage:
+
+[0;34m[Test 3] MCP stdio mode — initialize + tools/list[0m
+  [0;32m✅ PASS: stdio mode returned tools/list response (       3 tool names found)[0m
+
+[0;34m[Test 4] MCP HTTP streamable mode — initialize[0m
+  [0;32m✅ PASS: HTTP streamable mode responded (status 200)[0m
+       Session ID: 534861aa69fc4d6e...
+
+[0;34m[Test 5] MCP HTTP — tools/list[0m
+  [0;32m✅ PASS: HTTP tools/list returned tools[0m
+       - fingerprint_services: Identify network services running on open ports and extract version/config metad
+       - list_capabilities: List all supported service detection plugins.
+
+Returns the set of 120+ service t
+
+[0;34m[Test 6] MCP HTTP — tools/call (list_capabilities)[0m
+  [0;32m✅ PASS: tools/call list_capabilities returned a result[0m
+
+=================================================================================
+[0;34mResults: [0;32m6 passed[0m, [0;31m0 failed[0m
+=================================================================================
+nerva-mcp-test
+nerva-mcp-test

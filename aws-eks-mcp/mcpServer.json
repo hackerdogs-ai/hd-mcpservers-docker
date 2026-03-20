@@ -1,0 +1,27 @@
+{
+  "mcpServers": {
+    "aws-eks-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "MCP_TRANSPORT",
+        "-e",
+        "AWS_REGION",
+        "-e",
+        "AWS_ACCESS_KEY_ID",
+        "-e",
+        "AWS_SECRET_ACCESS_KEY",
+        "hackerdogs/aws-eks-mcp:latest"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio",
+        "AWS_REGION": "",
+        "AWS_ACCESS_KEY_ID": "",
+        "AWS_SECRET_ACCESS_KEY": ""
+      }
+    }
+  }
+}

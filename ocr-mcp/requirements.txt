@@ -1,0 +1,5 @@
+fastmcp
+uvicorn
+Pillow
+pytesseract
+pdf2image

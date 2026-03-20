@@ -1,0 +1,53 @@
+MCP test run - virustotal-mcp
+Generated (UTC): 2026-03-20T20:01:50Z
+Exit code: 0
+Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
+---------------------------------------------------------------------------------
+=================================================================================
+[0;34mVirusTotal MCP Server — Test Suite[0m
+=================================================================================
+
+[0;34m[Test 1] Docker image[0m
+  [0;32m✅ PASS: Docker image hackerdogs/virustotal-mcp:latest exists[0m
+
+[0;34m[Test 2] Python requests library inside container[0m
+  [0;32m✅ PASS: requests library available[0m
+       requests 2.32.5
+
+[0;34m[Test 3] MCP stdio mode — initialize + tools/list[0m
+  [0;32m✅ PASS: stdio mode returned tools/list response (       7 tool names found)[0m
+
+[0;34m[Test 4] MCP HTTP streamable mode — initialize[0m
+  [0;32m✅ PASS: HTTP streamable mode responded (status 200)[0m
+       Session ID: 1949be857d5f4d09...
+
+[0;34m[Test 5] MCP HTTP — tools/list[0m
+  [0;32m✅ PASS: HTTP tools/list returned tools[0m
+       - vt_file_report: Get the VirusTotal analysis report for a file by its hash (MD5, SHA-1, or SHA-25
+       - vt_url_report: Get the VirusTotal analysis report for a URL.
+
+Args:
+    url: The URL to look up
+       - vt_domain_report: Get the VirusTotal analysis report for a domain.
+
+Args:
+    domain: Domain name 
+       - vt_ip_report: Get the VirusTotal analysis report for an IP address.
+
+Args:
+    ip_address: IPv
+       - vt_scan_url: Submit a URL to VirusTotal for scanning.
+
+Returns an analysis ID that can be che
+       - vt_get_analysis: Get the status and results of a VirusTotal analysis by its ID.
+
+Use this to chec
+
+[0;34m[Test 6] MCP HTTP — tools/call (vt_domain_report)[0m
+  [0;32m✅ PASS: tools/call vt_domain_report returned a result[0m
+
+=================================================================================
+[0;34mResults: [0;32m6 passed[0m, [0;31m0 failed[0m
+=================================================================================
+virustotal-mcp-test
+virustotal-mcp-test

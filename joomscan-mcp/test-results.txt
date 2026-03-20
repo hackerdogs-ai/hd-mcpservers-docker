@@ -1,0 +1,34 @@
+MCP test run - joomscan-mcp
+Generated (UTC): 2026-03-20T18:49:51Z
+Exit code: 0
+Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
+---------------------------------------------------------------------------------
+=================================================================================
+[0;34mJoomScan MCP Server — Test Suite[0m
+=================================================================================
+
+[0;34m[Test 1] Docker image[0m
+  [0;32mPASS: Docker image hackerdogs/joomscan-mcp:latest exists[0m
+
+[0;34m[Test 2] CLI binary inside container[0m
+  [0;32mPASS: joomscan binary responds[0m
+       [FATAL tini (7)] exec joomscan failed: No such file or directory
+
+[0;34m[Test 3] MCP stdio mode — initialize + tools/list[0m
+  [0;32mPASS: stdio mode returned tools/list response (       2 tool names found)[0m
+
+[0;34m[Test 4] MCP HTTP streamable mode — initialize[0m
+  [0;32mPASS: HTTP streamable mode responded (status 200)[0m
+       Session ID: bd9934c8a7014dc5...
+
+[0;34m[Test 5] MCP HTTP — tools/list[0m
+  [0;32mPASS: HTTP tools/list returned tools[0m
+
+[0;34m[Test 6] MCP HTTP — tools/call (run_joomscan)[0m
+  [0;32mPASS: tools/call run_joomscan returned a result[0m
+
+=================================================================================
+[0;34mResults: [0;32m6 passed[0m, [0;31m0 failed[0m
+=================================================================================
+joomscan-mcp-test
+joomscan-mcp-test

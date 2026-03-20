@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  sec-edgar-mcp:
+    image: hackerdogs/sec-edgar-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sec-edgar-mcp
+    ports:
+      - "8451:8451"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8451
+    restart: unless-stopped

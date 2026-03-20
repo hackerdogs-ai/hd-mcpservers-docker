@@ -6,20 +6,52 @@
 
 # Atlas Docs MCP Server
 
-MCP server for **Atlas Docs** — technical documentation for libraries and frameworks, processed into clean markdown for LLM consumption. Easy to use with Cursor, Cline, and other MCP clients.
-
-**Upstream:** [acuvity/mcp-server-atlas-docs](https://hub.docker.com/r/acuvity/mcp-server-atlas-docs) · [GitHub (CartographAI/atlas-docs-mcp)](https://github.com/CartographAI/atlas-docs-mcp)
+Atlas Docs MCP server:  Provides technical documentation for libraries and frameworks Processes the official docs into a clean markdown vers
 
 ## Docker Run (stdio)
 
 ```bash
-docker run -i --rm acuvity/mcp-server-atlas-docs:latest
+docker run -i --rm hackerdogs/acuvity-mcp-server-atlas-docs-mcp:latest
 ```
 
-## Env / Port
+## Docker Run (HTTP streamable mode)
 
-- Default: stdio transport. If the image supports HTTP streamable, use port **8384** and set `MCP_TRANSPORT=streamable-http`, `MCP_PORT=8384`.
+```bash
+docker run -d --name acuvity-mcp-server-atlas-docs-mcp \
+  -e MCP_TRANSPORT=streamable-http \
+  -e MCP_PORT=8403 \
+  -p 8403:8403 \
+  hackerdogs/acuvity-mcp-server-atlas-docs-mcp:latest
+```
 
-## Tools
+## MCP Client Configuration (stdio)
 
-Exposes documentation lookup and processing for libraries and frameworks.
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-atlas-docs-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/acuvity-mcp-server-atlas-docs-mcp:latest"]
+    }
+  }
+}
+```
+
+## Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `MCP_TRANSPORT` | `stdio` | Transport: `stdio` or `streamable-http` |
+| `MCP_PORT` | `8403` | HTTP port (streamable-http mode) |
+
+## Build
+
+```bash
+docker build -t hackerdogs/acuvity-mcp-server-atlas-docs-mcp:latest .
+```
+
+## Test
+
+```bash
+./test.sh
+```

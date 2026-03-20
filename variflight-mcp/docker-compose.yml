@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  variflight-mcp:
+    image: hackerdogs/variflight-mcp:latest
+    build: .
+    ports:
+      - "8672:8672"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8672
+      - VARIFLIGHT_API_KEY=${VARIFLIGHT_API_KEY:-}

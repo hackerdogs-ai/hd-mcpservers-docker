@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  dns-mcp-server-mcp:
+    image: hackerdogs/dns-mcp-server-mcp:latest
+    build: .
+    ports:
+      - "8635:8635"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8635
+

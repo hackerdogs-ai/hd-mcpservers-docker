@@ -1,0 +1,8 @@
+services:
+  powerpoint-tools-mcp:
+    build: .
+    ports:
+      - "8507:8507"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8507

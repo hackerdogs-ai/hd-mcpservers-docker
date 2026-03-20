@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  acuvity-mcp-server-playwright-mcp:
+    image: hackerdogs/acuvity-mcp-server-playwright-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: acuvity-mcp-server-playwright-mcp
+    ports:
+      - "8444:8444"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8444
+    restart: unless-stopped

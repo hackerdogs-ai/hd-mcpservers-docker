@@ -1,0 +1,76 @@
+server_name,type,npm_or_pypi_package,port,env_vars,description
+ai-humanizer-mcp,npx,ai-humanizer-mcp,8601,,AI text humanizer
+aws-api-mcp,uvx,awslabs.aws-api-mcp-server,8602,AWS_REGION AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY,AWS API operations
+aws-aurora-dsql-mcp,uvx,awslabs.aurora-dsql-mcp-server,8603,AWS_REGION AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY,Aurora DSQL database
+aws-bedrock-agentcore-mcp,uvx,awslabs.bedrock-agentcore-mcp-server,8604,AWS_REGION AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY,Bedrock AgentCore services
+aws-bedrock-custom-model-mcp,uvx,awslabs.bedrock-custom-model-mcp-server,8605,AWS_REGION AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY,Bedrock custom model import
+aws-cloudtrail-mcp,uvx,awslabs.cloudtrail-mcp-server,8606,AWS_REGION AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY,CloudTrail account activity
+aws-cloudwatch-appsignals-mcp,uvx,awslabs.cloudwatch-appsignals-mcp-server,8607,AWS_REGION AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY,CloudWatch Application Signals
+aws-cloudwatch-mcp,uvx,awslabs.cloudwatch-mcp-server,8608,AWS_REGION AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY,CloudWatch monitoring
+aws-core-mcp,uvx,awslabs.core-mcp-server,8609,AWS_REGION AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY,AWS Core proxy server
+aws-documentation-mcp,uvx,awslabs.aws-documentation-mcp-server,8610,,AWS documentation search
+aws-documentdb-mcp,uvx,awslabs.documentdb-mcp-server,8611,AWS_REGION AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY,DocumentDB database
+aws-dynamodb-mcp,uvx,awslabs.dynamodb-mcp-server,8612,AWS_REGION AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY,DynamoDB data modeling
+aws-ecs-mcp,uvx,awslabs.ecs-mcp-server,8613,AWS_REGION AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY,ECS container management
+aws-eks-mcp,uvx,awslabs.eks-mcp-server,8614,AWS_REGION AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY,EKS Kubernetes management
+aws-iam-mcp,uvx,awslabs.iam-mcp-server,8615,AWS_REGION AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY,IAM identity management
+aws-mq-mcp,uvx,awslabs.amazon-mq-mcp-server,8616,AWS_REGION AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY,Amazon MQ broker management
+aws-neptune-mcp,uvx,awslabs.neptune-mcp-server,8617,AWS_REGION AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY,Neptune graph database
+aws-network-mcp,uvx,awslabs.network-mcp-server,8618,AWS_REGION AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY,AWS networking troubleshoot
+aws-postgres-mcp,uvx,awslabs.postgres-mcp-server,8619,AWS_REGION AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY,Aurora PostgreSQL database
+aws-prometheus-mcp,uvx,awslabs.prometheus-mcp-server,8620,AWS_REGION AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY,Prometheus PromQL queries
+aws-redshift-mcp,uvx,awslabs.redshift-mcp-server,8621,AWS_REGION AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY,Redshift data warehouse
+aws-s3-tables-mcp,uvx,awslabs.s3-tables-mcp-server,8622,AWS_REGION AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY,S3 Tables management
+aws-serverless-mcp,uvx,awslabs.serverless-mcp-server,8623,AWS_REGION AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY,Serverless application dev
+aws-sns-sqs-mcp,uvx,awslabs.amazon-sns-sqs-mcp-server,8624,AWS_REGION AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY,SNS/SQS messaging
+aws-stepfunctions-mcp,uvx,awslabs.stepfunctions-mcp-server,8625,AWS_REGION AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY,Step Functions workflows
+aws-well-architected-security-mcp,uvx,awslabs.well-architected-security-mcp-server,8626,AWS_REGION AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY,Well-Architected security
+azure-mcp,npx,@azure/mcp,8627,AZURE_CLIENT_ID AZURE_CLIENT_SECRET AZURE_TENANT_ID AZURE_SUBSCRIPTION_ID,Azure resource management
+baidu-search-mcp-server-mcp,uvx,baidu-search-mcp-server,8628,,Baidu search with content fetch
+brave-search-mcp,npx,@modelcontextprotocol/server-brave-search,8629,BRAVE_API_KEY,Brave web search
+brightdata-mcp-server-mcp,npx,@anthropic/brightdata-mcp-server,8630,BRIGHTDATA_API_KEY,Bright Data web scraping
+chrome-devtools-mcp,npx,@anthropic/mcp-server-chrome-devtools,8631,,Chrome DevTools protocol
+clinicaltrialsgov-mcp-server-mcp,npx,clinicaltrialsgov-mcp-server,8632,,ClinicalTrials.gov search
+cloudflare-mcp,npx,@cloudflare/mcp-server-cloudflare,8633,CLOUDFLARE_API_TOKEN,Cloudflare management
+context7-mcp,npx,@upstash/context7-mcp,8634,,Library documentation lookup
+dns-mcp-server-mcp,npx,@cenemiljezweb/dns-mcp-server,8635,,DNS lookups and resolution
+dnstwist-mcp,npx,dnstwist-mcp,8636,,DNS fuzzing typosquatting
+exa-mcp,npx,exa-mcp-server,8637,EXA_API_KEY,Exa neural search
+exiftool-agent-mcp,npx,exiftool-mcp-ai-agent,8638,,Exiftool metadata via npx
+fetch-mcp,uvx,mcp-server-fetch,8639,,Web content fetching
+firecrawl-mcp,npx,firecrawl-mcp,8640,FIRECRAWL_API_KEY,Firecrawl web scraping
+geocoding-mcp,uvx,geocode-mcp,8641,,Geocoding address lookup
+gitlab-mcp,npx,@zereight/mcp-gitlab,8642,GITLAB_TOKEN,GitLab API operations
+globalping-mcp,npx,globalping-mcp,8643,,Global network probing
+google-threat-intelligence-mcp,uvx,google-threat-intelligence-mcp,8644,GOOGLE_TI_API_KEY,Google TI with Mandiant/VT
+greynoise-mcp,npx,@greynoise/greynoise-mcp-server,8645,GREYNOISE_API_KEY,GreyNoise IP intelligence
+hibp-mcp,npx,@darrenjrobinson/hibp-mcp,8646,HIBP_API_KEY,Have I Been Pwned lookups
+imf-data-mcp,uvx,imf-data-mcp,8647,,IMF economic data
+iplocate-mcp,npx,iplocate-mcp,8648,,IP geolocation lookup
+jira-mcp,uvx,mcp-server-jira,8649,JIRA_URL JIRA_EMAIL JIRA_API_TOKEN,Jira issue management
+ms-fabric-rti-mcp,uvx,microsoft-fabric-rti-mcp,8650,FABRIC_API_KEY,Microsoft Fabric RTI
+nasa-mcp,npx,nasa-mcp,8651,NASA_API_KEY,NASA open data APIs
+notion-mcp,npx,@notionhq/notion-mcp-server,8652,NOTION_API_KEY,Notion workspace management
+octagon-mcp-server-mcp,npx,octagon-mcp,8653,,Octagon finance data
+octocode-mcp,npx,octocode-mcp,8654,,Code analysis tool
+openfda-mcp,npx,openfda-mcp,8655,,FDA drug/device data
+osm-mcp-server-mcp,uvx,osm-mcp-server,8656,,OpenStreetMap queries
+pinecone-mcp,npx,@pinecone-database/mcp,8657,PINECONE_API_KEY,Pinecone vector database
+postman-mcp,npx,@postman/postman-mcp-server,8658,POSTMAN_API_KEY,Postman API collections
+puppeteer-mcp,npx,@modelcontextprotocol/server-puppeteer,8659,,Puppeteer browser control
+rapidapi-hub-reverse-image-search-by-copyseeker-mcp,npx,mcp-remote,8660,RAPIDAPI_KEY,Reverse image search
+reddit-mcp,uvx,mcp-server-reddit,8661,,Reddit content access
+s3-mcp-server-mcp,npx,@geunoh/s3-mcp-server,8662,AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY,S3 bucket operations
+scc-mcp,uvx,scc-mcp,8663,,Source code counter
+search1api-mcp,npx,search1api-mcp,8664,SEARCH1API_KEY,Search1API web search
+sentry-mcp,npx,@sentry/mcp-server-sentry,8665,SENTRY_AUTH_TOKEN,Sentry error tracking
+serper-search-mcp,npx,serper-search-scrape-mcp-server,8666,SERPER_API_KEY,Serper Google search
+splunk-mcp,npx,splunk-mcp,8667,SPLUNK_URL SPLUNK_TOKEN,Splunk log search
+steampipe-mcp,uvx,steampipe-mcp-server,8668,,Steampipe cloud queries
+stripe-mcp,npx,@stripe/mcp,8669,STRIPE_SECRET_KEY,Stripe payments
+terraform-mcp,npx,terraform-mcp-server,8670,,Terraform IaC management
+tomtom-mcp,npx,@tomtom-org/tomtom-mcp,8671,TOMTOM_API_KEY,TomTom maps and routing
+variflight-mcp,npx,@variflight-ai/variflight-mcp,8672,VARIFLIGHT_API_KEY,Flight tracking data
+whois-mcp,npx,whois-mcp,8673,,WHOIS domain lookups
+winston-ai-mcp,npx,winston-ai-mcp,8674,,Winston AI content detection
+youtube-transcript-mcp,npx,@kimtaeyoon83/mcp-server-youtube-transcript,8675,,YouTube transcript extraction

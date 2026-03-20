@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  graphviz-dot-mcp:
+    image: hackerdogs/graphviz-dot-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: graphviz-dot-mcp
+    ports:
+      - "8523:8523"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8523
+    restart: unless-stopped

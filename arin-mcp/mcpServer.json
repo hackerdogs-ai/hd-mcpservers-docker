@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "arin-mcp": {
+      "url": "http://localhost:8513/mcp"
+    }
+  }
+}

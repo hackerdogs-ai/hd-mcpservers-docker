@@ -1,0 +1,86 @@
+MCP test run - qsreplace-mcp
+Generated (UTC): 2026-03-20T19:19:03Z
+Exit code: 0
+Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
+---------------------------------------------------------------------------------
+=================================================================================
+[0;34mQSReplace MCP Server — Test Suite[0m
+=================================================================================
+
+[0;34m[Test 1] Docker image[0m
+  Image not found. Building...
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.92kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#2 DONE 0.8s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/8] FROM docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0
+#4 resolve docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0 done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 4.71kB done
+#5 DONE 0.0s
+
+#6 [2/8] RUN groupadd -g 1000 mcpuser &&     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
+#6 CACHED
+
+#7 [3/8] RUN apt-get update && apt-get install -y --no-install-recommends     tini     ca-certificates     && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [5/8] COPY requirements.txt ./
+#8 CACHED
+
+#9 [4/8] WORKDIR /app
+#9 CACHED
+
+#10 [6/8] RUN pip install --no-cache-dir -r requirements.txt
+#10 CACHED
+
+#11 [7/8] COPY mcp_server.py ./
+#11 DONE 0.0s
+
+#12 [8/8] RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+#12 DONE 0.1s
+
+#13 exporting to image
+#13 exporting layers 0.0s done
+#13 exporting manifest sha256:d324ddf982c811873206f556852efc27ba22ac1eea84e7d3fb53f2e7c7a7683f done
+#13 exporting config sha256:7aa543b16ed45b9326e51666f8f63764c77f3de33dc8bc1f68d341c435441e78 done
+#13 exporting attestation manifest sha256:024b4e5b8c1daed834b9f0c1351ed3d9d751210bc7f94d8da46ae11e548e6258 done
+#13 exporting manifest list sha256:899c7706b3e67436438633743f5ec9daa59267f47d78cdf2f5d181d40f2fc444 done
+#13 naming to docker.io/hackerdogs/qsreplace-mcp:latest done
+#13 unpacking to docker.io/hackerdogs/qsreplace-mcp:latest 0.0s done
+#13 DONE 0.1s
+  [0;32m✅ PASS: Docker image hackerdogs/qsreplace-mcp:latest exists[0m
+
+[0;34m[Test 2] CLI binary inside container[0m
+  [0;32m✅ PASS: qsreplace binary responds[0m
+       [FATAL tini (7)] exec qsreplace failed: No such file or directory
+
+[0;34m[Test 3] MCP stdio mode — initialize + tools/list[0m
+  [0;32m✅ PASS: stdio mode returned tools/list response (       2 tool names found)[0m
+
+[0;34m[Test 4] MCP HTTP streamable mode — initialize[0m
+  [0;32m✅ PASS: HTTP streamable mode responded (status 200)[0m
+       Session ID: 26e33cbdd79c4edf...
+
+[0;34m[Test 5] MCP HTTP — tools/list[0m
+  [0;32m✅ PASS: HTTP tools/list returned tools[0m
+
+[0;34m[Test 6] MCP HTTP — tools/call (run_qsreplace)[0m
+  [0;32m✅ PASS: tools/call run_qsreplace returned a result[0m
+
+=================================================================================
+[0;34mResults: [0;32m6 passed[0m, [0;31m0 failed[0m
+=================================================================================
+qsreplace-mcp-test
+qsreplace-mcp-test

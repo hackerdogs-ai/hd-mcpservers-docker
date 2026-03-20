@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  aws-cloudtrail-mcp:
+    image: hackerdogs/aws-cloudtrail-mcp:latest
+    build: .
+    ports:
+      - "8606:8606"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8606
+      - AWS_REGION=${AWS_REGION:-}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-}

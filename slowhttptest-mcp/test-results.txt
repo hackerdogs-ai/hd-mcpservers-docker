@@ -1,0 +1,903 @@
+MCP test run - slowhttptest-mcp
+Generated (UTC): 2026-03-20T19:40:23Z
+Exit code: 0
+Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
+---------------------------------------------------------------------------------
+=================================================================================
+[0;34mSlowHTTPTest MCP Server — Test Suite[0m
+=================================================================================
+
+[0;34m[Test 1] Docker image[0m
+  Image not found. Building...
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.73kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#2 ...
+
+#3 [auth] library/python:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#2 DONE 1.9s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.1s
+
+#5 [1/8] FROM docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0
+#5 resolve docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0 done
+#5 DONE 0.0s
+
+#6 [2/8] RUN groupadd -g 1000 mcpuser &&     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
+#6 CACHED
+
+#7 [internal] load build context
+#7 transferring context: 4.78kB 0.0s done
+#7 DONE 0.0s
+
+#8 [3/8] RUN apt-get update && apt-get install -y --no-install-recommends     git build-essential autoconf automake libssl-dev tini ca-certificates     && rm -rf /var/lib/apt/lists/*     && git clone --depth 1 https://github.com/shekyan/slowhttptest.git /tmp/slowhttptest-src     && cd /tmp/slowhttptest-src && ./configure && make && make install     && rm -rf /tmp/slowhttptest-src
+#8 0.431 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#8 0.753 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#8 1.024 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [48.0 kB]
+#8 1.033 Get:4 http://deb.debian.org/debian bookworm/main arm64 Packages [8691 kB]
+#8 1.605 Get:5 http://deb.debian.org/debian bookworm-updates/main arm64 Packages [6936 B]
+#8 1.612 Get:6 http://deb.debian.org/debian-security bookworm-security/main arm64 Packages [291 kB]
+#8 2.269 Fetched 9243 kB in 2s (4258 kB/s)
+#8 2.269 Reading package lists...
+#8 2.548 Reading package lists...
+#8 2.834 Building dependency tree...
+#8 2.897 Reading state information...
+#8 2.968 ca-certificates is already the newest version (20230311+deb12u1).
+#8 2.968 The following additional packages will be installed:
+#8 2.968   autotools-dev binutils binutils-aarch64-linux-gnu binutils-common bzip2 cpp
+#8 2.968   cpp-12 dpkg-dev g++ g++-12 gcc gcc-12 git-man libasan8 libatomic1
+#8 2.968   libbinutils libbrotli1 libc-dev-bin libc6-dev libcc1-0 libcrypt-dev
+#8 2.968   libctf-nobfd0 libctf0 libcurl3-gnutls libdpkg-perl liberror-perl libexpat1
+#8 2.969   libgcc-12-dev libgdbm-compat4 libgomp1 libgprofng0 libhwasan0 libisl23
+#8 2.969   libitm1 libjansson4 libldap-2.5-0 liblsan0 libmpc3 libmpfr6 libnghttp2-14
+#8 2.969   libnsl-dev libperl5.36 libpsl5 librtmp1 libsasl2-2 libsasl2-modules-db
+#8 2.969   libssh2-1 libstdc++-12-dev libtirpc-dev libtsan2 libubsan1 linux-libc-dev m4
+#8 2.969   make patch perl perl-modules-5.36 rpcsvc-proto xz-utils
+#8 2.969 Suggested packages:
+#8 2.969   autoconf-archive gnu-standards autoconf-doc libtool gettext binutils-doc
+#8 2.969   bzip2-doc cpp-doc gcc-12-locales cpp-12-doc debian-keyring gcc-12-doc
+#8 2.969   gcc-multilib manpages-dev flex bison gdb gcc-doc gettext-base git-daemon-run
+#8 2.969   | git-daemon-sysvinit git-doc git-email git-gui gitk gitweb git-cvs
+#8 2.969   git-mediawiki git-svn glibc-doc gnupg | sq | sqop | pgpainless-cli
+#8 2.969   sensible-utils bzr libssl-doc libstdc++-12-doc m4-doc make-doc ed
+#8 2.969   diffutils-doc perl-doc libterm-readline-gnu-perl
+#8 2.969   | libterm-readline-perl-perl libtap-harness-archive-perl
+#8 2.969 Recommended packages:
+#8 2.969   fakeroot gnupg | sq | sqop | pgpainless-cli libalgorithm-merge-perl less
+#8 2.969   ssh-client manpages manpages-dev libc-devtools libfile-fcntllock-perl
+#8 2.969   liblocale-gettext-perl libldap-common publicsuffix libsasl2-modules
+#8 3.169 The following NEW packages will be installed:
+#8 3.169   autoconf automake autotools-dev binutils binutils-aarch64-linux-gnu
+#8 3.169   binutils-common build-essential bzip2 cpp cpp-12 dpkg-dev g++ g++-12 gcc
+#8 3.169   gcc-12 git git-man libasan8 libatomic1 libbinutils libbrotli1 libc-dev-bin
+#8 3.169   libc6-dev libcc1-0 libcrypt-dev libctf-nobfd0 libctf0 libcurl3-gnutls
+#8 3.169   libdpkg-perl liberror-perl libexpat1 libgcc-12-dev libgdbm-compat4 libgomp1
+#8 3.169   libgprofng0 libhwasan0 libisl23 libitm1 libjansson4 libldap-2.5-0 liblsan0
+#8 3.169   libmpc3 libmpfr6 libnghttp2-14 libnsl-dev libperl5.36 libpsl5 librtmp1
+#8 3.169   libsasl2-2 libsasl2-modules-db libssh2-1 libssl-dev libstdc++-12-dev
+#8 3.169   libtirpc-dev libtsan2 libubsan1 linux-libc-dev m4 make patch perl
+#8 3.169   perl-modules-5.36 rpcsvc-proto tini xz-utils
+#8 3.203 0 upgraded, 65 newly installed, 0 to remove and 0 not upgraded.
+#8 3.203 Need to get 80.7 MB of archives.
+#8 3.203 After this operation, 368 MB of additional disk space will be used.
+#8 3.203 Get:1 http://deb.debian.org/debian bookworm/main arm64 perl-modules-5.36 all 5.36.0-7+deb12u3 [2815 kB]
+#8 3.354 Get:2 http://deb.debian.org/debian bookworm/main arm64 libgdbm-compat4 arm64 1.23-3 [48.0 kB]
+#8 3.357 Get:3 http://deb.debian.org/debian bookworm/main arm64 libperl5.36 arm64 5.36.0-7+deb12u3 [4009 kB]
+#8 3.658 Get:4 http://deb.debian.org/debian bookworm/main arm64 perl arm64 5.36.0-7+deb12u3 [239 kB]
+#8 3.676 Get:5 http://deb.debian.org/debian bookworm/main arm64 bzip2 arm64 1.0.8-5+b1 [48.9 kB]
+#8 3.682 Get:6 http://deb.debian.org/debian bookworm/main arm64 xz-utils arm64 5.4.1-1 [469 kB]
+#8 3.716 Get:7 http://deb.debian.org/debian bookworm/main arm64 m4 arm64 1.4.19-3 [276 kB]
+#8 3.736 Get:8 http://deb.debian.org/debian bookworm/main arm64 autoconf all 2.71-3 [332 kB]
+#8 3.761 Get:9 http://deb.debian.org/debian bookworm/main arm64 autotools-dev all 20220109.1 [51.6 kB]
+#8 3.769 Get:10 http://deb.debian.org/debian bookworm/main arm64 automake all 1:1.16.5-1.3 [823 kB]
+#8 3.832 Get:11 http://deb.debian.org/debian bookworm/main arm64 binutils-common arm64 2.40-2 [2487 kB]
+#8 4.133 Get:12 http://deb.debian.org/debian bookworm/main arm64 libbinutils arm64 2.40-2 [645 kB]
+#8 4.146 Get:13 http://deb.debian.org/debian bookworm/main arm64 libctf-nobfd0 arm64 2.40-2 [144 kB]
+#8 4.150 Get:14 http://deb.debian.org/debian bookworm/main arm64 libctf0 arm64 2.40-2 [79.2 kB]
+#8 4.151 Get:15 http://deb.debian.org/debian bookworm/main arm64 libgprofng0 arm64 2.40-2 [680 kB]
+#8 4.167 Get:16 http://deb.debian.org/debian bookworm/main arm64 libjansson4 arm64 2.14-2 [40.2 kB]
+#8 4.170 Get:17 http://deb.debian.org/debian bookworm/main arm64 binutils-aarch64-linux-gnu arm64 2.40-2 [2637 kB]
+#8 4.373 Get:18 http://deb.debian.org/debian bookworm/main arm64 binutils arm64 2.40-2 [64.9 kB]
+#8 4.380 Get:19 http://deb.debian.org/debian bookworm/main arm64 libc-dev-bin arm64 2.36-9+deb12u13 [46.5 kB]
+#8 4.380 Get:20 http://deb.debian.org/debian-security bookworm-security/main arm64 linux-libc-dev arm64 6.1.164-1 [2217 kB]
+#8 4.655 Get:21 http://deb.debian.org/debian bookworm/main arm64 libcrypt-dev arm64 1:4.4.33-2 [121 kB]
+#8 4.658 Get:22 http://deb.debian.org/debian bookworm/main arm64 libtirpc-dev arm64 1.3.3+ds-1 [194 kB]
+#8 4.662 Get:23 http://deb.debian.org/debian bookworm/main arm64 libnsl-dev arm64 1.3.0-2 [66.1 kB]
+#8 4.666 Get:24 http://deb.debian.org/debian bookworm/main arm64 rpcsvc-proto arm64 1.4.3-1 [59.7 kB]
+#8 4.669 Get:25 http://deb.debian.org/debian bookworm/main arm64 libc6-dev arm64 2.36-9+deb12u13 [1435 kB]
+#8 4.700 Get:26 http://deb.debian.org/debian bookworm/main arm64 libisl23 arm64 0.25-1.1 [610 kB]
+#8 4.756 Get:27 http://deb.debian.org/debian bookworm/main arm64 libmpfr6 arm64 4.2.0-1 [600 kB]
+#8 4.787 Get:28 http://deb.debian.org/debian bookworm/main arm64 libmpc3 arm64 1.3.1-1 [49.2 kB]
+#8 4.790 Get:29 http://deb.debian.org/debian bookworm/main arm64 cpp-12 arm64 12.2.0-14+deb12u1 [8228 kB]
+#8 5.482 Get:30 http://deb.debian.org/debian bookworm/main arm64 cpp arm64 4:12.2.0-3 [6832 B]
+#8 5.482 Get:31 http://deb.debian.org/debian bookworm/main arm64 libcc1-0 arm64 12.2.0-14+deb12u1 [37.7 kB]
+#8 5.483 Get:32 http://deb.debian.org/debian bookworm/main arm64 libgomp1 arm64 12.2.0-14+deb12u1 [104 kB]
+#8 5.487 Get:33 http://deb.debian.org/debian bookworm/main arm64 libitm1 arm64 12.2.0-14+deb12u1 [24.0 kB]
+#8 5.646 Get:34 http://deb.debian.org/debian bookworm/main arm64 libatomic1 arm64 12.2.0-14+deb12u1 [9568 B]
+#8 5.647 Get:35 http://deb.debian.org/debian bookworm/main arm64 libasan8 arm64 12.2.0-14+deb12u1 [2096 kB]
+#8 5.714 Get:36 http://deb.debian.org/debian bookworm/main arm64 liblsan0 arm64 12.2.0-14+deb12u1 [926 kB]
+#8 5.728 Get:37 http://deb.debian.org/debian bookworm/main arm64 libtsan2 arm64 12.2.0-14+deb12u1 [2178 kB]
+#8 5.898 Get:38 http://deb.debian.org/debian bookworm/main arm64 libubsan1 arm64 12.2.0-14+deb12u1 [862 kB]
+#8 6.173 Get:39 http://deb.debian.org/debian bookworm/main arm64 libhwasan0 arm64 12.2.0-14+deb12u1 [999 kB]
+#8 6.185 Get:40 http://deb.debian.org/debian bookworm/main arm64 libgcc-12-dev arm64 12.2.0-14+deb12u1 [956 kB]
+#8 6.238 Get:41 http://deb.debian.org/debian bookworm/main arm64 gcc-12 arm64 12.2.0-14+deb12u1 [16.3 MB]
+#8 7.398 Get:42 http://deb.debian.org/debian bookworm/main arm64 gcc arm64 4:12.2.0-3 [5244 B]
+#8 7.398 Get:43 http://deb.debian.org/debian bookworm/main arm64 libstdc++-12-dev arm64 12.2.0-14+deb12u1 [2007 kB]
+#8 7.553 Get:44 http://deb.debian.org/debian bookworm/main arm64 g++-12 arm64 12.2.0-14+deb12u1 [9072 kB]
+#8 8.284 Get:45 http://deb.debian.org/debian bookworm/main arm64 g++ arm64 4:12.2.0-3 [1336 B]
+#8 8.285 Get:46 http://deb.debian.org/debian bookworm/main arm64 make arm64 4.3-4.1 [391 kB]
+#8 8.301 Get:47 http://deb.debian.org/debian bookworm/main arm64 libdpkg-perl all 1.21.22 [603 kB]
+#8 8.322 Get:48 http://deb.debian.org/debian bookworm/main arm64 patch arm64 2.7.6-7 [121 kB]
+#8 8.332 Get:49 http://deb.debian.org/debian bookworm/main arm64 dpkg-dev all 1.21.22 [1353 kB]
+#8 8.439 Get:50 http://deb.debian.org/debian bookworm/main arm64 build-essential arm64 12.9 [7704 B]
+#8 8.440 Get:51 http://deb.debian.org/debian bookworm/main arm64 libbrotli1 arm64 1.0.9-2+b6 [269 kB]
+#8 8.458 Get:52 http://deb.debian.org/debian bookworm/main arm64 libsasl2-modules-db arm64 2.1.28+dfsg-10 [20.8 kB]
+#8 8.460 Get:53 http://deb.debian.org/debian bookworm/main arm64 libsasl2-2 arm64 2.1.28+dfsg-10 [58.0 kB]
+#8 8.465 Get:54 http://deb.debian.org/debian bookworm/main arm64 libldap-2.5-0 arm64 2.5.13+dfsg-5 [171 kB]
+#8 8.476 Get:55 http://deb.debian.org/debian bookworm/main arm64 libnghttp2-14 arm64 1.52.0-1+deb12u2 [68.6 kB]
+#8 8.483 Get:56 http://deb.debian.org/debian bookworm/main arm64 libpsl5 arm64 0.21.2-1 [58.6 kB]
+#8 8.487 Get:57 http://deb.debian.org/debian bookworm/main arm64 librtmp1 arm64 2.4+20151223.gitfa8646d.1-2+b2 [59.4 kB]
+#8 8.491 Get:58 http://deb.debian.org/debian bookworm/main arm64 libssh2-1 arm64 1.10.0-3+b1 [172 kB]
+#8 8.506 Get:59 http://deb.debian.org/debian bookworm/main arm64 libcurl3-gnutls arm64 7.88.1-10+deb12u14 [362 kB]
+#8 8.536 Get:60 http://deb.debian.org/debian bookworm/main arm64 libexpat1 arm64 2.5.0-1+deb12u2 [86.3 kB]
+#8 8.538 Get:61 http://deb.debian.org/debian bookworm/main arm64 liberror-perl all 0.17029-2 [29.0 kB]
+#8 8.543 Get:62 http://deb.debian.org/debian bookworm/main arm64 git-man all 1:2.39.5-0+deb12u3 [2053 kB]
+#8 8.703 Get:63 http://deb.debian.org/debian bookworm/main arm64 git arm64 1:2.39.5-0+deb12u3 [7153 kB]
+#8 9.336 Get:64 http://deb.debian.org/debian-security bookworm-security/main arm64 libssl-dev arm64 3.0.18-1~deb12u2 [2314 kB]
+#8 9.430 Get:65 http://deb.debian.org/debian bookworm/main arm64 tini arm64 0.19.0-1+b3 [224 kB]
+#8 9.532 debconf: delaying package configuration, since apt-utils is not installed
+#8 9.543 Fetched 80.7 MB in 6s (12.9 MB/s)
+#8 9.556 Selecting previously unselected package perl-modules-5.36.
+#8 9.556 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6689 files and directories currently installed.)
+#8 9.567 Preparing to unpack .../00-perl-modules-5.36_5.36.0-7+deb12u3_all.deb ...
+#8 9.568 Unpacking perl-modules-5.36 (5.36.0-7+deb12u3) ...
+#8 9.752 Selecting previously unselected package libgdbm-compat4:arm64.
+#8 9.753 Preparing to unpack .../01-libgdbm-compat4_1.23-3_arm64.deb ...
+#8 9.755 Unpacking libgdbm-compat4:arm64 (1.23-3) ...
+#8 9.770 Selecting previously unselected package libperl5.36:arm64.
+#8 9.770 Preparing to unpack .../02-libperl5.36_5.36.0-7+deb12u3_arm64.deb ...
+#8 9.771 Unpacking libperl5.36:arm64 (5.36.0-7+deb12u3) ...
+#8 9.991 Selecting previously unselected package perl.
+#8 9.992 Preparing to unpack .../03-perl_5.36.0-7+deb12u3_arm64.deb ...
+#8 9.995 Unpacking perl (5.36.0-7+deb12u3) ...
+#8 10.01 Selecting previously unselected package bzip2.
+#8 10.02 Preparing to unpack .../04-bzip2_1.0.8-5+b1_arm64.deb ...
+#8 10.02 Unpacking bzip2 (1.0.8-5+b1) ...
+#8 10.03 Selecting previously unselected package xz-utils.
+#8 10.03 Preparing to unpack .../05-xz-utils_5.4.1-1_arm64.deb ...
+#8 10.03 Unpacking xz-utils (5.4.1-1) ...
+#8 10.06 Selecting previously unselected package m4.
+#8 10.07 Preparing to unpack .../06-m4_1.4.19-3_arm64.deb ...
+#8 10.07 Unpacking m4 (1.4.19-3) ...
+#8 10.09 Selecting previously unselected package autoconf.
+#8 10.09 Preparing to unpack .../07-autoconf_2.71-3_all.deb ...
+#8 10.09 Unpacking autoconf (2.71-3) ...
+#8 10.12 Selecting previously unselected package autotools-dev.
+#8 10.12 Preparing to unpack .../08-autotools-dev_20220109.1_all.deb ...
+#8 10.12 Unpacking autotools-dev (20220109.1) ...
+#8 10.13 Selecting previously unselected package automake.
+#8 10.13 Preparing to unpack .../09-automake_1%3a1.16.5-1.3_all.deb ...
+#8 10.13 Unpacking automake (1:1.16.5-1.3) ...
+#8 10.17 Selecting previously unselected package binutils-common:arm64.
+#8 10.17 Preparing to unpack .../10-binutils-common_2.40-2_arm64.deb ...
+#8 10.17 Unpacking binutils-common:arm64 (2.40-2) ...
+#8 10.32 Selecting previously unselected package libbinutils:arm64.
+#8 10.32 Preparing to unpack .../11-libbinutils_2.40-2_arm64.deb ...
+#8 10.32 Unpacking libbinutils:arm64 (2.40-2) ...
+#8 10.40 Selecting previously unselected package libctf-nobfd0:arm64.
+#8 10.40 Preparing to unpack .../12-libctf-nobfd0_2.40-2_arm64.deb ...
+#8 10.40 Unpacking libctf-nobfd0:arm64 (2.40-2) ...
+#8 10.42 Selecting previously unselected package libctf0:arm64.
+#8 10.42 Preparing to unpack .../13-libctf0_2.40-2_arm64.deb ...
+#8 10.42 Unpacking libctf0:arm64 (2.40-2) ...
+#8 10.43 Selecting previously unselected package libgprofng0:arm64.
+#8 10.44 Preparing to unpack .../14-libgprofng0_2.40-2_arm64.deb ...
+#8 10.44 Unpacking libgprofng0:arm64 (2.40-2) ...
+#8 10.48 Selecting previously unselected package libjansson4:arm64.
+#8 10.48 Preparing to unpack .../15-libjansson4_2.14-2_arm64.deb ...
+#8 10.48 Unpacking libjansson4:arm64 (2.14-2) ...
+#8 10.49 Selecting previously unselected package binutils-aarch64-linux-gnu.
+#8 10.49 Preparing to unpack .../16-binutils-aarch64-linux-gnu_2.40-2_arm64.deb ...
+#8 10.49 Unpacking binutils-aarch64-linux-gnu (2.40-2) ...
+#8 10.66 Selecting previously unselected package binutils.
+#8 10.66 Preparing to unpack .../17-binutils_2.40-2_arm64.deb ...
+#8 10.66 Unpacking binutils (2.40-2) ...
+#8 10.67 Selecting previously unselected package libc-dev-bin.
+#8 10.68 Preparing to unpack .../18-libc-dev-bin_2.36-9+deb12u13_arm64.deb ...
+#8 10.68 Unpacking libc-dev-bin (2.36-9+deb12u13) ...
+#8 10.69 Selecting previously unselected package linux-libc-dev:arm64.
+#8 10.69 Preparing to unpack .../19-linux-libc-dev_6.1.164-1_arm64.deb ...
+#8 10.69 Unpacking linux-libc-dev:arm64 (6.1.164-1) ...
+#8 10.77 Selecting previously unselected package libcrypt-dev:arm64.
+#8 10.77 Preparing to unpack .../20-libcrypt-dev_1%3a4.4.33-2_arm64.deb ...
+#8 10.77 Unpacking libcrypt-dev:arm64 (1:4.4.33-2) ...
+#8 10.79 Selecting previously unselected package libtirpc-dev:arm64.
+#8 10.79 Preparing to unpack .../21-libtirpc-dev_1.3.3+ds-1_arm64.deb ...
+#8 10.79 Unpacking libtirpc-dev:arm64 (1.3.3+ds-1) ...
+#8 10.81 Selecting previously unselected package libnsl-dev:arm64.
+#8 10.81 Preparing to unpack .../22-libnsl-dev_1.3.0-2_arm64.deb ...
+#8 10.81 Unpacking libnsl-dev:arm64 (1.3.0-2) ...
+#8 10.82 Selecting previously unselected package rpcsvc-proto.
+#8 10.82 Preparing to unpack .../23-rpcsvc-proto_1.4.3-1_arm64.deb ...
+#8 10.82 Unpacking rpcsvc-proto (1.4.3-1) ...
+#8 10.84 Selecting previously unselected package libc6-dev:arm64.
+#8 10.84 Preparing to unpack .../24-libc6-dev_2.36-9+deb12u13_arm64.deb ...
+#8 10.84 Unpacking libc6-dev:arm64 (2.36-9+deb12u13) ...
+#8 10.94 Selecting previously unselected package libisl23:arm64.
+#8 10.94 Preparing to unpack .../25-libisl23_0.25-1.1_arm64.deb ...
+#8 10.94 Unpacking libisl23:arm64 (0.25-1.1) ...
+#8 10.98 Selecting previously unselected package libmpfr6:arm64.
+#8 10.98 Preparing to unpack .../26-libmpfr6_4.2.0-1_arm64.deb ...
+#8 10.98 Unpacking libmpfr6:arm64 (4.2.0-1) ...
+#8 11.01 Selecting previously unselected package libmpc3:arm64.
+#8 11.01 Preparing to unpack .../27-libmpc3_1.3.1-1_arm64.deb ...
+#8 11.01 Unpacking libmpc3:arm64 (1.3.1-1) ...
+#8 11.02 Selecting previously unselected package cpp-12.
+#8 11.02 Preparing to unpack .../28-cpp-12_12.2.0-14+deb12u1_arm64.deb ...
+#8 11.02 Unpacking cpp-12 (12.2.0-14+deb12u1) ...
+#8 11.38 Selecting previously unselected package cpp.
+#8 11.38 Preparing to unpack .../29-cpp_4%3a12.2.0-3_arm64.deb ...
+#8 11.38 Unpacking cpp (4:12.2.0-3) ...
+#8 11.39 Selecting previously unselected package libcc1-0:arm64.
+#8 11.40 Preparing to unpack .../30-libcc1-0_12.2.0-14+deb12u1_arm64.deb ...
+#8 11.40 Unpacking libcc1-0:arm64 (12.2.0-14+deb12u1) ...
+#8 11.41 Selecting previously unselected package libgomp1:arm64.
+#8 11.41 Preparing to unpack .../31-libgomp1_12.2.0-14+deb12u1_arm64.deb ...
+#8 11.41 Unpacking libgomp1:arm64 (12.2.0-14+deb12u1) ...
+#8 11.43 Selecting previously unselected package libitm1:arm64.
+#8 11.43 Preparing to unpack .../32-libitm1_12.2.0-14+deb12u1_arm64.deb ...
+#8 11.43 Unpacking libitm1:arm64 (12.2.0-14+deb12u1) ...
+#8 11.44 Selecting previously unselected package libatomic1:arm64.
+#8 11.44 Preparing to unpack .../33-libatomic1_12.2.0-14+deb12u1_arm64.deb ...
+#8 11.44 Unpacking libatomic1:arm64 (12.2.0-14+deb12u1) ...
+#8 11.45 Selecting previously unselected package libasan8:arm64.
+#8 11.45 Preparing to unpack .../34-libasan8_12.2.0-14+deb12u1_arm64.deb ...
+#8 11.45 Unpacking libasan8:arm64 (12.2.0-14+deb12u1) ...
+#8 11.57 Selecting previously unselected package liblsan0:arm64.
+#8 11.57 Preparing to unpack .../35-liblsan0_12.2.0-14+deb12u1_arm64.deb ...
+#8 11.57 Unpacking liblsan0:arm64 (12.2.0-14+deb12u1) ...
+#8 11.62 Selecting previously unselected package libtsan2:arm64.
+#8 11.62 Preparing to unpack .../36-libtsan2_12.2.0-14+deb12u1_arm64.deb ...
+#8 11.62 Unpacking libtsan2:arm64 (12.2.0-14+deb12u1) ...
+#8 11.74 Selecting previously unselected package libubsan1:arm64.
+#8 11.74 Preparing to unpack .../37-libubsan1_12.2.0-14+deb12u1_arm64.deb ...
+#8 11.74 Unpacking libubsan1:arm64 (12.2.0-14+deb12u1) ...
+#8 11.80 Selecting previously unselected package libhwasan0:arm64.
+#8 11.80 Preparing to unpack .../38-libhwasan0_12.2.0-14+deb12u1_arm64.deb ...
+#8 11.80 Unpacking libhwasan0:arm64 (12.2.0-14+deb12u1) ...
+#8 11.85 Selecting previously unselected package libgcc-12-dev:arm64.
+#8 11.85 Preparing to unpack .../39-libgcc-12-dev_12.2.0-14+deb12u1_arm64.deb ...
+#8 11.86 Unpacking libgcc-12-dev:arm64 (12.2.0-14+deb12u1) ...
+#8 11.93 Selecting previously unselected package gcc-12.
+#8 11.93 Preparing to unpack .../40-gcc-12_12.2.0-14+deb12u1_arm64.deb ...
+#8 11.93 Unpacking gcc-12 (12.2.0-14+deb12u1) ...
+#8 12.36 Selecting previously unselected package gcc.
+#8 12.36 Preparing to unpack .../41-gcc_4%3a12.2.0-3_arm64.deb ...
+#8 12.36 Unpacking gcc (4:12.2.0-3) ...
+#8 12.37 Selecting previously unselected package libstdc++-12-dev:arm64.
+#8 12.37 Preparing to unpack .../42-libstdc++-12-dev_12.2.0-14+deb12u1_arm64.deb ...
+#8 12.38 Unpacking libstdc++-12-dev:arm64 (12.2.0-14+deb12u1) ...
+#8 12.53 Selecting previously unselected package g++-12.
+#8 12.53 Preparing to unpack .../43-g++-12_12.2.0-14+deb12u1_arm64.deb ...
+#8 12.53 Unpacking g++-12 (12.2.0-14+deb12u1) ...
+#8 12.92 Selecting previously unselected package g++.
+#8 12.92 Preparing to unpack .../44-g++_4%3a12.2.0-3_arm64.deb ...
+#8 12.92 Unpacking g++ (4:12.2.0-3) ...
+#8 12.93 Selecting previously unselected package make.
+#8 12.93 Preparing to unpack .../45-make_4.3-4.1_arm64.deb ...
+#8 12.93 Unpacking make (4.3-4.1) ...
+#8 12.96 Selecting previously unselected package libdpkg-perl.
+#8 12.96 Preparing to unpack .../46-libdpkg-perl_1.21.22_all.deb ...
+#8 12.96 Unpacking libdpkg-perl (1.21.22) ...
+#8 12.99 Selecting previously unselected package patch.
+#8 12.99 Preparing to unpack .../47-patch_2.7.6-7_arm64.deb ...
+#8 13.00 Unpacking patch (2.7.6-7) ...
+#8 13.01 Selecting previously unselected package dpkg-dev.
+#8 13.01 Preparing to unpack .../48-dpkg-dev_1.21.22_all.deb ...
+#8 13.01 Unpacking dpkg-dev (1.21.22) ...
+#8 13.07 Selecting previously unselected package build-essential.
+#8 13.07 Preparing to unpack .../49-build-essential_12.9_arm64.deb ...
+#8 13.08 Unpacking build-essential (12.9) ...
+#8 13.09 Selecting previously unselected package libbrotli1:arm64.
+#8 13.09 Preparing to unpack .../50-libbrotli1_1.0.9-2+b6_arm64.deb ...
+#8 13.09 Unpacking libbrotli1:arm64 (1.0.9-2+b6) ...
+#8 13.11 Selecting previously unselected package libsasl2-modules-db:arm64.
+#8 13.11 Preparing to unpack .../51-libsasl2-modules-db_2.1.28+dfsg-10_arm64.deb ...
+#8 13.11 Unpacking libsasl2-modules-db:arm64 (2.1.28+dfsg-10) ...
+#8 13.12 Selecting previously unselected package libsasl2-2:arm64.
+#8 13.13 Preparing to unpack .../52-libsasl2-2_2.1.28+dfsg-10_arm64.deb ...
+#8 13.13 Unpacking libsasl2-2:arm64 (2.1.28+dfsg-10) ...
+#8 13.14 Selecting previously unselected package libldap-2.5-0:arm64.
+#8 13.14 Preparing to unpack .../53-libldap-2.5-0_2.5.13+dfsg-5_arm64.deb ...
+#8 13.14 Unpacking libldap-2.5-0:arm64 (2.5.13+dfsg-5) ...
+#8 13.16 Selecting previously unselected package libnghttp2-14:arm64.
+#8 13.16 Preparing to unpack .../54-libnghttp2-14_1.52.0-1+deb12u2_arm64.deb ...
+#8 13.16 Unpacking libnghttp2-14:arm64 (1.52.0-1+deb12u2) ...
+#8 13.18 Selecting previously unselected package libpsl5:arm64.
+#8 13.18 Preparing to unpack .../55-libpsl5_0.21.2-1_arm64.deb ...
+#8 13.18 Unpacking libpsl5:arm64 (0.21.2-1) ...
+#8 13.19 Selecting previously unselected package librtmp1:arm64.
+#8 13.19 Preparing to unpack .../56-librtmp1_2.4+20151223.gitfa8646d.1-2+b2_arm64.deb ...
+#8 13.19 Unpacking librtmp1:arm64 (2.4+20151223.gitfa8646d.1-2+b2) ...
+#8 13.20 Selecting previously unselected package libssh2-1:arm64.
+#8 13.21 Preparing to unpack .../57-libssh2-1_1.10.0-3+b1_arm64.deb ...
+#8 13.21 Unpacking libssh2-1:arm64 (1.10.0-3+b1) ...
+#8 13.22 Selecting previously unselected package libcurl3-gnutls:arm64.
+#8 13.22 Preparing to unpack .../58-libcurl3-gnutls_7.88.1-10+deb12u14_arm64.deb ...
+#8 13.23 Unpacking libcurl3-gnutls:arm64 (7.88.1-10+deb12u14) ...
+#8 13.25 Selecting previously unselected package libexpat1:arm64.
+#8 13.25 Preparing to unpack .../59-libexpat1_2.5.0-1+deb12u2_arm64.deb ...
+#8 13.25 Unpacking libexpat1:arm64 (2.5.0-1+deb12u2) ...
+#8 13.26 Selecting previously unselected package liberror-perl.
+#8 13.26 Preparing to unpack .../60-liberror-perl_0.17029-2_all.deb ...
+#8 13.26 Unpacking liberror-perl (0.17029-2) ...
+#8 13.27 Selecting previously unselected package git-man.
+#8 13.27 Preparing to unpack .../61-git-man_1%3a2.39.5-0+deb12u3_all.deb ...
+#8 13.28 Unpacking git-man (1:2.39.5-0+deb12u3) ...
+#8 13.34 Selecting previously unselected package git.
+#8 13.34 Preparing to unpack .../62-git_1%3a2.39.5-0+deb12u3_arm64.deb ...
+#8 13.34 Unpacking git (1:2.39.5-0+deb12u3) ...
+#8 13.56 Selecting previously unselected package libssl-dev:arm64.
+#8 13.56 Preparing to unpack .../63-libssl-dev_3.0.18-1~deb12u2_arm64.deb ...
+#8 13.56 Unpacking libssl-dev:arm64 (3.0.18-1~deb12u2) ...
+#8 13.68 Selecting previously unselected package tini.
+#8 13.68 Preparing to unpack .../64-tini_0.19.0-1+b3_arm64.deb ...
+#8 13.68 Unpacking tini (0.19.0-1+b3) ...
+#8 13.71 Setting up libexpat1:arm64 (2.5.0-1+deb12u2) ...
+#8 13.71 Setting up libpsl5:arm64 (0.21.2-1) ...
+#8 13.71 Setting up libbrotli1:arm64 (1.0.9-2+b6) ...
+#8 13.71 Setting up binutils-common:arm64 (2.40-2) ...
+#8 13.72 Setting up libnghttp2-14:arm64 (1.52.0-1+deb12u2) ...
+#8 13.72 Setting up linux-libc-dev:arm64 (6.1.164-1) ...
+#8 13.73 Setting up libctf-nobfd0:arm64 (2.40-2) ...
+#8 13.73 Setting up m4 (1.4.19-3) ...
+#8 13.73 Setting up libgomp1:arm64 (12.2.0-14+deb12u1) ...
+#8 13.73 Setting up bzip2 (1.0.8-5+b1) ...
+#8 13.74 Setting up libjansson4:arm64 (2.14-2) ...
+#8 13.74 Setting up libsasl2-modules-db:arm64 (2.1.28+dfsg-10) ...
+#8 13.74 Setting up perl-modules-5.36 (5.36.0-7+deb12u3) ...
+#8 13.75 Setting up autotools-dev (20220109.1) ...
+#8 13.75 Setting up libtirpc-dev:arm64 (1.3.3+ds-1) ...
+#8 13.75 Setting up rpcsvc-proto (1.4.3-1) ...
+#8 13.75 Setting up make (4.3-4.1) ...
+#8 13.76 Setting up libmpfr6:arm64 (4.2.0-1) ...
+#8 13.76 Setting up librtmp1:arm64 (2.4+20151223.gitfa8646d.1-2+b2) ...
+#8 13.76 Setting up xz-utils (5.4.1-1) ...
+#8 13.77 update-alternatives: using /usr/bin/xz to provide /usr/bin/lzma (lzma) in auto mode
+#8 13.77 update-alternatives: warning: skip creation of /usr/share/man/man1/lzma.1.gz because associated file /usr/share/man/man1/xz.1.gz (of link group lzma) doesn't exist
+#8 13.77 update-alternatives: warning: skip creation of /usr/share/man/man1/unlzma.1.gz because associated file /usr/share/man/man1/unxz.1.gz (of link group lzma) doesn't exist
+#8 13.77 update-alternatives: warning: skip creation of /usr/share/man/man1/lzcat.1.gz because associated file /usr/share/man/man1/xzcat.1.gz (of link group lzma) doesn't exist
+#8 13.77 update-alternatives: warning: skip creation of /usr/share/man/man1/lzmore.1.gz because associated file /usr/share/man/man1/xzmore.1.gz (of link group lzma) doesn't exist
+#8 13.77 update-alternatives: warning: skip creation of /usr/share/man/man1/lzless.1.gz because associated file /usr/share/man/man1/xzless.1.gz (of link group lzma) doesn't exist
+#8 13.77 update-alternatives: warning: skip creation of /usr/share/man/man1/lzdiff.1.gz because associated file /usr/share/man/man1/xzdiff.1.gz (of link group lzma) doesn't exist
+#8 13.77 update-alternatives: warning: skip creation of /usr/share/man/man1/lzcmp.1.gz because associated file /usr/share/man/man1/xzcmp.1.gz (of link group lzma) doesn't exist
+#8 13.77 update-alternatives: warning: skip creation of /usr/share/man/man1/lzgrep.1.gz because associated file /usr/share/man/man1/xzgrep.1.gz (of link group lzma) doesn't exist
+#8 13.77 update-alternatives: warning: skip creation of /usr/share/man/man1/lzegrep.1.gz because associated file /usr/share/man/man1/xzegrep.1.gz (of link group lzma) doesn't exist
+#8 13.77 update-alternatives: warning: skip creation of /usr/share/man/man1/lzfgrep.1.gz because associated file /usr/share/man/man1/xzfgrep.1.gz (of link group lzma) doesn't exist
+#8 13.77 Setting up libssl-dev:arm64 (3.0.18-1~deb12u2) ...
+#8 13.77 Setting up libmpc3:arm64 (1.3.1-1) ...
+#8 13.78 Setting up libatomic1:arm64 (12.2.0-14+deb12u1) ...
+#8 13.78 Setting up tini (0.19.0-1+b3) ...
+#8 13.78 Setting up patch (2.7.6-7) ...
+#8 13.79 Setting up libgdbm-compat4:arm64 (1.23-3) ...
+#8 13.79 Setting up libsasl2-2:arm64 (2.1.28+dfsg-10) ...
+#8 13.79 Setting up libubsan1:arm64 (12.2.0-14+deb12u1) ...
+#8 13.79 Setting up libnsl-dev:arm64 (1.3.0-2) ...
+#8 13.80 Setting up libhwasan0:arm64 (12.2.0-14+deb12u1) ...
+#8 13.80 Setting up libcrypt-dev:arm64 (1:4.4.33-2) ...
+#8 13.80 Setting up libasan8:arm64 (12.2.0-14+deb12u1) ...
+#8 13.81 Setting up git-man (1:2.39.5-0+deb12u3) ...
+#8 13.81 Setting up libssh2-1:arm64 (1.10.0-3+b1) ...
+#8 13.81 Setting up libtsan2:arm64 (12.2.0-14+deb12u1) ...
+#8 13.81 Setting up libbinutils:arm64 (2.40-2) ...
+#8 13.82 Setting up libisl23:arm64 (0.25-1.1) ...
+#8 13.82 Setting up libc-dev-bin (2.36-9+deb12u13) ...
+#8 13.82 Setting up libcc1-0:arm64 (12.2.0-14+deb12u1) ...
+#8 13.83 Setting up libperl5.36:arm64 (5.36.0-7+deb12u3) ...
+#8 13.83 Setting up liblsan0:arm64 (12.2.0-14+deb12u1) ...
+#8 13.83 Setting up libitm1:arm64 (12.2.0-14+deb12u1) ...
+#8 13.83 Setting up libctf0:arm64 (2.40-2) ...
+#8 13.84 Setting up cpp-12 (12.2.0-14+deb12u1) ...
+#8 13.84 Setting up libldap-2.5-0:arm64 (2.5.13+dfsg-5) ...
+#8 13.84 Setting up perl (5.36.0-7+deb12u3) ...
+#8 13.85 Setting up libgprofng0:arm64 (2.40-2) ...
+#8 13.85 Setting up libgcc-12-dev:arm64 (12.2.0-14+deb12u1) ...
+#8 13.86 Setting up libdpkg-perl (1.21.22) ...
+#8 13.86 Setting up autoconf (2.71-3) ...
+#8 13.86 Setting up cpp (4:12.2.0-3) ...
+#8 13.87 Setting up libc6-dev:arm64 (2.36-9+deb12u13) ...
+#8 13.87 Setting up automake (1:1.16.5-1.3) ...
+#8 13.87 update-alternatives: using /usr/bin/automake-1.16 to provide /usr/bin/automake (automake) in auto mode
+#8 13.87 update-alternatives: warning: skip creation of /usr/share/man/man1/automake.1.gz because associated file /usr/share/man/man1/automake-1.16.1.gz (of link group automake) doesn't exist
+#8 13.87 update-alternatives: warning: skip creation of /usr/share/man/man1/aclocal.1.gz because associated file /usr/share/man/man1/aclocal-1.16.1.gz (of link group automake) doesn't exist
+#8 13.88 Setting up libstdc++-12-dev:arm64 (12.2.0-14+deb12u1) ...
+#8 13.88 Setting up binutils-aarch64-linux-gnu (2.40-2) ...
+#8 13.88 Setting up libcurl3-gnutls:arm64 (7.88.1-10+deb12u14) ...
+#8 13.88 Setting up binutils (2.40-2) ...
+#8 13.89 Setting up dpkg-dev (1.21.22) ...
+#8 13.89 Setting up liberror-perl (0.17029-2) ...
+#8 13.89 Setting up gcc-12 (12.2.0-14+deb12u1) ...
+#8 13.90 Setting up git (1:2.39.5-0+deb12u3) ...
+#8 13.90 Setting up g++-12 (12.2.0-14+deb12u1) ...
+#8 13.90 Setting up gcc (4:12.2.0-3) ...
+#8 13.91 Setting up g++ (4:12.2.0-3) ...
+#8 13.91 update-alternatives: using /usr/bin/g++ to provide /usr/bin/c++ (c++) in auto mode
+#8 13.92 Setting up build-essential (12.9) ...
+#8 13.92 Processing triggers for libc-bin (2.36-9+deb12u13) ...
+#8 13.94 Cloning into '/tmp/slowhttptest-src'...
+#8 15.04 checking for a BSD-compatible install... /usr/bin/install -c
+#8 15.04 checking whether build environment is sane... yes
+#8 15.05 checking for a race-free mkdir -p... /usr/bin/mkdir -p
+#8 15.05 checking for gawk... no
+#8 15.05 checking for mawk... mawk
+#8 15.05 checking whether make sets $(MAKE)... yes
+#8 15.06 checking whether make supports nested variables... yes
+#8 15.06 checking for g++... g++
+#8 15.07 checking whether the C++ compiler works... yes
+#8 15.10 checking for C++ compiler default output file name... a.out
+#8 15.10 checking for suffix of executables... 
+#8 15.12 checking whether we are cross compiling... no
+#8 15.15 checking for suffix of object files... o
+#8 15.16 checking whether the compiler supports GNU C++... yes
+#8 15.16 checking whether g++ accepts -g... yes
+#8 15.17 checking for g++ option to enable C++11 features... none needed
+#8 15.21 checking whether make supports the include directive... yes (GNU style)
+#8 15.22 checking dependency style of g++... gcc3
+#8 15.23 checking for gcc... gcc
+#8 15.24 checking whether the compiler supports GNU C... yes
+#8 15.25 checking whether gcc accepts -g... yes
+#8 15.26 checking for gcc option to enable C11 features... none needed
+#8 15.29 checking whether gcc understands -c and -o together... yes
+#8 15.31 checking dependency style of gcc... gcc3
+#8 15.32 checking whether g++ supports C++11 features by default... yes
+#8 15.34 checking for SSL_new in -lssl... yes
+#8 15.37 checking for stdio.h... yes
+#8 15.38 checking for stdlib.h... yes
+#8 15.39 checking for string.h... yes
+#8 15.40 checking for inttypes.h... yes
+#8 15.41 checking for stdint.h... yes
+#8 15.42 checking for strings.h... yes
+#8 15.44 checking for sys/stat.h... yes
+#8 15.45 checking for sys/types.h... yes
+#8 15.46 checking for unistd.h... yes
+#8 15.47 checking for sys/select.h... yes
+#8 15.49 checking for sys/socket.h... yes
+#8 15.51 checking for fcntl.h... yes
+#8 15.52 checking for limits.h... yes
+#8 15.53 checking for netdb.h... yes
+#8 15.55 checking for netinet/in.h... yes
+#8 15.56 checking for stdlib.h... (cached) yes
+#8 15.56 checking for string.h... (cached) yes
+#8 15.56 checking for sys/socket.h... (cached) yes
+#8 15.56 checking for sys/time.h... yes
+#8 15.58 checking for unistd.h... (cached) yes
+#8 15.58 checking for _Bool... yes
+#8 15.61 checking for stdbool.h that conforms to C99... yes
+#8 15.62 checking for an ANSI C-conforming const... yes
+#8 15.63 checking for size_t... yes
+#8 15.66 checking types of arguments for select... int,fd_set *,struct timeval *
+#8 15.68 checking for vprintf... yes
+#8 15.70 checking for atexit... yes
+#8 15.71 checking for gettimeofday... yes
+#8 15.73 checking for poll... yes
+#8 15.75 checking for select... yes
+#8 15.77 checking for socket... yes
+#8 15.79 checking for strerror... yes
+#8 15.81 checking for strstr... yes
+#8 15.83 checking for strtol... yes
+#8 15.86 checking that generated files are newer than configure... done
+#8 16.05 configure: creating ./config.status
+#8 16.10 config.status: creating Makefile
+#8 16.11 config.status: creating src/Makefile
+#8 16.12 config.status: creating man/Makefile
+#8 16.12 config.status: creating config.h
+#8 16.13 config.status: executing depfiles commands
+#8 16.16 CDPATH="${ZSH_VERSION+.}:" && cd . && /bin/bash '/tmp/slowhttptest-src/missing' aclocal-1.16 -I m4
+#8 16.31  cd . && /bin/bash /tmp/slowhttptest-src/missing automake-1.16 --foreign
+#8 16.48 CDPATH="${ZSH_VERSION+.}:" && cd . && /bin/bash '/tmp/slowhttptest-src/missing' autoconf
+#8 16.58 /bin/bash ./config.status --recheck
+#8 16.59 running CONFIG_SHELL=/bin/bash /bin/bash ./configure --no-create --no-recursion
+#8 16.61 checking for a BSD-compatible install... /usr/bin/install -c
+#8 16.62 checking whether build environment is sane... yes
+#8 16.62 checking for a race-free mkdir -p... /usr/bin/mkdir -p
+#8 16.62 checking for gawk... no
+#8 16.62 checking for mawk... mawk
+#8 16.62 checking whether make sets $(MAKE)... yes
+#8 16.63 checking whether make supports nested variables... yes
+#8 16.63 checking for g++... g++
+#8 16.64 checking whether the C++ compiler works... yes
+#8 16.66 checking for C++ compiler default output file name... a.out
+#8 16.66 checking for suffix of executables... 
+#8 16.69 checking whether we are cross compiling... no
+#8 16.71 checking for suffix of object files... o
+#8 16.72 checking whether the compiler supports GNU C++... yes
+#8 16.73 checking whether g++ accepts -g... yes
+#8 16.74 checking for g++ option to enable C++11 features... none needed
+#8 16.78 checking whether make supports the include directive... yes (GNU style)
+#8 16.78 checking dependency style of g++... gcc3
+#8 16.80 checking for gcc... gcc
+#8 16.80 checking whether the compiler supports GNU C... yes
+#8 16.82 checking whether gcc accepts -g... yes
+#8 16.82 checking for gcc option to enable C11 features... none needed
+#8 16.85 checking whether gcc understands -c and -o together... yes
+#8 16.87 checking dependency style of gcc... gcc3
+#8 16.88 checking whether g++ supports C++11 features by default... yes
+#8 16.90 checking for SSL_new in -lssl... yes
+#8 16.93 checking for stdio.h... yes
+#8 16.94 checking for stdlib.h... yes
+#8 16.95 checking for string.h... yes
+#8 16.96 checking for inttypes.h... yes
+#8 16.97 checking for stdint.h... yes
+#8 16.98 checking for strings.h... yes
+#8 17.00 checking for sys/stat.h... yes
+#8 17.01 checking for sys/types.h... yes
+#8 17.02 checking for unistd.h... yes
+#8 17.03 checking for sys/select.h... yes
+#8 17.04 checking for sys/socket.h... yes
+#8 17.06 checking for fcntl.h... yes
+#8 17.07 checking for limits.h... yes
+#8 17.08 checking for netdb.h... yes
+#8 17.10 checking for netinet/in.h... yes
+#8 17.11 checking for stdlib.h... (cached) yes
+#8 17.11 checking for string.h... (cached) yes
+#8 17.11 checking for sys/socket.h... (cached) yes
+#8 17.11 checking for sys/time.h... yes
+#8 17.12 checking for unistd.h... (cached) yes
+#8 17.12 checking for _Bool... yes
+#8 17.15 checking for stdbool.h that conforms to C99... yes
+#8 17.16 checking for an ANSI C-conforming const... yes
+#8 17.17 checking for size_t... yes
+#8 17.20 checking types of arguments for select... int,fd_set *,struct timeval *
+#8 17.22 checking for vprintf... yes
+#8 17.24 checking for atexit... yes
+#8 17.26 checking for gettimeofday... yes
+#8 17.28 checking for poll... yes
+#8 17.30 checking for select... yes
+#8 17.32 checking for socket... yes
+#8 17.34 checking for strerror... yes
+#8 17.35 checking for strstr... yes
+#8 17.38 checking for strtol... yes
+#8 17.40 checking that generated files are newer than configure... done
+#8 17.63 configure: creating ./config.status
+#8 17.67  /bin/bash ./config.status
+#8 17.69 config.status: creating Makefile
+#8 17.70 config.status: creating src/Makefile
+#8 17.70 config.status: creating man/Makefile
+#8 17.71 config.status: creating config.h
+#8 17.71 config.status: config.h is unchanged
+#8 17.71 config.status: executing depfiles commands
+#8 17.72 (CDPATH="${ZSH_VERSION+.}:" && cd . && /bin/bash '/tmp/slowhttptest-src/missing' autoheader)
+#8 17.78 rm -f stamp-h1
+#8 17.78 touch config.h.in
+#8 17.79 cd . && /bin/bash ./config.status config.h
+#8 17.80 config.status: creating config.h
+#8 17.80 config.status: config.h is unchanged
+#8 17.80 make  all-recursive
+#8 17.81 make[1]: Entering directory '/tmp/slowhttptest-src'
+#8 17.81 Making all in src
+#8 17.81 make[2]: Entering directory '/tmp/slowhttptest-src/src'
+#8 17.81 g++ -DHAVE_CONFIG_H -I. -I..   -I/usr/local/opt/openssl/include  -g -O2 -MT slowhttptestmain.o -MD -MP -MF .deps/slowhttptestmain.Tpo -c -o slowhttptestmain.o slowhttptestmain.cc
+#8 17.98 mv -f .deps/slowhttptestmain.Tpo .deps/slowhttptestmain.Po
+#8 17.98 g++ -DHAVE_CONFIG_H -I. -I..   -I/usr/local/opt/openssl/include  -g -O2 -MT slowhttptest.o -MD -MP -MF .deps/slowhttptest.Tpo -c -o slowhttptest.o slowhttptest.cc
+#8 18.57 mv -f .deps/slowhttptest.Tpo .deps/slowhttptest.Po
+#8 18.58 g++ -DHAVE_CONFIG_H -I. -I..   -I/usr/local/opt/openssl/include  -g -O2 -MT slowsocket.o -MD -MP -MF .deps/slowsocket.Tpo -c -o slowsocket.o slowsocket.cc
+#8 18.81 mv -f .deps/slowsocket.Tpo .deps/slowsocket.Po
+#8 18.81 g++ -DHAVE_CONFIG_H -I. -I..   -I/usr/local/opt/openssl/include  -g -O2 -MT slowstats.o -MD -MP -MF .deps/slowstats.Tpo -c -o slowstats.o slowstats.cc
+#8 18.97 mv -f .deps/slowstats.Tpo .deps/slowstats.Po
+#8 18.97 g++ -DHAVE_CONFIG_H -I. -I..   -I/usr/local/opt/openssl/include  -g -O2 -MT slowurl.o -MD -MP -MF .deps/slowurl.Tpo -c -o slowurl.o slowurl.cc
+#8 19.11 mv -f .deps/slowurl.Tpo .deps/slowurl.Po
+#8 19.11 g++ -DHAVE_CONFIG_H -I. -I..   -I/usr/local/opt/openssl/include  -g -O2 -MT slowlog.o -MD -MP -MF .deps/slowlog.Tpo -c -o slowlog.o slowlog.cc
+#8 19.14 mv -f .deps/slowlog.Tpo .deps/slowlog.Po
+#8 19.14 g++ -DHAVE_CONFIG_H -I. -I..   -I/usr/local/opt/openssl/include  -g -O2 -MT text-generator.o -MD -MP -MF .deps/text-generator.Tpo -c -o text-generator.o text-generator.cc
+#8 19.24 mv -f .deps/text-generator.Tpo .deps/text-generator.Po
+#8 19.24 g++ -DHAVE_CONFIG_H -I. -I..   -I/usr/local/opt/openssl/include  -g -O2 -MT range-generator.o -MD -MP -MF .deps/range-generator.Tpo -c -o range-generator.o range-generator.cc
+#8 19.40 mv -f .deps/range-generator.Tpo .deps/range-generator.Po
+#8 19.40 g++  -g -O2  -L/usr/local/opt/openssl/lib -L/usr/local/lib -lssl -o slowhttptest slowhttptestmain.o slowhttptest.o slowsocket.o slowstats.o slowurl.o slowlog.o text-generator.o range-generator.o  -lssl 
+#8 19.44 make[2]: Leaving directory '/tmp/slowhttptest-src/src'
+#8 19.44 Making all in man
+#8 19.44 make[2]: Entering directory '/tmp/slowhttptest-src/man'
+#8 19.44 make[2]: Nothing to be done for 'all'.
+#8 19.44 make[2]: Leaving directory '/tmp/slowhttptest-src/man'
+#8 19.44 make[2]: Entering directory '/tmp/slowhttptest-src'
+#8 19.44 make[2]: Leaving directory '/tmp/slowhttptest-src'
+#8 19.44 make[1]: Leaving directory '/tmp/slowhttptest-src'
+#8 19.45 Making install in src
+#8 19.46 make[1]: Entering directory '/tmp/slowhttptest-src/src'
+#8 19.47 make[2]: Entering directory '/tmp/slowhttptest-src/src'
+#8 19.47  /usr/bin/mkdir -p '/usr/local/bin'
+#8 19.47   /usr/bin/install -c slowhttptest '/usr/local/bin'
+#8 19.54 make[2]: Nothing to be done for 'install-data-am'.
+#8 19.54 make[2]: Leaving directory '/tmp/slowhttptest-src/src'
+#8 19.54 make[1]: Leaving directory '/tmp/slowhttptest-src/src'
+#8 19.54 Making install in man
+#8 19.55 make[1]: Entering directory '/tmp/slowhttptest-src/man'
+#8 19.55 make[2]: Entering directory '/tmp/slowhttptest-src/man'
+#8 19.55 make[2]: Nothing to be done for 'install-exec-am'.
+#8 19.55  /usr/bin/mkdir -p '/usr/local/share/man/man1'
+#8 19.55  /usr/bin/install -c -m 644 slowhttptest.1 '/usr/local/share/man/man1'
+#8 19.55 make[2]: Leaving directory '/tmp/slowhttptest-src/man'
+#8 19.55 make[1]: Leaving directory '/tmp/slowhttptest-src/man'
+#8 19.55 make[1]: Entering directory '/tmp/slowhttptest-src'
+#8 19.56 make[2]: Entering directory '/tmp/slowhttptest-src'
+#8 19.56 make[2]: Nothing to be done for 'install-exec-am'.
+#8 19.56 make[2]: Nothing to be done for 'install-data-am'.
+#8 19.56 make[2]: Leaving directory '/tmp/slowhttptest-src'
+#8 19.56 make[1]: Leaving directory '/tmp/slowhttptest-src'
+#8 DONE 19.6s
+
+#9 [4/8] WORKDIR /app
+#9 DONE 0.0s
+
+#10 [5/8] COPY requirements.txt ./
+#10 DONE 0.0s
+
+#11 [6/8] RUN pip install --no-cache-dir -r requirements.txt
+#11 1.049 Collecting fastmcp>=2.0.0 (from -r requirements.txt (line 1))
+#11 1.102   Downloading fastmcp-3.1.1-py3-none-any.whl.metadata (8.1 kB)
+#11 1.118 Collecting authlib>=1.6.5 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.124   Downloading authlib-1.6.9-py2.py3-none-any.whl.metadata (9.8 kB)
+#11 1.146 Collecting cyclopts>=4.0.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.153   Downloading cyclopts-4.10.0-py3-none-any.whl.metadata (12 kB)
+#11 1.167 Collecting exceptiongroup>=1.2.2 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.173   Downloading exceptiongroup-1.3.1-py3-none-any.whl.metadata (6.7 kB)
+#11 1.187 Collecting httpx<1.0,>=0.28.1 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.195   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#11 1.205 Collecting jsonref>=1.1.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.210   Downloading jsonref-1.1.0-py3-none-any.whl.metadata (2.7 kB)
+#11 1.221 Collecting jsonschema-path>=0.3.4 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.228   Downloading jsonschema_path-0.4.5-py3-none-any.whl.metadata (5.9 kB)
+#11 1.241 Collecting mcp<2.0,>=1.24.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.248   Downloading mcp-1.26.0-py3-none-any.whl.metadata (89 kB)
+#11 1.269 Collecting openapi-pydantic>=0.5.1 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.277   Downloading openapi_pydantic-0.5.1-py3-none-any.whl.metadata (10 kB)
+#11 1.293 Collecting opentelemetry-api>=1.20.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.298   Downloading opentelemetry_api-1.40.0-py3-none-any.whl.metadata (1.5 kB)
+#11 1.310 Collecting packaging>=24.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.316   Downloading packaging-26.0-py3-none-any.whl.metadata (3.3 kB)
+#11 1.330 Collecting platformdirs>=4.0.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.336   Downloading platformdirs-4.9.4-py3-none-any.whl.metadata (4.7 kB)
+#11 1.345 Collecting py-key-value-aio<0.5.0,>=0.4.4 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.352   Downloading py_key_value_aio-0.4.4-py3-none-any.whl.metadata (15 kB)
+#11 1.427 Collecting pydantic>=2.11.7 (from pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.435   Downloading pydantic-2.12.5-py3-none-any.whl.metadata (90 kB)
+#11 1.449 Collecting pyperclip>=1.9.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.456   Downloading pyperclip-1.11.0-py3-none-any.whl.metadata (2.4 kB)
+#11 1.470 Collecting python-dotenv>=1.1.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.477   Downloading python_dotenv-1.2.2-py3-none-any.whl.metadata (27 kB)
+#11 1.498 Collecting pyyaml<7.0,>=6.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.504   Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (2.4 kB)
+#11 1.527 Collecting rich>=13.9.4 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.534   Downloading rich-14.3.3-py3-none-any.whl.metadata (18 kB)
+#11 1.543 Collecting uncalled-for>=0.2.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.550   Downloading uncalled_for-0.2.0-py3-none-any.whl.metadata (2.9 kB)
+#11 1.567 Collecting uvicorn>=0.35 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.574   Downloading uvicorn-0.42.0-py3-none-any.whl.metadata (6.7 kB)
+#11 1.608 Collecting watchfiles>=1.0.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.616   Downloading watchfiles-1.1.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (4.9 kB)
+#11 1.654 Collecting websockets>=15.0.1 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.662   Downloading websockets-16.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (6.8 kB)
+#11 1.737 Collecting cryptography (from authlib>=1.6.5->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.745   Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_aarch64.whl.metadata (5.7 kB)
+#11 1.762 Collecting attrs>=23.1.0 (from cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.768   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+#11 1.778 Collecting docstring-parser<4.0,>=0.15 (from cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.784   Downloading docstring_parser-0.17.0-py3-none-any.whl.metadata (3.5 kB)
+#11 1.794 Collecting rich-rst<2.0.0,>=1.3.1 (from cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.801   Downloading rich_rst-1.3.2-py3-none-any.whl.metadata (6.1 kB)
+#11 1.819 Collecting typing-extensions>=4.6.0 (from exceptiongroup>=1.2.2->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.825   Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+#11 1.839 Collecting anyio (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.846   Downloading anyio-4.12.1-py3-none-any.whl.metadata (4.3 kB)
+#11 1.859 Collecting certifi (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.865   Downloading certifi-2026.2.25-py3-none-any.whl.metadata (2.5 kB)
+#11 1.879 Collecting httpcore==1.* (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.885   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#11 1.897 Collecting idna (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.904   Downloading idna-3.11-py3-none-any.whl.metadata (8.4 kB)
+#11 1.915 Collecting h11>=0.16 (from httpcore==1.*->httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.922   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#11 1.934 Collecting pathable<0.6.0,>=0.5.0 (from jsonschema-path>=0.3.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.941   Downloading pathable-0.5.0-py3-none-any.whl.metadata (5.9 kB)
+#11 1.960 Collecting referencing<0.38.0 (from jsonschema-path>=0.3.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.967   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+#11 1.977 Collecting httpx-sse>=0.4 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 1.984   Downloading httpx_sse-0.4.3-py3-none-any.whl.metadata (9.7 kB)
+#11 2.004 Collecting jsonschema>=4.20.0 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.010   Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+#11 2.023 Collecting pydantic-settings>=2.5.2 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.029   Downloading pydantic_settings-2.13.1-py3-none-any.whl.metadata (3.4 kB)
+#11 2.052 Collecting pyjwt>=2.10.1 (from pyjwt[crypto]>=2.10.1->mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.060   Downloading pyjwt-2.12.1-py3-none-any.whl.metadata (4.1 kB)
+#11 2.071 Collecting python-multipart>=0.0.9 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.077   Downloading python_multipart-0.0.22-py3-none-any.whl.metadata (1.8 kB)
+#11 2.090 Collecting sse-starlette>=1.6.1 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.095   Downloading sse_starlette-3.3.3-py3-none-any.whl.metadata (14 kB)
+#11 2.117 Collecting starlette>=0.27 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.123   Downloading starlette-0.52.1-py3-none-any.whl.metadata (6.3 kB)
+#11 2.136 Collecting typing-inspection>=0.4.1 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.142   Downloading typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+#11 2.174 Collecting importlib-metadata<8.8.0,>=6.0 (from opentelemetry-api>=1.20.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.180   Downloading importlib_metadata-8.7.1-py3-none-any.whl.metadata (4.7 kB)
+#11 2.198 Collecting beartype>=0.20.0 (from py-key-value-aio<0.5.0,>=0.4.4->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.205   Downloading beartype-0.22.9-py3-none-any.whl.metadata (37 kB)
+#11 2.244 Collecting aiofile>=3.5.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.249   Downloading aiofile-3.9.0-py3-none-any.whl.metadata (14 kB)
+#11 2.273 Collecting keyring>=25.6.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.278   Downloading keyring-25.7.0-py3-none-any.whl.metadata (21 kB)
+#11 2.295 Collecting cachetools>=5.0.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.302   Downloading cachetools-7.0.5-py3-none-any.whl.metadata (5.6 kB)
+#11 2.311 Collecting annotated-types>=0.6.0 (from pydantic>=2.11.7->pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.318   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+#11 2.571 Collecting pydantic-core==2.41.5 (from pydantic>=2.11.7->pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.578   Downloading pydantic_core-2.41.5-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (7.3 kB)
+#11 2.591 Collecting email-validator>=2.0.0 (from pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.598   Downloading email_validator-2.3.0-py3-none-any.whl.metadata (26 kB)
+#11 2.624 Collecting markdown-it-py>=2.2.0 (from rich>=13.9.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.631   Downloading markdown_it_py-4.0.0-py3-none-any.whl.metadata (7.3 kB)
+#11 2.647 Collecting pygments<3.0.0,>=2.13.0 (from rich>=13.9.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.653   Downloading pygments-2.19.2-py3-none-any.whl.metadata (2.5 kB)
+#11 2.667 Collecting click>=7.0 (from uvicorn>=0.35->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.676   Downloading click-8.3.1-py3-none-any.whl.metadata (2.6 kB)
+#11 2.702 Collecting caio<0.10.0,>=0.9.0 (from aiofile>=3.5.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.708   Downloading caio-0.9.25-cp312-cp312-manylinux_2_34_aarch64.whl.metadata (3.3 kB)
+#11 2.725 Collecting dnspython>=2.0.0 (from email-validator>=2.0.0->pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.732   Downloading dnspython-2.8.0-py3-none-any.whl.metadata (5.7 kB)
+#11 2.751 Collecting zipp>=3.20 (from importlib-metadata<8.8.0,>=6.0->opentelemetry-api>=1.20.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.757   Downloading zipp-3.23.0-py3-none-any.whl.metadata (3.6 kB)
+#11 2.771 Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.20.0->mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.779   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+#11 2.900 Collecting rpds-py>=0.25.0 (from jsonschema>=4.20.0->mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.908   Downloading rpds_py-0.30.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (4.1 kB)
+#11 2.922 Collecting SecretStorage>=3.2 (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.928   Downloading secretstorage-3.5.0-py3-none-any.whl.metadata (4.0 kB)
+#11 2.939 Collecting jeepney>=0.4.2 (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.944   Downloading jeepney-0.9.0-py3-none-any.whl.metadata (1.2 kB)
+#11 2.955 Collecting jaraco.classes (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 2.962   Downloading jaraco.classes-3.4.0-py3-none-any.whl.metadata (2.6 kB)
+#11 3.187 Collecting jaraco.functools (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 3.195   Downloading jaraco_functools-4.4.0-py3-none-any.whl.metadata (3.0 kB)
+#11 3.207 Collecting jaraco.context (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 3.214   Downloading jaraco_context-6.1.1-py3-none-any.whl.metadata (4.3 kB)
+#11 3.225 Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich>=13.9.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 3.229   Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+#11 3.290 Collecting cffi>=2.0.0 (from cryptography->authlib>=1.6.5->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 3.296   Downloading cffi-2.0.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.whl.metadata (2.6 kB)
+#11 3.315 Collecting docutils (from rich-rst<2.0.0,>=1.3.1->cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 3.322   Downloading docutils-0.22.4-py3-none-any.whl.metadata (15 kB)
+#11 3.355 Collecting pycparser (from cffi>=2.0.0->cryptography->authlib>=1.6.5->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 3.359   Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+#11 3.395 Collecting more-itertools (from jaraco.classes->keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 3.402   Downloading more_itertools-10.8.0-py3-none-any.whl.metadata (39 kB)
+#11 3.415 Downloading fastmcp-3.1.1-py3-none-any.whl (633 kB)
+#11 3.434    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 633.8/633.8 kB 33.0 MB/s eta 0:00:00
+#11 3.441 Downloading authlib-1.6.9-py2.py3-none-any.whl (244 kB)
+#11 3.456 Downloading cyclopts-4.10.0-py3-none-any.whl (204 kB)
+#11 3.466 Downloading exceptiongroup-1.3.1-py3-none-any.whl (16 kB)
+#11 3.472 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#11 3.478 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#11 3.486 Downloading jsonref-1.1.0-py3-none-any.whl (9.4 kB)
+#11 3.493 Downloading jsonschema_path-0.4.5-py3-none-any.whl (19 kB)
+#11 3.501 Downloading mcp-1.26.0-py3-none-any.whl (233 kB)
+#11 3.511 Downloading openapi_pydantic-0.5.1-py3-none-any.whl (96 kB)
+#11 3.518 Downloading opentelemetry_api-1.40.0-py3-none-any.whl (68 kB)
+#11 3.525 Downloading packaging-26.0-py3-none-any.whl (74 kB)
+#11 3.532 Downloading platformdirs-4.9.4-py3-none-any.whl (21 kB)
+#11 3.541 Downloading py_key_value_aio-0.4.4-py3-none-any.whl (152 kB)
+#11 3.548 Downloading pydantic-2.12.5-py3-none-any.whl (463 kB)
+#11 3.563 Downloading pydantic_core-2.41.5-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (1.9 MB)
+#11 3.648    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.9/1.9 MB 21.5 MB/s eta 0:00:00
+#11 3.657 Downloading pyperclip-1.11.0-py3-none-any.whl (11 kB)
+#11 3.668 Downloading python_dotenv-1.2.2-py3-none-any.whl (22 kB)
+#11 3.676 Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (775 kB)
+#11 3.711    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 775.1/775.1 kB 21.1 MB/s eta 0:00:00
+#11 3.718 Downloading rich-14.3.3-py3-none-any.whl (310 kB)
+#11 3.739 Downloading uncalled_for-0.2.0-py3-none-any.whl (11 kB)
+#11 3.746 Downloading uvicorn-0.42.0-py3-none-any.whl (68 kB)
+#11 3.753 Downloading watchfiles-1.1.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (449 kB)
+#11 3.782 Downloading websockets-16.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (186 kB)
+#11 3.795 Downloading aiofile-3.9.0-py3-none-any.whl (19 kB)
+#11 3.804 Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+#11 3.810 Downloading anyio-4.12.1-py3-none-any.whl (113 kB)
+#11 3.819 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+#11 3.826 Downloading beartype-0.22.9-py3-none-any.whl (1.3 MB)
+#11 3.910    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 13.6 MB/s eta 0:00:00
+#11 3.918 Downloading cachetools-7.0.5-py3-none-any.whl (13 kB)
+#11 3.927 Downloading click-8.3.1-py3-none-any.whl (108 kB)
+#11 3.938 Downloading docstring_parser-0.17.0-py3-none-any.whl (36 kB)
+#11 3.947 Downloading email_validator-2.3.0-py3-none-any.whl (35 kB)
+#11 3.955 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#11 3.963 Downloading httpx_sse-0.4.3-py3-none-any.whl (9.0 kB)
+#11 3.970 Downloading idna-3.11-py3-none-any.whl (71 kB)
+#11 3.980 Downloading importlib_metadata-8.7.1-py3-none-any.whl (27 kB)
+#11 3.987 Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+#11 3.996 Downloading keyring-25.7.0-py3-none-any.whl (39 kB)
+#11 4.005 Downloading markdown_it_py-4.0.0-py3-none-any.whl (87 kB)
+#11 4.014 Downloading pathable-0.5.0-py3-none-any.whl (16 kB)
+#11 4.023 Downloading pydantic_settings-2.13.1-py3-none-any.whl (58 kB)
+#11 4.031 Downloading pygments-2.19.2-py3-none-any.whl (1.2 MB)
+#11 4.056    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 56.4 MB/s eta 0:00:00
+#11 4.063 Downloading pyjwt-2.12.1-py3-none-any.whl (29 kB)
+#11 4.070 Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_aarch64.whl (4.3 MB)
+#11 4.384    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.3/4.3 MB 13.1 MB/s eta 0:00:00
+#11 4.392 Downloading python_multipart-0.0.22-py3-none-any.whl (24 kB)
+#11 4.399 Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+#11 4.407 Downloading rich_rst-1.3.2-py3-none-any.whl (12 kB)
+#11 4.415 Downloading sse_starlette-3.3.3-py3-none-any.whl (14 kB)
+#11 4.422 Downloading starlette-0.52.1-py3-none-any.whl (74 kB)
+#11 4.430 Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+#11 4.437 Downloading typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+#11 4.443 Downloading certifi-2026.2.25-py3-none-any.whl (153 kB)
+#11 4.450 Downloading caio-0.9.25-cp312-cp312-manylinux_2_34_aarch64.whl (81 kB)
+#11 4.458 Downloading cffi-2.0.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.whl (220 kB)
+#11 4.467 Downloading dnspython-2.8.0-py3-none-any.whl (331 kB)
+#11 4.478 Downloading jeepney-0.9.0-py3-none-any.whl (49 kB)
+#11 4.485 Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+#11 4.491 Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+#11 4.499 Downloading rpds_py-0.30.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (390 kB)
+#11 4.513 Downloading secretstorage-3.5.0-py3-none-any.whl (15 kB)
+#11 4.520 Downloading zipp-3.23.0-py3-none-any.whl (10 kB)
+#11 4.525 Downloading docutils-0.22.4-py3-none-any.whl (633 kB)
+#11 4.549    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 633.2/633.2 kB 18.6 MB/s eta 0:00:00
+#11 4.556 Downloading jaraco.classes-3.4.0-py3-none-any.whl (6.8 kB)
+#11 4.563 Downloading jaraco_context-6.1.1-py3-none-any.whl (7.0 kB)
+#11 4.570 Downloading jaraco_functools-4.4.0-py3-none-any.whl (10 kB)
+#11 4.575 Downloading more_itertools-10.8.0-py3-none-any.whl (69 kB)
+#11 4.582 Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+#11 4.674 Installing collected packages: pyperclip, zipp, websockets, uncalled-for, typing-extensions, rpds-py, pyyaml, python-multipart, python-dotenv, pyjwt, pygments, pycparser, platformdirs, pathable, packaging, more-itertools, mdurl, jsonref, jeepney, jaraco.context, idna, httpx-sse, h11, docutils, docstring-parser, dnspython, click, certifi, caio, cachetools, beartype, attrs, annotated-types, uvicorn, typing-inspection, referencing, pydantic-core, py-key-value-aio, markdown-it-py, jaraco.functools, jaraco.classes, importlib-metadata, httpcore, exceptiongroup, email-validator, cffi, anyio, aiofile, watchfiles, starlette, rich, pydantic, opentelemetry-api, jsonschema-specifications, jsonschema-path, httpx, cryptography, sse-starlette, SecretStorage, rich-rst, pydantic-settings, openapi-pydantic, jsonschema, authlib, mcp, keyring, cyclopts, fastmcp
+#11 7.168 Successfully installed SecretStorage-3.5.0 aiofile-3.9.0 annotated-types-0.7.0 anyio-4.12.1 attrs-26.1.0 authlib-1.6.9 beartype-0.22.9 cachetools-7.0.5 caio-0.9.25 certifi-2026.2.25 cffi-2.0.0 click-8.3.1 cryptography-46.0.5 cyclopts-4.10.0 dnspython-2.8.0 docstring-parser-0.17.0 docutils-0.22.4 email-validator-2.3.0 exceptiongroup-1.3.1 fastmcp-3.1.1 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 httpx-sse-0.4.3 idna-3.11 importlib-metadata-8.7.1 jaraco.classes-3.4.0 jaraco.context-6.1.1 jaraco.functools-4.4.0 jeepney-0.9.0 jsonref-1.1.0 jsonschema-4.26.0 jsonschema-path-0.4.5 jsonschema-specifications-2025.9.1 keyring-25.7.0 markdown-it-py-4.0.0 mcp-1.26.0 mdurl-0.1.2 more-itertools-10.8.0 openapi-pydantic-0.5.1 opentelemetry-api-1.40.0 packaging-26.0 pathable-0.5.0 platformdirs-4.9.4 py-key-value-aio-0.4.4 pycparser-3.0 pydantic-2.12.5 pydantic-core-2.41.5 pydantic-settings-2.13.1 pygments-2.19.2 pyjwt-2.12.1 pyperclip-1.11.0 python-dotenv-1.2.2 python-multipart-0.0.22 pyyaml-6.0.3 referencing-0.37.0 rich-14.3.3 rich-rst-1.3.2 rpds-py-0.30.0 sse-starlette-3.3.3 starlette-0.52.1 typing-extensions-4.15.0 typing-inspection-0.4.2 uncalled-for-0.2.0 uvicorn-0.42.0 watchfiles-1.1.1 websockets-16.0 zipp-3.23.0
+#11 7.169 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#11 7.258 
+#11 7.258 [notice] A new release of pip is available: 25.0.1 -> 26.0.1
+#11 7.258 [notice] To update, run: pip install --upgrade pip
+#11 DONE 7.4s
+
+#12 [7/8] COPY mcp_server.py ./
+#12 DONE 0.0s
+
+#13 [8/8] RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+#13 DONE 0.1s
+
+#14 exporting to image
+#14 exporting layers
+#14 exporting layers 7.7s done
+#14 exporting manifest sha256:ed1dd6f11e8e2fa7eb1773c5dd7cba604e2e10ffd4ed4d89f0e37d6b87875623 done
+#14 exporting config sha256:a3a5b0934894eeca1452d9e7612b79341e01268f0e616c2120ea0b3253b697cf done
+#14 exporting attestation manifest sha256:2cfbe4eed445af740cec250e2ed71e95f36978c850df09ddb2157a64a25236a2 done
+#14 exporting manifest list sha256:31006e91886af86333d9ae7efd3ebaf279969e5d91aa0e71b047e2fa1c77703a done
+#14 naming to docker.io/hackerdogs/slowhttptest-mcp:latest done
+#14 unpacking to docker.io/hackerdogs/slowhttptest-mcp:latest
+#14 unpacking to docker.io/hackerdogs/slowhttptest-mcp:latest 1.8s done
+#14 DONE 9.6s
+  [0;32mPASS: Docker image hackerdogs/slowhttptest-mcp:latest exists[0m
+
+[0;34m[Test 2] CLI binary inside container[0m
+  [0;32mPASS: slowhttptest binary responds[0m
+       
+
+[0;34m[Test 3] MCP stdio mode — initialize + tools/list[0m
+  [0;32mPASS: stdio mode returned tools/list response (       2 tool names found)[0m
+
+[0;34m[Test 4] MCP HTTP streamable mode — initialize[0m
+  [0;32mPASS: HTTP streamable mode responded (status 200)[0m
+       Session ID: 4e23ce9eb7594503...
+
+[0;34m[Test 5] MCP HTTP — tools/list[0m
+  [0;32mPASS: HTTP tools/list returned tools[0m
+
+[0;34m[Test 6] MCP HTTP — tools/call (run_slowhttptest)[0m
+  [0;32mPASS: tools/call run_slowhttptest returned a result[0m
+
+=================================================================================
+[0;34mResults: [0;32m6 passed[0m, [0;31m0 failed[0m
+=================================================================================
+slowhttptest-mcp-test
+slowhttptest-mcp-test

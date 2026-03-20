@@ -5,3 +5,5 @@ webservice/catalog.json
 */logs/*
 /tools-to-migrate-to-mcp/cyproxio
 /tools-to-migrate-to-mcp/acuvity
+/tools-to-migrate-to-mcp/modules
+/tools-to-migrate-to-mcp/mcpserverconfigs

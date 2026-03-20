@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "webc-mcp": {
+      "url": "http://localhost:8504/mcp"
+    }
+  }
+}

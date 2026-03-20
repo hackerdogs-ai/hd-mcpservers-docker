@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  aws-api-mcp:
+    image: hackerdogs/aws-api-mcp:latest
+    build: .
+    ports:
+      - "8602:8602"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8602
+      - AWS_REGION=${AWS_REGION:-}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-}

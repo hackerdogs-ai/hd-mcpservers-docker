@@ -1,0 +1,752 @@
+[
+  {
+    "server": "ai-humanizer-mcp",
+    "port": 8601,
+    "stdio_pass": true,
+    "stdio_tools": 1,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "aws-api-mcp",
+    "port": 8602,
+    "stdio_pass": true,
+    "stdio_tools": 2,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "aws-aurora-dsql-mcp",
+    "port": 8603,
+    "stdio_pass": true,
+    "stdio_tools": 6,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "aws-bedrock-agentcore-mcp",
+    "port": 8604,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=127 /entrypoint.sh: 5: exec: awslabs.bedrock-agentcore-mcp-server: not found\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "aws-bedrock-custom-model-mcp",
+    "port": 8605,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=127 /entrypoint.sh: 5: exec: awslabs.bedrock-custom-model-mcp-server: not found\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "aws-cloudtrail-mcp",
+    "port": 8606,
+    "stdio_pass": true,
+    "stdio_tools": 5,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "aws-cloudwatch-appsignals-mcp",
+    "port": 8607,
+    "stdio_pass": true,
+    "stdio_tools": 13,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "aws-cloudwatch-mcp",
+    "port": 8608,
+    "stdio_pass": true,
+    "stdio_tools": 11,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "aws-core-mcp",
+    "port": 8609,
+    "stdio_pass": true,
+    "stdio_tools": 1,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 1,
+    "http_err": ""
+  },
+  {
+    "server": "aws-documentation-mcp",
+    "port": 8610,
+    "stdio_pass": true,
+    "stdio_tools": 4,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "aws-documentdb-mcp",
+    "port": 8611,
+    "stdio_pass": true,
+    "stdio_tools": 16,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "aws-dynamodb-mcp",
+    "port": 8612,
+    "stdio_pass": true,
+    "stdio_tools": 8,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "aws-ecs-mcp",
+    "port": 8613,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=127 /entrypoint.sh: 5: exec: awslabs.ecs-mcp-server: not found\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "aws-eks-mcp",
+    "port": 8614,
+    "stdio_pass": true,
+    "stdio_tools": 16,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "aws-iam-mcp",
+    "port": 8615,
+    "stdio_pass": true,
+    "stdio_tools": 29,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "aws-mq-mcp",
+    "port": 8616,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=1 ed_config()\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.11/site-packages/botocore/session.py\", line 424, in get_scoped_config\n    raise ProfileNotFound(profile=profile_name)\nbotocore.exceptions.ProfileNotFound: The config profile (default) could not be found\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "aws-neptune-mcp",
+    "port": 8617,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=127 /entrypoint.sh: 5: exec: awslabs.neptune-mcp-server: not found\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "aws-network-mcp",
+    "port": 8618,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=127 /entrypoint.sh: 5: exec: awslabs.network-mcp-server: not found\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "aws-postgres-mcp",
+    "port": 8619,
+    "stdio_pass": true,
+    "stdio_tools": 7,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "aws-prometheus-mcp",
+    "port": 8620,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=1 R: AWS credentials validation failed: An error occurred (InvalidClientTokenId) when calling the GetCallerIdentity operation: The security token included in the request is invalid.\n2026-03-19 10:27:15.997 | ERROR    | awslabs.prometheus_mcp_server.server:main:1089 - AWS credentials validation failed\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "aws-redshift-mcp",
+    "port": 8621,
+    "stdio_pass": true,
+    "stdio_tools": 6,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "aws-s3-tables-mcp",
+    "port": 8622,
+    "stdio_pass": true,
+    "stdio_tools": 16,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "aws-serverless-mcp",
+    "port": 8623,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=1 et_scoped_config()\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.11/site-packages/botocore/session.py\", line 424, in get_scoped_config\n    raise ProfileNotFound(profile=profile_name)\nbotocore.exceptions.ProfileNotFound: The config profile () could not be found\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "aws-sns-sqs-mcp",
+    "port": 8624,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=1 ed_config()\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.11/site-packages/botocore/session.py\", line 424, in get_scoped_config\n    raise ProfileNotFound(profile=profile_name)\nbotocore.exceptions.ProfileNotFound: The config profile (default) could not be found\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "aws-stepfunctions-mcp",
+    "port": 8625,
+    "stdio_pass": true,
+    "stdio_tools": 2,
+    "stdio_err": "",
+    "http_pass": true,
+    "http_tools": 2,
+    "http_err": ""
+  },
+  {
+    "server": "aws-well-architected-security-mcp",
+    "port": 8626,
+    "stdio_pass": true,
+    "stdio_tools": 6,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "azure-mcp",
+    "port": 8627,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=0 dBuilder`1[[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]].Start[[Program+<Main>d__1, azmcp, Version=0.3.2.0, Culture=neutral, PublicKeyToken=null]](<Main>d__1 ByRef)\n   at Program.Main(System.String[])\n   at Program.<Main>(System.String[])\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "baidu-search-mcp-server-mcp",
+    "port": 8628,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=127 /entrypoint.sh: 5: exec: baidu-search-mcp-server: not found\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "brave-search-mcp",
+    "port": 8629,
+    "stdio_pass": true,
+    "stdio_tools": 2,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "brightdata-mcp-server-mcp",
+    "port": 8630,
+    "stdio_pass": true,
+    "stdio_tools": 4,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "chrome-devtools-mcp",
+    "port": 8631,
+    "stdio_pass": true,
+    "stdio_tools": 31,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "clinicaltrialsgov-mcp-server-mcp",
+    "port": 8632,
+    "stdio_pass": true,
+    "stdio_tools": 7,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "cloudflare-mcp",
+    "port": 8633,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=0 [DEBUG 2026-03-19T10:29:26.503Z] Uncaught exception: Error: Unknown command: undefined. Expected 'init' or 'run'.\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "context7-mcp",
+    "port": 8634,
+    "stdio_pass": true,
+    "stdio_tools": 2,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "dns-mcp-server-mcp",
+    "port": 8635,
+    "stdio_pass": true,
+    "stdio_tools": 4,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "dnstwist-mcp",
+    "port": 8636,
+    "stdio_pass": true,
+    "stdio_tools": 1,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "exa-mcp",
+    "port": 8637,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=1 l/modules/cjs/loader:1140:15)\n    at Module._load (node:internal/modules/cjs/loader:981:27)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:128:12)\n    at node:internal/main/run_main_module:28:49 {\n  code: 'MODULE_NOT_FOUND',\n  requireStack: []\n}\n\nNode.js v18.20.8\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "exiftool-agent-mcp",
+    "port": 8638,
+    "stdio_pass": true,
+    "stdio_tools": 4,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "fetch-mcp",
+    "port": 8639,
+    "stdio_pass": true,
+    "stdio_tools": 1,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "firecrawl-mcp",
+    "port": 8640,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=1 Either FIRECRAWL_API_KEY or FIRECRAWL_API_URL must be provided\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "geocoding-mcp",
+    "port": 8641,
+    "stdio_pass": true,
+    "stdio_tools": 1,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "gitlab-mcp",
+    "port": 8642,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=1 \u001b[31mERROR\u001b[39m [10:30:57.032] (18): \u001b[36mGITLAB_PERSONAL_ACCESS_TOKEN environment variable is not set\u001b[39m\n\u001b[32mINFO\u001b[39m [10:30:57.032] (18): \u001b[36mEither set GITLAB_PERSONAL_ACCESS_TOKEN or enable OAuth with GITLAB_USE_OAUTH=true\u001b[39m\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "globalping-mcp",
+    "port": 8643,
+    "stdio_pass": true,
+    "stdio_tools": 6,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "google-threat-intelligence-mcp",
+    "port": 8644,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=127 /entrypoint.sh: 5: exec: google-threat-intelligence-mcp: not found\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "greynoise-mcp",
+    "port": 8645,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=1 Error: GREYNOISE_API_KEY is required. Please add it to your .env file.\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "hibp-mcp",
+    "port": 8646,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=1 p-mcp/build/main.js:305:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:195:25)\n    at async ModuleLoader.import (node:internal/modules/esm/loader:337:24)\n    at async loadESM (node:internal/process/esm_loader:34:7)\n    at async handleMainPromise (node:internal/modules/run_main:106:12)\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "imf-data-mcp",
+    "port": 8647,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=127 /entrypoint.sh: 5: exec: imf-data-mcp: not found\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "iplocate-mcp",
+    "port": 8648,
+    "stdio_pass": true,
+    "stdio_tools": 6,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "jira-mcp",
+    "port": 8649,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=2 usage: mcp-server-jira [-h] --jira-base-url JIRA_BASE_URL\n                       [--jira-token JIRA_TOKEN]\nmcp-server-jira: error: the following arguments are required: --jira-base-url\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "ms-fabric-rti-mcp",
+    "port": 8650,
+    "stdio_pass": true,
+    "stdio_tools": 36,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "nasa-mcp",
+    "port": 8651,
+    "stdio_pass": true,
+    "stdio_tools": 23,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "notion-mcp",
+    "port": 8652,
+    "stdio_pass": true,
+    "stdio_tools": 22,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "octagon-mcp-server-mcp",
+    "port": 8653,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=1 s:10:11\n    at ModuleJob.run (node:internal/modules/esm/module_job:195:25)\n    at async ModuleLoader.import (node:internal/modules/esm/loader:337:24)\n    at async loadESM (node:internal/process/esm_loader:34:7)\n    at async handleMainPromise (node:internal/modules/run_main:106:12)\n\nNode.js v18.20.8\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "octocode-mcp",
+    "port": 8654,
+    "stdio_pass": true,
+    "stdio_tools": 6,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "openfda-mcp",
+    "port": 8655,
+    "stdio_pass": true,
+    "stdio_tools": 7,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "osm-mcp-server-mcp",
+    "port": 8656,
+    "stdio_pass": true,
+    "stdio_tools": 12,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "pinecone-mcp",
+    "port": 8657,
+    "stdio_pass": true,
+    "stdio_tools": 1,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "postman-mcp",
+    "port": 8658,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=1 certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.\nnpm warn deprecated @faker-js/faker@5.5.3: Please update to a newer version.\nInvalid environment variables for Postman MCP server: { _errors: [], POSTMAN_API_KEY: { _errors: [ 'Required' ] } }\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "timed out"
+  },
+  {
+    "server": "puppeteer-mcp",
+    "port": 8659,
+    "stdio_pass": true,
+    "stdio_tools": 7,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "rapidapi-hub-reverse-image-search-by-copyseeker-mcp",
+    "port": 8660,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=1 [18] Usage: npx tsx proxy.ts <https://server-url> [callback-port] [--debug]\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "reddit-mcp",
+    "port": 8661,
+    "stdio_pass": true,
+    "stdio_tools": 8,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "s3-mcp-server-mcp",
+    "port": 8662,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=1 Error: AWS credentials are required. Please set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables.\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "scc-mcp",
+    "port": 8663,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=127 /entrypoint.sh: 5: exec: scc-mcp: not found\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "<urlopen error [Errno 61] Connection refused>"
+  },
+  {
+    "server": "search1api-mcp",
+    "port": 8664,
+    "stdio_pass": true,
+    "stdio_tools": 6,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "sentry-mcp",
+    "port": 8665,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=1 =TOKEN\n  @sentry/mcp-server --access-token=TOKEN --skills=inspect,triage\n  @sentry/mcp-server --access-token=TOKEN --host=sentry.example.com\n  @sentry/mcp-server --access-token=TOKEN --host=sentry.example.com --disable-skills=seer\n  @sentry/mcp-server --access-token=TOKEN --agent-provider=anthropic\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "serper-search-mcp",
+    "port": 8666,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=1 s:14:11\n    at ModuleJob.run (node:internal/modules/esm/module_job:195:25)\n    at async ModuleLoader.import (node:internal/modules/esm/loader:337:24)\n    at async loadESM (node:internal/process/esm_loader:34:7)\n    at async handleMainPromise (node:internal/modules/run_main:106:12)\n\nNode.js v18.20.8\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "splunk-mcp",
+    "port": 8667,
+    "stdio_pass": true,
+    "stdio_tools": 11,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "steampipe-mcp",
+    "port": 8668,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "TIMEOUT",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "timed out"
+  },
+  {
+    "server": "stripe-mcp",
+    "port": 8669,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=0 _modules/@stripe/mcp/node_modules/@modelcontextprotocol/sdk/dist/cjs/client/streamableHttp.js:368:23)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async stdioTransport.onmessage (/usr/local/lib/node_modules/@stripe/mcp/dist/index.js:33:13) {\n  code: 401\n}\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "timed out"
+  },
+  {
+    "server": "terraform-mcp",
+    "port": 8670,
+    "stdio_pass": true,
+    "stdio_tools": 10,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "tomtom-mcp",
+    "port": 8671,
+    "stdio_pass": true,
+    "stdio_tools": 10,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "variflight-mcp",
+    "port": 8672,
+    "stdio_pass": true,
+    "stdio_tools": 8,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "whois-mcp",
+    "port": 8673,
+    "stdio_pass": true,
+    "stdio_tools": 3,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "winston-ai-mcp",
+    "port": 8674,
+    "stdio_pass": false,
+    "stdio_tools": 0,
+    "stdio_err": "exit=1 WINSTONAI_API_KEY is not set\n",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  },
+  {
+    "server": "youtube-transcript-mcp",
+    "port": 8675,
+    "stdio_pass": true,
+    "stdio_tools": 1,
+    "stdio_err": "",
+    "http_pass": false,
+    "http_tools": 0,
+    "http_err": "no tools/list response"
+  }
+]

@@ -1,0 +1,25 @@
+MCP test run - boofuzz-mcp
+Generated (UTC): 2026-03-20T18:04:51Z
+Exit code: 125
+Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
+---------------------------------------------------------------------------------
+=================================================================================
+[0;34mBoofuzz MCP Server — Test Suite[0m
+=================================================================================
+
+[0;34m[Test 1] Docker image[0m
+  [0;32mPASS: Docker image hackerdogs/boofuzz-mcp:latest exists[0m
+
+[0;34m[Test 2] CLI binary inside container[0m
+  [0;32mPASS: boofuzz binary responds[0m
+       [FATAL tini (7)] exec boofuzz failed: No such file or directory
+
+[0;34m[Test 3] MCP stdio mode — initialize + tools/list[0m
+  [0;32mPASS: stdio mode returned tools/list response (       2 tool names found)[0m
+
+[0;34m[Test 4] MCP HTTP streamable mode — initialize[0m
+docker: Error response from daemon: failed to set up container networking: driver failed programming external connectivity on endpoint boofuzz-mcp-test (bd24678b5b5a5be895d780df4cbf54bfe684e86deb098544ea59e318bb5717b9): Bind for 0.0.0.0:8333 failed: port is already allocated
+
+Run 'docker run --help' for more information
+boofuzz-mcp-test
+boofuzz-mcp-test

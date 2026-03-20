@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  rapidapi-hub-reverse-image-search-by-copyseeker-mcp:
+    image: hackerdogs/rapidapi-hub-reverse-image-search-by-copyseeker-mcp:latest
+    build: .
+    ports:
+      - "8660:8660"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8660
+      - RAPIDAPI_KEY=${RAPIDAPI_KEY:-}

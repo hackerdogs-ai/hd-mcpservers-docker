@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "imf-data-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "MCP_TRANSPORT",
+        "hackerdogs/imf-data-mcp:latest"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
+    }
+  }
+}

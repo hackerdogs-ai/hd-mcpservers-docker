@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  edgartools-mcp-server-mcp:
+    image: hackerdogs/edgartools-mcp-server-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: edgartools-mcp-server-mcp
+    ports:
+      - "8415:8415"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8415
+    restart: unless-stopped

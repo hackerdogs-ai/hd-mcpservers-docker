@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "youtube-transcript-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "MCP_TRANSPORT",
+        "hackerdogs/youtube-transcript-mcp:latest"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
+    }
+  }
+}

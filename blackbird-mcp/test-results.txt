@@ -1,0 +1,37 @@
+MCP test run - blackbird-mcp
+Generated (UTC): 2026-03-20T18:04:36Z
+Exit code: 0
+Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
+---------------------------------------------------------------------------------
+=================================================================================
+[0;34mBlackbird MCP Server — Test Suite[0m
+=================================================================================
+
+[0;34m[Test 1] Docker image[0m
+  [0;32m✅ PASS: Docker image hackerdogs/blackbird-mcp:latest exists[0m
+
+[0;34m[Test 2] CLI binary inside container[0m
+  [0;32m✅ PASS: blackbird binary responds[0m
+       usage: blackbird [-h] [-u [USERNAME ...]] [-uf USERNAME_FILE] [--permute]
+
+[0;34m[Test 3] MCP stdio mode — initialize + tools/list[0m
+  [0;32m✅ PASS: stdio mode returned tools/list response (       2 tool names found)[0m
+
+[0;34m[Test 4] MCP HTTP streamable mode — initialize[0m
+  [0;32m✅ PASS: HTTP streamable mode responded (status 200)[0m
+       Session ID: 2bbf013c1b0743d6...
+
+[0;34m[Test 5] MCP HTTP — tools/list[0m
+  [0;32m✅ PASS: HTTP tools/list returned tools[0m
+       - run_blackbird: Run blackbird with the given arguments.
+
+Search for a username across 500+ sites
+
+[0;34m[Test 6] MCP HTTP — tools/call (run_blackbird --help)[0m
+  [0;32m✅ PASS: tools/call run_blackbird returned a result[0m
+
+=================================================================================
+[0;34mResults: [0;32m6 passed[0m, [0;31m0 failed[0m
+=================================================================================
+blackbird-mcp-test
+blackbird-mcp-test

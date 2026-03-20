@@ -1,0 +1,53 @@
+MCP test run - titus-mcp
+Generated (UTC): 2026-03-20T19:54:28Z
+Exit code: 0
+Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
+---------------------------------------------------------------------------------
+=================================================================================
+[0;34mTitus MCP Server — Test Suite[0m
+=================================================================================
+
+[0;34m[Test 1] Docker image[0m
+  [0;32m✅ PASS: Docker image hackerdogs/titus-mcp:latest exists[0m
+
+[0;34m[Test 2] CLI binary inside container[0m
+  [0;32m✅ PASS: titus binary responds[0m
+       Titus is a fast secrets scanner that finds credentials in code, files, and git history.
+
+[0;34m[Test 3] MCP stdio mode — initialize + tools/list[0m
+  [0;32m✅ PASS: stdio mode returned tools/list response (       7 tool names found)[0m
+
+[0;34m[Test 4] MCP HTTP streamable mode — initialize[0m
+  [0;32m✅ PASS: HTTP streamable mode responded (status 200)[0m
+       Session ID: 4b2623c2fca04d63...
+
+[0;34m[Test 5] MCP HTTP — tools/list[0m
+  [0;32m✅ PASS: HTTP tools/list returned tools[0m
+       - scan_path: Scan files and directories for secrets (API keys, tokens, credentials).
+
+Designe
+       - scan_git: Scan git history of a repository for secrets leaked in past commits.
+
+Designed f
+       - list_rules: List all available secret detection rules.
+
+Returns the full set of 487 built-in
+       - generate_report: Generate a report of findings from the most recent scan.
+
+Produces a summary rep
+       - download_file: Download a file or repository from a URL into the container workspace.
+
+Use when
+       - cleanup_downloads: Clean up downloaded files from the container workspace.
+
+Args:
+    job_id: Speci
+
+[0;34m[Test 6] MCP HTTP — tools/call (list_rules)[0m
+  [0;32m✅ PASS: tools/call list_rules returned a result[0m
+
+=================================================================================
+[0;34mResults: [0;32m6 passed[0m, [0;31m0 failed[0m
+=================================================================================
+titus-mcp-test
+titus-mcp-test

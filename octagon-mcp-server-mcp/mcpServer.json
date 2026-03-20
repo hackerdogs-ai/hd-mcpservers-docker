@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "octagon-mcp-server-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "MCP_TRANSPORT",
+        "-e",
+        "OCTAGON_API_KEY",
+        "hackerdogs/octagon-mcp-server-mcp:latest"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio",
+        "OCTAGON_API_KEY": ""
+      }
+    }
+  }
+}

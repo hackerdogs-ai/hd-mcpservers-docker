@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  acuvity-mcp-server-microsoft-graph-mcp:
+    image: hackerdogs/acuvity-mcp-server-microsoft-graph-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: acuvity-mcp-server-microsoft-graph-mcp
+    ports:
+      - "8433:8433"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8433
+    restart: unless-stopped

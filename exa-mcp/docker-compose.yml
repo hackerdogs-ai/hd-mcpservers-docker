@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  exa-mcp:
+    image: hackerdogs/exa-mcp:latest
+    build: .
+    ports:
+      - "8637:8637"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8637
+      - EXA_API_KEY=${EXA_API_KEY:-}

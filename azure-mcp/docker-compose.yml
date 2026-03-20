@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  azure-mcp:
+    image: hackerdogs/azure-mcp:latest
+    build: .
+    ports:
+      - "8627:8627"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8627
+      - AZURE_CLIENT_ID=${AZURE_CLIENT_ID:-}
+      - AZURE_CLIENT_SECRET=${AZURE_CLIENT_SECRET:-}
+      - AZURE_TENANT_ID=${AZURE_TENANT_ID:-}
+      - AZURE_SUBSCRIPTION_ID=${AZURE_SUBSCRIPTION_ID:-}

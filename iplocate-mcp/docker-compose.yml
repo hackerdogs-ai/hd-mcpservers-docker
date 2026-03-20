@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  iplocate-mcp:
+    image: hackerdogs/iplocate-mcp:latest
+    build: .
+    ports:
+      - "8648:8648"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8648
+

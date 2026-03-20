@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  serper-search-mcp:
+    image: hackerdogs/serper-search-mcp:latest
+    build: .
+    ports:
+      - "8666:8666"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8666
+      - SERPER_API_KEY=${SERPER_API_KEY:-}

@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  imf-data-mcp:
+    image: hackerdogs/imf-data-mcp:latest
+    build: .
+    ports:
+      - "8647:8647"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8647
+

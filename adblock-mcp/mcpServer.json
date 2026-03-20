@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "adblock-mcp": {
+      "url": "http://localhost:8508/mcp"
+    }
+  }
+}

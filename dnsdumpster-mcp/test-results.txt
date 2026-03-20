@@ -1,0 +1,40 @@
+MCP test run - dnsdumpster-mcp
+Generated (UTC): 2026-03-20T18:24:22Z
+Exit code: 0
+Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
+---------------------------------------------------------------------------------
+=================================================================================
+[0;34mDNSDumpster MCP Server — Test Suite[0m
+=================================================================================
+
+[0;34m[Test 1] Docker image[0m
+  [0;32m✅ PASS: Docker image hackerdogs/dnsdumpster-mcp:latest exists[0m
+
+[0;34m[Test 2] CLI binary inside container[0m
+  [0;32m✅ PASS: dnsdumpster binary responds[0m
+       /opt/dnsdumpster/dnsdumpster.py:220: SyntaxWarning: invalid escape sequence '\/'
+
+[0;34m[Test 3] MCP stdio mode — initialize + tools/list[0m
+  [0;32m✅ PASS: stdio mode returned tools/list response (       3 tool names found)[0m
+
+[0;34m[Test 4] MCP HTTP streamable mode — initialize[0m
+  [0;32m✅ PASS: HTTP streamable mode responded (status 200)[0m
+       Session ID: 216e455f2f544dda...
+
+[0;34m[Test 5] MCP HTTP — tools/list[0m
+  [0;32m✅ PASS: HTTP tools/list returned tools[0m
+       - dnsdumpster_search: Perform comprehensive passive DNS reconnaissance on a target domain.
+
+Discovers 
+       - run_dnsdumpster: Run the dnsdumpster CLI with arbitrary arguments.
+
+Use this for direct CLI acces
+
+[0;34m[Test 6] MCP HTTP — tools/call (run_dnsdumpster --help)[0m
+  [0;32m✅ PASS: tools/call run_dnsdumpster returned a result[0m
+
+=================================================================================
+[0;34mResults: [0;32m6 passed[0m, [0;31m0 failed[0m
+=================================================================================
+dnsdumpster-mcp-test
+dnsdumpster-mcp-test

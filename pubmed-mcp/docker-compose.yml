@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  pubmed-mcp:
+    image: hackerdogs/pubmed-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pubmed-mcp
+    ports:
+      - "8446:8446"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8446
+    restart: unless-stopped

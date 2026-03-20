@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  ai-humanizer-mcp:
+    image: hackerdogs/ai-humanizer-mcp:latest
+    build: .
+    ports:
+      - "8601:8601"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8601
+

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  n2yo-mcp:
+    image: hackerdogs/n2yo-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: n2yo-mcp
+    ports:
+      - "8435:8435"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8435
+    restart: unless-stopped

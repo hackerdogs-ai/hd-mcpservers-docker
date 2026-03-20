@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "browserless-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "-e", "MCP_PORT", "-e", "BROWSERLESS_URL", "-e", "BROWSERLESS_API_KEY", "hackerdogs/browserless-mcp:latest"],
+      "env": {
+        "MCP_TRANSPORT": "stdio",
+        "BROWSERLESS_URL": "http://localhost:3000",
+        "BROWSERLESS_API_KEY": ""
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "excel-tools-mcp": {
+      "url": "http://localhost:8505/mcp"
+    }
+  }
+}

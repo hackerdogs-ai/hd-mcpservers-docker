@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "powerpoint-tools-mcp": {
+      "url": "http://localhost:8507/mcp"
+    }
+  }
+}

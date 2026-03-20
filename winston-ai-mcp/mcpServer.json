@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "winston-ai-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "MCP_TRANSPORT",
+        "-e",
+        "WINSTONAI_API_KEY",
+        "hackerdogs/winston-ai-mcp:latest"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio",
+        "WINSTONAI_API_KEY": ""
+      }
+    }
+  }
+}

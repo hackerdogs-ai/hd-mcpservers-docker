@@ -1,0 +1,49 @@
+MCP test run - x8-mcp
+Generated (UTC): 2026-03-20T20:13:08Z
+Exit code: 1
+Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
+---------------------------------------------------------------------------------
+=================================================================================
+[0;34mX8 MCP Server — Test Suite[0m
+=================================================================================
+
+[0;34m[Test 1] Docker image[0m
+  Image not found. Building...
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.31kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#2 ...
+
+#3 [auth] library/x8-builder:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#4 [auth] library/rust:pull token for registry-1.docker.io
+#4 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#2 DONE 0.9s
+
+#5 [internal] load metadata for docker.io/library/rust:1.77-slim-bookworm
+#5 ...
+
+#6 [internal] load metadata for docker.io/library/x8-builder:latest
+#6 ERROR: pull access denied, repository does not exist or may require authorization: server message: insufficient_scope: authorization failed
+
+#5 [internal] load metadata for docker.io/library/rust:1.77-slim-bookworm
+#5 CANCELED
+------
+ > [internal] load metadata for docker.io/library/x8-builder:latest:
+------
+Dockerfile:29
+--------------------
+  27 |     
+  28 |     # Copy x8 binary from builder
+  29 | >>> COPY --from=x8-builder /usr/local/cargo/bin/x8 /usr/local/bin/x8
+  30 |     
+  31 |     # Security: Create non-root user
+--------------------
+ERROR: failed to build: failed to solve: x8-builder: failed to resolve source metadata for docker.io/library/x8-builder:latest: pull access denied, repository does not exist or may require authorization: server message: insufficient_scope: authorization failed

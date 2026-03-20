@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "stripe-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "MCP_TRANSPORT",
+        "-e",
+        "STRIPE_SECRET_KEY",
+        "hackerdogs/stripe-mcp:latest"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio",
+        "STRIPE_SECRET_KEY": ""
+      }
+    }
+  }
+}

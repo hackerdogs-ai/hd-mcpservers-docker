@@ -1,0 +1,37 @@
+MCP test run - dirb-mcp
+Generated (UTC): 2026-03-20T18:23:29Z
+Exit code: 1
+Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
+---------------------------------------------------------------------------------
+=================================================================================
+[0;34mDirb MCP Server — Test Suite[0m
+=================================================================================
+
+[0;34m[Test 1] Docker image[0m
+  [0;32m✅ PASS: Docker image hackerdogs/dirb-mcp:latest exists[0m
+
+[0;34m[Test 2] CLI binary inside container[0m
+  [0;32m✅ PASS: dirb binary responds[0m
+       
+
+[0;34m[Test 3] MCP stdio mode — initialize + tools/list[0m
+  [0;31m❌ FAIL: stdio mode did not return a valid tools/list response[0m
+
+[0;34m[Test 4] MCP HTTP streamable mode — initialize[0m
+  [0;31m❌ FAIL: HTTP streamable mode did not respond (status 000 after 30s)[0m
+Traceback (most recent call last):
+  File "/app/mcp_server.py", line 16, in <module>
+    import hd_fetch
+ModuleNotFoundError: No module named 'hd_fetch'
+
+[0;34m[Test 5] MCP HTTP — tools/list[0m
+  [0;31m❌ FAIL: HTTP tools/list did not return tools[0m
+
+[0;34m[Test 6] MCP HTTP — tools/call (run_dirb)[0m
+  [0;31m❌ FAIL: tools/call run_dirb did not return expected response[0m
+
+=================================================================================
+[0;34mResults: [0;32m2 passed[0m, [0;31m4 failed[0m
+=================================================================================
+dirb-mcp-test
+dirb-mcp-test

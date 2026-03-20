@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "globalping-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "MCP_TRANSPORT",
+        "hackerdogs/globalping-mcp:latest"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
+    }
+  }
+}

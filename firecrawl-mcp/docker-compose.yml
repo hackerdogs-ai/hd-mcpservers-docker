@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  firecrawl-mcp:
+    image: hackerdogs/firecrawl-mcp:latest
+    build: .
+    ports:
+      - "8640:8640"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8640
+      - FIRECRAWL_API_KEY=${FIRECRAWL_API_KEY:-}

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  cortex-mcp:
+    image: hackerdogs/cortex-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cortex-mcp
+    ports:
+      - "8410:8410"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8410
+    restart: unless-stopped

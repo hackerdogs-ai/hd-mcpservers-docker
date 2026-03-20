@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  brightdata-mcp-server-mcp:
+    image: hackerdogs/brightdata-mcp-server-mcp:latest
+    build: .
+    ports:
+      - "8630:8630"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8630
+      - BRIGHTDATA_API_KEY=${BRIGHTDATA_API_KEY:-}

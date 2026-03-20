@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  pinecone-mcp:
+    image: hackerdogs/pinecone-mcp:latest
+    build: .
+    ports:
+      - "8657:8657"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8657
+      - PINECONE_API_KEY=${PINECONE_API_KEY:-}

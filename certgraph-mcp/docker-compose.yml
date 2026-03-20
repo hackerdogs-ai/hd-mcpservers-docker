@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  certgraph-mcp:
+    image: hackerdogs/certgraph-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: certgraph-mcp
+    ports:
+      - "8519:8519"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8519
+    restart: unless-stopped

@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  browserless-mcp:
+    image: hackerdogs/browserless-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: browserless-mcp
+    ports:
+      - "8518:8518"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8518
+      - BROWSERLESS_URL=${BROWSERLESS_URL:-http://localhost:3000}
+      - BROWSERLESS_API_KEY=${BROWSERLESS_API_KEY:-}
+    restart: unless-stopped

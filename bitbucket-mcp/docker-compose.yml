@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  bitbucket-mcp:
+    image: hackerdogs/bitbucket-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bitbucket-mcp
+    ports:
+      - "8516:8516"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8516
+    restart: unless-stopped

@@ -24,3 +24,30 @@ Hackerdogs MCP wrapper for Httpx — probe and analyze HTTP servers. No Minibrid
   }
 }
 ```
+
+## Contributing
+
+1. **Fork the repository** (if you don't have write access).
+2. **Clone your fork:**
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/hd-mcpservers-docker.git
+   cd hd-mcpservers-docker
+   ```
+3. **Add upstream remote** (optional, for syncing):
+   ```bash
+   git remote add upstream https://github.com/hackerdogs/hd-mcpservers-docker.git
+   ```
+4. **Create a feature branch:**
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+5. **Make your changes**, then commit:
+   ```bash
+   git add .
+   git commit -m "Add: brief description of your feature"
+   ```
+6. **Push your branch:**
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+7. **Open a Pull Request** on GitHub from your branch into `main` (or the default branch), with a clear title and description of your feature.

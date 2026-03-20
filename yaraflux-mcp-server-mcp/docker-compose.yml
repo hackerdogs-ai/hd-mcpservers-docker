@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  yaraflux-mcp-server-mcp:
+    image: hackerdogs/yaraflux-mcp-server-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: yaraflux-mcp-server-mcp
+    ports:
+      - "8461:8461"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8461
+    restart: unless-stopped

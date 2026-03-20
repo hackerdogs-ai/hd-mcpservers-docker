@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  winston-ai-mcp:
+    image: hackerdogs/winston-ai-mcp:latest
+    build: .
+    ports:
+      - "8674:8674"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8674
+

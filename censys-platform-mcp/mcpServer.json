@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "censys-platform": {
+      "url": "https://mcp.censys.io/mcp"
+    }
+  }
+}

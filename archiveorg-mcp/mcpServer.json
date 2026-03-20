@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "archiveorg-mcp": {
+      "url": "http://localhost:8512/mcp"
+    }
+  }
+}

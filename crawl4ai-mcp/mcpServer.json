@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "crawl4ai-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "-e", "MCP_PORT", "-e", "CRAWL4AI_URL", "-e", "CRAWL4AI_API_TOKEN", "hackerdogs/crawl4ai-mcp:latest"],
+      "env": {
+        "MCP_TRANSPORT": "stdio",
+        "CRAWL4AI_URL": "http://localhost:11235",
+        "CRAWL4AI_API_TOKEN": ""
+      }
+    }
+  }
+}

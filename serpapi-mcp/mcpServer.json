@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "serpapi": {
+      "url": "https://mcp.serpapi.com/mcp"
+    }
+  }
+}

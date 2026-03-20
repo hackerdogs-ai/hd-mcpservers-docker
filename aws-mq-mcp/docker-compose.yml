@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  aws-mq-mcp:
+    image: hackerdogs/aws-mq-mcp:latest
+    build: .
+    ports:
+      - "8616:8616"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8616
+      - AWS_REGION=${AWS_REGION:-}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-}

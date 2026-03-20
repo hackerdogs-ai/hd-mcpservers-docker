@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  archiveorg-mcp:
+    image: hackerdogs/archiveorg-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: archiveorg-mcp
+    ports:
+      - "8512:8512"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8512
+    restart: unless-stopped

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  ocr-mcp:
+    image: hackerdogs/ocr-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ocr-mcp
+    ports:
+      - "8438:8438"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8438
+    restart: unless-stopped

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  mapboxserver-mcp:
+    image: hackerdogs/mapboxserver-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mapboxserver-mcp
+    ports:
+      - "8429:8429"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8429
+    restart: unless-stopped

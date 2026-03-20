@@ -1,0 +1,37 @@
+MCP test run - maigret-mcp
+Generated (UTC): 2026-03-20T18:50:57Z
+Exit code: 0
+Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
+---------------------------------------------------------------------------------
+=================================================================================
+[0;34mMaigret MCP Server — Test Suite[0m
+=================================================================================
+
+[0;34m[Test 1] Docker image[0m
+  [0;32m✅ PASS: Docker image hackerdogs/maigret-mcp:latest exists[0m
+
+[0;34m[Test 2] CLI binary inside container[0m
+  [0;32m✅ PASS: maigret binary responds[0m
+       usage: maigret [-h] [--version] [--timeout TIMEOUT] [--retries RETRIES]
+
+[0;34m[Test 3] MCP stdio mode — initialize + tools/list[0m
+  [0;32m✅ PASS: stdio mode returned tools/list response (       2 tool names found)[0m
+
+[0;34m[Test 4] MCP HTTP streamable mode — initialize[0m
+  [0;32m✅ PASS: HTTP streamable mode responded (status 200)[0m
+       Session ID: 2c1a0072fe264334...
+
+[0;34m[Test 5] MCP HTTP — tools/list[0m
+  [0;32m✅ PASS: HTTP tools/list returned tools[0m
+       - run_maigret: Run maigret with the given arguments.
+
+Search for a username across 3000+ sites.
+
+[0;34m[Test 6] MCP HTTP — tools/call (run_maigret --help)[0m
+  [0;32m✅ PASS: tools/call run_maigret returned a result[0m
+
+=================================================================================
+[0;34mResults: [0;32m6 passed[0m, [0;31m0 failed[0m
+=================================================================================
+maigret-mcp-test
+maigret-mcp-test

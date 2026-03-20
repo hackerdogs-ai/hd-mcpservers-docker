@@ -1,0 +1,8 @@
+services:
+  visualization-tools-mcp:
+    build: .
+    ports:
+      - "8506:8506"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8506

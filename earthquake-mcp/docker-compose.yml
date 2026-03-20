@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  earthquake-mcp:
+    image: hackerdogs/earthquake-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: earthquake-mcp
+    ports:
+      - "8457:8457"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8457
+    restart: unless-stopped
