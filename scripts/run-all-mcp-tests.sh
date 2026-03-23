@@ -30,6 +30,8 @@ writes_test_results_internally() {
   local f="$1"
   grep -qE 'mcp-standard-six-test\.sh' "$f" 2>/dev/null && return 0
   grep -qE 'append_section\(\)' "$f" 2>/dev/null && return 0
+  # Custom test.sh that tees to ./test-results.txt (see clinicaltrialsgov-mcp-server-mcp/test.sh)
+  grep -qE '^# WRITES_TEST_RESULTS_TXT=1' "$f" 2>/dev/null && return 0
   return 1
 }
 

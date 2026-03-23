@@ -5,6 +5,7 @@ RUN npm install -g @programcomputer/nasa-mcp-server supergateway 2>/dev/null || 
 COPY mcp_http_proxy.py /mcp_http_proxy.py
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+ENV NASA_API_KEY=DEMO_KEY
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8651
 EXPOSE 8651

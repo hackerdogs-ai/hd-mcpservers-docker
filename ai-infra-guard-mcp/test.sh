@@ -135,10 +135,9 @@ INIT_NOTIF='{"jsonrpc":"2.0","method":"notifications/initialized"}'
 LIST_REQ='{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}'
 
 S3=FAIL
-STDIO_OUT=$(printf '%s\n%s\n%s\n' "$INIT_REQ" "$INIT_NOTIF" "$LIST_REQ" | \
-  docker run -i --rm -e MCP_TRANSPORT=stdio "$IMAGE" 2>&1 || true)
+STDIO_OUT=$(python3 "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
 
-if echo "$STDIO_OUT" | grep -q '"tools"'; then
+if grep -q '"tools"' <<< "$STDIO_OUT"; then
   TOOL_COUNT=$(echo "$STDIO_OUT" | grep -o '"name"' | wc -l | tr -d ' ')
   pass "stdio mode returned tools/list response ($TOOL_COUNT tool names found)"
   S3=PASS

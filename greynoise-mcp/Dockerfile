@@ -5,6 +5,7 @@ RUN npm install -g @greynoise/greynoise-mcp-server supergateway 2>/dev/null || n
 COPY mcp_http_proxy.py /mcp_http_proxy.py
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+ENV GREYNOISE_API_KEY=dummy-greynoise-key-for-mcp-list-tools-only
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8645
 EXPOSE 8645

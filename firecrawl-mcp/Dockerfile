@@ -5,6 +5,7 @@ RUN npm install -g firecrawl-mcp supergateway 2>/dev/null || npm install -g supe
 COPY mcp_http_proxy.py /mcp_http_proxy.py
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+ENV FIRECRAWL_API_KEY=dummy-firecrawl-key-for-mcp-list-tools-only
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8640
 EXPOSE 8640

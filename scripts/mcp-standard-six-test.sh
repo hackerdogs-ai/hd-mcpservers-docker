@@ -119,7 +119,7 @@ echo ""
 # --- Step 2: stdio tools/list ---
 info "[2/6] List tools (stdio)"
 # shellcheck disable=SC2086
-STDIO_LIST=$(printf '%s\n%s\n%s\n' "$INIT_REQ" "$INIT_NOTIF" "$LIST_REQ" | docker run -i --rm -e MCP_TRANSPORT=stdio $MCP_EXTRA_DOCKER_ARGS "$MCP_IMAGE" 2>&1) || STDIO_LIST="${STDIO_LIST:-}(docker run failed)"
+STDIO_LIST=$(python3 "$SCRIPT_DIR/mcp_stdio_docker_tools_list.py" $MCP_EXTRA_DOCKER_ARGS "$MCP_IMAGE") || STDIO_LIST="${STDIO_LIST:-}(docker run failed)"
 S2=FAIL
 if echo "$STDIO_LIST" | grep -q '"tools"'; then
   pass "stdio tools/list"
@@ -133,19 +133,25 @@ echo ""
 
 # --- Step 3: stdio tools/call ---
 info "[3/6] Run tool (stdio) - $MCP_TOOL_NAME"
-# shellcheck disable=SC2086
-STDIO_CALL=$(printf '%s\n%s\n%s\n%s\n' "$INIT_REQ" "$INIT_NOTIF" "$LIST_REQ" "$CALL_REQ" | docker run -i --rm -e MCP_TRANSPORT=stdio $MCP_EXTRA_DOCKER_ARGS "$MCP_IMAGE" 2>&1) || STDIO_CALL="${STDIO_CALL:-}(docker run failed)"
-S3=FAIL
-set +e
-V3_MSG=$(printf '%s' "$STDIO_CALL" | python3 "$MCP_VALIDATE_TOOLS_CALL" 3 2>&1)
-V3_RC=$?
-set -e
-if [ "$V3_RC" -eq 0 ]; then
-  pass "stdio tools/call succeeded (strict validation, id=3)"
-  S3=PASS
+if [ "${MCP_SKIP_STRICT_TOOLS_CALL:-}" = "1" ]; then
+  pass "stdio tools/call skipped (MCP_SKIP_STRICT_TOOLS_CALL=1 — upstream API not verifiable in CI)"
+  S3=SKIP
+  STDIO_CALL="(skipped — MCP_SKIP_STRICT_TOOLS_CALL=1)"
 else
-  fail "stdio tools/call failed validation: $V3_MSG"
-  echo "$STDIO_CALL" | tail -20
+  # shellcheck disable=SC2086
+  STDIO_CALL=$(printf '%s\n%s\n%s\n%s\n' "$INIT_REQ" "$INIT_NOTIF" "$LIST_REQ" "$CALL_REQ" | MCP_STDIO_DOCKER_TIMEOUT="${MCP_STDIO_DOCKER_TIMEOUT_CALL:-90}" python3 "$SCRIPT_DIR/mcp_stdio_docker_pipe.py" $MCP_EXTRA_DOCKER_ARGS "$MCP_IMAGE") || STDIO_CALL="${STDIO_CALL:-}(docker run failed)"
+  S3=FAIL
+  set +e
+  V3_MSG=$(printf '%s' "$STDIO_CALL" | python3 "$MCP_VALIDATE_TOOLS_CALL" 3 2>&1)
+  V3_RC=$?
+  set -e
+  if [ "$V3_RC" -eq 0 ]; then
+    pass "stdio tools/call succeeded (strict validation, id=3)"
+    S3=PASS
+  else
+    fail "stdio tools/call failed validation: $V3_MSG"
+    echo "$STDIO_CALL" | tail -20
+  fi
 fi
 append_section "[3/6] Run tool (stdio) - tools/call full output" "$S3" "$STDIO_CALL"
 echo ""
@@ -160,15 +166,15 @@ docker run -d --name "$MCP_CONTAINER" \
   $MCP_EXTRA_DOCKER_ARGS \
   "$MCP_IMAGE" >/dev/null
 
-HTTP_STARTUP_WAIT=${HTTP_STARTUP_WAIT:-20}
+HTTP_STARTUP_WAIT=${HTTP_STARTUP_WAIT:-${MCP_HTTP_STARTUP_SLEEP:-10}}
 sleep "$HTTP_STARTUP_WAIT"
 
 SESSION_ID=""
 TOOLS_RESP=""
 HTTP_INIT_META=""
 WAITED=0
-while [ "$WAITED" -lt 45 ]; do
-  curl -s --max-time 15 -D /tmp/mcp_std_hdr -o /tmp/mcp_std_body -X POST "http://localhost:${MCP_PORT}/mcp" \
+while [ "$WAITED" -lt "${MCP_HTTP_LIST_MAX_WAIT:-30}" ]; do
+  curl -s --max-time 8 -D /tmp/mcp_std_hdr -o /tmp/mcp_std_body -X POST "http://localhost:${MCP_PORT}/mcp" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json, text/event-stream" \
     -d "$INIT_REQ" 2>/dev/null || true
@@ -181,12 +187,12 @@ $(cat /tmp/mcp_std_body 2>/dev/null || true)"
   if [ -n "$SESSION_ID" ]; then
     SESS_HDR=( -H "mcp-session-id: $SESSION_ID" )
   fi
-  curl -s --max-time 10 -X POST "http://localhost:${MCP_PORT}/mcp" \
+  curl -s --max-time 8 -X POST "http://localhost:${MCP_PORT}/mcp" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json, text/event-stream" \
     "${SESS_HDR[@]}" \
     -d "$INIT_NOTIF" >/dev/null 2>&1 || true
-  TOOLS_RESP=$(curl -s --max-time 15 -X POST "http://localhost:${MCP_PORT}/mcp" \
+  TOOLS_RESP=$(curl -s --max-time 8 -X POST "http://localhost:${MCP_PORT}/mcp" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json, text/event-stream" \
     "${SESS_HDR[@]}" \
@@ -194,8 +200,8 @@ $(cat /tmp/mcp_std_body 2>/dev/null || true)"
   if echo "$TOOLS_RESP" | grep -q '"tools"'; then
     break
   fi
-  sleep 3
-  WAITED=$((WAITED + 3))
+  sleep 2
+  WAITED=$((WAITED + 2))
 done
 
 S4=FAIL
@@ -216,24 +222,31 @@ $(docker logs "$MCP_CONTAINER" 2>&1 | tail -80)"
 echo ""
 
 info "[5/6] Run tool (HTTP streamable) - $MCP_TOOL_NAME"
-HTTP_CALL_REQ=$(python3 -c "import json,os; n=os.environ['MCP_TOOL_NAME']; a=json.loads(os.environ['MCP_TOOL_ARGUMENTS']); print(json.dumps({'jsonrpc':'2.0','id':4,'method':'tools/call','params':{'name':n,'arguments':a}}))")
-CALL_RESP=$(curl -s --max-time 60 -X POST "http://localhost:${MCP_PORT}/mcp" \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json, text/event-stream" \
-  "${SESS_HDR[@]}" \
-  -d "$HTTP_CALL_REQ" 2>/dev/null) || CALL_RESP=""
-
-S5=FAIL
-set +e
-V5_MSG=$(printf '%s' "$CALL_RESP" | python3 "$MCP_VALIDATE_TOOLS_CALL" 4 2>&1)
-V5_RC=$?
-set -e
-if [ "$V5_RC" -eq 0 ]; then
-  pass "HTTP streamable tools/call succeeded (strict validation, id=4)"
-  S5=PASS
+if [ "${MCP_SKIP_STRICT_TOOLS_CALL:-}" = "1" ]; then
+  pass "HTTP streamable tools/call skipped (MCP_SKIP_STRICT_TOOLS_CALL=1 — upstream API not verifiable in CI)"
+  S5=SKIP
+  HTTP_CALL_REQ="(skipped)"
+  CALL_RESP="(skipped — MCP_SKIP_STRICT_TOOLS_CALL=1)"
 else
-  fail "HTTP streamable tools/call failed validation: $V5_MSG"
-  echo "$CALL_RESP" | tail -20
+  HTTP_CALL_REQ=$(python3 -c "import json,os; n=os.environ['MCP_TOOL_NAME']; a=json.loads(os.environ['MCP_TOOL_ARGUMENTS']); print(json.dumps({'jsonrpc':'2.0','id':4,'method':'tools/call','params':{'name':n,'arguments':a}}))")
+  CALL_RESP=$(curl -s --max-time 60 -X POST "http://localhost:${MCP_PORT}/mcp" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json, text/event-stream" \
+    "${SESS_HDR[@]}" \
+    -d "$HTTP_CALL_REQ" 2>/dev/null) || CALL_RESP=""
+
+  S5=FAIL
+  set +e
+  V5_MSG=$(printf '%s' "$CALL_RESP" | python3 "$MCP_VALIDATE_TOOLS_CALL" 4 2>&1)
+  V5_RC=$?
+  set -e
+  if [ "$V5_RC" -eq 0 ]; then
+    pass "HTTP streamable tools/call succeeded (strict validation, id=4)"
+    S5=PASS
+  else
+    fail "HTTP streamable tools/call failed validation: $V5_MSG"
+    echo "$CALL_RESP" | tail -20
+  fi
 fi
 append_section "[5/6] Run tool (HTTP streamable) - request + full response" "$S5" "--- tools/call request JSON ---
 ${HTTP_CALL_REQ}

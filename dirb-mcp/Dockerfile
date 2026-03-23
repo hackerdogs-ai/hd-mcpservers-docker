@@ -35,6 +35,8 @@ WORKDIR /app
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Shared helper (imported by mcp_server.py)
+COPY hd_fetch.py ./
 # Copy application code
 COPY mcp_server.py ./
 

@@ -5,6 +5,7 @@ RUN npm install -g @darrenjrobinson/hibp-mcp supergateway 2>/dev/null || npm ins
 COPY mcp_http_proxy.py /mcp_http_proxy.py
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+ENV HIBP_API_KEY=dummy-hibp-api-key-for-mcp-list-tools-only
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8646
 EXPOSE 8646

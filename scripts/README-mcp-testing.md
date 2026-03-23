@@ -46,6 +46,57 @@ To disable truncation of huge blobs, set `MCP_TEST_RESULT_MAX_CHARS=0` before ru
 
 Pass secrets only via **`MCP_EXTRA_DOCKER_ARGS`** (or extend the standard script to support `--env-file`). Do not commit real keys; CI/local can inject them when running `./test.sh`.
 
+## `mcp_http_proxy.py` (stdio → HTTP)
+
+Canonical implementation: **`scripts/mcp_http_proxy.py`**.
+
+- **Drains the child process stderr** so Java/Node MCP servers cannot deadlock when they log heavily.
+- **Long timeouts** (default **120s** initialize, **240s** per request); override with `MCP_PROXY_INIT_TIMEOUT` / `MCP_PROXY_REQUEST_TIMEOUT`.
+
+After editing the canonical file, sync into every server copy:
+
+```bash
+SRC=scripts/mcp_http_proxy.py
+find . -name mcp_http_proxy.py -type f ! -path "./$SRC" -exec cp "$SRC" {} \;
+```
+
+Then **rebuild** affected Docker images so the new proxy is in the image.
+
+### Rebuild all fixed images (proxy + `hd_fetch`)
+
+After syncing `mcp_http_proxy.py` or changing the four `hd_fetch` Dockerfiles, rebuild **79** images in one pass (uses each `test.sh` `IMAGE=…` tag when set):
+
+```bash
+./scripts/rebuild-fixed-images.sh
+# log defaults to ./rebuild-fixed-images.log at repo root
+# or:  LOG=/path/to.log ./scripts/rebuild-fixed-images.sh
+```
+
+Resume after a failure (sorted basenames):
+
+```bash
+START_AFTER=aws-network-mcp ./scripts/rebuild-fixed-images.sh
+```
+
+Smoke (first 3 builds only):
+
+```bash
+MAX_BUILDS=3 ./scripts/rebuild-fixed-images.sh
+```
+
+Full run can take **hours**; use `tail -f rebuild-fixed-images.log`.
+
+### Verify rebuilt images (79 `test.sh` runs)
+
+After a rebuild, run tests only for those same directories:
+
+```bash
+./scripts/verify-rebuilt-images.sh
+# writes verify-rebuilt-79.log and prints a PASS/FAIL summary
+```
+
+Options: `MAX_TESTS=N`, `START_AFTER=dirname`, `VERIFY_LOG=/path/to.log`.
+
 ## Run every server (`run-all-mcp-tests.sh`)
 
 From the repo root:

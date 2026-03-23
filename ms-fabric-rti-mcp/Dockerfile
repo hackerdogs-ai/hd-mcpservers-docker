@@ -13,6 +13,9 @@ COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/l
 COPY mcp_http_proxy.py /mcp_http_proxy.py
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+ENV KUSTO_SERVICE_URI=https://help.kusto.windows.net/
+ENV KUSTO_SERVICE_DEFAULT_DB=Samples
+ENV FABRIC_API_BASE_URL=https://api.fabric.microsoft.com/v1
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8650
 EXPOSE 8650

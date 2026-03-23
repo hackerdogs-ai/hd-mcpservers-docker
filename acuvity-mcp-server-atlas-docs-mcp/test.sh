@@ -27,7 +27,7 @@ fi
 pass "image exists"
 
 info "[2] Stdio tools/list"
-STDIO_OUT=$(printf '%s\n%s\n%s\n' "$INIT_REQ" "$INIT_NOTIF" "$LIST_REQ" | docker run -i --rm -e MCP_TRANSPORT=stdio "$IMAGE" 2>/dev/null) || true
+STDIO_OUT=$(python3 "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
 echo "$STDIO_OUT" | grep -q '"tools"' && pass "stdio tools/list" || fail "stdio tools/list"
 
 info "[3] Stdio tools/call"
@@ -39,7 +39,7 @@ cleanup
 docker run -d --name "$CONTAINER_NAME" -e MCP_TRANSPORT=streamable-http -e MCP_PORT=$PORT -p "$PORT:$PORT" "$IMAGE" >/dev/null
 sleep 5
 SESSION_ID=""; WAITED=0; TOOLS_RESP=""
-while [ $WAITED -lt 30 ]; do
+while [ "$WAITED" -lt "${MCP_HTTP_LIST_MAX_WAIT:-30}" ]; do
   curl -s -D /tmp/mcp_h -o /dev/null -X POST "http://localhost:${PORT}/mcp" -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" -d "$INIT_REQ" 2>/dev/null || true
   SESSION_ID=$(grep -i 'mcp-session-id' /tmp/mcp_h 2>/dev/null | sed 's/.*: *//' | tr -d '\r' | head -1)
   SESS_HDR=""; [ -n "$SESSION_ID" ] && SESS_HDR="-H mcp-session-id:$SESSION_ID"

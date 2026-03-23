@@ -5,6 +5,8 @@ RUN npm install -g @cloudflare/mcp-server-cloudflare supergateway 2>/dev/null ||
 COPY mcp_http_proxy.py /mcp_http_proxy.py
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+ENV CLOUDFLARE_API_TOKEN=dummy-cf-api-token-for-mcp-list-tools-only
+ENV CLOUDFLARE_ACCOUNT_ID=00000000000000000000000000000000
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8633
 EXPOSE 8633

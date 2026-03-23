@@ -5,6 +5,7 @@ RUN npm install -g @zereight/mcp-gitlab supergateway 2>/dev/null || npm install 
 COPY mcp_http_proxy.py /mcp_http_proxy.py
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+ENV GITLAB_TOKEN=glpat-dummy-gitlab-token-for-mcp-list-tools-only
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8642
 EXPOSE 8642

@@ -36,6 +36,7 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # 5. Copy app and fix permissions (AS ROOT)
+COPY hd_fetch.py ./
 COPY mcp_server.py ./
 RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
 
