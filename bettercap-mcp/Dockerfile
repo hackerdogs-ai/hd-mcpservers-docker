@@ -1,5 +1,9 @@
 # ---- Stage 1: Build bettercap from source ----
-FROM golang:1.24-bookworm AS builder
+# FIX: Upgraded to golang:1.25-bookworm to satisfy modern dependency requirements
+FROM golang:1.25-bookworm AS builder
+
+# FIX: Enable auto toolchain upgrades so Go can dynamically pull newer compilers if needed
+ENV GOTOOLCHAIN=auto
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libpcap-dev libnetfilter-queue-dev libusb-1.0-0-dev \
@@ -27,6 +31,7 @@ RUN groupadd -g 1000 mcpuser && \
 
 COPY --from=builder /go/bin/bettercap /usr/local/bin/bettercap
 
+# Install runtime dependencies required by Bettercap
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini ca-certificates libpcap0.8 libnetfilter-queue1 libusb-1.0-0 \
     && rm -rf /var/lib/apt/lists/*
@@ -34,13 +39,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /app
 
 # Copy requirements and install Python dependencies
+# Note: Ensure fastmcp==2.14.5 is pinned in your requirements.txt!
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY mcp_server.py ./
 
-# Create output directory
+# Create output directory and grant permissions
 RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
 
 # Switch to non-root user

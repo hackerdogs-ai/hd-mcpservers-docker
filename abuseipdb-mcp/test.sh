@@ -29,7 +29,7 @@ fi
 pass "image exists"
 
 info "[2] Stdio tools/list"
-STDIO_OUT=$(python3 "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
+STDIO_OUT=$(python "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
 echo "$STDIO_OUT" | grep -q '"tools"' && pass "stdio tools/list" || fail "stdio tools/list"
 
 info "[3] Stdio tools/call check_ip"

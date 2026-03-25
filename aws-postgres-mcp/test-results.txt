@@ -1,20 +1,96 @@
-MCP test run - aws-postgres-mcp
-Generated (UTC): 2026-03-20T17:58:07Z
-Exit code: 0
-Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
----------------------------------------------------------------------------------
+========== Retesting aws-postgres-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 787B 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 ...
+
+#3 [auth] library/node:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#4 [auth] library/python:pull token for registry-1.docker.io
+#4 DONE 0.0s
+
+#5 [internal] load metadata for docker.io/library/python:3.11-slim
+#5 DONE 9.6s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 9.9s
+
+#6 [internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#7 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.1s done
+#7 DONE 0.1s
+
+#8 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+#8 resolve docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634 0.0s done
+#8 DONE 0.1s
+
+#9 [internal] load build context
+#9 transferring context: 72B done
+#9 DONE 0.0s
+
+#10 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#10 CACHED
+
+#11 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#11 CACHED
+
+#12 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#12 CACHED
+
+#13 [stage-1 3/9] WORKDIR /app
+#13 CACHED
+
+#14 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.postgres-mcp-server
+#14 CACHED
+
+#15 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#15 CACHED
+
+#16 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#16 CACHED
+
+#17 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#17 CACHED
+
+#18 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#18 CACHED
+
+#19 exporting to image
+#19 exporting layers done
+#19 exporting manifest sha256:58f62e7a8ba9645905e0a7960a4e6fab1621d0a0d4bcc34b1cdb7260f1c21423 done
+#19 exporting config sha256:6c3b5184fab6876cf74f1aa25ab0690fba48a91a9b0a314c4a73c94083935947 done
+#19 exporting attestation manifest sha256:9ef3e68524cdd3ee8ab20b162044d55db8db69914c790e62835d8cb372e1996d 0.0s done
+#19 exporting manifest list sha256:28f73f651d8dc5d37d596e11119b58133fb80a243cd7fc92b0ecc501215894b5 0.0s done
+#19 naming to docker.io/library/aws-postgres-mcp:latest
+#19 naming to docker.io/library/aws-postgres-mcp:latest done
+#19 unpacking to docker.io/library/aws-postgres-mcp:latest 0.0s done
+#19 naming to docker.io/hackerdogs/aws-postgres-mcp:latest done
+#19 unpacking to docker.io/hackerdogs/aws-postgres-mcp:latest 0.0s done
+#19 DONE 0.5s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/581bi77ewbhwh9vumnkfs0rxn
 ========== aws-postgres-mcp test (compliance) ==========
 [0;34m[1] Install[0m
   [0;32mPASS: image exists[0m
 [0;34m[2] Stdio tools/list[0m
-  [0;32mPASS: stdio tools/list[0m
+  [0;31mFAIL: stdio tools/list[0m
 [0;34m[3] Stdio tools/call (skipped — upstream package)[0m
   [0;32mPASS: stdio tools/call (upstream)[0m
 [0;34m[4] HTTP streamable tools/list[0m
-  [0;32mPASS: HTTP tools/list[0m
+  [0;31mFAIL: HTTP tools/list[0m
 [0;34m[5] HTTP streamable tools/call (skipped — upstream package)[0m
   [0;32mPASS: HTTP tools/call (upstream)[0m
 
-Total: 5 passed, 0 failed
+Total: 3 passed, 2 failed
 aws-postgres-mcp-test
 aws-postgres-mcp-test
+
+❌ FAIL (Test): aws-postgres-mcp

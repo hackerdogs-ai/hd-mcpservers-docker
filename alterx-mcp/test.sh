@@ -26,7 +26,7 @@ docker build -t "$IMAGE" "$PROJECT_DIR" 2>/dev/null || true
 if docker image inspect "$IMAGE" >/dev/null 2>&1; then pass "image exists"; else fail "image build"; exit 1; fi
 
 info "[2] Stdio tools/list"
-STDIO_OUT=$(python3 "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
+STDIO_OUT=$(python "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
 echo "$STDIO_OUT" | grep -q '"tools"' && pass "stdio tools/list" || fail "stdio tools/list"
 
 info "[3] Stdio tools/call do_alterx"

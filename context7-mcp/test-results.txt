@@ -1,20 +1,84 @@
-MCP test run - context7-mcp
-Generated (UTC): 2026-03-20T18:20:46Z
-Exit code: 0
-Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
----------------------------------------------------------------------------------
+========== Testing context7-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 470B done
+#1 DONE 0.0s
+
+#2 [auth] library/node:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 1.6s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 DONE 0.0s
+
+#6 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.1s done
+#6 DONE 0.1s
+
+#7 [2/7] WORKDIR /app
+#7 CACHED
+
+#8 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#5 [internal] load build context
+#5 transferring context: 10.73kB done
+#5 DONE 0.1s
+
+#9 [4/7] RUN npm install -g @upstash/context7-mcp supergateway 2>/dev/null || npm install -g supergateway
+#9 13.09 
+#9 13.09 added 245 packages in 12s
+#9 13.09 
+#9 13.09 36 packages are looking for funding
+#9 13.09   run `npm fund` for details
+#9 DONE 13.2s
+
+#10 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#10 DONE 0.1s
+
+#11 [6/7] COPY entrypoint.sh /entrypoint.sh
+#11 DONE 0.1s
+
+#12 [7/7] RUN chmod +x /entrypoint.sh
+#12 DONE 0.4s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 2.5s done
+#13 exporting manifest sha256:da8c7a5951010fa2f5f3c7de541704136e23dfa8a8c3065050265242416734db 0.0s done
+#13 exporting config sha256:077f7759f23e9588c489a35f1cc65931f436506ca246cc69bed5424b1606b4a5 0.0s done
+#13 exporting attestation manifest sha256:f01a4f04efe0dfa000262196d079cd4027073343622151c76a02bbc8f67efdeb 0.0s done
+#13 exporting manifest list sha256:1623035d65b5e92358ecc168e7eb7b8d0adb7a863ddf72fddc22056a7955eb30 0.0s done
+#13 naming to docker.io/library/context7-mcp:latest
+#13 naming to docker.io/library/context7-mcp:latest done
+#13 unpacking to docker.io/library/context7-mcp:latest
+#13 unpacking to docker.io/library/context7-mcp:latest 1.6s done
+#13 naming to docker.io/hackerdogs/context7-mcp:latest done
+#13 unpacking to docker.io/hackerdogs/context7-mcp:latest 0.0s done
+#13 DONE 4.3s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/3y82ocvkg2bn9pcln5h1dlfsn
 ========== context7-mcp test (compliance) ==========
 [0;34m[1] Install[0m
   [0;32mPASS: image exists[0m
 [0;34m[2] Stdio tools/list[0m
-  [0;32mPASS: stdio tools/list[0m
+  [0;31mFAIL: stdio tools/list[0m
 [0;34m[3] Stdio tools/call (skipped — upstream package)[0m
   [0;32mPASS: stdio tools/call (upstream)[0m
 [0;34m[4] HTTP streamable tools/list[0m
-  [0;32mPASS: HTTP tools/list[0m
+  [0;31mFAIL: HTTP tools/list[0m
 [0;34m[5] HTTP streamable tools/call (skipped — upstream package)[0m
   [0;32mPASS: HTTP tools/call (upstream)[0m
 
-Total: 5 passed, 0 failed
+Total: 3 passed, 2 failed
 context7-mcp-test
 context7-mcp-test
+
+❌ FAIL (Test): context7-mcp

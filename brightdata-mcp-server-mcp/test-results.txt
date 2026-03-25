@@ -1,8 +1,61 @@
-MCP test run - brightdata-mcp-server-mcp
-Generated (UTC): 2026-03-20T18:11:27Z
-Exit code: 1
-Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
----------------------------------------------------------------------------------
+========== Retesting brightdata-mcp-server-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 537B 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 1.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context:
+#3 transferring context: 2B done
+#3 DONE 0.2s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [6/7] COPY entrypoint.sh /entrypoint.sh
+#7 CACHED
+
+#8 [2/7] WORKDIR /app
+#8 CACHED
+
+#9 [4/7] RUN npm install -g @brightdata/mcp supergateway 2>/dev/null || npm install -g supergateway
+#9 CACHED
+
+#10 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:b159e3d0481e6c56179d364ca8cbf75219371ed5824feb0256af8633e0dfc5d2 done
+#12 exporting config sha256:78e2653cc6d0a18729fe06180513a463fa0bbc4b98a8f41f93f7a2cc0380cfa8 done
+#12 exporting attestation manifest sha256:87fa8b5da5e9577e34156e15a423c37aa06937f3f5714625772e0a56710f7be9
+#12 exporting attestation manifest sha256:87fa8b5da5e9577e34156e15a423c37aa06937f3f5714625772e0a56710f7be9 0.0s done
+#12 exporting manifest list sha256:e373895839e6a611cdab804911d0f5b83a4a52fe762859abfa89886c359d8c70 0.0s done
+#12 naming to docker.io/library/brightdata-mcp-server-mcp:latest done
+#12 unpacking to docker.io/library/brightdata-mcp-server-mcp:latest 0.0s done
+#12 naming to docker.io/hackerdogs/brightdata-mcp-server-mcp:latest done
+#12 unpacking to docker.io/hackerdogs/brightdata-mcp-server-mcp:latest 0.0s done
+#12 DONE 0.3s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/9asuoyruhtod6i78mji4a7z21
+
+ [33m1 warning found (use docker --debug to expand):
+[0m - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "BRIGHTDATA_API_TOKEN") (line 8)
 ========== brightdata-mcp-server-mcp test (compliance) ==========
 [0;34m[1] Install[0m
   [0;32mPASS: image exists[0m
@@ -18,3 +71,5 @@ Note: Full stdout/stderr capture (this test.sh does not use the structured test-
 Total: 3 passed, 2 failed
 brightdata-mcp-server-mcp-test
 brightdata-mcp-server-mcp-test
+
+❌ FAIL (Test): brightdata-mcp-server-mcp
