@@ -1,8 +1,74 @@
-MCP test run - firecrawl-mcp
-Generated (UTC): 2026-03-20T18:34:59Z
-Exit code: 1
-Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
----------------------------------------------------------------------------------
+========== Testing firecrawl-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 529B 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 ...
+
+#3 [auth] library/node:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 2.2s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.1s
+
+#5 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#5 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.1s done
+#5 DONE 0.1s
+
+#6 [2/7] WORKDIR /app
+#6 CACHED
+
+#7 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [internal] load build context
+#8 transferring context: 10.92kB done
+#8 DONE 0.1s
+
+#9 [4/7] RUN npm install -g firecrawl-mcp supergateway 2>/dev/null || npm install -g supergateway
+#9 23.95 
+#9 23.95 added 290 packages in 23s
+#9 23.95 
+#9 23.95 69 packages are looking for funding
+#9 23.95   run `npm fund` for details
+#9 DONE 24.2s
+
+#10 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#10 DONE 0.3s
+
+#11 [6/7] COPY entrypoint.sh /entrypoint.sh
+#11 DONE 0.1s
+
+#12 [7/7] RUN chmod +x /entrypoint.sh
+#12 DONE 0.4s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 4.6s done
+#13 exporting manifest sha256:056f908df39924b4d6b411a0c662f087c7f324167248181bc6274eba503770f9 0.0s done
+#13 exporting config sha256:019934db8d1a1a624641449a17bc3297d84240645636112808d3dbab20cc8536 0.0s done
+#13 exporting attestation manifest sha256:857b645493bbea76d6c22df94ee22d0039e7f3fb8fa0385732dd30dcf3b7aa41
+#13 exporting attestation manifest sha256:857b645493bbea76d6c22df94ee22d0039e7f3fb8fa0385732dd30dcf3b7aa41 0.1s done
+#13 exporting manifest list sha256:022d206ab9d07f9111d551021f142b9c4b841314c23dd038bb32d9cdd0ba901f 0.0s done
+#13 naming to docker.io/library/firecrawl-mcp:latest
+#13 naming to docker.io/library/firecrawl-mcp:latest done
+#13 unpacking to docker.io/library/firecrawl-mcp:latest
+#13 unpacking to docker.io/library/firecrawl-mcp:latest 2.3s done
+#13 naming to docker.io/hackerdogs/firecrawl-mcp:latest done
+#13 unpacking to docker.io/hackerdogs/firecrawl-mcp:latest 0.0s done
+#13 DONE 7.3s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/k6d7xtajb8gfsf3w2yt1gvkxy
+
+ [33m1 warning found (use docker --debug to expand):
+[0m - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "FIRECRAWL_API_KEY") (line 8)
 ========== firecrawl-mcp test (compliance) ==========
 [0;34m[1] Install[0m
   [0;32mPASS: image exists[0m
@@ -18,3 +84,5 @@ Note: Full stdout/stderr capture (this test.sh does not use the structured test-
 Total: 3 passed, 2 failed
 firecrawl-mcp-test
 firecrawl-mcp-test
+
+❌ FAIL (Test): firecrawl-mcp

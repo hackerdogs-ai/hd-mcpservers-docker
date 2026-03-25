@@ -1,8 +1,58 @@
-MCP test run - abusech-mcp
-Generated (UTC): 2026-03-20T17:38:28Z
-Exit code: 0
-Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
----------------------------------------------------------------------------------
+========== Testing abusech-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.06kB 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim-bookworm
+#2 DONE 0.4s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/8] FROM docker.io/library/python:3.11-slim-bookworm@sha256:420310dd2ff7895895f0f1f9d15cae5a95dabceb8f1d6b9a23ef33c2c1c542c3
+#4 resolve docker.io/library/python:3.11-slim-bookworm@sha256:420310dd2ff7895895f0f1f9d15cae5a95dabceb8f1d6b9a23ef33c2c1c542c3 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 70B done
+#5 DONE 0.0s
+
+#6 [3/8] RUN apt-get update && apt-get install -y --no-install-recommends tini ca-certificates     && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [4/8] WORKDIR /app
+#7 CACHED
+
+#8 [7/8] COPY mcp_server.py ./
+#8 CACHED
+
+#9 [2/8] RUN groupadd -g 1000 mcpuser && useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
+#9 CACHED
+
+#10 [5/8] COPY requirements.txt ./
+#10 CACHED
+
+#11 [6/8] RUN pip install --no-cache-dir -r requirements.txt
+#11 CACHED
+
+#12 [8/8] RUN chown -R mcpuser:mcpuser /app
+#12 CACHED
+
+#13 exporting to image
+#13 exporting layers done
+#13 exporting manifest sha256:b028e578ee7e09158ef66fcdbfb8c4854037f65816260fa5670089c7128eafe6 done
+#13 exporting config sha256:c58418a965b9e7297acc05e7f89bee677f478fceed15b29034fa845a07c15f3f done
+#13 exporting attestation manifest sha256:c3655f4cf515ceaa8040f2da585094edce0ed1df090af013da57a7a92cd5c3da
+#13 exporting attestation manifest sha256:c3655f4cf515ceaa8040f2da585094edce0ed1df090af013da57a7a92cd5c3da 0.0s done
+#13 exporting manifest list sha256:e5039440a06615c0021cc5417882a61b1e85fd4fa744a0270c074f32062f3546 0.0s done
+#13 naming to docker.io/hackerdogs/abusech-mcp:latest done
+#13 unpacking to docker.io/hackerdogs/abusech-mcp:latest 0.0s done
+#13 DONE 0.1s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/k7juxv3k03lxvbdnsxyd4cdjq
 ========== abusech-mcp test (compliance) ==========
 [0;34m[1] Install[0m
   [0;32mPASS: image exists[0m
@@ -18,3 +68,5 @@ Note: Full stdout/stderr capture (this test.sh does not use the structured test-
 Total: 5 passed, 0 failed
 abusech-mcp-test
 abusech-mcp-test
+
+✅ PASS: abusech-mcp

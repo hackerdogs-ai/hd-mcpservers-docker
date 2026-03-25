@@ -21,7 +21,7 @@ info "[1] Install"
 docker build -t "$IMAGE" "$PROJECT_DIR" 2>/dev/null || true
 docker image inspect "$IMAGE" >/dev/null 2>&1 && pass "image exists" || { fail "image build"; exit 1; }
 info "[2] Stdio tools/list"
-STDIO_OUT=$(python3 "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
+STDIO_OUT=$(python "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
 echo "$STDIO_OUT" | grep -q '"tools"' && pass "stdio tools/list" || fail "stdio tools/list"
 info "[3] Stdio tools/call run_assetfinder"
 CALL_OUT=$( ( printf '%s\n%s\n%s\n' "$INIT_REQ" "$INIT_NOTIF" "$CALL_REQ"; sleep 5 ) | docker run -i --rm -e MCP_TRANSPORT=stdio "$IMAGE" 2>/dev/null) || true

@@ -27,7 +27,7 @@ fi
 pass "image exists"
 
 info "[2] Stdio tools/list"
-STDIO_OUT=$(python3 "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
+STDIO_OUT=$(python "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
 if grep -q '"tools"' <<< "$STDIO_OUT"; then
   pass "stdio tools/list"
 else

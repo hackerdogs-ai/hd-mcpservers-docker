@@ -91,8 +91,8 @@ dump ">>> [2] MCP requests sent on container stdin (one JSON-RPC per line):"
 echo "$INIT_REQ"
 echo "$INIT_NOTIF"
 echo "$LIST_REQ"
-dump ">>> [2] Running: python3 mcp_stdio_docker_tools_list.py"
-STDIO_OUT=$(MCP_STDIO_DOCKER_TIMEOUT="${MCP_STDIO_DOCKER_TIMEOUT:-180}" python3 "$SCRIPT_HELPER" "$IMAGE") || true
+dump ">>> [2] Running: python mcp_stdio_docker_tools_list.py"
+STDIO_OUT=$(MCP_STDIO_DOCKER_TIMEOUT="${MCP_STDIO_DOCKER_TIMEOUT:-180}" python "$SCRIPT_HELPER" "$IMAGE") || true
 dump ">>> [2] Full raw MCP stdout from container:"
 echo "--------------------------------------------------------------------------------"
 printf '%s\n' "$STDIO_OUT"
