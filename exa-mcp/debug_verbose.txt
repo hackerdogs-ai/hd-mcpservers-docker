@@ -1,0 +1,170 @@
+========== VERBOSE DEBUG: exa-mcp ==========
+Timestamp: Sun, Mar 29, 2026  8:59:18 PM
+
+--- [CHECK 1] Building Docker image ---
+>>> docker build -t exa-mcp -t hackerdogs/exa-mcp:latest exa-mcp
+
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 498B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.4s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3
+#4 resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3 0.0s done
+#4 DONE 0.0s
+
+#5 [2/7] WORKDIR /app
+#5 CACHED
+
+#6 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [internal] load build context
+#7 transferring context: 10.82kB 0.0s done
+#7 DONE 0.1s
+
+#8 [4/7] RUN npm install -g exa-mcp-server supergateway 2>/dev/null || npm install -g supergateway
+#8 17.43 
+#8 17.43 added 269 packages in 17s
+#8 17.43 
+#8 17.43 41 packages are looking for funding
+#8 17.43   run `npm fund` for details
+#8 DONE 17.6s
+
+#9 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#9 DONE 0.1s
+
+#10 [6/7] COPY entrypoint.sh /entrypoint.sh
+#10 DONE 0.1s
+
+#11 [7/7] RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
+#11 DONE 0.3s
+
+#12 exporting to image
+#12 exporting layers
+#12 exporting layers 3.3s done
+#12 exporting manifest sha256:8917eb9f2740f12f3ba4727139b99f70f272d967fbf754c21e97c237e3f39d1b 0.0s done
+#12 exporting config sha256:fed12f4947ba68d9a621f6581d4b4390ef224b98532e290f87c21e2cf7bf28dc 0.0s done
+#12 exporting attestation manifest sha256:7e479f9c317019b9b4dff6a35128b66214a9bd430d078b08f1949da964e695c7 0.0s done
+#12 exporting manifest list sha256:45a8d0357ee83553f2aa9b7d0bd619d731e20ec9d1e6f6f7987a42e627689be6 0.0s done
+#12 naming to docker.io/library/exa-mcp:latest
+#12 naming to docker.io/library/exa-mcp:latest done
+#12 unpacking to docker.io/library/exa-mcp:latest
+#12 unpacking to docker.io/library/exa-mcp:latest 1.9s done
+#12 naming to docker.io/hackerdogs/exa-mcp:latest done
+#12 unpacking to docker.io/hackerdogs/exa-mcp:latest 0.0s done
+#12 DONE 5.5s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/8s1os4ugdy59rwn5x0f306on4
+
+✅ Build succeeded.
+
+--- [CHECK 2] Stdio tools/list (raw output) ---
+>>> Sending to container via stdio:
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"debug","version":"0.0.1"}}}
+{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}
+
+>>> Raw container response:
+[smithery] Starting MCP server with stdio transport
+[smithery] Creating server.
+[EXA-MCP-DEBUG] Server initialized with modern MCP SDK and Smithery CLI support
+[smithery] MCP server connected to stdio transport
+[smithery] Configuration loaded: { debug: false }
+{"result":{"protocolVersion":"2024-11-05","capabilities":{"tools":{"listChanged":true},"prompts":{"listChanged":true},"completions":{},"resources":{"listChanged":true}},"serverInfo":{"name":"exa-search-server","title":"Exa","version":"3.2.0"}},"jsonrpc":"2.0","id":1}
+{"result":{"tools":[{"name":"web_search_exa","description":"Search the web for any topic and get clean, ready-to-use content.\n\nBest for: Finding current information, news, facts, or answering questions about any topic.\nReturns: Clean text content from top search results, ready for LLM use.\n\nQuery tips: describe the ideal page, not keywords. \"blog post comparing React and Vue performance\" not \"React vs Vue\".\nIf highlights are insufficient, follow up with crawling_exa on the best URLs.","inputSchema":{"type":"object","properties":{"query":{"type":"string","description":"Natural language search query. Should be a semantically rich description of the ideal page, not just keywords."},"numResults":{"type":"number","minimum":1,"maximum":100,"description":"Number of search results to return (must be a number, default: 8)"},"type":{"type":"string","enum":["auto","fast"],"description":"Search type - 'auto': balanced search (default), 'fast': quick results"},"freshness":{"type":"string","enum":["24h","week","month","year","any"],"description":"How recent results should be. Only set when recency matters."},"includeDomains":{"type":"array","items":{"type":"string"},"description":"List of domains to include in the search. If specified, results will only come from these domains."}},"required":["query"],"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"annotations":{"readOnlyHint":true,"destructiveHint":false,"idempotentHint":true},"execution":{"taskSupport":"forbidden"}},{"name":"crawling_exa","description":"Read a webpage's full content as clean markdown. Use after web_search_exa when highlights are insufficient or to read any URL.\n\nBest for: Extracting full content from known URLs. Batch multiple URLs in one call.\nReturns: Clean text content and metadata from the page(s).","inputSchema":{"type":"object","properties":{"urls":{"type":"array","items":{"type":"string"},"description":"URLs to read. Batch multiple URLs in one call."},"maxCharacters":{"type":"number","description":"Maximum characters to extract per page (must be a number, default: 3000)"},"maxAgeHours":{"type":"number","description":"Maximum age of cached content in hours. 0 = always fetch fresh content, omit = use cached content with fresh fetch fallback."},"subpages":{"type":"number","description":"Number of subpages to also crawl from each URL."},"subpageTarget":{"type":"string","description":"Keywords to prioritize when selecting subpages"}},"required":["urls"],"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"annotations":{"readOnlyHint":true,"destructiveHint":false,"idempotentHint":true},"execution":{"taskSupport":"forbidden"}},{"name":"get_code_context_exa","description":"Find code examples, documentation, and programming solutions. \n\nBest for: Any programming question - API usage, library examples, code snippets, debugging help.\nReturns: Relevant code and documentation.\n\nQuery tips: describe what you're looking for specifically. \"Python requests library POST with JSON body\" not \"python http\".\nIf highlights are insufficient, follow up with crawling_exa on the best URLs.","inputSchema":{"type":"object","properties":{"query":{"type":"string","description":"Search query to find relevant context for APIs, Libraries, and SDKs. For example, 'React useState hook examples', 'Python pandas dataframe filtering', 'Express.js middleware', 'Next js partial prerendering configuration'"},"numResults":{"type":"number","minimum":1,"maximum":20,"description":"Number of search results to return (must be a number, default: 8)"}},"required":["query"],"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"annotations":{"readOnlyHint":true,"destructiveHint":false,"idempotentHint":true},"execution":{"taskSupport":"forbidden"}}]},"jsonrpc":"2.0","id":2}
+
+✅ Stdio tools/list: tools key found in response.
+
+--- [CHECK 3] HTTP streamable tools/list (raw output) ---
+>>> Starting container in HTTP mode on port 8614...
+7e3a0c1221691dd4f2243e20f17f1ef48d7145a2e300bd8bcc5e81a47463c283
+>>> Waiting 5s for server to start...
+>>> Container logs so far:
+[mcp-proxy] Listening on 0.0.0.0:8637/mcp
+[mcp-proxy] Wrapping: node /usr/local/lib/node_modules/exa-mcp-server/.smithery/stdio/index.cjs
+
+>>> Sending HTTP initialize request to get session ID...
+event: message
+data: {"result":{"protocolVersion":"2024-11-05","capabilities":{"tools":{"listChanged":true},"prompts":{"listChanged":true},"completions":{},"resources":{"listChanged":true}},"serverInfo":{"name":"exa-search-server","title":"Exa","version":"3.2.0"}},"jsonrpc":"2.0","id":1}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> Content-Length: 154
+> 
+} [154 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.2
+< Date: Sun, 29 Mar 2026 15:29:53 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: 1ad148d67ad1488ea58e17531ca0a168
+< 
+{ [290 bytes data]
+* Closing connection 0
+✅ Got session ID: 1ad148d67ad1488ea58e17531ca0a168
+>>> Sending HTTP notifications/initialized...
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 1ad148d67ad1488ea58e17531ca0a168
+> Content-Length: 54
+> 
+} [54 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 202 Accepted
+< Server: BaseHTTP/0.6 Python/3.11.2
+< Date: Sun, 29 Mar 2026 15:29:53 GMT
+< 
+{ [0 bytes data]
+* Closing connection 0
+>>> Sending HTTP tools/list request:
+>>> Raw HTTP response:
+event: message
+data: {"result":{"tools":[{"name":"web_search_exa","description":"Search the web for any topic and get clean, ready-to-use content.\n\nBest for: Finding current information, news, facts, or answering questions about any topic.\nReturns: Clean text content from top search results, ready for LLM use.\n\nQuery tips: describe the ideal page, not keywords. \"blog post comparing React and Vue performance\" not \"React vs Vue\".\nIf highlights are insufficient, follow up with crawling_exa on the best URLs.","inputSchema":{"type":"object","properties":{"query":{"type":"string","description":"Natural language search query. Should be a semantically rich description of the ideal page, not just keywords."},"numResults":{"type":"number","minimum":1,"maximum":100,"description":"Number of search results to return (must be a number, default: 8)"},"type":{"type":"string","enum":["auto","fast"],"description":"Search type - 'auto': balanced search (default), 'fast': quick results"},"freshness":{"type":"string","enum":["24h","week","month","year","any"],"description":"How recent results should be. Only set when recency matters."},"includeDomains":{"type":"array","items":{"type":"string"},"description":"List of domains to include in the search. If specified, results will only come from these domains."}},"required":["query"],"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"annotations":{"readOnlyHint":true,"destructiveHint":false,"idempotentHint":true},"execution":{"taskSupport":"forbidden"}},{"name":"crawling_exa","description":"Read a webpage's full content as clean markdown. Use after web_search_exa when highlights are insufficient or to read any URL.\n\nBest for: Extracting full content from known URLs. Batch multiple URLs in one call.\nReturns: Clean text content and metadata from the page(s).","inputSchema":{"type":"object","properties":{"urls":{"type":"array","items":{"type":"string"},"description":"URLs to read. Batch multiple URLs in one call."},"maxCharacters":{"type":"number","description":"Maximum characters to extract per page (must be a number, default: 3000)"},"maxAgeHours":{"type":"number","description":"Maximum age of cached content in hours. 0 = always fetch fresh content, omit = use cached content with fresh fetch fallback."},"subpages":{"type":"number","description":"Number of subpages to also crawl from each URL."},"subpageTarget":{"type":"string","description":"Keywords to prioritize when selecting subpages"}},"required":["urls"],"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"annotations":{"readOnlyHint":true,"destructiveHint":false,"idempotentHint":true},"execution":{"taskSupport":"forbidden"}},{"name":"get_code_context_exa","description":"Find code examples, documentation, and programming solutions. \n\nBest for: Any programming question - API usage, library examples, code snippets, debugging help.\nReturns: Relevant code and documentation.\n\nQuery tips: describe what you're looking for specifically. \"Python requests library POST with JSON body\" not \"python http\".\nIf highlights are insufficient, follow up with crawling_exa on the best URLs.","inputSchema":{"type":"object","properties":{"query":{"type":"string","description":"Search query to find relevant context for APIs, Libraries, and SDKs. For example, 'React useState hook examples', 'Python pandas dataframe filtering', 'Express.js middleware', 'Next js partial prerendering configuration'"},"numResults":{"type":"number","minimum":1,"maximum":20,"description":"Number of search results to return (must be a number, default: 8)"}},"required":["query"],"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"annotations":{"readOnlyHint":true,"destructiveHint":false,"idempotentHint":true},"execution":{"taskSupport":"forbidden"}}]},"jsonrpc":"2.0","id":2}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 1ad148d67ad1488ea58e17531ca0a168
+> Content-Length: 58
+> 
+} [58 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.2
+< Date: Sun, 29 Mar 2026 15:29:54 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: 1ad148d67ad1488ea58e17531ca0a168
+< 
+{ [3891 bytes data]
+* Closing connection 0
+
+✅ HTTP tools/list: tools key found in response.
+
+>>> Stopping HTTP container...
+exa-mcp-debug-http
+
+========== End of Debug: Sun, Mar 29, 2026  8:59:55 PM ==========

@@ -1,0 +1,167 @@
+========== VERBOSE DEBUG: iplocate-mcp ==========
+Timestamp: Sun, Mar 29, 2026 11:17:08 PM
+
+--- [CHECK 1] Building Docker image ---
+>>> docker build -t iplocate-mcp -t hackerdogs/iplocate-mcp:latest iplocate-mcp
+
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 504B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 1.2s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.1s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3
+#4 resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3 0.0s done
+#4 DONE 0.0s
+
+#5 [2/7] WORKDIR /app
+#5 CACHED
+
+#6 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [internal] load build context
+#7 transferring context: 10.95kB 0.0s done
+#7 DONE 0.1s
+
+#8 [4/7] RUN npm install -g @iplocate/mcp-server supergateway 2>/dev/null || npm install -g supergateway
+#8 14.18 
+#8 14.18 added 232 packages in 14s
+#8 14.18 
+#8 14.18 35 packages are looking for funding
+#8 14.18   run `npm fund` for details
+#8 DONE 14.3s
+
+#9 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#9 DONE 0.1s
+
+#10 [6/7] COPY entrypoint.sh /entrypoint.sh
+#10 DONE 0.1s
+
+#11 [7/7] RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
+#11 DONE 0.4s
+
+#12 exporting to image
+#12 exporting layers
+#12 exporting layers 2.2s done
+#12 exporting manifest sha256:96c29b53dd97aff0fc3f8ec00b2d410006ce523167c1d3142a8b46ab1770b21a 0.0s done
+#12 exporting config sha256:9412c59b875249802e55e9519ffa0c134e1b71385cfda0acd8924d4aa3f4c575 0.0s done
+#12 exporting attestation manifest sha256:040e8474eebd000ddf48a39f07c229cbac31c2bb3af0690b8e0a406816449500 0.0s done
+#12 exporting manifest list sha256:027df1bb24277b429d1030a66a696ac5a75a61f37f192b035dc754dcc8fafd29
+#12 exporting manifest list sha256:027df1bb24277b429d1030a66a696ac5a75a61f37f192b035dc754dcc8fafd29 0.0s done
+#12 naming to docker.io/library/iplocate-mcp:latest done
+#12 unpacking to docker.io/library/iplocate-mcp:latest
+#12 unpacking to docker.io/library/iplocate-mcp:latest 1.5s done
+#12 naming to docker.io/hackerdogs/iplocate-mcp:latest done
+#12 unpacking to docker.io/hackerdogs/iplocate-mcp:latest 0.0s done
+#12 DONE 3.9s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/3igmdnfc072ocom8o1tjmn825
+
+✅ Build succeeded.
+
+--- [CHECK 2] Stdio tools/list (raw output) ---
+>>> Sending to container via stdio:
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"debug","version":"0.0.1"}}}
+{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}
+
+>>> Raw container response:
+IPLocate MCP server running on stdio
+No API key found. Set IPLOCATE_API_KEY for higher rate limits.
+{"result":{"protocolVersion":"2024-11-05","capabilities":{"tools":{"listChanged":true},"prompts":{"listChanged":true}},"serverInfo":{"name":"iplocate-server","version":"1.0.0"}},"jsonrpc":"2.0","id":1}
+{"result":{"tools":[{"name":"lookup_ip_address_details","title":"Look up IP Address Details","description":"Get comprehensive information about an IP address including geolocation, network details, privacy/security information, company data, and abuse contacts. Can look up any IPv4 or IPv6 address, or your own IP if no address is provided.","inputSchema":{"type":"object","properties":{"ip":{"type":"string","description":"IPv4 or IPv6 address to look up. If not provided, returns information about the caller's IP address."}},"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"execution":{"taskSupport":"forbidden"}},{"name":"lookup_ip_address_location","title":"Look up IP Address Location","description":"Get geographic location information for an IP address including country, city, coordinates, timezone, and postal code. Can look up any IPv4 or IPv6 address, or your own IP if no address is provided.","inputSchema":{"type":"object","properties":{"ip":{"type":"string","description":"IPv4 or IPv6 address to look up. If not provided, returns information about the caller's IP address."}},"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"execution":{"taskSupport":"forbidden"}},{"name":"lookup_ip_address_privacy","title":"Look up IP Address Privacy & Security","description":"Get privacy and security information for an IP address including VPN, proxy, Tor, hosting, and abuse detection. Can look up any IPv4 or IPv6 address, or your own IP if no address is provided.","inputSchema":{"type":"object","properties":{"ip":{"type":"string","description":"IPv4 or IPv6 address to look up. If not provided, returns information about the caller's IP address."}},"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"execution":{"taskSupport":"forbidden"}},{"name":"lookup_ip_address_network","title":"Look up IP Address Network (ASN)","description":"Get network and ASN (Autonomous System Number) information for an IP address including the network operator, route, and regional registry. Can look up any IPv4 or IPv6 address, or your own IP if no address is provided.","inputSchema":{"type":"object","properties":{"ip":{"type":"string","description":"IPv4 or IPv6 address to look up. If not provided, returns information about the caller's IP address."}},"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"execution":{"taskSupport":"forbidden"}},{"name":"lookup_ip_address_company","title":"Look up IP Address Company","description":"Get company/organization information for an IP address including the company name, domain, and type of organization. Can look up any IPv4 or IPv6 address, or your own IP if no address is provided.","inputSchema":{"type":"object","properties":{"ip":{"type":"string","description":"IPv4 or IPv6 address to look up. If not provided, returns information about the caller's IP address."}},"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"execution":{"taskSupport":"forbidden"}},{"name":"lookup_ip_address_abuse_contacts","title":"Look up IP Address Abuse Contacts","description":"Get abuse contact information for an IP address to report malicious activity. Includes email, phone, and address of the network administrator. Can look up any IPv4 or IPv6 address, or your own IP if no address is provided.","inputSchema":{"type":"object","properties":{"ip":{"type":"string","description":"IPv4 or IPv6 address to look up. If not provided, returns information about the caller's IP address."}},"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"execution":{"taskSupport":"forbidden"}}]},"jsonrpc":"2.0","id":2}
+
+✅ Stdio tools/list: tools key found in response.
+
+--- [CHECK 3] HTTP streamable tools/list (raw output) ---
+>>> Starting container in HTTP mode on port 8614...
+cbf92f279a5a1eb51889b08b34005ee6703cc38b631dc04fc97d2dd22e8ed6aa
+>>> Waiting 5s for server to start...
+>>> Container logs so far:
+[mcp-proxy] Listening on 0.0.0.0:8648/mcp
+[mcp-proxy] Wrapping: mcp-server-iplocate
+
+>>> Sending HTTP initialize request to get session ID...
+event: message
+data: {"result":{"protocolVersion":"2024-11-05","capabilities":{"tools":{"listChanged":true},"prompts":{"listChanged":true}},"serverInfo":{"name":"iplocate-server","version":"1.0.0"}},"jsonrpc":"2.0","id":1}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> Content-Length: 154
+> 
+} [154 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.2
+< Date: Sun, 29 Mar 2026 17:47:37 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: c159551e7a014081b83bbefb2e1fb4d0
+< 
+{ [224 bytes data]
+* Closing connection 0
+✅ Got session ID: c159551e7a014081b83bbefb2e1fb4d0
+>>> Sending HTTP notifications/initialized...
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: c159551e7a014081b83bbefb2e1fb4d0
+> Content-Length: 54
+> 
+} [54 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 202 Accepted
+< Server: BaseHTTP/0.6 Python/3.11.2
+< Date: Sun, 29 Mar 2026 17:47:37 GMT
+< 
+{ [0 bytes data]
+* Closing connection 0
+>>> Sending HTTP tools/list request:
+>>> Raw HTTP response:
+event: message
+data: {"result":{"tools":[{"name":"lookup_ip_address_details","title":"Look up IP Address Details","description":"Get comprehensive information about an IP address including geolocation, network details, privacy/security information, company data, and abuse contacts. Can look up any IPv4 or IPv6 address, or your own IP if no address is provided.","inputSchema":{"type":"object","properties":{"ip":{"type":"string","description":"IPv4 or IPv6 address to look up. If not provided, returns information about the caller's IP address."}},"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"execution":{"taskSupport":"forbidden"}},{"name":"lookup_ip_address_location","title":"Look up IP Address Location","description":"Get geographic location information for an IP address including country, city, coordinates, timezone, and postal code. Can look up any IPv4 or IPv6 address, or your own IP if no address is provided.","inputSchema":{"type":"object","properties":{"ip":{"type":"string","description":"IPv4 or IPv6 address to look up. If not provided, returns information about the caller's IP address."}},"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"execution":{"taskSupport":"forbidden"}},{"name":"lookup_ip_address_privacy","title":"Look up IP Address Privacy & Security","description":"Get privacy and security information for an IP address including VPN, proxy, Tor, hosting, and abuse detection. Can look up any IPv4 or IPv6 address, or your own IP if no address is provided.","inputSchema":{"type":"object","properties":{"ip":{"type":"string","description":"IPv4 or IPv6 address to look up. If not provided, returns information about the caller's IP address."}},"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"execution":{"taskSupport":"forbidden"}},{"name":"lookup_ip_address_network","title":"Look up IP Address Network (ASN)","description":"Get network and ASN (Autonomous System Number) information for an IP address including the network operator, route, and regional registry. Can look up any IPv4 or IPv6 address, or your own IP if no address is provided.","inputSchema":{"type":"object","properties":{"ip":{"type":"string","description":"IPv4 or IPv6 address to look up. If not provided, returns information about the caller's IP address."}},"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"execution":{"taskSupport":"forbidden"}},{"name":"lookup_ip_address_company","title":"Look up IP Address Company","description":"Get company/organization information for an IP address including the company name, domain, and type of organization. Can look up any IPv4 or IPv6 address, or your own IP if no address is provided.","inputSchema":{"type":"object","properties":{"ip":{"type":"string","description":"IPv4 or IPv6 address to look up. If not provided, returns information about the caller's IP address."}},"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"execution":{"taskSupport":"forbidden"}},{"name":"lookup_ip_address_abuse_contacts","title":"Look up IP Address Abuse Contacts","description":"Get abuse contact information for an IP address to report malicious activity. Includes email, phone, and address of the network administrator. Can look up any IPv4 or IPv6 address, or your own IP if no address is provided.","inputSchema":{"type":"object","properties":{"ip":{"type":"string","description":"IPv4 or IPv6 address to look up. If not provided, returns information about the caller's IP address."}},"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"execution":{"taskSupport":"forbidden"}}]},"jsonrpc":"2.0","id":2}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: c159551e7a014081b83bbefb2e1fb4d0
+> Content-Length: 58
+> 
+} [58 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.2
+< Date: Sun, 29 Mar 2026 17:47:38 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: c159551e7a014081b83bbefb2e1fb4d0
+< 
+{ [3753 bytes data]
+* Closing connection 0
+
+✅ HTTP tools/list: tools key found in response.
+
+>>> Stopping HTTP container...
+iplocate-mcp-debug-http
+
+========== End of Debug: Sun, Mar 29, 2026 11:17:39 PM ==========

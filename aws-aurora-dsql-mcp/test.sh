@@ -10,6 +10,7 @@ pass() { echo -e "  ${GREEN}PASS: $1${NC}"; PASS=$((PASS+1)); }
 fail() { echo -e "  ${RED}FAIL: $1${NC}"; FAIL=$((FAIL+1)); }
 info() { echo -e "${BLUE}$1${NC}"; }
 cleanup() { docker stop "$CONTAINER_NAME" 2>/dev/null || true; docker rm -f "$CONTAINER_NAME" 2>/dev/null || true; }
+  echo "--- Container Logs ---" > test_logs.txt && docker logs "$CONTAINER_NAME" >> test_logs.txt 2>&1
 trap cleanup EXIT
 INIT_REQ='{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}'
 INIT_NOTIF='{"jsonrpc":"2.0","method":"notifications/initialized"}'

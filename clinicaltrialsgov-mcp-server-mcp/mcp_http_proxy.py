@@ -1,21 +1,4 @@
 #!/usr/bin/env python3
-"""
-Stateful MCP stdio-to-HTTP proxy.
-Wraps any stdio MCP server with a streamable-http endpoint at /mcp.
-Maintains a single long-lived stdio process with session support.
-
-Fixes for slow JVM/Node MCP servers and noisy stderr:
-  - Drains child stderr in a thread (prevents pipe fill deadlock).
-  - Long read timeouts (env MCP_PROXY_INIT_TIMEOUT, MCP_PROXY_REQUEST_TIMEOUT).
-  - Sends HTTP response headers BEFORE waiting for the child (so clients see bytes
-    immediately and don't hit idle curl --max-time while a huge tools/list line
-    is still being generated on stdio).
-  - SSE comment keepalives while waiting for a full newline-terminated JSON-RPC line.
-  - ThreadingHTTPServer: one slow tools/list cannot block other clients (single-threaded
-    BaseHTTPRequestHandler would deadlock the whole /mcp endpoint until the child finishes).
-
-Usage: python mcp_http_proxy.py --port 8600 -- command arg1 arg2
-"""
 import json
 import os
 import select
@@ -30,23 +13,11 @@ from socketserver import ThreadingMixIn
 sessions = {}
 lock = threading.Lock()
 
-# Defaults tuned for cold npx/JVM/FastMCP starts inside the container.
 _INIT_TIMEOUT = float(os.environ.get("MCP_PROXY_INIT_TIMEOUT", "360"))
 _REQUEST_TIMEOUT = float(os.environ.get("MCP_PROXY_REQUEST_TIMEOUT", "600"))
-# While waiting for a full stdio line (can be multi-MB for tools/list), emit SSE
-# comments so HTTP clients don't see a long idle period (curl --max-time).
 _KEEPALIVE_INTERVAL = float(os.environ.get("MCP_PROXY_KEEPALIVE_INTERVAL", "10"))
 
-
 def read_jsonrpc_line(proc, timeout, keepalive_wfile=None):
-    """
-    Read one newline-terminated line from child's stdout, validating JSON.
-    Uses binary incremental reads so we don't block the HTTP socket until the
-    entire line exists (we still only return after a full line + valid JSON).
-
-    If keepalive_wfile is set, writes SSE comment lines periodically so clients
-    receive bytes during long upstream generation (e.g. huge tools/list).
-    """
     buf = b""
     deadline = time.time() + timeout
     last_keepalive = time.time()
@@ -90,9 +61,10 @@ def read_jsonrpc_line(proc, timeout, keepalive_wfile=None):
                 json.loads(line)
                 return line
             except (json.JSONDecodeError, ValueError):
+                sys.stdout.write(f"[child-stdout-discarded] {line}\n")
+                sys.stdout.flush()
                 continue
     return None
-
 
 class StdioSession:
     def __init__(self, cmd):
@@ -111,8 +83,9 @@ class StdioSession:
     def _drain_stderr(self):
         try:
             if self.proc.stderr is not None:
-                for _ in iter(self.proc.stderr.readline, ""):
-                    pass
+                for line in iter(self.proc.stderr.readline, ""):
+                    sys.stdout.write(f"[child-stderr] {line}")
+                    sys.stdout.flush()
         except Exception:
             pass
 
@@ -130,7 +103,6 @@ class StdioSession:
             self.proc.wait(timeout=3)
         except Exception:
             self.proc.kill()
-
 
 class MCPHandler(BaseHTTPRequestHandler):
     cmd = None
@@ -253,7 +225,6 @@ class MCPHandler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.end_headers()
 
-
 def main():
     argv = sys.argv[1:]
     port = 8000
@@ -295,7 +266,6 @@ def main():
     print(f"[mcp-proxy] Listening on {host}:{port}/mcp", flush=True)
     print(f"[mcp-proxy] Wrapping: {' '.join(cmd)}", flush=True)
     server.serve_forever()
-
 
 if __name__ == "__main__":
     main()

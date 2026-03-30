@@ -1,0 +1,168 @@
+========== VERBOSE DEBUG: brightdata-mcp-server-mcp ==========
+Timestamp: Mon, Mar 30, 2026 11:01:29 AM
+
+--- [CHECK 1] Building Docker image ---
+>>> docker build -t brightdata-mcp-server-mcp -t hackerdogs/brightdata-mcp-server-mcp:latest brightdata-mcp-server-mcp
+
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 561B 0.0s done
+#1 DONE 0.0s
+
+#2 [auth] library/node:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 1.7s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/7] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3
+#5 resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3 0.0s done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 72B done
+#6 DONE 0.0s
+
+#7 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#7 CACHED
+
+#8 [4/7] RUN npm install -g @brightdata/mcp supergateway 2>/dev/null || npm install -g supergateway
+#8 CACHED
+
+#9 [2/7] WORKDIR /app
+#9 CACHED
+
+#10 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [6/7] COPY entrypoint.sh /entrypoint.sh
+#11 CACHED
+
+#12 [7/7] RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
+#12 CACHED
+
+#13 exporting to image
+#13 exporting layers done
+#13 exporting manifest sha256:01c0cce86d1f91e005cd4b0a053daac4f57ec6cbc786ad8107e7d2a4be8a298c 0.0s done
+#13 exporting config sha256:77838c28e6f4fda5d6034e9bea8a13d4e61dde17287aed95a6717c43adaeab14
+#13 exporting config sha256:77838c28e6f4fda5d6034e9bea8a13d4e61dde17287aed95a6717c43adaeab14 0.0s done
+#13 exporting attestation manifest sha256:41d0f73a1bdf369a0edaaabedcfc68f66bbc9de3f26a136659ccf80359d5fa95 0.0s done
+#13 exporting manifest list sha256:20586dd175dcd67ed0907417b00e07ff270a79871674e81810ec019d251a2742 0.0s done
+#13 naming to docker.io/library/brightdata-mcp-server-mcp:latest done
+#13 unpacking to docker.io/library/brightdata-mcp-server-mcp:latest
+#13 unpacking to docker.io/library/brightdata-mcp-server-mcp:latest 0.0s done
+#13 naming to docker.io/hackerdogs/brightdata-mcp-server-mcp:latest done
+#13 unpacking to docker.io/hackerdogs/brightdata-mcp-server-mcp:latest 0.0s done
+#13 DONE 0.2s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/wsq6pfu9pnm2wdi1w5aez116y
+
+ [33m1 warning found (use docker --debug to expand):
+[0m - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "API_TOKEN") (line 8)
+
+✅ Build succeeded.
+
+--- [CHECK 2] Stdio tools/list (raw output) ---
+>>> Sending to container via stdio:
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"debug","version":"0.0.1"}}}
+{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}
+
+>>> Raw container response:
+Checking for required zones...
+Error checking/creating zones: Invalid credentials
+Starting server...
+{"result":{"protocolVersion":"2024-11-05","capabilities":{"tools":{},"prompts":{},"logging":{},"completions":{}},"serverInfo":{"name":"Bright Data","version":"2.9.2"}},"jsonrpc":"2.0","id":1}
+{"result":{"tools":[{"annotations":{"title":"Search Engine","readOnlyHint":true,"openWorldHint":true},"description":"Scrape search results from Google, Bing or Yandex. Returns SERP results in JSON or Markdown (URL, title, description), Ideal forgathering current information, news, and detailed search results.","inputSchema":{"type":"object","properties":{"query":{"type":"string"},"engine":{"type":"string","enum":["google","bing","yandex"],"default":"google"},"cursor":{"type":"string","description":"Pagination cursor for next page"},"geo_location":{"type":"string","minLength":2,"maxLength":2,"description":"2-letter country code for geo-targeted results (e.g., \"us\", \"uk\")"}},"required":["query"],"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"name":"search_engine"},{"annotations":{"title":"Scrape as Markdown","readOnlyHint":true,"openWorldHint":true},"description":"Scrape a single webpage URL with advanced options for content extraction and get back the results in MarkDown language. This tool can unlock any webpage even if it uses bot detection or CAPTCHA.","inputSchema":{"type":"object","properties":{"url":{"type":"string","format":"uri"}},"required":["url"],"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"name":"scrape_as_markdown"},{"annotations":{"title":"Search Engine Batch","readOnlyHint":true,"openWorldHint":true},"description":"Run multiple search queries simultaneously. Returns JSON for Google, Markdown for Bing/Yandex.","inputSchema":{"type":"object","properties":{"queries":{"type":"array","items":{"type":"object","properties":{"query":{"type":"string"},"engine":{"type":"string","enum":["google","bing","yandex"],"default":"google"},"cursor":{"type":"string"},"geo_location":{"type":"string","minLength":2,"maxLength":2,"description":"2-letter country code for geo-targeted results (e.g., \"us\", \"uk\")"}},"required":["query"],"additionalProperties":false},"minItems":1,"maxItems":5}},"required":["queries"],"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"name":"search_engine_batch"},{"annotations":{"title":"Scrape Batch","readOnlyHint":true,"openWorldHint":true},"description":"Scrape multiple webpages URLs with advanced options for content extraction and get back the results in MarkDown language. This tool can unlock any webpage even if it uses bot detection or CAPTCHA.","inputSchema":{"type":"object","properties":{"urls":{"type":"array","items":{"type":"string","format":"uri"},"minItems":1,"maxItems":5,"description":"Array of URLs to scrape (max 5)"}},"required":["urls"],"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"name":"scrape_batch"}]},"jsonrpc":"2.0","id":2}
+
+✅ Stdio tools/list: tools key found in response.
+
+--- [CHECK 3] HTTP streamable tools/list (raw output) ---
+>>> Starting container in HTTP mode on port 8614...
+5de85138fc18d11888a126b10b218767b68410b14585d52c4b780b9230f808f4
+>>> Waiting 5s for server to start...
+>>> Container logs so far:
+[mcp-proxy] Listening on 0.0.0.0:8630/mcp
+[mcp-proxy] Wrapping: node /usr/local/lib/node_modules/@brightdata/mcp/server.js
+
+>>> Sending HTTP initialize request to get session ID...
+event: message
+data: {"result":{"protocolVersion":"2024-11-05","capabilities":{"tools":{},"prompts":{},"logging":{},"completions":{}},"serverInfo":{"name":"Bright Data","version":"2.9.2"}},"jsonrpc":"2.0","id":1}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> Content-Length: 154
+> 
+} [154 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.2
+< Date: Mon, 30 Mar 2026 05:31:43 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: cf83d3ce1fb14f2db589d8d996d02a19
+< 
+{ [214 bytes data]
+* Closing connection 0
+✅ Got session ID: cf83d3ce1fb14f2db589d8d996d02a19
+>>> Sending HTTP notifications/initialized...
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: cf83d3ce1fb14f2db589d8d996d02a19
+> Content-Length: 54
+> 
+} [54 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 202 Accepted
+< Server: BaseHTTP/0.6 Python/3.11.2
+< Date: Mon, 30 Mar 2026 05:31:45 GMT
+< 
+{ [0 bytes data]
+* Closing connection 0
+>>> Sending HTTP tools/list request:
+>>> Raw HTTP response:
+event: message
+data: {"result":{"tools":[{"annotations":{"title":"Search Engine","readOnlyHint":true,"openWorldHint":true},"description":"Scrape search results from Google, Bing or Yandex. Returns SERP results in JSON or Markdown (URL, title, description), Ideal forgathering current information, news, and detailed search results.","inputSchema":{"type":"object","properties":{"query":{"type":"string"},"engine":{"type":"string","enum":["google","bing","yandex"],"default":"google"},"cursor":{"type":"string","description":"Pagination cursor for next page"},"geo_location":{"type":"string","minLength":2,"maxLength":2,"description":"2-letter country code for geo-targeted results (e.g., \"us\", \"uk\")"}},"required":["query"],"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"name":"search_engine"},{"annotations":{"title":"Scrape as Markdown","readOnlyHint":true,"openWorldHint":true},"description":"Scrape a single webpage URL with advanced options for content extraction and get back the results in MarkDown language. This tool can unlock any webpage even if it uses bot detection or CAPTCHA.","inputSchema":{"type":"object","properties":{"url":{"type":"string","format":"uri"}},"required":["url"],"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"name":"scrape_as_markdown"},{"annotations":{"title":"Search Engine Batch","readOnlyHint":true,"openWorldHint":true},"description":"Run multiple search queries simultaneously. Returns JSON for Google, Markdown for Bing/Yandex.","inputSchema":{"type":"object","properties":{"queries":{"type":"array","items":{"type":"object","properties":{"query":{"type":"string"},"engine":{"type":"string","enum":["google","bing","yandex"],"default":"google"},"cursor":{"type":"string"},"geo_location":{"type":"string","minLength":2,"maxLength":2,"description":"2-letter country code for geo-targeted results (e.g., \"us\", \"uk\")"}},"required":["query"],"additionalProperties":false},"minItems":1,"maxItems":5}},"required":["queries"],"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"name":"search_engine_batch"},{"annotations":{"title":"Scrape Batch","readOnlyHint":true,"openWorldHint":true},"description":"Scrape multiple webpages URLs with advanced options for content extraction and get back the results in MarkDown language. This tool can unlock any webpage even if it uses bot detection or CAPTCHA.","inputSchema":{"type":"object","properties":{"urls":{"type":"array","items":{"type":"string","format":"uri"},"minItems":1,"maxItems":5,"description":"Array of URLs to scrape (max 5)"}},"required":["urls"],"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"name":"scrape_batch"}]},"jsonrpc":"2.0","id":2}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: cf83d3ce1fb14f2db589d8d996d02a19
+> Content-Length: 58
+> 
+} [58 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.2
+< Date: Mon, 30 Mar 2026 05:31:46 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: cf83d3ce1fb14f2db589d8d996d02a19
+< 
+{ [2782 bytes data]
+* Closing connection 0
+
+✅ HTTP tools/list: tools key found in response.
+
+>>> Stopping HTTP container...
+brightdata-mcp-server-mcp-debug-http
+
+========== End of Debug: Mon, Mar 30, 2026 11:01:47 AM ==========

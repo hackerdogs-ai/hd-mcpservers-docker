@@ -1,0 +1,404 @@
+========== VERBOSE DEBUG: aws-well-architected-security-mcp ==========
+Timestamp: Sun, Mar 29, 2026  8:40:58 PM
+
+--- [CHECK 1] Building Docker image ---
+>>> docker build -t aws-well-architected-security-mcp -t hackerdogs/aws-well-architected-security-mcp:latest aws-well-architected-security-mcp
+
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 DONE 0.0s
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 839B 0.0s done
+#1 DONE 0.1s
+
+#2 [auth] library/node:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 ...
+
+#4 [internal] load metadata for docker.io/library/python:3.11-slim
+#4 DONE 1.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 1.5s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+#6 resolve docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634 0.0s done
+#6 DONE 0.0s
+
+#7 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [stage-1 3/9] WORKDIR /app
+#8 CACHED
+
+#9 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3
+#9 resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3 0.0s done
+#9 DONE 0.0s
+
+#10 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#10 CACHED
+
+#11 [internal] load build context
+#11 transferring context: 10.99kB 0.0s done
+#11 DONE 0.1s
+
+#12 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.well-architected-security-mcp-server
+#12 1.626 Collecting awslabs.well-architected-security-mcp-server
+#12 1.902   Downloading awslabs_well_architected_security_mcp_server-0.1.7-py3-none-any.whl.metadata (13 kB)
+#12 2.577 Collecting boto3>=1.28.0 (from awslabs.well-architected-security-mcp-server)
+#12 2.641   Downloading boto3-1.42.78-py3-none-any.whl.metadata (6.7 kB)
+#12 2.789 Collecting fastapi>=0.100.0 (from awslabs.well-architected-security-mcp-server)
+#12 2.852   Downloading fastapi-0.135.2-py3-none-any.whl.metadata (28 kB)
+#12 2.932 Collecting loguru>=0.7.0 (from awslabs.well-architected-security-mcp-server)
+#12 2.995   Downloading loguru-0.7.3-py3-none-any.whl.metadata (22 kB)
+#12 3.067 Collecting mcp>=1.23.0 (from mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 3.128   Downloading mcp-1.26.0-py3-none-any.whl.metadata (89 kB)
+#12 3.198      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 89.5/89.5 kB 1.3 MB/s eta 0:00:00
+#12 3.407 Collecting pydantic>=2.0.0 (from awslabs.well-architected-security-mcp-server)
+#12 3.483   Downloading pydantic-2.12.5-py3-none-any.whl.metadata (90 kB)
+#12 3.497      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 90.6/90.6 kB 7.4 MB/s eta 0:00:00
+#12 3.839 Collecting pyright>=1.1.0 (from awslabs.well-architected-security-mcp-server)
+#12 3.905   Downloading pyright-1.1.408-py3-none-any.whl.metadata (6.9 kB)
+#12 3.972 Collecting pytest-asyncio>=0.26.0 (from awslabs.well-architected-security-mcp-server)
+#12 4.039   Downloading pytest_asyncio-1.3.0-py3-none-any.whl.metadata (4.1 kB)
+#12 4.112 Collecting pytest-cov>=4.1.0 (from awslabs.well-architected-security-mcp-server)
+#12 4.175   Downloading pytest_cov-7.1.0-py3-none-any.whl.metadata (32 kB)
+#12 4.251 Collecting pytest-mock>=3.12.0 (from awslabs.well-architected-security-mcp-server)
+#12 4.312   Downloading pytest_mock-3.15.1-py3-none-any.whl.metadata (3.9 kB)
+#12 4.416 Collecting pytest>=7.0.0 (from awslabs.well-architected-security-mcp-server)
+#12 4.478   Downloading pytest-9.0.2-py3-none-any.whl.metadata (7.6 kB)
+#12 5.023 Collecting ruff>=0.0.291 (from awslabs.well-architected-security-mcp-server)
+#12 5.086   Downloading ruff-0.15.8-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (26 kB)
+#12 5.797 Collecting botocore<1.43.0,>=1.42.78 (from boto3>=1.28.0->awslabs.well-architected-security-mcp-server)
+#12 5.861   Downloading botocore-1.42.78-py3-none-any.whl.metadata (5.9 kB)
+#12 5.912 Collecting jmespath<2.0.0,>=0.7.1 (from boto3>=1.28.0->awslabs.well-architected-security-mcp-server)
+#12 5.972   Downloading jmespath-1.1.0-py3-none-any.whl.metadata (7.6 kB)
+#12 6.038 Collecting s3transfer<0.17.0,>=0.16.0 (from boto3>=1.28.0->awslabs.well-architected-security-mcp-server)
+#12 6.098   Downloading s3transfer-0.16.0-py3-none-any.whl.metadata (1.7 kB)
+#12 6.204 Collecting starlette>=0.46.0 (from fastapi>=0.100.0->awslabs.well-architected-security-mcp-server)
+#12 6.265   Downloading starlette-1.0.0-py3-none-any.whl.metadata (6.3 kB)
+#12 6.339 Collecting typing-extensions>=4.8.0 (from fastapi>=0.100.0->awslabs.well-architected-security-mcp-server)
+#12 6.401   Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+#12 6.449 Collecting typing-inspection>=0.4.2 (from fastapi>=0.100.0->awslabs.well-architected-security-mcp-server)
+#12 6.511   Downloading typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+#12 6.580 Collecting annotated-doc>=0.0.2 (from fastapi>=0.100.0->awslabs.well-architected-security-mcp-server)
+#12 6.643   Downloading annotated_doc-0.0.4-py3-none-any.whl.metadata (6.6 kB)
+#12 6.748 Collecting anyio>=4.5 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 6.809   Downloading anyio-4.13.0-py3-none-any.whl.metadata (4.5 kB)
+#12 6.862 Collecting httpx-sse>=0.4 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 6.924   Downloading httpx_sse-0.4.3-py3-none-any.whl.metadata (9.7 kB)
+#12 6.993 Collecting httpx>=0.27.1 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 7.057   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#12 7.132 Collecting jsonschema>=4.20.0 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 7.204   Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+#12 7.265 Collecting pydantic-settings>=2.5.2 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 7.325   Downloading pydantic_settings-2.13.1-py3-none-any.whl.metadata (3.4 kB)
+#12 7.402 Collecting pyjwt>=2.10.1 (from pyjwt[crypto]>=2.10.1->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 7.465   Downloading pyjwt-2.12.1-py3-none-any.whl.metadata (4.1 kB)
+#12 7.532 Collecting python-multipart>=0.0.9 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 7.598   Downloading python_multipart-0.0.22-py3-none-any.whl.metadata (1.8 kB)
+#12 7.662 Collecting sse-starlette>=1.6.1 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 7.724   Downloading sse_starlette-3.3.4-py3-none-any.whl.metadata (14 kB)
+#12 7.812 Collecting uvicorn>=0.31.1 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 7.875   Downloading uvicorn-0.42.0-py3-none-any.whl.metadata (6.7 kB)
+#12 7.944 Collecting python-dotenv>=1.0.0 (from mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 8.014   Downloading python_dotenv-1.2.2-py3-none-any.whl.metadata (27 kB)
+#12 8.084 Collecting typer>=0.16.0 (from mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 8.147   Downloading typer-0.24.1-py3-none-any.whl.metadata (16 kB)
+#12 8.216 Collecting annotated-types>=0.6.0 (from pydantic>=2.0.0->awslabs.well-architected-security-mcp-server)
+#12 8.278   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+#12 9.402 Collecting pydantic-core==2.41.5 (from pydantic>=2.0.0->awslabs.well-architected-security-mcp-server)
+#12 9.464   Downloading pydantic_core-2.41.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (7.3 kB)
+#12 9.530 Collecting nodeenv>=1.6.0 (from pyright>=1.1.0->awslabs.well-architected-security-mcp-server)
+#12 9.599   Downloading nodeenv-1.10.0-py2.py3-none-any.whl.metadata (24 kB)
+#12 9.665 Collecting iniconfig>=1.0.1 (from pytest>=7.0.0->awslabs.well-architected-security-mcp-server)
+#12 9.727   Downloading iniconfig-2.3.0-py3-none-any.whl.metadata (2.5 kB)
+#12 9.803 Collecting packaging>=22 (from pytest>=7.0.0->awslabs.well-architected-security-mcp-server)
+#12 9.865   Downloading packaging-26.0-py3-none-any.whl.metadata (3.3 kB)
+#12 9.922 Collecting pluggy<2,>=1.5 (from pytest>=7.0.0->awslabs.well-architected-security-mcp-server)
+#12 9.984   Downloading pluggy-1.6.0-py3-none-any.whl.metadata (4.8 kB)
+#12 10.06 Collecting pygments>=2.7.2 (from pytest>=7.0.0->awslabs.well-architected-security-mcp-server)
+#12 10.12   Downloading pygments-2.20.0-py3-none-any.whl.metadata (2.5 kB)
+#12 10.68 Collecting coverage>=7.10.6 (from coverage[toml]>=7.10.6->pytest-cov>=4.1.0->awslabs.well-architected-security-mcp-server)
+#12 10.75   Downloading coverage-7.13.5-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (8.5 kB)
+#12 10.83 Collecting idna>=2.8 (from anyio>=4.5->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 10.89   Downloading idna-3.11-py3-none-any.whl.metadata (8.4 kB)
+#12 10.97 Collecting python-dateutil<3.0.0,>=2.1 (from botocore<1.43.0,>=1.42.78->boto3>=1.28.0->awslabs.well-architected-security-mcp-server)
+#12 11.04   Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+#12 11.14 Collecting urllib3!=2.2.0,<3,>=1.25.4 (from botocore<1.43.0,>=1.42.78->boto3>=1.28.0->awslabs.well-architected-security-mcp-server)
+#12 11.20   Downloading urllib3-2.6.3-py3-none-any.whl.metadata (6.9 kB)
+#12 11.29 Collecting certifi (from httpx>=0.27.1->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 11.35   Downloading certifi-2026.2.25-py3-none-any.whl.metadata (2.5 kB)
+#12 11.42 Collecting httpcore==1.* (from httpx>=0.27.1->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 11.48   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#12 11.55 Collecting h11>=0.16 (from httpcore==1.*->httpx>=0.27.1->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 11.61   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#12 11.70 Collecting attrs>=22.2.0 (from jsonschema>=4.20.0->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 11.77   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+#12 11.82 Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.20.0->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 11.89   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+#12 11.96 Collecting referencing>=0.28.4 (from jsonschema>=4.20.0->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 12.02   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+#12 12.52 Collecting rpds-py>=0.25.0 (from jsonschema>=4.20.0->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 12.58   Downloading rpds_py-0.30.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)
+#12 12.98 Collecting cryptography>=3.4.0 (from pyjwt[crypto]>=2.10.1->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 13.04   Downloading cryptography-46.0.6-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (5.7 kB)
+#12 13.36 Collecting click>=8.2.1 (from typer>=0.16.0->mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 13.42   Downloading click-8.3.1-py3-none-any.whl.metadata (2.6 kB)
+#12 13.48 Collecting shellingham>=1.3.0 (from typer>=0.16.0->mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 13.54   Downloading shellingham-1.5.4-py2.py3-none-any.whl.metadata (3.5 kB)
+#12 13.67 Collecting rich>=12.3.0 (from typer>=0.16.0->mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 13.74   Downloading rich-14.3.3-py3-none-any.whl.metadata (18 kB)
+#12 13.97 Collecting cffi>=2.0.0 (from cryptography>=3.4.0->pyjwt[crypto]>=2.10.1->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 14.03   Downloading cffi-2.0.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.6 kB)
+#12 14.12 Collecting six>=1.5 (from python-dateutil<3.0.0,>=2.1->botocore<1.43.0,>=1.42.78->boto3>=1.28.0->awslabs.well-architected-security-mcp-server)
+#12 14.18   Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+#12 14.27 Collecting markdown-it-py>=2.2.0 (from rich>=12.3.0->typer>=0.16.0->mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 14.33   Downloading markdown_it_py-4.0.0-py3-none-any.whl.metadata (7.3 kB)
+#12 14.43 Collecting pycparser (from cffi>=2.0.0->cryptography>=3.4.0->pyjwt[crypto]>=2.10.1->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 14.50   Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+#12 14.57 Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich>=12.3.0->typer>=0.16.0->mcp[cli]>=1.23.0->awslabs.well-architected-security-mcp-server)
+#12 14.63   Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+#12 14.73 Downloading awslabs_well_architected_security_mcp_server-0.1.7-py3-none-any.whl (51 kB)
+#12 14.74    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 51.1/51.1 kB 3.4 MB/s eta 0:00:00
+#12 14.81 Downloading boto3-1.42.78-py3-none-any.whl (140 kB)
+#12 14.85    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 140.6/140.6 kB 3.4 MB/s eta 0:00:00
+#12 14.91 Downloading fastapi-0.135.2-py3-none-any.whl (117 kB)
+#12 14.94    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 117.4/117.4 kB 3.9 MB/s eta 0:00:00
+#12 15.00 Downloading loguru-0.7.3-py3-none-any.whl (61 kB)
+#12 15.02    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 61.6/61.6 kB 3.2 MB/s eta 0:00:00
+#12 15.10 Downloading mcp-1.26.0-py3-none-any.whl (233 kB)
+#12 15.17    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 233.6/233.6 kB 3.1 MB/s eta 0:00:00
+#12 15.23 Downloading pydantic-2.12.5-py3-none-any.whl (463 kB)
+#12 15.38    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 463.6/463.6 kB 3.2 MB/s eta 0:00:00
+#12 15.45 Downloading pydantic_core-2.41.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.1 MB)
+#12 15.97    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 4.0 MB/s eta 0:00:00
+#12 16.03 Downloading pyright-1.1.408-py3-none-any.whl (6.4 MB)
+#12 17.02    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 6.4/6.4 MB 6.5 MB/s eta 0:00:00
+#12 17.08 Downloading pytest-9.0.2-py3-none-any.whl (374 kB)
+#12 17.12    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 374.8/374.8 kB 9.0 MB/s eta 0:00:00
+#12 17.18 Downloading pytest_asyncio-1.3.0-py3-none-any.whl (15 kB)
+#12 17.25 Downloading pytest_cov-7.1.0-py3-none-any.whl (22 kB)
+#12 17.31 Downloading pytest_mock-3.15.1-py3-none-any.whl (10 kB)
+#12 17.38 Downloading ruff-0.15.8-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (11.3 MB)
+#12 18.36    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 11.3/11.3 MB 11.6 MB/s eta 0:00:00
+#12 18.42 Downloading annotated_doc-0.0.4-py3-none-any.whl (5.3 kB)
+#12 18.48 Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+#12 18.56 Downloading anyio-4.13.0-py3-none-any.whl (114 kB)
+#12 18.57    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 114.4/114.4 kB 16.3 MB/s eta 0:00:00
+#12 18.63 Downloading botocore-1.42.78-py3-none-any.whl (14.7 MB)
+#12 19.75    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 14.7/14.7 MB 12.5 MB/s eta 0:00:00
+#12 19.81 Downloading coverage-7.13.5-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (252 kB)
+#12 19.85    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 252.2/252.2 kB 7.6 MB/s eta 0:00:00
+#12 19.91 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#12 19.91    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.5/73.5 kB 15.7 MB/s eta 0:00:00
+#12 19.98 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#12 19.99    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.8/78.8 kB 20.2 MB/s eta 0:00:00
+#12 20.05 Downloading httpx_sse-0.4.3-py3-none-any.whl (9.0 kB)
+#12 20.11 Downloading iniconfig-2.3.0-py3-none-any.whl (7.5 kB)
+#12 20.17 Downloading jmespath-1.1.0-py3-none-any.whl (20 kB)
+#12 20.23 Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+#12 20.24    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 90.6/90.6 kB 19.4 MB/s eta 0:00:00
+#12 20.30 Downloading nodeenv-1.10.0-py2.py3-none-any.whl (23 kB)
+#12 20.36 Downloading packaging-26.0-py3-none-any.whl (74 kB)
+#12 20.37    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 74.4/74.4 kB 30.7 MB/s eta 0:00:00
+#12 20.43 Downloading pluggy-1.6.0-py3-none-any.whl (20 kB)
+#12 20.50 Downloading pydantic_settings-2.13.1-py3-none-any.whl (58 kB)
+#12 20.51    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 58.9/58.9 kB 35.9 MB/s eta 0:00:00
+#12 20.57 Downloading pygments-2.20.0-py3-none-any.whl (1.2 MB)
+#12 20.73    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 7.4 MB/s eta 0:00:00
+#12 20.80 Downloading pyjwt-2.12.1-py3-none-any.whl (29 kB)
+#12 20.86 Downloading python_dotenv-1.2.2-py3-none-any.whl (22 kB)
+#12 20.92 Downloading python_multipart-0.0.22-py3-none-any.whl (24 kB)
+#12 20.99 Downloading s3transfer-0.16.0-py3-none-any.whl (86 kB)
+#12 21.00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 86.8/86.8 kB 14.3 MB/s eta 0:00:00
+#12 21.06 Downloading sse_starlette-3.3.4-py3-none-any.whl (14 kB)
+#12 21.13 Downloading starlette-1.0.0-py3-none-any.whl (72 kB)
+#12 21.13    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 72.7/72.7 kB 19.0 MB/s eta 0:00:00
+#12 21.19 Downloading typer-0.24.1-py3-none-any.whl (56 kB)
+#12 21.20    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 56.1/56.1 kB 14.2 MB/s eta 0:00:00
+#12 21.26 Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+#12 21.27    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 44.6/44.6 kB 21.1 MB/s eta 0:00:00
+#12 21.33 Downloading typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+#12 21.39 Downloading uvicorn-0.42.0-py3-none-any.whl (68 kB)
+#12 21.40    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 68.8/68.8 kB 15.3 MB/s eta 0:00:00
+#12 21.47 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+#12 21.47    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 67.5/67.5 kB 11.1 MB/s eta 0:00:00
+#12 21.54 Downloading click-8.3.1-py3-none-any.whl (108 kB)
+#12 21.55    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 108.3/108.3 kB 17.6 MB/s eta 0:00:00
+#12 21.61 Downloading cryptography-46.0.6-cp311-abi3-manylinux_2_34_x86_64.whl (4.5 MB)
+#12 22.17    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.5/4.5 MB 8.0 MB/s eta 0:00:00
+#12 22.23 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#12 22.30 Downloading idna-3.11-py3-none-any.whl (71 kB)
+#12 22.30    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 71.0/71.0 kB 68.9 MB/s eta 0:00:00
+#12 22.36 Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+#12 22.42 Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+#12 22.44    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 229.9/229.9 kB 12.9 MB/s eta 0:00:00
+#12 22.51 Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+#12 22.57 Downloading rich-14.3.3-py3-none-any.whl (310 kB)
+#12 22.61    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 310.5/310.5 kB 14.9 MB/s eta 0:00:00
+#12 22.67 Downloading rpds_py-0.30.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (390 kB)
+#12 22.70    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 390.8/390.8 kB 14.7 MB/s eta 0:00:00
+#12 22.76 Downloading shellingham-1.5.4-py2.py3-none-any.whl (9.8 kB)
+#12 22.83 Downloading urllib3-2.6.3-py3-none-any.whl (131 kB)
+#12 22.84    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 131.6/131.6 kB 11.8 MB/s eta 0:00:00
+#12 22.91 Downloading certifi-2026.2.25-py3-none-any.whl (153 kB)
+#12 22.93    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 153.7/153.7 kB 13.6 MB/s eta 0:00:00
+#12 22.99 Downloading cffi-2.0.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (215 kB)
+#12 23.02    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 215.6/215.6 kB 15.3 MB/s eta 0:00:00
+#12 23.08 Downloading markdown_it_py-4.0.0-py3-none-any.whl (87 kB)
+#12 23.09    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 87.3/87.3 kB 14.7 MB/s eta 0:00:00
+#12 23.15 Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+#12 23.21 Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+#12 23.27 Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+#12 23.28    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 48.2/48.2 kB 22.3 MB/s eta 0:00:00
+#12 23.83 Installing collected packages: urllib3, typing-extensions, six, shellingham, ruff, rpds-py, python-multipart, python-dotenv, pyjwt, pygments, pycparser, pluggy, packaging, nodeenv, mdurl, loguru, jmespath, iniconfig, idna, httpx-sse, h11, coverage, click, certifi, attrs, annotated-types, annotated-doc, uvicorn, typing-inspection, referencing, python-dateutil, pytest, pyright, pydantic-core, markdown-it-py, httpcore, cffi, anyio, starlette, rich, pytest-mock, pytest-cov, pytest-asyncio, pydantic, jsonschema-specifications, httpx, cryptography, botocore, typer, sse-starlette, s3transfer, pydantic-settings, jsonschema, fastapi, mcp, boto3, awslabs.well-architected-security-mcp-server
+#12 29.37 Successfully installed annotated-doc-0.0.4 annotated-types-0.7.0 anyio-4.13.0 attrs-26.1.0 awslabs.well-architected-security-mcp-server-0.1.7 boto3-1.42.78 botocore-1.42.78 certifi-2026.2.25 cffi-2.0.0 click-8.3.1 coverage-7.13.5 cryptography-46.0.6 fastapi-0.135.2 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 httpx-sse-0.4.3 idna-3.11 iniconfig-2.3.0 jmespath-1.1.0 jsonschema-4.26.0 jsonschema-specifications-2025.9.1 loguru-0.7.3 markdown-it-py-4.0.0 mcp-1.26.0 mdurl-0.1.2 nodeenv-1.10.0 packaging-26.0 pluggy-1.6.0 pycparser-3.0 pydantic-2.12.5 pydantic-core-2.41.5 pydantic-settings-2.13.1 pygments-2.20.0 pyjwt-2.12.1 pyright-1.1.408 pytest-9.0.2 pytest-asyncio-1.3.0 pytest-cov-7.1.0 pytest-mock-3.15.1 python-dateutil-2.9.0.post0 python-dotenv-1.2.2 python-multipart-0.0.22 referencing-0.37.0 rich-14.3.3 rpds-py-0.30.0 ruff-0.15.8 s3transfer-0.16.0 shellingham-1.5.4 six-1.17.0 sse-starlette-3.3.4 starlette-1.0.0 typer-0.24.1 typing-extensions-4.15.0 typing-inspection-0.4.2 urllib3-2.6.3 uvicorn-0.42.0
+#12 29.37 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+#12 29.61 
+#12 29.61 [notice] A new release of pip is available: 24.0 -> 26.0.1
+#12 29.61 [notice] To update, run: pip install --upgrade pip
+#12 DONE 30.6s
+
+#13 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#13 DONE 0.2s
+
+#14 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#14 DONE 0.3s
+
+#15 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#15 DONE 0.1s
+
+#16 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#16 DONE 0.1s
+
+#17 [stage-1 9/9] RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
+#17 DONE 0.3s
+
+#18 exporting to image
+#18 exporting layers
+#18 exporting layers 6.4s done
+#18 exporting manifest sha256:0bacd749c457eca1f2e357d20d29daf44b40472d5a43361d35f2351379850a9f 0.0s done
+#18 exporting config sha256:2b12b991e4788a799c255d845afcc52e181e7b11577c233ccd9c29b7042e3256 0.0s done
+#18 exporting attestation manifest sha256:82d70f8fd103a08721f0816fc6f0152120db846725e7f6bec0f7b71d39df8d15 0.0s done
+#18 exporting manifest list sha256:6634c8a4f073727fab188da45af01554867c7a0d825eafb5ca0950b5b8735142
+#18 exporting manifest list sha256:6634c8a4f073727fab188da45af01554867c7a0d825eafb5ca0950b5b8735142 0.0s done
+#18 naming to docker.io/library/aws-well-architected-security-mcp:latest done
+#18 unpacking to docker.io/library/aws-well-architected-security-mcp:latest
+#18 unpacking to docker.io/library/aws-well-architected-security-mcp:latest 3.9s done
+#18 naming to docker.io/hackerdogs/aws-well-architected-security-mcp:latest done
+#18 unpacking to docker.io/hackerdogs/aws-well-architected-security-mcp:latest 0.0s done
+#18 DONE 10.5s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/019n91crfv8zump7msqs6k2qo
+
+✅ Build succeeded.
+
+--- [CHECK 2] Stdio tools/list (raw output) ---
+>>> Sending to container via stdio:
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"debug","version":"0.0.1"}}}
+{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}
+
+>>> Raw container response:
+2026-03-29 15:11:48.262 | INFO     | awslabs.well_architected_security_mcp_server.server:main:1154 - Starting AWS Security Pillar MCP Server
+2026-03-29 15:11:48.262 | INFO     | awslabs.well_architected_security_mcp_server.server:main:1162 - Running MCP server with default transport
+[03/29/26 15:11:48] INFO     Processing request of type            server.py:720
+                             ListToolsRequest                                   
+{"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"prompts":{"listChanged":false},"resources":{"subscribe":false,"listChanged":false},"tools":{"listChanged":false}},"serverInfo":{"name":"well-architected-security-mcp-server","version":"1.26.0"},"instructions":"AWS Security Pillar MCP Server for analyzing AWS environments against Well-Architected Framework security principles.\n\nThis server dynamically adapts to your AWS environment, without requiring pre-defined services or rules.\n\n## Key Capabilities\n- Security services integration (Security Hub, GuardDuty, etc.)\n- Dynamic resource discovery and security scanning\n- Well-Architected Framework security analysis\n- Detailed remediation planning with dry run analysis\n\n## Available Tools\n\n### CheckSecurityServices\nVerifies if selected AWS security services are enabled in the specified region and account.\nThis consolidated tool checks the status of multiple AWS security services in a single call,\nproviding a comprehensive overview of your security posture.\n\n### GetSecurityFindings\nRetrieves security findings from various AWS security services including GuardDuty, Security Hub,\nInspector, IAM Access Analyzer, Trusted Advisor, and Macie with filtering options by severity.\n\n### CheckStorageEncryption\nIdentifies storage resources using Resource Explorer and checks if they are properly configured\nfor data protection at rest according to AWS Well-Architected Framework Security Pillar best practices.\n\n### CheckNetworkSecurity\nIdentifies network resources using Resource Explorer and checks if they are properly configured\nfor data protection in transit according to AWS Well-Architected Framework Security Pillar best practices.\nThis tool helps ensure your network configurations follow security best practices for protecting data in transit.\n\n### GetStoredSecurityContext\nRetrieves security services data that was stored in context from a previous CheckSecurityServices call\nwithout making additional AWS API calls.\n\n### GetResourceComplianceStatus\nChecks the compliance status of specific AWS resources against AWS Config rules, providing\ndetailed compliance information and configuration history.\n\n### ExploreAwsResources\nProvides a comprehensive inventory of AWS resources within a specified region across multiple services.\nThis tool is useful for understanding what resources are deployed in your environment before conducting\na security assessment.\n\n## Usage Guidelines\n1. Start by exploring your AWS resources to understand your environment:\n   - Use ExploreAwsResources to get a comprehensive inventory of resources\n   - Review what services and resources are deployed in your target region\n\n2. Check if key security services are enabled:\n   - Use CheckSecurityServices to verify which security services are enabled\n   - Review the summary to identify which services need to be enabled\n\n3. Assess your data protection posture:\n   - Use CheckStorageEncryption to verify encryption at rest\n   - Use CheckNetworkSecurity to verify encryption in transit\n   - Review the recommendations for improving your data protection\n\n4. Analyze security findings:\n   - Use GetSecurityFindings to retrieve findings from enabled security services\n   - Focus on high-severity findings first\n\n5. Apply recommended remediation steps to improve your security posture\n\n## AWS Security Pillar\nThis server aligns with the Security Pillar of the AWS Well-Architected Framework, which focuses on:\n- Identity and Access Management\n- Detection Controls\n- Infrastructure Protection\n- Data Protection\n- Incident Response\n\nFor more information, see: https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/welcome.html\n"}}
+{"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"CheckSecurityServices","description":"Verify if selected AWS security services are enabled in the specified region and account.\n\n    This consolidated tool checks the status of multiple AWS security services in a single call,\n    providing a comprehensive overview of your security posture.\n\n    ## Response format\n    Returns a dictionary with:\n    - region: The region that was checked\n    - services_checked: List of services that were checked\n    - all_enabled: Boolean indicating if all specified services are enabled\n    - service_statuses: Dictionary with detailed status for each service\n    - summary: Summary of security recommendations\n\n    ## AWS permissions required\n    - guardduty:ListDetectors, guardduty:GetDetector (if checking GuardDuty)\n    - inspector2:GetStatus (if checking Inspector)\n    - accessanalyzer:ListAnalyzers (if checking Access Analyzer)\n    - securityhub:DescribeHub (if checking Security Hub)\n    - support:DescribeTrustedAdvisorChecks (if checking Trusted Advisor)\n    ","inputSchema":{"properties":{"region":{"default":"us-east-1","description":"AWS region to check for security services status","title":"Region","type":"string"},"services":{"default":["guardduty","inspector","accessanalyzer","securityhub","trustedadvisor","macie"],"description":"List of security services to check. Options: guardduty, inspector, accessanalyzer, securityhub, trustedadvisor, macie","items":{"type":"string"},"title":"Services","type":"array"},"account_id":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"Optional AWS account ID (defaults to caller's account)","title":"Account Id"},"aws_profile":{"anyOf":[{"type":"string"},{"type":"null"}],"default":"default","description":"Optional AWS profile to use (defaults to AWS_PROFILE environment variable or 'default')","title":"Aws Profile"},"store_in_context":{"default":true,"description":"Whether to store results in context for access by other tools","title":"Store In Context","type":"boolean"},"debug":{"default":true,"description":"Whether to include detailed debug information in the response","title":"Debug","type":"boolean"}},"title":"check_security_servicesArguments","type":"object"},"outputSchema":{"properties":{"result":{"additionalProperties":true,"title":"Result","type":"object"}},"required":["result"],"title":"check_security_servicesOutput","type":"object"}},{"name":"GetSecurityFindings","description":"Retrieve security findings from AWS security services.\n\n    This tool provides a consolidated interface to retrieve findings from various AWS security\n    services, including GuardDuty, Security Hub, Inspector, IAM Access Analyzer, and Trusted Advisor.\n\n    It first checks if the specified security service is enabled in the region (using data from\n    a previous CheckSecurityServices call) and only retrieves findings if the service is enabled.\n\n    ## Response format\n    Returns a dictionary with:\n    - service: The security service findings were retrieved from\n    - enabled: Whether the service is enabled in the specified region\n    - findings: List of findings from the service (if service is enabled)\n    - summary: Summary statistics about the findings (if service is enabled)\n    - message: Status message or error information\n\n    ## AWS permissions required\n    - Read permissions for the specified security service\n\n    ## Note\n    For optimal performance, run CheckSecurityServices with store_in_context=True\n    before using this tool. Otherwise, it will need to check if the service is enabled first.\n    ","inputSchema":{"properties":{"region":{"default":"us-east-1","description":"AWS region to check for security services status","title":"Region","type":"string"},"service":{"description":"Security service to retrieve findings from ('guardduty', 'securityhub', 'inspector', 'accessanalyzer', 'trustedadvisor', 'macie')","title":"Service","type":"string"},"max_findings":{"default":100,"description":"Maximum number of findings to retrieve","title":"Max Findings","type":"integer"},"severity_filter":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"Optional severity filter (e.g., 'HIGH', 'CRITICAL', or for Trusted Advisor: 'ERROR', 'WARNING')","title":"Severity Filter"},"aws_profile":{"anyOf":[{"type":"string"},{"type":"null"}],"default":"default","description":"Optional AWS profile to use (defaults to AWS_PROFILE environment variable or 'default')","title":"Aws Profile"},"check_enabled":{"default":true,"description":"Whether to check if service is enabled before retrieving findings","title":"Check Enabled","type":"boolean"}},"required":["service"],"title":"get_security_findingsArguments","type":"object"},"outputSchema":{"properties":{"result":{"additionalProperties":true,"title":"Result","type":"object"}},"required":["result"],"title":"get_security_findingsOutput","type":"object"}},{"name":"GetStoredSecurityContext","description":"Retrieve security services data that was stored in context from a previous CheckSecurityServices call.\n\n    This tool allows you to access security service status data stored by the CheckSecurityServices tool\n    without making additional AWS API calls. This is useful for workflows where you need to reference\n    the security services status in subsequent steps.\n\n    ## Response format\n    Returns a dictionary with:\n    - region: The region the data was stored for\n    - available: Boolean indicating if data is available for the requested region\n    - data: The stored security services data (if available and detailed=True)\n    - summary: A summary of the stored data (if available)\n    - timestamp: When the data was stored (if available)\n\n    ## Note\n    This tool requires that CheckSecurityServices was previously called with store_in_context=True\n    for the requested region.\n    ","inputSchema":{"properties":{"region":{"default":"us-east-1","description":"AWS region to check for security services status","title":"Region","type":"string"},"detailed":{"default":false,"description":"Whether to return the full details of the stored security services data","title":"Detailed","type":"boolean"}},"title":"get_stored_security_contextArguments","type":"object"},"outputSchema":{"properties":{"result":{"additionalProperties":true,"title":"Result","type":"object"}},"required":["result"],"title":"get_stored_security_contextOutput","type":"object"}},{"name":"CheckStorageEncryption","description":"Check if AWS storage resources have encryption enabled.\n\n    This tool identifies storage resources using Resource Explorer and checks if they\n    are properly configured for data protection at rest according to AWS Well-Architected\n    Framework Security Pillar best practices.\n\n    ## Response format\n    Returns a dictionary with:\n    - region: The region that was checked\n    - resources_checked: Total number of storage resources checked\n    - compliant_resources: Number of resources with proper encryption\n    - non_compliant_resources: Number of resources without proper encryption\n    - compliance_by_service: Breakdown of compliance by service type\n    - resource_details: Details about each resource checked\n    - recommendations: Recommendations for improving data protection at rest\n\n    ## AWS permissions required\n    - resource-explorer-2:ListResources\n    - Read permissions for each storage service being analyzed (s3:GetEncryptionConfiguration, etc.)\n    ","inputSchema":{"properties":{"region":{"default":"us-east-1","description":"AWS region to check for security services status","title":"Region","type":"string"},"services":{"default":["s3","ebs","rds","dynamodb","efs","elasticache"],"description":"List of storage services to check. Options: s3, ebs, rds, dynamodb, efs, elasticache","items":{"type":"string"},"title":"Services","type":"array"},"include_unencrypted_only":{"default":false,"description":"Whether to include only unencrypted resources in the results","title":"Include Unencrypted Only","type":"boolean"},"aws_profile":{"anyOf":[{"type":"string"},{"type":"null"}],"default":"default","description":"Optional AWS profile to use (defaults to AWS_PROFILE environment variable or 'default')","title":"Aws Profile"},"store_in_context":{"default":true,"description":"Whether to store results in context for access by other tools","title":"Store In Context","type":"boolean"}},"title":"check_storage_encryption_toolArguments","type":"object"},"outputSchema":{"properties":{"result":{"additionalProperties":true,"title":"Result","type":"object"}},"required":["result"],"title":"check_storage_encryption_toolOutput","type":"object"}},{"name":"ListServicesInRegion","description":"List all AWS services being used in a specific region.\n\n    This tool identifies which AWS services are actively being used in the specified region\n    by discovering resources through AWS Resource Explorer or direct API calls.\n\n    ## Response format\n    Returns a dictionary with:\n    - region: The region that was checked\n    - services: List of AWS services being used in the region\n    - service_counts: Dictionary mapping service names to resource counts\n    - total_resources: Total number of resources found across all services\n\n    ## AWS permissions required\n    - resource-explorer-2:Search (if Resource Explorer is set up)\n    - Read permissions for various AWS services\n    ","inputSchema":{"properties":{"region":{"default":"us-east-1","description":"AWS region to check for security services status","title":"Region","type":"string"},"aws_profile":{"anyOf":[{"type":"string"},{"type":"null"}],"default":"default","description":"Optional AWS profile to use (defaults to AWS_PROFILE environment variable or 'default')","title":"Aws Profile"},"store_in_context":{"default":true,"description":"Whether to store results in context for access by other tools","title":"Store In Context","type":"boolean"}},"title":"list_services_in_region_toolArguments","type":"object"},"outputSchema":{"properties":{"result":{"additionalProperties":true,"title":"Result","type":"object"}},"required":["result"],"title":"list_services_in_region_toolOutput","type":"object"}},{"name":"CheckNetworkSecurity","description":"Check if AWS network resources are configured for secure data-in-transit.\n\n    This tool identifies network resources using Resource Explorer and checks if they\n    are properly configured for data protection in transit according to AWS Well-Architected\n    Framework Security Pillar best practices.\n\n    ## Response format\n    Returns a dictionary with:\n    - region: The region that was checked\n    - resources_checked: Total number of network resources checked\n    - compliant_resources: Number of resources with proper in-transit protection\n    - non_compliant_resources: Number of resources without proper in-transit protection\n    - compliance_by_service: Breakdown of compliance by service type\n    - resource_details: Details about each resource checked\n    - recommendations: Recommendations for improving data protection in transit\n\n    ## AWS permissions required\n    - resource-explorer-2:ListResources\n    - Read permissions for each network service being analyzed (elb:DescribeLoadBalancers, etc.)\n    ","inputSchema":{"properties":{"region":{"default":"us-east-1","description":"AWS region to check for security services status","title":"Region","type":"string"},"services":{"default":["elb","vpc","apigateway","cloudfront"],"description":"List of network services to check. Options: elb, vpc, apigateway, cloudfront","items":{"type":"string"},"title":"Services","type":"array"},"include_non_compliant_only":{"default":false,"description":"Whether to include only non-compliant resources in the results","title":"Include Non Compliant Only","type":"boolean"},"aws_profile":{"anyOf":[{"type":"string"},{"type":"null"}],"default":"default","description":"Optional AWS profile to use (defaults to AWS_PROFILE environment variable or 'default')","title":"Aws Profile"},"store_in_context":{"default":true,"description":"Whether to store results in context for access by other tools","title":"Store In Context","type":"boolean"}},"title":"check_network_security_toolArguments","type":"object"},"outputSchema":{"properties":{"result":{"additionalProperties":true,"title":"Result","type":"object"}},"required":["result"],"title":"check_network_security_toolOutput","type":"object"}}]}}
+
+✅ Stdio tools/list: tools key found in response.
+
+--- [CHECK 3] HTTP streamable tools/list (raw output) ---
+>>> Starting container in HTTP mode on port 8614...
+98c6e0b2bc3b092d36e65267089695ba41d65a43a225dec4403444581da0f3cf
+>>> Waiting 5s for server to start...
+>>> Container logs so far:
+[mcp-proxy] Listening on 0.0.0.0:8626/mcp
+[mcp-proxy] Wrapping: awslabs.well-architected-security-mcp-server
+
+>>> Sending HTTP initialize request to get session ID...
+event: message
+data: {"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"prompts":{"listChanged":false},"resources":{"subscribe":false,"listChanged":false},"tools":{"listChanged":false}},"serverInfo":{"name":"well-architected-security-mcp-server","version":"1.26.0"},"instructions":"AWS Security Pillar MCP Server for analyzing AWS environments against Well-Architected Framework security principles.\n\nThis server dynamically adapts to your AWS environment, without requiring pre-defined services or rules.\n\n## Key Capabilities\n- Security services integration (Security Hub, GuardDuty, etc.)\n- Dynamic resource discovery and security scanning\n- Well-Architected Framework security analysis\n- Detailed remediation planning with dry run analysis\n\n## Available Tools\n\n### CheckSecurityServices\nVerifies if selected AWS security services are enabled in the specified region and account.\nThis consolidated tool checks the status of multiple AWS security services in a single call,\nproviding a comprehensive overview of your security posture.\n\n### GetSecurityFindings\nRetrieves security findings from various AWS security services including GuardDuty, Security Hub,\nInspector, IAM Access Analyzer, Trusted Advisor, and Macie with filtering options by severity.\n\n### CheckStorageEncryption\nIdentifies storage resources using Resource Explorer and checks if they are properly configured\nfor data protection at rest according to AWS Well-Architected Framework Security Pillar best practices.\n\n### CheckNetworkSecurity\nIdentifies network resources using Resource Explorer and checks if they are properly configured\nfor data protection in transit according to AWS Well-Architected Framework Security Pillar best practices.\nThis tool helps ensure your network configurations follow security best practices for protecting data in transit.\n\n### GetStoredSecurityContext\nRetrieves security services data that was stored in context from a previous CheckSecurityServices call\nwithout making additional AWS API calls.\n\n### GetResourceComplianceStatus\nChecks the compliance status of specific AWS resources against AWS Config rules, providing\ndetailed compliance information and configuration history.\n\n### ExploreAwsResources\nProvides a comprehensive inventory of AWS resources within a specified region across multiple services.\nThis tool is useful for understanding what resources are deployed in your environment before conducting\na security assessment.\n\n## Usage Guidelines\n1. Start by exploring your AWS resources to understand your environment:\n   - Use ExploreAwsResources to get a comprehensive inventory of resources\n   - Review what services and resources are deployed in your target region\n\n2. Check if key security services are enabled:\n   - Use CheckSecurityServices to verify which security services are enabled\n   - Review the summary to identify which services need to be enabled\n\n3. Assess your data protection posture:\n   - Use CheckStorageEncryption to verify encryption at rest\n   - Use CheckNetworkSecurity to verify encryption in transit\n   - Review the recommendations for improving your data protection\n\n4. Analyze security findings:\n   - Use GetSecurityFindings to retrieve findings from enabled security services\n   - Focus on high-severity findings first\n\n5. Apply recommended remediation steps to improve your security posture\n\n## AWS Security Pillar\nThis server aligns with the Security Pillar of the AWS Well-Architected Framework, which focuses on:\n- Identity and Access Management\n- Detection Controls\n- Infrastructure Protection\n- Data Protection\n- Incident Response\n\nFor more information, see: https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/welcome.html\n"}}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> Content-Length: 154
+> 
+} [154 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.15
+< Date: Sun, 29 Mar 2026 15:11:55 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: a9ffff9946054d8a93d019480088aef3
+< 
+{ [3815 bytes data]
+* Closing connection 0
+✅ Got session ID: a9ffff9946054d8a93d019480088aef3
+>>> Sending HTTP notifications/initialized...
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: a9ffff9946054d8a93d019480088aef3
+> Content-Length: 54
+> 
+} [54 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 202 Accepted
+< Server: BaseHTTP/0.6 Python/3.11.15
+< Date: Sun, 29 Mar 2026 15:11:55 GMT
+< 
+{ [0 bytes data]
+* Closing connection 0
+>>> Sending HTTP tools/list request:
+>>> Raw HTTP response:
+event: message
+data: {"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"CheckSecurityServices","description":"Verify if selected AWS security services are enabled in the specified region and account.\n\n    This consolidated tool checks the status of multiple AWS security services in a single call,\n    providing a comprehensive overview of your security posture.\n\n    ## Response format\n    Returns a dictionary with:\n    - region: The region that was checked\n    - services_checked: List of services that were checked\n    - all_enabled: Boolean indicating if all specified services are enabled\n    - service_statuses: Dictionary with detailed status for each service\n    - summary: Summary of security recommendations\n\n    ## AWS permissions required\n    - guardduty:ListDetectors, guardduty:GetDetector (if checking GuardDuty)\n    - inspector2:GetStatus (if checking Inspector)\n    - accessanalyzer:ListAnalyzers (if checking Access Analyzer)\n    - securityhub:DescribeHub (if checking Security Hub)\n    - support:DescribeTrustedAdvisorChecks (if checking Trusted Advisor)\n    ","inputSchema":{"properties":{"region":{"default":"us-east-1","description":"AWS region to check for security services status","title":"Region","type":"string"},"services":{"default":["guardduty","inspector","accessanalyzer","securityhub","trustedadvisor","macie"],"description":"List of security services to check. Options: guardduty, inspector, accessanalyzer, securityhub, trustedadvisor, macie","items":{"type":"string"},"title":"Services","type":"array"},"account_id":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"Optional AWS account ID (defaults to caller's account)","title":"Account Id"},"aws_profile":{"anyOf":[{"type":"string"},{"type":"null"}],"default":"default","description":"Optional AWS profile to use (defaults to AWS_PROFILE environment variable or 'default')","title":"Aws Profile"},"store_in_context":{"default":true,"description":"Whether to store results in context for access by other tools","title":"Store In Context","type":"boolean"},"debug":{"default":true,"description":"Whether to include detailed debug information in the response","title":"Debug","type":"boolean"}},"title":"check_security_servicesArguments","type":"object"},"outputSchema":{"properties":{"result":{"additionalProperties":true,"title":"Result","type":"object"}},"required":["result"],"title":"check_security_servicesOutput","type":"object"}},{"name":"GetSecurityFindings","description":"Retrieve security findings from AWS security services.\n\n    This tool provides a consolidated interface to retrieve findings from various AWS security\n    services, including GuardDuty, Security Hub, Inspector, IAM Access Analyzer, and Trusted Advisor.\n\n    It first checks if the specified security service is enabled in the region (using data from\n    a previous CheckSecurityServices call) and only retrieves findings if the service is enabled.\n\n    ## Response format\n    Returns a dictionary with:\n    - service: The security service findings were retrieved from\n    - enabled: Whether the service is enabled in the specified region\n    - findings: List of findings from the service (if service is enabled)\n    - summary: Summary statistics about the findings (if service is enabled)\n    - message: Status message or error information\n\n    ## AWS permissions required\n    - Read permissions for the specified security service\n\n    ## Note\n    For optimal performance, run CheckSecurityServices with store_in_context=True\n    before using this tool. Otherwise, it will need to check if the service is enabled first.\n    ","inputSchema":{"properties":{"region":{"default":"us-east-1","description":"AWS region to check for security services status","title":"Region","type":"string"},"service":{"description":"Security service to retrieve findings from ('guardduty', 'securityhub', 'inspector', 'accessanalyzer', 'trustedadvisor', 'macie')","title":"Service","type":"string"},"max_findings":{"default":100,"description":"Maximum number of findings to retrieve","title":"Max Findings","type":"integer"},"severity_filter":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"Optional severity filter (e.g., 'HIGH', 'CRITICAL', or for Trusted Advisor: 'ERROR', 'WARNING')","title":"Severity Filter"},"aws_profile":{"anyOf":[{"type":"string"},{"type":"null"}],"default":"default","description":"Optional AWS profile to use (defaults to AWS_PROFILE environment variable or 'default')","title":"Aws Profile"},"check_enabled":{"default":true,"description":"Whether to check if service is enabled before retrieving findings","title":"Check Enabled","type":"boolean"}},"required":["service"],"title":"get_security_findingsArguments","type":"object"},"outputSchema":{"properties":{"result":{"additionalProperties":true,"title":"Result","type":"object"}},"required":["result"],"title":"get_security_findingsOutput","type":"object"}},{"name":"GetStoredSecurityContext","description":"Retrieve security services data that was stored in context from a previous CheckSecurityServices call.\n\n    This tool allows you to access security service status data stored by the CheckSecurityServices tool\n    without making additional AWS API calls. This is useful for workflows where you need to reference\n    the security services status in subsequent steps.\n\n    ## Response format\n    Returns a dictionary with:\n    - region: The region the data was stored for\n    - available: Boolean indicating if data is available for the requested region\n    - data: The stored security services data (if available and detailed=True)\n    - summary: A summary of the stored data (if available)\n    - timestamp: When the data was stored (if available)\n\n    ## Note\n    This tool requires that CheckSecurityServices was previously called with store_in_context=True\n    for the requested region.\n    ","inputSchema":{"properties":{"region":{"default":"us-east-1","description":"AWS region to check for security services status","title":"Region","type":"string"},"detailed":{"default":false,"description":"Whether to return the full details of the stored security services data","title":"Detailed","type":"boolean"}},"title":"get_stored_security_contextArguments","type":"object"},"outputSchema":{"properties":{"result":{"additionalProperties":true,"title":"Result","type":"object"}},"required":["result"],"title":"get_stored_security_contextOutput","type":"object"}},{"name":"CheckStorageEncryption","description":"Check if AWS storage resources have encryption enabled.\n\n    This tool identifies storage resources using Resource Explorer and checks if they\n    are properly configured for data protection at rest according to AWS Well-Architected\n    Framework Security Pillar best practices.\n\n    ## Response format\n    Returns a dictionary with:\n    - region: The region that was checked\n    - resources_checked: Total number of storage resources checked\n    - compliant_resources: Number of resources with proper encryption\n    - non_compliant_resources: Number of resources without proper encryption\n    - compliance_by_service: Breakdown of compliance by service type\n    - resource_details: Details about each resource checked\n    - recommendations: Recommendations for improving data protection at rest\n\n    ## AWS permissions required\n    - resource-explorer-2:ListResources\n    - Read permissions for each storage service being analyzed (s3:GetEncryptionConfiguration, etc.)\n    ","inputSchema":{"properties":{"region":{"default":"us-east-1","description":"AWS region to check for security services status","title":"Region","type":"string"},"services":{"default":["s3","ebs","rds","dynamodb","efs","elasticache"],"description":"List of storage services to check. Options: s3, ebs, rds, dynamodb, efs, elasticache","items":{"type":"string"},"title":"Services","type":"array"},"include_unencrypted_only":{"default":false,"description":"Whether to include only unencrypted resources in the results","title":"Include Unencrypted Only","type":"boolean"},"aws_profile":{"anyOf":[{"type":"string"},{"type":"null"}],"default":"default","description":"Optional AWS profile to use (defaults to AWS_PROFILE environment variable or 'default')","title":"Aws Profile"},"store_in_context":{"default":true,"description":"Whether to store results in context for access by other tools","title":"Store In Context","type":"boolean"}},"title":"check_storage_encryption_toolArguments","type":"object"},"outputSchema":{"properties":{"result":{"additionalProperties":true,"title":"Result","type":"object"}},"required":["result"],"title":"check_storage_encryption_toolOutput","type":"object"}},{"name":"ListServicesInRegion","description":"List all AWS services being used in a specific region.\n\n    This tool identifies which AWS services are actively being used in the specified region\n    by discovering resources through AWS Resource Explorer or direct API calls.\n\n    ## Response format\n    Returns a dictionary with:\n    - region: The region that was checked\n    - services: List of AWS services being used in the region\n    - service_counts: Dictionary mapping service names to resource counts\n    - total_resources: Total number of resources found across all services\n\n    ## AWS permissions required\n    - resource-explorer-2:Search (if Resource Explorer is set up)\n    - Read permissions for various AWS services\n    ","inputSchema":{"properties":{"region":{"default":"us-east-1","description":"AWS region to check for security services status","title":"Region","type":"string"},"aws_profile":{"anyOf":[{"type":"string"},{"type":"null"}],"default":"default","description":"Optional AWS profile to use (defaults to AWS_PROFILE environment variable or 'default')","title":"Aws Profile"},"store_in_context":{"default":true,"description":"Whether to store results in context for access by other tools","title":"Store In Context","type":"boolean"}},"title":"list_services_in_region_toolArguments","type":"object"},"outputSchema":{"properties":{"result":{"additionalProperties":true,"title":"Result","type":"object"}},"required":["result"],"title":"list_services_in_region_toolOutput","type":"object"}},{"name":"CheckNetworkSecurity","description":"Check if AWS network resources are configured for secure data-in-transit.\n\n    This tool identifies network resources using Resource Explorer and checks if they\n    are properly configured for data protection in transit according to AWS Well-Architected\n    Framework Security Pillar best practices.\n\n    ## Response format\n    Returns a dictionary with:\n    - region: The region that was checked\n    - resources_checked: Total number of network resources checked\n    - compliant_resources: Number of resources with proper in-transit protection\n    - non_compliant_resources: Number of resources without proper in-transit protection\n    - compliance_by_service: Breakdown of compliance by service type\n    - resource_details: Details about each resource checked\n    - recommendations: Recommendations for improving data protection in transit\n\n    ## AWS permissions required\n    - resource-explorer-2:ListResources\n    - Read permissions for each network service being analyzed (elb:DescribeLoadBalancers, etc.)\n    ","inputSchema":{"properties":{"region":{"default":"us-east-1","description":"AWS region to check for security services status","title":"Region","type":"string"},"services":{"default":["elb","vpc","apigateway","cloudfront"],"description":"List of network services to check. Options: elb, vpc, apigateway, cloudfront","items":{"type":"string"},"title":"Services","type":"array"},"include_non_compliant_only":{"default":false,"description":"Whether to include only non-compliant resources in the results","title":"Include Non Compliant Only","type":"boolean"},"aws_profile":{"anyOf":[{"type":"string"},{"type":"null"}],"default":"default","description":"Optional AWS profile to use (defaults to AWS_PROFILE environment variable or 'default')","title":"Aws Profile"},"store_in_context":{"default":true,"description":"Whether to store results in context for access by other tools","title":"Store In Context","type":"boolean"}},"title":"check_network_security_toolArguments","type":"object"},"outputSchema":{"properties":{"result":{"additionalProperties":true,"title":"Result","type":"object"}},"required":["result"],"title":"check_network_security_toolOutput","type":"object"}}]}}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: a9ffff9946054d8a93d019480088aef3
+> Content-Length: 58
+> 
+} [58 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.15
+< Date: Sun, 29 Mar 2026 15:11:56 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: a9ffff9946054d8a93d019480088aef3
+< 
+{ [12527 bytes data]
+* Closing connection 0
+
+✅ HTTP tools/list: tools key found in response.
+
+>>> Stopping HTTP container...
+aws-well-architected-security-mcp-debug-http
+
+========== End of Debug: Sun, Mar 29, 2026  8:41:57 PM ==========
