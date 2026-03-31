@@ -1,0 +1,13 @@
+services:
+  serpapi-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hackerdogs/serpapi-mcp:latest
+    container_name: serpapi-mcp
+    ports:
+      - "8514:8514"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8514
+    restart: unless-stopped
