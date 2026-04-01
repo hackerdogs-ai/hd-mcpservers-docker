@@ -1,5 +1,7 @@
 # PRD: Hackerdogs MCP Server Farm
 
+> **Canonical architecture & product framing:** [AI-aware zero-trust gateway for MCP](./AI-aware-zero-trust-gateway-for-MCP.md). This PRD is supporting implementation detail (compose, admin API, guardrail research). If anything disagrees, the gateway spec wins. **Persistence:** the gateway spec standardizes **PostgreSQL + TimescaleDB** ([`docs/schema/mcp-farm-timescaledb.sql`](./schema/mcp-farm-timescaledb.sql)) for production; SQLite below remains a minimal-dev alternative, not the long-term target.
+
 ## 1. Overview
 
 A self-contained, stateless, isolated deployment of **155+ MCP (Model Context Protocol) security tool servers** behind a single Caddy reverse proxy, exposed to the internet via Cloudflare Tunnel at `mcp.hackerdogs.ai`, authenticated via API Key Bearer tokens stored in SQLite. The entire farm launches with a single `docker compose up` command and is ready for any MCP client or LLM to access over HTTP in seconds.
