@@ -84,7 +84,7 @@ docker rm -f "${CONTAINER_NAME}-http" > /dev/null 2>&1
 echo ">>> Starting container in HTTP mode on port $HTTP_PORT..." | tee -a "$LOG_FILE"
 docker run -d \
     --name "${CONTAINER_NAME}-http" \
-    -p "$HTTP_PORT:8630" \
+    -p "$HTTP_PORT:8800" \
     -e AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID:-dummy}" \
     -e AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY:-dummy}" \
     -e AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-us-east-1}" \

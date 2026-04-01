@@ -1,0 +1,304 @@
+========== VERBOSE DEBUG: acuvity-mcp-server-amass-mcp ==========
+Timestamp: Tue, Mar 31, 2026  3:49:33 PM
+
+--- [CHECK 1] Building Docker image ---
+>>> docker build -t acuvity-mcp-server-amass-mcp -t hackerdogs/acuvity-mcp-server-amass-mcp:latest acuvity-mcp-server-amass-mcp
+
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 927B 0.0s done
+#1 DONE 0.1s
+
+#2 [auth] library/python:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim-bookworm
+#3 DONE 1.8s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 DONE 0.0s
+
+#6 [1/8] FROM docker.io/library/python:3.11-slim-bookworm@sha256:420310dd2ff7895895f0f1f9d15cae5a95dabceb8f1d6b9a23ef33c2c1c542c3
+#6 resolve docker.io/library/python:3.11-slim-bookworm@sha256:420310dd2ff7895895f0f1f9d15cae5a95dabceb8f1d6b9a23ef33c2c1c542c3 0.1s done
+#6 DONE 0.1s
+
+#5 [internal] load build context
+#5 transferring context: 70B done
+#5 DONE 0.0s
+
+#7 [3/8] RUN apt-get update && apt-get install -y --no-install-recommends tini ca-certificates && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [5/8] COPY requirements.txt ./
+#8 CACHED
+
+#9 [7/8] COPY mcp_server.py ./
+#9 CACHED
+
+#10 [2/8] RUN groupadd -g 1000 mcpuser && useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
+#10 CACHED
+
+#11 [4/8] WORKDIR /app
+#11 CACHED
+
+#12 [6/8] RUN pip install --no-cache-dir -r requirements.txt
+#12 CACHED
+
+#13 [8/8] RUN chown -R mcpuser:mcpuser /app
+#13 CACHED
+
+#14 exporting to image
+#14 exporting layers 0.0s done
+#14 exporting manifest sha256:fd8e17b98fd4d1a08b231db6e0b017f5055d310e147bb617ebd73c963ba173c2 done
+#14 exporting config sha256:651767b5ab18ab9e446ef9d9d01a439c7b3a94293962cf50290b24797807436c
+#14 exporting config sha256:651767b5ab18ab9e446ef9d9d01a439c7b3a94293962cf50290b24797807436c done
+#14 exporting attestation manifest sha256:89f74b9ab417d97878549f4989a6304745855ec5227cdbed3352d2a16fb02439 0.1s done
+#14 exporting manifest list sha256:2d56c2cbbfd92647abb9bd014b2718fd6e552b9d0544a28148a9007a43c0778b
+#14 exporting manifest list sha256:2d56c2cbbfd92647abb9bd014b2718fd6e552b9d0544a28148a9007a43c0778b 0.0s done
+#14 naming to docker.io/library/acuvity-mcp-server-amass-mcp:latest done
+#14 unpacking to docker.io/library/acuvity-mcp-server-amass-mcp:latest 0.0s done
+#14 naming to docker.io/hackerdogs/acuvity-mcp-server-amass-mcp:latest done
+#14 unpacking to docker.io/hackerdogs/acuvity-mcp-server-amass-mcp:latest
+#14 unpacking to docker.io/hackerdogs/acuvity-mcp-server-amass-mcp:latest 0.0s done
+#14 DONE 0.5s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/bx35mhsbyl6q9xcvis3isp4gs
+
+✅ Build succeeded.
+
+--- [CHECK 2] Stdio tools/list (raw output) ---
+>>> Sending to container via stdio:
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"debug","version":"0.0.1"}}}
+{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}
+
+>>> Raw container response:
+2026-03-31 10:19:44,238 [acuvity-mcp-server-amass-mcp] INFO: Starting acuvity-mcp-server-amass-mcp (transport=stdio, port=8381)
+2026-03-31 10:19:44,556 [httpx] INFO: HTTP Request: GET https://pypi.org/pypi/fastmcp/json "HTTP/1.1 200 OK"
+
+
+╭──────────────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│                                                                              │
+│                         ▄▀▀ ▄▀█ █▀▀ ▀█▀ █▀▄▀█ █▀▀ █▀█                        │
+│                         █▀  █▀█ ▄▄█  █  █ ▀ █ █▄▄ █▀▀                        │
+│                                                                              │
+│                                                                              │
+│                                FastMCP 3.1.1                                 │
+│                            https://gofastmcp.com                             │
+│                                                                              │
+│                   🖥  Server:      Amass MCP Server, 3.1.1                    │
+│                   🚀 Deploy free: https://fastmcp.cloud                      │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭──────────────────────────────────────────────────────────────────────────────╮
+│                          🎉 Update available: 3.2.0                          │
+│                      Run: pip install --upgrade fastmcp                      │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+[03/31/26 10:19:44] INFO     Starting MCP server 'Amass MCP     transport.py:183
+                             Server' with transport 'stdio'                     
+2026-03-31 10:19:44,605 [mcp.server.lowlevel.server] INFO: Processing request of type ListToolsRequest
+{"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"prompts":{"listChanged":false},"resources":{"subscribe":false,"listChanged":false},"tools":{"listChanged":true},"extensions":{"io.modelcontextprotocol/ui":{}}},"serverInfo":{"name":"Amass MCP Server","version":"3.1.1"},"instructions":"Subdomain reconnaissance (intel, enum, viz, track) for enumeration workflows."}}
+  + Exception Group Traceback (most recent call last):
+  |   File "/app/mcp_server.py", line 38, in <module>
+  |     mcp.run(transport="stdio")
+  |   File "/usr/local/lib/python3.11/site-packages/fastmcp/server/mixins/transport.py", line 88, in run
+  |     anyio.run(
+  |   File "/usr/local/lib/python3.11/site-packages/anyio/_core/_eventloop.py", line 77, in run
+  |     return async_backend.run(func, args, {}, backend_options)
+  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/usr/local/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 2358, in run
+  |     return runner.run(wrapper())
+  |            ^^^^^^^^^^^^^^^^^^^^^
+  |   File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+  |     return self._loop.run_until_complete(task)
+  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+  |     return future.result()
+  |            ^^^^^^^^^^^^^^^
+  |   File "/usr/local/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 2341, in wrapper
+  |     return await func(*args)
+  |            ^^^^^^^^^^^^^^^^^
+  |   File "/usr/local/lib/python3.11/site-packages/fastmcp/server/mixins/transport.py", line 61, in run_async
+  |     await self.run_stdio_async(
+  |   File "/usr/local/lib/python3.11/site-packages/fastmcp/server/mixins/transport.py", line 181, in run_stdio_async
+  |     async with stdio_server() as (read_stream, write_stream):
+  |   File "/usr/local/lib/python3.11/contextlib.py", line 231, in __aexit__
+  |     await self.gen.athrow(typ, value, traceback)
+  |   File "/usr/local/lib/python3.11/site-packages/mcp/server/stdio.py", line 85, in stdio_server
+  |     async with anyio.create_task_group() as tg:
+  |   File "/usr/local/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 799, in __aexit__
+  |     raise BaseExceptionGroup(
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Exception Group Traceback (most recent call last):
+    |   File "/usr/local/lib/python3.11/site-packages/mcp/server/stdio.py", line 88, in stdio_server
+    |     yield read_stream, write_stream
+    |   File "/usr/local/lib/python3.11/site-packages/fastmcp/server/mixins/transport.py", line 187, in run_stdio_async
+    |     await self._mcp_server.run(
+    |   File "/usr/local/lib/python3.11/site-packages/fastmcp/server/low_level.py", line 233, in run
+    |     async with AsyncExitStack() as stack:
+    |   File "/usr/local/lib/python3.11/contextlib.py", line 745, in __aexit__
+    |     raise exc_details[1]
+    |   File "/usr/local/lib/python3.11/contextlib.py", line 728, in __aexit__
+    |     cb_suppress = await cb(*exc_details)
+    |                   ^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.11/site-packages/mcp/shared/session.py", line 238, in __aexit__
+    |     return await self._task_group.__aexit__(exc_type, exc_val, exc_tb)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 799, in __aexit__
+    |     raise BaseExceptionGroup(
+    | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+    +-+---------------- 1 ----------------
+      | Exception Group Traceback (most recent call last):
+      |   File "/usr/local/lib/python3.11/site-packages/fastmcp/server/low_level.py", line 245, in run
+      |     async with anyio.create_task_group() as tg:
+      |   File "/usr/local/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 799, in __aexit__
+      |     raise BaseExceptionGroup(
+      | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+      +-+---------------- 1 ----------------
+        | Traceback (most recent call last):
+        |   File "/usr/local/lib/python3.11/site-packages/mcp/server/lowlevel/server.py", line 696, in _handle_message
+        |     await self._handle_request(message, req, session, lifespan_context, raise_exceptions)
+        |   File "/usr/local/lib/python3.11/site-packages/mcp/server/lowlevel/server.py", line 781, in _handle_request
+        |     await message.respond(response)
+        |   File "/usr/local/lib/python3.11/site-packages/mcp/shared/session.py", line 134, in respond
+        |     await self._session._send_response(  # type: ignore[reportPrivateUsage]
+        |   File "/usr/local/lib/python3.11/site-packages/mcp/shared/session.py", line 349, in _send_response
+        |     await self._write_stream.send(session_message)
+        |   File "/usr/local/lib/python3.11/site-packages/anyio/streams/memory.py", line 249, in send
+        |     self.send_nowait(item)
+        |   File "/usr/local/lib/python3.11/site-packages/anyio/streams/memory.py", line 218, in send_nowait
+        |     raise ClosedResourceError
+        | anyio.ClosedResourceError
+        +------------------------------------
+
+✅ Stdio tools/list: tools key found in response.
+
+--- [CHECK 3] HTTP streamable tools/list (raw output) ---
+>>> Starting container in HTTP mode on port 8614...
+bef26a94e21e12dc8ea3c7d6e742f050f37b95c2d85b6255a9e40674abb145c3
+>>> Waiting 5s for server to start...
+>>> Container logs so far:
+2026-03-31 10:19:50,592 [acuvity-mcp-server-amass-mcp] INFO: Starting acuvity-mcp-server-amass-mcp (transport=http, port=8381)
+2026-03-31 10:19:50,840 [httpx] INFO: HTTP Request: GET https://pypi.org/pypi/fastmcp/json "HTTP/1.1 200 OK"
+
+
+╭──────────────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│                                                                              │
+│                         ▄▀▀ ▄▀█ █▀▀ ▀█▀ █▀▄▀█ █▀▀ █▀█                        │
+│                         █▀  █▀█ ▄▄█  █  █ ▀ █ █▄▄ █▀▀                        │
+│                                                                              │
+│                                                                              │
+│                                FastMCP 3.1.1                                 │
+│                            https://gofastmcp.com                             │
+│                                                                              │
+│                   🖥  Server:      Amass MCP Server, 3.1.1                    │
+│                   🚀 Deploy free: https://fastmcp.cloud                      │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭──────────────────────────────────────────────────────────────────────────────╮
+│                          🎉 Update available: 3.2.0                          │
+│                      Run: pip install --upgrade fastmcp                      │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+[03/31/26 10:19:50] INFO     Starting MCP server 'Amass MCP     transport.py:273
+                             Server' with transport                             
+                             'streamable-http' on                               
+                             http://0.0.0.0:8381/mcp                            
+INFO:     Started server process [7]
+INFO:     Waiting for application startup.
+2026-03-31 10:19:51,144 [mcp.server.streamable_http_manager] INFO: StreamableHTTP session manager started
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8381 (Press CTRL+C to quit)
+
+>>> Sending HTTP initialize request to get session ID...
+event: message
+data: {"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"prompts":{"listChanged":true},"resources":{"subscribe":false,"listChanged":true},"tools":{"listChanged":true},"extensions":{"io.modelcontextprotocol/ui":{}}},"serverInfo":{"name":"Amass MCP Server","version":"3.1.1"},"instructions":"Subdomain reconnaissance (intel, enum, viz, track) for enumeration workflows."}}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> Content-Length: 154
+> 
+} [154 bytes data]
+< HTTP/1.1 200 OK
+< date: Tue, 31 Mar 2026 10:19:54 GMT
+< server: uvicorn
+< cache-control: no-cache, no-transform
+< connection: keep-alive
+< content-type: text/event-stream
+< mcp-session-id: 46d54dec7d3c402c964ac7d409ef48e2
+< x-accel-buffering: no
+< Transfer-Encoding: chunked
+< 
+{ [451 bytes data]
+* Connection #0 to host localhost left intact
+✅ Got session ID: 46d54dec7d3c402c964ac7d409ef48e2
+>>> Sending HTTP notifications/initialized...
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 46d54dec7d3c402c964ac7d409ef48e2
+> Content-Length: 54
+> 
+} [54 bytes data]
+< HTTP/1.1 202 Accepted
+< date: Tue, 31 Mar 2026 10:19:55 GMT
+< server: uvicorn
+< content-type: application/json
+< mcp-session-id: 46d54dec7d3c402c964ac7d409ef48e2
+< content-length: 0
+< 
+* Connection #0 to host localhost left intact
+>>> Sending HTTP tools/list request:
+>>> Raw HTTP response:
+event: message
+data: {"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"acuvity_mcp_server_amass_info","inputSchema":{"additionalProperties":false,"properties":{},"type":"object"},"outputSchema":{"properties":{"result":{"type":"string"}},"required":["result"],"type":"object","x-fastmcp-wrap-result":true},"_meta":{"fastmcp":{"tags":[]}}}]}}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 46d54dec7d3c402c964ac7d409ef48e2
+> Content-Length: 58
+> 
+} [58 bytes data]
+< HTTP/1.1 200 OK
+< date: Tue, 31 Mar 2026 10:19:55 GMT
+< server: uvicorn
+< cache-control: no-cache, no-transform
+< connection: keep-alive
+< content-type: text/event-stream
+< mcp-session-id: 46d54dec7d3c402c964ac7d409ef48e2
+< x-accel-buffering: no
+< Transfer-Encoding: chunked
+< 
+{ [354 bytes data]
+* Connection #0 to host localhost left intact
+
+✅ HTTP tools/list: tools key found in response.
+
+>>> Stopping HTTP container...
+acuvity-mcp-server-amass-mcp-debug-http
+
+========== End of Debug: Tue, Mar 31, 2026  3:49:57 PM ==========

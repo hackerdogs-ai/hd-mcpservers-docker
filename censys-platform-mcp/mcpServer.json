@@ -1,7 +1,11 @@
 {
   "mcpServers": {
     "censys-platform": {
-      "url": "https://mcp.censys.io/mcp"
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "-e", "CENSYS_MCP_URL", "-e", "CENSYS_MCP_BEARER_TOKEN", "-e", "CENSYS_BEARER_TOKEN", "-e", "CENSYS_API_ID", "-e", "CENSYS_API_SECRET", "hackerdogs/censys-platform-mcp:latest"],
+      "env": {
+        "CENSYS_MCP_URL": "https://mcp.censys.io/mcp"
+      }
     }
   }
 }
