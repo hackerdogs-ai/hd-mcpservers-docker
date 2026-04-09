@@ -1,0 +1,652 @@
+name: MCP Server Security Scanning
+
+on:
+  push:
+    branches: [main, develop, "release/*"]
+    paths:
+      - "**"
+      - ".github/workflows/security-scan.yml"
+      - "scan-mcp-server.py"
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 2 * * *" # Daily at 2 AM UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+  pull-requests: write
+  actions: read
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Job 1 — Secret & Credential Scanning (Gitleaks + TruffleHog)
+# ─────────────────────────────────────────────────────────────────────────────
+jobs:
+  secret-scanning:
+    name: "Secret & Credential Scanning"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks (official action)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
+
+      - name: Install TruffleHog
+        run: pip install truffleHog3
+
+      - name: Run TruffleHog on MCP server directory
+        continue-on-error: true
+        run: |
+          trufflehog3 filesystem . \
+            --json > trufflehog-report.json 2>/dev/null || true
+          echo "TruffleHog scan complete: $(wc -l < trufflehog-report.json) findings"
+
+      - name: Upload Gitleaks SARIF to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: results.sarif
+        continue-on-error: true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: secret-scanning-results
+          path: |
+            trufflehog-report.json
+            results.sarif
+          retention-days: 30
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Job 2 — Dockerfile Linting & IaC Scanning (hadolint + checkov)
+  # ─────────────────────────────────────────────────────────────────────────────
+  dockerfile-scanning:
+    name: "Dockerfile Security (hadolint + checkov)"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install hadolint
+        run: |
+          curl -sL \
+            https://github.com/hadolint/hadolint/releases/latest/download/hadolint-Linux-x86_64 \
+            -o /usr/local/bin/hadolint
+          chmod +x /usr/local/bin/hadolint
+          hadolint --version
+
+      - name: Run hadolint on all MCP Dockerfiles
+        continue-on-error: true
+        run: |
+          DOCKERFILE_COUNT=$(find . -name 'Dockerfile' | wc -l)
+          echo "Found ${DOCKERFILE_COUNT} Dockerfiles"
+          echo "[]" > hadolint-report.json
+          find . -name 'Dockerfile' | while read -r f; do
+            hadolint --format json "$f" >> hadolint-raw.jsonl 2>/dev/null || true
+          done
+          # Wrap individual JSON lines into an array
+          python3 -c "
+          import json, sys
+          results = []
+          try:
+              with open('hadolint-raw.jsonl') as f:
+                  for line in f:
+                      line = line.strip()
+                      if line:
+                          try:
+                              results.extend(json.loads(line) if isinstance(json.loads(line), list) else [json.loads(line)])
+                          except Exception:
+                              pass
+          except FileNotFoundError:
+              pass
+          with open('hadolint-report.json', 'w') as out:
+              json.dump(results, out, indent=2)
+          print(f'hadolint: {len(results)} findings across {${DOCKERFILE_COUNT}} Dockerfiles')
+          " || true
+
+      - name: Setup Python for Checkov
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Checkov
+        run: pip install checkov
+
+      - name: Run Checkov on all MCP Dockerfiles
+        continue-on-error: true
+        run: |
+          checkov -d . \
+            --framework dockerfile \
+            --output json \
+            --compact \
+            --download-external-modules false \
+            --output-file-path checkov-dockerfile-report.json || true
+
+      - name: Run Checkov on all docker-compose files
+        continue-on-error: true
+        run: |
+          checkov -d . \
+            --framework docker_compose \
+            --output json \
+            --compact \
+            --download-external-modules false \
+            --output-file-path checkov-compose-report.json || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dockerfile-scanning-results
+          path: |
+            hadolint-report.json
+            checkov-dockerfile-report.json
+            checkov-compose-report.json
+          retention-days: 30
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Job 3 — Python SAST: all mcp_server.py files (bandit + semgrep)
+  # ─────────────────────────────────────────────────────────────────────────────
+  python-sast:
+    name: "Python SAST (bandit + semgrep)"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install scanning tools
+        run: pip install bandit semgrep
+
+      - name: Run Bandit on all MCP Python files
+        continue-on-error: true
+        run: |
+          PYTHON_COUNT=$(find . -name 'mcp_server.py' | wc -l)
+          echo "Scanning ${PYTHON_COUNT} mcp_server.py files with Bandit"
+          bandit -r . \
+            --severity-level medium \
+            --confidence-level medium \
+            --skip B101,B603 \
+            -f json \
+            -o bandit-report.json || true
+
+      - name: Run Semgrep on MCP Python + Dockerfile
+        continue-on-error: true
+        run: |
+          semgrep scan \
+            --config p/security-audit \
+            --config p/python \
+            --config p/docker \
+            --json \
+            --output semgrep-report.json \
+            . || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: python-sast-results
+          path: |
+            bandit-report.json
+            semgrep-report.json
+          retention-days: 30
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Job 4 — Dependency Scanning: every requirements.txt + Trivy FS
+  # ─────────────────────────────────────────────────────────────────────────────
+  dependency-scanning:
+    name: "Dependency Scanning (pip-audit + Trivy FS)"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install pip-audit
+        run: pip install pip-audit
+
+      - name: Scan every MCP server requirements.txt
+        continue-on-error: true
+        run: |
+          mkdir -p dep-reports
+          REQ_COUNT=$(find . -name 'requirements.txt' | wc -l)
+          echo "Found ${REQ_COUNT} requirements.txt files"
+          find . -name 'requirements.txt' | while read -r req; do
+            server_name=$(basename "$(dirname "$req")")
+            echo "  Auditing: ${server_name}"
+            pip-audit -r "$req" --desc --format json \
+              > "dep-reports/${server_name}-pip-audit.json" 2>/dev/null || true
+          done
+          echo "Dependency scan complete"
+
+      - name: Install Trivy
+        run: |
+          curl -sfL \
+            https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh \
+            | sh -s -- -b /usr/local/bin
+          trivy --version
+
+      - name: Run Trivy filesystem scan on MCP repo
+        continue-on-error: true
+        run: |
+          trivy fs . \
+            --severity HIGH,CRITICAL \
+            --format json \
+            --output trivy-fs-report.json || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dependency-scanning-results
+          path: |
+            dep-reports/
+            trivy-fs-report.json
+          retention-days: 30
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Job 5 — MCP Config Validation (mcpServer.json security audit)
+  # ─────────────────────────────────────────────────────────────────────────────
+  mcp-config-validation:
+    name: "MCP Config & Compose Security Validation"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate all mcpServer.json files
+        run: |
+          python3 << 'EOF'
+          import json
+          import re
+          import sys
+          from pathlib import Path
+
+          issues = []
+          validated = 0
+
+          for config_file in sorted(Path(".").rglob("mcpServer.json")):
+              validated += 1
+              try:
+                  with open(config_file, encoding="utf-8", errors="replace") as f:
+                      config = json.load(f)
+              except json.JSONDecodeError as exc:
+                  issues.append({"file": str(config_file), "severity": "ERROR", "message": f"Invalid JSON: {exc}"})
+                  continue
+
+              servers = config.get("mcpServers", {})
+              for name, srv in servers.items():
+                  args = srv.get("args", [])
+                  env = srv.get("env", {})
+
+                  # Dangerous container flags
+                  if "--privileged" in args:
+                      issues.append({"file": str(config_file), "server": name, "severity": "HIGH",
+                                     "message": "--privileged flag detected in docker args"})
+                  if "--cap-add=ALL" in args or "--cap-add" in args:
+                      issues.append({"file": str(config_file), "server": name, "severity": "MEDIUM",
+                                     "message": "--cap-add detected; verify it is not ALL"})
+
+                  # Hardcoded secrets in env (value is non-empty and not a ${VAR} reference)
+                  secret_keywords = ("KEY", "TOKEN", "SECRET", "PASSWORD", "PASS", "PWD", "AUTH")
+                  for k, v in env.items():
+                      if (v and not str(v).startswith("${") and
+                              any(kw in k.upper() for kw in secret_keywords)):
+                          issues.append({"file": str(config_file), "server": name, "severity": "HIGH",
+                                         "message": f"Possible hardcoded secret in env var '{k}'"})
+
+          report = {"validated_configs": validated, "issue_count": len(issues), "issues": issues}
+          with open("mcp-config-validation-report.json", "w", encoding="utf-8") as f:
+              json.dump(report, f, indent=2)
+
+          print(f"Validated {validated} mcpServer.json files — {len(issues)} issues found")
+          for issue in issues:
+              print(f"  [{issue.get('severity','?')}] {issue['file']}: {issue.get('message','')}")
+          EOF
+
+      - name: Audit docker-compose files for insecure settings
+        run: |
+          python3 << 'EOF'
+          import json
+          import re
+          from pathlib import Path
+
+          issues = []
+          compose_files = sorted(Path(".").rglob("docker-compose*.yml"))
+
+          for compose_file in compose_files:
+              content = compose_file.read_text(encoding="utf-8", errors="replace")
+
+              if "privileged: true" in content:
+                  issues.append({"file": str(compose_file), "severity": "HIGH",
+                                  "message": "privileged: true detected"})
+              if re.search(r"cap_add\s*:\s*\n\s*-\s*ALL", content):
+                  issues.append({"file": str(compose_file), "severity": "HIGH",
+                                  "message": "cap_add: ALL detected"})
+              if "network_mode: host" in content:
+                  issues.append({"file": str(compose_file), "severity": "MEDIUM",
+                                  "message": "network_mode: host detected"})
+
+          report = {"compose_files_scanned": len(compose_files),
+                    "issue_count": len(issues), "issues": issues}
+          with open("compose-security-report.json", "w", encoding="utf-8") as f:
+              json.dump(report, f, indent=2)
+
+          print(json.dumps(report, indent=2))
+          EOF
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mcp-config-validation-results
+          path: |
+            mcp-config-validation-report.json
+            compose-security-report.json
+          retention-days: 30
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Job 6 — Container Image Scanning: ALL *-mcp servers (Trivy + Syft)
+  # ─────────────────────────────────────────────────────────────────────────────
+  container-image-scanning:
+    name: "Container Image Scanning (All MCP Servers)"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Trivy
+        run: |
+          curl -sfL \
+            https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh \
+            | sh -s -- -b /usr/local/bin
+          trivy --version
+
+      - name: Install Syft
+        run: |
+          curl -sSfL \
+            https://raw.githubusercontent.com/anchore/syft/main/install.sh \
+            | sh -s -- -b /usr/local/bin
+          syft --version
+
+      - name: Build, scan and generate SBOM for all MCP servers
+        continue-on-error: true
+        run: |
+          mkdir -p container-scan-reports
+          TOTAL=0
+          BUILT=0
+          FAILED=0
+
+          for server_dir in $(find . -maxdepth 1 -type d -name '*-mcp' | sort); do
+            server=$(basename "$server_dir")
+            TOTAL=$((TOTAL + 1))
+
+            if [ ! -f "$server_dir/Dockerfile" ]; then
+              echo "  [SKIP] $server — no Dockerfile"
+              continue
+            fi
+
+            echo "──────────────────────────────────────────"
+            echo "  [BUILD] $server"
+
+            # Build image
+            if docker build \
+                -t "hackerdogs/${server}:scan-test" \
+                "$server_dir/" \
+                --quiet 2>/dev/null; then
+              BUILT=$((BUILT + 1))
+              echo "  [OK] Built hackerdogs/${server}:scan-test"
+
+              # Trivy image scan
+              trivy image \
+                --severity HIGH,CRITICAL \
+                --format json \
+                --output "container-scan-reports/${server}-trivy.json" \
+                "hackerdogs/${server}:scan-test" 2>/dev/null || true
+
+              # Syft SBOM
+              syft "hackerdogs/${server}:scan-test" \
+                -o spdx-json="container-scan-reports/${server}-sbom.json" \
+                2>/dev/null || true
+
+              echo "  [OK] Scanned $server"
+
+              # Remove image to free disk space
+              docker rmi "hackerdogs/${server}:scan-test" --force 2>/dev/null || true
+            else
+              FAILED=$((FAILED + 1))
+              echo "  [FAIL] Build failed for $server"
+            fi
+          done
+
+          echo "══════════════════════════════════════════"
+          echo "Container scan complete:"
+          echo "  Total MCP servers : $TOTAL"
+          echo "  Successfully built: $BUILT"
+          echo "  Build failures    : $FAILED"
+          echo "  Reports saved to  : container-scan-reports/"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: container-image-scan-results
+          path: container-scan-reports/
+          retention-days: 30
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Job 7 — Supply Chain (OSSF Scorecard)
+  # ─────────────────────────────────────────────────────────────────────────────
+  supply-chain:
+    name: "Supply Chain (OSSF Scorecard)"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Run OSSF Scorecard
+        uses: ossf/scorecard-action@v2.3.3
+        with:
+          results_file: scorecard-results.sarif
+          results_format: sarif
+          publish_results: false
+        env:
+          GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: supply-chain-results
+          path: scorecard-results.sarif
+          retention-days: 30
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Job 8 — Aggregate all reports and comment on PRs
+  # ─────────────────────────────────────────────────────────────────────────────
+  aggregate-reports:
+    name: "Aggregate Security Reports"
+    runs-on: ubuntu-latest
+    needs:
+      - secret-scanning
+      - dockerfile-scanning
+      - python-sast
+      - dependency-scanning
+      - mcp-config-validation
+    if: always()
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Generate aggregated JSON report
+        run: |
+          python3 << 'EOF'
+          import json
+          import os
+          import glob
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          mcp_servers = [
+              d.name for d in Path(".").iterdir()
+              if d.is_dir() and d.name.endswith("-mcp")
+          ]
+
+          aggregated = {
+              "scan_timestamp": datetime.now(timezone.utc).isoformat(),
+              "repository": os.environ.get("GITHUB_REPOSITORY", "unknown"),
+              "commit_sha": os.environ.get("GITHUB_SHA", "unknown"),
+              "branch": os.environ.get("GITHUB_REF", "unknown"),
+              "workflow_run_id": os.environ.get("GITHUB_RUN_ID", "unknown"),
+              "mcp_servers_in_repo": len(mcp_servers),
+              "scan_categories": [
+                  "secret-scanning",
+                  "dockerfile-scanning",
+                  "python-sast",
+                  "dependency-scanning",
+                  "mcp-config-validation",
+                  "container-image-scanning",
+                  "supply-chain",
+              ],
+              "scan_results": {},
+          }
+
+          for json_file in sorted(glob.glob("**/*.json", recursive=True)):
+              if "aggregated" in json_file:
+                  continue
+              try:
+                  if os.path.isfile(json_file):
+                      with open(json_file, "r", encoding="utf-8", errors="replace") as f:
+                          aggregated["scan_results"][json_file] = json.load(f)
+              except Exception:
+                  pass
+
+          with open("aggregated-security-report.json", "w", encoding="utf-8") as f:
+              json.dump(aggregated, f, indent=2, default=str)
+
+          print(f"Aggregated {len(aggregated['scan_results'])} report files")
+          print(f"MCP servers in repository: {len(mcp_servers)}")
+          EOF
+
+      - name: Generate HTML summary
+        run: |
+          MCP_COUNT=$(find . -maxdepth 1 -type d -name '*-mcp' | wc -l)
+          DOCKERFILE_COUNT=$(find . -name 'Dockerfile' | wc -l)
+          PYTHON_COUNT=$(find . -name 'mcp_server.py' | wc -l)
+          REQ_COUNT=$(find . -name 'requirements.txt' | wc -l)
+
+          cat > security-report.html << HTMLEOF
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>MCP Security Scan — ${GITHUB_REPOSITORY}</title>
+            <style>
+              body  { font-family: Arial, sans-serif; margin: 24px; background: #f3f4f6; color: #111; }
+              .hdr  { background: #1e40af; color: #fff; padding: 20px 24px; border-radius: 8px; }
+              .hdr h1 { margin: 0 0 6px; font-size: 1.6em; }
+              .hdr p  { margin: 0; opacity: .85; font-size: .9em; }
+              .cards { display: flex; flex-wrap: wrap; gap: 14px; margin: 18px 0; }
+              .card  { background: #fff; border-radius: 8px; padding: 18px 22px;
+                       box-shadow: 0 2px 6px rgba(0,0,0,.1); min-width: 140px; }
+              .card h3 { margin: 0; font-size: 2.2em; color: #1e40af; }
+              .card p  { margin: 4px 0 0; color: #555; font-size: .85em; }
+              .section { background: #fff; border-radius: 8px; padding: 18px 22px;
+                         margin: 10px 0; box-shadow: 0 2px 6px rgba(0,0,0,.1); }
+              table { width: 100%; border-collapse: collapse; }
+              th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid #e5e7eb; }
+              th { background: #eff6ff; font-size: .9em; }
+              tr:last-child td { border-bottom: none; }
+            </style>
+          </head>
+          <body>
+            <div class="hdr">
+              <h1>🔒 MCP Server Security Scan Report</h1>
+              <p>Repo: ${GITHUB_REPOSITORY} &nbsp;|&nbsp; Commit: ${GITHUB_SHA} &nbsp;|&nbsp; Run: ${GITHUB_RUN_ID}</p>
+            </div>
+            <div class="cards">
+              <div class="card"><h3>${MCP_COUNT}</h3><p>MCP Servers</p></div>
+              <div class="card"><h3>${DOCKERFILE_COUNT}</h3><p>Dockerfiles</p></div>
+              <div class="card"><h3>${PYTHON_COUNT}</h3><p>Python files</p></div>
+              <div class="card"><h3>${REQ_COUNT}</h3><p>requirements.txt</p></div>
+              <div class="card"><h3>7</h3><p>Scan categories</p></div>
+            </div>
+            <div class="section">
+              <h2>Scan Matrix</h2>
+              <table>
+                <tr><th>Category</th><th>Tools</th><th>Scope</th></tr>
+                <tr><td>Secret Scanning</td><td>Gitleaks, TruffleHog</td><td>Entire repository</td></tr>
+                <tr><td>Dockerfile Analysis</td><td>hadolint, Checkov</td><td>All ${DOCKERFILE_COUNT} MCP Dockerfiles</td></tr>
+                <tr><td>Python SAST</td><td>Bandit, Semgrep</td><td>All ${PYTHON_COUNT} mcp_server.py files</td></tr>
+                <tr><td>Dependency Scanning</td><td>pip-audit, Trivy FS</td><td>All ${REQ_COUNT} requirements.txt files</td></tr>
+                <tr><td>MCP Config Validation</td><td>Custom auditor</td><td>All mcpServer.json + docker-compose files</td></tr>
+                <tr><td>Container Image Scanning</td><td>Trivy, Syft (SBOM)</td><td>10 key security MCP images</td></tr>
+                <tr><td>Supply Chain</td><td>OSSF Scorecard</td><td>Repository (main branch)</td></tr>
+              </table>
+            </div>
+            <div class="section">
+              <p>Download the <strong>aggregated-security-reports</strong> artifact for the full JSON report.</p>
+            </div>
+          </body>
+          </html>
+          HTMLEOF
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: aggregated-security-reports
+          path: |
+            aggregated-security-report.json
+            security-report.html
+          retention-days: 30
+
+      - name: PR comment with scan summary
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { execSync } = require('child_process');
+            const mcpCount = execSync(
+              "find . -maxdepth 1 -type d -name '*-mcp' | wc -l",
+              { encoding: 'utf8' }
+            ).trim();
+            const dfCount = execSync(
+              "find . -name 'Dockerfile' | wc -l",
+              { encoding: 'utf8' }
+            ).trim();
+            const pyCount = execSync(
+              "find . -name 'mcp_server.py' | wc -l",
+              { encoding: 'utf8' }
+            ).trim();
+
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: [
+                '## 🔒 MCP Security Scan Complete',
+                '',
+                '| Metric | Count |',
+                '|--------|-------|',
+                `| MCP Servers | ${mcpCount} |`,
+                `| Dockerfiles scanned | ${dfCount} |`,
+                `| Python MCP files scanned | ${pyCount} |`,
+                '| Scan categories | 7 |',
+                '| Tools executed | 10+ |',
+                '',
+                '**Artifacts:** secret scan · Dockerfile analysis · Python SAST · dependency scan · MCP config validation · container image scan · supply chain',
+                '',
+                'Download the `aggregated-security-reports` artifact for the full JSON report.',
+              ].join('\n'),
+            });

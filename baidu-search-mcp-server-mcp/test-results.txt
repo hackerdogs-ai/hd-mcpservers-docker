@@ -1,4 +1,3 @@
-========== Testing baidu-search-mcp-server-mcp ==========
 #0 building with "desktop-linux" instance using docker driver
 
 #1 [internal] load build definition from Dockerfile
@@ -67,6 +66,268 @@
 #17 DONE 0.4s
 
 View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/qgoveqkq0pwr7cup8cpeskccn
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 776B 0.0s done
+#1 DONE 0.1s
+
+#2 [auth] library/node:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 0.5s
+
+#4 [internal] load metadata for docker.io/library/node:20-slim
+#4 DONE 1.6s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#6 DONE 0.0s
+
+#7 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+#7 resolve docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634 0.0s done
+#7 DONE 0.0s
+
+#8 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [stage-1 3/9] WORKDIR /app
+#9 CACHED
+
+#10 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#10 CACHED
+
+#11 [internal] load build context
+#11 transferring context: 10.94kB done
+#11 DONE 0.1s
+
+#12 [stage-1 4/9] RUN pip install --no-cache-dir baidu-mcp-server
+#12 1.743 Collecting baidu-mcp-server
+#12 1.933   Downloading baidu_mcp_server-0.1.8-py3-none-any.whl.metadata (5.0 kB)
+#12 2.006 Collecting beautifulsoup4>=4.13.3 (from baidu-mcp-server)
+#12 2.050   Downloading beautifulsoup4-4.14.3-py3-none-any.whl.metadata (3.8 kB)
+#12 2.203 Collecting curl-cffi>=0.7.3 (from baidu-mcp-server)
+#12 2.249   Downloading curl_cffi-0.14.0-cp39-abi3-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl.metadata (15 kB)
+#12 2.321 Collecting httpx>=0.28.1 (from baidu-mcp-server)
+#12 2.364   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#12 2.425 Collecting markdownify>=1.1.0 (from baidu-mcp-server)
+#12 2.468   Downloading markdownify-1.2.2-py3-none-any.whl.metadata (9.9 kB)
+#12 2.537 Collecting mcp>=1.3.0 (from mcp[cli]>=1.3.0->baidu-mcp-server)
+#12 2.579   Downloading mcp-1.26.0-py3-none-any.whl.metadata (89 kB)
+#12 2.635      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 89.5/89.5 kB 1.6 MB/s eta 0:00:00
+#12 2.727 Collecting playwright (from baidu-mcp-server)
+#12 2.770   Downloading playwright-1.58.0-py3-none-manylinux1_x86_64.whl.metadata (3.5 kB)
+#12 2.823 Collecting readabilipy>=0.3.0 (from baidu-mcp-server)
+#12 2.868   Downloading readabilipy-0.3.0-py3-none-any.whl.metadata (8.9 kB)
+#12 2.937 Collecting soupsieve>=1.6.1 (from beautifulsoup4>=4.13.3->baidu-mcp-server)
+#12 2.992   Downloading soupsieve-2.8.3-py3-none-any.whl.metadata (4.6 kB)
+#12 3.056 Collecting typing-extensions>=4.0.0 (from beautifulsoup4>=4.13.3->baidu-mcp-server)
+#12 3.099   Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+#12 3.315 Collecting cffi>=1.12.0 (from curl-cffi>=0.7.3->baidu-mcp-server)
+#12 3.358   Downloading cffi-2.0.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.6 kB)
+#12 3.422 Collecting certifi>=2024.2.2 (from curl-cffi>=0.7.3->baidu-mcp-server)
+#12 3.464   Downloading certifi-2026.2.25-py3-none-any.whl.metadata (2.5 kB)
+#12 3.554 Collecting anyio (from httpx>=0.28.1->baidu-mcp-server)
+#12 3.597   Downloading anyio-4.13.0-py3-none-any.whl.metadata (4.5 kB)
+#12 3.662 Collecting httpcore==1.* (from httpx>=0.28.1->baidu-mcp-server)
+#12 3.704   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#12 3.766 Collecting idna (from httpx>=0.28.1->baidu-mcp-server)
+#12 3.810   Downloading idna-3.11-py3-none-any.whl.metadata (8.4 kB)
+#12 3.867 Collecting h11>=0.16 (from httpcore==1.*->httpx>=0.28.1->baidu-mcp-server)
+#12 3.911   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#12 3.976 Collecting six<2,>=1.15 (from markdownify>=1.1.0->baidu-mcp-server)
+#12 4.019   Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+#12 4.098 Collecting httpx-sse>=0.4 (from mcp>=1.3.0->mcp[cli]>=1.3.0->baidu-mcp-server)
+#12 4.141   Downloading httpx_sse-0.4.3-py3-none-any.whl.metadata (9.7 kB)
+#12 4.219 Collecting jsonschema>=4.20.0 (from mcp>=1.3.0->mcp[cli]>=1.3.0->baidu-mcp-server)
+#12 4.263   Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+#12 4.328 Collecting pydantic-settings>=2.5.2 (from mcp>=1.3.0->mcp[cli]>=1.3.0->baidu-mcp-server)
+#12 4.372   Downloading pydantic_settings-2.13.1-py3-none-any.whl.metadata (3.4 kB)
+#12 4.560 Collecting pydantic<3.0.0,>=2.11.0 (from mcp>=1.3.0->mcp[cli]>=1.3.0->baidu-mcp-server)
+#12 4.606   Downloading pydantic-2.12.5-py3-none-any.whl.metadata (90 kB)
+#12 4.619      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 90.6/90.6 kB 8.4 MB/s eta 0:00:00
+#12 4.685 Collecting pyjwt>=2.10.1 (from pyjwt[crypto]>=2.10.1->mcp>=1.3.0->mcp[cli]>=1.3.0->baidu-mcp-server)
+#12 4.728   Downloading pyjwt-2.12.1-py3-none-any.whl.metadata (4.1 kB)
+#12 4.783 Collecting python-multipart>=0.0.9 (from mcp>=1.3.0->mcp[cli]>=1.3.0->baidu-mcp-server)
+#12 4.825   Downloading python_multipart-0.0.22-py3-none-any.whl.metadata (1.8 kB)
+#12 4.891 Collecting sse-starlette>=1.6.1 (from mcp>=1.3.0->mcp[cli]>=1.3.0->baidu-mcp-server)
+#12 4.936   Downloading sse_starlette-3.3.3-py3-none-any.whl.metadata (14 kB)
+#12 5.018 Collecting starlette>=0.27 (from mcp>=1.3.0->mcp[cli]>=1.3.0->baidu-mcp-server)
+#12 5.062   Downloading starlette-1.0.0-py3-none-any.whl.metadata (6.3 kB)
+#12 5.125 Collecting typing-inspection>=0.4.1 (from mcp>=1.3.0->mcp[cli]>=1.3.0->baidu-mcp-server)
+#12 5.169   Downloading typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+#12 5.248 Collecting uvicorn>=0.31.1 (from mcp>=1.3.0->mcp[cli]>=1.3.0->baidu-mcp-server)
+#12 5.290   Downloading uvicorn-0.42.0-py3-none-any.whl.metadata (6.7 kB)
+#12 5.375 Collecting python-dotenv>=1.0.0 (from mcp[cli]>=1.3.0->baidu-mcp-server)
+#12 5.420   Downloading python_dotenv-1.2.2-py3-none-any.whl.metadata (27 kB)
+#12 5.493 Collecting typer>=0.16.0 (from mcp[cli]>=1.3.0->baidu-mcp-server)
+#12 5.539   Downloading typer-0.24.1-py3-none-any.whl.metadata (16 kB)
+#12 5.638 Collecting html5lib (from readabilipy>=0.3.0->baidu-mcp-server)
+#12 5.679   Downloading html5lib-1.1-py2.py3-none-any.whl.metadata (16 kB)
+#12 5.988 Collecting lxml (from readabilipy>=0.3.0->baidu-mcp-server)
+#12 6.031   Downloading lxml-6.0.2-cp311-cp311-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl.metadata (3.6 kB)
+#12 6.593 Collecting regex (from readabilipy>=0.3.0->baidu-mcp-server)
+#12 6.636   Downloading regex-2026.2.28-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (40 kB)
+#12 6.653      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 40.4/40.4 kB 20.4 MB/s eta 0:00:00
+#12 6.718 Collecting pyee<14,>=13 (from playwright->baidu-mcp-server)
+#12 6.762   Downloading pyee-13.0.1-py3-none-any.whl.metadata (3.0 kB)
+#12 6.978 Collecting greenlet<4.0.0,>=3.1.1 (from playwright->baidu-mcp-server)
+#12 7.038   Downloading greenlet-3.3.2-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (3.7 kB)
+#12 7.111 Collecting pycparser (from cffi>=1.12.0->curl-cffi>=0.7.3->baidu-mcp-server)
+#12 7.155   Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+#12 7.242 Collecting attrs>=22.2.0 (from jsonschema>=4.20.0->mcp>=1.3.0->mcp[cli]>=1.3.0->baidu-mcp-server)
+#12 7.285   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+#12 7.349 Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.20.0->mcp>=1.3.0->mcp[cli]>=1.3.0->baidu-mcp-server)
+#12 7.393   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+#12 7.515 Collecting referencing>=0.28.4 (from jsonschema>=4.20.0->mcp>=1.3.0->mcp[cli]>=1.3.0->baidu-mcp-server)
+#12 7.557   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+#12 8.018 Collecting rpds-py>=0.25.0 (from jsonschema>=4.20.0->mcp>=1.3.0->mcp[cli]>=1.3.0->baidu-mcp-server)
+#12 8.065   Downloading rpds_py-0.30.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)
+#12 8.127 Collecting annotated-types>=0.6.0 (from pydantic<3.0.0,>=2.11.0->mcp>=1.3.0->mcp[cli]>=1.3.0->baidu-mcp-server)
+#12 8.169   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+#12 9.156 Collecting pydantic-core==2.41.5 (from pydantic<3.0.0,>=2.11.0->mcp>=1.3.0->mcp[cli]>=1.3.0->baidu-mcp-server)
+#12 9.200   Downloading pydantic_core-2.41.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (7.3 kB)
+#12 9.568 Collecting cryptography>=3.4.0 (from pyjwt[crypto]>=2.10.1->mcp>=1.3.0->mcp[cli]>=1.3.0->baidu-mcp-server)
+#12 9.612   Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (5.7 kB)
+#12 9.734 Collecting click>=8.2.1 (from typer>=0.16.0->mcp[cli]>=1.3.0->baidu-mcp-server)
+#12 9.775   Downloading click-8.3.1-py3-none-any.whl.metadata (2.6 kB)
+#12 9.837 Collecting shellingham>=1.3.0 (from typer>=0.16.0->mcp[cli]>=1.3.0->baidu-mcp-server)
+#12 9.880   Downloading shellingham-1.5.4-py2.py3-none-any.whl.metadata (3.5 kB)
+#12 9.986 Collecting rich>=12.3.0 (from typer>=0.16.0->mcp[cli]>=1.3.0->baidu-mcp-server)
+#12 10.03   Downloading rich-14.3.3-py3-none-any.whl.metadata (18 kB)
+#12 10.08 Collecting annotated-doc>=0.0.2 (from typer>=0.16.0->mcp[cli]>=1.3.0->baidu-mcp-server)
+#12 10.13   Downloading annotated_doc-0.0.4-py3-none-any.whl.metadata (6.6 kB)
+#12 10.22 Collecting webencodings (from html5lib->readabilipy>=0.3.0->baidu-mcp-server)
+#12 10.26   Downloading webencodings-0.5.1-py2.py3-none-any.whl.metadata (2.1 kB)
+#12 10.43 Collecting markdown-it-py>=2.2.0 (from rich>=12.3.0->typer>=0.16.0->mcp[cli]>=1.3.0->baidu-mcp-server)
+#12 10.48   Downloading markdown_it_py-4.0.0-py3-none-any.whl.metadata (7.3 kB)
+#12 10.55 Collecting pygments<3.0.0,>=2.13.0 (from rich>=12.3.0->typer>=0.16.0->mcp[cli]>=1.3.0->baidu-mcp-server)
+#12 10.59   Downloading pygments-2.19.2-py3-none-any.whl.metadata (2.5 kB)
+#12 10.69 Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich>=12.3.0->typer>=0.16.0->mcp[cli]>=1.3.0->baidu-mcp-server)
+#12 10.73   Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+#12 10.80 Downloading baidu_mcp_server-0.1.8-py3-none-any.whl (11 kB)
+#12 10.84 Downloading beautifulsoup4-4.14.3-py3-none-any.whl (107 kB)
+#12 10.86    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 107.7/107.7 kB 9.7 MB/s eta 0:00:00
+#12 10.90 Downloading curl_cffi-0.14.0-cp39-abi3-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl (8.7 MB)
+#12 12.04    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 8.7/8.7 MB 7.6 MB/s eta 0:00:00
+#12 12.09 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#12 12.10    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.5/73.5 kB 10.8 MB/s eta 0:00:00
+#12 12.14 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#12 12.15    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.8/78.8 kB 15.0 MB/s eta 0:00:00
+#12 12.20 Downloading markdownify-1.2.2-py3-none-any.whl (15 kB)
+#12 12.25 Downloading mcp-1.26.0-py3-none-any.whl (233 kB)
+#12 12.27    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 233.6/233.6 kB 10.5 MB/s eta 0:00:00
+#12 12.32 Downloading readabilipy-0.3.0-py3-none-any.whl (22 kB)
+#12 12.36 Downloading playwright-1.58.0-py3-none-manylinux1_x86_64.whl (46.2 MB)
+#12 17.80    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 46.2/46.2 MB 9.2 MB/s eta 0:00:00
+#12 17.84 Downloading anyio-4.13.0-py3-none-any.whl (114 kB)
+#12 17.85    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 114.4/114.4 kB 12.4 MB/s eta 0:00:00
+#12 17.90 Downloading certifi-2026.2.25-py3-none-any.whl (153 kB)
+#12 17.92    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 153.7/153.7 kB 9.1 MB/s eta 0:00:00
+#12 17.96 Downloading cffi-2.0.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (215 kB)
+#12 17.99    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 215.6/215.6 kB 8.6 MB/s eta 0:00:00
+#12 18.03 Downloading greenlet-3.3.2-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (594 kB)
+#12 18.09    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 594.2/594.2 kB 10.5 MB/s eta 0:00:00
+#12 18.14 Downloading httpx_sse-0.4.3-py3-none-any.whl (9.0 kB)
+#12 18.19 Downloading idna-3.11-py3-none-any.whl (71 kB)
+#12 18.19    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 71.0/71.0 kB 31.0 MB/s eta 0:00:00
+#12 18.24 Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+#12 18.25    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 90.6/90.6 kB 9.5 MB/s eta 0:00:00
+#12 18.30 Downloading pydantic-2.12.5-py3-none-any.whl (463 kB)
+#12 18.34    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 463.6/463.6 kB 9.9 MB/s eta 0:00:00
+#12 18.40 Downloading pydantic_core-2.41.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.1 MB)
+#12 18.62    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 9.3 MB/s eta 0:00:00
+#12 18.66 Downloading pydantic_settings-2.13.1-py3-none-any.whl (58 kB)
+#12 18.67    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 58.9/58.9 kB 15.7 MB/s eta 0:00:00
+#12 18.72 Downloading pyee-13.0.1-py3-none-any.whl (15 kB)
+#12 18.77 Downloading pyjwt-2.12.1-py3-none-any.whl (29 kB)
+#12 18.81 Downloading python_dotenv-1.2.2-py3-none-any.whl (22 kB)
+#12 18.86 Downloading python_multipart-0.0.22-py3-none-any.whl (24 kB)
+#12 18.90 Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+#12 18.95 Downloading soupsieve-2.8.3-py3-none-any.whl (37 kB)
+#12 18.99 Downloading sse_starlette-3.3.3-py3-none-any.whl (14 kB)
+#12 19.04 Downloading starlette-1.0.0-py3-none-any.whl (72 kB)
+#12 19.05    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 72.7/72.7 kB 7.0 MB/s eta 0:00:00
+#12 19.09 Downloading typer-0.24.1-py3-none-any.whl (56 kB)
+#12 19.10    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 56.1/56.1 kB 16.7 MB/s eta 0:00:00
+#12 19.14 Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+#12 19.15    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 44.6/44.6 kB 14.2 MB/s eta 0:00:00
+#12 19.19 Downloading typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+#12 19.24 Downloading uvicorn-0.42.0-py3-none-any.whl (68 kB)
+#12 19.24    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 68.8/68.8 kB 20.6 MB/s eta 0:00:00
+#12 19.30 Downloading html5lib-1.1-py2.py3-none-any.whl (112 kB)
+#12 19.31    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 112.2/112.2 kB 11.1 MB/s eta 0:00:00
+#12 19.36 Downloading lxml-6.0.2-cp311-cp311-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl (5.2 MB)
+#12 20.07    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.2/5.2 MB 7.3 MB/s eta 0:00:00
+#12 20.12 Downloading regex-2026.2.28-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (800 kB)
+#12 20.21    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 800.2/800.2 kB 8.4 MB/s eta 0:00:00
+#12 20.26 Downloading annotated_doc-0.0.4-py3-none-any.whl (5.3 kB)
+#12 20.31 Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+#12 20.35 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+#12 20.37    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 67.5/67.5 kB 5.2 MB/s eta 0:00:00
+#12 20.41 Downloading click-8.3.1-py3-none-any.whl (108 kB)
+#12 20.46    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 108.3/108.3 kB 16.2 MB/s eta 0:00:00
+#12 20.50 Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_x86_64.whl (4.5 MB)
+#12 21.18    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.5/4.5 MB 6.6 MB/s eta 0:00:00
+#12 21.22 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#12 21.27 Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+#12 21.31 Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+#12 21.35 Downloading rich-14.3.3-py3-none-any.whl (310 kB)
+#12 21.39    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 310.5/310.5 kB 9.8 MB/s eta 0:00:00
+#12 21.43 Downloading rpds_py-0.30.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (390 kB)
+#12 21.49    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 390.8/390.8 kB 7.3 MB/s eta 0:00:00
+#12 21.53 Downloading shellingham-1.5.4-py2.py3-none-any.whl (9.8 kB)
+#12 21.57 Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+#12 21.58    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 48.2/48.2 kB 9.1 MB/s eta 0:00:00
+#12 21.62 Downloading webencodings-0.5.1-py2.py3-none-any.whl (11 kB)
+#12 21.67 Downloading markdown_it_py-4.0.0-py3-none-any.whl (87 kB)
+#12 21.67    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 87.3/87.3 kB 17.0 MB/s eta 0:00:00
+#12 21.72 Downloading pygments-2.19.2-py3-none-any.whl (1.2 MB)
+#12 21.89    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 7.4 MB/s eta 0:00:00
+#12 21.93 Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+#12 22.27 Installing collected packages: webencodings, typing-extensions, soupsieve, six, shellingham, rpds-py, regex, python-multipart, python-dotenv, pyjwt, pygments, pycparser, mdurl, lxml, idna, httpx-sse, h11, greenlet, click, certifi, attrs, annotated-types, annotated-doc, uvicorn, typing-inspection, referencing, pyee, pydantic-core, markdown-it-py, httpcore, html5lib, cffi, beautifulsoup4, anyio, starlette, rich, readabilipy, pydantic, playwright, markdownify, jsonschema-specifications, httpx, curl-cffi, cryptography, typer, sse-starlette, pydantic-settings, jsonschema, mcp, baidu-mcp-server
+#12 26.64 Successfully installed annotated-doc-0.0.4 annotated-types-0.7.0 anyio-4.13.0 attrs-26.1.0 baidu-mcp-server-0.1.8 beautifulsoup4-4.14.3 certifi-2026.2.25 cffi-2.0.0 click-8.3.1 cryptography-46.0.5 curl-cffi-0.14.0 greenlet-3.3.2 h11-0.16.0 html5lib-1.1 httpcore-1.0.9 httpx-0.28.1 httpx-sse-0.4.3 idna-3.11 jsonschema-4.26.0 jsonschema-specifications-2025.9.1 lxml-6.0.2 markdown-it-py-4.0.0 markdownify-1.2.2 mcp-1.26.0 mdurl-0.1.2 playwright-1.58.0 pycparser-3.0 pydantic-2.12.5 pydantic-core-2.41.5 pydantic-settings-2.13.1 pyee-13.0.1 pygments-2.19.2 pyjwt-2.12.1 python-dotenv-1.2.2 python-multipart-0.0.22 readabilipy-0.3.0 referencing-0.37.0 regex-2026.2.28 rich-14.3.3 rpds-py-0.30.0 shellingham-1.5.4 six-1.17.0 soupsieve-2.8.3 sse-starlette-3.3.3 starlette-1.0.0 typer-0.24.1 typing-extensions-4.15.0 typing-inspection-0.4.2 uvicorn-0.42.0 webencodings-0.5.1
+#12 26.64 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+#12 26.96 
+#12 26.96 [notice] A new release of pip is available: 24.0 -> 26.0.1
+#12 26.96 [notice] To update, run: pip install --upgrade pip
+#12 DONE 28.0s
+
+#13 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#13 DONE 0.3s
+
+#14 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#14 DONE 0.3s
+
+#15 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#15 DONE 0.1s
+
+#16 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#16 DONE 0.0s
+
+#17 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#17 DONE 0.3s
+
+#18 exporting to image
+#18 exporting layers
+#18 exporting layers 10.5s done
+#18 exporting manifest sha256:22086ecf62672a84f67eab69d68ef73204882c99651a6e705c88237f9ab980ae 0.0s done
+#18 exporting config sha256:2edac41bfa3dd450de32ed4d4e228307caf453c5db79db24117f12e334074412 0.0s done
+#18 exporting attestation manifest sha256:6650897a5ce239bebae7e0e30e43085796949849c914c00bb10508f328b5d6b4 0.0s done
+#18 exporting manifest list sha256:fdc202d72ce172d831e348a444da963f5016c5d69124e2fda588a0e6c86543fc 0.0s done
+#18 naming to docker.io/library/baidu-search-mcp-server-mcp:latest done
+#18 unpacking to docker.io/library/baidu-search-mcp-server-mcp:latest
+#18 unpacking to docker.io/library/baidu-search-mcp-server-mcp:latest 4.0s done
+#18 naming to docker.io/hackerdogs/baidu-search-mcp-server-mcp:latest done
+#18 unpacking to docker.io/hackerdogs/baidu-search-mcp-server-mcp:latest 0.0s done
+#18 DONE 14.8s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/uwh14sg48d2572flbx4q16tz6
 ========== baidu-search-mcp-server-mcp test (compliance) ==========
 [0;34m[1] Install[0m
   [0;32mPASS: image exists[0m

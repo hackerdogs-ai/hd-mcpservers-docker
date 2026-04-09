@@ -1,14 +1,3 @@
-MCP standard 6-step test - evidence
-Generated (UTC): 2026-03-26T12:36:29Z
-Image: ai-humanizer-mcp
-HTTP port: 8601
-Container (HTTP): ai-humanizer-mcp-test
-Tool exercised: detect
-Tool arguments (JSON): {"type":"original_text","text":"Hello world","detectionTypeList":["HEMINGWAY"]}
-
-Below: raw outputs from each step (not only PASS/FAIL).
-
-=================================================================================
 [1/6] Install - docker build
 Status: PASS
 ---------------------------------------------------------------------------------
@@ -21,6 +10,7 @@ Status: PASS
 #2 [internal] load metadata for docker.io/library/node:20-slim
 #2 ...
 
+
 #3 [auth] library/node:pull token for registry-1.docker.io
 #3 DONE 0.0s
 
@@ -31,322 +21,18 @@ Status: PASS
 #4 transferring context: 2B done
 #4 DONE 0.0s
 
-#5 [1/7] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3
-#5 resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3 0.0s done
-#5 ...
-
-#6 [internal] load build context
-#6 transferring context: 10.78kB 0.0s done
-#6 DONE 0.1s
-
-#5 [1/7] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3
-#5 sha256:1cd806dc86be3a3d72f1eacf81bb9b14528605924e4f4a81356e776ff101c88b 0B / 446B 0.2s
-#5 sha256:4d153bee4c0ed5b35be1fad9bee6a1ade2c33b4fc8fadfbafcee6c3bf6346219 0B / 1.71MB 0.2s
-#5 sha256:e853745b3e30ddfb3e6582d468f164bc6e1871ce7a5217019793e5c6b18fb305 0B / 41.42MB 0.2s
-#5 sha256:ca99483f3fa42e0157592468f580530898d1636ce1009b8b561e47ee502cf244 0B / 3.31kB 0.2s
-#5 sha256:1cd806dc86be3a3d72f1eacf81bb9b14528605924e4f4a81356e776ff101c88b 446B / 446B 0.7s done
-#5 sha256:ca99483f3fa42e0157592468f580530898d1636ce1009b8b561e47ee502cf244 3.31kB / 3.31kB 1.4s done
-#5 sha256:4d153bee4c0ed5b35be1fad9bee6a1ade2c33b4fc8fadfbafcee6c3bf6346219 1.05MB / 1.71MB 1.7s
-#5 extracting sha256:ca99483f3fa42e0157592468f580530898d1636ce1009b8b561e47ee502cf244 0.0s done
-#5 sha256:4d153bee4c0ed5b35be1fad9bee6a1ade2c33b4fc8fadfbafcee6c3bf6346219 1.71MB / 1.71MB 1.7s done
-#5 sha256:e853745b3e30ddfb3e6582d468f164bc6e1871ce7a5217019793e5c6b18fb305 2.10MB / 41.42MB 1.9s
-#5 sha256:e853745b3e30ddfb3e6582d468f164bc6e1871ce7a5217019793e5c6b18fb305 4.19MB / 41.42MB 2.4s
-#5 sha256:e853745b3e30ddfb3e6582d468f164bc6e1871ce7a5217019793e5c6b18fb305 6.29MB / 41.42MB 2.5s
-#5 sha256:e853745b3e30ddfb3e6582d468f164bc6e1871ce7a5217019793e5c6b18fb305 9.44MB / 41.42MB 2.7s
-#5 sha256:e853745b3e30ddfb3e6582d468f164bc6e1871ce7a5217019793e5c6b18fb305 11.53MB / 41.42MB 3.0s
-#5 sha256:e853745b3e30ddfb3e6582d468f164bc6e1871ce7a5217019793e5c6b18fb305 14.68MB / 41.42MB 3.3s
-#5 sha256:e853745b3e30ddfb3e6582d468f164bc6e1871ce7a5217019793e5c6b18fb305 17.83MB / 41.42MB 3.6s
-#5 sha256:e853745b3e30ddfb3e6582d468f164bc6e1871ce7a5217019793e5c6b18fb305 19.92MB / 41.42MB 3.9s
-#5 sha256:e853745b3e30ddfb3e6582d468f164bc6e1871ce7a5217019793e5c6b18fb305 23.07MB / 41.42MB 4.2s
-#5 sha256:e853745b3e30ddfb3e6582d468f164bc6e1871ce7a5217019793e5c6b18fb305 25.17MB / 41.42MB 4.5s
-#5 sha256:e853745b3e30ddfb3e6582d468f164bc6e1871ce7a5217019793e5c6b18fb305 27.26MB / 41.42MB 4.8s
-#5 sha256:e853745b3e30ddfb3e6582d468f164bc6e1871ce7a5217019793e5c6b18fb305 29.36MB / 41.42MB 5.1s
-#5 sha256:e853745b3e30ddfb3e6582d468f164bc6e1871ce7a5217019793e5c6b18fb305 31.46MB / 41.42MB 5.2s
-#5 sha256:e853745b3e30ddfb3e6582d468f164bc6e1871ce7a5217019793e5c6b18fb305 34.60MB / 41.42MB 5.7s
-#5 sha256:e853745b3e30ddfb3e6582d468f164bc6e1871ce7a5217019793e5c6b18fb305 36.70MB / 41.42MB 5.8s
-#5 sha256:e853745b3e30ddfb3e6582d468f164bc6e1871ce7a5217019793e5c6b18fb305 38.80MB / 41.42MB 6.1s
-#5 sha256:e853745b3e30ddfb3e6582d468f164bc6e1871ce7a5217019793e5c6b18fb305 40.89MB / 41.42MB 6.4s
-#5 sha256:e853745b3e30ddfb3e6582d468f164bc6e1871ce7a5217019793e5c6b18fb305 41.42MB / 41.42MB 6.5s done
-#5 extracting sha256:e853745b3e30ddfb3e6582d468f164bc6e1871ce7a5217019793e5c6b18fb305
-#5 extracting sha256:e853745b3e30ddfb3e6582d468f164bc6e1871ce7a5217019793e5c6b18fb305 0.9s done
-#5 DONE 7.6s
-
-#5 [1/7] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3
-#5 extracting sha256:4d153bee4c0ed5b35be1fad9bee6a1ade2c33b4fc8fadfbafcee6c3bf6346219 0.0s done
-#5 extracting sha256:1cd806dc86be3a3d72f1eacf81bb9b14528605924e4f4a81356e776ff101c88b 0.0s done
-#5 DONE 7.6s
-
-#7 [2/7] WORKDIR /app
-#7 DONE 0.1s
-
-#8 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
-#8 0.654 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
-#8 0.875 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
-#8 0.989 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [48.0 kB]
-#8 1.097 Get:4 http://deb.debian.org/debian bookworm/main amd64 Packages [8792 kB]
-#8 2.629 Get:5 http://deb.debian.org/debian bookworm-updates/main amd64 Packages [6924 B]
-#8 2.728 Get:6 http://deb.debian.org/debian-security bookworm-security/main amd64 Packages [294 kB]
-#8 3.536 Fetched 9347 kB in 3s (2958 kB/s)
-#8 3.536 Reading package lists...
-#8 3.913 Reading package lists...
-#8 4.301 Building dependency tree...
-#8 4.372 Reading state information...
-#8 4.464 The following additional packages will be installed:
-#8 4.464   libexpat1 libgssapi-krb5-2 libk5crypto3 libkeyutils1 libkrb5-3
-#8 4.464   libkrb5support0 libncursesw6 libnsl2 libpython3-stdlib libpython3.11-minimal
-#8 4.464   libpython3.11-stdlib libreadline8 libsqlite3-0 libssl3 libtirpc-common
-#8 4.464   libtirpc3 media-types python3-minimal python3.11 python3.11-minimal
-#8 4.464   readline-common
-#8 4.465 Suggested packages:
-#8 4.465   krb5-doc krb5-user python3-doc python3-tk python3-venv python3.11-venv
-#8 4.465   python3.11-doc binutils binfmt-support readline-doc
-#8 4.465 Recommended packages:
-#8 4.465   krb5-locales libgpm2 ca-certificates
-#8 4.606 The following NEW packages will be installed:
-#8 4.606   libexpat1 libgssapi-krb5-2 libk5crypto3 libkeyutils1 libkrb5-3
-#8 4.606   libkrb5support0 libncursesw6 libnsl2 libpython3-stdlib libpython3.11-minimal
-#8 4.606   libpython3.11-stdlib libreadline8 libsqlite3-0 libssl3 libtirpc-common
-#8 4.606   libtirpc3 media-types python3 python3-minimal python3.11 python3.11-minimal
-#8 4.606   readline-common
-#8 4.757 0 upgraded, 22 newly installed, 0 to remove and 0 not upgraded.
-#8 4.757 Need to get 9407 kB of archives.
-#8 4.757 After this operation, 33.4 MB of additional disk space will be used.
-#8 4.757 Get:1 http://deb.debian.org/debian-security bookworm-security/main amd64 libssl3 amd64 3.0.18-1~deb12u2 [2030 kB]
-#8 5.490 Get:2 http://deb.debian.org/debian bookworm/main amd64 libpython3.11-minimal amd64 3.11.2-6+deb12u6 [817 kB]
-#8 5.836 Get:3 http://deb.debian.org/debian bookworm/main amd64 libexpat1 amd64 2.5.0-1+deb12u2 [99.9 kB]
-#8 5.844 Get:4 http://deb.debian.org/debian bookworm/main amd64 python3.11-minimal amd64 3.11.2-6+deb12u6 [2064 kB]
-#8 6.074 Get:5 http://deb.debian.org/debian bookworm/main amd64 python3-minimal amd64 3.11.2-1+b1 [26.3 kB]
-#8 6.079 Get:6 http://deb.debian.org/debian bookworm/main amd64 media-types all 10.0.0 [26.1 kB]
-#8 6.080 Get:7 http://deb.debian.org/debian bookworm/main amd64 libncursesw6 amd64 6.4-4 [134 kB]
-#8 6.090 Get:8 http://deb.debian.org/debian bookworm/main amd64 libkrb5support0 amd64 1.20.1-2+deb12u4 [33.2 kB]
-#8 6.092 Get:9 http://deb.debian.org/debian bookworm/main amd64 libk5crypto3 amd64 1.20.1-2+deb12u4 [79.8 kB]
-#8 6.097 Get:10 http://deb.debian.org/debian bookworm/main amd64 libkeyutils1 amd64 1.6.3-2 [8808 B]
-#8 6.098 Get:11 http://deb.debian.org/debian bookworm/main amd64 libkrb5-3 amd64 1.20.1-2+deb12u4 [334 kB]
-#8 6.172 Get:12 http://deb.debian.org/debian bookworm/main amd64 libgssapi-krb5-2 amd64 1.20.1-2+deb12u4 [135 kB]
-#8 6.203 Get:13 http://deb.debian.org/debian bookworm/main amd64 libtirpc-common all 1.3.3+ds-1 [14.0 kB]
-#8 6.228 Get:14 http://deb.debian.org/debian bookworm/main amd64 libtirpc3 amd64 1.3.3+ds-1 [85.2 kB]
-#8 6.237 Get:15 http://deb.debian.org/debian bookworm/main amd64 libnsl2 amd64 1.3.0-2 [39.5 kB]
-#8 6.334 Get:16 http://deb.debian.org/debian bookworm/main amd64 readline-common all 8.2-1.3 [69.0 kB]
-#8 6.441 Get:17 http://deb.debian.org/debian bookworm/main amd64 libreadline8 amd64 8.2-1.3 [166 kB]
-#8 6.691 Get:18 http://deb.debian.org/debian bookworm/main amd64 libsqlite3-0 amd64 3.40.1-2+deb12u2 [839 kB]
-#8 7.100 Get:19 http://deb.debian.org/debian bookworm/main amd64 libpython3.11-stdlib amd64 3.11.2-6+deb12u6 [1798 kB]
-#8 7.556 Get:20 http://deb.debian.org/debian bookworm/main amd64 python3.11 amd64 3.11.2-6+deb12u6 [573 kB]
-#8 7.818 Get:21 http://deb.debian.org/debian bookworm/main amd64 libpython3-stdlib amd64 3.11.2-1+b1 [9312 B]
-#8 7.821 Get:22 http://deb.debian.org/debian bookworm/main amd64 python3 amd64 3.11.2-1+b1 [26.3 kB]
-#8 7.970 debconf: delaying package configuration, since apt-utils is not installed
-#8 7.991 Fetched 9407 kB in 3s (2913 kB/s)
-#8 8.022 Selecting previously unselected package libssl3:amd64.
-#8 8.022 (Reading database ... 
-(Reading database ... 5%
-(Reading database ... 10%
-(Reading database ... 15%
-(Reading database ... 20%
-(Reading database ... 25%
-(Reading database ... 30%
-(Reading database ... 35%
-(Reading database ... 40%
-(Reading database ... 45%
-(Reading database ... 50%
-(Reading database ... 55%
-(Reading database ... 60%
-(Reading database ... 65%
-(Reading database ... 70%
-(Reading database ... 75%
-(Reading database ... 80%
-(Reading database ... 85%
-(Reading database ... 90%
-(Reading database ... 95%
-(Reading database ... 100%
-(Reading database ... 6096 files and directories currently installed.)
-#8 8.041 Preparing to unpack .../libssl3_3.0.18-1~deb12u2_amd64.deb ...
-#8 8.053 Unpacking libssl3:amd64 (3.0.18-1~deb12u2) ...
-#8 8.233 Selecting previously unselected package libpython3.11-minimal:amd64.
-#8 8.234 Preparing to unpack .../libpython3.11-minimal_3.11.2-6+deb12u6_amd64.deb ...
-#8 8.240 Unpacking libpython3.11-minimal:amd64 (3.11.2-6+deb12u6) ...
-#8 8.362 Selecting previously unselected package libexpat1:amd64.
-#8 8.362 Preparing to unpack .../libexpat1_2.5.0-1+deb12u2_amd64.deb ...
-#8 8.368 Unpacking libexpat1:amd64 (2.5.0-1+deb12u2) ...
-#8 8.427 Selecting previously unselected package python3.11-minimal.
-#8 8.427 Preparing to unpack .../python3.11-minimal_3.11.2-6+deb12u6_amd64.deb ...
-#8 8.453 Unpacking python3.11-minimal (3.11.2-6+deb12u6) ...
-#8 8.658 Setting up libssl3:amd64 (3.0.18-1~deb12u2) ...
-#8 8.677 Setting up libpython3.11-minimal:amd64 (3.11.2-6+deb12u6) ...
-#8 8.706 Setting up libexpat1:amd64 (2.5.0-1+deb12u2) ...
-#8 8.724 Setting up python3.11-minimal (3.11.2-6+deb12u6) ...
-#8 9.328 Selecting previously unselected package python3-minimal.
-#8 9.328 (Reading database ... 
-(Reading database ... 5%
-(Reading database ... 10%
-(Reading database ... 15%
-(Reading database ... 20%
-(Reading database ... 25%
-(Reading database ... 30%
-(Reading database ... 35%
-(Reading database ... 40%
-(Reading database ... 45%
-(Reading database ... 50%
-(Reading database ... 55%
-(Reading database ... 60%
-(Reading database ... 65%
-(Reading database ... 70%
-(Reading database ... 75%
-(Reading database ... 80%
-(Reading database ... 85%
-(Reading database ... 90%
-(Reading database ... 95%
-(Reading database ... 100%
-(Reading database ... 6424 files and directories currently installed.)
-#8 9.330 Preparing to unpack .../00-python3-minimal_3.11.2-1+b1_amd64.deb ...
-#8 9.337 Unpacking python3-minimal (3.11.2-1+b1) ...
-#8 9.377 Selecting previously unselected package media-types.
-#8 9.378 Preparing to unpack .../01-media-types_10.0.0_all.deb ...
-#8 9.383 Unpacking media-types (10.0.0) ...
-#8 9.429 Selecting previously unselected package libncursesw6:amd64.
-#8 9.429 Preparing to unpack .../02-libncursesw6_6.4-4_amd64.deb ...
-#8 9.436 Unpacking libncursesw6:amd64 (6.4-4) ...
-#8 9.504 Selecting previously unselected package libkrb5support0:amd64.
-#8 9.505 Preparing to unpack .../03-libkrb5support0_1.20.1-2+deb12u4_amd64.deb ...
-#8 9.515 Unpacking libkrb5support0:amd64 (1.20.1-2+deb12u4) ...
-#8 9.588 Selecting previously unselected package libk5crypto3:amd64.
-#8 9.589 Preparing to unpack .../04-libk5crypto3_1.20.1-2+deb12u4_amd64.deb ...
-#8 9.597 Unpacking libk5crypto3:amd64 (1.20.1-2+deb12u4) ...
-#8 9.662 Selecting previously unselected package libkeyutils1:amd64.
-#8 9.663 Preparing to unpack .../05-libkeyutils1_1.6.3-2_amd64.deb ...
-#8 9.671 Unpacking libkeyutils1:amd64 (1.6.3-2) ...
-#8 9.729 Selecting previously unselected package libkrb5-3:amd64.
-#8 9.730 Preparing to unpack .../06-libkrb5-3_1.20.1-2+deb12u4_amd64.deb ...
-#8 9.738 Unpacking libkrb5-3:amd64 (1.20.1-2+deb12u4) ...
-#8 9.820 Selecting previously unselected package libgssapi-krb5-2:amd64.
-#8 9.821 Preparing to unpack .../07-libgssapi-krb5-2_1.20.1-2+deb12u4_amd64.deb ...
-#8 9.830 Unpacking libgssapi-krb5-2:amd64 (1.20.1-2+deb12u4) ...
-#8 9.884 Selecting previously unselected package libtirpc-common.
-#8 9.885 Preparing to unpack .../08-libtirpc-common_1.3.3+ds-1_all.deb ...
-#8 9.892 Unpacking libtirpc-common (1.3.3+ds-1) ...
-#8 9.948 Selecting previously unselected package libtirpc3:amd64.
-#8 9.949 Preparing to unpack .../09-libtirpc3_1.3.3+ds-1_amd64.deb ...
-#8 9.957 Unpacking libtirpc3:amd64 (1.3.3+ds-1) ...
-#8 10.01 Selecting previously unselected package libnsl2:amd64.
-#8 10.01 Preparing to unpack .../10-libnsl2_1.3.0-2_amd64.deb ...
-#8 10.02 Unpacking libnsl2:amd64 (1.3.0-2) ...
-#8 10.08 Selecting previously unselected package readline-common.
-#8 10.08 Preparing to unpack .../11-readline-common_8.2-1.3_all.deb ...
-#8 10.09 Unpacking readline-common (8.2-1.3) ...
-#8 10.15 Selecting previously unselected package libreadline8:amd64.
-#8 10.15 Preparing to unpack .../12-libreadline8_8.2-1.3_amd64.deb ...
-#8 10.16 Unpacking libreadline8:amd64 (8.2-1.3) ...
-#8 10.21 Selecting previously unselected package libsqlite3-0:amd64.
-#8 10.21 Preparing to unpack .../13-libsqlite3-0_3.40.1-2+deb12u2_amd64.deb ...
-#8 10.22 Unpacking libsqlite3-0:amd64 (3.40.1-2+deb12u2) ...
-#8 10.30 Selecting previously unselected package libpython3.11-stdlib:amd64.
-#8 10.30 Preparing to unpack .../14-libpython3.11-stdlib_3.11.2-6+deb12u6_amd64.deb ...
-#8 10.31 Unpacking libpython3.11-stdlib:amd64 (3.11.2-6+deb12u6) ...
-#8 10.48 Selecting previously unselected package python3.11.
-#8 10.48 Preparing to unpack .../15-python3.11_3.11.2-6+deb12u6_amd64.deb ...
-#8 10.49 Unpacking python3.11 (3.11.2-6+deb12u6) ...
-#8 10.53 Selecting previously unselected package libpython3-stdlib:amd64.
-#8 10.53 Preparing to unpack .../16-libpython3-stdlib_3.11.2-1+b1_amd64.deb ...
-#8 10.54 Unpacking libpython3-stdlib:amd64 (3.11.2-1+b1) ...
-#8 10.59 Setting up python3-minimal (3.11.2-1+b1) ...
-#8 10.76 Selecting previously unselected package python3.
-#8 10.76 (Reading database ... 
-(Reading database ... 5%
-(Reading database ... 10%
-(Reading database ... 15%
-(Reading database ... 20%
-(Reading database ... 25%
-(Reading database ... 30%
-(Reading database ... 35%
-(Reading database ... 40%
-(Reading database ... 45%
-(Reading database ... 50%
-(Reading database ... 55%
-(Reading database ... 60%
-(Reading database ... 65%
-(Reading database ... 70%
-(Reading database ... 75%
-(Reading database ... 80%
-(Reading database ... 85%
-(Reading database ... 90%
-(Reading database ... 95%
-(Reading database ... 100%
-(Reading database ... 6932 files and directories currently installed.)
-#8 10.77 Preparing to unpack .../python3_3.11.2-1+b1_amd64.deb ...
-#8 10.78 Unpacking python3 (3.11.2-1+b1) ...
-#8 10.84 Setting up media-types (10.0.0) ...
-#8 10.87 Setting up libkeyutils1:amd64 (1.6.3-2) ...
-#8 10.90 Setting up libtirpc-common (1.3.3+ds-1) ...
-#8 10.93 Setting up libsqlite3-0:amd64 (3.40.1-2+deb12u2) ...
-#8 10.95 Setting up libkrb5support0:amd64 (1.20.1-2+deb12u4) ...
-#8 10.97 Setting up libncursesw6:amd64 (6.4-4) ...
-#8 10.99 Setting up libk5crypto3:amd64 (1.20.1-2+deb12u4) ...
-#8 11.00 Setting up libkrb5-3:amd64 (1.20.1-2+deb12u4) ...
-#8 11.02 Setting up readline-common (8.2-1.3) ...
-#8 11.04 Setting up libreadline8:amd64 (8.2-1.3) ...
-#8 11.05 Setting up libgssapi-krb5-2:amd64 (1.20.1-2+deb12u4) ...
-#8 11.07 Setting up libtirpc3:amd64 (1.3.3+ds-1) ...
-#8 11.09 Setting up libnsl2:amd64 (1.3.0-2) ...
-#8 11.11 Setting up libpython3.11-stdlib:amd64 (3.11.2-6+deb12u6) ...
-#8 11.13 Setting up libpython3-stdlib:amd64 (3.11.2-1+b1) ...
-#8 11.14 Setting up python3.11 (3.11.2-6+deb12u6) ...
-#8 11.74 Setting up python3 (3.11.2-1+b1) ...
-#8 11.75 running python rtupdate hooks for python3.11...
-#8 11.75 running python post-rtupdate hooks for python3.11...
-#8 11.83 Processing triggers for libc-bin (2.36-9+deb12u13) ...
-#8 DONE 12.0s
-
-#9 [4/7] RUN npm install -g ai-humanizer-mcp-server supergateway
-#9 8.134 
-#9 8.134 added 232 packages in 8s
-#9 8.134 
-#9 8.134 35 packages are looking for funding
-#9 8.134   run `npm fund` for details
-#9 8.135 npm notice
-#9 8.135 npm notice New major version of npm available! 10.8.2 -> 11.12.0
-#9 8.135 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.12.0
-#9 8.135 npm notice To update run: npm install -g npm@11.12.0
-#9 8.135 npm notice
-#9 DONE 8.3s
-
-#10 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
-#10 DONE 0.1s
-
-#11 [6/7] COPY entrypoint.sh /entrypoint.sh
-#11 DONE 0.0s
-
-#12 [7/7] RUN chmod +x /entrypoint.sh
-#12 DONE 0.3s
-
-#13 exporting to image
-#13 exporting layers
-#13 exporting layers 2.4s done
-#13 exporting manifest sha256:7fbaa0653b4cbca53fceecdac12aaeb3db39b66ec0a9ffc722692247fe086d5a 0.0s done
-#13 exporting config sha256:324b438e435931cd9d253b1442bce0f16f9d59e1d0213061e49a2bcdde699bd0 0.0s done
-#13 exporting attestation manifest sha256:913aada8b5f4c40b7ae53e321a375634edc1ef1efc426ac80846d5388be795fa 0.0s done
-#13 exporting manifest list sha256:44a8458be74fb00af6fd7a103845088333111a5aa02bdcae11a5954bb696c3dd 0.0s done
-#13 naming to docker.io/library/ai-humanizer-mcp:latest
-#13 naming to docker.io/library/ai-humanizer-mcp:latest done
-#13 unpacking to docker.io/library/ai-humanizer-mcp:latest
-#13 unpacking to docker.io/library/ai-humanizer-mcp:latest 1.8s done
-#13 DONE 4.3s
-
-View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/eqxckkiclssi4u6d6yruwgh0o
----------------------------------------------------------------------------------
-
-=================================================================================
 [2/6] List tools (stdio - full docker stdout/stderr)
 Status: FAIL
 ---------------------------------------------------------------------------------
 (docker run failed)
 ---------------------------------------------------------------------------------
 
-=================================================================================
 [3/6] Run tool (stdio) - tools/call full output
 Status: SKIP
 ---------------------------------------------------------------------------------
 (skipped — MCP_SKIP_STRICT_TOOLS_CALL=1)
 ---------------------------------------------------------------------------------
 
-=================================================================================
 [4/6] List tools (HTTP streamable) - init metadata + tools/list body
 Status: FAIL
 ---------------------------------------------------------------------------------
@@ -362,7 +48,6 @@ Status: FAIL
 exec /entrypoint.sh: no such file or directory
 ---------------------------------------------------------------------------------
 
-=================================================================================
 [5/6] Run tool (HTTP streamable) - request + full response
 Status: SKIP
 ---------------------------------------------------------------------------------
@@ -372,17 +57,41 @@ Status: SKIP
 --- tools/call response (raw) ---
 (skipped — MCP_SKIP_STRICT_TOOLS_CALL=1)
 ---------------------------------------------------------------------------------
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
 
-=================================================================================
-[6/6] Tear down
-Status: PASS
----------------------------------------------------------------------------------
-docker stop / docker rm -f ai-humanizer-mcp-test (executed)
----------------------------------------------------------------------------------
+#6 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#6 CACHED
 
-=================================================================================
-SUMMARY
-=================================================================================
-Steps passed: 4  Steps failed: 2
-Overall: FAIL
-=================================================================================
+#7 [4/7] RUN npm install -g ai-humanizer-mcp-server supergateway
+#7 CACHED
+
+#8 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#8 CACHED
+
+#9 [2/7] WORKDIR /app
+#9 CACHED
+
+#10 [6/7] COPY entrypoint.sh /entrypoint.sh
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:9414cb9b845731389fec9828cab1168952bb4c8ae9bde61efe33b8f3d64172cd done
+#12 exporting config sha256:0db7b5e7f12e7cfa47d111fa59b7f20d1a2ce068947d774a7d892f59ce34c7fe done
+#12 exporting attestation manifest sha256:15ccf81fb50c80026535f260a004ca89f59b021760f940065527332e99a92648 0.0s done
+#12 exporting manifest list sha256:ba717572e368596c9c819c3c412a5ba13bf9c5c4286e90f2fd0cf737b4ac386f 0.0s done
+#12 naming to docker.io/library/ai-humanizer-mcp:latest
+#12 naming to docker.io/library/ai-humanizer-mcp:latest done
+#12 unpacking to docker.io/library/ai-humanizer-mcp:latest 0.0s done
+#12 naming to docker.io/hackerdogs/ai-humanizer-mcp:latest done
+#12 unpacking to docker.io/hackerdogs/ai-humanizer-mcp:latest 0.0s done
+#12 DONE 0.2s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/5pw1ftnegkhyadaef8vjl9tji
+/c/Users/Utkarsh Singhal/Desktop/hd-mcpservers-docker/scripts/mcp-standard-six-test.sh: line 75: python3: command not found
+
