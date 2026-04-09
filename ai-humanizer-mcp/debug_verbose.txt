@@ -1,0 +1,161 @@
+========== VERBOSE DEBUG: ai-humanizer-mcp ==========
+Timestamp: Sun, Mar 29, 2026  8:20:21 PM
+
+--- [CHECK 1] Building Docker image ---
+>>> docker build -t ai-humanizer-mcp -t hackerdogs/ai-humanizer-mcp:latest ai-humanizer-mcp
+
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 596B 0.0s done
+#1 DONE 0.0s
+
+#2 [auth] library/node:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 1.4s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B 0.0s done
+#4 DONE 0.0s
+
+#5 [1/7] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3
+#5 resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3 0.0s done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 72B done
+#6 DONE 0.0s
+
+#7 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#7 CACHED
+
+#8 [2/7] WORKDIR /app
+#8 CACHED
+
+#9 [4/7] RUN npm install -g ai-humanizer-mcp-server supergateway
+#9 CACHED
+
+#10 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [6/7] COPY entrypoint.sh /entrypoint.sh
+#11 CACHED
+
+#12 [7/7] RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
+#12 DONE 0.3s
+
+#13 exporting to image
+#13 exporting layers 0.1s done
+#13 exporting manifest sha256:7b35ddaf98418a1efd8b4a328e2979987658ca3a9df9b62cf51e9f321a4a102a 0.0s done
+#13 exporting config sha256:9f3fc7d9cc4acf041dcab0d6ab222f48e520c821a652aefd4037818be858d7e5 0.0s done
+#13 exporting attestation manifest sha256:bfd52875d9d07fa7774dfeef53b3e282ba8f2fe81cb1914dbffc772d954c0774 0.0s done
+#13 exporting manifest list sha256:5b5ab794735978a2ca2e59561a8e7d821fb46e9cc5c819fd74fa05b1c89cfefd 0.0s done
+#13 naming to docker.io/library/ai-humanizer-mcp:latest done
+#13 unpacking to docker.io/library/ai-humanizer-mcp:latest 0.0s done
+#13 naming to docker.io/hackerdogs/ai-humanizer-mcp:latest done
+#13 unpacking to docker.io/hackerdogs/ai-humanizer-mcp:latest 0.0s done
+#13 DONE 0.3s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/hyeqjhdxw5fh8q7bcvyak909e
+
+✅ Build succeeded.
+
+--- [CHECK 2] Stdio tools/list (raw output) ---
+>>> Sending to container via stdio:
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"debug","version":"0.0.1"}}}
+{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}
+
+>>> Raw container response:
+ai-detect MCP Server running on stdio
+{"result":{"protocolVersion":"2024-11-05","capabilities":{"tools":{}},"serverInfo":{"name":"ai-humanizer","version":"1.0.0"}},"jsonrpc":"2.0","id":1}
+{"result":{"tools":[{"name":"detect","description":"Detect whether the text is AI-generated.Show to user the task detail url. Extract the taskId field, then concatenate the link in the following format: https://pre-www.text2go.ai/?utm_source=claude_mcp&taskId={taskId}","inputSchema":{"type":"object","properties":{"type":{"type":"string","enum":["original_text"]},"text":{"type":"string"},"detectionTypeList":{"type":"array","items":{"type":"string","enum":["COPYLEAKS","HEMINGWAY"]}}},"required":["type","text","detectionTypeList"]}}]},"jsonrpc":"2.0","id":2}
+
+✅ Stdio tools/list: tools key found in response.
+
+--- [CHECK 3] HTTP streamable tools/list (raw output) ---
+>>> Starting container in HTTP mode on port 8614...
+4a79f09ac5dcaf7afe762fbaf46874f94fa382e3cd8b5bde06a38bc541b56d9a
+>>> Waiting 5s for server to start...
+>>> Container logs so far:
+[mcp-proxy] Listening on 0.0.0.0:8601/mcp
+[mcp-proxy] Wrapping: npx -y ai-humanizer-mcp-server
+
+>>> Sending HTTP initialize request to get session ID...
+event: message
+data: {"result":{"protocolVersion":"2024-11-05","capabilities":{"tools":{}},"serverInfo":{"name":"ai-humanizer","version":"1.0.0"}},"jsonrpc":"2.0","id":1}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> Content-Length: 154
+> 
+} [154 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.2
+< Date: Sun, 29 Mar 2026 14:50:33 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: f635ef009f8e4f988d40303688fc0563
+< 
+{ [172 bytes data]
+* Closing connection 0
+✅ Got session ID: f635ef009f8e4f988d40303688fc0563
+>>> Sending HTTP notifications/initialized...
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: f635ef009f8e4f988d40303688fc0563
+> Content-Length: 54
+> 
+} [54 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 202 Accepted
+< Server: BaseHTTP/0.6 Python/3.11.2
+< Date: Sun, 29 Mar 2026 14:50:34 GMT
+< 
+{ [0 bytes data]
+* Closing connection 0
+>>> Sending HTTP tools/list request:
+>>> Raw HTTP response:
+event: message
+data: {"result":{"tools":[{"name":"detect","description":"Detect whether the text is AI-generated.Show to user the task detail url. Extract the taskId field, then concatenate the link in the following format: https://pre-www.text2go.ai/?utm_source=claude_mcp&taskId={taskId}","inputSchema":{"type":"object","properties":{"type":{"type":"string","enum":["original_text"]},"text":{"type":"string"},"detectionTypeList":{"type":"array","items":{"type":"string","enum":["COPYLEAKS","HEMINGWAY"]}}},"required":["type","text","detectionTypeList"]}}]},"jsonrpc":"2.0","id":2}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: f635ef009f8e4f988d40303688fc0563
+> Content-Length: 58
+> 
+} [58 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.2
+< Date: Sun, 29 Mar 2026 14:50:34 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: f635ef009f8e4f988d40303688fc0563
+< 
+{ [584 bytes data]
+* Closing connection 0
+
+✅ HTTP tools/list: tools key found in response.
+
+>>> Stopping HTTP container...
+ai-humanizer-mcp-debug-http
+
+========== End of Debug: Sun, Mar 29, 2026  8:20:35 PM ==========

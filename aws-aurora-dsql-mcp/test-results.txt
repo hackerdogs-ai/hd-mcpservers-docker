@@ -1,4 +1,75 @@
-========== Retesting aws-aurora-dsql-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 790B 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 ...
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 0.4s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 0.4s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3
+#5 resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3 0.0s done
+#5 DONE 0.0s
+
+#6 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+#6 resolve docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.aurora-dsql-mcp-server
+#8 CACHED
+
+#9 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#9 CACHED
+
+#10 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#10 CACHED
+
+#11 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#11 CACHED
+
+#12 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#12 CACHED
+
+#13 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#13 CACHED
+
+#14 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#14 CACHED
+
+#15 [stage-1 3/9] WORKDIR /app
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:112546064cd2a133bdc3434d3e558192bd9af6d2aea3ebef8eb36004fcd61328 done
+#17 exporting config sha256:d23fac55a2c5e9863cc3abb4397fd76f9cf36dd0a80ccbb905e880e07038b482 done
+#17 exporting attestation manifest sha256:eb670a28a45fa48944ca28591dceb931041982354678f5a22ee9e8dc17d4f734 0.0s done
+#17 exporting manifest list sha256:ee62a1aedb9b7853fad83fd0ce7e433269c2424ef24c529e4a83feae85a9443d 0.0s done
+#17 naming to docker.io/library/aws-aurora-dsql-mcp:latest
+#17 naming to docker.io/library/aws-aurora-dsql-mcp:latest done
+#17 unpacking to docker.io/library/aws-aurora-dsql-mcp:latest 0.0s done
+#17 naming to docker.io/hackerdogs/aws-aurora-dsql-mcp:latest done
+#17 unpacking to docker.io/hackerdogs/aws-aurora-dsql-mcp:latest 0.0s done
+#17 DONE 0.2s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/p0kcl55iccwuji7g6jvk2rsxq
 #0 building with "desktop-linux" instance using docker driver
 
 #1 [internal] load build definition from Dockerfile
@@ -259,7 +330,6 @@
 #18 DONE 9.3s
 
 View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/w178feb07xz7z0240p4hzaqmp
-========== aws-aurora-dsql-mcp test (compliance) ==========
 [0;34m[1] Install[0m
   [0;32mPASS: image exists[0m
 [0;34m[2] Stdio tools/list[0m

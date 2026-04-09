@@ -1,21 +1,62 @@
-========== Retesting ai-humanizer-mcp ==========
+[1/6] Install - docker build
+Status: PASS
+---------------------------------------------------------------------------------
 #0 building with "desktop-linux" instance using docker driver
 
 #1 [internal] load build definition from Dockerfile
-#1 transferring dockerfile: 561B done
-#1 DONE 0.0s
+#1 transferring dockerfile: 561B 0.0s done
+#1 DONE 0.1s
 
 #2 [internal] load metadata for docker.io/library/node:20-slim
-#2 DONE 1.1s
+#2 ...
 
-#3 [internal] load .dockerignore
-#3 transferring context: 2B done
+
+#3 [auth] library/node:pull token for registry-1.docker.io
 #3 DONE 0.0s
 
-#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
-#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 3.8s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
 #4 DONE 0.0s
 
+[2/6] List tools (stdio - full docker stdout/stderr)
+Status: FAIL
+---------------------------------------------------------------------------------
+(docker run failed)
+---------------------------------------------------------------------------------
+
+[3/6] Run tool (stdio) - tools/call full output
+Status: SKIP
+---------------------------------------------------------------------------------
+(skipped — MCP_SKIP_STRICT_TOOLS_CALL=1)
+---------------------------------------------------------------------------------
+
+[4/6] List tools (HTTP streamable) - init metadata + tools/list body
+Status: FAIL
+---------------------------------------------------------------------------------
+--- Response headers (initialize) ---
+
+--- Response body (initialize) ---
+
+
+--- tools/list response body ---
+
+
+--- docker logs (last 80 lines) ---
+exec /entrypoint.sh: no such file or directory
+---------------------------------------------------------------------------------
+
+[5/6] Run tool (HTTP streamable) - request + full response
+Status: SKIP
+---------------------------------------------------------------------------------
+--- tools/call request JSON ---
+(skipped)
+
+--- tools/call response (raw) ---
+(skipped — MCP_SKIP_STRICT_TOOLS_CALL=1)
+---------------------------------------------------------------------------------
 #5 [internal] load build context
 #5 transferring context: 72B done
 #5 DONE 0.0s
@@ -54,4 +95,3 @@
 View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/5pw1ftnegkhyadaef8vjl9tji
 /c/Users/Utkarsh Singhal/Desktop/hd-mcpservers-docker/scripts/mcp-standard-six-test.sh: line 75: python3: command not found
 
-❌ FAIL (Test): ai-humanizer-mcp

@@ -6,12 +6,19 @@ export AWS_DEFAULT_REGION=${AWS_REGION:-us-east-1}
 export AWS_PROFILE=default
 export AWS_CONFIG_FILE=/root/.aws/config
 export AWS_SHARED_CREDENTIALS_FILE=/root/.aws/credentials
-export FASTMCP_TRANSPORT=${MCP_TRANSPORT:-stdio}
+
+# Fallback chain for the port: test runner's PORT -> MCP_PORT -> 8080
+TARGET_PORT=${PORT:-${MCP_PORT:-8080}}
+
 export FASTMCP_HOST=0.0.0.0
-export FASTMCP_PORT=${MCP_PORT:-8605}
+
+# If the runner explicitly asks for stdio, OR if it doesn't specify any HTTP transport flags
 if [ "$MCP_TRANSPORT" = "stdio" ]; then
+  export FASTMCP_TRANSPORT=stdio
   exec awslabs.aws-bedrock-custom-model-import-mcp-server
 else
+  # HTTP / Proxy mode
+  echo "[entrypoint] Starting HTTP proxy on port $TARGET_PORT..."
   export FASTMCP_TRANSPORT=stdio
-  exec python /mcp_http_proxy.py --port ${MCP_PORT:-8605} -- awslabs.aws-bedrock-custom-model-import-mcp-server
+  exec python /mcp_http_proxy.py --port $TARGET_PORT -- awslabs.aws-bedrock-custom-model-import-mcp-server
 fi

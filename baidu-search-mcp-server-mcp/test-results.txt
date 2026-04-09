@@ -1,4 +1,71 @@
-========== Retesting baidu-search-mcp-server-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 776B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 1.1s
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 1.1s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3
+#5 resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3 0.0s done
+#5 DONE 0.0s
+
+#6 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+#6 resolve docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 621B 0.0s done
+#7 DONE 0.0s
+
+#8 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#8 CACHED
+
+#9 [stage-1 4/9] RUN pip install --no-cache-dir baidu-mcp-server
+#9 CACHED
+
+#10 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#10 CACHED
+
+#11 [stage-1 3/9] WORKDIR /app
+#11 CACHED
+
+#12 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#12 CACHED
+
+#13 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#13 CACHED
+
+#14 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#14 CACHED
+
+#15 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#15 DONE 0.0s
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 DONE 0.4s
+
+#17 exporting to image
+#17 exporting layers 0.2s done
+#17 exporting manifest sha256:5272bad9fe2b02d879d0009753477e756bc1244fda3a8bcb8b9858d39c00111d 0.0s done
+#17 exporting config sha256:463421a347d866fc0bdf5deadd60c2eb6a381f749795a630a9587b3744fffc38 0.0s done
+#17 exporting attestation manifest sha256:7822bf54dc81fc975da5226184f105366cfeaffc1a2870eac812dc6f9baad449 0.0s done
+#17 exporting manifest list sha256:e49d86ef4da5a193877494a13b6326fcc19d5892a90f94442a9c70e02dc5c7a1 0.0s done
+#17 naming to docker.io/library/baidu-search-mcp-server-mcp:latest done
+#17 unpacking to docker.io/library/baidu-search-mcp-server-mcp:latest 0.0s done
+#17 naming to docker.io/hackerdogs/baidu-search-mcp-server-mcp:latest done
+#17 unpacking to docker.io/hackerdogs/baidu-search-mcp-server-mcp:latest 0.0s done
+#17 DONE 0.4s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/qgoveqkq0pwr7cup8cpeskccn
 #0 building with "desktop-linux" instance using docker driver
 
 #1 [internal] load build definition from Dockerfile

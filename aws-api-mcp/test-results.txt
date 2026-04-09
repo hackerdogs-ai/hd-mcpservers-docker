@@ -1,4 +1,58 @@
-========== Retesting aws-api-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 947B 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 1.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/8] FROM docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+#4 resolve docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [5/8] RUN python -m awslabs.aws_api_mcp_server.scripts.generate_embeddings || true
+#6 CACHED
+
+#7 [6/8] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#7 CACHED
+
+#8 [7/8] COPY entrypoint.sh /entrypoint.sh
+#8 CACHED
+
+#9 [2/8] RUN apt-get update && apt-get install -y --no-install-recommends     gcc     python3-dev     curl     gnupg     && curl -fsSL https://deb.nodesource.com/setup_20.x | bash -     && apt-get install -y nodejs     && npm install -g supergateway     && rm -rf /var/lib/apt/lists/*
+#9 CACHED
+
+#10 [3/8] WORKDIR /app
+#10 CACHED
+
+#11 [4/8] RUN pip install --no-cache-dir awslabs.aws-api-mcp-server
+#11 CACHED
+
+#12 [8/8] RUN chmod +x /entrypoint.sh
+#12 CACHED
+
+#13 exporting to image
+#13 exporting layers done
+#13 exporting manifest sha256:69534688cd0f29fbbf4ba72f3eff000608d70e9c43a99fdfbdc4c3e5c240d934 done
+#13 exporting config sha256:aad33bdd09fa052570a48f6d6abc57bd43157af6f53397822896087296f9c08e done
+#13 exporting attestation manifest sha256:83883a18a073a43281698b63cb2ddc3f88538739f96905d37b8c5567c59245b6 0.0s done
+#13 exporting manifest list sha256:704e97f5b48114b17e4e5fcd031cdbba62645ed47f4a7e3a512f9a5281dc04ca 0.0s done
+#13 naming to docker.io/library/aws-api-mcp:latest done
+#13 unpacking to docker.io/library/aws-api-mcp:latest done
+#13 naming to docker.io/hackerdogs/aws-api-mcp:latest done
+#13 unpacking to docker.io/hackerdogs/aws-api-mcp:latest done
+#13 DONE 0.2s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/l6v19ycn7a96yldq8zprz3k6p
 #0 building with "desktop-linux" instance using docker driver
 
 #1 [internal] load build definition from Dockerfile
@@ -431,7 +485,6 @@
 #18 DONE 12.6s
 
 View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/let1rohd0cb93vzlkq8iolffx
-========== aws-api-mcp test (compliance) ==========
 [0;34m[1] Install[0m
   [0;32mPASS: image exists[0m
 [0;34m[2] Stdio tools/list[0m

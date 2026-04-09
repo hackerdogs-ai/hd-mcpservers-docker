@@ -12,11 +12,11 @@ Commercial
 
 ## Connection
 
-This is a **remote-only** MCP server. No Docker image or local build is required.
+Production uses the **hosted** Censys Platform MCP URL (see `mcpServer.json`). This folder also includes a **local FastMCP Docker stub** so you can run `test.sh` (5-step compliance: image, stdio, HTTP).
 
 | Transport | URL |
 |-----------|-----|
-| Streamable HTTP | `https://mcp.censys.io/mcp` |
+| Streamable HTTP | `https://mcp.platform.censys.io/platform/mcp/` (with token + org headers) |
 
 ## Setup
 

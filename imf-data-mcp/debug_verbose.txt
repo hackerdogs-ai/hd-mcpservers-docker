@@ -1,0 +1,339 @@
+========== VERBOSE DEBUG: imf-data-mcp ==========
+Timestamp: Sun, Mar 29, 2026 11:16:11 PM
+
+--- [CHECK 1] Building Docker image ---
+>>> docker build -t imf-data-mcp -t hackerdogs/imf-data-mcp:latest imf-data-mcp
+
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 813B done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 ...
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 1.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 1.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 DONE 0.0s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3
+#6 resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3 0.0s done
+#6 DONE 0.0s
+
+#7 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+#7 resolve docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634 0.0s done
+#7 DONE 0.1s
+
+#8 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [stage-1 3/9] WORKDIR /app
+#9 CACHED
+
+#10 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#10 CACHED
+
+#5 [internal] load build context
+#5 transferring context: 11.01kB 0.0s done
+#5 DONE 0.1s
+
+#11 [stage-1 4/9] RUN pip install --no-cache-dir mseep-imf-data-mcp
+#11 2.235 Collecting mseep-imf-data-mcp
+#11 2.428   Downloading mseep_imf_data_mcp-0.1.3-py3-none-any.whl.metadata (811 bytes)
+#11 2.526 Collecting mcp>=1.9.1 (from mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 2.571   Downloading mcp-1.26.0-py3-none-any.whl.metadata (89 kB)
+#11 2.626      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 89.5/89.5 kB 1.6 MB/s eta 0:00:00
+#11 2.732 Collecting requests>=2.32.3 (from mseep-imf-data-mcp)
+#11 2.775   Downloading requests-2.33.0-py3-none-any.whl.metadata (5.1 kB)
+#11 2.877 Collecting anyio>=4.5 (from mcp>=1.9.1->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 2.921   Downloading anyio-4.13.0-py3-none-any.whl.metadata (4.5 kB)
+#11 2.981 Collecting httpx-sse>=0.4 (from mcp>=1.9.1->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 3.024   Downloading httpx_sse-0.4.3-py3-none-any.whl.metadata (9.7 kB)
+#11 3.110 Collecting httpx>=0.27.1 (from mcp>=1.9.1->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 3.157   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#11 3.259 Collecting jsonschema>=4.20.0 (from mcp>=1.9.1->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 3.303   Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+#11 3.386 Collecting pydantic-settings>=2.5.2 (from mcp>=1.9.1->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 3.429   Downloading pydantic_settings-2.13.1-py3-none-any.whl.metadata (3.4 kB)
+#11 3.717 Collecting pydantic<3.0.0,>=2.11.0 (from mcp>=1.9.1->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 3.767   Downloading pydantic-2.12.5-py3-none-any.whl.metadata (90 kB)
+#11 3.776      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 90.6/90.6 kB 13.3 MB/s eta 0:00:00
+#11 3.850 Collecting pyjwt>=2.10.1 (from pyjwt[crypto]>=2.10.1->mcp>=1.9.1->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 3.893   Downloading pyjwt-2.12.1-py3-none-any.whl.metadata (4.1 kB)
+#11 3.966 Collecting python-multipart>=0.0.9 (from mcp>=1.9.1->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 4.020   Downloading python_multipart-0.0.22-py3-none-any.whl.metadata (1.8 kB)
+#11 4.102 Collecting sse-starlette>=1.6.1 (from mcp>=1.9.1->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 4.147   Downloading sse_starlette-3.3.4-py3-none-any.whl.metadata (14 kB)
+#11 4.248 Collecting starlette>=0.27 (from mcp>=1.9.1->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 4.292   Downloading starlette-1.0.0-py3-none-any.whl.metadata (6.3 kB)
+#11 4.369 Collecting typing-extensions>=4.9.0 (from mcp>=1.9.1->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 4.410   Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+#11 4.464 Collecting typing-inspection>=0.4.1 (from mcp>=1.9.1->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 4.507   Downloading typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+#11 4.594 Collecting uvicorn>=0.31.1 (from mcp>=1.9.1->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 4.636   Downloading uvicorn-0.42.0-py3-none-any.whl.metadata (6.7 kB)
+#11 4.742 Collecting python-dotenv>=1.0.0 (from mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 4.783   Downloading python_dotenv-1.2.2-py3-none-any.whl.metadata (27 kB)
+#11 4.870 Collecting typer>=0.16.0 (from mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 4.913   Downloading typer-0.24.1-py3-none-any.whl.metadata (16 kB)
+#11 5.108 Collecting charset_normalizer<4,>=2 (from requests>=2.32.3->mseep-imf-data-mcp)
+#11 5.152   Downloading charset_normalizer-3.4.6-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (40 kB)
+#11 5.155      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 40.6/40.6 kB 151.6 MB/s eta 0:00:00
+#11 5.225 Collecting idna<4,>=2.5 (from requests>=2.32.3->mseep-imf-data-mcp)
+#11 5.269   Downloading idna-3.11-py3-none-any.whl.metadata (8.4 kB)
+#11 5.374 Collecting urllib3<3,>=1.26 (from requests>=2.32.3->mseep-imf-data-mcp)
+#11 5.420   Downloading urllib3-2.6.3-py3-none-any.whl.metadata (6.9 kB)
+#11 5.495 Collecting certifi>=2023.5.7 (from requests>=2.32.3->mseep-imf-data-mcp)
+#11 5.539   Downloading certifi-2026.2.25-py3-none-any.whl.metadata (2.5 kB)
+#11 5.650 Collecting httpcore==1.* (from httpx>=0.27.1->mcp>=1.9.1->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 5.725   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#11 5.807 Collecting h11>=0.16 (from httpcore==1.*->httpx>=0.27.1->mcp>=1.9.1->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 5.853   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#11 5.959 Collecting attrs>=22.2.0 (from jsonschema>=4.20.0->mcp>=1.9.1->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 6.004   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+#11 6.078 Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.20.0->mcp>=1.9.1->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 6.125   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+#11 6.211 Collecting referencing>=0.28.4 (from jsonschema>=4.20.0->mcp>=1.9.1->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 6.254   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+#11 6.715 Collecting rpds-py>=0.25.0 (from jsonschema>=4.20.0->mcp>=1.9.1->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 6.759   Downloading rpds_py-0.30.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)
+#11 6.834 Collecting annotated-types>=0.6.0 (from pydantic<3.0.0,>=2.11.0->mcp>=1.9.1->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 6.883   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+#11 8.020 Collecting pydantic-core==2.41.5 (from pydantic<3.0.0,>=2.11.0->mcp>=1.9.1->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 8.067   Downloading pydantic_core-2.41.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (7.3 kB)
+#11 8.523 Collecting cryptography>=3.4.0 (from pyjwt[crypto]>=2.10.1->mcp>=1.9.1->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 8.567   Downloading cryptography-46.0.6-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (5.7 kB)
+#11 8.703 Collecting click>=8.2.1 (from typer>=0.16.0->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 8.747   Downloading click-8.3.1-py3-none-any.whl.metadata (2.6 kB)
+#11 8.822 Collecting shellingham>=1.3.0 (from typer>=0.16.0->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 8.867   Downloading shellingham-1.5.4-py2.py3-none-any.whl.metadata (3.5 kB)
+#11 9.001 Collecting rich>=12.3.0 (from typer>=0.16.0->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 9.046   Downloading rich-14.3.3-py3-none-any.whl.metadata (18 kB)
+#11 9.109 Collecting annotated-doc>=0.0.2 (from typer>=0.16.0->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 9.153   Downloading annotated_doc-0.0.4-py3-none-any.whl.metadata (6.6 kB)
+#11 9.509 Collecting cffi>=2.0.0 (from cryptography>=3.4.0->pyjwt[crypto]>=2.10.1->mcp>=1.9.1->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 9.553   Downloading cffi-2.0.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.6 kB)
+#11 9.675 Collecting markdown-it-py>=2.2.0 (from rich>=12.3.0->typer>=0.16.0->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 9.721   Downloading markdown_it_py-4.0.0-py3-none-any.whl.metadata (7.3 kB)
+#11 9.804 Collecting pygments<3.0.0,>=2.13.0 (from rich>=12.3.0->typer>=0.16.0->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 9.849   Downloading pygments-2.20.0-py3-none-any.whl.metadata (2.5 kB)
+#11 9.932 Collecting pycparser (from cffi>=2.0.0->cryptography>=3.4.0->pyjwt[crypto]>=2.10.1->mcp>=1.9.1->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 9.978   Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+#11 10.07 Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich>=12.3.0->typer>=0.16.0->mcp[cli]>=1.9.1->mseep-imf-data-mcp)
+#11 10.13   Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+#11 10.21 Downloading mseep_imf_data_mcp-0.1.3-py3-none-any.whl (9.4 kB)
+#11 10.26 Downloading mcp-1.26.0-py3-none-any.whl (233 kB)
+#11 10.32    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 233.6/233.6 kB 4.2 MB/s eta 0:00:00
+#11 10.36 Downloading requests-2.33.0-py3-none-any.whl (65 kB)
+#11 10.38    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 65.0/65.0 kB 6.0 MB/s eta 0:00:00
+#11 10.42 Downloading anyio-4.13.0-py3-none-any.whl (114 kB)
+#11 10.44    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 114.4/114.4 kB 6.2 MB/s eta 0:00:00
+#11 10.48 Downloading certifi-2026.2.25-py3-none-any.whl (153 kB)
+#11 10.51    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 153.7/153.7 kB 7.7 MB/s eta 0:00:00
+#11 10.55 Downloading charset_normalizer-3.4.6-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (204 kB)
+#11 10.59    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 204.7/204.7 kB 6.3 MB/s eta 0:00:00
+#11 10.63 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#11 10.65    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.5/73.5 kB 6.4 MB/s eta 0:00:00
+#11 10.69 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#11 10.70    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.8/78.8 kB 10.7 MB/s eta 0:00:00
+#11 10.75 Downloading httpx_sse-0.4.3-py3-none-any.whl (9.0 kB)
+#11 10.80 Downloading idna-3.11-py3-none-any.whl (71 kB)
+#11 10.81    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 71.0/71.0 kB 14.6 MB/s eta 0:00:00
+#11 10.86 Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+#11 10.86    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 90.6/90.6 kB 21.1 MB/s eta 0:00:00
+#11 10.91 Downloading pydantic-2.12.5-py3-none-any.whl (463 kB)
+#11 11.00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 463.6/463.6 kB 5.7 MB/s eta 0:00:00
+#11 11.05 Downloading pydantic_core-2.41.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.1 MB)
+#11 11.35    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 6.9 MB/s eta 0:00:00
+#11 11.39 Downloading pydantic_settings-2.13.1-py3-none-any.whl (58 kB)
+#11 11.40    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 58.9/58.9 kB 14.8 MB/s eta 0:00:00
+#11 11.44 Downloading pyjwt-2.12.1-py3-none-any.whl (29 kB)
+#11 11.48 Downloading python_dotenv-1.2.2-py3-none-any.whl (22 kB)
+#11 11.53 Downloading python_multipart-0.0.22-py3-none-any.whl (24 kB)
+#11 11.57 Downloading sse_starlette-3.3.4-py3-none-any.whl (14 kB)
+#11 11.62 Downloading starlette-1.0.0-py3-none-any.whl (72 kB)
+#11 11.63    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 72.7/72.7 kB 35.3 MB/s eta 0:00:00
+#11 11.68 Downloading typer-0.24.1-py3-none-any.whl (56 kB)
+#11 11.68    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 56.1/56.1 kB 29.1 MB/s eta 0:00:00
+#11 11.74 Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+#11 11.74    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 44.6/44.6 kB 84.6 MB/s eta 0:00:00
+#11 11.79 Downloading typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+#11 11.84 Downloading urllib3-2.6.3-py3-none-any.whl (131 kB)
+#11 11.85    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 131.6/131.6 kB 13.5 MB/s eta 0:00:00
+#11 11.89 Downloading uvicorn-0.42.0-py3-none-any.whl (68 kB)
+#11 11.90    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 68.8/68.8 kB 15.7 MB/s eta 0:00:00
+#11 11.95 Downloading annotated_doc-0.0.4-py3-none-any.whl (5.3 kB)
+#11 11.99 Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+#11 12.04 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+#11 12.05    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 67.5/67.5 kB 12.5 MB/s eta 0:00:00
+#11 12.09 Downloading click-8.3.1-py3-none-any.whl (108 kB)
+#11 12.10    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 108.3/108.3 kB 22.5 MB/s eta 0:00:00
+#11 12.15 Downloading cryptography-46.0.6-cp311-abi3-manylinux_2_34_x86_64.whl (4.5 MB)
+#11 12.77    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.5/4.5 MB 7.2 MB/s eta 0:00:00
+#11 12.81 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#11 12.87 Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+#11 12.92 Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+#11 12.97 Downloading rich-14.3.3-py3-none-any.whl (310 kB)
+#11 12.99    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 310.5/310.5 kB 25.7 MB/s eta 0:00:00
+#11 13.03 Downloading rpds_py-0.30.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (390 kB)
+#11 13.08    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 390.8/390.8 kB 17.0 MB/s eta 0:00:00
+#11 13.12 Downloading shellingham-1.5.4-py2.py3-none-any.whl (9.8 kB)
+#11 13.17 Downloading cffi-2.0.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (215 kB)
+#11 13.20    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 215.6/215.6 kB 7.8 MB/s eta 0:00:00
+#11 13.25 Downloading markdown_it_py-4.0.0-py3-none-any.whl (87 kB)
+#11 13.26    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 87.3/87.3 kB 15.9 MB/s eta 0:00:00
+#11 13.31 Downloading pygments-2.20.0-py3-none-any.whl (1.2 MB)
+#11 13.51    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 6.8 MB/s eta 0:00:00
+#11 13.55 Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+#11 13.59 Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+#11 13.60    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 48.2/48.2 kB 11.2 MB/s eta 0:00:00
+#11 13.86 Installing collected packages: urllib3, typing-extensions, shellingham, rpds-py, python-multipart, python-dotenv, pyjwt, pygments, pycparser, mdurl, idna, httpx-sse, h11, click, charset_normalizer, certifi, attrs, annotated-types, annotated-doc, uvicorn, typing-inspection, requests, referencing, pydantic-core, markdown-it-py, httpcore, cffi, anyio, starlette, rich, pydantic, jsonschema-specifications, httpx, cryptography, typer, sse-starlette, pydantic-settings, jsonschema, mcp, mseep-imf-data-mcp
+#11 17.13 Successfully installed annotated-doc-0.0.4 annotated-types-0.7.0 anyio-4.13.0 attrs-26.1.0 certifi-2026.2.25 cffi-2.0.0 charset_normalizer-3.4.6 click-8.3.1 cryptography-46.0.6 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 httpx-sse-0.4.3 idna-3.11 jsonschema-4.26.0 jsonschema-specifications-2025.9.1 markdown-it-py-4.0.0 mcp-1.26.0 mdurl-0.1.2 mseep-imf-data-mcp-0.1.3 pycparser-3.0 pydantic-2.12.5 pydantic-core-2.41.5 pydantic-settings-2.13.1 pygments-2.20.0 pyjwt-2.12.1 python-dotenv-1.2.2 python-multipart-0.0.22 referencing-0.37.0 requests-2.33.0 rich-14.3.3 rpds-py-0.30.0 shellingham-1.5.4 sse-starlette-3.3.4 starlette-1.0.0 typer-0.24.1 typing-extensions-4.15.0 typing-inspection-0.4.2 urllib3-2.6.3 uvicorn-0.42.0
+#11 17.13 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+#11 17.43 
+#11 17.43 [notice] A new release of pip is available: 24.0 -> 26.0.1
+#11 17.43 [notice] To update, run: pip install --upgrade pip
+#11 DONE 18.0s
+
+#12 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#12 DONE 0.3s
+
+#13 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#13 DONE 0.7s
+
+#14 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#14 DONE 0.6s
+
+#15 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#15 DONE 0.7s
+
+#16 [stage-1 9/9] RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
+#16 DONE 0.7s
+
+#17 exporting to image
+#17 exporting layers
+#17 exporting layers 4.6s done
+#17 exporting manifest sha256:8cc65e81db353a0a729b2bcdaf156810e0ceea202c027873bdd3a66c1e9782b1 0.0s done
+#17 exporting config sha256:1028fe2edcfbaac466c6d6159d374c747f9041c9a64460cf242663b3017ba7e9 0.0s done
+#17 exporting attestation manifest sha256:8d1821d37a1f10d7e9ffdc35e7e6b4ba1609a21e2b3d86638b4a790a2f2dd2dd 0.0s done
+#17 exporting manifest list sha256:faae62de9be0d8dc596a2c6a94810fb8ef33fecd1e8490ca3083f7f827e04d61
+#17 exporting manifest list sha256:faae62de9be0d8dc596a2c6a94810fb8ef33fecd1e8490ca3083f7f827e04d61 0.0s done
+#17 naming to docker.io/library/imf-data-mcp:latest done
+#17 unpacking to docker.io/library/imf-data-mcp:latest
+#17 unpacking to docker.io/library/imf-data-mcp:latest 1.9s done
+#17 naming to docker.io/hackerdogs/imf-data-mcp:latest done
+#17 unpacking to docker.io/hackerdogs/imf-data-mcp:latest 0.0s done
+#17 DONE 6.7s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/axo4jr67b3ttc57nt5r7psjzl
+
+✅ Build succeeded.
+
+--- [CHECK 2] Stdio tools/list (raw output) ---
+>>> Sending to container via stdio:
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"debug","version":"0.0.1"}}}
+{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}
+
+>>> Raw container response:
+{"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"prompts":{"listChanged":false},"resources":{"subscribe":false,"listChanged":false},"tools":{"listChanged":false}},"serverInfo":{"name":"IMF Data Server","version":"1.26.0"}}}
+[03/29/26 17:46:42] INFO     Processing request of type            server.py:720
+                             ListToolsRequest                                   
+{"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"fetch_ifs_data","description":"\n    Retrieves compact format time series data from the IFS database based on the input parameters.\n\n    Args:\n        freq (str): Frequency (e.g., \"A\" for annual).\n        country (str): Country code, multiple country codes can be connected with \"+\".\n        indicator (str): Indicator code.\n        start (str | int): Start year.\n        end (str | int): End year.\n\n    Returns:\n        str: Description of the queried data. Do not perform further analysis or retry if the query fails.\n    ","inputSchema":{"properties":{"freq":{"title":"Freq","type":"string"},"country":{"title":"Country","type":"string"},"indicator":{"title":"Indicator","type":"string"},"start":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"Start"},"end":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"End"}},"required":["freq","country","indicator","start","end"],"title":"fetch_ifs_dataArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"fetch_ifs_dataOutput","type":"object"}},{"name":"fetch_dot_data","description":"\n    Retrieves compact format time series data from the DOT database based on the input parameters.\n\n    Args:\n        freq (str): Frequency (e.g., \"A\" for annual).\n        country (str): Country code, multiple country codes can be connected with \"+\".\n        indicator (str): Indicator code.\n        counterpart (str): Counterpart country code.\n        start (str | int): Start year.\n        end (str | int): End year.\n\n    Returns:\n        str: Description of the queried data. Do not perform further analysis or retry if the query fails.\n    ","inputSchema":{"properties":{"freq":{"title":"Freq","type":"string"},"country":{"title":"Country","type":"string"},"indicator":{"title":"Indicator","type":"string"},"counterpart":{"title":"Counterpart","type":"string"},"start":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"Start"},"end":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"End"}},"required":["freq","country","indicator","counterpart","start","end"],"title":"fetch_dot_dataArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"fetch_dot_dataOutput","type":"object"}},{"name":"fetch_bop_data","description":"\n    Retrieves compact format time series data from the BOP database based on the input parameters.\n\n    Args:\n        freq (str): Frequency (e.g., \"A\" for annual, \"Q\" for quarterly, \"M\" for monthly).\n        country (str): Country code, multiple country codes can be connected with \"+\".\n        indicator (str): Indicator code.\n        start (str | int): Start year.\n        end (str | int): End year.\n\n    Returns:\n        str: Description of the queried data. Do not perform further analysis or retry if the query fails.\n    ","inputSchema":{"properties":{"freq":{"title":"Freq","type":"string"},"country":{"title":"Country","type":"string"},"indicator":{"title":"Indicator","type":"string"},"start":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"Start"},"end":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"End"}},"required":["freq","country","indicator","start","end"],"title":"fetch_bop_dataArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"fetch_bop_dataOutput","type":"object"}},{"name":"fetch_cdis_data","description":"\n    Retrieves compact format time series data from the CDIS database based on the input parameters.\n\n    Args:\n        freq (str): Frequency (e.g., \"A\" for annual).\n        country (str): Country code, multiple country codes can be connected with \"+\".\n        indicator (str): Indicator code.\n        counterpart (str): Counterpart country code.\n        start (str | int): Start year.\n        end (str | int): End year.\n\n    Returns:\n        str: Description of the queried data. Do not perform further analysis or retry if the query fails.\n    ","inputSchema":{"properties":{"freq":{"title":"Freq","type":"string"},"country":{"title":"Country","type":"string"},"indicator":{"title":"Indicator","type":"string"},"counterpart":{"title":"Counterpart","type":"string"},"start":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"Start"},"end":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"End"}},"required":["freq","country","indicator","counterpart","start","end"],"title":"fetch_cdis_dataArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"fetch_cdis_dataOutput","type":"object"}},{"name":"fetch_cpis_data","description":"\n    Retrieves compact format time series data from the CPIS database based on the input parameters.\n\n    Args:\n        freq (str): Frequency (e.g., \"A\" for annual).\n        country (str): Country code, multiple country codes can be connected with \"+\".\n        indicator (str): Indicator code.\n        counter_country (str): Counterpart country code.\n        start (str | int): Start year.\n        end (str | int): End year.\n\n    Returns:\n        str: Description of the queried data. Do not perform further analysis or retry if the query fails.\n    ","inputSchema":{"properties":{"freq":{"title":"Freq","type":"string"},"country":{"title":"Country","type":"string"},"indicator":{"title":"Indicator","type":"string"},"counter_country":{"title":"Counter Country","type":"string"},"start":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"Start"},"end":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"End"}},"required":["freq","country","indicator","counter_country","start","end"],"title":"fetch_cpis_dataArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"fetch_cpis_dataOutput","type":"object"}},{"name":"fetch_gfsmab_data","description":"\n    Retrieves compact format time series data from the GFSMAB database based on the input parameters.\n\n    Args:\n        freq (str): Frequency (e.g., \"A\" for annual).\n        country (str): Country code, multiple country codes can be connected with \"+\".\n        unit (str): Unit code XDC or XDC_R_B1GQ (Percent of GDP).\n        indicator (str): Indicator code.\n        start (str | int): Start year.\n        end (str | int): End year.\n\n    Returns:\n        str: Description of the queried data. Do not perform further analysis or retry if the query fails.\n    ","inputSchema":{"properties":{"freq":{"title":"Freq","type":"string"},"country":{"title":"Country","type":"string"},"unit":{"title":"Unit","type":"string"},"indicator":{"title":"Indicator","type":"string"},"start":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"Start"},"end":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"End"}},"required":["freq","country","unit","indicator","start","end"],"title":"fetch_gfsmab_dataArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"fetch_gfsmab_dataOutput","type":"object"}},{"name":"fetch_mfs_data","description":"\n    Retrieves compact format time series data from the MFS database based on the input parameters.\n\n    Args:\n        freq (str): Frequency (e.g., \"A\" for annual).\n        country (str): Country code, multiple country codes can be connected with \"+\".\n        indicator (str): Indicator code.\n        start (str | int): Start year.\n        end (str | int): End year.\n\n    Returns:\n        str: Description of the queried data. Do not perform further analysis or retry if the query fails.\n    ","inputSchema":{"properties":{"freq":{"title":"Freq","type":"string"},"country":{"title":"Country","type":"string"},"indicator":{"title":"Indicator","type":"string"},"start":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"Start"},"end":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"End"}},"required":["freq","country","indicator","start","end"],"title":"fetch_mfs_dataArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"fetch_mfs_dataOutput","type":"object"}},{"name":"fetch_fsi_data","description":"\n    Retrieves compact format time series data from the FSI database based on the input parameters.\n\n    Args:\n        freq (str): Frequency (e.g., \"A\" for annual).\n        country (str): Country code, multiple country codes can be connected with \"+\".\n        indicator (str): Indicator code.\n        start (str | int): Start year.\n        end (str | int): End year.\n\n    Returns:\n        str: Description of the queried data. Do not perform further analysis or retry if the query fails.\n    ","inputSchema":{"properties":{"freq":{"title":"Freq","type":"string"},"country":{"title":"Country","type":"string"},"indicator":{"title":"Indicator","type":"string"},"start":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"Start"},"end":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"End"}},"required":["freq","country","indicator","start","end"],"title":"fetch_fsi_dataArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"fetch_fsi_dataOutput","type":"object"}},{"name":"list_indicators","description":"\n    Returns a list of indicators for the specified dataset, read from the corresponding .json file in the local indicators directory.\n\n    Args:\n        dataset_id (str): Dataset ID, such as \"IFS\", \"DOT\", \"BOP\", etc.\n\n    Returns:\n        list: List of indicators.\n    ","inputSchema":{"properties":{"dataset_id":{"title":"Dataset Id","type":"string"}},"required":["dataset_id"],"title":"list_indicatorsArguments","type":"object"}},{"name":"list_countries","description":"\n    Returns a list of available countries for the specified dataset, read from the corresponding .json file in the local areas directory.\n\n    Args:\n        dataset_id (str): Dataset ID, such as \"IFS\", \"DOT\", \"BOP\", etc.\n\n    Returns:\n        list: List of countries.\n    ","inputSchema":{"properties":{"dataset_id":{"title":"Dataset Id","type":"string"}},"required":["dataset_id"],"title":"list_countriesArguments","type":"object"}}]}}
+
+✅ Stdio tools/list: tools key found in response.
+
+--- [CHECK 3] HTTP streamable tools/list (raw output) ---
+>>> Starting container in HTTP mode on port 8614...
+c8ea2245617abc8e72fbb199199b3ddcc9188e4c2ac4d7ce74f81faf5a735361
+>>> Waiting 5s for server to start...
+>>> Container logs so far:
+[mcp-proxy] Listening on 0.0.0.0:8647/mcp
+[mcp-proxy] Wrapping: python -c from imf_data_mcp import mcp; mcp.run()
+
+>>> Sending HTTP initialize request to get session ID...
+event: message
+data: {"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"prompts":{"listChanged":false},"resources":{"subscribe":false,"listChanged":false},"tools":{"listChanged":false}},"serverInfo":{"name":"IMF Data Server","version":"1.26.0"}}}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> Content-Length: 154
+> 
+} [154 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.15
+< Date: Sun, 29 Mar 2026 17:46:49 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: 295067e42ab947079bb3390c7bd3a758
+< 
+{ [297 bytes data]
+* Closing connection 0
+✅ Got session ID: 295067e42ab947079bb3390c7bd3a758
+>>> Sending HTTP notifications/initialized...
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 295067e42ab947079bb3390c7bd3a758
+> Content-Length: 54
+> 
+} [54 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 202 Accepted
+< Server: BaseHTTP/0.6 Python/3.11.15
+< Date: Sun, 29 Mar 2026 17:46:50 GMT
+< 
+{ [0 bytes data]
+* Closing connection 0
+>>> Sending HTTP tools/list request:
+>>> Raw HTTP response:
+event: message
+data: {"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"fetch_ifs_data","description":"\n    Retrieves compact format time series data from the IFS database based on the input parameters.\n\n    Args:\n        freq (str): Frequency (e.g., \"A\" for annual).\n        country (str): Country code, multiple country codes can be connected with \"+\".\n        indicator (str): Indicator code.\n        start (str | int): Start year.\n        end (str | int): End year.\n\n    Returns:\n        str: Description of the queried data. Do not perform further analysis or retry if the query fails.\n    ","inputSchema":{"properties":{"freq":{"title":"Freq","type":"string"},"country":{"title":"Country","type":"string"},"indicator":{"title":"Indicator","type":"string"},"start":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"Start"},"end":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"End"}},"required":["freq","country","indicator","start","end"],"title":"fetch_ifs_dataArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"fetch_ifs_dataOutput","type":"object"}},{"name":"fetch_dot_data","description":"\n    Retrieves compact format time series data from the DOT database based on the input parameters.\n\n    Args:\n        freq (str): Frequency (e.g., \"A\" for annual).\n        country (str): Country code, multiple country codes can be connected with \"+\".\n        indicator (str): Indicator code.\n        counterpart (str): Counterpart country code.\n        start (str | int): Start year.\n        end (str | int): End year.\n\n    Returns:\n        str: Description of the queried data. Do not perform further analysis or retry if the query fails.\n    ","inputSchema":{"properties":{"freq":{"title":"Freq","type":"string"},"country":{"title":"Country","type":"string"},"indicator":{"title":"Indicator","type":"string"},"counterpart":{"title":"Counterpart","type":"string"},"start":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"Start"},"end":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"End"}},"required":["freq","country","indicator","counterpart","start","end"],"title":"fetch_dot_dataArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"fetch_dot_dataOutput","type":"object"}},{"name":"fetch_bop_data","description":"\n    Retrieves compact format time series data from the BOP database based on the input parameters.\n\n    Args:\n        freq (str): Frequency (e.g., \"A\" for annual, \"Q\" for quarterly, \"M\" for monthly).\n        country (str): Country code, multiple country codes can be connected with \"+\".\n        indicator (str): Indicator code.\n        start (str | int): Start year.\n        end (str | int): End year.\n\n    Returns:\n        str: Description of the queried data. Do not perform further analysis or retry if the query fails.\n    ","inputSchema":{"properties":{"freq":{"title":"Freq","type":"string"},"country":{"title":"Country","type":"string"},"indicator":{"title":"Indicator","type":"string"},"start":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"Start"},"end":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"End"}},"required":["freq","country","indicator","start","end"],"title":"fetch_bop_dataArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"fetch_bop_dataOutput","type":"object"}},{"name":"fetch_cdis_data","description":"\n    Retrieves compact format time series data from the CDIS database based on the input parameters.\n\n    Args:\n        freq (str): Frequency (e.g., \"A\" for annual).\n        country (str): Country code, multiple country codes can be connected with \"+\".\n        indicator (str): Indicator code.\n        counterpart (str): Counterpart country code.\n        start (str | int): Start year.\n        end (str | int): End year.\n\n    Returns:\n        str: Description of the queried data. Do not perform further analysis or retry if the query fails.\n    ","inputSchema":{"properties":{"freq":{"title":"Freq","type":"string"},"country":{"title":"Country","type":"string"},"indicator":{"title":"Indicator","type":"string"},"counterpart":{"title":"Counterpart","type":"string"},"start":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"Start"},"end":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"End"}},"required":["freq","country","indicator","counterpart","start","end"],"title":"fetch_cdis_dataArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"fetch_cdis_dataOutput","type":"object"}},{"name":"fetch_cpis_data","description":"\n    Retrieves compact format time series data from the CPIS database based on the input parameters.\n\n    Args:\n        freq (str): Frequency (e.g., \"A\" for annual).\n        country (str): Country code, multiple country codes can be connected with \"+\".\n        indicator (str): Indicator code.\n        counter_country (str): Counterpart country code.\n        start (str | int): Start year.\n        end (str | int): End year.\n\n    Returns:\n        str: Description of the queried data. Do not perform further analysis or retry if the query fails.\n    ","inputSchema":{"properties":{"freq":{"title":"Freq","type":"string"},"country":{"title":"Country","type":"string"},"indicator":{"title":"Indicator","type":"string"},"counter_country":{"title":"Counter Country","type":"string"},"start":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"Start"},"end":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"End"}},"required":["freq","country","indicator","counter_country","start","end"],"title":"fetch_cpis_dataArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"fetch_cpis_dataOutput","type":"object"}},{"name":"fetch_gfsmab_data","description":"\n    Retrieves compact format time series data from the GFSMAB database based on the input parameters.\n\n    Args:\n        freq (str): Frequency (e.g., \"A\" for annual).\n        country (str): Country code, multiple country codes can be connected with \"+\".\n        unit (str): Unit code XDC or XDC_R_B1GQ (Percent of GDP).\n        indicator (str): Indicator code.\n        start (str | int): Start year.\n        end (str | int): End year.\n\n    Returns:\n        str: Description of the queried data. Do not perform further analysis or retry if the query fails.\n    ","inputSchema":{"properties":{"freq":{"title":"Freq","type":"string"},"country":{"title":"Country","type":"string"},"unit":{"title":"Unit","type":"string"},"indicator":{"title":"Indicator","type":"string"},"start":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"Start"},"end":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"End"}},"required":["freq","country","unit","indicator","start","end"],"title":"fetch_gfsmab_dataArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"fetch_gfsmab_dataOutput","type":"object"}},{"name":"fetch_mfs_data","description":"\n    Retrieves compact format time series data from the MFS database based on the input parameters.\n\n    Args:\n        freq (str): Frequency (e.g., \"A\" for annual).\n        country (str): Country code, multiple country codes can be connected with \"+\".\n        indicator (str): Indicator code.\n        start (str | int): Start year.\n        end (str | int): End year.\n\n    Returns:\n        str: Description of the queried data. Do not perform further analysis or retry if the query fails.\n    ","inputSchema":{"properties":{"freq":{"title":"Freq","type":"string"},"country":{"title":"Country","type":"string"},"indicator":{"title":"Indicator","type":"string"},"start":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"Start"},"end":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"End"}},"required":["freq","country","indicator","start","end"],"title":"fetch_mfs_dataArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"fetch_mfs_dataOutput","type":"object"}},{"name":"fetch_fsi_data","description":"\n    Retrieves compact format time series data from the FSI database based on the input parameters.\n\n    Args:\n        freq (str): Frequency (e.g., \"A\" for annual).\n        country (str): Country code, multiple country codes can be connected with \"+\".\n        indicator (str): Indicator code.\n        start (str | int): Start year.\n        end (str | int): End year.\n\n    Returns:\n        str: Description of the queried data. Do not perform further analysis or retry if the query fails.\n    ","inputSchema":{"properties":{"freq":{"title":"Freq","type":"string"},"country":{"title":"Country","type":"string"},"indicator":{"title":"Indicator","type":"string"},"start":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"Start"},"end":{"anyOf":[{"type":"string"},{"type":"integer"}],"title":"End"}},"required":["freq","country","indicator","start","end"],"title":"fetch_fsi_dataArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"fetch_fsi_dataOutput","type":"object"}},{"name":"list_indicators","description":"\n    Returns a list of indicators for the specified dataset, read from the corresponding .json file in the local indicators directory.\n\n    Args:\n        dataset_id (str): Dataset ID, such as \"IFS\", \"DOT\", \"BOP\", etc.\n\n    Returns:\n        list: List of indicators.\n    ","inputSchema":{"properties":{"dataset_id":{"title":"Dataset Id","type":"string"}},"required":["dataset_id"],"title":"list_indicatorsArguments","type":"object"}},{"name":"list_countries","description":"\n    Returns a list of available countries for the specified dataset, read from the corresponding .json file in the local areas directory.\n\n    Args:\n        dataset_id (str): Dataset ID, such as \"IFS\", \"DOT\", \"BOP\", etc.\n\n    Returns:\n        list: List of countries.\n    ","inputSchema":{"properties":{"dataset_id":{"title":"Dataset Id","type":"string"}},"required":["dataset_id"],"title":"list_countriesArguments","type":"object"}}]}}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 295067e42ab947079bb3390c7bd3a758
+> Content-Length: 58
+> 
+} [58 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.15
+< Date: Sun, 29 Mar 2026 17:46:51 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: 295067e42ab947079bb3390c7bd3a758
+< 
+{ [10489 bytes data]
+* Closing connection 0
+
+✅ HTTP tools/list: tools key found in response.
+
+>>> Stopping HTTP container...
+imf-data-mcp-debug-http
+
+========== End of Debug: Sun, Mar 29, 2026 11:16:52 PM ==========

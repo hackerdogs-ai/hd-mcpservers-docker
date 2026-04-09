@@ -1,0 +1,181 @@
+========== VERBOSE DEBUG: aws-documentation-mcp ==========
+Timestamp: Sun, Mar 29, 2026  7:02:59 PM
+
+--- [CHECK 1] Building Docker image ---
+>>> docker build -t aws-documentation-mcp -t hackerdogs/aws-documentation-mcp:latest aws-documentation-mcp
+
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 831B done
+#1 DONE 0.0s
+
+#2 [auth] library/node:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 ...
+
+#4 [internal] load metadata for docker.io/library/node:20-slim
+#4 DONE 0.9s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 1.0s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+#6 resolve docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634 0.1s done
+#6 DONE 0.1s
+
+#7 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3
+#7 resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3 0.1s done
+#7 DONE 0.1s
+
+#8 [internal] load build context
+#8 transferring context: 72B done
+#8 DONE 0.0s
+
+#9 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#9 CACHED
+
+#10 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#10 CACHED
+
+#11 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#11 CACHED
+
+#12 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.aws-documentation-mcp-server
+#12 CACHED
+
+#13 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#13 CACHED
+
+#14 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#14 CACHED
+
+#15 [stage-1 3/9] WORKDIR /app
+#15 CACHED
+
+#16 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#16 CACHED
+
+#17 [stage-1 9/9] RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
+#17 CACHED
+
+#18 exporting to image
+#18 exporting layers done
+#18 exporting manifest sha256:53871116786c880aa84f58c7dd98eaef8473b40b48cf62469354b7ba992c3e0c done
+#18 exporting config sha256:2c25f9b35d288516e6cf16c316edaf28f545d277d9a5a81dfe7b1fea83c50ea4 done
+#18 exporting attestation manifest sha256:20d6939e5f8b3ae8f245f46ba911b5848bd944f7e352e09748f4ed253a54284e 0.0s done
+#18 exporting manifest list sha256:1b98dcece326c3537c8c27a21da088d2b1f0c35177a453317aeb8129e93f2f82 0.0s done
+#18 naming to docker.io/library/aws-documentation-mcp:latest done
+#18 unpacking to docker.io/library/aws-documentation-mcp:latest 0.0s done
+#18 naming to docker.io/hackerdogs/aws-documentation-mcp:latest done
+#18 unpacking to docker.io/hackerdogs/aws-documentation-mcp:latest 0.0s done
+#18 DONE 0.2s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/0e7t02an6s11zm6b62qoqrsro
+
+✅ Build succeeded.
+
+--- [CHECK 2] Stdio tools/list (raw output) ---
+>>> Sending to container via stdio:
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"debug","version":"0.0.1"}}}
+{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}
+
+>>> Raw container response:
+{"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"prompts":{"listChanged":false},"resources":{"subscribe":false,"listChanged":false},"tools":{"listChanged":false}},"serverInfo":{"name":"awslabs.aws-documentation-mcp-server","version":"1.26.0"},"instructions":"\n    # AWS Documentation MCP Server\n\n    This server provides tools to access public AWS documentation, search for content, and get recommendations.\n\n    ## Best Practices\n\n    - For long documentation pages, make multiple calls to `read_documentation` with different `start_index` values for pagination\n    - By default, use read_sections when the answer could be within a specific section(s), given the table of contents. Otherwise, use read_documentation to scan the entire page.\n    - For very long documents (>30,000 characters), stop reading if you've found the needed information\n    - When searching, use specific technical terms rather than general phrases\n    - Use `recommend` tool to discover related content that might not appear in search results\n    - For recent updates to a service, get an URL for any page in that service, then check the **New** section of the `recommend` tool output on that URL\n    - If multiple searches with similar terms yield insufficient results, pivot to using `recommend` to find related pages.\n    - Always cite the documentation URL when providing information to users\n\n    ## Tool Selection Guide\n\n    - Use `search_documentation` when: You need to find documentation about a specific AWS service or feature\n    - Use `read_documentation` when: You have a specific documentation URL and need its content\n    - Use `read_sections` when: You have a specific documentation URL and specific section title(s) and want content from those specific section(s)\n    - Use `recommend` when: You want to find related content to a documentation page you're already viewing or need to find newly released information\n    - Use `recommend` as a fallback when: Multiple searches have not yielded the specific information needed\n    "}}
+[03/29/26 13:33:03] INFO     Processing request of type            server.py:720
+                             ListToolsRequest                                   
+{"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"read_documentation","description":"Fetch and convert an AWS documentation page to markdown format.\n\n    ## Usage\n\n    This tool retrieves the content of an AWS documentation page and converts it to markdown format.\n    For long documents, you can make multiple calls with different start_index values to retrieve\n    the entire content in chunks.\n\n    ## URL Requirements\n\n    - Must be from the docs.aws.amazon.com domain\n    - Must end with .html\n\n    ## Example URLs\n\n    - https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html\n    - https://docs.aws.amazon.com/lambda/latest/dg/lambda-invocation.html\n\n    ## Output Format\n\n    The output is formatted as markdown text with:\n    - Preserved headings and structure\n    - Code blocks for examples\n    - Lists and tables converted to markdown format\n\n    ## Handling Long Documents\n\n    If the response indicates the document was truncated, you have several options:\n\n    1. **Continue Reading**: Make another call with start_index set to the end of the previous response\n    2. **Stop Early**: For very long documents (>30,000 characters), if you've already found the specific information needed, you can stop reading\n\n    Args:\n        ctx: MCP context for logging and error handling\n        url: URL of the AWS documentation page to read\n        max_length: Maximum number of characters to return\n        start_index: On return output starting at this character index\n\n    Returns:\n        Markdown content of the AWS documentation\n    ","inputSchema":{"properties":{"url":{"description":"URL of the AWS documentation page to read","title":"Url","type":"string"},"max_length":{"default":5000,"description":"Maximum number of characters to return.","exclusiveMaximum":1000000,"exclusiveMinimum":0,"title":"Max Length","type":"integer"},"start_index":{"default":0,"description":"On return output starting at this character index, useful if a previous fetch was truncated and more content is required.","minimum":0,"title":"Start Index","type":"integer"}},"required":["url"],"title":"read_documentationArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"read_documentationOutput","type":"object"}},{"name":"read_sections","description":"Extract specific sections from AWS documentation pages by title.\n\n    Retrieves a page, converts to markdown, and returns only matching sections.\n    Section matching is case-insensitive and handles whitespace differences.\n\n    ## URL Requirements\n    - Must end with .html\n\n    ## Read Sections Tips\n\n    - Use exact section titles from search results 'sections' field when available\n    - Section matching is case-insensitive and handles whitespace differences\n    - Include multiple related sections in one call for comprehensive coverage\n\n    ## Example Usage\n\n    ```\n    # If query is about S3 bucket naming rules:\n    # Available sections: ['General purpose buckets naming rules', 'Example general purpose bucket names', 'Best practices', 'Creating a bucket that uses a GUID in the bucket name']\n    # Read these specific sections:\n    read_sections(\n        url='https://docs.aws.amazon.com/s3/latest/userguide/bucketnamingrules.html',\n        section_titles=['General purpose buckets naming rules', 'Best practices'],\n    )\n\n    # If query is about Python Lambda function examples:\n    # Available sections: ['Example Python Lambda function code', 'Handler naming conventions', 'Using the Lambda event object', 'Accessing and using the Lambda context object'. 'Valid handler signatures for Python handlers', 'Returning a value', 'Using the AWS SDK for Python (Boto3) in your handler', 'Accessing environment variables, 'Code best practices for Python Lambda functions']\n    # Read these specific sections:\n    read_sections(\n        url='https://docs.aws.amazon.com/lambda/latest/dg/python-handler.html',\n        section_titles=[\n            'Example Python Lambda function code',\n            'Code best practices for Python Lambda functions',\n        ],\n    )\n    ```\n\n    Args:\n        ctx: MCP context for logging and error handling\n        url: URL of the AWS documentation page to read\n        section_titles: List of section titles to extract\n\n    Returns:\n        Filtered markdown content containing only the requested sections\n    ","inputSchema":{"properties":{"url":{"description":"URL of the AWS documentation page to read","title":"Url","type":"string"},"section_titles":{"description":"List of section titles to extract from the documentation","items":{"type":"string"},"title":"Section Titles","type":"array"}},"required":["url","section_titles"],"title":"read_sectionsArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"read_sectionsOutput","type":"object"}},{"name":"search_documentation","description":"Search AWS documentation using the official AWS Documentation Search API.\n\n    ## Usage\n\n    This tool searches across all AWS documentation for pages matching your search phrase.\n    Use it to find relevant documentation when you don't have a specific URL.\n\n    ## Search Tips\n\n    - Use specific technical terms rather than general phrases\n    - Include service names to narrow results (e.g., \"S3 bucket versioning\" instead of just \"versioning\")\n    - Use quotes for exact phrase matching (e.g., \"AWS Lambda function URLs\")\n    - Include abbreviations and alternative terms to improve results\n    - Use guide_type and product_type filters found from a SearchResponse's \"facets\" property:\n        - Filter only for broad search queries with patterns:\n            - \"What is [service]?\" -> product_types: [\"Amazon Simple Storage Service\"]\n            - \"How to use <service 1> with <service 2>?\" -> product_types: [<service 1>, <service 2>]\n            - \"[service] getting started\" -> product_types: [<service>] + guide_types: [\"User Guide, \"Developer Guide\"]\n            - \"API reference for [service]\" -> product_types: [<service>] + guide_types: [\"API Reference\"]\n\n    ## Result Interpretation\n\n    Each SearchResponse includes:\n    - search_results: List of documentation pages, each with:\n        - rank_order: The relevance ranking (lower is more relevant)\n        - url: The documentation page URL\n        - title: The page title\n        - context: A brief excerpt or summary (if available)\n        - sections: Table of contents (when available) - these section titles can be used with the read_sections tool for targeted content extraction\n    - facets: Available filters (product_types, guide_types) for refining searches\n    - query_id: Unique identifier for this search session\n\n\n    Args:\n        ctx: MCP context for logging and error handling\n        search_phrase: Search phrase to use\n        search_intent: The intent behind the search requested by the user\n        limit: Maximum number of results to return\n        product_types: Filter by AWS product/service\n        guide_types: Filter by guide type\n\n    Returns:\n        List of search results with URLs, titles, query ID, context snippets, and facets for filtering\n    ","inputSchema":{"properties":{"search_phrase":{"description":"Search phrase to use","title":"Search Phrase","type":"string"},"search_intent":{"default":"","description":"For the search_phrase parameter, describe the search intent of the user. CRITICAL: Do not include any PII or customer data, describe only the AWS-related intent for search.","title":"Search Intent","type":"string"},"limit":{"default":10,"description":"Maximum number of results to return","maximum":50,"minimum":1,"title":"Limit","type":"integer"},"product_types":{"anyOf":[{"items":{"type":"string"},"type":"array"},{"type":"null"}],"default":null,"description":"Filter results by AWS product/service (e.g., [\"Amazon Simple Storage Service\"])","title":"Product Types"},"guide_types":{"anyOf":[{"items":{"type":"string"},"type":"array"},{"type":"null"}],"default":null,"description":"Filter results by guide type (e.g., [\"User Guide\", \"API Reference\", \"Developer Guide\"])","title":"Guide Types"}},"required":["search_phrase"],"title":"search_documentationArguments","type":"object"},"outputSchema":{"$defs":{"SearchResult":{"description":"Search result from AWS documentation search.","properties":{"rank_order":{"title":"Rank Order","type":"integer"},"url":{"title":"Url","type":"string"},"title":{"title":"Title","type":"string"},"context":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Context"},"sections":{"anyOf":[{"items":{"type":"string"},"type":"array"},{"type":"null"}],"default":null,"title":"Sections"}},"required":["rank_order","url","title"],"title":"SearchResult","type":"object"}},"description":"Complete search response including results and facets.","properties":{"search_results":{"items":{"$ref":"#/$defs/SearchResult"},"title":"Search Results","type":"array"},"facets":{"anyOf":[{"additionalProperties":{"items":{"type":"string"},"type":"array"},"type":"object"},{"type":"null"}],"default":null,"title":"Facets"},"query_id":{"title":"Query Id","type":"string"}},"required":["search_results","query_id"],"title":"SearchResponse","type":"object"}},{"name":"recommend","description":"Get content recommendations for an AWS documentation page.\n\n    ## Usage\n\n    This tool provides recommendations for related AWS documentation pages based on a given URL.\n    Use it to discover additional relevant content that might not appear in search results.\n\n    ## Recommendation Types\n\n    The recommendations include four categories:\n\n    1. **Highly Rated**: Popular pages within the same AWS service\n    2. **New**: Recently added pages within the same AWS service - useful for finding newly released features\n    3. **Similar**: Pages covering similar topics to the current page\n    4. **Journey**: Pages commonly viewed next by other users\n\n    ## When to Use\n\n    - After reading a documentation page to find related content\n    - When exploring a new AWS service to discover important pages\n    - To find alternative explanations of complex concepts\n    - To discover the most popular pages for a service\n    - To find newly released information by using a service's welcome page URL and checking the **New** recommendations\n\n    ## Finding New Features\n\n    To find newly released information about a service:\n    1. Find any page belong to that service, typically you can try the welcome page\n    2. Call this tool with that URL\n    3. Look specifically at the **New** recommendation type in the results\n\n    ## Result Interpretation\n\n    Each recommendation includes:\n    - url: The documentation page URL\n    - title: The page title\n    - context: A brief description (if available)\n\n    Args:\n        ctx: MCP context for logging and error handling\n        url: URL of the AWS documentation page to get recommendations for\n\n    Returns:\n        List of recommended pages with URLs, titles, and context\n    ","inputSchema":{"properties":{"url":{"description":"URL of the AWS documentation page to get recommendations for","title":"Url","type":"string"}},"required":["url"],"title":"recommendArguments","type":"object"},"outputSchema":{"$defs":{"RecommendationResult":{"description":"Recommendation result from AWS documentation.","properties":{"url":{"title":"Url","type":"string"},"title":{"title":"Title","type":"string"},"context":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Context"}},"required":["url","title"],"title":"RecommendationResult","type":"object"}},"properties":{"result":{"items":{"$ref":"#/$defs/RecommendationResult"},"title":"Result","type":"array"}},"required":["result"],"title":"recommendOutput","type":"object"}}]}}
+
+✅ Stdio tools/list: tools key found in response.
+
+--- [CHECK 3] HTTP streamable tools/list (raw output) ---
+>>> Starting container in HTTP mode on port 8610...
+75af56c5d252f8f990a632db7a19577980377f0554ccbea10c47526513a2ab85
+>>> Waiting 5s for server to start...
+>>> Container logs so far:
+[mcp-proxy] Listening on 0.0.0.0:8610/mcp
+[mcp-proxy] Wrapping: awslabs.aws-documentation-mcp-server
+
+>>> Sending HTTP initialize request to get session ID...
+event: message
+data: {"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"prompts":{"listChanged":false},"resources":{"subscribe":false,"listChanged":false},"tools":{"listChanged":false}},"serverInfo":{"name":"awslabs.aws-documentation-mcp-server","version":"1.26.0"},"instructions":"\n    # AWS Documentation MCP Server\n\n    This server provides tools to access public AWS documentation, search for content, and get recommendations.\n\n    ## Best Practices\n\n    - For long documentation pages, make multiple calls to `read_documentation` with different `start_index` values for pagination\n    - By default, use read_sections when the answer could be within a specific section(s), given the table of contents. Otherwise, use read_documentation to scan the entire page.\n    - For very long documents (>30,000 characters), stop reading if you've found the needed information\n    - When searching, use specific technical terms rather than general phrases\n    - Use `recommend` tool to discover related content that might not appear in search results\n    - For recent updates to a service, get an URL for any page in that service, then check the **New** section of the `recommend` tool output on that URL\n    - If multiple searches with similar terms yield insufficient results, pivot to using `recommend` to find related pages.\n    - Always cite the documentation URL when providing information to users\n\n    ## Tool Selection Guide\n\n    - Use `search_documentation` when: You need to find documentation about a specific AWS service or feature\n    - Use `read_documentation` when: You have a specific documentation URL and need its content\n    - Use `read_sections` when: You have a specific documentation URL and specific section title(s) and want content from those specific section(s)\n    - Use `recommend` when: You want to find related content to a documentation page you're already viewing or need to find newly released information\n    - Use `recommend` as a fallback when: Multiple searches have not yielded the specific information needed\n    "}}
+
+*   Trying 127.0.0.1:8610...
+* Connected to localhost (127.0.0.1) port 8610 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8610
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> Content-Length: 154
+> 
+} [154 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.15
+< Date: Sun, 29 Mar 2026 13:33:10 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: 0095c1e082b445f180eb55d67cd2ec2e
+< 
+{ [2122 bytes data]
+* Closing connection 0
+✅ Got session ID: 0095c1e082b445f180eb55d67cd2ec2e
+>>> Sending HTTP notifications/initialized...
+*   Trying 127.0.0.1:8610...
+* Connected to localhost (127.0.0.1) port 8610 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8610
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 0095c1e082b445f180eb55d67cd2ec2e
+> Content-Length: 54
+> 
+} [54 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 202 Accepted
+< Server: BaseHTTP/0.6 Python/3.11.15
+< Date: Sun, 29 Mar 2026 13:33:10 GMT
+< 
+{ [0 bytes data]
+* Closing connection 0
+>>> Sending HTTP tools/list request:
+>>> Raw HTTP response:
+event: message
+data: {"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"read_documentation","description":"Fetch and convert an AWS documentation page to markdown format.\n\n    ## Usage\n\n    This tool retrieves the content of an AWS documentation page and converts it to markdown format.\n    For long documents, you can make multiple calls with different start_index values to retrieve\n    the entire content in chunks.\n\n    ## URL Requirements\n\n    - Must be from the docs.aws.amazon.com domain\n    - Must end with .html\n\n    ## Example URLs\n\n    - https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html\n    - https://docs.aws.amazon.com/lambda/latest/dg/lambda-invocation.html\n\n    ## Output Format\n\n    The output is formatted as markdown text with:\n    - Preserved headings and structure\n    - Code blocks for examples\n    - Lists and tables converted to markdown format\n\n    ## Handling Long Documents\n\n    If the response indicates the document was truncated, you have several options:\n\n    1. **Continue Reading**: Make another call with start_index set to the end of the previous response\n    2. **Stop Early**: For very long documents (>30,000 characters), if you've already found the specific information needed, you can stop reading\n\n    Args:\n        ctx: MCP context for logging and error handling\n        url: URL of the AWS documentation page to read\n        max_length: Maximum number of characters to return\n        start_index: On return output starting at this character index\n\n    Returns:\n        Markdown content of the AWS documentation\n    ","inputSchema":{"properties":{"url":{"description":"URL of the AWS documentation page to read","title":"Url","type":"string"},"max_length":{"default":5000,"description":"Maximum number of characters to return.","exclusiveMaximum":1000000,"exclusiveMinimum":0,"title":"Max Length","type":"integer"},"start_index":{"default":0,"description":"On return output starting at this character index, useful if a previous fetch was truncated and more content is required.","minimum":0,"title":"Start Index","type":"integer"}},"required":["url"],"title":"read_documentationArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"read_documentationOutput","type":"object"}},{"name":"read_sections","description":"Extract specific sections from AWS documentation pages by title.\n\n    Retrieves a page, converts to markdown, and returns only matching sections.\n    Section matching is case-insensitive and handles whitespace differences.\n\n    ## URL Requirements\n    - Must end with .html\n\n    ## Read Sections Tips\n\n    - Use exact section titles from search results 'sections' field when available\n    - Section matching is case-insensitive and handles whitespace differences\n    - Include multiple related sections in one call for comprehensive coverage\n\n    ## Example Usage\n\n    ```\n    # If query is about S3 bucket naming rules:\n    # Available sections: ['General purpose buckets naming rules', 'Example general purpose bucket names', 'Best practices', 'Creating a bucket that uses a GUID in the bucket name']\n    # Read these specific sections:\n    read_sections(\n        url='https://docs.aws.amazon.com/s3/latest/userguide/bucketnamingrules.html',\n        section_titles=['General purpose buckets naming rules', 'Best practices'],\n    )\n\n    # If query is about Python Lambda function examples:\n    # Available sections: ['Example Python Lambda function code', 'Handler naming conventions', 'Using the Lambda event object', 'Accessing and using the Lambda context object'. 'Valid handler signatures for Python handlers', 'Returning a value', 'Using the AWS SDK for Python (Boto3) in your handler', 'Accessing environment variables, 'Code best practices for Python Lambda functions']\n    # Read these specific sections:\n    read_sections(\n        url='https://docs.aws.amazon.com/lambda/latest/dg/python-handler.html',\n        section_titles=[\n            'Example Python Lambda function code',\n            'Code best practices for Python Lambda functions',\n        ],\n    )\n    ```\n\n    Args:\n        ctx: MCP context for logging and error handling\n        url: URL of the AWS documentation page to read\n        section_titles: List of section titles to extract\n\n    Returns:\n        Filtered markdown content containing only the requested sections\n    ","inputSchema":{"properties":{"url":{"description":"URL of the AWS documentation page to read","title":"Url","type":"string"},"section_titles":{"description":"List of section titles to extract from the documentation","items":{"type":"string"},"title":"Section Titles","type":"array"}},"required":["url","section_titles"],"title":"read_sectionsArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"read_sectionsOutput","type":"object"}},{"name":"search_documentation","description":"Search AWS documentation using the official AWS Documentation Search API.\n\n    ## Usage\n\n    This tool searches across all AWS documentation for pages matching your search phrase.\n    Use it to find relevant documentation when you don't have a specific URL.\n\n    ## Search Tips\n\n    - Use specific technical terms rather than general phrases\n    - Include service names to narrow results (e.g., \"S3 bucket versioning\" instead of just \"versioning\")\n    - Use quotes for exact phrase matching (e.g., \"AWS Lambda function URLs\")\n    - Include abbreviations and alternative terms to improve results\n    - Use guide_type and product_type filters found from a SearchResponse's \"facets\" property:\n        - Filter only for broad search queries with patterns:\n            - \"What is [service]?\" -> product_types: [\"Amazon Simple Storage Service\"]\n            - \"How to use <service 1> with <service 2>?\" -> product_types: [<service 1>, <service 2>]\n            - \"[service] getting started\" -> product_types: [<service>] + guide_types: [\"User Guide, \"Developer Guide\"]\n            - \"API reference for [service]\" -> product_types: [<service>] + guide_types: [\"API Reference\"]\n\n    ## Result Interpretation\n\n    Each SearchResponse includes:\n    - search_results: List of documentation pages, each with:\n        - rank_order: The relevance ranking (lower is more relevant)\n        - url: The documentation page URL\n        - title: The page title\n        - context: A brief excerpt or summary (if available)\n        - sections: Table of contents (when available) - these section titles can be used with the read_sections tool for targeted content extraction\n    - facets: Available filters (product_types, guide_types) for refining searches\n    - query_id: Unique identifier for this search session\n\n\n    Args:\n        ctx: MCP context for logging and error handling\n        search_phrase: Search phrase to use\n        search_intent: The intent behind the search requested by the user\n        limit: Maximum number of results to return\n        product_types: Filter by AWS product/service\n        guide_types: Filter by guide type\n\n    Returns:\n        List of search results with URLs, titles, query ID, context snippets, and facets for filtering\n    ","inputSchema":{"properties":{"search_phrase":{"description":"Search phrase to use","title":"Search Phrase","type":"string"},"search_intent":{"default":"","description":"For the search_phrase parameter, describe the search intent of the user. CRITICAL: Do not include any PII or customer data, describe only the AWS-related intent for search.","title":"Search Intent","type":"string"},"limit":{"default":10,"description":"Maximum number of results to return","maximum":50,"minimum":1,"title":"Limit","type":"integer"},"product_types":{"anyOf":[{"items":{"type":"string"},"type":"array"},{"type":"null"}],"default":null,"description":"Filter results by AWS product/service (e.g., [\"Amazon Simple Storage Service\"])","title":"Product Types"},"guide_types":{"anyOf":[{"items":{"type":"string"},"type":"array"},{"type":"null"}],"default":null,"description":"Filter results by guide type (e.g., [\"User Guide\", \"API Reference\", \"Developer Guide\"])","title":"Guide Types"}},"required":["search_phrase"],"title":"search_documentationArguments","type":"object"},"outputSchema":{"$defs":{"SearchResult":{"description":"Search result from AWS documentation search.","properties":{"rank_order":{"title":"Rank Order","type":"integer"},"url":{"title":"Url","type":"string"},"title":{"title":"Title","type":"string"},"context":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Context"},"sections":{"anyOf":[{"items":{"type":"string"},"type":"array"},{"type":"null"}],"default":null,"title":"Sections"}},"required":["rank_order","url","title"],"title":"SearchResult","type":"object"}},"description":"Complete search response including results and facets.","properties":{"search_results":{"items":{"$ref":"#/$defs/SearchResult"},"title":"Search Results","type":"array"},"facets":{"anyOf":[{"additionalProperties":{"items":{"type":"string"},"type":"array"},"type":"object"},{"type":"null"}],"default":null,"title":"Facets"},"query_id":{"title":"Query Id","type":"string"}},"required":["search_results","query_id"],"title":"SearchResponse","type":"object"}},{"name":"recommend","description":"Get content recommendations for an AWS documentation page.\n\n    ## Usage\n\n    This tool provides recommendations for related AWS documentation pages based on a given URL.\n    Use it to discover additional relevant content that might not appear in search results.\n\n    ## Recommendation Types\n\n    The recommendations include four categories:\n\n    1. **Highly Rated**: Popular pages within the same AWS service\n    2. **New**: Recently added pages within the same AWS service - useful for finding newly released features\n    3. **Similar**: Pages covering similar topics to the current page\n    4. **Journey**: Pages commonly viewed next by other users\n\n    ## When to Use\n\n    - After reading a documentation page to find related content\n    - When exploring a new AWS service to discover important pages\n    - To find alternative explanations of complex concepts\n    - To discover the most popular pages for a service\n    - To find newly released information by using a service's welcome page URL and checking the **New** recommendations\n\n    ## Finding New Features\n\n    To find newly released information about a service:\n    1. Find any page belong to that service, typically you can try the welcome page\n    2. Call this tool with that URL\n    3. Look specifically at the **New** recommendation type in the results\n\n    ## Result Interpretation\n\n    Each recommendation includes:\n    - url: The documentation page URL\n    - title: The page title\n    - context: A brief description (if available)\n\n    Args:\n        ctx: MCP context for logging and error handling\n        url: URL of the AWS documentation page to get recommendations for\n\n    Returns:\n        List of recommended pages with URLs, titles, and context\n    ","inputSchema":{"properties":{"url":{"description":"URL of the AWS documentation page to get recommendations for","title":"Url","type":"string"}},"required":["url"],"title":"recommendArguments","type":"object"},"outputSchema":{"$defs":{"RecommendationResult":{"description":"Recommendation result from AWS documentation.","properties":{"url":{"title":"Url","type":"string"},"title":{"title":"Title","type":"string"},"context":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Context"}},"required":["url","title"],"title":"RecommendationResult","type":"object"}},"properties":{"result":{"items":{"$ref":"#/$defs/RecommendationResult"},"title":"Result","type":"array"}},"required":["result"],"title":"recommendOutput","type":"object"}}]}}
+
+*   Trying 127.0.0.1:8610...
+* Connected to localhost (127.0.0.1) port 8610 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8610
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 0095c1e082b445f180eb55d67cd2ec2e
+> Content-Length: 58
+> 
+} [58 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.15
+< Date: Sun, 29 Mar 2026 13:33:10 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: 0095c1e082b445f180eb55d67cd2ec2e
+< 
+{ [12002 bytes data]
+* Closing connection 0
+
+✅ HTTP tools/list: tools key found in response.
+
+>>> Stopping HTTP container...
+aws-documentation-mcp-debug-http
+
+========== End of Debug: Sun, Mar 29, 2026  7:03:11 PM ==========

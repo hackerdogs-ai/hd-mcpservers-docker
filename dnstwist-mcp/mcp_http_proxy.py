@@ -111,8 +111,10 @@ class StdioSession:
     def _drain_stderr(self):
         try:
             if self.proc.stderr is not None:
-                for _ in iter(self.proc.stderr.readline, ""):
-                    pass
+                for line in iter(self.proc.stderr.readline, ""):
+                    # Print the child's error to the docker logs instead of passing!
+                    sys.stderr.write(f"[child-stderr] {line}")
+                    sys.stderr.flush()
         except Exception:
             pass
 

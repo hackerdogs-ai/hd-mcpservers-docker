@@ -2,8 +2,11 @@
   "mcpServers": {
     "acuvity-mcp-server-alterx-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "acuvity/mcp-server-alterx:latest"],
-      "env": {}
+      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "-e", "MCP_PORT", "hackerdogs/acuvity-mcp-server-alterx-mcp:latest"],
+      "env": {
+        "MCP_TRANSPORT": "stdio",
+        "MCP_PORT": "8380"
+      }
     }
   }
 }

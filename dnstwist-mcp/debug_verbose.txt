@@ -1,0 +1,186 @@
+========== VERBOSE DEBUG: dnstwist-mcp ==========
+Timestamp: Sun, Mar 29, 2026 11:55:48 PM
+
+--- [CHECK 1] Building Docker image ---
+>>> docker build -t dnstwist-mcp -t hackerdogs/dnstwist-mcp:latest dnstwist-mcp
+
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 905B 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 1.2s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/8] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3
+#4 resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3 0.1s done
+#4 DONE 0.1s
+
+#5 [2/8] WORKDIR /app
+#5 CACHED
+
+#6 [3/8] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [4/8] RUN echo '#!/bin/sh\necho "Docker version 24.0.0"\nexit 0' > /usr/local/bin/docker &&     chmod +x /usr/local/bin/docker
+#7 ...
+
+#8 [internal] load build context
+#8 transferring context: 478B 0.0s done
+#8 DONE 0.0s
+
+#7 [4/8] RUN echo '#!/bin/sh\necho "Docker version 24.0.0"\nexit 0' > /usr/local/bin/docker &&     chmod +x /usr/local/bin/docker
+#7 DONE 0.4s
+
+#9 [5/8] RUN npm install -g @burtthecoder/mcp-dnstwist supergateway || npm install -g supergateway
+#9 9.922 
+#9 9.922 added 155 packages in 9s
+#9 9.922 
+#9 9.922 34 packages are looking for funding
+#9 9.922   run `npm fund` for details
+#9 9.923 npm notice
+#9 9.923 npm notice New major version of npm available! 10.8.2 -> 11.12.1
+#9 9.923 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.12.1
+#9 9.923 npm notice To update run: npm install -g npm@11.12.1
+#9 9.923 npm notice
+#9 DONE 10.1s
+
+#10 [6/8] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#10 DONE 0.1s
+
+#11 [7/8] COPY entrypoint.sh /entrypoint.sh
+#11 DONE 0.1s
+
+#12 [8/8] RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
+#12 DONE 0.4s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 2.5s done
+#13 exporting manifest sha256:14e5e45e54fa1b789cdbb2eebc6be44eba52c1813181ea3b63ba4d868f1ffb1c 0.0s done
+#13 exporting config sha256:3149572eec2cbe7b3aeb0c93f5943368b2b51d577bafe7bdedd352b50114864e 0.0s done
+#13 exporting attestation manifest sha256:3898a6c375717e31188ffa12ec79543ac2cf6f4bdfa11fae0c7504b5b938bcef 0.1s done
+#13 exporting manifest list sha256:34ad2ab8657a83457e47858618ce3db948a1a11ea27d9939b0b384a244bca332
+#13 exporting manifest list sha256:34ad2ab8657a83457e47858618ce3db948a1a11ea27d9939b0b384a244bca332 0.0s done
+#13 naming to docker.io/library/dnstwist-mcp:latest done
+#13 unpacking to docker.io/library/dnstwist-mcp:latest
+#13 unpacking to docker.io/library/dnstwist-mcp:latest 1.6s done
+#13 naming to docker.io/hackerdogs/dnstwist-mcp:latest done
+#13 unpacking to docker.io/hackerdogs/dnstwist-mcp:latest 0.0s done
+#13 DONE 4.4s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/m8l0rucg0tvay24r4h614jccy
+
+✅ Build succeeded.
+
+--- [CHECK 2] Stdio tools/list (raw output) ---
+>>> Sending to container via stdio:
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"debug","version":"0.0.1"}}}
+{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}
+
+>>> Raw container response:
+Checking Docker...
+Executing command: docker --version
+Dnstwist MCP server running on stdio
+{"result":{"protocolVersion":"2024-11-05","capabilities":{"tools":{}},"serverInfo":{"name":"dnstwist-server","version":"0.1.0","capabilities":{"tools":{}}}},"jsonrpc":"2.0","id":1}
+{"result":{"tools":[{"name":"fuzz_domain","description":"Generate and analyze domain permutations to detect potential typosquatting, phishing, and brand impersonation","inputSchema":{"type":"object","properties":{"domain":{"type":"string","description":"Domain name to analyze (e.g., example.com)"},"nameservers":{"type":"string","description":"Comma-separated list of DNS servers to use (default: 1.1.1.1)","default":"1.1.1.1"},"threads":{"type":"number","description":"Number of threads to use for parallel processing","minimum":1,"maximum":100,"default":50},"format":{"type":"string","enum":["json","csv","list"],"description":"Output format","default":"json"},"registered_only":{"type":"boolean","description":"Show only registered domain permutations","default":true},"mxcheck":{"type":"boolean","description":"Check for MX records","default":true},"ssdeep":{"type":"boolean","description":"Generate fuzzy hashes of web pages to detect phishing","default":false},"banners":{"type":"boolean","description":"Capture HTTP banner information","default":true}},"required":["domain"]}}]},"jsonrpc":"2.0","id":2}
+Command output: Docker version 24.0.0
+
+Checking if dnstwist image exists...
+Executing command: docker image inspect elceef/dnstwist
+Command output: Docker version 24.0.0
+
+Dnstwist image found
+
+✅ Stdio tools/list: tools key found in response.
+
+--- [CHECK 3] HTTP streamable tools/list (raw output) ---
+>>> Starting container in HTTP mode on port 8614...
+ef96c5ec0cf5607a67d415a5cbe9240d7ffd9ee8631c8a1ffc343e48bd1d7869
+>>> Waiting 5s for server to start...
+>>> Container logs so far:
+[mcp-proxy] Listening on 0.0.0.0:8636/mcp
+[mcp-proxy] Wrapping: mcp-dnstwist
+
+>>> Sending HTTP initialize request to get session ID...
+event: message
+data: {"result":{"protocolVersion":"2024-11-05","capabilities":{"tools":{}},"serverInfo":{"name":"dnstwist-server","version":"0.1.0","capabilities":{"tools":{}}}},"jsonrpc":"2.0","id":1}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> Content-Length: 154
+> 
+} [154 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.2
+< Date: Sun, 29 Mar 2026 18:26:15 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: 400065fadff943a6990c101b5fdc7638
+< 
+{ [203 bytes data]
+* Closing connection 0
+✅ Got session ID: 400065fadff943a6990c101b5fdc7638
+>>> Sending HTTP notifications/initialized...
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 400065fadff943a6990c101b5fdc7638
+> Content-Length: 54
+> 
+} [54 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 202 Accepted
+< Server: BaseHTTP/0.6 Python/3.11.2
+< Date: Sun, 29 Mar 2026 18:26:16 GMT
+< 
+{ [0 bytes data]
+* Closing connection 0
+>>> Sending HTTP tools/list request:
+>>> Raw HTTP response:
+event: message
+data: {"result":{"tools":[{"name":"fuzz_domain","description":"Generate and analyze domain permutations to detect potential typosquatting, phishing, and brand impersonation","inputSchema":{"type":"object","properties":{"domain":{"type":"string","description":"Domain name to analyze (e.g., example.com)"},"nameservers":{"type":"string","description":"Comma-separated list of DNS servers to use (default: 1.1.1.1)","default":"1.1.1.1"},"threads":{"type":"number","description":"Number of threads to use for parallel processing","minimum":1,"maximum":100,"default":50},"format":{"type":"string","enum":["json","csv","list"],"description":"Output format","default":"json"},"registered_only":{"type":"boolean","description":"Show only registered domain permutations","default":true},"mxcheck":{"type":"boolean","description":"Check for MX records","default":true},"ssdeep":{"type":"boolean","description":"Generate fuzzy hashes of web pages to detect phishing","default":false},"banners":{"type":"boolean","description":"Capture HTTP banner information","default":true}},"required":["domain"]}}]},"jsonrpc":"2.0","id":2}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 400065fadff943a6990c101b5fdc7638
+> Content-Length: 58
+> 
+} [58 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.2
+< Date: Sun, 29 Mar 2026 18:26:16 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: 400065fadff943a6990c101b5fdc7638
+< 
+{ [1133 bytes data]
+* Closing connection 0
+
+✅ HTTP tools/list: tools key found in response.
+
+>>> Stopping HTTP container...
+dnstwist-mcp-debug-http
+
+========== End of Debug: Sun, Mar 29, 2026 11:56:18 PM ==========

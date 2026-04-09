@@ -1,0 +1,13 @@
+services:
+  prowler-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hackerdogs/prowler-mcp:latest
+    container_name: prowler-mcp
+    ports:
+      - "8515:8515"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8515
+    restart: unless-stopped

@@ -1,0 +1,368 @@
+========== VERBOSE DEBUG: aws-prometheus-mcp ==========
+Timestamp: Sun, Mar 29, 2026  8:31:44 PM
+
+--- [CHECK 1] Building Docker image ---
+>>> docker build -t aws-prometheus-mcp -t hackerdogs/aws-prometheus-mcp:latest aws-prometheus-mcp
+
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 824B 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 ...
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 1.2s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 1.2s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.1s
+
+#5 [internal] load build context
+#5 DONE 0.0s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3
+#6 resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3 0.0s done
+#6 DONE 0.1s
+
+#7 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+#7 resolve docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634 0.0s done
+#7 DONE 0.1s
+
+#8 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [stage-1 3/9] WORKDIR /app
+#9 CACHED
+
+#10 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#10 CACHED
+
+#5 [internal] load build context
+#5 transferring context: 11.59kB 0.0s done
+#5 DONE 0.1s
+
+#11 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.prometheus-mcp-server
+#11 2.159 Collecting awslabs.prometheus-mcp-server
+#11 2.408   Downloading awslabs_prometheus_mcp_server-0.2.14-py3-none-any.whl.metadata (8.5 kB)
+#11 3.359 Collecting boto3>=1.38.7 (from awslabs.prometheus-mcp-server)
+#11 3.422   Downloading boto3-1.42.78-py3-none-any.whl.metadata (6.7 kB)
+#11 3.496 Collecting httpx>=0.28.1 (from awslabs.prometheus-mcp-server)
+#11 3.564   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#11 3.629 Collecting loguru>=0.7.0 (from awslabs.prometheus-mcp-server)
+#11 3.691   Downloading loguru-0.7.3-py3-none-any.whl.metadata (22 kB)
+#11 3.772 Collecting mcp>=1.23.0 (from mcp[cli]>=1.23.0->awslabs.prometheus-mcp-server)
+#11 3.837   Downloading mcp-1.26.0-py3-none-any.whl.metadata (89 kB)
+#11 3.914      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 89.5/89.5 kB 1.2 MB/s eta 0:00:00
+#11 4.159 Collecting pydantic>=2.0.0 (from awslabs.prometheus-mcp-server)
+#11 4.221   Downloading pydantic-2.12.5-py3-none-any.whl.metadata (90 kB)
+#11 4.242      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 90.6/90.6 kB 4.9 MB/s eta 0:00:00
+#11 4.304 Collecting python-dotenv>=1.0.0 (from awslabs.prometheus-mcp-server)
+#11 4.365   Downloading python_dotenv-1.2.2-py3-none-any.whl.metadata (27 kB)
+#11 4.443 Collecting requests>=2.32.3 (from awslabs.prometheus-mcp-server)
+#11 4.509   Downloading requests-2.33.0-py3-none-any.whl.metadata (5.1 kB)
+#11 5.266 Collecting botocore<1.43.0,>=1.42.78 (from boto3>=1.38.7->awslabs.prometheus-mcp-server)
+#11 5.329   Downloading botocore-1.42.78-py3-none-any.whl.metadata (5.9 kB)
+#11 5.381 Collecting jmespath<2.0.0,>=0.7.1 (from boto3>=1.38.7->awslabs.prometheus-mcp-server)
+#11 5.455   Downloading jmespath-1.1.0-py3-none-any.whl.metadata (7.6 kB)
+#11 5.537 Collecting s3transfer<0.17.0,>=0.16.0 (from boto3>=1.38.7->awslabs.prometheus-mcp-server)
+#11 5.661   Downloading s3transfer-0.16.0-py3-none-any.whl.metadata (1.7 kB)
+#11 5.741 Collecting anyio (from httpx>=0.28.1->awslabs.prometheus-mcp-server)
+#11 5.804   Downloading anyio-4.13.0-py3-none-any.whl.metadata (4.5 kB)
+#11 5.870 Collecting certifi (from httpx>=0.28.1->awslabs.prometheus-mcp-server)
+#11 5.938   Downloading certifi-2026.2.25-py3-none-any.whl.metadata (2.5 kB)
+#11 6.000 Collecting httpcore==1.* (from httpx>=0.28.1->awslabs.prometheus-mcp-server)
+#11 6.063   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#11 6.122 Collecting idna (from httpx>=0.28.1->awslabs.prometheus-mcp-server)
+#11 6.184   Downloading idna-3.11-py3-none-any.whl.metadata (8.4 kB)
+#11 6.242 Collecting h11>=0.16 (from httpcore==1.*->httpx>=0.28.1->awslabs.prometheus-mcp-server)
+#11 6.310   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#11 6.429 Collecting httpx-sse>=0.4 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.prometheus-mcp-server)
+#11 6.500   Downloading httpx_sse-0.4.3-py3-none-any.whl.metadata (9.7 kB)
+#11 6.613 Collecting jsonschema>=4.20.0 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.prometheus-mcp-server)
+#11 6.706   Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+#11 6.778 Collecting pydantic-settings>=2.5.2 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.prometheus-mcp-server)
+#11 6.848   Downloading pydantic_settings-2.13.1-py3-none-any.whl.metadata (3.4 kB)
+#11 6.965 Collecting pyjwt>=2.10.1 (from pyjwt[crypto]>=2.10.1->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.prometheus-mcp-server)
+#11 7.029   Downloading pyjwt-2.12.1-py3-none-any.whl.metadata (4.1 kB)
+#11 7.089 Collecting python-multipart>=0.0.9 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.prometheus-mcp-server)
+#11 7.153   Downloading python_multipart-0.0.22-py3-none-any.whl.metadata (1.8 kB)
+#11 7.218 Collecting sse-starlette>=1.6.1 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.prometheus-mcp-server)
+#11 7.285   Downloading sse_starlette-3.3.4-py3-none-any.whl.metadata (14 kB)
+#11 7.370 Collecting starlette>=0.27 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.prometheus-mcp-server)
+#11 7.436   Downloading starlette-1.0.0-py3-none-any.whl.metadata (6.3 kB)
+#11 7.498 Collecting typing-extensions>=4.9.0 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.prometheus-mcp-server)
+#11 7.560   Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+#11 7.615 Collecting typing-inspection>=0.4.1 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.prometheus-mcp-server)
+#11 7.679   Downloading typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+#11 7.751 Collecting uvicorn>=0.31.1 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.prometheus-mcp-server)
+#11 7.813   Downloading uvicorn-0.42.0-py3-none-any.whl.metadata (6.7 kB)
+#11 7.895 Collecting typer>=0.16.0 (from mcp[cli]>=1.23.0->awslabs.prometheus-mcp-server)
+#11 7.957   Downloading typer-0.24.1-py3-none-any.whl.metadata (16 kB)
+#11 8.016 Collecting annotated-types>=0.6.0 (from pydantic>=2.0.0->awslabs.prometheus-mcp-server)
+#11 8.079   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+#11 9.236 Collecting pydantic-core==2.41.5 (from pydantic>=2.0.0->awslabs.prometheus-mcp-server)
+#11 9.298   Downloading pydantic_core-2.41.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (7.3 kB)
+#11 9.513 Collecting charset_normalizer<4,>=2 (from requests>=2.32.3->awslabs.prometheus-mcp-server)
+#11 9.580   Downloading charset_normalizer-3.4.6-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (40 kB)
+#11 9.588      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 40.6/40.6 kB 7.7 MB/s eta 0:00:00
+#11 9.685 Collecting urllib3<3,>=1.26 (from requests>=2.32.3->awslabs.prometheus-mcp-server)
+#11 9.748   Downloading urllib3-2.6.3-py3-none-any.whl.metadata (6.9 kB)
+#11 9.826 Collecting python-dateutil<3.0.0,>=2.1 (from botocore<1.43.0,>=1.42.78->boto3>=1.38.7->awslabs.prometheus-mcp-server)
+#11 9.887   Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+#11 9.988 Collecting attrs>=22.2.0 (from jsonschema>=4.20.0->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.prometheus-mcp-server)
+#11 10.05   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+#11 10.12 Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.20.0->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.prometheus-mcp-server)
+#11 10.18   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+#11 10.27 Collecting referencing>=0.28.4 (from jsonschema>=4.20.0->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.prometheus-mcp-server)
+#11 10.33   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+#11 10.82 Collecting rpds-py>=0.25.0 (from jsonschema>=4.20.0->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.prometheus-mcp-server)
+#11 10.90   Downloading rpds_py-0.30.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)
+#11 11.32 Collecting cryptography>=3.4.0 (from pyjwt[crypto]>=2.10.1->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.prometheus-mcp-server)
+#11 11.39   Downloading cryptography-46.0.6-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (5.7 kB)
+#11 11.66 Collecting click>=8.2.1 (from typer>=0.16.0->mcp[cli]>=1.23.0->awslabs.prometheus-mcp-server)
+#11 11.73   Downloading click-8.3.1-py3-none-any.whl.metadata (2.6 kB)
+#11 11.79 Collecting shellingham>=1.3.0 (from typer>=0.16.0->mcp[cli]>=1.23.0->awslabs.prometheus-mcp-server)
+#11 11.86   Downloading shellingham-1.5.4-py2.py3-none-any.whl.metadata (3.5 kB)
+#11 11.97 Collecting rich>=12.3.0 (from typer>=0.16.0->mcp[cli]>=1.23.0->awslabs.prometheus-mcp-server)
+#11 12.04   Downloading rich-14.3.3-py3-none-any.whl.metadata (18 kB)
+#11 12.09 Collecting annotated-doc>=0.0.2 (from typer>=0.16.0->mcp[cli]>=1.23.0->awslabs.prometheus-mcp-server)
+#11 12.15   Downloading annotated_doc-0.0.4-py3-none-any.whl.metadata (6.6 kB)
+#11 12.49 Collecting cffi>=2.0.0 (from cryptography>=3.4.0->pyjwt[crypto]>=2.10.1->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.prometheus-mcp-server)
+#11 12.55   Downloading cffi-2.0.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.6 kB)
+#11 12.64 Collecting six>=1.5 (from python-dateutil<3.0.0,>=2.1->botocore<1.43.0,>=1.42.78->boto3>=1.38.7->awslabs.prometheus-mcp-server)
+#11 12.71   Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+#11 12.80 Collecting markdown-it-py>=2.2.0 (from rich>=12.3.0->typer>=0.16.0->mcp[cli]>=1.23.0->awslabs.prometheus-mcp-server)
+#11 12.87   Downloading markdown_it_py-4.0.0-py3-none-any.whl.metadata (7.3 kB)
+#11 12.94 Collecting pygments<3.0.0,>=2.13.0 (from rich>=12.3.0->typer>=0.16.0->mcp[cli]>=1.23.0->awslabs.prometheus-mcp-server)
+#11 13.01   Downloading pygments-2.20.0-py3-none-any.whl.metadata (2.5 kB)
+#11 13.08 Collecting pycparser (from cffi>=2.0.0->cryptography>=3.4.0->pyjwt[crypto]>=2.10.1->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.prometheus-mcp-server)
+#11 13.14   Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+#11 13.23 Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich>=12.3.0->typer>=0.16.0->mcp[cli]>=1.23.0->awslabs.prometheus-mcp-server)
+#11 13.29   Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+#11 13.39 Downloading awslabs_prometheus_mcp_server-0.2.14-py3-none-any.whl (21 kB)
+#11 13.45 Downloading boto3-1.42.78-py3-none-any.whl (140 kB)
+#11 13.48    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 140.6/140.6 kB 6.1 MB/s eta 0:00:00
+#11 13.55 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#11 13.55    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.5/73.5 kB 26.7 MB/s eta 0:00:00
+#11 13.62 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#11 13.63    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.8/78.8 kB 10.4 MB/s eta 0:00:00
+#11 13.69 Downloading loguru-0.7.3-py3-none-any.whl (61 kB)
+#11 13.70    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 61.6/61.6 kB 9.9 MB/s eta 0:00:00
+#11 13.77 Downloading mcp-1.26.0-py3-none-any.whl (233 kB)
+#11 13.79    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 233.6/233.6 kB 12.0 MB/s eta 0:00:00
+#11 13.86 Downloading pydantic-2.12.5-py3-none-any.whl (463 kB)
+#11 13.90    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 463.6/463.6 kB 11.9 MB/s eta 0:00:00
+#11 13.96 Downloading pydantic_core-2.41.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.1 MB)
+#11 14.24    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 8.0 MB/s eta 0:00:00
+#11 14.31 Downloading python_dotenv-1.2.2-py3-none-any.whl (22 kB)
+#11 14.38 Downloading requests-2.33.0-py3-none-any.whl (65 kB)
+#11 14.38    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 65.0/65.0 kB 12.5 MB/s eta 0:00:00
+#11 14.45 Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+#11 14.51 Downloading anyio-4.13.0-py3-none-any.whl (114 kB)
+#11 14.52    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 114.4/114.4 kB 13.1 MB/s eta 0:00:00
+#11 14.59 Downloading botocore-1.42.78-py3-none-any.whl (14.7 MB)
+#11 16.33    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 14.7/14.7 MB 8.6 MB/s eta 0:00:00
+#11 16.40 Downloading certifi-2026.2.25-py3-none-any.whl (153 kB)
+#11 16.43    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 153.7/153.7 kB 7.8 MB/s eta 0:00:00
+#11 16.49 Downloading charset_normalizer-3.4.6-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (204 kB)
+#11 16.52    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 204.7/204.7 kB 6.7 MB/s eta 0:00:00
+#11 16.59 Downloading httpx_sse-0.4.3-py3-none-any.whl (9.0 kB)
+#11 16.65 Downloading idna-3.11-py3-none-any.whl (71 kB)
+#11 16.66    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 71.0/71.0 kB 26.9 MB/s eta 0:00:00
+#11 16.72 Downloading jmespath-1.1.0-py3-none-any.whl (20 kB)
+#11 16.79 Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+#11 16.80    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 90.6/90.6 kB 16.9 MB/s eta 0:00:00
+#11 16.86 Downloading pydantic_settings-2.13.1-py3-none-any.whl (58 kB)
+#11 16.88    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 58.9/58.9 kB 4.8 MB/s eta 0:00:00
+#11 16.94 Downloading pyjwt-2.12.1-py3-none-any.whl (29 kB)
+#11 17.01 Downloading python_multipart-0.0.22-py3-none-any.whl (24 kB)
+#11 17.08 Downloading s3transfer-0.16.0-py3-none-any.whl (86 kB)
+#11 17.10    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 86.8/86.8 kB 15.3 MB/s eta 0:00:00
+#11 17.17 Downloading sse_starlette-3.3.4-py3-none-any.whl (14 kB)
+#11 17.24 Downloading starlette-1.0.0-py3-none-any.whl (72 kB)
+#11 17.25    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 72.7/72.7 kB 8.3 MB/s eta 0:00:00
+#11 17.31 Downloading typer-0.24.1-py3-none-any.whl (56 kB)
+#11 17.32    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 56.1/56.1 kB 19.9 MB/s eta 0:00:00
+#11 17.38 Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+#11 17.39    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 44.6/44.6 kB 9.3 MB/s eta 0:00:00
+#11 17.45 Downloading typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+#11 17.52 Downloading urllib3-2.6.3-py3-none-any.whl (131 kB)
+#11 17.54    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 131.6/131.6 kB 11.7 MB/s eta 0:00:00
+#11 17.60 Downloading uvicorn-0.42.0-py3-none-any.whl (68 kB)
+#11 17.61    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 68.8/68.8 kB 9.7 MB/s eta 0:00:00
+#11 17.67 Downloading annotated_doc-0.0.4-py3-none-any.whl (5.3 kB)
+#11 17.75 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+#11 17.75    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 67.5/67.5 kB 19.6 MB/s eta 0:00:00
+#11 17.81 Downloading click-8.3.1-py3-none-any.whl (108 kB)
+#11 17.84    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 108.3/108.3 kB 14.4 MB/s eta 0:00:00
+#11 17.90 Downloading cryptography-46.0.6-cp311-abi3-manylinux_2_34_x86_64.whl (4.5 MB)
+#11 18.40    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.5/4.5 MB 9.0 MB/s eta 0:00:00
+#11 18.50 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#11 18.57 Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+#11 18.68 Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+#11 18.70    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 229.9/229.9 kB 18.5 MB/s eta 0:00:00
+#11 18.76 Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+#11 18.83 Downloading rich-14.3.3-py3-none-any.whl (310 kB)
+#11 18.88    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 310.5/310.5 kB 11.6 MB/s eta 0:00:00
+#11 18.97 Downloading rpds_py-0.30.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (390 kB)
+#11 19.01    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 390.8/390.8 kB 9.1 MB/s eta 0:00:00
+#11 19.10 Downloading shellingham-1.5.4-py2.py3-none-any.whl (9.8 kB)
+#11 19.18 Downloading cffi-2.0.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (215 kB)
+#11 19.20    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 215.6/215.6 kB 14.4 MB/s eta 0:00:00
+#11 19.28 Downloading markdown_it_py-4.0.0-py3-none-any.whl (87 kB)
+#11 19.29    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 87.3/87.3 kB 10.4 MB/s eta 0:00:00
+#11 19.37 Downloading pygments-2.20.0-py3-none-any.whl (1.2 MB)
+#11 19.49    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 9.7 MB/s eta 0:00:00
+#11 19.56 Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+#11 19.63 Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+#11 19.69 Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+#11 19.70    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 48.2/48.2 kB 3.9 MB/s eta 0:00:00
+#11 20.07 Installing collected packages: urllib3, typing-extensions, six, shellingham, rpds-py, python-multipart, python-dotenv, pyjwt, pygments, pycparser, mdurl, loguru, jmespath, idna, httpx-sse, h11, click, charset_normalizer, certifi, attrs, annotated-types, annotated-doc, uvicorn, typing-inspection, requests, referencing, python-dateutil, pydantic-core, markdown-it-py, httpcore, cffi, anyio, starlette, rich, pydantic, jsonschema-specifications, httpx, cryptography, botocore, typer, sse-starlette, s3transfer, pydantic-settings, jsonschema, mcp, boto3, awslabs.prometheus-mcp-server
+#11 24.28 Successfully installed annotated-doc-0.0.4 annotated-types-0.7.0 anyio-4.13.0 attrs-26.1.0 awslabs.prometheus-mcp-server-0.2.14 boto3-1.42.78 botocore-1.42.78 certifi-2026.2.25 cffi-2.0.0 charset_normalizer-3.4.6 click-8.3.1 cryptography-46.0.6 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 httpx-sse-0.4.3 idna-3.11 jmespath-1.1.0 jsonschema-4.26.0 jsonschema-specifications-2025.9.1 loguru-0.7.3 markdown-it-py-4.0.0 mcp-1.26.0 mdurl-0.1.2 pycparser-3.0 pydantic-2.12.5 pydantic-core-2.41.5 pydantic-settings-2.13.1 pygments-2.20.0 pyjwt-2.12.1 python-dateutil-2.9.0.post0 python-dotenv-1.2.2 python-multipart-0.0.22 referencing-0.37.0 requests-2.33.0 rich-14.3.3 rpds-py-0.30.0 s3transfer-0.16.0 shellingham-1.5.4 six-1.17.0 sse-starlette-3.3.4 starlette-1.0.0 typer-0.24.1 typing-extensions-4.15.0 typing-inspection-0.4.2 urllib3-2.6.3 uvicorn-0.42.0
+#11 24.28 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+#11 24.54 
+#11 24.54 [notice] A new release of pip is available: 24.0 -> 26.0.1
+#11 24.54 [notice] To update, run: pip install --upgrade pip
+#11 DONE 25.4s
+
+#12 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#12 DONE 0.7s
+
+#13 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#13 DONE 0.6s
+
+#14 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#14 DONE 0.1s
+
+#15 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#15 DONE 0.1s
+
+#16 [stage-1 9/9] RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
+#16 DONE 0.3s
+
+#17 exporting to image
+#17 exporting layers
+#17 exporting layers 5.2s done
+#17 exporting manifest sha256:7745c80a6802d45437f0755f8038cbc11da464888002c302de6a2615d834d35e 0.0s done
+#17 exporting config sha256:898e7a28c3a04480347e440f902f0a27c734e23f6502ecca95fd60fb7c78ec38 0.0s done
+#17 exporting attestation manifest sha256:a26de5fd23b51e775ee1ac5051a5ac73c17f9f27abe27149e89fd80843136600 0.0s done
+#17 exporting manifest list sha256:d0617b2fd2e73defaa1e55840d06c438551fd9e473a4f90bd21a8867561901a3 0.0s done
+#17 naming to docker.io/library/aws-prometheus-mcp:latest done
+#17 unpacking to docker.io/library/aws-prometheus-mcp:latest
+#17 unpacking to docker.io/library/aws-prometheus-mcp:latest 3.4s done
+#17 naming to docker.io/hackerdogs/aws-prometheus-mcp:latest done
+#17 unpacking to docker.io/hackerdogs/aws-prometheus-mcp:latest 0.0s done
+#17 DONE 8.8s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/pfn7cmk6az3tftjyl10khjjcd
+
+✅ Build succeeded.
+
+--- [CHECK 2] Stdio tools/list (raw output) ---
+>>> Sending to container via stdio:
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"debug","version":"0.0.1"}}}
+{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}
+
+>>> Raw container response:
+2026-03-29 15:02:27.996 | INFO     | awslabs.prometheus_mcp_server.server:main:1057 - Starting Prometheus MCP Server...
+2026-03-29 15:02:28.001 | INFO     | awslabs.prometheus_mcp_server.server:async_main:1050 - Initializing Prometheus MCP Server - workspace ID will be required for each tool invocation
+2026-03-29 15:02:28.001 | INFO     | awslabs.prometheus_mcp_server.server:main:1097 - Starting server...
+2026-03-29 15:02:28.001 | INFO     | awslabs.prometheus_mcp_server.server:main:1101 - Starting with stdio transport...
+[03/29/26 15:02:28] INFO     Processing request of type            server.py:720
+                             ListToolsRequest                                   
+{"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"prompts":{"listChanged":false},"resources":{"subscribe":false,"listChanged":false},"tools":{"listChanged":false}},"serverInfo":{"name":"awslabs-prometheus-mcp-server","version":"1.26.0"},"instructions":"\n# Prometheus MCP Server\n\nThis MCP server provides tools for interacting with AWS Managed Prometheus.\n\n## Available Tools\n\n### execute_query\nExecute an instant PromQL query against Prometheus.\n\n### execute_range_query\nExecute a PromQL range query with start time, end time, and step interval.\n\n### list_metrics\nList all available metrics in Prometheus.\n\n### get_server_info\nGet information about the Prometheus server configuration.\n\n## Query Tips\n- Use clear, specific PromQL queries for best results\n- For time series data, use execute_range_query with appropriate time ranges\n- Explore available metrics with list_metrics before crafting complex queries\n"}}
+{"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"ExecuteQuery","description":"Execute a PromQL query against Amazon Managed Prometheus.\n\n    ## Usage\n    - Use this tool to execute a PromQL query at a specific instant in time\n    - The query will return the current value of the specified metrics\n    - For time series data over a range, use execute_range_query instead\n    - If workspace_id is not known, use GetAvailableWorkspaces tool first to find available workspaces and ASK THE USER to choose one\n    - Uses DescribeWorkspace API to get the exact workspace URL\n    - No manual URL construction is performed\n\n    ## Example\n    Input:\n      workspace_id: \"ws-12345678-abcd-1234-efgh-123456789012\"\n      query: \"up\"\n      region: \"us-east-1\"\n\n    Output:\n      {\n        \"resultType\": \"vector\",\n        \"result\": [\n          {\n            \"metric\": {\"__name__\": \"up\", \"instance\": \"localhost:9090\", \"job\": \"prometheus\"},\n            \"value\": [1680307200, \"1\"]\n          },\n          {\n            \"metric\": {\"__name__\": \"up\", \"instance\": \"localhost:9100\", \"job\": \"node\"},\n            \"value\": [1680307200, \"1\"]\n          }\n        ]\n      }\n\n    Example queries:\n    - `up` - Shows which targets are up\n    - `rate(node_cpu_seconds_total{mode=\"system\"}[1m])` - CPU usage rate\n    - `sum by(instance) (rate(node_network_receive_bytes_total[5m]))` - Network receive rate by instance\n    ","inputSchema":{"properties":{"workspace_id":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"The Prometheus workspace ID to use (e.g., ws-12345678-abcd-1234-efgh-123456789012). Optional if a URL is configured via command line arguments.","title":"Workspace Id"},"query":{"description":"The PromQL query to execute","title":"Query","type":"string"},"time":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"Optional timestamp for query evaluation (RFC3339 or Unix timestamp)","title":"Time"},"region":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"AWS region (defaults to current region)","title":"Region"},"profile":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"AWS profile to use (defaults to None)","title":"Profile"}},"required":["query"],"title":"execute_queryArguments","type":"object"},"outputSchema":{"properties":{"result":{"additionalProperties":true,"title":"Result","type":"object"}},"required":["result"],"title":"execute_queryOutput","type":"object"}},{"name":"ExecuteRangeQuery","description":"Execute a range query and return the result.\n\n    ## Usage\n    - Use this tool to execute a PromQL query over a time range\n    - The query will return a series of values for the specified time range\n    - Useful for generating time series data for graphs or trend analysis\n    - If workspace_id is not known, use GetAvailableWorkspaces tool first to find available workspaces and ASK THE USER to choose one\n    - Uses DescribeWorkspace API to get the exact workspace URL\n    - No manual URL construction is performed\n\n    ## Example\n    Input:\n      workspace_id: \"ws-12345678-abcd-1234-efgh-123456789012\"\n      query: \"rate(node_cpu_seconds_total{mode=\\\"system\\\"}[5m])\"\n      start: \"2023-04-01T00:00:00Z\"\n      end: \"2023-04-01T01:00:00Z\"\n      step: \"5m\"\n\n    Output:\n      {\n        \"resultType\": \"matrix\",\n        \"result\": [\n          {\n            \"metric\": {\"__name__\": \"rate\", \"mode\": \"system\", \"instance\": \"localhost:9100\"},\n            \"values\": [[1680307200, \"0.01\"], [1680307500, \"0.012\"], ...]\n          }\n        ]\n      }\n    ","inputSchema":{"properties":{"workspace_id":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"The Prometheus workspace ID to use (e.g., ws-12345678-abcd-1234-efgh-123456789012). Optional if a URL is configured via command line arguments.","title":"Workspace Id"},"query":{"description":"The PromQL query to execute","title":"Query","type":"string"},"start":{"description":"Start timestamp (RFC3339 or Unix timestamp)","title":"Start","type":"string"},"end":{"description":"End timestamp (RFC3339 or Unix timestamp)","title":"End","type":"string"},"step":{"description":"Query resolution step width (duration format, e.g. '15s', '1m', '1h')","title":"Step","type":"string"},"region":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"AWS region (defaults to current region)","title":"Region"},"profile":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"AWS profile to use (defaults to None)","title":"Profile"}},"required":["query","start","end","step"],"title":"execute_range_queryArguments","type":"object"},"outputSchema":{"properties":{"result":{"additionalProperties":true,"title":"Result","type":"object"}},"required":["result"],"title":"execute_range_queryOutput","type":"object"}},{"name":"ListMetrics","description":"Get a list of all metric names.\n\n    ## Usage\n    - Use this tool to discover available metrics in the Prometheus server\n    - Returns a sorted list of all metric names\n    - Useful for exploration before crafting specific queries\n    - If workspace_id is not known, use GetAvailableWorkspaces tool first to find available workspaces and ASK THE USER to choose one\n\n    ## Example\n    Input:\n      workspace_id: \"ws-12345678-abcd-1234-efgh-123456789012\"\n      region: \"us-east-1\"\n\n    Output:\n      {\n        \"metrics\": [\n          \"go_gc_duration_seconds\",\n          \"go_goroutines\",\n          \"http_requests_total\",\n          ...\n        ]\n      }\n    ","inputSchema":{"properties":{"workspace_id":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"The Prometheus workspace ID to use (e.g., ws-12345678-abcd-1234-efgh-123456789012). Optional if a URL is configured via command line arguments.","title":"Workspace Id"},"region":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"AWS region (defaults to current region)","title":"Region"},"profile":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"AWS profile to use (defaults to None)","title":"Profile"}},"title":"list_metricsArguments","type":"object"},"outputSchema":{"description":"List of available metrics in Prometheus.\n\nAttributes:\n    metrics: List of metric names available in the Prometheus server.","properties":{"metrics":{"description":"List of metric names available in the Prometheus server","items":{"type":"string"},"title":"Metrics","type":"array"}},"required":["metrics"],"title":"MetricsList","type":"object"}},{"name":"GetServerInfo","description":"Get information about the Prometheus server configuration.\n\n    ## Usage\n    - Use this tool to retrieve the current server configuration\n    - Returns details about the Prometheus URL, AWS region, profile, and service name\n    - Useful for debugging connection issues\n    - If workspace_id is not known, use GetAvailableWorkspaces tool first to find available workspaces and ASK THE USER to choose one\n    - Uses DescribeWorkspace API to get the exact workspace URL\n    - No manual URL construction is performed\n\n    ## Example\n    Input:\n      workspace_id: \"ws-12345678-abcd-1234-efgh-123456789012\"\n      region: \"us-east-1\"\n\n    Output:\n      {\n        \"prometheus_url\": \"https://aps-workspaces.us-east-1.amazonaws.com/workspaces/ws-12345678-abcd-1234-efgh-123456789012\",\n        \"aws_region\": \"us-east-1\",\n        \"aws_profile\": \"default\",\n        \"service_name\": \"aps\"\n      }\n    ","inputSchema":{"properties":{"workspace_id":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"The Prometheus workspace ID to use (e.g., ws-12345678-abcd-1234-efgh-123456789012). Optional if a URL is configured via command line arguments.","title":"Workspace Id"},"region":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"AWS region (defaults to current region)","title":"Region"},"profile":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"AWS profile to use (defaults to None)","title":"Profile"}},"title":"get_server_infoArguments","type":"object"},"outputSchema":{"description":"Information about the Prometheus server configuration.\n\nAttributes:\n    prometheus_url: URL of the AWS Managed Prometheus endpoint.\n    aws_region: AWS region where the Prometheus service is located.\n    aws_profile: AWS profile name used for authentication.\n    service_name: AWS service name for SigV4 authentication.","properties":{"prometheus_url":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"URL of the AWS Managed Prometheus endpoint","title":"Prometheus Url"},"aws_region":{"description":"AWS region where the Prometheus service is located","title":"Aws Region","type":"string"},"aws_profile":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"AWS profile name used for authentication","title":"Aws Profile"},"service_name":{"description":"AWS service name for SigV4 authentication","title":"Service Name","type":"string"}},"required":["aws_region","service_name"],"title":"ServerInfo","type":"object"}},{"name":"GetAvailableWorkspaces","description":"List all available Prometheus workspaces in the specified region.\n\n    ## Usage\n    - Use this tool to see all available Prometheus workspaces\n    - Shows workspace ID, alias, status, and URL for active workspaces\n    - IMPORTANT: When multiple workspaces are available, present them to the user and ask them to choose one\n    - DO NOT automatically select a workspace; always ask the user to choose when multiple options exist\n    - Uses DescribeWorkspace API to get the exact URL for each workspace\n    - No manual URL construction is performed\n\n    ## Example\n    Input:\n      region: \"us-east-1\"\n\n    Output:\n      {\n        \"workspaces\": [\n          {\n            \"workspace_id\": \"ws-12345678-abcd-1234-efgh-123456789012\",\n            \"alias\": \"production\",\n            \"status\": \"ACTIVE\",\n            \"prometheus_url\": \"https://aps-workspaces.us-east-1.amazonaws.com/workspaces/ws-12345678-abcd-1234-efgh-123456789012\",\n            \"is_configured\": true\n          },\n          {\n            \"workspace_id\": \"ws-87654321-dcba-4321-hgfe-210987654321\",\n            \"alias\": \"development\",\n            \"status\": \"ACTIVE\",\n            \"prometheus_url\": \"https://aps-workspaces.us-east-1.amazonaws.com/workspaces/ws-87654321-dcba-4321-hgfe-210987654321\",\n            \"is_configured\": false\n          }\n        ],\n        \"count\": 2,\n        \"region\": \"us-east-1\",\n        \"requires_user_selection\": true,\n        \"configured_workspace_id\": \"ws-12345678-abcd-1234-efgh-123456789012\"\n      }\n    ","inputSchema":{"properties":{"region":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"AWS region (defaults to current region)","title":"Region"},"profile":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"AWS profile to use (defaults to None)","title":"Profile"}},"title":"get_available_workspacesArguments","type":"object"},"outputSchema":{"properties":{"result":{"additionalProperties":true,"title":"Result","type":"object"}},"required":["result"],"title":"get_available_workspacesOutput","type":"object"}}]}}
+
+✅ Stdio tools/list: tools key found in response.
+
+--- [CHECK 3] HTTP streamable tools/list (raw output) ---
+>>> Starting container in HTTP mode on port 8614...
+9b63f927b11e7a7171b8581228812815d0e39c4b586c5efe0becccd21203d44a
+>>> Waiting 5s for server to start...
+>>> Container logs so far:
+[mcp-proxy] Listening on 0.0.0.0:8620/mcp
+[mcp-proxy] Wrapping: awslabs.prometheus-mcp-server
+
+>>> Sending HTTP initialize request to get session ID...
+event: message
+data: {"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"prompts":{"listChanged":false},"resources":{"subscribe":false,"listChanged":false},"tools":{"listChanged":false}},"serverInfo":{"name":"awslabs-prometheus-mcp-server","version":"1.26.0"},"instructions":"\n# Prometheus MCP Server\n\nThis MCP server provides tools for interacting with AWS Managed Prometheus.\n\n## Available Tools\n\n### execute_query\nExecute an instant PromQL query against Prometheus.\n\n### execute_range_query\nExecute a PromQL range query with start time, end time, and step interval.\n\n### list_metrics\nList all available metrics in Prometheus.\n\n### get_server_info\nGet information about the Prometheus server configuration.\n\n## Query Tips\n- Use clear, specific PromQL queries for best results\n- For time series data, use execute_range_query with appropriate time ranges\n- Explore available metrics with list_metrics before crafting complex queries\n"}}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> Content-Length: 154
+> 
+} [154 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.15
+< Date: Sun, 29 Mar 2026 15:02:34 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: ae2c7653fa4c42d5b6494434bc125cc5
+< 
+{ [1009 bytes data]
+* Closing connection 0
+✅ Got session ID: ae2c7653fa4c42d5b6494434bc125cc5
+>>> Sending HTTP notifications/initialized...
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: ae2c7653fa4c42d5b6494434bc125cc5
+> Content-Length: 54
+> 
+} [54 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 202 Accepted
+< Server: BaseHTTP/0.6 Python/3.11.15
+< Date: Sun, 29 Mar 2026 15:02:35 GMT
+< 
+{ [0 bytes data]
+* Closing connection 0
+>>> Sending HTTP tools/list request:
+>>> Raw HTTP response:
+event: message
+data: {"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"ExecuteQuery","description":"Execute a PromQL query against Amazon Managed Prometheus.\n\n    ## Usage\n    - Use this tool to execute a PromQL query at a specific instant in time\n    - The query will return the current value of the specified metrics\n    - For time series data over a range, use execute_range_query instead\n    - If workspace_id is not known, use GetAvailableWorkspaces tool first to find available workspaces and ASK THE USER to choose one\n    - Uses DescribeWorkspace API to get the exact workspace URL\n    - No manual URL construction is performed\n\n    ## Example\n    Input:\n      workspace_id: \"ws-12345678-abcd-1234-efgh-123456789012\"\n      query: \"up\"\n      region: \"us-east-1\"\n\n    Output:\n      {\n        \"resultType\": \"vector\",\n        \"result\": [\n          {\n            \"metric\": {\"__name__\": \"up\", \"instance\": \"localhost:9090\", \"job\": \"prometheus\"},\n            \"value\": [1680307200, \"1\"]\n          },\n          {\n            \"metric\": {\"__name__\": \"up\", \"instance\": \"localhost:9100\", \"job\": \"node\"},\n            \"value\": [1680307200, \"1\"]\n          }\n        ]\n      }\n\n    Example queries:\n    - `up` - Shows which targets are up\n    - `rate(node_cpu_seconds_total{mode=\"system\"}[1m])` - CPU usage rate\n    - `sum by(instance) (rate(node_network_receive_bytes_total[5m]))` - Network receive rate by instance\n    ","inputSchema":{"properties":{"workspace_id":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"The Prometheus workspace ID to use (e.g., ws-12345678-abcd-1234-efgh-123456789012). Optional if a URL is configured via command line arguments.","title":"Workspace Id"},"query":{"description":"The PromQL query to execute","title":"Query","type":"string"},"time":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"Optional timestamp for query evaluation (RFC3339 or Unix timestamp)","title":"Time"},"region":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"AWS region (defaults to current region)","title":"Region"},"profile":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"AWS profile to use (defaults to None)","title":"Profile"}},"required":["query"],"title":"execute_queryArguments","type":"object"},"outputSchema":{"properties":{"result":{"additionalProperties":true,"title":"Result","type":"object"}},"required":["result"],"title":"execute_queryOutput","type":"object"}},{"name":"ExecuteRangeQuery","description":"Execute a range query and return the result.\n\n    ## Usage\n    - Use this tool to execute a PromQL query over a time range\n    - The query will return a series of values for the specified time range\n    - Useful for generating time series data for graphs or trend analysis\n    - If workspace_id is not known, use GetAvailableWorkspaces tool first to find available workspaces and ASK THE USER to choose one\n    - Uses DescribeWorkspace API to get the exact workspace URL\n    - No manual URL construction is performed\n\n    ## Example\n    Input:\n      workspace_id: \"ws-12345678-abcd-1234-efgh-123456789012\"\n      query: \"rate(node_cpu_seconds_total{mode=\\\"system\\\"}[5m])\"\n      start: \"2023-04-01T00:00:00Z\"\n      end: \"2023-04-01T01:00:00Z\"\n      step: \"5m\"\n\n    Output:\n      {\n        \"resultType\": \"matrix\",\n        \"result\": [\n          {\n            \"metric\": {\"__name__\": \"rate\", \"mode\": \"system\", \"instance\": \"localhost:9100\"},\n            \"values\": [[1680307200, \"0.01\"], [1680307500, \"0.012\"], ...]\n          }\n        ]\n      }\n    ","inputSchema":{"properties":{"workspace_id":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"The Prometheus workspace ID to use (e.g., ws-12345678-abcd-1234-efgh-123456789012). Optional if a URL is configured via command line arguments.","title":"Workspace Id"},"query":{"description":"The PromQL query to execute","title":"Query","type":"string"},"start":{"description":"Start timestamp (RFC3339 or Unix timestamp)","title":"Start","type":"string"},"end":{"description":"End timestamp (RFC3339 or Unix timestamp)","title":"End","type":"string"},"step":{"description":"Query resolution step width (duration format, e.g. '15s', '1m', '1h')","title":"Step","type":"string"},"region":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"AWS region (defaults to current region)","title":"Region"},"profile":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"AWS profile to use (defaults to None)","title":"Profile"}},"required":["query","start","end","step"],"title":"execute_range_queryArguments","type":"object"},"outputSchema":{"properties":{"result":{"additionalProperties":true,"title":"Result","type":"object"}},"required":["result"],"title":"execute_range_queryOutput","type":"object"}},{"name":"ListMetrics","description":"Get a list of all metric names.\n\n    ## Usage\n    - Use this tool to discover available metrics in the Prometheus server\n    - Returns a sorted list of all metric names\n    - Useful for exploration before crafting specific queries\n    - If workspace_id is not known, use GetAvailableWorkspaces tool first to find available workspaces and ASK THE USER to choose one\n\n    ## Example\n    Input:\n      workspace_id: \"ws-12345678-abcd-1234-efgh-123456789012\"\n      region: \"us-east-1\"\n\n    Output:\n      {\n        \"metrics\": [\n          \"go_gc_duration_seconds\",\n          \"go_goroutines\",\n          \"http_requests_total\",\n          ...\n        ]\n      }\n    ","inputSchema":{"properties":{"workspace_id":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"The Prometheus workspace ID to use (e.g., ws-12345678-abcd-1234-efgh-123456789012). Optional if a URL is configured via command line arguments.","title":"Workspace Id"},"region":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"AWS region (defaults to current region)","title":"Region"},"profile":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"AWS profile to use (defaults to None)","title":"Profile"}},"title":"list_metricsArguments","type":"object"},"outputSchema":{"description":"List of available metrics in Prometheus.\n\nAttributes:\n    metrics: List of metric names available in the Prometheus server.","properties":{"metrics":{"description":"List of metric names available in the Prometheus server","items":{"type":"string"},"title":"Metrics","type":"array"}},"required":["metrics"],"title":"MetricsList","type":"object"}},{"name":"GetServerInfo","description":"Get information about the Prometheus server configuration.\n\n    ## Usage\n    - Use this tool to retrieve the current server configuration\n    - Returns details about the Prometheus URL, AWS region, profile, and service name\n    - Useful for debugging connection issues\n    - If workspace_id is not known, use GetAvailableWorkspaces tool first to find available workspaces and ASK THE USER to choose one\n    - Uses DescribeWorkspace API to get the exact workspace URL\n    - No manual URL construction is performed\n\n    ## Example\n    Input:\n      workspace_id: \"ws-12345678-abcd-1234-efgh-123456789012\"\n      region: \"us-east-1\"\n\n    Output:\n      {\n        \"prometheus_url\": \"https://aps-workspaces.us-east-1.amazonaws.com/workspaces/ws-12345678-abcd-1234-efgh-123456789012\",\n        \"aws_region\": \"us-east-1\",\n        \"aws_profile\": \"default\",\n        \"service_name\": \"aps\"\n      }\n    ","inputSchema":{"properties":{"workspace_id":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"The Prometheus workspace ID to use (e.g., ws-12345678-abcd-1234-efgh-123456789012). Optional if a URL is configured via command line arguments.","title":"Workspace Id"},"region":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"AWS region (defaults to current region)","title":"Region"},"profile":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"AWS profile to use (defaults to None)","title":"Profile"}},"title":"get_server_infoArguments","type":"object"},"outputSchema":{"description":"Information about the Prometheus server configuration.\n\nAttributes:\n    prometheus_url: URL of the AWS Managed Prometheus endpoint.\n    aws_region: AWS region where the Prometheus service is located.\n    aws_profile: AWS profile name used for authentication.\n    service_name: AWS service name for SigV4 authentication.","properties":{"prometheus_url":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"URL of the AWS Managed Prometheus endpoint","title":"Prometheus Url"},"aws_region":{"description":"AWS region where the Prometheus service is located","title":"Aws Region","type":"string"},"aws_profile":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"AWS profile name used for authentication","title":"Aws Profile"},"service_name":{"description":"AWS service name for SigV4 authentication","title":"Service Name","type":"string"}},"required":["aws_region","service_name"],"title":"ServerInfo","type":"object"}},{"name":"GetAvailableWorkspaces","description":"List all available Prometheus workspaces in the specified region.\n\n    ## Usage\n    - Use this tool to see all available Prometheus workspaces\n    - Shows workspace ID, alias, status, and URL for active workspaces\n    - IMPORTANT: When multiple workspaces are available, present them to the user and ask them to choose one\n    - DO NOT automatically select a workspace; always ask the user to choose when multiple options exist\n    - Uses DescribeWorkspace API to get the exact URL for each workspace\n    - No manual URL construction is performed\n\n    ## Example\n    Input:\n      region: \"us-east-1\"\n\n    Output:\n      {\n        \"workspaces\": [\n          {\n            \"workspace_id\": \"ws-12345678-abcd-1234-efgh-123456789012\",\n            \"alias\": \"production\",\n            \"status\": \"ACTIVE\",\n            \"prometheus_url\": \"https://aps-workspaces.us-east-1.amazonaws.com/workspaces/ws-12345678-abcd-1234-efgh-123456789012\",\n            \"is_configured\": true\n          },\n          {\n            \"workspace_id\": \"ws-87654321-dcba-4321-hgfe-210987654321\",\n            \"alias\": \"development\",\n            \"status\": \"ACTIVE\",\n            \"prometheus_url\": \"https://aps-workspaces.us-east-1.amazonaws.com/workspaces/ws-87654321-dcba-4321-hgfe-210987654321\",\n            \"is_configured\": false\n          }\n        ],\n        \"count\": 2,\n        \"region\": \"us-east-1\",\n        \"requires_user_selection\": true,\n        \"configured_workspace_id\": \"ws-12345678-abcd-1234-efgh-123456789012\"\n      }\n    ","inputSchema":{"properties":{"region":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"AWS region (defaults to current region)","title":"Region"},"profile":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"AWS profile to use (defaults to None)","title":"Profile"}},"title":"get_available_workspacesArguments","type":"object"},"outputSchema":{"properties":{"result":{"additionalProperties":true,"title":"Result","type":"object"}},"required":["result"],"title":"get_available_workspacesOutput","type":"object"}}]}}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: ae2c7653fa4c42d5b6494434bc125cc5
+> Content-Length: 58
+> 
+} [58 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.15
+< Date: Sun, 29 Mar 2026 15:02:36 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: ae2c7653fa4c42d5b6494434bc125cc5
+< 
+{ [11517 bytes data]
+* Closing connection 0
+
+✅ HTTP tools/list: tools key found in response.
+
+>>> Stopping HTTP container...
+aws-prometheus-mcp-debug-http
+
+========== End of Debug: Sun, Mar 29, 2026  8:32:37 PM ==========

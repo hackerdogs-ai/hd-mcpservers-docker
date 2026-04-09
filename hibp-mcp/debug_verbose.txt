@@ -1,0 +1,168 @@
+========== VERBOSE DEBUG: hibp-mcp ==========
+Timestamp: Sun, Mar 29, 2026 11:15:29 PM
+
+--- [CHECK 1] Building Docker image ---
+>>> docker build -t hibp-mcp -t hackerdogs/hibp-mcp:latest hibp-mcp
+
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 570B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.5s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3
+#4 resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3 0.0s done
+#4 DONE 0.0s
+
+#5 [2/7] WORKDIR /app
+#5 CACHED
+
+#6 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [internal] load build context
+#7 transferring context: 10.93kB 0.0s done
+#7 DONE 0.1s
+
+#8 [4/7] RUN npm install -g @darrenjrobinson/hibp-mcp supergateway 2>/dev/null || npm install -g supergateway
+#8 13.05 
+#8 13.05 added 232 packages in 13s
+#8 13.06 
+#8 13.06 35 packages are looking for funding
+#8 13.06   run `npm fund` for details
+#8 DONE 13.2s
+
+#9 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#9 DONE 0.1s
+
+#10 [6/7] COPY entrypoint.sh /entrypoint.sh
+#10 DONE 0.1s
+
+#11 [7/7] RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
+#11 DONE 0.4s
+
+#12 exporting to image
+#12 exporting layers
+#12 exporting layers 2.2s done
+#12 exporting manifest sha256:ca398d86953c0789998775a19cbbb4152dbfbe9fd688474b81db1a20bae7bd22 0.0s done
+#12 exporting config sha256:ea8f1edb28b72f2c0759bde4f5eae60d397de800c436c53f2afc417eaabc6a96 0.0s done
+#12 exporting attestation manifest sha256:acd1f12eed0c346b22bf54b64e99a59233f711bf6fd8c79838be5df740319b0f 0.1s done
+#12 exporting manifest list sha256:e2db933ba2f1489a999ea450ee9a55317eea031d2b2517ab06801624cdad987f
+#12 exporting manifest list sha256:e2db933ba2f1489a999ea450ee9a55317eea031d2b2517ab06801624cdad987f 0.0s done
+#12 naming to docker.io/library/hibp-mcp:latest done
+#12 unpacking to docker.io/library/hibp-mcp:latest
+#12 unpacking to docker.io/library/hibp-mcp:latest 1.6s done
+#12 naming to docker.io/hackerdogs/hibp-mcp:latest done
+#12 unpacking to docker.io/hackerdogs/hibp-mcp:latest 0.0s done
+#12 DONE 4.0s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/jk0d2x911k50r6fdcbhtbhatw
+
+ [33m1 warning found (use docker --debug to expand):
+[0m - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "HIBP_API_KEY") (line 8)
+
+✅ Build succeeded.
+
+--- [CHECK 2] Stdio tools/list (raw output) ---
+>>> Sending to container via stdio:
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"debug","version":"0.0.1"}}}
+{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}
+
+>>> Raw container response:
+{"result":{"protocolVersion":"2024-11-05","capabilities":{"tools":{"listChanged":true}},"serverInfo":{"name":"HIBP-MCP","version":"1.0.2"}},"jsonrpc":"2.0","id":1}
+{"result":{"tools":[{"name":"HIBP-Breaches","description":"Tool to query breached accounts and breaches from the Have I Been Pwned API","inputSchema":{"type":"object","properties":{"operation":{"type":"string","enum":["getAllBreachesForAccount","getAllBreachedSites","getBreachByName","getDataClasses"],"description":"The HIBP operation to perform"},"account":{"type":"string","description":"Email address to check for breaches"},"domain":{"type":"string","description":"Domain to filter breaches by"},"name":{"type":"string","description":"Breach name to get details for"},"includeUnverified":{"type":"boolean","description":"Whether to include unverified breaches"},"truncateResponse":{"type":"boolean","description":"Whether to truncate the response"}},"required":["operation"],"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"execution":{"taskSupport":"forbidden"}},{"name":"HIBP-Pastes","description":"Tool to query pastes containing account data from the Have I Been Pwned API","inputSchema":{"type":"object","properties":{"account":{"type":"string","description":"Email address to check for pastes"}},"required":["account"],"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"execution":{"taskSupport":"forbidden"}},{"name":"HIBP-PwnedPasswords","description":"Tool to check if a password has been exposed in data breaches using the Pwned Passwords API","inputSchema":{"type":"object","properties":{"password":{"type":"string","description":"Password to check (will be hashed locally before sending)"}},"required":["password"],"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"execution":{"taskSupport":"forbidden"}}]},"jsonrpc":"2.0","id":2}
+
+✅ Stdio tools/list: tools key found in response.
+
+--- [CHECK 3] HTTP streamable tools/list (raw output) ---
+>>> Starting container in HTTP mode on port 8614...
+5aaaaaef5301fcf91f98305c4c300756ec8c0335be1d3d87adff0d3363df47b5
+>>> Waiting 5s for server to start...
+>>> Container logs so far:
+[mcp-proxy] Listening on 0.0.0.0:8646/mcp
+[mcp-proxy] Wrapping: hibp-mcp
+
+>>> Sending HTTP initialize request to get session ID...
+event: message
+data: {"result":{"protocolVersion":"2024-11-05","capabilities":{"tools":{"listChanged":true}},"serverInfo":{"name":"HIBP-MCP","version":"1.0.2"}},"jsonrpc":"2.0","id":1}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> Content-Length: 154
+> 
+} [154 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.2
+< Date: Sun, 29 Mar 2026 17:45:56 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: 01ebaa40cd504038b8431dd94aa24788
+< 
+{ [186 bytes data]
+* Closing connection 0
+✅ Got session ID: 01ebaa40cd504038b8431dd94aa24788
+>>> Sending HTTP notifications/initialized...
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 01ebaa40cd504038b8431dd94aa24788
+> Content-Length: 54
+> 
+} [54 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 202 Accepted
+< Server: BaseHTTP/0.6 Python/3.11.2
+< Date: Sun, 29 Mar 2026 17:45:57 GMT
+< 
+{ [0 bytes data]
+* Closing connection 0
+>>> Sending HTTP tools/list request:
+>>> Raw HTTP response:
+event: message
+data: {"result":{"tools":[{"name":"HIBP-Breaches","description":"Tool to query breached accounts and breaches from the Have I Been Pwned API","inputSchema":{"type":"object","properties":{"operation":{"type":"string","enum":["getAllBreachesForAccount","getAllBreachedSites","getBreachByName","getDataClasses"],"description":"The HIBP operation to perform"},"account":{"type":"string","description":"Email address to check for breaches"},"domain":{"type":"string","description":"Domain to filter breaches by"},"name":{"type":"string","description":"Breach name to get details for"},"includeUnverified":{"type":"boolean","description":"Whether to include unverified breaches"},"truncateResponse":{"type":"boolean","description":"Whether to truncate the response"}},"required":["operation"],"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"execution":{"taskSupport":"forbidden"}},{"name":"HIBP-Pastes","description":"Tool to query pastes containing account data from the Have I Been Pwned API","inputSchema":{"type":"object","properties":{"account":{"type":"string","description":"Email address to check for pastes"}},"required":["account"],"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"execution":{"taskSupport":"forbidden"}},{"name":"HIBP-PwnedPasswords","description":"Tool to check if a password has been exposed in data breaches using the Pwned Passwords API","inputSchema":{"type":"object","properties":{"password":{"type":"string","description":"Password to check (will be hashed locally before sending)"}},"required":["password"],"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"},"execution":{"taskSupport":"forbidden"}}]},"jsonrpc":"2.0","id":2}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 01ebaa40cd504038b8431dd94aa24788
+> Content-Length: 58
+> 
+} [58 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.2
+< Date: Sun, 29 Mar 2026 17:45:57 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: 01ebaa40cd504038b8431dd94aa24788
+< 
+{ [1770 bytes data]
+* Closing connection 0
+
+✅ HTTP tools/list: tools key found in response.
+
+>>> Stopping HTTP container...
+hibp-mcp-debug-http
+
+========== End of Debug: Sun, Mar 29, 2026 11:15:58 PM ==========

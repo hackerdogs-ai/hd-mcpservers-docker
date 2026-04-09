@@ -1,0 +1,13 @@
+services:
+  mitre-attack-remote-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hackerdogs/mitre-attack-remote-mcp:latest
+    container_name: mitre-attack-remote-mcp
+    ports:
+      - "8516:8516"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8516
+    restart: unless-stopped

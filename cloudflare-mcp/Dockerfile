@@ -4,7 +4,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -
 RUN npm install -g @cloudflare/mcp-server-cloudflare supergateway 2>/dev/null || npm install -g supergateway
 COPY mcp_http_proxy.py /mcp_http_proxy.py
 COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
 ENV CLOUDFLARE_API_TOKEN=dummy-cf-api-token-for-mcp-list-tools-only
 ENV CLOUDFLARE_ACCOUNT_ID=00000000000000000000000000000000
 ENV MCP_TRANSPORT=stdio

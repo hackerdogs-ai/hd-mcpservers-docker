@@ -1,0 +1,165 @@
+========== VERBOSE DEBUG: dns-mcp-server-mcp ==========
+Timestamp: Sun, Mar 29, 2026  8:56:43 PM
+
+--- [CHECK 1] Building Docker image ---
+>>> docker build -t dns-mcp-server-mcp -t hackerdogs/dns-mcp-server-mcp:latest dns-mcp-server-mcp
+
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 513B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.5s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3
+#4 resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3 0.0s done
+#4 DONE 0.0s
+
+#5 [2/7] WORKDIR /app
+#5 CACHED
+
+#6 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [internal] load build context
+#7 transferring context: 10.75kB 0.0s done
+#7 DONE 0.1s
+
+#8 [4/7] RUN npm install -g @cenemiljezweb/dns-mcp-server supergateway 2>/dev/null || npm install -g supergateway
+#8 10.76 
+#8 10.76 added 234 packages in 10s
+#8 10.76 
+#8 10.76 35 packages are looking for funding
+#8 10.76   run `npm fund` for details
+#8 DONE 10.9s
+
+#9 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#9 DONE 0.1s
+
+#10 [6/7] COPY entrypoint.sh /entrypoint.sh
+#10 DONE 0.1s
+
+#11 [7/7] RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
+#11 DONE 0.3s
+
+#12 exporting to image
+#12 exporting layers
+#12 exporting layers 1.8s done
+#12 exporting manifest sha256:91b9aa508f4b22f617982ac79aa2832557f5701d39b3ecb86974cc4b0cc5a54e 0.0s done
+#12 exporting config sha256:7274c7bf107b896bfc40fb13fa20cc53e55437dc81a6a222a5a6c34fec99b634 0.0s done
+#12 exporting attestation manifest sha256:e214c72930d2c98ab6f3c8980b8b2d743e678e820e3caca57ba55c191c78a4fb 0.0s done
+#12 exporting manifest list sha256:fabe9d5eb698589be3c3fa354f7181a4ebe88f4447c418c11f795d7dd1396e87 0.0s done
+#12 naming to docker.io/library/dns-mcp-server-mcp:latest done
+#12 unpacking to docker.io/library/dns-mcp-server-mcp:latest
+#12 unpacking to docker.io/library/dns-mcp-server-mcp:latest 1.3s done
+#12 naming to docker.io/hackerdogs/dns-mcp-server-mcp:latest done
+#12 unpacking to docker.io/hackerdogs/dns-mcp-server-mcp:latest 0.0s done
+#12 DONE 3.3s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/q06l5qsiwexbxja8h3h88lz4e
+
+✅ Build succeeded.
+
+--- [CHECK 2] Stdio tools/list (raw output) ---
+>>> Sending to container via stdio:
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"debug","version":"0.0.1"}}}
+{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}
+
+>>> Raw container response:
+[2026-03-29T15:27:03.236Z] [INFO] DNS MCP Server started successfully
+{"result":{"protocolVersion":"2024-11-05","capabilities":{"tools":{}},"serverInfo":{"name":"dns-mcp-server","version":"1.0.0"}},"jsonrpc":"2.0","id":1}
+{"result":{"tools":[{"name":"dns_lookup","description":"Perform DNS lookup for a domain to retrieve various record types (A, AAAA, MX, TXT, etc.)","inputSchema":{"type":"object","properties":{"domain":{"type":"string","description":"The domain name to lookup"},"recordType":{"type":"string","enum":["A","AAAA","CNAME","MX","TXT","NS","SOA","PTR","SRV","CAA"],"default":"A","description":"The type of DNS record to query"},"useCustomServer":{"type":"boolean","description":"Use custom DNS server if configured"},"timeout":{"type":"number","description":"Query timeout in milliseconds"}},"required":["domain"]}},{"name":"reverse_dns","description":"Perform reverse DNS lookup to find the hostname for an IP address","inputSchema":{"type":"object","properties":{"ipAddress":{"type":"string","description":"The IP address to perform reverse lookup on"},"timeout":{"type":"number","description":"Query timeout in milliseconds"}},"required":["ipAddress"]}},{"name":"batch_dns","description":"Perform multiple DNS lookups in a single operation","inputSchema":{"type":"object","properties":{"queries":{"type":"array","items":{"type":"object","properties":{"domain":{"type":"string"},"recordTypes":{"type":"array","items":{"type":"string","enum":["A","AAAA","CNAME","MX","TXT","NS","SOA","PTR","SRV","CAA"]}}},"required":["domain","recordTypes"]},"description":"Array of DNS queries to perform"},"parallel":{"type":"boolean","default":true,"description":"Execute queries in parallel"},"timeout":{"type":"number","description":"Query timeout per request"}},"required":["queries"]}},{"name":"dns_trace","description":"Trace the DNS resolution path from root servers to the final result","inputSchema":{"type":"object","properties":{"domain":{"type":"string","description":"The domain to trace DNS resolution path"},"recordType":{"type":"string","enum":["A","AAAA","CNAME","MX","TXT","NS","SOA","PTR","SRV","CAA"],"default":"A","description":"The record type to trace"}},"required":["domain"]}}]},"jsonrpc":"2.0","id":2}
+
+✅ Stdio tools/list: tools key found in response.
+
+--- [CHECK 3] HTTP streamable tools/list (raw output) ---
+>>> Starting container in HTTP mode on port 8614...
+7ccb1529bcfda79c3802185c7d733095a57499cf0ce3592d3960533b0fa6dffd
+>>> Waiting 5s for server to start...
+>>> Container logs so far:
+[mcp-proxy] Listening on 0.0.0.0:8635/mcp
+[mcp-proxy] Wrapping: npx -y @cenemiljezweb/dns-mcp-server
+
+>>> Sending HTTP initialize request to get session ID...
+event: message
+data: {"result":{"protocolVersion":"2024-11-05","capabilities":{"tools":{}},"serverInfo":{"name":"dns-mcp-server","version":"1.0.0"}},"jsonrpc":"2.0","id":1}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> Content-Length: 154
+> 
+} [154 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.2
+< Date: Sun, 29 Mar 2026 15:27:09 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: 4a44e0c3235e4851a457438f146fe292
+< 
+{ [174 bytes data]
+* Closing connection 0
+✅ Got session ID: 4a44e0c3235e4851a457438f146fe292
+>>> Sending HTTP notifications/initialized...
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 4a44e0c3235e4851a457438f146fe292
+> Content-Length: 54
+> 
+} [54 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 202 Accepted
+< Server: BaseHTTP/0.6 Python/3.11.2
+< Date: Sun, 29 Mar 2026 15:27:11 GMT
+< 
+{ [0 bytes data]
+* Closing connection 0
+>>> Sending HTTP tools/list request:
+>>> Raw HTTP response:
+event: message
+data: {"result":{"tools":[{"name":"dns_lookup","description":"Perform DNS lookup for a domain to retrieve various record types (A, AAAA, MX, TXT, etc.)","inputSchema":{"type":"object","properties":{"domain":{"type":"string","description":"The domain name to lookup"},"recordType":{"type":"string","enum":["A","AAAA","CNAME","MX","TXT","NS","SOA","PTR","SRV","CAA"],"default":"A","description":"The type of DNS record to query"},"useCustomServer":{"type":"boolean","description":"Use custom DNS server if configured"},"timeout":{"type":"number","description":"Query timeout in milliseconds"}},"required":["domain"]}},{"name":"reverse_dns","description":"Perform reverse DNS lookup to find the hostname for an IP address","inputSchema":{"type":"object","properties":{"ipAddress":{"type":"string","description":"The IP address to perform reverse lookup on"},"timeout":{"type":"number","description":"Query timeout in milliseconds"}},"required":["ipAddress"]}},{"name":"batch_dns","description":"Perform multiple DNS lookups in a single operation","inputSchema":{"type":"object","properties":{"queries":{"type":"array","items":{"type":"object","properties":{"domain":{"type":"string"},"recordTypes":{"type":"array","items":{"type":"string","enum":["A","AAAA","CNAME","MX","TXT","NS","SOA","PTR","SRV","CAA"]}}},"required":["domain","recordTypes"]},"description":"Array of DNS queries to perform"},"parallel":{"type":"boolean","default":true,"description":"Execute queries in parallel"},"timeout":{"type":"number","description":"Query timeout per request"}},"required":["queries"]}},{"name":"dns_trace","description":"Trace the DNS resolution path from root servers to the final result","inputSchema":{"type":"object","properties":{"domain":{"type":"string","description":"The domain to trace DNS resolution path"},"recordType":{"type":"string","enum":["A","AAAA","CNAME","MX","TXT","NS","SOA","PTR","SRV","CAA"],"default":"A","description":"The record type to trace"}},"required":["domain"]}}]},"jsonrpc":"2.0","id":2}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 4a44e0c3235e4851a457438f146fe292
+> Content-Length: 58
+> 
+} [58 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.2
+< Date: Sun, 29 Mar 2026 15:27:11 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: 4a44e0c3235e4851a457438f146fe292
+< 
+{ [2031 bytes data]
+* Closing connection 0
+
+✅ HTTP tools/list: tools key found in response.
+
+>>> Stopping HTTP container...
+dns-mcp-server-mcp-debug-http
+
+========== End of Debug: Sun, Mar 29, 2026  8:57:12 PM ==========
