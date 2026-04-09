@@ -1,0 +1,22 @@
+FROM node:20-slim AS supergateway-builder
+RUN npm install -g supergateway && npm cache clean --force
+
+FROM python:3.11-slim
+RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+RUN pip install --no-cache-dir microsoft-fabric-rti-mcp
+
+# Add Node.js + supergateway for HTTP mode
+COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+
+COPY mcp_http_proxy.py /mcp_http_proxy.py
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENV KUSTO_SERVICE_URI=https://help.kusto.windows.net/
+ENV KUSTO_SERVICE_DEFAULT_DB=Samples
+ENV FABRIC_API_BASE_URL=https://api.fabric.microsoft.com/v1
+ENV MCP_TRANSPORT=stdio
+ENV MCP_PORT=8650
+EXPOSE 8650
+ENTRYPOINT ["/entrypoint.sh"]

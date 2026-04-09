@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  clinicaltrialsgov-mcp-server-mcp:
+    image: hackerdogs/clinicaltrialsgov-mcp-server-mcp:latest
+    build: .
+    ports:
+      - "8632:8632"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8632
+

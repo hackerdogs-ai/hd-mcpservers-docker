@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  octocode-mcp:
+    image: hackerdogs/octocode-mcp:latest
+    build: .
+    ports:
+      - "8654:8654"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8654
+

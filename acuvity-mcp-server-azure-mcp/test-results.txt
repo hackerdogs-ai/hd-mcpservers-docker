@@ -1,0 +1,71 @@
+========== Testing acuvity-mcp-server-azure-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 937B 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim-bookworm
+#2 DONE 0.4s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/8] FROM docker.io/library/python:3.11-slim-bookworm@sha256:420310dd2ff7895895f0f1f9d15cae5a95dabceb8f1d6b9a23ef33c2c1c542c3
+#4 resolve docker.io/library/python:3.11-slim-bookworm@sha256:420310dd2ff7895895f0f1f9d15cae5a95dabceb8f1d6b9a23ef33c2c1c542c3 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 70B done
+#5 DONE 0.0s
+
+#6 [6/8] RUN pip install --no-cache-dir -r requirements.txt
+#6 CACHED
+
+#7 [2/8] RUN groupadd -g 1000 mcpuser && useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
+#7 CACHED
+
+#8 [5/8] COPY requirements.txt ./
+#8 CACHED
+
+#9 [7/8] COPY mcp_server.py ./
+#9 CACHED
+
+#10 [3/8] RUN apt-get update && apt-get install -y --no-install-recommends tini ca-certificates && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [4/8] WORKDIR /app
+#11 CACHED
+
+#12 [8/8] RUN chown -R mcpuser:mcpuser /app
+#12 CACHED
+
+#13 exporting to image
+#13 exporting layers done
+#13 exporting manifest sha256:c00f44e7141ca1d943956524f44be28a080c407254e666365ad494e4647aa84b done
+#13 exporting config sha256:0cb4c66cd8f2bfd89fcfa69c1158bc3bac59703460c7c0a243fedbe5cb7e10ee done
+#13 exporting attestation manifest sha256:b652fdcfd34bc11ee34eb9f8f1b979f3bbc8e56baaee638313d9b19ff3b48361 0.0s done
+#13 exporting manifest list sha256:1581d3dd8e65ac12b17eece6a47482f94d8ffe6e8a1f43dbf5a20638ea71b6f3 0.0s done
+#13 naming to docker.io/hackerdogs/acuvity-mcp-server-azure-mcp:latest done
+#13 unpacking to docker.io/hackerdogs/acuvity-mcp-server-azure-mcp:latest 0.0s done
+#13 DONE 0.1s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/2o7a6l50yye4ui5sdvatk9uie
+========== acuvity-mcp-server-azure-mcp test (compliance) ==========
+[0;34m[1] Install[0m
+  [0;32mPASS: image exists[0m
+[0;34m[2] Stdio tools/list[0m
+  [0;32mPASS: stdio tools/list[0m
+[0;34m[3] Stdio tools/call[0m
+  [0;32mPASS: stdio tools/call[0m
+[0;34m[4] HTTP streamable tools/list[0m
+  [0;32mPASS: HTTP tools/list[0m
+[0;34m[5] HTTP streamable tools/call[0m
+  [0;32mPASS: HTTP tools/call[0m
+
+Total: 5 passed, 0 failed
+acuvity-mcp-server-azure-mcp-test
+acuvity-mcp-server-azure-mcp-test
+
+✅ PASS: acuvity-mcp-server-azure-mcp

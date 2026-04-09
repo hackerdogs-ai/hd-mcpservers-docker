@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  world-bank-mcp:
+    image: hackerdogs/world-bank-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: world-bank-mcp
+    ports:
+      - "8459:8459"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8459
+    restart: unless-stopped

@@ -1,0 +1,982 @@
+MCP test run - uncover-mcp
+Generated (UTC): 2026-03-20T19:59:42Z
+Exit code: 0
+Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
+---------------------------------------------------------------------------------
+[1;33mNOTE: Uncover requires API keys for each search engine (except shodan-idb).[0m
+[1;33m   Test 6 uses shodan-idb which does not require an API key.[0m
+[1;33m   See https://github.com/projectdiscovery/uncover#provider-configuration[0m
+
+=================================================================================
+[0;34muncover MCP Server — Test Suite[0m
+=================================================================================
+
+[0;34m[Test 1] Docker image[0m
+  Image not found. Building...
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.51kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#2 ...
+
+#3 [internal] load metadata for docker.io/library/golang:1.24-bookworm
+#3 DONE 1.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#2 DONE 1.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [stage-1 1/9] FROM docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0
+#5 resolve docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0 0.0s done
+#5 DONE 0.0s
+
+#6 [stage-1 2/9] RUN groupadd -g 1000 mcpuser &&     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
+#6 CACHED
+
+#7 [builder 1/2] FROM docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
+#7 resolve docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac 0.0s done
+#7 CACHED
+
+#8 [stage-1 3/9] RUN apt-get update && apt-get install -y --no-install-recommends     tini     ca-certificates     && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [internal] load build context
+#9 transferring context: 6.08kB done
+#9 DONE 0.0s
+
+#10 [builder 2/2] RUN go install -v github.com/projectdiscovery/uncover/cmd/uncover@latest
+#10 3.047 go: downloading github.com/projectdiscovery/uncover v1.2.0
+#10 3.491 go: downloading github.com/projectdiscovery/gologger v1.1.43
+#10 3.492 go: downloading github.com/projectdiscovery/fdmax v0.0.4
+#10 3.493 go: downloading github.com/projectdiscovery/goflags v0.1.70
+#10 3.493 go: downloading github.com/hashicorp/golang-lru v0.5.4
+#10 3.494 go: downloading github.com/projectdiscovery/awesome-search-queries v0.0.0-20241111181020-ad0097bd63a1
+#10 3.497 go: downloading github.com/projectdiscovery/utils v0.4.8
+#10 4.910 go: downloading github.com/projectdiscovery/ratelimit v0.0.71
+#10 5.221 go: downloading github.com/projectdiscovery/retryablehttp-go v1.0.98
+#10 5.393 go: downloading github.com/censys/censys-sdk-go v0.19.1
+#10 5.397 go: downloading github.com/projectdiscovery/mapcidr v1.1.34
+#10 5.417 go: downloading github.com/cnf/structhash v0.0.0-20201127153200-e1b16c1ebc08
+#10 5.418 go: downloading github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510
+#10 5.419 go: downloading github.com/pkg/errors v0.9.1
+#10 5.422 go: downloading golang.org/x/exp v0.0.0-20250106191152-7588d65b2ba8
+#10 5.442 go: downloading gopkg.in/yaml.v3 v3.0.1
+#10 5.470 go: downloading github.com/json-iterator/go v1.1.12
+#10 5.546 go: downloading github.com/logrusorgru/aurora v2.0.3+incompatible
+#10 5.620 go: downloading github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2
+#10 5.621 go: downloading github.com/mattn/go-isatty v0.0.20
+#10 5.650 go: downloading golang.org/x/sys v0.38.0
+#10 5.951 go: downloading github.com/microcosm-cc/bluemonday v1.0.27
+#10 5.961 go: downloading github.com/saintfish/chardet v0.0.0-20230101081208-5e3ef4b5456d
+#10 5.976 go: downloading github.com/Masterminds/semver/v3 v3.2.1
+#10 6.125 go: downloading github.com/charmbracelet/glamour v0.8.0
+#10 6.552 go: downloading github.com/cheggaaa/pb/v3 v3.1.4
+#10 6.552 go: downloading github.com/google/go-github/v30 v30.1.0
+#10 6.628 go: downloading github.com/google/uuid v1.3.1
+#10 6.628 go: downloading github.com/minio/selfupdate v0.6.1-0.20230907112617-f11e74f84ca7
+#10 6.628 go: downloading github.com/projectdiscovery/machineid v0.0.0-20240226150047-2e2c51e35983
+#10 6.925 go: downloading github.com/zcalusic/sysinfo v1.0.2
+#10 6.927 go: downloading golang.org/x/oauth2 v0.27.0
+#10 6.930 go: downloading go.uber.org/multierr v1.11.0
+#10 6.957 go: downloading github.com/miekg/dns v1.1.62
+#10 6.959 go: downloading github.com/tidwall/gjson v1.18.0
+#10 7.067 go: downloading github.com/projectdiscovery/blackrock v0.0.1
+#10 7.110 go: downloading golang.org/x/time v0.5.0
+#10 7.112 go: downloading github.com/mholt/archiver/v3 v3.5.1
+#10 7.455 go: downloading gopkg.in/djherbis/times.v1 v1.3.0
+#10 7.503 go: downloading github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
+#10 7.513 go: downloading github.com/modern-go/reflect2 v1.0.2
+#10 7.571 go: downloading github.com/Mzack9999/go-http-digest-auth-client v0.6.1-0.20220414142836-eb8883508809
+#10 7.571 go: downloading github.com/projectdiscovery/fastdialer v0.3.0
+#10 7.730 go: downloading golang.org/x/net v0.47.0
+#10 7.734 go: downloading github.com/shirou/gopsutil/v3 v3.23.7
+#10 7.736 go: downloading github.com/aymerick/douceur v0.2.0
+#10 7.778 go: downloading github.com/tidwall/match v1.1.1
+#10 7.786 go: downloading github.com/tidwall/pretty v1.2.1
+#10 8.029 go: downloading github.com/VividCortex/ewma v1.2.0
+#10 8.033 go: downloading github.com/fatih/color v1.15.0
+#10 8.034 go: downloading github.com/mattn/go-colorable v0.1.13
+#10 8.085 go: downloading github.com/mattn/go-runewidth v0.0.16
+#10 8.091 go: downloading github.com/google/go-querystring v1.1.0
+#10 8.121 go: downloading golang.org/x/crypto v0.45.0
+#10 8.143 go: downloading github.com/muesli/termenv v0.15.3-0.20240618155329-98d742f6907a
+#10 8.144 go: downloading github.com/yuin/goldmark v1.7.4
+#10 8.506 go: downloading github.com/yuin/goldmark-emoji v1.0.3
+#10 8.582 go: downloading golang.org/x/term v0.37.0
+#10 8.795 go: downloading github.com/docker/go-units v0.5.0
+#10 8.799 go: downloading github.com/ericlagergren/decimal v0.0.0-20221120152707-495c53812d05
+#10 8.841 go: downloading aead.dev/minisign v0.2.0
+#10 9.047 go: downloading github.com/andybalholm/brotli v1.0.6
+#10 9.065 go: downloading github.com/dsnet/compress v0.0.2-0.20210315054119-f66993602bf5
+#10 9.065 go: downloading github.com/golang/snappy v0.0.4
+#10 9.185 go: downloading github.com/klauspost/compress v1.17.4
+#10 9.780 go: downloading github.com/klauspost/pgzip v1.2.5
+#10 10.07 go: downloading github.com/nwaples/rardecode v1.1.3
+#10 10.07 go: downloading github.com/pierrec/lz4/v4 v4.1.2
+#10 10.07 go: downloading github.com/ulikunitz/xz v0.5.11
+#10 10.07 go: downloading github.com/xi2/xz v0.0.0-20171230120015-48954b6210f8
+#10 10.07 go: downloading github.com/alecthomas/chroma/v2 v2.14.0
+#10 11.15 go: downloading github.com/charmbracelet/lipgloss v0.13.0
+#10 11.16 go: downloading github.com/charmbracelet/x/ansi v0.3.2
+#10 11.16 go: downloading github.com/muesli/reflow v0.3.0
+#10 11.25 go: downloading github.com/rivo/uniseg v0.4.7
+#10 11.36 go: downloading github.com/gorilla/css v1.0.1
+#10 11.64 go: downloading github.com/tklauser/go-sysconf v0.3.12
+#10 11.64 go: downloading github.com/Mzack9999/gcache v0.0.0-20230410081825-519e28eab057
+#10 11.74 go: downloading github.com/dimchansky/utfbom v1.1.1
+#10 11.74 go: downloading github.com/projectdiscovery/hmap v0.0.77
+#10 11.78 go: downloading github.com/projectdiscovery/networkpolicy v0.1.3
+#10 11.93 go: downloading github.com/projectdiscovery/retryabledns v1.0.94
+#10 12.20 go: downloading github.com/refraction-networking/utls v1.6.7
+#10 12.20 go: downloading github.com/zmap/zcrypto v0.0.0-20230814193918-dbe676986518
+#10 12.42 go: downloading golang.org/x/sync v0.18.0
+#10 12.45 go: downloading github.com/aymanbagabas/go-osc52/v2 v2.0.1
+#10 12.69 go: downloading github.com/lucasb-eyer/go-colorful v1.2.0
+#10 12.95 go: downloading github.com/dlclark/regexp2 v1.11.4
+#10 12.96 go: downloading golang.org/x/text v0.31.0
+#10 14.02 go: downloading github.com/tklauser/numcpus v0.6.1
+#10 14.02 go: downloading github.com/gaissmai/bart v0.17.8
+#10 14.02 go: downloading github.com/cloudflare/circl v1.6.1
+#10 16.60 go: downloading github.com/zmap/rc2 v0.0.0-20190804163417-abaa70531248
+#10 16.60 go: downloading github.com/akrylysov/pogreb v0.10.1
+#10 16.60 go: downloading github.com/syndtr/goleveldb v1.0.0
+#10 16.66 go: downloading github.com/tidwall/buntdb v1.3.0
+#10 16.71 go: downloading go.etcd.io/bbolt v1.3.7
+#10 16.77 go: downloading github.com/weppos/publicsuffix-go v0.30.2-0.20230730094716-a20f9abcc222
+#10 16.88 go: downloading github.com/tidwall/btree v1.6.0
+#10 16.97 go: downloading github.com/tidwall/grect v0.1.4
+#10 17.14 go: downloading github.com/tidwall/rtred v0.1.2
+#10 17.57 go: downloading github.com/tidwall/tinyqueue v0.1.1
+#10 24.54 internal/asan
+#10 24.54 internal/msan
+#10 24.54 internal/unsafeheader
+#10 24.54 internal/goarch
+#10 24.54 internal/godebugs
+#10 24.54 internal/byteorder
+#10 24.54 internal/runtime/syscall
+#10 24.54 internal/goos
+#10 24.54 internal/coverage/rtcov
+#10 24.55 internal/profilerecord
+#10 24.55 internal/goexperiment
+#10 24.55 internal/runtime/math
+#10 24.55 math/bits
+#10 24.55 internal/itoa
+#10 24.55 sync/atomic
+#10 24.55 internal/cpu
+#10 24.56 unicode/utf8
+#10 24.56 cmp
+#10 24.56 internal/chacha8rand
+#10 24.56 encoding
+#10 24.56 unicode/utf16
+#10 24.56 unicode
+#10 24.56 log/internal
+#10 24.57 github.com/projectdiscovery/gologger/levels
+#10 24.57 internal/abi
+#10 24.58 crypto/internal/fips140/alias
+#10 24.58 container/list
+#10 24.58 crypto/internal/fips140deps/byteorder
+#10 24.58 crypto/internal/boring/sig
+#10 24.58 crypto/internal/fips140/subtle
+#10 24.58 vendor/golang.org/x/crypto/cryptobyte/asn1
+#10 24.59 vendor/golang.org/x/crypto/internal/alias
+#10 24.59 internal/runtime/atomic
+#10 24.59 internal/runtime/sys
+#10 24.59 crypto/internal/fips140deps/cpu
+#10 24.60 internal/nettrace
+#10 24.60 github.com/dsnet/compress/bzip2/internal/sais
+#10 24.60 github.com/dsnet/compress/internal
+#10 24.60 internal/bytealg
+#10 24.60 github.com/pierrec/lz4/v4/internal/lz4errors
+#10 24.60 github.com/ulikunitz/xz/internal/hash
+#10 24.61 golang.org/x/net/html/atom
+#10 24.61 golang.org/x/net/internal/iana
+#10 24.61 github.com/tidwall/match
+#10 24.61 golang.org/x/exp/constraints
+#10 24.62 github.com/projectdiscovery/utils/conversion
+#10 24.62 github.com/projectdiscovery/utils/race
+#10 24.62 github.com/Mzack9999/gcache/internal/list
+#10 24.62 golang.org/x/crypto/cryptobyte/asn1
+#10 24.62 math
+#10 24.63 github.com/cloudflare/circl/pke/kyber/internal/common/params
+#10 24.63 github.com/cloudflare/circl/sign/internal/dilithium/params
+#10 24.63 golang.org/x/crypto/internal/alias
+#10 24.63 github.com/refraction-networking/utls/dicttls
+#10 24.63 github.com/tidwall/tinyqueue
+#10 24.63 internal/runtime/exithook
+#10 24.63 log/slog/internal
+#10 24.64 github.com/gaissmai/bart/internal/bitset
+#10 24.64 github.com/zmap/zcrypto/cryptobyte/asn1
+#10 24.64 github.com/cloudflare/circl/sign/internal/dilithium
+#10 24.64 github.com/censys/censys-sdk-go/internal/globals
+#10 24.65 github.com/rivo/uniseg
+#10 24.65 github.com/projectdiscovery/utils/ptr
+#10 24.65 image/color
+#10 24.65 github.com/VividCortex/ewma
+#10 24.65 github.com/shirou/gopsutil/v3/common
+#10 24.65 internal/stringslite
+#10 24.65 github.com/zcalusic/sysinfo/cpuid
+#10 24.66 github.com/gaissmai/bart/internal/sparse
+#10 24.67 internal/race
+#10 24.68 internal/sync
+#10 24.68 internal/runtime/maps
+#10 24.69 github.com/klauspost/compress
+#10 24.69 github.com/projectdiscovery/blackrock
+#10 24.69 github.com/tidwall/rtred/base
+#10 24.69 github.com/charmbracelet/x/ansi/parser
+#10 24.75 runtime
+#10 25.69 weak
+#10 25.69 iter
+#10 25.69 github.com/projectdiscovery/utils/os
+#10 25.69 internal/reflectlite
+#10 25.69 crypto/subtle
+#10 25.69 sync
+#10 25.69 maps
+#10 25.69 slices
+#10 25.70 golang.org/x/exp/maps
+#10 25.73 errors
+#10 25.73 sort
+#10 25.74 internal/bisect
+#10 25.74 internal/singleflight
+#10 25.74 unique
+#10 25.74 github.com/tidwall/btree
+#10 25.74 github.com/tidwall/rtred
+#10 25.74 log/slog/internal/buffer
+#10 25.74 github.com/yuin/goldmark-emoji/definition
+#10 25.74 internal/testlog
+#10 25.75 runtime/cgo
+#10 25.75 internal/oserror
+#10 25.75 path
+#10 25.75 io
+#10 25.76 math/rand/v2
+#10 25.76 strconv
+#10 25.79 internal/godebug
+#10 25.79 syscall
+#10 25.85 github.com/hashicorp/golang-lru/simplelru
+#10 25.85 vendor/golang.org/x/net/dns/dnsmessage
+#10 25.85 bytes
+#10 25.85 strings
+#10 25.88 crypto/internal/randutil
+#10 25.88 hash
+#10 25.89 internal/saferio
+#10 25.89 crypto/internal/fips140deps/godebug
+#10 25.89 hash/crc32
+#10 25.89 crypto
+#10 25.90 math/rand
+#10 25.90 reflect
+#10 25.91 hash/crc64
+#10 25.92 net/netip
+#10 25.92 hash/adler32
+#10 25.93 vendor/golang.org/x/text/transform
+#10 25.94 github.com/saintfish/chardet
+#10 25.94 github.com/dimchansky/utfbom
+#10 25.95 encoding/base32
+#10 25.96 bufio
+#10 25.97 crypto/internal/impl
+#10 25.98 crypto/internal/fips140
+#10 25.98 net/http/internal/ascii
+#10 25.98 github.com/dsnet/compress/internal/errors
+#10 25.98 regexp/syntax
+#10 25.99 html
+#10 25.99 github.com/cloudflare/circl/kem
+#10 25.99 github.com/cloudflare/circl/sign
+#10 25.99 github.com/syndtr/goleveldb/leveldb/comparer
+#10 26.00 crypto/internal/fips140/sha256
+#10 26.01 crypto/internal/fips140/sha512
+#10 26.01 crypto/internal/fips140/sha3
+#10 26.01 internal/syscall/execenv
+#10 26.02 time
+#10 26.02 internal/syscall/unix
+#10 26.02 crypto/tls/internal/fips140tls
+#10 26.03 github.com/dsnet/compress
+#10 26.05 hash/fnv
+#10 26.05 container/heap
+#10 26.05 crypto/sha3
+#10 26.05 github.com/zmap/zcrypto/internal/randutil
+#10 26.05 github.com/projectdiscovery/utils/consts
+#10 26.06 golang.org/x/text/transform
+#10 26.06 golang.org/x/crypto/openpgp/errors
+#10 26.07 compress/bzip2
+#10 26.07 crypto/internal/fips140hash
+#10 26.07 golang.org/x/crypto/cast5
+#10 26.07 crypto/internal/fips140/hmac
+#10 26.08 golang.org/x/crypto/openpgp/s2k
+#10 26.09 image
+#10 26.12 crypto/internal/fips140/check
+#10 26.13 regexp
+#10 26.14 crypto/internal/fips140/edwards25519/field
+#10 26.14 crypto/internal/fips140/hkdf
+#10 26.14 crypto/internal/fips140/nistec/fiat
+#10 26.14 crypto/internal/fips140/bigmod
+#10 26.15 crypto/internal/fips140/aes
+#10 26.16 crypto/internal/fips140/tls12
+#10 26.20 crypto/internal/fips140/tls13
+#10 26.21 crypto/internal/fips140/edwards25519
+#10 26.23 image/internal/imageutil
+#10 26.24 image/jpeg
+#10 26.25 github.com/projectdiscovery/hmap/store/cache
+#10 26.25 context
+#10 26.26 github.com/projectdiscovery/utils/slice
+#10 26.26 io/fs
+#10 26.29 internal/poll
+#10 26.29 github.com/microcosm-cc/bluemonday/css
+#10 26.32 github.com/projectdiscovery/utils/context
+#10 26.33 embed
+#10 26.33 internal/filepathlite
+#10 26.37 crypto/internal/fips140/nistec
+#10 26.39 os
+#10 26.43 internal/fmtsort
+#10 26.43 encoding/binary
+#10 26.44 github.com/modern-go/reflect2
+#10 26.53 github.com/golang/snappy
+#10 26.53 github.com/klauspost/compress/internal/snapref
+#10 26.53 github.com/klauspost/compress/zstd/internal/xxhash
+#10 26.53 github.com/pierrec/lz4/v4/internal/lz4block
+#10 26.53 vendor/golang.org/x/crypto/internal/poly1305
+#10 26.53 encoding/base64
+#10 26.56 github.com/pierrec/lz4/v4/internal/xxh32
+#10 26.57 io/ioutil
+#10 26.57 golang.org/x/sys/unix
+#10 26.57 path/filepath
+#10 26.57 fmt
+#10 26.58 crypto/internal/sysrand
+#10 26.58 encoding/pem
+#10 26.58 github.com/cloudflare/circl/internal/sha3
+#10 26.58 gopkg.in/djherbis/times.v1
+#10 26.59 crypto/internal/entropy
+#10 26.60 crypto/internal/fips140/drbg
+#10 26.61 golang.org/x/sys/cpu
+#10 26.62 golang.org/x/crypto/internal/poly1305
+#10 26.62 golang.org/x/crypto/blake2b
+#10 26.63 golang.org/x/crypto/blake2s
+#10 26.63 github.com/projectdiscovery/utils/env
+#10 26.64 crypto/internal/fips140/aes/gcm
+#10 26.64 net
+#10 26.64 os/exec
+#10 26.65 crypto/internal/fips140only
+#10 26.65 crypto/internal/fips140/ecdh
+#10 26.66 crypto/internal/fips140/ecdsa
+#10 26.66 crypto/internal/fips140/ed25519
+#10 26.67 crypto/internal/fips140/mlkem
+#10 26.68 crypto/rc4
+#10 26.68 crypto/md5
+#10 26.70 crypto/internal/fips140/rsa
+#10 26.71 crypto/cipher
+#10 26.73 github.com/cloudflare/circl/simd/keccakf1600
+#10 26.73 github.com/akrylysov/pogreb/fs
+#10 26.75 golang.org/x/crypto/sha3
+#10 26.76 github.com/cloudflare/circl/pke/kyber/internal/common
+#10 26.77 github.com/cloudflare/circl/xof/k12
+#10 26.78 github.com/projectdiscovery/utils/reader/rawmode
+#10 26.78 log
+#10 26.78 encoding/json
+#10 26.79 runtime/debug
+#10 26.80 github.com/logrusorgru/aurora
+#10 26.81 os/user
+#10 26.82 math/big
+#10 26.83 compress/flate
+#10 26.85 crypto/internal/boring
+#10 26.85 crypto/des
+#10 26.86 github.com/modern-go/concurrent
+#10 26.87 crypto/aes
+#10 26.87 vendor/golang.org/x/crypto/chacha20
+#10 26.89 crypto/ecdh
+#10 26.90 crypto/sha512
+#10 26.92 crypto/hmac
+#10 26.94 crypto/sha1
+#10 26.95 crypto/sha256
+#10 26.95 compress/gzip
+#10 26.95 vendor/golang.org/x/crypto/chacha20poly1305
+#10 26.96 encoding/hex
+#10 26.97 net/url
+#10 26.98 vendor/golang.org/x/text/unicode/bidi
+#10 27.00 vendor/golang.org/x/text/unicode/norm
+#10 27.00 mime
+#10 27.01 vendor/golang.org/x/net/http2/hpack
+#10 27.02 mime/quotedprintable
+#10 27.04 net/http/internal
+#10 27.06 github.com/dsnet/compress/internal/prefix
+#10 27.06 github.com/klauspost/compress/flate
+#10 27.07 github.com/klauspost/compress/fse
+#10 27.11 vendor/golang.org/x/text/secure/bidirule
+#10 27.12 github.com/nwaples/rardecode
+#10 27.14 github.com/pierrec/lz4/v4/internal/lz4stream
+#10 27.15 github.com/klauspost/compress/huff0
+#10 27.16 crypto/rand
+#10 27.17 crypto/elliptic
+#10 27.18 crypto/internal/boring/bbig
+#10 27.18 encoding/asn1
+#10 27.18 crypto/ed25519
+#10 27.19 github.com/json-iterator/go
+#10 27.19 crypto/internal/hpke
+#10 27.21 crypto/rsa
+#10 27.22 github.com/projectdiscovery/fdmax
+#10 27.23 crypto/dsa
+#10 27.25 github.com/dsnet/compress/bzip2
+#10 27.26 vendor/golang.org/x/net/idna
+#10 27.27 github.com/klauspost/compress/zstd
+#10 27.28 github.com/projectdiscovery/fdmax/autofdmax
+#10 27.29 vendor/golang.org/x/crypto/cryptobyte
+#10 27.30 github.com/pierrec/lz4/v4
+#10 27.30 crypto/x509/pkix
+#10 27.34 github.com/ulikunitz/xz/internal/xlog
+#10 27.34 github.com/xi2/xz
+#10 27.38 crypto/ecdsa
+#10 27.39 github.com/hashicorp/golang-lru
+#10 27.40 archive/tar
+#10 27.40 github.com/ulikunitz/xz/lzma
+#10 27.41 github.com/projectdiscovery/awesome-search-queries
+#10 27.41 flag
+#10 27.42 github.com/cnf/structhash
+#10 27.43 github.com/google/shlex
+#10 27.45 github.com/pkg/errors
+#10 27.46 compress/zlib
+#10 27.47 github.com/klauspost/compress/gzip
+#10 27.48 debug/dwarf
+#10 27.50 github.com/klauspost/compress/zip
+#10 27.51 github.com/klauspost/pgzip
+#10 27.52 github.com/mattn/go-isatty
+#10 27.53 internal/zstd
+#10 27.53 github.com/aymerick/douceur/css
+#10 27.55 github.com/gorilla/css/scanner
+#10 27.57 golang.org/x/net/html
+#10 27.57 github.com/ulikunitz/xz
+#10 27.57 github.com/aymerick/douceur/parser
+#10 27.58 gopkg.in/yaml.v3
+#10 27.59 golang.org/x/net/bpf
+#10 27.60 github.com/tidwall/pretty
+#10 27.65 github.com/projectdiscovery/utils/permission
+#10 27.65 github.com/tidwall/gjson
+#10 27.66 github.com/projectdiscovery/utils/time
+#10 27.67 text/tabwriter
+#10 27.68 golang.org/x/time/rate
+#10 27.68 github.com/Mzack9999/gcache
+#10 27.69 github.com/docker/go-units
+#10 27.71 golang.org/x/crypto/cryptobyte
+#10 27.72 github.com/cloudflare/circl/pke/kyber/kyber768/internal
+#10 27.74 golang.org/x/crypto/chacha20
+#10 27.74 golang.org/x/crypto/hkdf
+#10 27.75 github.com/cloudflare/circl/pke/kyber/kyber768
+#10 27.77 github.com/cloudflare/circl/pke/kyber/kyber1024/internal
+#10 27.78 github.com/projectdiscovery/gologger/formatter
+#10 27.78 github.com/cloudflare/circl/kem/kyber/kyber768
+#10 27.79 github.com/cloudflare/circl/kem/mlkem/mlkem768
+#10 27.81 github.com/cloudflare/circl/pke/kyber/kyber512/internal
+#10 27.81 github.com/cloudflare/circl/pke/kyber/kyber1024
+#10 27.81 debug/elf
+#10 27.81 golang.org/x/crypto/chacha20poly1305
+#10 27.81 github.com/cloudflare/circl/internal/conv
+#10 27.81 github.com/cloudflare/circl/xof
+#10 27.82 github.com/cloudflare/circl/kem/kyber/kyber1024
+#10 27.83 github.com/microcosm-cc/bluemonday
+#10 27.84 github.com/cloudflare/circl/sign/dilithium/mode2/internal
+#10 27.84 github.com/cloudflare/circl/sign/dilithium/mode3/internal
+#10 27.84 github.com/cloudflare/circl/pke/kyber/kyber512
+#10 27.84 github.com/cloudflare/circl/sign/dilithium/mode5/internal
+#10 27.84 github.com/cloudflare/circl/math/fp25519
+#10 27.85 github.com/cloudflare/circl/math/fp448
+#10 27.87 github.com/cloudflare/circl/kem/kyber/kyber512
+#10 27.88 github.com/cloudflare/circl/math
+#10 27.89 github.com/cloudflare/circl/math/mlsbset
+#10 27.90 github.com/cloudflare/circl/sign/mldsa/mldsa44/internal
+#10 27.91 github.com/cloudflare/circl/dh/x25519
+#10 27.91 github.com/cloudflare/circl/sign/ed25519
+#10 27.91 github.com/cloudflare/circl/dh/x448
+#10 27.92 github.com/cloudflare/circl/sign/dilithium/mode2
+#10 27.92 github.com/cloudflare/circl/sign/dilithium/mode5
+#10 27.93 github.com/cloudflare/circl/sign/dilithium/mode3
+#10 27.95 github.com/projectdiscovery/utils/strings
+#10 27.96 github.com/cloudflare/circl/kem/xwing
+#10 27.97 github.com/cloudflare/circl/sign/mldsa/mldsa44
+#10 27.97 github.com/cloudflare/circl/sign/mldsa/mldsa65/internal
+#10 27.97 github.com/cloudflare/circl/sign/mldsa/mldsa87/internal
+#10 27.97 github.com/cloudflare/circl/ecc/goldilocks
+#10 28.00 github.com/refraction-networking/utls/internal/boring
+#10 28.00 github.com/refraction-networking/utls/internal/helper
+#10 28.00 github.com/cloudflare/circl/sign/eddilithium2
+#10 28.00 github.com/refraction-networking/utls/internal/quicvarint/protocol
+#10 28.02 github.com/refraction-networking/utls/internal/quicvarint
+#10 28.02 encoding/gob
+#10 28.02 github.com/cloudflare/circl/hpke
+#10 28.02 github.com/cloudflare/circl/kem/hybrid
+#10 28.03 github.com/akrylysov/pogreb/internal/errors
+#10 28.03 github.com/akrylysov/pogreb/internal/hash
+#10 28.04 github.com/syndtr/goleveldb/leveldb/util
+#10 28.04 github.com/syndtr/goleveldb/leveldb/storage
+#10 28.05 github.com/tidwall/grect
+#10 28.05 github.com/cloudflare/circl/sign/mldsa/mldsa65
+#10 28.05 go.etcd.io/bbolt
+#10 28.05 github.com/cloudflare/circl/sign/mldsa/mldsa87
+#10 28.07 github.com/cloudflare/circl/sign/ed448
+#10 28.07 github.com/tidwall/buntdb
+#10 28.07 go.uber.org/multierr
+#10 28.08 github.com/gaissmai/bart
+#10 28.08 github.com/zmap/rc2
+#10 28.08 github.com/syndtr/goleveldb/leveldb/cache
+#10 28.08 log/slog
+#10 28.11 github.com/syndtr/goleveldb/leveldb/filter
+#10 28.11 github.com/cloudflare/circl/sign/eddilithium3
+#10 28.12 github.com/zmap/zcrypto/dsa
+#10 28.13 github.com/zmap/zcrypto/json
+#10 28.13 github.com/syndtr/goleveldb/leveldb/opt
+#10 28.16 golang.org/x/text/unicode/bidi
+#10 28.16 golang.org/x/text/unicode/norm
+#10 28.16 github.com/zmap/zcrypto/encoding/asn1
+#10 28.18 github.com/cloudflare/circl/sign/schemes
+#10 28.19 github.com/zmap/zcrypto/util
+#10 28.20 github.com/cloudflare/circl/pki
+#10 28.21 github.com/zmap/zcrypto/x509/ct
+#10 28.21 github.com/syndtr/goleveldb/leveldb/errors
+#10 28.22 golang.org/x/crypto/ed25519
+#10 28.22 golang.org/x/sync/singleflight
+#10 28.22 github.com/syndtr/goleveldb/leveldb/iterator
+#10 28.24 github.com/syndtr/goleveldb/leveldb/journal
+#10 28.25 golang.org/x/text/secure/bidirule
+#10 28.26 golang.org/x/net/http2/hpack
+#10 28.28 github.com/ericlagergren/decimal/internal/c
+#10 28.28 github.com/syndtr/goleveldb/leveldb/memdb
+#10 28.28 encoding/csv
+#10 28.29 archive/zip
+#10 28.29 github.com/syndtr/goleveldb/leveldb/table
+#10 28.29 github.com/projectdiscovery/utils/errkit
+#10 28.32 github.com/ericlagergren/decimal/internal/arith
+#10 28.33 database/sql/driver
+#10 28.33 encoding/xml
+#10 28.33 github.com/dlclark/regexp2/syntax
+#10 28.35 github.com/zmap/zcrypto/x509/pkix
+#10 28.35 github.com/zmap/zcrypto/cryptobyte
+#10 28.37 net/textproto
+#10 28.37 crypto/x509
+#10 28.37 vendor/golang.org/x/net/http/httpproxy
+#10 28.38 github.com/projectdiscovery/utils/errors
+#10 28.38 github.com/charmbracelet/x/ansi
+#10 28.42 golang.org/x/net/internal/socket
+#10 28.43 github.com/syndtr/goleveldb/leveldb
+#10 28.43 vendor/golang.org/x/net/http/httpguts
+#10 28.46 github.com/projectdiscovery/ratelimit
+#10 28.46 mime/multipart
+#10 28.48 golang.org/x/net/internal/socks
+#10 28.54 github.com/projectdiscovery/utils/generic
+#10 28.55 github.com/projectdiscovery/utils/reader
+#10 28.56 golang.org/x/net/idna
+#10 28.57 github.com/Masterminds/semver/v3
+#10 28.57 github.com/projectdiscovery/mapcidr
+#10 28.57 github.com/ericlagergren/decimal
+#10 28.58 golang.org/x/net/ipv6
+#10 28.58 golang.org/x/net/ipv4
+#10 28.59 github.com/dlclark/regexp2
+#10 28.60 github.com/aymanbagabas/go-osc52/v2
+#10 28.60 golang.org/x/net/proxy
+#10 28.62 github.com/lucasb-eyer/go-colorful
+#10 28.64 text/template/parse
+#10 28.64 github.com/mattn/go-runewidth
+#10 28.67 github.com/yuin/goldmark/util
+#10 28.68 github.com/muesli/reflow/ansi
+#10 28.69 golang.org/x/term
+#10 28.73 github.com/muesli/reflow/indent
+#10 28.73 golang.org/x/net/http/httpguts
+#10 28.74 github.com/muesli/reflow/wordwrap
+#10 28.74 github.com/muesli/reflow/padding
+#10 28.77 os/signal
+#10 28.77 github.com/google/go-querystring/query
+#10 28.77 github.com/mattn/go-colorable
+#10 28.78 golang.org/x/crypto/openpgp/armor
+#10 28.79 golang.org/x/crypto/openpgp/elgamal
+#10 28.79 github.com/fatih/color
+#10 28.80 golang.org/x/crypto/pbkdf2
+#10 28.82 github.com/google/uuid
+#10 28.82 text/template
+#10 28.83 github.com/asaskevich/govalidator
+#10 28.83 golang.org/x/crypto/scrypt
+#10 28.83 golang.org/x/crypto/openpgp/packet
+#10 28.83 github.com/cheggaaa/pb/v3/termutil
+#10 28.83 crypto/tls
+#10 28.84 github.com/minio/selfupdate/internal/binarydist
+#10 28.85 aead.dev/minisign
+#10 28.86 github.com/alecthomas/chroma/v2
+#10 28.86 github.com/minio/selfupdate/internal/osext
+#10 28.87 github.com/censys/censys-sdk-go/types
+#10 28.87 github.com/projectdiscovery/machineid
+#10 28.88 github.com/shirou/gopsutil/v3/internal/common
+#10 28.89 github.com/tklauser/numcpus
+#10 28.90 github.com/zcalusic/sysinfo
+#10 28.92 github.com/tklauser/go-sysconf
+#10 28.98 github.com/shirou/gopsutil/v3/mem
+#10 28.99 github.com/shirou/gopsutil/v3/cpu
+#10 28.99 github.com/shirou/gopsutil/v3/net
+#10 29.01 golang.org/x/crypto/openpgp
+#10 29.04 github.com/alecthomas/chroma/v2/formatters/html
+#10 29.04 github.com/alecthomas/chroma/v2/formatters/svg
+#10 29.05 github.com/alecthomas/chroma/v2/lexers
+#10 29.05 github.com/cheggaaa/pb/v3
+#10 29.05 github.com/muesli/termenv
+#10 29.05 github.com/shirou/gopsutil/v3/process
+#10 29.07 github.com/alecthomas/chroma/v2/styles
+#10 29.08 github.com/alecthomas/chroma/v2/formatters
+#10 29.14 github.com/charmbracelet/lipgloss
+#10 29.27 github.com/charmbracelet/lipgloss/table
+#10 29.32 github.com/alecthomas/chroma/v2/quick
+#10 29.43 net/http/httptrace
+#10 29.44 github.com/miekg/dns
+#10 29.45 golang.org/x/net/internal/httpcommon
+#10 29.45 net/http
+#10 30.08 github.com/yuin/goldmark/text
+#10 30.11 github.com/yuin/goldmark/ast
+#10 30.15 expvar
+#10 30.15 net/http/cookiejar
+#10 30.15 github.com/projectdiscovery/utils/ip
+#10 30.15 github.com/censys/censys-sdk-go/retry
+#10 30.15 github.com/projectdiscovery/utils/file
+#10 30.16 github.com/projectdiscovery/retryabledns/doh
+#10 30.16 github.com/Mzack9999/go-http-digest-auth-client
+#10 30.16 net/http/httputil
+#10 30.17 github.com/censys/censys-sdk-go/internal/config
+#10 30.18 github.com/censys/censys-sdk-go/internal/hooks
+#10 30.19 github.com/weppos/publicsuffix-go/publicsuffix
+#10 30.20 github.com/projectdiscovery/fastdialer/fastdialer/utils
+#10 30.21 golang.org/x/net/http2
+#10 30.21 github.com/minio/selfupdate
+#10 30.22 github.com/censys/censys-sdk-go/internal/utils
+#10 30.23 golang.org/x/oauth2/internal
+#10 30.26 github.com/projectdiscovery/utils/process
+#10 30.26 github.com/projectdiscovery/retryabledns/hostsfile
+#10 30.26 github.com/yuin/goldmark-emoji/ast
+#10 30.26 github.com/andybalholm/brotli
+#10 30.26 github.com/yuin/goldmark/renderer
+#10 30.27 github.com/yuin/goldmark/extension/ast
+#10 30.27 github.com/projectdiscovery/utils/maps
+#10 30.28 github.com/google/go-github/v30/github
+#10 30.28 github.com/yuin/goldmark/parser
+#10 30.29 golang.org/x/oauth2
+#10 30.29 github.com/yuin/goldmark/renderer/html
+#10 30.30 github.com/akrylysov/pogreb
+#10 30.37 github.com/projectdiscovery/utils/folder
+#10 30.38 github.com/projectdiscovery/retryabledns
+#10 30.38 github.com/projectdiscovery/utils/url
+#10 30.40 github.com/zmap/zcrypto/x509
+#10 30.43 github.com/charmbracelet/glamour/ansi
+#10 30.50 github.com/projectdiscovery/goflags
+#10 30.51 github.com/projectdiscovery/hmap/store/disk
+#10 30.53 github.com/projectdiscovery/networkpolicy
+#10 30.54 github.com/charmbracelet/glamour/styles
+#10 30.56 github.com/yuin/goldmark
+#10 30.59 github.com/yuin/goldmark-emoji
+#10 30.60 github.com/yuin/goldmark/extension
+#10 30.63 github.com/censys/censys-sdk-go/models/components
+#10 30.71 github.com/projectdiscovery/hmap/store/hybrid
+#10 30.78 github.com/zmap/zcrypto/tls
+#10 30.78 github.com/charmbracelet/glamour
+#10 30.79 github.com/projectdiscovery/fastdialer/fastdialer/metafiles
+#10 31.02 github.com/censys/censys-sdk-go/models/sdkerrors
+#10 31.03 github.com/censys/censys-sdk-go/models/operations
+#10 31.04 github.com/projectdiscovery/utils/crypto
+#10 31.09 github.com/censys/censys-sdk-go
+#10 31.19 github.com/mholt/archiver/v3
+#10 31.19 github.com/refraction-networking/utls
+#10 31.31 github.com/projectdiscovery/gologger/writer
+#10 31.33 github.com/projectdiscovery/gologger
+#10 31.34 github.com/projectdiscovery/utils/update
+#10 31.72 github.com/projectdiscovery/fastdialer/fastdialer/ja3/impersonate
+#10 31.74 github.com/projectdiscovery/fastdialer/fastdialer
+#10 32.04 github.com/projectdiscovery/retryablehttp-go
+#10 32.19 github.com/projectdiscovery/uncover/sources
+#10 32.25 github.com/projectdiscovery/uncover/sources/agent/censys
+#10 32.25 github.com/projectdiscovery/uncover/sources/agent/binaryedge
+#10 32.25 github.com/projectdiscovery/uncover/sources/agent/fofa
+#10 32.25 github.com/projectdiscovery/uncover/sources/agent/criminalip
+#10 32.25 github.com/projectdiscovery/uncover/sources/agent/driftnet
+#10 32.25 github.com/projectdiscovery/uncover/sources/agent/hunter
+#10 32.25 github.com/projectdiscovery/uncover/sources/agent/netlas
+#10 32.25 github.com/projectdiscovery/uncover/sources/agent/hunterhow
+#10 32.25 github.com/projectdiscovery/uncover/sources/agent/google
+#10 32.25 github.com/projectdiscovery/uncover/sources/agent/odin
+#10 32.25 github.com/projectdiscovery/uncover/sources/agent/onyphe
+#10 32.25 github.com/projectdiscovery/uncover/sources/agent/greynoise
+#10 32.35 github.com/projectdiscovery/uncover/sources/agent/publicwww
+#10 32.35 github.com/projectdiscovery/uncover/sources/agent/shodan
+#10 32.35 github.com/projectdiscovery/uncover/sources/agent/quake
+#10 32.35 github.com/projectdiscovery/uncover/sources/agent/shodanidb
+#10 32.36 github.com/projectdiscovery/uncover/sources/agent/zoomeye
+#10 32.43 github.com/projectdiscovery/uncover
+#10 32.50 github.com/projectdiscovery/uncover/runner
+#10 32.60 github.com/projectdiscovery/uncover/cmd/uncover
+#10 DONE 33.5s
+
+#11 [stage-1 4/9] COPY --from=builder /go/bin/uncover /usr/local/bin/uncover
+#11 DONE 0.0s
+
+#12 [stage-1 5/9] WORKDIR /app
+#12 DONE 0.0s
+
+#13 [stage-1 6/9] COPY requirements.txt ./
+#13 DONE 0.0s
+
+#14 [stage-1 7/9] RUN pip install --no-cache-dir -r requirements.txt
+#14 1.162 Collecting fastmcp>=2.0.0 (from -r requirements.txt (line 1))
+#14 1.224   Downloading fastmcp-3.1.1-py3-none-any.whl.metadata (8.1 kB)
+#14 1.241 Collecting authlib>=1.6.5 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 1.250   Downloading authlib-1.6.9-py2.py3-none-any.whl.metadata (9.8 kB)
+#14 1.276 Collecting cyclopts>=4.0.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 1.287   Downloading cyclopts-4.10.0-py3-none-any.whl.metadata (12 kB)
+#14 1.299 Collecting exceptiongroup>=1.2.2 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 1.308   Downloading exceptiongroup-1.3.1-py3-none-any.whl.metadata (6.7 kB)
+#14 1.321 Collecting httpx<1.0,>=0.28.1 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 1.330   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#14 1.340 Collecting jsonref>=1.1.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 1.349   Downloading jsonref-1.1.0-py3-none-any.whl.metadata (2.7 kB)
+#14 1.359 Collecting jsonschema-path>=0.3.4 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 1.369   Downloading jsonschema_path-0.4.5-py3-none-any.whl.metadata (5.9 kB)
+#14 1.381 Collecting mcp<2.0,>=1.24.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 1.390   Downloading mcp-1.26.0-py3-none-any.whl.metadata (89 kB)
+#14 1.414 Collecting openapi-pydantic>=0.5.1 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 1.423   Downloading openapi_pydantic-0.5.1-py3-none-any.whl.metadata (10 kB)
+#14 1.438 Collecting opentelemetry-api>=1.20.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 1.444   Downloading opentelemetry_api-1.40.0-py3-none-any.whl.metadata (1.5 kB)
+#14 1.456 Collecting packaging>=24.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 1.462   Downloading packaging-26.0-py3-none-any.whl.metadata (3.3 kB)
+#14 1.474 Collecting platformdirs>=4.0.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 1.482   Downloading platformdirs-4.9.4-py3-none-any.whl.metadata (4.7 kB)
+#14 1.491 Collecting py-key-value-aio<0.5.0,>=0.4.4 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 1.499   Downloading py_key_value_aio-0.4.4-py3-none-any.whl.metadata (15 kB)
+#14 1.579 Collecting pydantic>=2.11.7 (from pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 1.625   Downloading pydantic-2.12.5-py3-none-any.whl.metadata (90 kB)
+#14 1.642 Collecting pyperclip>=1.9.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 1.651   Downloading pyperclip-1.11.0-py3-none-any.whl.metadata (2.4 kB)
+#14 1.662 Collecting python-dotenv>=1.1.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 1.670   Downloading python_dotenv-1.2.2-py3-none-any.whl.metadata (27 kB)
+#14 1.691 Collecting pyyaml<7.0,>=6.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 1.699   Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (2.4 kB)
+#14 1.720 Collecting rich>=13.9.4 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 1.729   Downloading rich-14.3.3-py3-none-any.whl.metadata (18 kB)
+#14 1.739 Collecting uncalled-for>=0.2.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 1.748   Downloading uncalled_for-0.2.0-py3-none-any.whl.metadata (2.9 kB)
+#14 1.765 Collecting uvicorn>=0.35 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 1.774   Downloading uvicorn-0.42.0-py3-none-any.whl.metadata (6.7 kB)
+#14 1.808 Collecting watchfiles>=1.0.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 1.816   Downloading watchfiles-1.1.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (4.9 kB)
+#14 1.855 Collecting websockets>=15.0.1 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 1.864   Downloading websockets-16.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (6.8 kB)
+#14 1.943 Collecting cryptography (from authlib>=1.6.5->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 1.953   Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_aarch64.whl.metadata (5.7 kB)
+#14 1.968 Collecting attrs>=23.1.0 (from cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 1.976   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+#14 1.986 Collecting docstring-parser<4.0,>=0.15 (from cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 1.993   Downloading docstring_parser-0.17.0-py3-none-any.whl.metadata (3.5 kB)
+#14 2.005 Collecting rich-rst<2.0.0,>=1.3.1 (from cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 2.013   Downloading rich_rst-1.3.2-py3-none-any.whl.metadata (6.1 kB)
+#14 2.033 Collecting typing-extensions>=4.6.0 (from exceptiongroup>=1.2.2->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 2.043   Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+#14 2.057 Collecting anyio (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 2.155   Downloading anyio-4.12.1-py3-none-any.whl.metadata (4.3 kB)
+#14 2.169 Collecting certifi (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 2.177   Downloading certifi-2026.2.25-py3-none-any.whl.metadata (2.5 kB)
+#14 2.191 Collecting httpcore==1.* (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 2.202   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#14 2.215 Collecting idna (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 2.224   Downloading idna-3.11-py3-none-any.whl.metadata (8.4 kB)
+#14 2.235 Collecting h11>=0.16 (from httpcore==1.*->httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 2.245   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#14 2.257 Collecting pathable<0.6.0,>=0.5.0 (from jsonschema-path>=0.3.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 2.266   Downloading pathable-0.5.0-py3-none-any.whl.metadata (5.9 kB)
+#14 2.283 Collecting referencing<0.38.0 (from jsonschema-path>=0.3.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 2.291   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+#14 2.304 Collecting httpx-sse>=0.4 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 2.315   Downloading httpx_sse-0.4.3-py3-none-any.whl.metadata (9.7 kB)
+#14 2.332 Collecting jsonschema>=4.20.0 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 2.341   Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+#14 2.354 Collecting pydantic-settings>=2.5.2 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 2.362   Downloading pydantic_settings-2.13.1-py3-none-any.whl.metadata (3.4 kB)
+#14 2.380 Collecting pyjwt>=2.10.1 (from pyjwt[crypto]>=2.10.1->mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 2.390   Downloading pyjwt-2.12.1-py3-none-any.whl.metadata (4.1 kB)
+#14 2.402 Collecting python-multipart>=0.0.9 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 2.411   Downloading python_multipart-0.0.22-py3-none-any.whl.metadata (1.8 kB)
+#14 2.426 Collecting sse-starlette>=1.6.1 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 2.435   Downloading sse_starlette-3.3.3-py3-none-any.whl.metadata (14 kB)
+#14 2.456 Collecting starlette>=0.27 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 2.466   Downloading starlette-0.52.1-py3-none-any.whl.metadata (6.3 kB)
+#14 2.477 Collecting typing-inspection>=0.4.1 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 2.486   Downloading typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+#14 2.515 Collecting importlib-metadata<8.8.0,>=6.0 (from opentelemetry-api>=1.20.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 2.523   Downloading importlib_metadata-8.7.1-py3-none-any.whl.metadata (4.7 kB)
+#14 2.542 Collecting beartype>=0.20.0 (from py-key-value-aio<0.5.0,>=0.4.4->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 2.551   Downloading beartype-0.22.9-py3-none-any.whl.metadata (37 kB)
+#14 2.682 Collecting aiofile>=3.5.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 2.692   Downloading aiofile-3.9.0-py3-none-any.whl.metadata (14 kB)
+#14 2.721 Collecting keyring>=25.6.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 2.730   Downloading keyring-25.7.0-py3-none-any.whl.metadata (21 kB)
+#14 2.749 Collecting cachetools>=5.0.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 2.758   Downloading cachetools-7.0.5-py3-none-any.whl.metadata (5.6 kB)
+#14 2.769 Collecting annotated-types>=0.6.0 (from pydantic>=2.11.7->pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 2.780   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+#14 3.045 Collecting pydantic-core==2.41.5 (from pydantic>=2.11.7->pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 3.055   Downloading pydantic_core-2.41.5-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (7.3 kB)
+#14 3.069 Collecting email-validator>=2.0.0 (from pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 3.078   Downloading email_validator-2.3.0-py3-none-any.whl.metadata (26 kB)
+#14 3.116 Collecting markdown-it-py>=2.2.0 (from rich>=13.9.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 3.203   Downloading markdown_it_py-4.0.0-py3-none-any.whl.metadata (7.3 kB)
+#14 3.221 Collecting pygments<3.0.0,>=2.13.0 (from rich>=13.9.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 3.229   Downloading pygments-2.19.2-py3-none-any.whl.metadata (2.5 kB)
+#14 3.246 Collecting click>=7.0 (from uvicorn>=0.35->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 3.258   Downloading click-8.3.1-py3-none-any.whl.metadata (2.6 kB)
+#14 3.288 Collecting caio<0.10.0,>=0.9.0 (from aiofile>=3.5.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 3.298   Downloading caio-0.9.25-cp312-cp312-manylinux_2_34_aarch64.whl.metadata (3.3 kB)
+#14 3.317 Collecting dnspython>=2.0.0 (from email-validator>=2.0.0->pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 3.326   Downloading dnspython-2.8.0-py3-none-any.whl.metadata (5.7 kB)
+#14 3.347 Collecting zipp>=3.20 (from importlib-metadata<8.8.0,>=6.0->opentelemetry-api>=1.20.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 3.355   Downloading zipp-3.23.0-py3-none-any.whl.metadata (3.6 kB)
+#14 3.371 Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.20.0->mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 3.380   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+#14 3.497 Collecting rpds-py>=0.25.0 (from jsonschema>=4.20.0->mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 3.507   Downloading rpds_py-0.30.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (4.1 kB)
+#14 3.517 Collecting SecretStorage>=3.2 (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 3.526   Downloading secretstorage-3.5.0-py3-none-any.whl.metadata (4.0 kB)
+#14 3.537 Collecting jeepney>=0.4.2 (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 3.544   Downloading jeepney-0.9.0-py3-none-any.whl.metadata (1.2 kB)
+#14 3.553 Collecting jaraco.classes (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 3.561   Downloading jaraco.classes-3.4.0-py3-none-any.whl.metadata (2.6 kB)
+#14 3.574 Collecting jaraco.functools (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 3.584   Downloading jaraco_functools-4.4.0-py3-none-any.whl.metadata (3.0 kB)
+#14 3.595 Collecting jaraco.context (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 3.603   Downloading jaraco_context-6.1.1-py3-none-any.whl.metadata (4.3 kB)
+#14 3.615 Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich>=13.9.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 3.624   Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+#14 3.776 Collecting cffi>=2.0.0 (from cryptography->authlib>=1.6.5->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 3.786   Downloading cffi-2.0.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.whl.metadata (2.6 kB)
+#14 3.805 Collecting docutils (from rich-rst<2.0.0,>=1.3.1->cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 3.814   Downloading docutils-0.22.4-py3-none-any.whl.metadata (15 kB)
+#14 3.850 Collecting pycparser (from cffi>=2.0.0->cryptography->authlib>=1.6.5->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 3.859   Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+#14 3.896 Collecting more-itertools (from jaraco.classes->keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#14 3.905   Downloading more_itertools-10.8.0-py3-none-any.whl.metadata (39 kB)
+#14 3.918 Downloading fastmcp-3.1.1-py3-none-any.whl (633 kB)
+#14 3.937    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 633.8/633.8 kB 36.9 MB/s eta 0:00:00
+#14 3.945 Downloading authlib-1.6.9-py2.py3-none-any.whl (244 kB)
+#14 3.959 Downloading cyclopts-4.10.0-py3-none-any.whl (204 kB)
+#14 3.973 Downloading exceptiongroup-1.3.1-py3-none-any.whl (16 kB)
+#14 3.981 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#14 3.989 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#14 4.000 Downloading jsonref-1.1.0-py3-none-any.whl (9.4 kB)
+#14 4.008 Downloading jsonschema_path-0.4.5-py3-none-any.whl (19 kB)
+#14 4.016 Downloading mcp-1.26.0-py3-none-any.whl (233 kB)
+#14 4.028 Downloading openapi_pydantic-0.5.1-py3-none-any.whl (96 kB)
+#14 4.036 Downloading opentelemetry_api-1.40.0-py3-none-any.whl (68 kB)
+#14 4.044 Downloading packaging-26.0-py3-none-any.whl (74 kB)
+#14 4.052 Downloading platformdirs-4.9.4-py3-none-any.whl (21 kB)
+#14 4.059 Downloading py_key_value_aio-0.4.4-py3-none-any.whl (152 kB)
+#14 4.070 Downloading pydantic-2.12.5-py3-none-any.whl (463 kB)
+#14 4.084 Downloading pydantic_core-2.41.5-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (1.9 MB)
+#14 4.155    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.9/1.9 MB 26.3 MB/s eta 0:00:00
+#14 4.164 Downloading pyperclip-1.11.0-py3-none-any.whl (11 kB)
+#14 4.173 Downloading python_dotenv-1.2.2-py3-none-any.whl (22 kB)
+#14 4.181 Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (775 kB)
+#14 4.217    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 775.1/775.1 kB 16.9 MB/s eta 0:00:00
+#14 4.225 Downloading rich-14.3.3-py3-none-any.whl (310 kB)
+#14 4.248 Downloading uncalled_for-0.2.0-py3-none-any.whl (11 kB)
+#14 4.257 Downloading uvicorn-0.42.0-py3-none-any.whl (68 kB)
+#14 4.265 Downloading watchfiles-1.1.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (449 kB)
+#14 4.290 Downloading websockets-16.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (186 kB)
+#14 4.304 Downloading aiofile-3.9.0-py3-none-any.whl (19 kB)
+#14 4.314 Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+#14 4.323 Downloading anyio-4.12.1-py3-none-any.whl (113 kB)
+#14 4.334 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+#14 4.342 Downloading beartype-0.22.9-py3-none-any.whl (1.3 MB)
+#14 4.419    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 14.9 MB/s eta 0:00:00
+#14 4.430 Downloading cachetools-7.0.5-py3-none-any.whl (13 kB)
+#14 4.438 Downloading click-8.3.1-py3-none-any.whl (108 kB)
+#14 4.450 Downloading docstring_parser-0.17.0-py3-none-any.whl (36 kB)
+#14 4.459 Downloading email_validator-2.3.0-py3-none-any.whl (35 kB)
+#14 4.469 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#14 4.478 Downloading httpx_sse-0.4.3-py3-none-any.whl (9.0 kB)
+#14 4.487 Downloading idna-3.11-py3-none-any.whl (71 kB)
+#14 4.497 Downloading importlib_metadata-8.7.1-py3-none-any.whl (27 kB)
+#14 4.504 Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+#14 4.514 Downloading keyring-25.7.0-py3-none-any.whl (39 kB)
+#14 4.523 Downloading markdown_it_py-4.0.0-py3-none-any.whl (87 kB)
+#14 4.533 Downloading pathable-0.5.0-py3-none-any.whl (16 kB)
+#14 4.541 Downloading pydantic_settings-2.13.1-py3-none-any.whl (58 kB)
+#14 4.548 Downloading pygments-2.19.2-py3-none-any.whl (1.2 MB)
+#14 4.569    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 60.7 MB/s eta 0:00:00
+#14 4.579 Downloading pyjwt-2.12.1-py3-none-any.whl (29 kB)
+#14 4.586 Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_aarch64.whl (4.3 MB)
+#14 4.894    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.3/4.3 MB 13.4 MB/s eta 0:00:00
+#14 4.904 Downloading python_multipart-0.0.22-py3-none-any.whl (24 kB)
+#14 4.914 Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+#14 4.924 Downloading rich_rst-1.3.2-py3-none-any.whl (12 kB)
+#14 4.935 Downloading sse_starlette-3.3.3-py3-none-any.whl (14 kB)
+#14 4.944 Downloading starlette-0.52.1-py3-none-any.whl (74 kB)
+#14 4.955 Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+#14 4.965 Downloading typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+#14 4.975 Downloading certifi-2026.2.25-py3-none-any.whl (153 kB)
+#14 4.985 Downloading caio-0.9.25-cp312-cp312-manylinux_2_34_aarch64.whl (81 kB)
+#14 4.995 Downloading cffi-2.0.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.whl (220 kB)
+#14 5.004 Downloading dnspython-2.8.0-py3-none-any.whl (331 kB)
+#14 5.019 Downloading jeepney-0.9.0-py3-none-any.whl (49 kB)
+#14 5.029 Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+#14 5.039 Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+#14 5.048 Downloading rpds_py-0.30.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (390 kB)
+#14 5.064 Downloading secretstorage-3.5.0-py3-none-any.whl (15 kB)
+#14 5.077 Downloading zipp-3.23.0-py3-none-any.whl (10 kB)
+#14 5.084 Downloading docutils-0.22.4-py3-none-any.whl (633 kB)
+#14 5.096    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 633.2/633.2 kB 61.8 MB/s eta 0:00:00
+#14 5.106 Downloading jaraco.classes-3.4.0-py3-none-any.whl (6.8 kB)
+#14 5.116 Downloading jaraco_context-6.1.1-py3-none-any.whl (7.0 kB)
+#14 5.125 Downloading jaraco_functools-4.4.0-py3-none-any.whl (10 kB)
+#14 5.133 Downloading more_itertools-10.8.0-py3-none-any.whl (69 kB)
+#14 5.142 Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+#14 5.257 Installing collected packages: pyperclip, zipp, websockets, uncalled-for, typing-extensions, rpds-py, pyyaml, python-multipart, python-dotenv, pyjwt, pygments, pycparser, platformdirs, pathable, packaging, more-itertools, mdurl, jsonref, jeepney, jaraco.context, idna, httpx-sse, h11, docutils, docstring-parser, dnspython, click, certifi, caio, cachetools, beartype, attrs, annotated-types, uvicorn, typing-inspection, referencing, pydantic-core, py-key-value-aio, markdown-it-py, jaraco.functools, jaraco.classes, importlib-metadata, httpcore, exceptiongroup, email-validator, cffi, anyio, aiofile, watchfiles, starlette, rich, pydantic, opentelemetry-api, jsonschema-specifications, jsonschema-path, httpx, cryptography, sse-starlette, SecretStorage, rich-rst, pydantic-settings, openapi-pydantic, jsonschema, authlib, mcp, keyring, cyclopts, fastmcp
+#14 7.954 Successfully installed SecretStorage-3.5.0 aiofile-3.9.0 annotated-types-0.7.0 anyio-4.12.1 attrs-26.1.0 authlib-1.6.9 beartype-0.22.9 cachetools-7.0.5 caio-0.9.25 certifi-2026.2.25 cffi-2.0.0 click-8.3.1 cryptography-46.0.5 cyclopts-4.10.0 dnspython-2.8.0 docstring-parser-0.17.0 docutils-0.22.4 email-validator-2.3.0 exceptiongroup-1.3.1 fastmcp-3.1.1 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 httpx-sse-0.4.3 idna-3.11 importlib-metadata-8.7.1 jaraco.classes-3.4.0 jaraco.context-6.1.1 jaraco.functools-4.4.0 jeepney-0.9.0 jsonref-1.1.0 jsonschema-4.26.0 jsonschema-path-0.4.5 jsonschema-specifications-2025.9.1 keyring-25.7.0 markdown-it-py-4.0.0 mcp-1.26.0 mdurl-0.1.2 more-itertools-10.8.0 openapi-pydantic-0.5.1 opentelemetry-api-1.40.0 packaging-26.0 pathable-0.5.0 platformdirs-4.9.4 py-key-value-aio-0.4.4 pycparser-3.0 pydantic-2.12.5 pydantic-core-2.41.5 pydantic-settings-2.13.1 pygments-2.19.2 pyjwt-2.12.1 pyperclip-1.11.0 python-dotenv-1.2.2 python-multipart-0.0.22 pyyaml-6.0.3 referencing-0.37.0 rich-14.3.3 rich-rst-1.3.2 rpds-py-0.30.0 sse-starlette-3.3.3 starlette-0.52.1 typing-extensions-4.15.0 typing-inspection-0.4.2 uncalled-for-0.2.0 uvicorn-0.42.0 watchfiles-1.1.1 websockets-16.0 zipp-3.23.0
+#14 7.954 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#14 8.037 
+#14 8.037 [notice] A new release of pip is available: 25.0.1 -> 26.0.1
+#14 8.037 [notice] To update, run: pip install --upgrade pip
+#14 DONE 8.2s
+
+#15 [stage-1 8/9] COPY mcp_server.py ./
+#15 DONE 0.0s
+
+#16 [stage-1 9/9] RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+#16 DONE 0.1s
+
+#17 exporting to image
+#17 exporting layers
+#17 exporting layers 2.2s done
+#17 exporting manifest sha256:46bbe49d93288cdb4b86a37070f58ca8c2132842885d2ba60b2da522b3c0d996 done
+#17 exporting config sha256:9741ba34b4841665870964cfb96022ebffca9346fe0c811edaf6796e640f6090 done
+#17 exporting attestation manifest sha256:35db42219ec444ed0adce9c68edb9c07e7694ff133f59aa80493d5d770ce2acc done
+#17 exporting manifest list sha256:a37a542f4ba989b800078d36934dd522e30b28887a09b8eea06ed3d925c3ec52 done
+#17 naming to docker.io/hackerdogs/uncover-mcp:latest done
+#17 unpacking to docker.io/hackerdogs/uncover-mcp:latest
+#17 unpacking to docker.io/hackerdogs/uncover-mcp:latest 0.7s done
+#17 DONE 2.9s
+  [0;32m✅ PASS: Docker image hackerdogs/uncover-mcp:latest exists[0m
+
+[0;34m[Test 2] CLI binary inside container[0m
+  [0;32m✅ PASS: uncover binary responds[0m
+       [[34mINF[0m] Current Version: v1.1.0
+
+[0;34m[Test 3] MCP stdio mode — initialize + tools/list[0m
+  [0;32m✅ PASS: stdio mode returned tools/list response (       2 tool names found)[0m
+
+[0;34m[Test 4] MCP HTTP streamable mode — initialize[0m
+  [0;32m✅ PASS: HTTP streamable mode responded (status 200)[0m
+       Session ID: 3debe3cd5dcc4d9c...
+
+[0;34m[Test 5] MCP HTTP — tools/list[0m
+  [0;32m✅ PASS: HTTP tools/list returned tools[0m
+       - search_hosts: Search for exposed hosts using internet search engines.
+
+Uses Uncover to query s
+
+[0;34m[Test 6] MCP HTTP — tools/call (search_hosts)[0m
+  [0;32m✅ PASS: tools/call search_hosts returned a result[0m
+
+=================================================================================
+[0;34mResults: [0;32m6 passed[0m, [0;31m0 failed[0m
+=================================================================================
+uncover-mcp-test
+uncover-mcp-test

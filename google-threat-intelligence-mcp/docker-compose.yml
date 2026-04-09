@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  google-threat-intelligence-mcp:
+    image: hackerdogs/google-threat-intelligence-mcp:latest
+    build: .
+    ports:
+      - "8644:8644"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8644
+      - GOOGLE_TI_API_KEY=${GOOGLE_TI_API_KEY:-}

@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  scc-mcp:
+    image: hackerdogs/scc-mcp:latest
+    build: .
+    ports:
+      - "8663:8663"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8663
+

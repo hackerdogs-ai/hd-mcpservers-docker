@@ -1,0 +1,72 @@
+========== Testing abuseipdb-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 971B 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim-bookworm
+#2 DONE 0.4s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/8] FROM docker.io/library/python:3.11-slim-bookworm@sha256:420310dd2ff7895895f0f1f9d15cae5a95dabceb8f1d6b9a23ef33c2c1c542c3
+#4 resolve docker.io/library/python:3.11-slim-bookworm@sha256:420310dd2ff7895895f0f1f9d15cae5a95dabceb8f1d6b9a23ef33c2c1c542c3 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 70B done
+#5 DONE 0.0s
+
+#6 [6/8] RUN pip install --no-cache-dir -r requirements.txt
+#6 CACHED
+
+#7 [7/8] COPY mcp_server.py ./
+#7 CACHED
+
+#8 [5/8] COPY requirements.txt ./
+#8 CACHED
+
+#9 [2/8] RUN groupadd -g 1000 mcpuser && useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
+#9 CACHED
+
+#10 [3/8] RUN apt-get update && apt-get install -y --no-install-recommends tini ca-certificates && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [4/8] WORKDIR /app
+#11 CACHED
+
+#12 [8/8] RUN chown -R mcpuser:mcpuser /app
+#12 CACHED
+
+#13 exporting to image
+#13 exporting layers done
+#13 exporting manifest sha256:ba663d95df95e85d8fe5c67b59eae84178b7f7c0ba2b0d1102af5eab890e05df done
+#13 exporting config sha256:6a9536e7d29285777c91bc9614ca75c865187b639424947ddd008517d0519619 done
+#13 exporting attestation manifest sha256:8531bbd4933a50a611de4ee1101be6c832bc04316ca49a444af7a6cfb79bb03e 0.1s done
+#13 exporting manifest list sha256:83604c4c149d5dc287b09afc0e078e6725dec0819bf33753dbffda2e419baa59
+#13 exporting manifest list sha256:83604c4c149d5dc287b09afc0e078e6725dec0819bf33753dbffda2e419baa59 0.0s done
+#13 naming to docker.io/hackerdogs/abuseipdb-mcp:latest done
+#13 unpacking to docker.io/hackerdogs/abuseipdb-mcp:latest 0.0s done
+#13 DONE 0.2s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/0m676ew0arspv3y9dywdcxzr6
+========== abuseipdb-mcp test (compliance) ==========
+[0;34m[1] Install[0m
+  [0;32mPASS: image exists[0m
+[0;34m[2] Stdio tools/list[0m
+  [0;32mPASS: stdio tools/list[0m
+[0;34m[3] Stdio tools/call check_ip[0m
+  [0;32mPASS: stdio tools/call check_ip[0m
+[0;34m[4] HTTP streamable tools/list[0m
+  [0;32mPASS: HTTP tools/list[0m
+[0;34m[5] HTTP streamable tools/call check_ip[0m
+  [0;32mPASS: HTTP tools/call check_ip[0m
+
+Total: 5 passed, 0 failed
+abuseipdb-mcp-test
+abuseipdb-mcp-test
+
+✅ PASS: abuseipdb-mcp

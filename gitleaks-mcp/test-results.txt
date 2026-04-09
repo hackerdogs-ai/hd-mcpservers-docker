@@ -1,0 +1,25 @@
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/vlpnqxzgdo89tkjkipci7qypk
+  PASS: Docker image hackerdogs/gitleaks-mcp:latest exists
+
+[Test 2] CLI binary inside container
+  PASS: gitleaks binary responds
+       version is set by build process
+
+[Test 3] MCP stdio mode — initialize + tools/list
+  PASS: stdio mode returned tools/list response (1 tool names found)
+
+[Test 4] MCP HTTP streamable mode — initialize
+  PASS: HTTP streamable mode responded (status 200)
+       Session ID: 5311bc7501ff4672...
+
+[Test 5] MCP HTTP — tools/list
+  PASS: HTTP tools/list returned tools
+
+[Test 6] MCP HTTP — tools/call (run_gitleaks)
+  PASS: tools/call run_gitleaks returned a result
+
+=================================================================================
+Results: 6 passed, 0 failed
+=================================================================================
+gitleaks-mcp-test
+gitleaks-mcp-test

@@ -1,0 +1,57 @@
+========== Retesting ai-humanizer-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 561B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 1.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [4/7] RUN npm install -g ai-humanizer-mcp-server supergateway
+#7 CACHED
+
+#8 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#8 CACHED
+
+#9 [2/7] WORKDIR /app
+#9 CACHED
+
+#10 [6/7] COPY entrypoint.sh /entrypoint.sh
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:9414cb9b845731389fec9828cab1168952bb4c8ae9bde61efe33b8f3d64172cd done
+#12 exporting config sha256:0db7b5e7f12e7cfa47d111fa59b7f20d1a2ce068947d774a7d892f59ce34c7fe done
+#12 exporting attestation manifest sha256:15ccf81fb50c80026535f260a004ca89f59b021760f940065527332e99a92648 0.0s done
+#12 exporting manifest list sha256:ba717572e368596c9c819c3c412a5ba13bf9c5c4286e90f2fd0cf737b4ac386f 0.0s done
+#12 naming to docker.io/library/ai-humanizer-mcp:latest
+#12 naming to docker.io/library/ai-humanizer-mcp:latest done
+#12 unpacking to docker.io/library/ai-humanizer-mcp:latest 0.0s done
+#12 naming to docker.io/hackerdogs/ai-humanizer-mcp:latest done
+#12 unpacking to docker.io/hackerdogs/ai-humanizer-mcp:latest 0.0s done
+#12 DONE 0.2s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/5pw1ftnegkhyadaef8vjl9tji
+/c/Users/Utkarsh Singhal/Desktop/hd-mcpservers-docker/scripts/mcp-standard-six-test.sh: line 75: python3: command not found
+
+❌ FAIL (Test): ai-humanizer-mcp

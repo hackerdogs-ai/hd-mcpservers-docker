@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  acuvity-mcp-server-hyperbrowser-mcp:
+    image: hackerdogs/acuvity-mcp-server-hyperbrowser-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: acuvity-mcp-server-hyperbrowser-mcp
+    ports:
+      - "8427:8427"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8427
+    restart: unless-stopped

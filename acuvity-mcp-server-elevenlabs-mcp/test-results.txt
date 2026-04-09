@@ -1,0 +1,75 @@
+========== Testing acuvity-mcp-server-elevenlabs-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 938B 0.0s done
+#1 DONE 0.1s
+
+#2 [auth] library/python:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim-bookworm
+#3 DONE 0.9s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/8] FROM docker.io/library/python:3.11-slim-bookworm@sha256:420310dd2ff7895895f0f1f9d15cae5a95dabceb8f1d6b9a23ef33c2c1c542c3
+#5 resolve docker.io/library/python:3.11-slim-bookworm@sha256:420310dd2ff7895895f0f1f9d15cae5a95dabceb8f1d6b9a23ef33c2c1c542c3 0.0s done
+#5 DONE 0.1s
+
+#6 [internal] load build context
+#6 transferring context: 1.37kB 0.0s done
+#6 DONE 0.1s
+
+#7 [2/8] RUN groupadd -g 1000 mcpuser && useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
+#7 CACHED
+
+#8 [3/8] RUN apt-get update && apt-get install -y --no-install-recommends tini ca-certificates && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [4/8] WORKDIR /app
+#9 CACHED
+
+#10 [5/8] COPY requirements.txt ./
+#10 CACHED
+
+#11 [6/8] RUN pip install --no-cache-dir -r requirements.txt
+#11 CACHED
+
+#12 [7/8] COPY mcp_server.py ./
+#12 DONE 0.0s
+
+#13 [8/8] RUN chown -R mcpuser:mcpuser /app
+#13 DONE 0.3s
+
+#14 exporting to image
+#14 exporting layers
+#14 exporting layers 0.2s done
+#14 exporting manifest sha256:c285e56c5e871b6d271a598523ccef3da3e7259e71bae5ea66ed76979d833bb9 0.0s done
+#14 exporting config sha256:6fc1941454e6a51b1bc064fdf01d019955652e7c6258b0870669221406beff10 0.0s done
+#14 exporting attestation manifest sha256:a154a1d135aad19d148f057669eae823ff3770ba9af87d8729a5061d456ae061 0.0s done
+#14 exporting manifest list sha256:9d995e25a2056ada35ec310042838cc1b9da82bb037254e1f0b58455e38dd65d 0.0s done
+#14 naming to docker.io/hackerdogs/acuvity-mcp-server-elevenlabs-mcp:latest done
+#14 unpacking to docker.io/hackerdogs/acuvity-mcp-server-elevenlabs-mcp:latest 0.0s done
+#14 DONE 0.4s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/nc7e7o65lhgz9ie0yueg67luh
+========== acuvity-mcp-server-elevenlabs-mcp test (compliance) ==========
+[0;34m[1] Install[0m
+  [0;32mPASS: image exists[0m
+[0;34m[2] Stdio tools/list[0m
+  [0;32mPASS: stdio tools/list[0m
+[0;34m[3] Stdio tools/call[0m
+  [0;32mPASS: stdio tools/call[0m
+[0;34m[4] HTTP streamable tools/list[0m
+  [0;32mPASS: HTTP tools/list[0m
+[0;34m[5] HTTP streamable tools/call[0m
+  [0;32mPASS: HTTP tools/call[0m
+
+Total: 5 passed, 0 failed
+acuvity-mcp-server-elevenlabs-mcp-test
+acuvity-mcp-server-elevenlabs-mcp-test
+
+✅ PASS: acuvity-mcp-server-elevenlabs-mcp

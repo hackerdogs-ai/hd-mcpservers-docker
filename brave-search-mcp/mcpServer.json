@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "brave-search-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "MCP_TRANSPORT",
+        "-e",
+        "BRAVE_API_KEY",
+        "hackerdogs/brave-search-mcp:latest"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio",
+        "BRAVE_API_KEY": ""
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  flights-mcp:
+    image: hackerdogs/flights-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flights-mcp
+    ports:
+      - "8422:8422"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8422
+    restart: unless-stopped

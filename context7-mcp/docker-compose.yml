@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  context7-mcp:
+    image: hackerdogs/context7-mcp:latest
+    build: .
+    ports:
+      - "8634:8634"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8634
+

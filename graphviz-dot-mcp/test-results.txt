@@ -1,0 +1,726 @@
+========== Testing graphviz-dot-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 998B 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim-bookworm
+#2 DONE 1.2s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.1s
+
+#4 [1/8] FROM docker.io/library/python:3.11-slim-bookworm@sha256:420310dd2ff7895895f0f1f9d15cae5a95dabceb8f1d6b9a23ef33c2c1c542c3
+#4 resolve docker.io/library/python:3.11-slim-bookworm@sha256:420310dd2ff7895895f0f1f9d15cae5a95dabceb8f1d6b9a23ef33c2c1c542c3 0.0s done
+#4 DONE 0.1s
+
+#5 [2/8] RUN groupadd -g 1000 mcpuser && useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
+#5 CACHED
+
+#6 [internal] load build context
+#6 transferring context: 2.03kB 0.0s done
+#6 DONE 0.1s
+
+#7 [3/8] RUN apt-get update && apt-get install -y --no-install-recommends tini ca-certificates graphviz     && rm -rf /var/lib/apt/lists/*
+#7 0.649 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#7 0.845 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#7 0.919 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [48.0 kB]
+#7 0.983 Get:4 http://deb.debian.org/debian bookworm/main amd64 Packages [8792 kB]
+#7 3.083 Get:5 http://deb.debian.org/debian bookworm-updates/main amd64 Packages [6924 B]
+#7 3.145 Get:6 http://deb.debian.org/debian-security bookworm-security/main amd64 Packages [294 kB]
+#7 4.283 Fetched 9347 kB in 4s (2437 kB/s)
+#7 4.283 Reading package lists...
+#7 4.891 Reading package lists...
+#7 5.471 Building dependency tree...
+#7 5.606 Reading state information...
+#7 5.750 ca-certificates is already the newest version (20230311+deb12u1).
+#7 5.750 The following additional packages will be installed:
+#7 5.750   fontconfig fontconfig-config fonts-dejavu-core libabsl20220623 libann0
+#7 5.750   libaom3 libavif15 libbrotli1 libbsd0 libcairo2 libcdt5 libcgraph6 libdatrie1
+#7 5.750   libdav1d6 libde265-0 libdeflate0 libexpat1 libfontconfig1 libfreetype6
+#7 5.750   libfribidi0 libgav1-1 libgd3 libglib2.0-0 libgraphite2-3 libgts-0.7-5
+#7 5.750   libgvc6 libgvpr2 libharfbuzz0b libheif1 libice6 libjbig0 libjpeg62-turbo
+#7 5.750   liblab-gamut1 liblerc4 libltdl7 libnuma1 libpango-1.0-0 libpangocairo-1.0-0
+#7 5.750   libpangoft2-1.0-0 libpathplan4 libpixman-1-0 libpng16-16 librav1e0 libsm6
+#7 5.750   libsvtav1enc1 libthai-data libthai0 libtiff6 libwebp7 libx11-6 libx11-data
+#7 5.750   libx265-199 libxau6 libxaw7 libxcb-render0 libxcb-shm0 libxcb1 libxdmcp6
+#7 5.750   libxext6 libxmu6 libxpm4 libxrender1 libxt6 libyuv0 x11-common
+#7 5.751 Suggested packages:
+#7 5.751   gsfonts graphviz-doc libgd-tools low-memory-monitor
+#7 5.751 Recommended packages:
+#7 5.751   fonts-liberation2 libglib2.0-data shared-mime-info xdg-user-dirs libgts-bin
+#7 6.162 The following NEW packages will be installed:
+#7 6.163   fontconfig fontconfig-config fonts-dejavu-core graphviz libabsl20220623
+#7 6.163   libann0 libaom3 libavif15 libbrotli1 libbsd0 libcairo2 libcdt5 libcgraph6
+#7 6.163   libdatrie1 libdav1d6 libde265-0 libdeflate0 libexpat1 libfontconfig1
+#7 6.163   libfreetype6 libfribidi0 libgav1-1 libgd3 libglib2.0-0 libgraphite2-3
+#7 6.163   libgts-0.7-5 libgvc6 libgvpr2 libharfbuzz0b libheif1 libice6 libjbig0
+#7 6.163   libjpeg62-turbo liblab-gamut1 liblerc4 libltdl7 libnuma1 libpango-1.0-0
+#7 6.164   libpangocairo-1.0-0 libpangoft2-1.0-0 libpathplan4 libpixman-1-0 libpng16-16
+#7 6.164   librav1e0 libsm6 libsvtav1enc1 libthai-data libthai0 libtiff6 libwebp7
+#7 6.164   libx11-6 libx11-data libx265-199 libxau6 libxaw7 libxcb-render0 libxcb-shm0
+#7 6.165   libxcb1 libxdmcp6 libxext6 libxmu6 libxpm4 libxrender1 libxt6 libyuv0 tini
+#7 6.165   x11-common
+#7 6.292 0 upgraded, 67 newly installed, 0 to remove and 0 not upgraded.
+#7 6.292 Need to get 22.6 MB of archives.
+#7 6.292 After this operation, 76.8 MB of additional disk space will be used.
+#7 6.292 Get:1 http://deb.debian.org/debian bookworm/main amd64 libexpat1 amd64 2.5.0-1+deb12u2 [99.9 kB]
+#7 6.462 Get:2 http://deb.debian.org/debian bookworm/main amd64 libbrotli1 amd64 1.0.9-2+b6 [275 kB]
+#7 6.618 Get:3 http://deb.debian.org/debian-security bookworm-security/main amd64 libpng16-16 amd64 1.6.39-2+deb12u3 [276 kB]
+#7 6.739 Get:4 http://deb.debian.org/debian bookworm/main amd64 libfreetype6 amd64 2.12.1+dfsg-5+deb12u4 [398 kB]
+#7 6.892 Get:5 http://deb.debian.org/debian bookworm/main amd64 fonts-dejavu-core all 2.37-6 [1068 kB]
+#7 7.335 Get:6 http://deb.debian.org/debian bookworm/main amd64 fontconfig-config amd64 2.14.1-4 [315 kB]
+#7 7.539 Get:7 http://deb.debian.org/debian bookworm/main amd64 libfontconfig1 amd64 2.14.1-4 [386 kB]
+#7 7.793 Get:8 http://deb.debian.org/debian bookworm/main amd64 fontconfig amd64 2.14.1-4 [449 kB]
+#7 8.065 Get:9 http://deb.debian.org/debian bookworm/main amd64 libann0 amd64 1.1.2+doc-9+b1 [25.1 kB]
+#7 8.178 Get:10 http://deb.debian.org/debian bookworm/main amd64 libcdt5 amd64 2.42.2-7+deb12u1 [39.6 kB]
+#7 8.272 Get:11 http://deb.debian.org/debian bookworm/main amd64 libcgraph6 amd64 2.42.2-7+deb12u1 [63.0 kB]
+#7 8.318 Get:12 http://deb.debian.org/debian bookworm/main amd64 libaom3 amd64 3.6.0-1+deb12u2 [1850 kB]
+#7 9.324 Get:13 http://deb.debian.org/debian bookworm/main amd64 libdav1d6 amd64 1.0.0-2+deb12u1 [513 kB]
+#7 9.643 Get:14 http://deb.debian.org/debian bookworm/main amd64 libabsl20220623 amd64 20220623.1-1+deb12u2 [391 kB]
+#7 10.08 Get:15 http://deb.debian.org/debian bookworm/main amd64 libgav1-1 amd64 0.18.0-1+b1 [332 kB]
+#7 10.34 Get:16 http://deb.debian.org/debian bookworm/main amd64 librav1e0 amd64 0.5.1-6 [763 kB]
+#7 10.73 Get:17 http://deb.debian.org/debian bookworm/main amd64 libsvtav1enc1 amd64 1.4.1+dfsg-1 [2121 kB]
+#7 11.60 Get:18 http://deb.debian.org/debian bookworm/main amd64 libjpeg62-turbo amd64 1:2.1.5-2 [166 kB]
+#7 11.70 Get:19 http://deb.debian.org/debian bookworm/main amd64 libyuv0 amd64 0.0~git20230123.b2528b0-1 [168 kB]
+#7 11.76 Get:20 http://deb.debian.org/debian bookworm/main amd64 libavif15 amd64 0.11.1-1+deb12u1 [94.4 kB]
+#7 11.79 Get:21 http://deb.debian.org/debian bookworm/main amd64 libde265-0 amd64 1.0.11-1+deb12u2 [185 kB]
+#7 11.84 Get:22 http://deb.debian.org/debian bookworm/main amd64 libnuma1 amd64 2.0.16-1 [21.0 kB]
+#7 11.85 Get:23 http://deb.debian.org/debian bookworm/main amd64 libx265-199 amd64 3.5-2+b1 [1150 kB]
+#7 12.23 Get:24 http://deb.debian.org/debian bookworm/main amd64 libheif1 amd64 1.15.1-1+deb12u1 [215 kB]
+#7 12.33 Get:25 http://deb.debian.org/debian bookworm/main amd64 libdeflate0 amd64 1.14-1 [61.4 kB]
+#7 12.34 Get:26 http://deb.debian.org/debian bookworm/main amd64 libjbig0 amd64 2.1-6.1 [31.7 kB]
+#7 12.41 Get:27 http://deb.debian.org/debian bookworm/main amd64 liblerc4 amd64 4.0.0+ds-2 [170 kB]
+#7 12.55 Get:28 http://deb.debian.org/debian bookworm/main amd64 libwebp7 amd64 1.2.4-0.2+deb12u1 [286 kB]
+#7 12.67 Get:29 http://deb.debian.org/debian bookworm/main amd64 libtiff6 amd64 4.5.0-6+deb12u3 [316 kB]
+#7 12.77 Get:30 http://deb.debian.org/debian bookworm/main amd64 libxau6 amd64 1:1.0.9-1 [19.7 kB]
+#7 12.79 Get:31 http://deb.debian.org/debian bookworm/main amd64 libbsd0 amd64 0.11.7-2 [117 kB]
+#7 12.81 Get:32 http://deb.debian.org/debian bookworm/main amd64 libxdmcp6 amd64 1:1.1.2-3 [26.3 kB]
+#7 12.81 Get:33 http://deb.debian.org/debian bookworm/main amd64 libxcb1 amd64 1.15-1 [144 kB]
+#7 12.85 Get:34 http://deb.debian.org/debian bookworm/main amd64 libx11-data all 2:1.8.4-2+deb12u2 [292 kB]
+#7 13.01 Get:35 http://deb.debian.org/debian bookworm/main amd64 libx11-6 amd64 2:1.8.4-2+deb12u2 [760 kB]
+#7 13.23 Get:36 http://deb.debian.org/debian bookworm/main amd64 libxpm4 amd64 1:3.5.12-1.1+deb12u1 [48.6 kB]
+#7 13.28 Get:37 http://deb.debian.org/debian bookworm/main amd64 libgd3 amd64 2.3.3-9 [124 kB]
+#7 13.85 Get:38 http://deb.debian.org/debian bookworm/main amd64 libglib2.0-0 amd64 2.74.6-2+deb12u8 [1402 kB]
+#7 14.41 Get:39 http://deb.debian.org/debian bookworm/main amd64 libgts-0.7-5 amd64 0.7.6+darcs121130-5+b1 [160 kB]
+#7 14.48 Get:40 http://deb.debian.org/debian bookworm/main amd64 libpixman-1-0 amd64 0.42.2-1 [546 kB]
+#7 14.65 Get:41 http://deb.debian.org/debian bookworm/main amd64 libxcb-render0 amd64 1.15-1 [115 kB]
+#7 14.73 Get:42 http://deb.debian.org/debian bookworm/main amd64 libxcb-shm0 amd64 1.15-1 [105 kB]
+#7 14.74 Get:43 http://deb.debian.org/debian bookworm/main amd64 libxext6 amd64 2:1.3.4-1+b1 [52.9 kB]
+#7 14.78 Get:44 http://deb.debian.org/debian bookworm/main amd64 libxrender1 amd64 1:0.9.10-1.1 [33.2 kB]
+#7 14.79 Get:45 http://deb.debian.org/debian bookworm/main amd64 libcairo2 amd64 1.16.0-7 [575 kB]
+#7 14.96 Get:46 http://deb.debian.org/debian bookworm/main amd64 libltdl7 amd64 2.4.7-7~deb12u1 [393 kB]
+#7 15.07 Get:47 http://deb.debian.org/debian bookworm/main amd64 libfribidi0 amd64 1.0.8-2.1 [65.0 kB]
+#7 15.09 Get:48 http://deb.debian.org/debian bookworm/main amd64 libgraphite2-3 amd64 1.3.14-1 [81.2 kB]
+#7 15.11 Get:49 http://deb.debian.org/debian bookworm/main amd64 libharfbuzz0b amd64 6.0.0+dfsg-3 [1945 kB]
+#7 15.75 Get:50 http://deb.debian.org/debian bookworm/main amd64 libthai-data all 0.1.29-1 [176 kB]
+#7 15.81 Get:51 http://deb.debian.org/debian bookworm/main amd64 libdatrie1 amd64 0.2.13-2+b1 [43.3 kB]
+#7 15.82 Get:52 http://deb.debian.org/debian bookworm/main amd64 libthai0 amd64 0.1.29-1 [57.5 kB]
+#7 15.83 Get:53 http://deb.debian.org/debian bookworm/main amd64 libpango-1.0-0 amd64 1.50.12+ds-1 [212 kB]
+#7 15.90 Get:54 http://deb.debian.org/debian bookworm/main amd64 libpangoft2-1.0-0 amd64 1.50.12+ds-1 [47.4 kB]
+#7 15.92 Get:55 http://deb.debian.org/debian bookworm/main amd64 libpangocairo-1.0-0 amd64 1.50.12+ds-1 [34.2 kB]
+#7 15.98 Get:56 http://deb.debian.org/debian bookworm/main amd64 libpathplan4 amd64 2.42.2-7+deb12u1 [41.9 kB]
+#7 16.09 Get:57 http://deb.debian.org/debian bookworm/main amd64 libgvc6 amd64 2.42.2-7+deb12u1 [679 kB]
+#7 16.38 Get:58 http://deb.debian.org/debian bookworm/main amd64 libgvpr2 amd64 2.42.2-7+deb12u1 [189 kB]
+#7 16.52 Get:59 http://deb.debian.org/debian bookworm/main amd64 liblab-gamut1 amd64 2.42.2-7+deb12u1 [197 kB]
+#7 16.65 Get:60 http://deb.debian.org/debian bookworm/main amd64 x11-common all 1:7.7+23 [252 kB]
+#7 16.78 Get:61 http://deb.debian.org/debian bookworm/main amd64 libice6 amd64 2:1.0.10-1 [58.5 kB]
+#7 16.83 Get:62 http://deb.debian.org/debian bookworm/main amd64 libsm6 amd64 2:1.2.3-1 [35.1 kB]
+#7 16.93 Get:63 http://deb.debian.org/debian bookworm/main amd64 libxt6 amd64 1:1.2.1-1.1 [186 kB]
+#7 16.98 Get:64 http://deb.debian.org/debian bookworm/main amd64 libxmu6 amd64 2:1.1.3-3 [60.1 kB]
+#7 17.01 Get:65 http://deb.debian.org/debian bookworm/main amd64 libxaw7 amd64 2:1.0.14-1 [201 kB]
+#7 17.06 Get:66 http://deb.debian.org/debian bookworm/main amd64 graphviz amd64 2.42.2-7+deb12u1 [611 kB]
+#7 17.27 Get:67 http://deb.debian.org/debian bookworm/main amd64 tini amd64 0.19.0-1+b3 [267 kB]
+#7 17.54 debconf: delaying package configuration, since apt-utils is not installed
+#7 17.58 Fetched 22.6 MB in 11s (2018 kB/s)
+#7 17.64 Selecting previously unselected package libexpat1:amd64.
+#7 17.64 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6695 files and directories currently installed.)
+#7 17.67 Preparing to unpack .../00-libexpat1_2.5.0-1+deb12u2_amd64.deb ...
+#7 17.70 Unpacking libexpat1:amd64 (2.5.0-1+deb12u2) ...
+#7 17.84 Selecting previously unselected package libbrotli1:amd64.
+#7 17.84 Preparing to unpack .../01-libbrotli1_1.0.9-2+b6_amd64.deb ...
+#7 17.86 Unpacking libbrotli1:amd64 (1.0.9-2+b6) ...
+#7 18.00 Selecting previously unselected package libpng16-16:amd64.
+#7 18.00 Preparing to unpack .../02-libpng16-16_1.6.39-2+deb12u3_amd64.deb ...
+#7 18.02 Unpacking libpng16-16:amd64 (1.6.39-2+deb12u3) ...
+#7 18.14 Selecting previously unselected package libfreetype6:amd64.
+#7 18.14 Preparing to unpack .../03-libfreetype6_2.12.1+dfsg-5+deb12u4_amd64.deb ...
+#7 18.15 Unpacking libfreetype6:amd64 (2.12.1+dfsg-5+deb12u4) ...
+#7 18.29 Selecting previously unselected package fonts-dejavu-core.
+#7 18.29 Preparing to unpack .../04-fonts-dejavu-core_2.37-6_all.deb ...
+#7 18.30 Unpacking fonts-dejavu-core (2.37-6) ...
+#7 18.55 Selecting previously unselected package fontconfig-config.
+#7 18.55 Preparing to unpack .../05-fontconfig-config_2.14.1-4_amd64.deb ...
+#7 18.66 Unpacking fontconfig-config (2.14.1-4) ...
+#7 18.77 Selecting previously unselected package libfontconfig1:amd64.
+#7 18.77 Preparing to unpack .../06-libfontconfig1_2.14.1-4_amd64.deb ...
+#7 18.78 Unpacking libfontconfig1:amd64 (2.14.1-4) ...
+#7 18.87 Selecting previously unselected package fontconfig.
+#7 18.87 Preparing to unpack .../07-fontconfig_2.14.1-4_amd64.deb ...
+#7 18.88 Unpacking fontconfig (2.14.1-4) ...
+#7 19.00 Selecting previously unselected package libann0.
+#7 19.00 Preparing to unpack .../08-libann0_1.1.2+doc-9+b1_amd64.deb ...
+#7 19.02 Unpacking libann0 (1.1.2+doc-9+b1) ...
+#7 19.16 Selecting previously unselected package libcdt5:amd64.
+#7 19.16 Preparing to unpack .../09-libcdt5_2.42.2-7+deb12u1_amd64.deb ...
+#7 19.17 Unpacking libcdt5:amd64 (2.42.2-7+deb12u1) ...
+#7 19.26 Selecting previously unselected package libcgraph6:amd64.
+#7 19.26 Preparing to unpack .../10-libcgraph6_2.42.2-7+deb12u1_amd64.deb ...
+#7 19.27 Unpacking libcgraph6:amd64 (2.42.2-7+deb12u1) ...
+#7 19.38 Selecting previously unselected package libaom3:amd64.
+#7 19.38 Preparing to unpack .../11-libaom3_3.6.0-1+deb12u2_amd64.deb ...
+#7 19.40 Unpacking libaom3:amd64 (3.6.0-1+deb12u2) ...
+#7 19.68 Selecting previously unselected package libdav1d6:amd64.
+#7 19.68 Preparing to unpack .../12-libdav1d6_1.0.0-2+deb12u1_amd64.deb ...
+#7 19.70 Unpacking libdav1d6:amd64 (1.0.0-2+deb12u1) ...
+#7 19.85 Selecting previously unselected package libabsl20220623:amd64.
+#7 19.85 Preparing to unpack .../13-libabsl20220623_20220623.1-1+deb12u2_amd64.deb ...
+#7 19.86 Unpacking libabsl20220623:amd64 (20220623.1-1+deb12u2) ...
+#7 20.02 Selecting previously unselected package libgav1-1:amd64.
+#7 20.02 Preparing to unpack .../14-libgav1-1_0.18.0-1+b1_amd64.deb ...
+#7 20.03 Unpacking libgav1-1:amd64 (0.18.0-1+b1) ...
+#7 20.16 Selecting previously unselected package librav1e0:amd64.
+#7 20.16 Preparing to unpack .../15-librav1e0_0.5.1-6_amd64.deb ...
+#7 20.17 Unpacking librav1e0:amd64 (0.5.1-6) ...
+#7 20.34 Selecting previously unselected package libsvtav1enc1:amd64.
+#7 20.34 Preparing to unpack .../16-libsvtav1enc1_1.4.1+dfsg-1_amd64.deb ...
+#7 20.35 Unpacking libsvtav1enc1:amd64 (1.4.1+dfsg-1) ...
+#7 20.66 Selecting previously unselected package libjpeg62-turbo:amd64.
+#7 20.67 Preparing to unpack .../17-libjpeg62-turbo_1%3a2.1.5-2_amd64.deb ...
+#7 20.68 Unpacking libjpeg62-turbo:amd64 (1:2.1.5-2) ...
+#7 20.77 Selecting previously unselected package libyuv0:amd64.
+#7 20.78 Preparing to unpack .../18-libyuv0_0.0~git20230123.b2528b0-1_amd64.deb ...
+#7 20.79 Unpacking libyuv0:amd64 (0.0~git20230123.b2528b0-1) ...
+#7 20.91 Selecting previously unselected package libavif15:amd64.
+#7 20.91 Preparing to unpack .../19-libavif15_0.11.1-1+deb12u1_amd64.deb ...
+#7 20.93 Unpacking libavif15:amd64 (0.11.1-1+deb12u1) ...
+#7 21.01 Selecting previously unselected package libde265-0:amd64.
+#7 21.01 Preparing to unpack .../20-libde265-0_1.0.11-1+deb12u2_amd64.deb ...
+#7 21.02 Unpacking libde265-0:amd64 (1.0.11-1+deb12u2) ...
+#7 21.12 Selecting previously unselected package libnuma1:amd64.
+#7 21.12 Preparing to unpack .../21-libnuma1_2.0.16-1_amd64.deb ...
+#7 21.13 Unpacking libnuma1:amd64 (2.0.16-1) ...
+#7 21.21 Selecting previously unselected package libx265-199:amd64.
+#7 21.21 Preparing to unpack .../22-libx265-199_3.5-2+b1_amd64.deb ...
+#7 21.22 Unpacking libx265-199:amd64 (3.5-2+b1) ...
+#7 21.52 Selecting previously unselected package libheif1:amd64.
+#7 21.52 Preparing to unpack .../23-libheif1_1.15.1-1+deb12u1_amd64.deb ...
+#7 21.54 Unpacking libheif1:amd64 (1.15.1-1+deb12u1) ...
+#7 21.64 Selecting previously unselected package libdeflate0:amd64.
+#7 21.64 Preparing to unpack .../24-libdeflate0_1.14-1_amd64.deb ...
+#7 21.65 Unpacking libdeflate0:amd64 (1.14-1) ...
+#7 21.74 Selecting previously unselected package libjbig0:amd64.
+#7 21.74 Preparing to unpack .../25-libjbig0_2.1-6.1_amd64.deb ...
+#7 21.75 Unpacking libjbig0:amd64 (2.1-6.1) ...
+#7 21.83 Selecting previously unselected package liblerc4:amd64.
+#7 21.84 Preparing to unpack .../26-liblerc4_4.0.0+ds-2_amd64.deb ...
+#7 21.85 Unpacking liblerc4:amd64 (4.0.0+ds-2) ...
+#7 21.94 Selecting previously unselected package libwebp7:amd64.
+#7 21.94 Preparing to unpack .../27-libwebp7_1.2.4-0.2+deb12u1_amd64.deb ...
+#7 21.96 Unpacking libwebp7:amd64 (1.2.4-0.2+deb12u1) ...
+#7 22.07 Selecting previously unselected package libtiff6:amd64.
+#7 22.07 Preparing to unpack .../28-libtiff6_4.5.0-6+deb12u3_amd64.deb ...
+#7 22.08 Unpacking libtiff6:amd64 (4.5.0-6+deb12u3) ...
+#7 22.18 Selecting previously unselected package libxau6:amd64.
+#7 22.19 Preparing to unpack .../29-libxau6_1%3a1.0.9-1_amd64.deb ...
+#7 22.21 Unpacking libxau6:amd64 (1:1.0.9-1) ...
+#7 22.30 Selecting previously unselected package libbsd0:amd64.
+#7 22.31 Preparing to unpack .../30-libbsd0_0.11.7-2_amd64.deb ...
+#7 22.32 Unpacking libbsd0:amd64 (0.11.7-2) ...
+#7 22.40 Selecting previously unselected package libxdmcp6:amd64.
+#7 22.40 Preparing to unpack .../31-libxdmcp6_1%3a1.1.2-3_amd64.deb ...
+#7 22.42 Unpacking libxdmcp6:amd64 (1:1.1.2-3) ...
+#7 22.50 Selecting previously unselected package libxcb1:amd64.
+#7 22.50 Preparing to unpack .../32-libxcb1_1.15-1_amd64.deb ...
+#7 22.51 Unpacking libxcb1:amd64 (1.15-1) ...
+#7 22.58 Selecting previously unselected package libx11-data.
+#7 22.59 Preparing to unpack .../33-libx11-data_2%3a1.8.4-2+deb12u2_all.deb ...
+#7 22.60 Unpacking libx11-data (2:1.8.4-2+deb12u2) ...
+#7 22.73 Selecting previously unselected package libx11-6:amd64.
+#7 22.73 Preparing to unpack .../34-libx11-6_2%3a1.8.4-2+deb12u2_amd64.deb ...
+#7 22.74 Unpacking libx11-6:amd64 (2:1.8.4-2+deb12u2) ...
+#7 22.89 Selecting previously unselected package libxpm4:amd64.
+#7 22.90 Preparing to unpack .../35-libxpm4_1%3a3.5.12-1.1+deb12u1_amd64.deb ...
+#7 22.91 Unpacking libxpm4:amd64 (1:3.5.12-1.1+deb12u1) ...
+#7 23.01 Selecting previously unselected package libgd3:amd64.
+#7 23.01 Preparing to unpack .../36-libgd3_2.3.3-9_amd64.deb ...
+#7 23.03 Unpacking libgd3:amd64 (2.3.3-9) ...
+#7 23.12 Selecting previously unselected package libglib2.0-0:amd64.
+#7 23.12 Preparing to unpack .../37-libglib2.0-0_2.74.6-2+deb12u8_amd64.deb ...
+#7 23.14 Unpacking libglib2.0-0:amd64 (2.74.6-2+deb12u8) ...
+#7 23.37 Selecting previously unselected package libgts-0.7-5:amd64.
+#7 23.37 Preparing to unpack .../38-libgts-0.7-5_0.7.6+darcs121130-5+b1_amd64.deb ...
+#7 23.38 Unpacking libgts-0.7-5:amd64 (0.7.6+darcs121130-5+b1) ...
+#7 23.47 Selecting previously unselected package libpixman-1-0:amd64.
+#7 23.47 Preparing to unpack .../39-libpixman-1-0_0.42.2-1_amd64.deb ...
+#7 23.49 Unpacking libpixman-1-0:amd64 (0.42.2-1) ...
+#7 23.61 Selecting previously unselected package libxcb-render0:amd64.
+#7 23.61 Preparing to unpack .../40-libxcb-render0_1.15-1_amd64.deb ...
+#7 23.62 Unpacking libxcb-render0:amd64 (1.15-1) ...
+#7 23.71 Selecting previously unselected package libxcb-shm0:amd64.
+#7 23.71 Preparing to unpack .../41-libxcb-shm0_1.15-1_amd64.deb ...
+#7 23.72 Unpacking libxcb-shm0:amd64 (1.15-1) ...
+#7 23.86 Selecting previously unselected package libxext6:amd64.
+#7 23.86 Preparing to unpack .../42-libxext6_2%3a1.3.4-1+b1_amd64.deb ...
+#7 23.87 Unpacking libxext6:amd64 (2:1.3.4-1+b1) ...
+#7 23.97 Selecting previously unselected package libxrender1:amd64.
+#7 23.97 Preparing to unpack .../43-libxrender1_1%3a0.9.10-1.1_amd64.deb ...
+#7 23.98 Unpacking libxrender1:amd64 (1:0.9.10-1.1) ...
+#7 24.07 Selecting previously unselected package libcairo2:amd64.
+#7 24.07 Preparing to unpack .../44-libcairo2_1.16.0-7_amd64.deb ...
+#7 24.08 Unpacking libcairo2:amd64 (1.16.0-7) ...
+#7 24.22 Selecting previously unselected package libltdl7:amd64.
+#7 24.22 Preparing to unpack .../45-libltdl7_2.4.7-7~deb12u1_amd64.deb ...
+#7 24.24 Unpacking libltdl7:amd64 (2.4.7-7~deb12u1) ...
+#7 24.37 Selecting previously unselected package libfribidi0:amd64.
+#7 24.37 Preparing to unpack .../46-libfribidi0_1.0.8-2.1_amd64.deb ...
+#7 24.39 Unpacking libfribidi0:amd64 (1.0.8-2.1) ...
+#7 24.47 Selecting previously unselected package libgraphite2-3:amd64.
+#7 24.47 Preparing to unpack .../47-libgraphite2-3_1.3.14-1_amd64.deb ...
+#7 24.48 Unpacking libgraphite2-3:amd64 (1.3.14-1) ...
+#7 24.59 Selecting previously unselected package libharfbuzz0b:amd64.
+#7 24.59 Preparing to unpack .../48-libharfbuzz0b_6.0.0+dfsg-3_amd64.deb ...
+#7 24.60 Unpacking libharfbuzz0b:amd64 (6.0.0+dfsg-3) ...
+#7 24.74 Selecting previously unselected package libthai-data.
+#7 24.74 Preparing to unpack .../49-libthai-data_0.1.29-1_all.deb ...
+#7 24.75 Unpacking libthai-data (0.1.29-1) ...
+#7 24.88 Selecting previously unselected package libdatrie1:amd64.
+#7 24.88 Preparing to unpack .../50-libdatrie1_0.2.13-2+b1_amd64.deb ...
+#7 24.90 Unpacking libdatrie1:amd64 (0.2.13-2+b1) ...
+#7 24.98 Selecting previously unselected package libthai0:amd64.
+#7 24.98 Preparing to unpack .../51-libthai0_0.1.29-1_amd64.deb ...
+#7 24.99 Unpacking libthai0:amd64 (0.1.29-1) ...
+#7 25.08 Selecting previously unselected package libpango-1.0-0:amd64.
+#7 25.08 Preparing to unpack .../52-libpango-1.0-0_1.50.12+ds-1_amd64.deb ...
+#7 25.10 Unpacking libpango-1.0-0:amd64 (1.50.12+ds-1) ...
+#7 25.19 Selecting previously unselected package libpangoft2-1.0-0:amd64.
+#7 25.19 Preparing to unpack .../53-libpangoft2-1.0-0_1.50.12+ds-1_amd64.deb ...
+#7 25.21 Unpacking libpangoft2-1.0-0:amd64 (1.50.12+ds-1) ...
+#7 25.31 Selecting previously unselected package libpangocairo-1.0-0:amd64.
+#7 25.31 Preparing to unpack .../54-libpangocairo-1.0-0_1.50.12+ds-1_amd64.deb ...
+#7 25.32 Unpacking libpangocairo-1.0-0:amd64 (1.50.12+ds-1) ...
+#7 25.40 Selecting previously unselected package libpathplan4:amd64.
+#7 25.40 Preparing to unpack .../55-libpathplan4_2.42.2-7+deb12u1_amd64.deb ...
+#7 25.42 Unpacking libpathplan4:amd64 (2.42.2-7+deb12u1) ...
+#7 25.51 Selecting previously unselected package libgvc6.
+#7 25.51 Preparing to unpack .../56-libgvc6_2.42.2-7+deb12u1_amd64.deb ...
+#7 25.52 Unpacking libgvc6 (2.42.2-7+deb12u1) ...
+#7 25.68 Selecting previously unselected package libgvpr2:amd64.
+#7 25.68 Preparing to unpack .../57-libgvpr2_2.42.2-7+deb12u1_amd64.deb ...
+#7 25.69 Unpacking libgvpr2:amd64 (2.42.2-7+deb12u1) ...
+#7 25.80 Selecting previously unselected package liblab-gamut1:amd64.
+#7 25.80 Preparing to unpack .../58-liblab-gamut1_2.42.2-7+deb12u1_amd64.deb ...
+#7 25.81 Unpacking liblab-gamut1:amd64 (2.42.2-7+deb12u1) ...
+#7 26.00 Selecting previously unselected package x11-common.
+#7 26.00 Preparing to unpack .../59-x11-common_1%3a7.7+23_all.deb ...
+#7 26.02 Unpacking x11-common (1:7.7+23) ...
+#7 26.11 Selecting previously unselected package libice6:amd64.
+#7 26.11 Preparing to unpack .../60-libice6_2%3a1.0.10-1_amd64.deb ...
+#7 26.12 Unpacking libice6:amd64 (2:1.0.10-1) ...
+#7 26.22 Selecting previously unselected package libsm6:amd64.
+#7 26.22 Preparing to unpack .../61-libsm6_2%3a1.2.3-1_amd64.deb ...
+#7 26.23 Unpacking libsm6:amd64 (2:1.2.3-1) ...
+#7 26.32 Selecting previously unselected package libxt6:amd64.
+#7 26.32 Preparing to unpack .../62-libxt6_1%3a1.2.1-1.1_amd64.deb ...
+#7 26.33 Unpacking libxt6:amd64 (1:1.2.1-1.1) ...
+#7 26.45 Selecting previously unselected package libxmu6:amd64.
+#7 26.45 Preparing to unpack .../63-libxmu6_2%3a1.1.3-3_amd64.deb ...
+#7 26.46 Unpacking libxmu6:amd64 (2:1.1.3-3) ...
+#7 26.54 Selecting previously unselected package libxaw7:amd64.
+#7 26.54 Preparing to unpack .../64-libxaw7_2%3a1.0.14-1_amd64.deb ...
+#7 26.56 Unpacking libxaw7:amd64 (2:1.0.14-1) ...
+#7 26.68 Selecting previously unselected package graphviz.
+#7 26.68 Preparing to unpack .../65-graphviz_2.42.2-7+deb12u1_amd64.deb ...
+#7 26.71 Unpacking graphviz (2.42.2-7+deb12u1) ...
+#7 26.86 Selecting previously unselected package tini.
+#7 26.86 Preparing to unpack .../66-tini_0.19.0-1+b3_amd64.deb ...
+#7 26.88 Unpacking tini (0.19.0-1+b3) ...
+#7 26.99 Setting up libexpat1:amd64 (2.5.0-1+deb12u2) ...
+#7 27.03 Setting up libgraphite2-3:amd64 (1.3.14-1) ...
+#7 27.06 Setting up libpixman-1-0:amd64 (0.42.2-1) ...
+#7 27.10 Setting up libaom3:amd64 (3.6.0-1+deb12u2) ...
+#7 27.14 Setting up libabsl20220623:amd64 (20220623.1-1+deb12u2) ...
+#7 27.18 Setting up libxau6:amd64 (1:1.0.9-1) ...
+#7 27.22 Setting up liblerc4:amd64 (4.0.0+ds-2) ...
+#7 27.28 Setting up libdatrie1:amd64 (0.2.13-2+b1) ...
+#7 27.32 Setting up libglib2.0-0:amd64 (2.74.6-2+deb12u8) ...
+#7 27.34 No schema files found: doing nothing.
+#7 27.36 Setting up libbrotli1:amd64 (1.0.9-2+b6) ...
+#7 27.40 Setting up liblab-gamut1:amd64 (2.42.2-7+deb12u1) ...
+#7 27.44 Setting up x11-common (1:7.7+23) ...
+#7 27.71 debconf: unable to initialize frontend: Dialog
+#7 27.71 debconf: (TERM is not set, so the dialog frontend is not usable.)
+#7 27.71 debconf: falling back to frontend: Readline
+#7 27.72 debconf: unable to initialize frontend: Readline
+#7 27.72 debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.36.0 /usr/local/share/perl/5.36.0 /usr/lib/x86_64-linux-gnu/perl5/5.36 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.36 /usr/share/perl/5.36 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+#7 27.72 debconf: falling back to frontend: Teletype
+#7 27.73 invoke-rc.d: could not determine current runlevel
+#7 27.73 invoke-rc.d: policy-rc.d denied execution of restart.
+#7 27.75 Setting up libdeflate0:amd64 (1.14-1) ...
+#7 27.79 Setting up libsvtav1enc1:amd64 (1.4.1+dfsg-1) ...
+#7 27.83 Setting up libjbig0:amd64 (2.1-6.1) ...
+#7 27.87 Setting up librav1e0:amd64 (0.5.1-6) ...
+#7 27.90 Setting up libgts-0.7-5:amd64 (0.7.6+darcs121130-5+b1) ...
+#7 27.94 Setting up libjpeg62-turbo:amd64 (1:2.1.5-2) ...
+#7 27.98 Setting up libx11-data (2:1.8.4-2+deb12u2) ...
+#7 28.02 Setting up libpathplan4:amd64 (2.42.2-7+deb12u1) ...
+#7 28.06 Setting up libann0 (1.1.2+doc-9+b1) ...
+#7 28.10 Setting up libfribidi0:amd64 (1.0.8-2.1) ...
+#7 28.13 Setting up libpng16-16:amd64 (1.6.39-2+deb12u3) ...
+#7 28.18 Setting up tini (0.19.0-1+b3) ...
+#7 28.21 Setting up fonts-dejavu-core (2.37-6) ...
+#7 28.41 Setting up libgav1-1:amd64 (0.18.0-1+b1) ...
+#7 28.44 Setting up libdav1d6:amd64 (1.0.0-2+deb12u1) ...
+#7 28.48 Setting up libltdl7:amd64 (2.4.7-7~deb12u1) ...
+#7 28.52 Setting up libwebp7:amd64 (1.2.4-0.2+deb12u1) ...
+#7 28.57 Setting up libnuma1:amd64 (2.0.16-1) ...
+#7 28.62 Setting up libtiff6:amd64 (4.5.0-6+deb12u3) ...
+#7 28.66 Setting up libthai-data (0.1.29-1) ...
+#7 28.70 Setting up libcdt5:amd64 (2.42.2-7+deb12u1) ...
+#7 28.75 Setting up libcgraph6:amd64 (2.42.2-7+deb12u1) ...
+#7 28.79 Setting up libde265-0:amd64 (1.0.11-1+deb12u2) ...
+#7 28.84 Setting up libbsd0:amd64 (0.11.7-2) ...
+#7 28.88 Setting up libyuv0:amd64 (0.0~git20230123.b2528b0-1) ...
+#7 28.93 Setting up libice6:amd64 (2:1.0.10-1) ...
+#7 28.98 Setting up libxdmcp6:amd64 (1:1.1.2-3) ...
+#7 29.02 Setting up libxcb1:amd64 (1.15-1) ...
+#7 29.06 Setting up libavif15:amd64 (0.11.1-1+deb12u1) ...
+#7 29.11 Setting up libxcb-render0:amd64 (1.15-1) ...
+#7 29.14 Setting up fontconfig-config (2.14.1-4) ...
+#7 29.24 debconf: unable to initialize frontend: Dialog
+#7 29.24 debconf: (TERM is not set, so the dialog frontend is not usable.)
+#7 29.24 debconf: falling back to frontend: Readline
+#7 29.24 debconf: unable to initialize frontend: Readline
+#7 29.24 debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.36.0 /usr/local/share/perl/5.36.0 /usr/lib/x86_64-linux-gnu/perl5/5.36 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.36 /usr/share/perl/5.36 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+#7 29.24 debconf: falling back to frontend: Teletype
+#7 29.40 Setting up libxcb-shm0:amd64 (1.15-1) ...
+#7 29.41 Setting up libthai0:amd64 (0.1.29-1) ...
+#7 29.44 Setting up libfreetype6:amd64 (2.12.1+dfsg-5+deb12u4) ...
+#7 29.47 Setting up libx265-199:amd64 (3.5-2+b1) ...
+#7 29.51 Setting up libgvpr2:amd64 (2.42.2-7+deb12u1) ...
+#7 29.55 Setting up libx11-6:amd64 (2:1.8.4-2+deb12u2) ...
+#7 29.59 Setting up libharfbuzz0b:amd64 (6.0.0+dfsg-3) ...
+#7 29.62 Setting up libfontconfig1:amd64 (2.14.1-4) ...
+#7 29.66 Setting up libsm6:amd64 (2:1.2.3-1) ...
+#7 29.69 Setting up fontconfig (2.14.1-4) ...
+#7 29.72 Regenerating fonts cache... done.
+#7 31.75 Setting up libxpm4:amd64 (1:3.5.12-1.1+deb12u1) ...
+#7 31.78 Setting up libxrender1:amd64 (1:0.9.10-1.1) ...
+#7 31.82 Setting up libpango-1.0-0:amd64 (1.50.12+ds-1) ...
+#7 31.85 Setting up libheif1:amd64 (1.15.1-1+deb12u1) ...
+#7 31.89 Setting up libxext6:amd64 (2:1.3.4-1+b1) ...
+#7 31.93 Setting up libcairo2:amd64 (1.16.0-7) ...
+#7 31.96 Setting up libgd3:amd64 (2.3.3-9) ...
+#7 32.00 Setting up libxt6:amd64 (1:1.2.1-1.1) ...
+#7 32.04 Setting up libpangoft2-1.0-0:amd64 (1.50.12+ds-1) ...
+#7 32.08 Setting up libpangocairo-1.0-0:amd64 (1.50.12+ds-1) ...
+#7 32.12 Setting up libxmu6:amd64 (2:1.1.3-3) ...
+#7 32.16 Setting up libxaw7:amd64 (2:1.0.14-1) ...
+#7 32.21 Setting up libgvc6 (2.42.2-7+deb12u1) ...
+#7 32.27 Setting up graphviz (2.42.2-7+deb12u1) ...
+#7 32.31 Processing triggers for libc-bin (2.36-9+deb12u13) ...
+#7 DONE 32.5s
+
+#8 [4/8] WORKDIR /app
+#8 DONE 0.1s
+
+#9 [5/8] COPY requirements.txt ./
+#9 DONE 0.1s
+
+#10 [6/8] RUN pip install --no-cache-dir -r requirements.txt
+#10 3.447 Collecting fastmcp (from -r requirements.txt (line 1))
+#10 3.676   Downloading fastmcp-3.1.1-py3-none-any.whl.metadata (8.1 kB)
+#10 3.797 Collecting uvicorn (from -r requirements.txt (line 2))
+#10 3.846   Downloading uvicorn-0.42.0-py3-none-any.whl.metadata (6.7 kB)
+#10 3.942 Collecting authlib>=1.6.5 (from fastmcp->-r requirements.txt (line 1))
+#10 3.990   Downloading authlib-1.6.9-py2.py3-none-any.whl.metadata (9.8 kB)
+#10 4.098 Collecting cyclopts>=4.0.0 (from fastmcp->-r requirements.txt (line 1))
+#10 4.139   Downloading cyclopts-4.10.1-py3-none-any.whl.metadata (12 kB)
+#10 4.211 Collecting exceptiongroup>=1.2.2 (from fastmcp->-r requirements.txt (line 1))
+#10 4.260   Downloading exceptiongroup-1.3.1-py3-none-any.whl.metadata (6.7 kB)
+#10 4.339 Collecting httpx<1.0,>=0.28.1 (from fastmcp->-r requirements.txt (line 1))
+#10 4.389   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#10 4.446 Collecting jsonref>=1.1.0 (from fastmcp->-r requirements.txt (line 1))
+#10 4.499   Downloading jsonref-1.1.0-py3-none-any.whl.metadata (2.7 kB)
+#10 4.557 Collecting jsonschema-path>=0.3.4 (from fastmcp->-r requirements.txt (line 1))
+#10 4.602   Downloading jsonschema_path-0.4.5-py3-none-any.whl.metadata (5.9 kB)
+#10 4.690 Collecting mcp<2.0,>=1.24.0 (from fastmcp->-r requirements.txt (line 1))
+#10 4.794   Downloading mcp-1.26.0-py3-none-any.whl.metadata (89 kB)
+#10 4.857      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 89.5/89.5 kB 1.5 MB/s eta 0:00:00
+#10 4.924 Collecting openapi-pydantic>=0.5.1 (from fastmcp->-r requirements.txt (line 1))
+#10 4.979   Downloading openapi_pydantic-0.5.1-py3-none-any.whl.metadata (10 kB)
+#10 5.061 Collecting opentelemetry-api>=1.20.0 (from fastmcp->-r requirements.txt (line 1))
+#10 5.107   Downloading opentelemetry_api-1.40.0-py3-none-any.whl.metadata (1.5 kB)
+#10 5.184 Collecting packaging>=24.0 (from fastmcp->-r requirements.txt (line 1))
+#10 5.233   Downloading packaging-26.0-py3-none-any.whl.metadata (3.3 kB)
+#10 5.308 Collecting platformdirs>=4.0.0 (from fastmcp->-r requirements.txt (line 1))
+#10 5.354   Downloading platformdirs-4.9.4-py3-none-any.whl.metadata (4.7 kB)
+#10 5.409 Collecting py-key-value-aio<0.5.0,>=0.4.4 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp->-r requirements.txt (line 1))
+#10 5.457   Downloading py_key_value_aio-0.4.4-py3-none-any.whl.metadata (15 kB)
+#10 5.806 Collecting pydantic>=2.11.7 (from pydantic[email]>=2.11.7->fastmcp->-r requirements.txt (line 1))
+#10 5.850   Downloading pydantic-2.12.5-py3-none-any.whl.metadata (90 kB)
+#10 5.867      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 90.6/90.6 kB 6.6 MB/s eta 0:00:00
+#10 5.925 Collecting pyperclip>=1.9.0 (from fastmcp->-r requirements.txt (line 1))
+#10 5.974   Downloading pyperclip-1.11.0-py3-none-any.whl.metadata (2.4 kB)
+#10 6.042 Collecting python-dotenv>=1.1.0 (from fastmcp->-r requirements.txt (line 1))
+#10 6.086   Downloading python_dotenv-1.2.2-py3-none-any.whl.metadata (27 kB)
+#10 6.229 Collecting pyyaml<7.0,>=6.0 (from fastmcp->-r requirements.txt (line 1))
+#10 6.273   Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+#10 6.410 Collecting rich>=13.9.4 (from fastmcp->-r requirements.txt (line 1))
+#10 6.458   Downloading rich-14.3.3-py3-none-any.whl.metadata (18 kB)
+#10 6.511 Collecting uncalled-for>=0.2.0 (from fastmcp->-r requirements.txt (line 1))
+#10 6.555   Downloading uncalled_for-0.2.0-py3-none-any.whl.metadata (2.9 kB)
+#10 6.778 Collecting watchfiles>=1.0.0 (from fastmcp->-r requirements.txt (line 1))
+#10 6.824   Downloading watchfiles-1.1.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.9 kB)
+#10 7.044 Collecting websockets>=15.0.1 (from fastmcp->-r requirements.txt (line 1))
+#10 7.093   Downloading websockets-16.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (6.8 kB)
+#10 7.184 Collecting click>=7.0 (from uvicorn->-r requirements.txt (line 2))
+#10 7.233   Downloading click-8.3.1-py3-none-any.whl.metadata (2.6 kB)
+#10 7.286 Collecting h11>=0.8 (from uvicorn->-r requirements.txt (line 2))
+#10 7.330   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#10 7.816 Collecting cryptography (from authlib>=1.6.5->fastmcp->-r requirements.txt (line 1))
+#10 7.863   Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (5.7 kB)
+#10 8.012 Collecting attrs>=23.1.0 (from cyclopts>=4.0.0->fastmcp->-r requirements.txt (line 1))
+#10 8.058   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+#10 8.131 Collecting docstring-parser<4.0,>=0.15 (from cyclopts>=4.0.0->fastmcp->-r requirements.txt (line 1))
+#10 8.193   Downloading docstring_parser-0.17.0-py3-none-any.whl.metadata (3.5 kB)
+#10 8.275 Collecting rich-rst<2.0.0,>=1.3.1 (from cyclopts>=4.0.0->fastmcp->-r requirements.txt (line 1))
+#10 8.319   Downloading rich_rst-1.3.2-py3-none-any.whl.metadata (6.1 kB)
+#10 8.430 Collecting typing-extensions>=4.6.0 (from exceptiongroup>=1.2.2->fastmcp->-r requirements.txt (line 1))
+#10 8.481   Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+#10 8.583 Collecting anyio (from httpx<1.0,>=0.28.1->fastmcp->-r requirements.txt (line 1))
+#10 8.629   Downloading anyio-4.13.0-py3-none-any.whl.metadata (4.5 kB)
+#10 8.709 Collecting certifi (from httpx<1.0,>=0.28.1->fastmcp->-r requirements.txt (line 1))
+#10 8.754   Downloading certifi-2026.2.25-py3-none-any.whl.metadata (2.5 kB)
+#10 8.830 Collecting httpcore==1.* (from httpx<1.0,>=0.28.1->fastmcp->-r requirements.txt (line 1))
+#10 8.877   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#10 8.945 Collecting idna (from httpx<1.0,>=0.28.1->fastmcp->-r requirements.txt (line 1))
+#10 8.989   Downloading idna-3.11-py3-none-any.whl.metadata (8.4 kB)
+#10 9.068 Collecting pathable<0.6.0,>=0.5.0 (from jsonschema-path>=0.3.4->fastmcp->-r requirements.txt (line 1))
+#10 9.119   Downloading pathable-0.5.0-py3-none-any.whl.metadata (5.9 kB)
+#10 9.210 Collecting referencing<0.38.0 (from jsonschema-path>=0.3.4->fastmcp->-r requirements.txt (line 1))
+#10 9.265   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+#10 9.353 Collecting httpx-sse>=0.4 (from mcp<2.0,>=1.24.0->fastmcp->-r requirements.txt (line 1))
+#10 9.402   Downloading httpx_sse-0.4.3-py3-none-any.whl.metadata (9.7 kB)
+#10 9.501 Collecting jsonschema>=4.20.0 (from mcp<2.0,>=1.24.0->fastmcp->-r requirements.txt (line 1))
+#10 9.548   Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+#10 9.623 Collecting pydantic-settings>=2.5.2 (from mcp<2.0,>=1.24.0->fastmcp->-r requirements.txt (line 1))
+#10 9.670   Downloading pydantic_settings-2.13.1-py3-none-any.whl.metadata (3.4 kB)
+#10 9.772 Collecting pyjwt>=2.10.1 (from pyjwt[crypto]>=2.10.1->mcp<2.0,>=1.24.0->fastmcp->-r requirements.txt (line 1))
+#10 9.821   Downloading pyjwt-2.12.1-py3-none-any.whl.metadata (4.1 kB)
+#10 9.886 Collecting python-multipart>=0.0.9 (from mcp<2.0,>=1.24.0->fastmcp->-r requirements.txt (line 1))
+#10 9.931   Downloading python_multipart-0.0.22-py3-none-any.whl.metadata (1.8 kB)
+#10 10.00 Collecting sse-starlette>=1.6.1 (from mcp<2.0,>=1.24.0->fastmcp->-r requirements.txt (line 1))
+#10 10.05   Downloading sse_starlette-3.3.3-py3-none-any.whl.metadata (14 kB)
+#10 10.15 Collecting starlette>=0.27 (from mcp<2.0,>=1.24.0->fastmcp->-r requirements.txt (line 1))
+#10 10.19   Downloading starlette-1.0.0-py3-none-any.whl.metadata (6.3 kB)
+#10 10.25 Collecting typing-inspection>=0.4.1 (from mcp<2.0,>=1.24.0->fastmcp->-r requirements.txt (line 1))
+#10 10.30   Downloading typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+#10 10.45 Collecting importlib-metadata<8.8.0,>=6.0 (from opentelemetry-api>=1.20.0->fastmcp->-r requirements.txt (line 1))
+#10 10.50   Downloading importlib_metadata-8.7.1-py3-none-any.whl.metadata (4.7 kB)
+#10 10.62 Collecting beartype>=0.20.0 (from py-key-value-aio<0.5.0,>=0.4.4->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp->-r requirements.txt (line 1))
+#10 10.67   Downloading beartype-0.22.9-py3-none-any.whl.metadata (37 kB)
+#10 10.81 Collecting aiofile>=3.5.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp->-r requirements.txt (line 1))
+#10 10.86   Downloading aiofile-3.9.0-py3-none-any.whl.metadata (14 kB)
+#10 10.99 Collecting keyring>=25.6.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp->-r requirements.txt (line 1))
+#10 11.03   Downloading keyring-25.7.0-py3-none-any.whl.metadata (21 kB)
+#10 11.12 Collecting cachetools>=5.0.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp->-r requirements.txt (line 1))
+#10 11.17   Downloading cachetools-7.0.5-py3-none-any.whl.metadata (5.6 kB)
+#10 11.23 Collecting annotated-types>=0.6.0 (from pydantic>=2.11.7->pydantic[email]>=2.11.7->fastmcp->-r requirements.txt (line 1))
+#10 11.28   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+#10 13.10 Collecting pydantic-core==2.41.5 (from pydantic>=2.11.7->pydantic[email]>=2.11.7->fastmcp->-r requirements.txt (line 1))
+#10 13.16   Downloading pydantic_core-2.41.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (7.3 kB)
+#10 13.25 Collecting email-validator>=2.0.0 (from pydantic[email]>=2.11.7->fastmcp->-r requirements.txt (line 1))
+#10 13.29   Downloading email_validator-2.3.0-py3-none-any.whl.metadata (26 kB)
+#10 13.40 Collecting markdown-it-py>=2.2.0 (from rich>=13.9.4->fastmcp->-r requirements.txt (line 1))
+#10 13.44   Downloading markdown_it_py-4.0.0-py3-none-any.whl.metadata (7.3 kB)
+#10 13.53 Collecting pygments<3.0.0,>=2.13.0 (from rich>=13.9.4->fastmcp->-r requirements.txt (line 1))
+#10 13.58   Downloading pygments-2.19.2-py3-none-any.whl.metadata (2.5 kB)
+#10 13.74 Collecting caio<0.10.0,>=0.9.0 (from aiofile>=3.5.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp->-r requirements.txt (line 1))
+#10 13.79   Downloading caio-0.9.25-cp311-cp311-manylinux_2_34_x86_64.whl.metadata (3.3 kB)
+#10 14.07 Collecting dnspython>=2.0.0 (from email-validator>=2.0.0->pydantic[email]>=2.11.7->fastmcp->-r requirements.txt (line 1))
+#10 14.13   Downloading dnspython-2.8.0-py3-none-any.whl.metadata (5.7 kB)
+#10 14.25 Collecting zipp>=3.20 (from importlib-metadata<8.8.0,>=6.0->opentelemetry-api>=1.20.0->fastmcp->-r requirements.txt (line 1))
+#10 14.30   Downloading zipp-3.23.0-py3-none-any.whl.metadata (3.6 kB)
+#10 14.46 Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.20.0->mcp<2.0,>=1.24.0->fastmcp->-r requirements.txt (line 1))
+#10 14.50   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+#10 15.05 Collecting rpds-py>=0.25.0 (from jsonschema>=4.20.0->mcp<2.0,>=1.24.0->fastmcp->-r requirements.txt (line 1))
+#10 15.10   Downloading rpds_py-0.30.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)
+#10 15.19 Collecting SecretStorage>=3.2 (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp->-r requirements.txt (line 1))
+#10 15.23   Downloading secretstorage-3.5.0-py3-none-any.whl.metadata (4.0 kB)
+#10 15.30 Collecting jeepney>=0.4.2 (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp->-r requirements.txt (line 1))
+#10 15.35   Downloading jeepney-0.9.0-py3-none-any.whl.metadata (1.2 kB)
+#10 15.41 Collecting jaraco.classes (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp->-r requirements.txt (line 1))
+#10 15.45   Downloading jaraco.classes-3.4.0-py3-none-any.whl.metadata (2.6 kB)
+#10 15.52 Collecting jaraco.functools (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp->-r requirements.txt (line 1))
+#10 15.57   Downloading jaraco_functools-4.4.0-py3-none-any.whl.metadata (3.0 kB)
+#10 15.63 Collecting jaraco.context (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp->-r requirements.txt (line 1))
+#10 15.69   Downloading jaraco_context-6.1.2-py3-none-any.whl.metadata (4.2 kB)
+#10 15.77 Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich>=13.9.4->fastmcp->-r requirements.txt (line 1))
+#10 15.82   Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+#10 16.16 Collecting cffi>=2.0.0 (from cryptography->authlib>=1.6.5->fastmcp->-r requirements.txt (line 1))
+#10 16.20   Downloading cffi-2.0.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.6 kB)
+#10 16.31 Collecting docutils (from rich-rst<2.0.0,>=1.3.1->cyclopts>=4.0.0->fastmcp->-r requirements.txt (line 1))
+#10 16.37   Downloading docutils-0.22.4-py3-none-any.whl.metadata (15 kB)
+#10 16.57 Collecting pycparser (from cffi>=2.0.0->cryptography->authlib>=1.6.5->fastmcp->-r requirements.txt (line 1))
+#10 16.61   Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+#10 16.89 Collecting more-itertools (from jaraco.classes->keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp->-r requirements.txt (line 1))
+#10 16.94   Downloading more_itertools-10.8.0-py3-none-any.whl.metadata (39 kB)
+#10 17.02 Collecting backports.tarfile (from jaraco.context->keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp->-r requirements.txt (line 1))
+#10 17.06   Downloading backports.tarfile-1.2.0-py3-none-any.whl.metadata (2.0 kB)
+#10 17.19 Downloading fastmcp-3.1.1-py3-none-any.whl (633 kB)
+#10 17.35    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 633.8/633.8 kB 4.2 MB/s eta 0:00:00
+#10 17.39 Downloading uvicorn-0.42.0-py3-none-any.whl (68 kB)
+#10 17.40    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 68.8/68.8 kB 8.2 MB/s eta 0:00:00
+#10 17.44 Downloading authlib-1.6.9-py2.py3-none-any.whl (244 kB)
+#10 17.49    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 244.2/244.2 kB 5.9 MB/s eta 0:00:00
+#10 17.55 Downloading click-8.3.1-py3-none-any.whl (108 kB)
+#10 17.56    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 108.3/108.3 kB 10.3 MB/s eta 0:00:00
+#10 17.61 Downloading cyclopts-4.10.1-py3-none-any.whl (204 kB)
+#10 17.67    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 204.3/204.3 kB 3.5 MB/s eta 0:00:00
+#10 17.71 Downloading exceptiongroup-1.3.1-py3-none-any.whl (16 kB)
+#10 17.76 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#10 17.82 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#10 17.83    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.5/73.5 kB 25.9 MB/s eta 0:00:00
+#10 17.89 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#10 17.90    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.8/78.8 kB 28.2 MB/s eta 0:00:00
+#10 18.02 Downloading jsonref-1.1.0-py3-none-any.whl (9.4 kB)
+#10 18.07 Downloading jsonschema_path-0.4.5-py3-none-any.whl (19 kB)
+#10 18.13 Downloading mcp-1.26.0-py3-none-any.whl (233 kB)
+#10 18.19    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 233.6/233.6 kB 6.0 MB/s eta 0:00:00
+#10 18.24 Downloading openapi_pydantic-0.5.1-py3-none-any.whl (96 kB)
+#10 18.25    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 96.4/96.4 kB 9.4 MB/s eta 0:00:00
+#10 18.29 Downloading opentelemetry_api-1.40.0-py3-none-any.whl (68 kB)
+#10 18.30    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 68.7/68.7 kB 9.4 MB/s eta 0:00:00
+#10 18.35 Downloading packaging-26.0-py3-none-any.whl (74 kB)
+#10 18.36    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 74.4/74.4 kB 11.2 MB/s eta 0:00:00
+#10 18.40 Downloading platformdirs-4.9.4-py3-none-any.whl (21 kB)
+#10 18.45 Downloading py_key_value_aio-0.4.4-py3-none-any.whl (152 kB)
+#10 18.47    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 152.3/152.3 kB 8.9 MB/s eta 0:00:00
+#10 18.52 Downloading pydantic-2.12.5-py3-none-any.whl (463 kB)
+#10 18.60    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 463.6/463.6 kB 6.2 MB/s eta 0:00:00
+#10 18.64 Downloading pydantic_core-2.41.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.1 MB)
+#10 19.00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 5.8 MB/s eta 0:00:00
+#10 19.05 Downloading pyperclip-1.11.0-py3-none-any.whl (11 kB)
+#10 19.09 Downloading python_dotenv-1.2.2-py3-none-any.whl (22 kB)
+#10 19.14 Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (806 kB)
+#10 19.25    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 806.6/806.6 kB 7.4 MB/s eta 0:00:00
+#10 19.30 Downloading rich-14.3.3-py3-none-any.whl (310 kB)
+#10 19.33    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 310.5/310.5 kB 8.7 MB/s eta 0:00:00
+#10 19.38 Downloading uncalled_for-0.2.0-py3-none-any.whl (11 kB)
+#10 19.42 Downloading watchfiles-1.1.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (456 kB)
+#10 19.49    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 456.1/456.1 kB 7.0 MB/s eta 0:00:00
+#10 19.54 Downloading websockets-16.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (184 kB)
+#10 19.56    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 184.6/184.6 kB 7.2 MB/s eta 0:00:00
+#10 19.61 Downloading aiofile-3.9.0-py3-none-any.whl (19 kB)
+#10 19.66 Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+#10 19.71 Downloading anyio-4.13.0-py3-none-any.whl (114 kB)
+#10 19.72    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 114.4/114.4 kB 12.5 MB/s eta 0:00:00
+#10 19.78 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+#10 19.79    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 67.5/67.5 kB 10.1 MB/s eta 0:00:00
+#10 19.84 Downloading beartype-0.22.9-py3-none-any.whl (1.3 MB)
+#10 20.05    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 6.2 MB/s eta 0:00:00
+#10 20.10 Downloading cachetools-7.0.5-py3-none-any.whl (13 kB)
+#10 20.17 Downloading docstring_parser-0.17.0-py3-none-any.whl (36 kB)
+#10 20.22 Downloading email_validator-2.3.0-py3-none-any.whl (35 kB)
+#10 20.27 Downloading httpx_sse-0.4.3-py3-none-any.whl (9.0 kB)
+#10 20.32 Downloading idna-3.11-py3-none-any.whl (71 kB)
+#10 20.34    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 71.0/71.0 kB 5.9 MB/s eta 0:00:00
+#10 20.39 Downloading importlib_metadata-8.7.1-py3-none-any.whl (27 kB)
+#10 20.43 Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+#10 20.45    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 90.6/90.6 kB 7.8 MB/s eta 0:00:00
+#10 20.49 Downloading keyring-25.7.0-py3-none-any.whl (39 kB)
+#10 20.54 Downloading markdown_it_py-4.0.0-py3-none-any.whl (87 kB)
+#10 20.55    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 87.3/87.3 kB 12.2 MB/s eta 0:00:00
+#10 20.61 Downloading pathable-0.5.0-py3-none-any.whl (16 kB)
+#10 20.66 Downloading pydantic_settings-2.13.1-py3-none-any.whl (58 kB)
+#10 20.67    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 58.9/58.9 kB 22.1 MB/s eta 0:00:00
+#10 20.73 Downloading pygments-2.19.2-py3-none-any.whl (1.2 MB)
+#10 20.96    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 5.3 MB/s eta 0:00:00
+#10 21.01 Downloading pyjwt-2.12.1-py3-none-any.whl (29 kB)
+#10 21.07 Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_x86_64.whl (4.5 MB)
+#10 22.17    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.5/4.5 MB 4.0 MB/s eta 0:00:00
+#10 22.22 Downloading python_multipart-0.0.22-py3-none-any.whl (24 kB)
+#10 22.27 Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+#10 22.33 Downloading rich_rst-1.3.2-py3-none-any.whl (12 kB)
+#10 22.38 Downloading sse_starlette-3.3.3-py3-none-any.whl (14 kB)
+#10 22.43 Downloading starlette-1.0.0-py3-none-any.whl (72 kB)
+#10 22.44    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 72.7/72.7 kB 4.3 MB/s eta 0:00:00
+#10 22.49 Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+#10 22.50    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 44.6/44.6 kB 11.1 MB/s eta 0:00:00
+#10 22.54 Downloading typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+#10 22.59 Downloading certifi-2026.2.25-py3-none-any.whl (153 kB)
+#10 22.65    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 153.7/153.7 kB 2.8 MB/s eta 0:00:00
+#10 22.70 Downloading caio-0.9.25-cp311-cp311-manylinux_2_34_x86_64.whl (78 kB)
+#10 22.72    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.3/78.3 kB 3.9 MB/s eta 0:00:00
+#10 22.77 Downloading cffi-2.0.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (215 kB)
+#10 22.83    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 215.6/215.6 kB 3.6 MB/s eta 0:00:00
+#10 22.87 Downloading dnspython-2.8.0-py3-none-any.whl (331 kB)
+#10 23.07    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 331.1/331.1 kB 3.4 MB/s eta 0:00:00
+#10 23.12 Downloading jeepney-0.9.0-py3-none-any.whl (49 kB)
+#10 23.13    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 49.0/49.0 kB 9.2 MB/s eta 0:00:00
+#10 23.17 Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+#10 23.22 Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+#10 23.27 Downloading rpds_py-0.30.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (390 kB)
+#10 23.39    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 390.8/390.8 kB 3.2 MB/s eta 0:00:00
+#10 23.44 Downloading secretstorage-3.5.0-py3-none-any.whl (15 kB)
+#10 23.49 Downloading zipp-3.23.0-py3-none-any.whl (10 kB)
+#10 23.54 Downloading docutils-0.22.4-py3-none-any.whl (633 kB)
+#10 23.75    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 633.2/633.2 kB 3.1 MB/s eta 0:00:00
+#10 23.80 Downloading jaraco.classes-3.4.0-py3-none-any.whl (6.8 kB)
+#10 23.84 Downloading jaraco_context-6.1.2-py3-none-any.whl (7.9 kB)
+#10 23.89 Downloading jaraco_functools-4.4.0-py3-none-any.whl (10 kB)
+#10 23.93 Downloading backports.tarfile-1.2.0-py3-none-any.whl (30 kB)
+#10 24.00 Downloading more_itertools-10.8.0-py3-none-any.whl (69 kB)
+#10 24.02    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 69.7/69.7 kB 14.3 MB/s eta 0:00:00
+#10 24.07 Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+#10 24.09    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 48.2/48.2 kB 1.8 MB/s eta 0:00:00
+#10 24.82 Installing collected packages: pyperclip, zipp, websockets, uncalled-for, typing-extensions, rpds-py, pyyaml, python-multipart, python-dotenv, pyjwt, pygments, pycparser, platformdirs, pathable, packaging, more-itertools, mdurl, jsonref, jeepney, idna, httpx-sse, h11, docutils, docstring-parser, dnspython, click, certifi, caio, cachetools, beartype, backports.tarfile, attrs, annotated-types, uvicorn, typing-inspection, referencing, pydantic-core, py-key-value-aio, markdown-it-py, jaraco.functools, jaraco.context, jaraco.classes, importlib-metadata, httpcore, exceptiongroup, email-validator, cffi, anyio, aiofile, watchfiles, starlette, rich, pydantic, opentelemetry-api, jsonschema-specifications, jsonschema-path, httpx, cryptography, sse-starlette, SecretStorage, rich-rst, pydantic-settings, openapi-pydantic, jsonschema, authlib, mcp, keyring, cyclopts, fastmcp
+#10 31.96 Successfully installed SecretStorage-3.5.0 aiofile-3.9.0 annotated-types-0.7.0 anyio-4.13.0 attrs-26.1.0 authlib-1.6.9 backports.tarfile-1.2.0 beartype-0.22.9 cachetools-7.0.5 caio-0.9.25 certifi-2026.2.25 cffi-2.0.0 click-8.3.1 cryptography-46.0.5 cyclopts-4.10.1 dnspython-2.8.0 docstring-parser-0.17.0 docutils-0.22.4 email-validator-2.3.0 exceptiongroup-1.3.1 fastmcp-3.1.1 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 httpx-sse-0.4.3 idna-3.11 importlib-metadata-8.7.1 jaraco.classes-3.4.0 jaraco.context-6.1.2 jaraco.functools-4.4.0 jeepney-0.9.0 jsonref-1.1.0 jsonschema-4.26.0 jsonschema-path-0.4.5 jsonschema-specifications-2025.9.1 keyring-25.7.0 markdown-it-py-4.0.0 mcp-1.26.0 mdurl-0.1.2 more-itertools-10.8.0 openapi-pydantic-0.5.1 opentelemetry-api-1.40.0 packaging-26.0 pathable-0.5.0 platformdirs-4.9.4 py-key-value-aio-0.4.4 pycparser-3.0 pydantic-2.12.5 pydantic-core-2.41.5 pydantic-settings-2.13.1 pygments-2.19.2 pyjwt-2.12.1 pyperclip-1.11.0 python-dotenv-1.2.2 python-multipart-0.0.22 pyyaml-6.0.3 referencing-0.37.0 rich-14.3.3 rich-rst-1.3.2 rpds-py-0.30.0 sse-starlette-3.3.3 starlette-1.0.0 typing-extensions-4.15.0 typing-inspection-0.4.2 uncalled-for-0.2.0 uvicorn-0.42.0 watchfiles-1.1.1 websockets-16.0 zipp-3.23.0
+#10 31.96 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+#10 32.24 
+#10 32.24 [notice] A new release of pip is available: 24.0 -> 26.0.1
+#10 32.24 [notice] To update, run: pip install --upgrade pip
+#10 DONE 33.1s
+
+#11 [7/8] COPY mcp_server.py ./
+#11 DONE 0.2s
+
+#12 [8/8] RUN chown -R mcpuser:mcpuser /app
+#12 DONE 0.5s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 5.4s done
+#13 exporting manifest sha256:f4cdb1b153e45e143f80aa0f394809caf0538a84dbf15eae225e2a8b3a2f6f5b 0.0s done
+#13 exporting config sha256:51d34be9d3cd3a6dd433d709e81147c6416e7b33c44edba48a97f32ed215c6ad 0.0s done
+#13 exporting attestation manifest sha256:38c3e2ac1c4949d1800b007a69efe2fdeafc43be881846fa1e1f19ea11b2004e 0.1s done
+#13 exporting manifest list sha256:52e745adadeacd792a132b05a3fdc5c2d5460acd05bd5b25951946148864601d
+#13 exporting manifest list sha256:52e745adadeacd792a132b05a3fdc5c2d5460acd05bd5b25951946148864601d 0.0s done
+#13 naming to docker.io/library/graphviz-dot-mcp:latest done
+#13 unpacking to docker.io/library/graphviz-dot-mcp:latest
+#13 unpacking to docker.io/library/graphviz-dot-mcp:latest 2.5s done
+#13 naming to docker.io/hackerdogs/graphviz-dot-mcp:latest done
+#13 unpacking to docker.io/hackerdogs/graphviz-dot-mcp:latest 0.0s done
+#13 DONE 8.2s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/llbdkaztini06e5rgi5hfb4yw
+========== graphviz-dot-mcp test (compliance) ==========
+[0;34m[1] Install[0m
+  [0;32mPASS: image exists[0m
+[0;34m[2] Stdio tools/list[0m
+  [0;32mPASS: stdio tools/list[0m
+[0;34m[3] Stdio tools/call[0m
+  [0;32mPASS: stdio tools/call[0m
+[0;34m[4] HTTP streamable tools/list[0m
+  [0;32mPASS: HTTP tools/list[0m
+[0;34m[5] HTTP streamable tools/call[0m
+  [0;32mPASS: HTTP tools/call[0m
+
+Total: 5 passed, 0 failed
+graphviz-dot-mcp-test
+graphviz-dot-mcp-test
+
+✅ PASS: graphviz-dot-mcp

@@ -1,0 +1,2249 @@
+MCP test run - radare2-mcp
+Generated (UTC): 2026-03-20T19:20:23Z
+Exit code: 0
+Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
+---------------------------------------------------------------------------------
+=================================================================================
+[0;34mRadare2 MCP Server — Test Suite[0m
+=================================================================================
+
+[0;34m[Test 1] Docker image[0m
+  Image not found. Building...
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.01kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#2 DONE 0.4s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/9] FROM docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0
+#4 resolve docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0 done
+#4 DONE 0.0s
+
+#5 [2/9] RUN groupadd -g 1000 mcpuser &&     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
+#5 CACHED
+
+#6 [internal] load build context
+#6 transferring context: 17.01kB done
+#6 DONE 0.0s
+
+#7 [3/9] RUN apt-get update && apt-get install -y --no-install-recommends     git     make     gcc     libc6-dev     patch     pkg-config     tini     git     unzip     ca-certificates     && rm -rf /var/lib/apt/lists/*     && git clone --depth 1 https://github.com/radareorg/radare2.git /opt/radare2     && cd /opt/radare2     && sys/install.sh     && rm -rf /opt/radare2/.git
+#7 0.178 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#7 0.215 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#7 0.226 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [48.0 kB]
+#7 0.253 Get:4 http://deb.debian.org/debian bookworm/main arm64 Packages [8691 kB]
+#7 0.845 Get:5 http://deb.debian.org/debian bookworm-updates/main arm64 Packages [6936 B]
+#7 0.845 Get:6 http://deb.debian.org/debian-security bookworm-security/main arm64 Packages [291 kB]
+#7 1.508 Fetched 9243 kB in 1s (6761 kB/s)
+#7 1.508 Reading package lists...
+#7 1.768 Reading package lists...
+#7 2.018 Building dependency tree...
+#7 2.076 Reading state information...
+#7 2.149 ca-certificates is already the newest version (20230311+deb12u1).
+#7 2.149 The following additional packages will be installed:
+#7 2.149   binutils binutils-aarch64-linux-gnu binutils-common cpp cpp-12 gcc-12
+#7 2.149   git-man libasan8 libatomic1 libbinutils libbrotli1 libc-dev-bin libcc1-0
+#7 2.149   libcrypt-dev libctf-nobfd0 libctf0 libcurl3-gnutls liberror-perl libexpat1
+#7 2.149   libgcc-12-dev libgdbm-compat4 libgomp1 libgprofng0 libhwasan0 libisl23
+#7 2.149   libitm1 libjansson4 libldap-2.5-0 liblsan0 libmpc3 libmpfr6 libnghttp2-14
+#7 2.149   libnsl-dev libperl5.36 libpkgconf3 libpsl5 librtmp1 libsasl2-2
+#7 2.149   libsasl2-modules-db libssh2-1 libtirpc-dev libtsan2 libubsan1 linux-libc-dev
+#7 2.150   perl perl-modules-5.36 pkgconf pkgconf-bin rpcsvc-proto
+#7 2.150 Suggested packages:
+#7 2.150   binutils-doc cpp-doc gcc-12-locales cpp-12-doc gcc-multilib manpages-dev
+#7 2.150   autoconf automake libtool flex bison gdb gcc-doc gcc-12-doc gettext-base
+#7 2.150   git-daemon-run | git-daemon-sysvinit git-doc git-email git-gui gitk gitweb
+#7 2.150   git-cvs git-mediawiki git-svn glibc-doc sensible-utils make-doc ed
+#7 2.150   diffutils-doc perl-doc libterm-readline-gnu-perl
+#7 2.150   | libterm-readline-perl-perl libtap-harness-archive-perl zip
+#7 2.150 Recommended packages:
+#7 2.150   less ssh-client manpages manpages-dev libc-devtools libldap-common
+#7 2.150   publicsuffix libsasl2-modules
+#7 2.330 The following NEW packages will be installed:
+#7 2.330   binutils binutils-aarch64-linux-gnu binutils-common cpp cpp-12 gcc gcc-12
+#7 2.330   git git-man libasan8 libatomic1 libbinutils libbrotli1 libc-dev-bin
+#7 2.330   libc6-dev libcc1-0 libcrypt-dev libctf-nobfd0 libctf0 libcurl3-gnutls
+#7 2.330   liberror-perl libexpat1 libgcc-12-dev libgdbm-compat4 libgomp1 libgprofng0
+#7 2.330   libhwasan0 libisl23 libitm1 libjansson4 libldap-2.5-0 liblsan0 libmpc3
+#7 2.330   libmpfr6 libnghttp2-14 libnsl-dev libperl5.36 libpkgconf3 libpsl5 librtmp1
+#7 2.330   libsasl2-2 libsasl2-modules-db libssh2-1 libtirpc-dev libtsan2 libubsan1
+#7 2.330   linux-libc-dev make patch perl perl-modules-5.36 pkg-config pkgconf
+#7 2.330   pkgconf-bin rpcsvc-proto tini unzip
+#7 2.362 0 upgraded, 57 newly installed, 0 to remove and 0 not upgraded.
+#7 2.362 Need to get 63.6 MB of archives.
+#7 2.362 After this operation, 294 MB of additional disk space will be used.
+#7 2.362 Get:1 http://deb.debian.org/debian bookworm/main arm64 perl-modules-5.36 all 5.36.0-7+deb12u3 [2815 kB]
+#7 2.501 Get:2 http://deb.debian.org/debian bookworm/main arm64 libgdbm-compat4 arm64 1.23-3 [48.0 kB]
+#7 2.502 Get:3 http://deb.debian.org/debian bookworm/main arm64 libperl5.36 arm64 5.36.0-7+deb12u3 [4009 kB]
+#7 2.815 Get:4 http://deb.debian.org/debian bookworm/main arm64 perl arm64 5.36.0-7+deb12u3 [239 kB]
+#7 2.823 Get:5 http://deb.debian.org/debian bookworm/main arm64 binutils-common arm64 2.40-2 [2487 kB]
+#7 3.015 Get:6 http://deb.debian.org/debian bookworm/main arm64 libbinutils arm64 2.40-2 [645 kB]
+#7 3.064 Get:7 http://deb.debian.org/debian bookworm/main arm64 libctf-nobfd0 arm64 2.40-2 [144 kB]
+#7 3.077 Get:8 http://deb.debian.org/debian bookworm/main arm64 libctf0 arm64 2.40-2 [79.2 kB]
+#7 3.081 Get:9 http://deb.debian.org/debian bookworm/main arm64 libgprofng0 arm64 2.40-2 [680 kB]
+#7 3.134 Get:10 http://deb.debian.org/debian bookworm/main arm64 libjansson4 arm64 2.14-2 [40.2 kB]
+#7 3.137 Get:11 http://deb.debian.org/debian bookworm/main arm64 binutils-aarch64-linux-gnu arm64 2.40-2 [2637 kB]
+#7 3.341 Get:12 http://deb.debian.org/debian bookworm/main arm64 binutils arm64 2.40-2 [64.9 kB]
+#7 3.345 Get:13 http://deb.debian.org/debian bookworm/main arm64 libisl23 arm64 0.25-1.1 [610 kB]
+#7 3.391 Get:14 http://deb.debian.org/debian bookworm/main arm64 libmpfr6 arm64 4.2.0-1 [600 kB]
+#7 3.440 Get:15 http://deb.debian.org/debian bookworm/main arm64 libmpc3 arm64 1.3.1-1 [49.2 kB]
+#7 3.442 Get:16 http://deb.debian.org/debian bookworm/main arm64 cpp-12 arm64 12.2.0-14+deb12u1 [8228 kB]
+#7 4.075 Get:17 http://deb.debian.org/debian bookworm/main arm64 cpp arm64 4:12.2.0-3 [6832 B]
+#7 4.075 Get:18 http://deb.debian.org/debian bookworm/main arm64 libcc1-0 arm64 12.2.0-14+deb12u1 [37.7 kB]
+#7 4.078 Get:19 http://deb.debian.org/debian bookworm/main arm64 libgomp1 arm64 12.2.0-14+deb12u1 [104 kB]
+#7 4.083 Get:20 http://deb.debian.org/debian bookworm/main arm64 libitm1 arm64 12.2.0-14+deb12u1 [24.0 kB]
+#7 4.085 Get:21 http://deb.debian.org/debian bookworm/main arm64 libatomic1 arm64 12.2.0-14+deb12u1 [9568 B]
+#7 4.086 Get:22 http://deb.debian.org/debian bookworm/main arm64 libasan8 arm64 12.2.0-14+deb12u1 [2096 kB]
+#7 4.249 Get:23 http://deb.debian.org/debian bookworm/main arm64 liblsan0 arm64 12.2.0-14+deb12u1 [926 kB]
+#7 4.318 Get:24 http://deb.debian.org/debian bookworm/main arm64 libtsan2 arm64 12.2.0-14+deb12u1 [2178 kB]
+#7 4.510 Get:25 http://deb.debian.org/debian bookworm/main arm64 libubsan1 arm64 12.2.0-14+deb12u1 [862 kB]
+#7 4.550 Get:26 http://deb.debian.org/debian bookworm/main arm64 libhwasan0 arm64 12.2.0-14+deb12u1 [999 kB]
+#7 4.629 Get:27 http://deb.debian.org/debian bookworm/main arm64 libgcc-12-dev arm64 12.2.0-14+deb12u1 [956 kB]
+#7 4.702 Get:28 http://deb.debian.org/debian bookworm/main arm64 gcc-12 arm64 12.2.0-14+deb12u1 [16.3 MB]
+#7 5.957 Get:29 http://deb.debian.org/debian bookworm/main arm64 gcc arm64 4:12.2.0-3 [5244 B]
+#7 5.957 Get:30 http://deb.debian.org/debian bookworm/main arm64 libbrotli1 arm64 1.0.9-2+b6 [269 kB]
+#7 5.972 Get:31 http://deb.debian.org/debian bookworm/main arm64 libsasl2-modules-db arm64 2.1.28+dfsg-10 [20.8 kB]
+#7 5.973 Get:32 http://deb.debian.org/debian bookworm/main arm64 libsasl2-2 arm64 2.1.28+dfsg-10 [58.0 kB]
+#7 5.976 Get:33 http://deb.debian.org/debian bookworm/main arm64 libldap-2.5-0 arm64 2.5.13+dfsg-5 [171 kB]
+#7 5.989 Get:34 http://deb.debian.org/debian bookworm/main arm64 libnghttp2-14 arm64 1.52.0-1+deb12u2 [68.6 kB]
+#7 5.995 Get:35 http://deb.debian.org/debian bookworm/main arm64 libpsl5 arm64 0.21.2-1 [58.6 kB]
+#7 6.001 Get:36 http://deb.debian.org/debian bookworm/main arm64 librtmp1 arm64 2.4+20151223.gitfa8646d.1-2+b2 [59.4 kB]
+#7 6.004 Get:37 http://deb.debian.org/debian bookworm/main arm64 libssh2-1 arm64 1.10.0-3+b1 [172 kB]
+#7 6.018 Get:38 http://deb.debian.org/debian bookworm/main arm64 libcurl3-gnutls arm64 7.88.1-10+deb12u14 [362 kB]
+#7 6.048 Get:39 http://deb.debian.org/debian bookworm/main arm64 libexpat1 arm64 2.5.0-1+deb12u2 [86.3 kB]
+#7 6.053 Get:40 http://deb.debian.org/debian bookworm/main arm64 liberror-perl all 0.17029-2 [29.0 kB]
+#7 6.055 Get:41 http://deb.debian.org/debian bookworm/main arm64 git-man all 1:2.39.5-0+deb12u3 [2053 kB]
+#7 6.214 Get:42 http://deb.debian.org/debian bookworm/main arm64 git arm64 1:2.39.5-0+deb12u3 [7153 kB]
+#7 6.765 Get:43 http://deb.debian.org/debian bookworm/main arm64 libc-dev-bin arm64 2.36-9+deb12u13 [46.5 kB]
+#7 6.769 Get:44 http://deb.debian.org/debian-security bookworm-security/main arm64 linux-libc-dev arm64 6.1.164-1 [2217 kB]
+#7 6.935 Get:45 http://deb.debian.org/debian bookworm/main arm64 libcrypt-dev arm64 1:4.4.33-2 [121 kB]
+#7 6.944 Get:46 http://deb.debian.org/debian bookworm/main arm64 libtirpc-dev arm64 1.3.3+ds-1 [194 kB]
+#7 6.959 Get:47 http://deb.debian.org/debian bookworm/main arm64 libnsl-dev arm64 1.3.0-2 [66.1 kB]
+#7 6.963 Get:48 http://deb.debian.org/debian bookworm/main arm64 rpcsvc-proto arm64 1.4.3-1 [59.7 kB]
+#7 6.968 Get:49 http://deb.debian.org/debian bookworm/main arm64 libc6-dev arm64 2.36-9+deb12u13 [1435 kB]
+#7 7.079 Get:50 http://deb.debian.org/debian bookworm/main arm64 libpkgconf3 arm64 1.8.1-1 [35.3 kB]
+#7 7.082 Get:51 http://deb.debian.org/debian bookworm/main arm64 make arm64 4.3-4.1 [391 kB]
+#7 7.111 Get:52 http://deb.debian.org/debian bookworm/main arm64 patch arm64 2.7.6-7 [121 kB]
+#7 7.121 Get:53 http://deb.debian.org/debian bookworm/main arm64 pkgconf-bin arm64 1.8.1-1 [28.9 kB]
+#7 7.123 Get:54 http://deb.debian.org/debian bookworm/main arm64 pkgconf arm64 1.8.1-1 [25.9 kB]
+#7 7.125 Get:55 http://deb.debian.org/debian bookworm/main arm64 pkg-config arm64 1.8.1-1 [13.7 kB]
+#7 7.127 Get:56 http://deb.debian.org/debian bookworm/main arm64 tini arm64 0.19.0-1+b3 [224 kB]
+#7 7.143 Get:57 http://deb.debian.org/debian bookworm/main arm64 unzip arm64 6.0-28 [157 kB]
+#7 7.251 debconf: delaying package configuration, since apt-utils is not installed
+#7 7.262 Fetched 63.6 MB in 5s (13.2 MB/s)
+#7 7.276 Selecting previously unselected package perl-modules-5.36.
+#7 7.276 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6689 files and directories currently installed.)
+#7 7.286 Preparing to unpack .../00-perl-modules-5.36_5.36.0-7+deb12u3_all.deb ...
+#7 7.286 Unpacking perl-modules-5.36 (5.36.0-7+deb12u3) ...
+#7 7.473 Selecting previously unselected package libgdbm-compat4:arm64.
+#7 7.474 Preparing to unpack .../01-libgdbm-compat4_1.23-3_arm64.deb ...
+#7 7.476 Unpacking libgdbm-compat4:arm64 (1.23-3) ...
+#7 7.491 Selecting previously unselected package libperl5.36:arm64.
+#7 7.492 Preparing to unpack .../02-libperl5.36_5.36.0-7+deb12u3_arm64.deb ...
+#7 7.493 Unpacking libperl5.36:arm64 (5.36.0-7+deb12u3) ...
+#7 7.717 Selecting previously unselected package perl.
+#7 7.717 Preparing to unpack .../03-perl_5.36.0-7+deb12u3_arm64.deb ...
+#7 7.721 Unpacking perl (5.36.0-7+deb12u3) ...
+#7 7.743 Selecting previously unselected package binutils-common:arm64.
+#7 7.744 Preparing to unpack .../04-binutils-common_2.40-2_arm64.deb ...
+#7 7.745 Unpacking binutils-common:arm64 (2.40-2) ...
+#7 7.883 Selecting previously unselected package libbinutils:arm64.
+#7 7.884 Preparing to unpack .../05-libbinutils_2.40-2_arm64.deb ...
+#7 7.885 Unpacking libbinutils:arm64 (2.40-2) ...
+#7 7.929 Selecting previously unselected package libctf-nobfd0:arm64.
+#7 7.930 Preparing to unpack .../06-libctf-nobfd0_2.40-2_arm64.deb ...
+#7 7.931 Unpacking libctf-nobfd0:arm64 (2.40-2) ...
+#7 7.946 Selecting previously unselected package libctf0:arm64.
+#7 7.948 Preparing to unpack .../07-libctf0_2.40-2_arm64.deb ...
+#7 7.949 Unpacking libctf0:arm64 (2.40-2) ...
+#7 7.964 Selecting previously unselected package libgprofng0:arm64.
+#7 7.965 Preparing to unpack .../08-libgprofng0_2.40-2_arm64.deb ...
+#7 7.966 Unpacking libgprofng0:arm64 (2.40-2) ...
+#7 8.013 Selecting previously unselected package libjansson4:arm64.
+#7 8.014 Preparing to unpack .../09-libjansson4_2.14-2_arm64.deb ...
+#7 8.015 Unpacking libjansson4:arm64 (2.14-2) ...
+#7 8.026 Selecting previously unselected package binutils-aarch64-linux-gnu.
+#7 8.027 Preparing to unpack .../10-binutils-aarch64-linux-gnu_2.40-2_arm64.deb ...
+#7 8.027 Unpacking binutils-aarch64-linux-gnu (2.40-2) ...
+#7 8.195 Selecting previously unselected package binutils.
+#7 8.196 Preparing to unpack .../11-binutils_2.40-2_arm64.deb ...
+#7 8.197 Unpacking binutils (2.40-2) ...
+#7 8.211 Selecting previously unselected package libisl23:arm64.
+#7 8.212 Preparing to unpack .../12-libisl23_0.25-1.1_arm64.deb ...
+#7 8.213 Unpacking libisl23:arm64 (0.25-1.1) ...
+#7 8.255 Selecting previously unselected package libmpfr6:arm64.
+#7 8.255 Preparing to unpack .../13-libmpfr6_4.2.0-1_arm64.deb ...
+#7 8.257 Unpacking libmpfr6:arm64 (4.2.0-1) ...
+#7 8.281 Selecting previously unselected package libmpc3:arm64.
+#7 8.282 Preparing to unpack .../14-libmpc3_1.3.1-1_arm64.deb ...
+#7 8.283 Unpacking libmpc3:arm64 (1.3.1-1) ...
+#7 8.293 Selecting previously unselected package cpp-12.
+#7 8.294 Preparing to unpack .../15-cpp-12_12.2.0-14+deb12u1_arm64.deb ...
+#7 8.295 Unpacking cpp-12 (12.2.0-14+deb12u1) ...
+#7 8.662 Selecting previously unselected package cpp.
+#7 8.663 Preparing to unpack .../16-cpp_4%3a12.2.0-3_arm64.deb ...
+#7 8.664 Unpacking cpp (4:12.2.0-3) ...
+#7 8.675 Selecting previously unselected package libcc1-0:arm64.
+#7 8.676 Preparing to unpack .../17-libcc1-0_12.2.0-14+deb12u1_arm64.deb ...
+#7 8.677 Unpacking libcc1-0:arm64 (12.2.0-14+deb12u1) ...
+#7 8.689 Selecting previously unselected package libgomp1:arm64.
+#7 8.690 Preparing to unpack .../18-libgomp1_12.2.0-14+deb12u1_arm64.deb ...
+#7 8.690 Unpacking libgomp1:arm64 (12.2.0-14+deb12u1) ...
+#7 8.704 Selecting previously unselected package libitm1:arm64.
+#7 8.705 Preparing to unpack .../19-libitm1_12.2.0-14+deb12u1_arm64.deb ...
+#7 8.707 Unpacking libitm1:arm64 (12.2.0-14+deb12u1) ...
+#7 8.718 Selecting previously unselected package libatomic1:arm64.
+#7 8.718 Preparing to unpack .../20-libatomic1_12.2.0-14+deb12u1_arm64.deb ...
+#7 8.719 Unpacking libatomic1:arm64 (12.2.0-14+deb12u1) ...
+#7 8.729 Selecting previously unselected package libasan8:arm64.
+#7 8.730 Preparing to unpack .../21-libasan8_12.2.0-14+deb12u1_arm64.deb ...
+#7 8.731 Unpacking libasan8:arm64 (12.2.0-14+deb12u1) ...
+#7 8.848 Selecting previously unselected package liblsan0:arm64.
+#7 8.849 Preparing to unpack .../22-liblsan0_12.2.0-14+deb12u1_arm64.deb ...
+#7 8.850 Unpacking liblsan0:arm64 (12.2.0-14+deb12u1) ...
+#7 8.904 Selecting previously unselected package libtsan2:arm64.
+#7 8.905 Preparing to unpack .../23-libtsan2_12.2.0-14+deb12u1_arm64.deb ...
+#7 8.906 Unpacking libtsan2:arm64 (12.2.0-14+deb12u1) ...
+#7 9.025 Selecting previously unselected package libubsan1:arm64.
+#7 9.026 Preparing to unpack .../24-libubsan1_12.2.0-14+deb12u1_arm64.deb ...
+#7 9.027 Unpacking libubsan1:arm64 (12.2.0-14+deb12u1) ...
+#7 9.080 Selecting previously unselected package libhwasan0:arm64.
+#7 9.081 Preparing to unpack .../25-libhwasan0_12.2.0-14+deb12u1_arm64.deb ...
+#7 9.082 Unpacking libhwasan0:arm64 (12.2.0-14+deb12u1) ...
+#7 9.140 Selecting previously unselected package libgcc-12-dev:arm64.
+#7 9.140 Preparing to unpack .../26-libgcc-12-dev_12.2.0-14+deb12u1_arm64.deb ...
+#7 9.141 Unpacking libgcc-12-dev:arm64 (12.2.0-14+deb12u1) ...
+#7 9.212 Selecting previously unselected package gcc-12.
+#7 9.213 Preparing to unpack .../27-gcc-12_12.2.0-14+deb12u1_arm64.deb ...
+#7 9.214 Unpacking gcc-12 (12.2.0-14+deb12u1) ...
+#7 9.648 Selecting previously unselected package gcc.
+#7 9.649 Preparing to unpack .../28-gcc_4%3a12.2.0-3_arm64.deb ...
+#7 9.650 Unpacking gcc (4:12.2.0-3) ...
+#7 9.661 Selecting previously unselected package libbrotli1:arm64.
+#7 9.662 Preparing to unpack .../29-libbrotli1_1.0.9-2+b6_arm64.deb ...
+#7 9.663 Unpacking libbrotli1:arm64 (1.0.9-2+b6) ...
+#7 9.686 Selecting previously unselected package libsasl2-modules-db:arm64.
+#7 9.686 Preparing to unpack .../30-libsasl2-modules-db_2.1.28+dfsg-10_arm64.deb ...
+#7 9.688 Unpacking libsasl2-modules-db:arm64 (2.1.28+dfsg-10) ...
+#7 9.698 Selecting previously unselected package libsasl2-2:arm64.
+#7 9.699 Preparing to unpack .../31-libsasl2-2_2.1.28+dfsg-10_arm64.deb ...
+#7 9.700 Unpacking libsasl2-2:arm64 (2.1.28+dfsg-10) ...
+#7 9.712 Selecting previously unselected package libldap-2.5-0:arm64.
+#7 9.712 Preparing to unpack .../32-libldap-2.5-0_2.5.13+dfsg-5_arm64.deb ...
+#7 9.713 Unpacking libldap-2.5-0:arm64 (2.5.13+dfsg-5) ...
+#7 9.731 Selecting previously unselected package libnghttp2-14:arm64.
+#7 9.732 Preparing to unpack .../33-libnghttp2-14_1.52.0-1+deb12u2_arm64.deb ...
+#7 9.733 Unpacking libnghttp2-14:arm64 (1.52.0-1+deb12u2) ...
+#7 9.746 Selecting previously unselected package libpsl5:arm64.
+#7 9.747 Preparing to unpack .../34-libpsl5_0.21.2-1_arm64.deb ...
+#7 9.748 Unpacking libpsl5:arm64 (0.21.2-1) ...
+#7 9.762 Selecting previously unselected package librtmp1:arm64.
+#7 9.764 Preparing to unpack .../35-librtmp1_2.4+20151223.gitfa8646d.1-2+b2_arm64.deb ...
+#7 9.765 Unpacking librtmp1:arm64 (2.4+20151223.gitfa8646d.1-2+b2) ...
+#7 9.775 Selecting previously unselected package libssh2-1:arm64.
+#7 9.776 Preparing to unpack .../36-libssh2-1_1.10.0-3+b1_arm64.deb ...
+#7 9.778 Unpacking libssh2-1:arm64 (1.10.0-3+b1) ...
+#7 9.796 Selecting previously unselected package libcurl3-gnutls:arm64.
+#7 9.797 Preparing to unpack .../37-libcurl3-gnutls_7.88.1-10+deb12u14_arm64.deb ...
+#7 9.798 Unpacking libcurl3-gnutls:arm64 (7.88.1-10+deb12u14) ...
+#7 9.824 Selecting previously unselected package libexpat1:arm64.
+#7 9.824 Preparing to unpack .../38-libexpat1_2.5.0-1+deb12u2_arm64.deb ...
+#7 9.825 Unpacking libexpat1:arm64 (2.5.0-1+deb12u2) ...
+#7 9.837 Selecting previously unselected package liberror-perl.
+#7 9.838 Preparing to unpack .../39-liberror-perl_0.17029-2_all.deb ...
+#7 9.839 Unpacking liberror-perl (0.17029-2) ...
+#7 9.849 Selecting previously unselected package git-man.
+#7 9.849 Preparing to unpack .../40-git-man_1%3a2.39.5-0+deb12u3_all.deb ...
+#7 9.850 Unpacking git-man (1:2.39.5-0+deb12u3) ...
+#7 9.915 Selecting previously unselected package git.
+#7 9.916 Preparing to unpack .../41-git_1%3a2.39.5-0+deb12u3_arm64.deb ...
+#7 9.919 Unpacking git (1:2.39.5-0+deb12u3) ...
+#7 10.15 Selecting previously unselected package libc-dev-bin.
+#7 10.15 Preparing to unpack .../42-libc-dev-bin_2.36-9+deb12u13_arm64.deb ...
+#7 10.15 Unpacking libc-dev-bin (2.36-9+deb12u13) ...
+#7 10.16 Selecting previously unselected package linux-libc-dev:arm64.
+#7 10.16 Preparing to unpack .../43-linux-libc-dev_6.1.164-1_arm64.deb ...
+#7 10.16 Unpacking linux-libc-dev:arm64 (6.1.164-1) ...
+#7 10.24 Selecting previously unselected package libcrypt-dev:arm64.
+#7 10.24 Preparing to unpack .../44-libcrypt-dev_1%3a4.4.33-2_arm64.deb ...
+#7 10.24 Unpacking libcrypt-dev:arm64 (1:4.4.33-2) ...
+#7 10.26 Selecting previously unselected package libtirpc-dev:arm64.
+#7 10.26 Preparing to unpack .../45-libtirpc-dev_1.3.3+ds-1_arm64.deb ...
+#7 10.26 Unpacking libtirpc-dev:arm64 (1.3.3+ds-1) ...
+#7 10.28 Selecting previously unselected package libnsl-dev:arm64.
+#7 10.28 Preparing to unpack .../46-libnsl-dev_1.3.0-2_arm64.deb ...
+#7 10.28 Unpacking libnsl-dev:arm64 (1.3.0-2) ...
+#7 10.29 Selecting previously unselected package rpcsvc-proto.
+#7 10.29 Preparing to unpack .../47-rpcsvc-proto_1.4.3-1_arm64.deb ...
+#7 10.29 Unpacking rpcsvc-proto (1.4.3-1) ...
+#7 10.31 Selecting previously unselected package libc6-dev:arm64.
+#7 10.31 Preparing to unpack .../48-libc6-dev_2.36-9+deb12u13_arm64.deb ...
+#7 10.31 Unpacking libc6-dev:arm64 (2.36-9+deb12u13) ...
+#7 10.40 Selecting previously unselected package libpkgconf3:arm64.
+#7 10.40 Preparing to unpack .../49-libpkgconf3_1.8.1-1_arm64.deb ...
+#7 10.40 Unpacking libpkgconf3:arm64 (1.8.1-1) ...
+#7 10.41 Selecting previously unselected package make.
+#7 10.41 Preparing to unpack .../50-make_4.3-4.1_arm64.deb ...
+#7 10.41 Unpacking make (4.3-4.1) ...
+#7 10.44 Selecting previously unselected package patch.
+#7 10.44 Preparing to unpack .../51-patch_2.7.6-7_arm64.deb ...
+#7 10.44 Unpacking patch (2.7.6-7) ...
+#7 10.46 Selecting previously unselected package pkgconf-bin.
+#7 10.46 Preparing to unpack .../52-pkgconf-bin_1.8.1-1_arm64.deb ...
+#7 10.46 Unpacking pkgconf-bin (1.8.1-1) ...
+#7 10.47 Selecting previously unselected package pkgconf:arm64.
+#7 10.47 Preparing to unpack .../53-pkgconf_1.8.1-1_arm64.deb ...
+#7 10.47 Unpacking pkgconf:arm64 (1.8.1-1) ...
+#7 10.48 Selecting previously unselected package pkg-config:arm64.
+#7 10.48 Preparing to unpack .../54-pkg-config_1.8.1-1_arm64.deb ...
+#7 10.49 Unpacking pkg-config:arm64 (1.8.1-1) ...
+#7 10.50 Selecting previously unselected package tini.
+#7 10.50 Preparing to unpack .../55-tini_0.19.0-1+b3_arm64.deb ...
+#7 10.50 Unpacking tini (0.19.0-1+b3) ...
+#7 10.52 Selecting previously unselected package unzip.
+#7 10.52 Preparing to unpack .../56-unzip_6.0-28_arm64.deb ...
+#7 10.52 Unpacking unzip (6.0-28) ...
+#7 10.54 Setting up libexpat1:arm64 (2.5.0-1+deb12u2) ...
+#7 10.54 Setting up libpsl5:arm64 (0.21.2-1) ...
+#7 10.55 Setting up unzip (6.0-28) ...
+#7 10.55 Setting up libbrotli1:arm64 (1.0.9-2+b6) ...
+#7 10.55 Setting up binutils-common:arm64 (2.40-2) ...
+#7 10.56 Setting up libnghttp2-14:arm64 (1.52.0-1+deb12u2) ...
+#7 10.56 Setting up linux-libc-dev:arm64 (6.1.164-1) ...
+#7 10.56 Setting up libctf-nobfd0:arm64 (2.40-2) ...
+#7 10.57 Setting up libgomp1:arm64 (12.2.0-14+deb12u1) ...
+#7 10.57 Setting up libjansson4:arm64 (2.14-2) ...
+#7 10.57 Setting up libsasl2-modules-db:arm64 (2.1.28+dfsg-10) ...
+#7 10.58 Setting up perl-modules-5.36 (5.36.0-7+deb12u3) ...
+#7 10.58 Setting up libtirpc-dev:arm64 (1.3.3+ds-1) ...
+#7 10.58 Setting up libpkgconf3:arm64 (1.8.1-1) ...
+#7 10.58 Setting up rpcsvc-proto (1.4.3-1) ...
+#7 10.59 Setting up make (4.3-4.1) ...
+#7 10.59 Setting up libmpfr6:arm64 (4.2.0-1) ...
+#7 10.59 Setting up librtmp1:arm64 (2.4+20151223.gitfa8646d.1-2+b2) ...
+#7 10.60 Setting up libmpc3:arm64 (1.3.1-1) ...
+#7 10.60 Setting up libatomic1:arm64 (12.2.0-14+deb12u1) ...
+#7 10.60 Setting up tini (0.19.0-1+b3) ...
+#7 10.60 Setting up patch (2.7.6-7) ...
+#7 10.61 Setting up libgdbm-compat4:arm64 (1.23-3) ...
+#7 10.61 Setting up pkgconf-bin (1.8.1-1) ...
+#7 10.61 Setting up libsasl2-2:arm64 (2.1.28+dfsg-10) ...
+#7 10.61 Setting up libubsan1:arm64 (12.2.0-14+deb12u1) ...
+#7 10.62 Setting up libnsl-dev:arm64 (1.3.0-2) ...
+#7 10.62 Setting up libhwasan0:arm64 (12.2.0-14+deb12u1) ...
+#7 10.62 Setting up libcrypt-dev:arm64 (1:4.4.33-2) ...
+#7 10.63 Setting up libasan8:arm64 (12.2.0-14+deb12u1) ...
+#7 10.63 Setting up git-man (1:2.39.5-0+deb12u3) ...
+#7 10.64 Setting up libssh2-1:arm64 (1.10.0-3+b1) ...
+#7 10.64 Setting up libtsan2:arm64 (12.2.0-14+deb12u1) ...
+#7 10.64 Setting up libbinutils:arm64 (2.40-2) ...
+#7 10.65 Setting up libisl23:arm64 (0.25-1.1) ...
+#7 10.65 Setting up libc-dev-bin (2.36-9+deb12u13) ...
+#7 10.65 Setting up libcc1-0:arm64 (12.2.0-14+deb12u1) ...
+#7 10.65 Setting up libperl5.36:arm64 (5.36.0-7+deb12u3) ...
+#7 10.66 Setting up liblsan0:arm64 (12.2.0-14+deb12u1) ...
+#7 10.66 Setting up libitm1:arm64 (12.2.0-14+deb12u1) ...
+#7 10.66 Setting up libctf0:arm64 (2.40-2) ...
+#7 10.67 Setting up cpp-12 (12.2.0-14+deb12u1) ...
+#7 10.67 Setting up libldap-2.5-0:arm64 (2.5.13+dfsg-5) ...
+#7 10.67 Setting up pkgconf:arm64 (1.8.1-1) ...
+#7 10.67 Setting up perl (5.36.0-7+deb12u3) ...
+#7 10.68 Setting up libgprofng0:arm64 (2.40-2) ...
+#7 10.68 Setting up libgcc-12-dev:arm64 (12.2.0-14+deb12u1) ...
+#7 10.69 Setting up pkg-config:arm64 (1.8.1-1) ...
+#7 10.69 Setting up cpp (4:12.2.0-3) ...
+#7 10.69 Setting up libc6-dev:arm64 (2.36-9+deb12u13) ...
+#7 10.70 Setting up binutils-aarch64-linux-gnu (2.40-2) ...
+#7 10.70 Setting up libcurl3-gnutls:arm64 (7.88.1-10+deb12u14) ...
+#7 10.70 Setting up binutils (2.40-2) ...
+#7 10.71 Setting up liberror-perl (0.17029-2) ...
+#7 10.71 Setting up gcc-12 (12.2.0-14+deb12u1) ...
+#7 10.71 Setting up git (1:2.39.5-0+deb12u3) ...
+#7 10.72 Setting up gcc (4:12.2.0-3) ...
+#7 10.72 Processing triggers for libc-bin (2.36-9+deb12u13) ...
+#7 10.76 Cloning into '/opt/radare2'...
+#7 13.78 [WW] Do not run this script as root!
+#7 13.78 WARNING: Updating from remote repository
+#7 14.37 From https://github.com/radareorg/radare2
+#7 14.37  * branch            master     -> FETCH_HEAD
+#7 14.38 Already up to date.
+#7 14.39 Warning: Cannot find system wide capstone
+#7 14.39 ARGS=
+#7 14.39 /bin/sh ./sys/build.sh
+#7 14.39 /opt/radare2
+#7 14.39 Building on Linux : computing number of allowed parallel jobs.
+#7 14.39 Maximum allowed RAM memory per job is 150000 kB.
+#7 14.40 Number of CPUs is 12 and current free RAM allows us to run 39 jobs in parallel.
+#7 14.40 So, the build will run on 12 job(s).
+#7 14.41 /opt/radare2
+#7 14.41 ./configure --with-rpath --prefix=/usr/local
+#7 14.42 configure-plugins: Copying dist/plugins-cfg/plugins.def.cfg
+#7 14.42 [INFO] No third-party static plugins
+#7 14.42 configure-plugins: Loading ./plugins.cfg ..
+#7 14.43 configure-plugins: Generating libr/config.h
+#7 14.76 configure-plugins: Generating libr/asm/d/config.inc
+#7 15.07 configure-plugins: Generating libr/config.mk
+#7 15.40 SHARED: io.shm
+#7 15.40 STATIC: anal.a2f anal.blaze anal.drcov anal.null anal.path anal.sbpf anal.six anal.tcc anal.tp arch.6502 arch.6502_cs arch.8051 arch.alpha arch.amd29k arch.any_as arch.any_vasm arch.arc arch.arm arch.arm_cs arch.arm_gnu arch.arm_v35 arch.avr arch.bf arch.bpf arch.bpf_cs arch.chip8 arch.cil arch.cosmac arch.cr16 arch.cris arch.dalvik arch.dis arch.ebc arch.evm arch.fslsp arch.gb arch.h8300 arch.hppa_gnu arch.i4004 arch.i8080 arch.java arch.jdh8 arch.kvx arch.lanai arch.lh5801 arch.lm32 arch.loongarch_gnu arch.lua arch.m680x_cs arch.m68k_cs arch.m68k_gnu arch.mcore arch.mcs96 arch.mips_cs arch.mips_gnu arch.msp430 arch.nds32 arch.nios2 arch.null arch.or1k arch.pdp11 arch.pic arch.pickle arch.ppc_cs arch.ppc_gnu arch.propeller arch.pyc arch.riscv arch.riscv_cs arch.rsp arch.s390_cs arch.s390_gnu arch.sbpf_cs arch.sh arch.sh_cs arch.sm5xx arch.snes arch.sparc_cs arch.sparc_gnu arch.stm8 arch.tms320 arch.tms320_gnu arch.tricore arch.tricore_cs arch.uxn arch.v810 arch.v850 arch.vax arch.wasm arch.ws arch.x86_cs arch.x86_nasm arch.x86_nz arch.xap arch.xcore_cs arch.xtensa arch.z80 asm.6502 asm.8051 asm.arc asm.arm asm.att2intel asm.avr asm.bpf asm.chip8 asm.cil asm.cosmac asm.dalvik asm.evm asm.gb asm.hppa asm.java asm.m68k asm.mips asm.msp430 asm.nds32 asm.null asm.pickle asm.ppc asm.pyc asm.riscv asm.sh asm.sparc asm.stm8 asm.tms320 asm.tricore asm.v850 asm.vax asm.wasm asm.x86 asm.z80 bin.any bin.art bin.avr bin.bf bin.bflt bin.bios bin.bootimg bin.cgc bin.coff bin.dex bin.dis bin.dmp64 bin.dol bin.dyldcache bin.elf bin.elf64 bin.fs bin.gns1 bin.hunk bin.io bin.java bin.le bin.lua bin.mach0 bin.mach064 bin.mbn bin.mclf bin.mdmp bin.menuet bin.msx bin.mz bin.ne bin.nes bin.nin3ds bin.ninds bin.ningb bin.ningba bin.nro bin.nso bin.off bin.omf bin.p9 bin.pcap bin.pdb bin.pdp11 bin.pe bin.pe64 bin.pebble bin.pef bin.prg bin.psxexe bin.pyc bin.qnx bin.rel bin.s390 bin.sfc bin.smd bin.sms bin.som bin.symbols bin.te bin.tic bin.uf2 bin.vsf bin.wad bin.wasm bin.xbe bin.xcoff64 bin.xnu_kernelcache bin.xtac bin.z64 bin.zimg bin_ldr.ldr_linux bin_xtr.xtr_dyldcache bin_xtr.xtr_fatmach0 bin_xtr.xtr_pemixed bin_xtr.xtr_sep64 bin_xtr.xtr_xalz bp.arm bp.bf bp.mips bp.null bp.ppc bp.riscv bp.s390x bp.x86 core.agD core.java core.prj core.writedwarf debug.bf debug.bochs debug.esil debug.evm debug.gdb debug.io debug.native debug.null debug.qnx debug.rap debug.rv32ima debug.winkd egg.bind egg.exec egg.nullby egg.reverse egg.xor esil.dummy esil.forth esil.null fs.apfs fs.bfs fs.ext2 fs.fat fs.fb fs.hfs fs.hfsplus fs.io fs.iso9660 fs.jfs fs.minix fs.ntfs fs.posix fs.r2 fs.reiserfs fs.sfs fs.squashfs fs.tar fs.tmp fs.ubifs fs.udf fs.ufs fs.xfs fs.zip io.ar io.bfdbg io.bochs io.cyclic io.debug io.default io.dsc io.fd io.gdb io.gprobe io.gzip io.http io.ihex io.isotp io.mach io.malloc io.mmap io.null io.procpid io.ptrace io.pvm io.qnx io.r2k io.r2pipe io.r2web io.rap io.rbuf io.reg io.self io.serial io.socket io.sparse io.srec io.sysgdb io.tap io.tcpslurp io.treebuf io.uf2 io.w32 io.w32dbg io.winedbg io.winkd io.xalz io.xattr io.zip lang.c lang.cpipe lang.pipe lang.rust lang.spp lang.v lang.vala lang.zig muta.add muta.aes muta.aes_cbc muta.aes_wrap muta.base64 muta.base91 muta.bech32 muta.blowfish muta.charset_arabic_iso muta.charset_arabic_windows muta.charset_ascii muta.charset_ascii_ansi muta.charset_ascii_oem muta.charset_big5 muta.charset_cyrillic_iso muta.charset_cyrillic_windows muta.charset_ebcdic37 muta.charset_greek_iso muta.charset_greek_windows muta.charset_hebrew_iso muta.charset_hebrew_windows muta.charset_hiragana muta.charset_iso8859_1 muta.charset_iso_646 muta.charset_jis7 muta.charset_katakana muta.charset_macintosh muta.charset_pokemon muta.charset_pokered muta.charset_seven muta.cps2 muta.crc muta.des muta.ed25519 muta.entropy muta.fletcher muta.md4 muta.md5 muta.null muta.punycode muta.rc muta.rot muta.serpent muta.sha muta.simplehash muta.sip muta.sm4 muta.ssdeep muta.strhash muta.xor muta.xxhash
+#7 15.40 checking build system type... aarch64-unknown-linux-gnu
+#7 15.40 checking host system type... aarch64-unknown-linux-gnu
+#7 15.40 checking target system type... aarch64-unknown-linux-gnu
+#7 15.40 checking for working directories... current
+#7 15.40 using prefix '/usr/local'
+#7 15.40 checking for c compiler... gcc
+#7 15.42 checking for dynamic library... required
+#7 15.42 checking for pkg-config... /usr/bin/pkg-config
+#7 15.42 checking for patch... /usr/bin/patch
+#7 15.42 checking for ar... /usr/bin/ar
+#7 15.42 checking for git... /usr/bin/git
+#7 15.42 checking for gperf... no
+#7 15.42 checking for libatomic ... yes
+#7 15.44 checking for libmagic ... no
+#7 15.45 checking for linux/can.h... yes
+#7 15.47 checking pkg-config flags for libsqsh... no
+#7 15.47 checking pkg-config flags for liblz4... no
+#7 15.47 checking for libz ... no
+#7 15.48 checking for libzip ... no
+#7 15.49 checking for libxxhash ... no
+#7 15.50 checking declaration of ADDR_NO_RANDOMIZE in sys/personality.h... yes
+#7 15.52 checking declaration of __GLIBC__ in features.h... yes
+#7 15.53 checking function arc4random_uniform() in c... yes
+#7 15.55 checking function explicit_bzero() in c... yes
+#7 15.56 checking function explicit_memset() in c... no
+#7 15.58 checking function clock_nanosleep() in c... yes
+#7 15.59 checking function __atomic_fetch_add_8() in c... no
+#7 15.61 checking function sigaction() in c... yes
+#7 15.63 checking function clock_gettime() in c... yes
+#7 15.64 checking cflags  -std=gnu99... yes
+#7 15.66 checking version of library libuv >= 1.0.0... no
+#7 15.66 generating pkgcfg/r_egg.pc
+#7 15.66 generating pkgcfg/r_io.pc
+#7 15.66 generating pkgcfg/r_esil.pc
+#7 15.66 generating pkgcfg/r_cons.pc
+#7 15.66 generating pkgcfg/r_socket.pc
+#7 15.66 generating pkgcfg/r_reg.pc
+#7 15.66 generating pkgcfg/r_bp.pc
+#7 15.67 generating pkgcfg/r_flag.pc
+#7 15.67 generating pkgcfg/r_bin.pc
+#7 15.67 generating pkgcfg/r_lang.pc
+#7 15.67 generating pkgcfg/r_syscall.pc
+#7 15.67 generating pkgcfg/r_config.pc
+#7 15.67 generating pkgcfg/r_fs.pc
+#7 15.67 generating pkgcfg/r_util.pc
+#7 15.67 generating pkgcfg/r_magic.pc
+#7 15.67 generating pkgcfg/r_search.pc
+#7 15.67 generating pkgcfg/r_arch.pc
+#7 15.68 generating pkgcfg/r_muta.pc
+#7 15.68 generating pkgcfg/r_anal.pc
+#7 15.68 generating pkgcfg/r_asm.pc
+#7 15.68 generating pkgcfg/r_debug.pc
+#7 15.78 creating ./config-user.mk
+#7 15.82 creating libr/include/r_userconf.h
+#7 15.86 creating pkgcfg/r_core.pc
+#7 15.90 cleaning temporally files... done
+#7 15.90 
+#7 15.90 Final report:
+#7 15.90  - BUILD = aarch64-unknown-linux-gnu
+#7 15.90  - CC = gcc
+#7 15.90  - CFLAGS = ""
+#7 15.90  - DEBUGGER = 1
+#7 15.90  - HAVE_ARC4RANDOM_UNIFORM = 1
+#7 15.90  - HAVE_EXPLICIT_BZERO = 1
+#7 15.90  - HAVE_EXPLICIT_MEMSET = 0
+#7 15.90  - HAVE_FORK = 1
+#7 15.90  - HAVE_GPERF = 0
+#7 15.90  - HAVE_LIBUV = 0
+#7 15.90  - HAVE_LIB_GMP = 0
+#7 15.90  - WANT_DEBUGSTUFF = 1
+#7 15.90  - HAVE_OPENSSL = 0
+#7 15.90  - WANT_SSL_CRYPTO = 0
+#7 15.90  - HAVE_PTRACE = 1
+#7 15.90  - HOST = aarch64-unknown-linux-gnu
+#7 15.90  - LDFLAGS = -Wl,--as-needed 
+#7 15.90  - LIBVERSION = 6.1.3
+#7 15.90  - PKGCONFIG = /usr/bin/pkg-config
+#7 15.90  - PREFIX = /usr/local
+#7 15.90  - R_CHECKS_LEVEL = 2
+#7 15.90  - TARGET = aarch64-unknown-linux-gnu
+#7 15.90  - USERCC = gcc
+#7 15.90  - USEROSTYPE = gnulinux
+#7 15.90  - USE_CAPSTONE = 0
+#7 15.90  - USE_LIB_MAGIC = 0
+#7 15.90  - USE_SQSH = 0
+#7 15.90  - USE_LIB_XXHASH = 0
+#7 15.90  - USE_LIB_ZIP = 0
+#7 15.90  - USE_PTRACE_WRAP = 1
+#7 15.90  - USE_SYSLZ4 = 0
+#7 15.90  - VERSION = 6.1.3
+#7 15.90  - WANT_DYLINK = 1
+#7 15.90  - USE_LIB_ATOMIC = 0
+#7 15.90  - HAVE___ATOMIC_FETCH_ADD_8 = 0
+#7 15.90  - FORCE_LIB_ATOMIC = 1
+#7 15.90  - WANT_QJS = 1
+#7 15.93 Generating r_version.h file
+#7 15.93 wget: not found
+#7 15.94 Cloning into 'sdb'...
+#7 15.94 Cloning into 'qjs'...
+#7 15.94 Cloning into 'otezip'...
+#7 15.94 Cloning into 'capstone-v5'...
+#7 17.77 From https://github.com/radareorg/sdb
+#7 17.77  * tag               2.4.2      -> FETCH_HEAD
+#7 17.78 Note: switching to 'FETCH_HEAD'.
+#7 17.78 
+#7 17.78 You are in 'detached HEAD' state. You can look around, make experimental
+#7 17.78 changes and commit them, and you can discard any commits you make in this
+#7 17.78 state without impacting any branches by switching back to a branch.
+#7 17.78 
+#7 17.78 If you want to create a new branch to retain commits you create, you may
+#7 17.78 do so (now or later) by using -c with the switch command. Example:
+#7 17.78 
+#7 17.78   git switch -c <new-branch-name>
+#7 17.78 
+#7 17.78 Or undo this operation with:
+#7 17.78 
+#7 17.78   git switch -
+#7 17.78 
+#7 17.78 Turn off this advice by setting config variable advice.detachedHead to false
+#7 17.78 
+#7 17.78 HEAD is now at 5170c9f Release 2.4.2
+#7 17.84 From https://github.com/trufae/otezip
+#7 17.84  * tag               0.4.8      -> FETCH_HEAD
+#7 17.85 Note: switching to 'FETCH_HEAD'.
+#7 17.85 
+#7 17.85 You are in 'detached HEAD' state. You can look around, make experimental
+#7 17.85 changes and commit them, and you can discard any commits you make in this
+#7 17.85 state without impacting any branches by switching back to a branch.
+#7 17.85 
+#7 17.85 If you want to create a new branch to retain commits you create, you may
+#7 17.85 do so (now or later) by using -c with the switch command. Example:
+#7 17.85 
+#7 17.85   git switch -c <new-branch-name>
+#7 17.85 
+#7 17.85 Or undo this operation with:
+#7 17.85 
+#7 17.85   git switch -
+#7 17.85 
+#7 17.85 Turn off this advice by setting config variable advice.detachedHead to false
+#7 17.85 
+#7 17.85 HEAD is now at c501074 Release 0.4.8
+#7 18.75 From https://github.com/quickjs-ng/quickjs
+#7 18.75  * branch            e2b100e8c5fa7131e9fb22b8a0e9ca0f16eb9892 -> FETCH_HEAD
+#7 18.77 Note: switching to 'FETCH_HEAD'.
+#7 18.77 
+#7 18.77 You are in 'detached HEAD' state. You can look around, make experimental
+#7 18.77 changes and commit them, and you can discard any commits you make in this
+#7 18.77 state without impacting any branches by switching back to a branch.
+#7 18.77 
+#7 18.77 If you want to create a new branch to retain commits you create, you may
+#7 18.77 do so (now or later) by using -c with the switch command. Example:
+#7 18.77 
+#7 18.77   git switch -c <new-branch-name>
+#7 18.77 
+#7 18.77 Or undo this operation with:
+#7 18.77 
+#7 18.77   git switch -
+#7 18.77 
+#7 18.77 Turn off this advice by setting config variable advice.detachedHead to false
+#7 18.77 
+#7 18.77 HEAD is now at e2b100e Use a better hash table magic constant (#1403)
+#7 20.94 From https://github.com/capstone-engine/capstone
+#7 20.94  * branch            0bd647456e57ae17796937b9f296ef8bc1201b9e -> FETCH_HEAD
+#7 21.09 Note: switching to 'FETCH_HEAD'.
+#7 21.09 
+#7 21.09 You are in 'detached HEAD' state. You can look around, make experimental
+#7 21.09 changes and commit them, and you can discard any commits you make in this
+#7 21.09 state without impacting any branches by switching back to a branch.
+#7 21.09 
+#7 21.09 If you want to create a new branch to retain commits you create, you may
+#7 21.09 do so (now or later) by using -c with the switch command. Example:
+#7 21.09 
+#7 21.09   git switch -c <new-branch-name>
+#7 21.09 
+#7 21.09 Or undo this operation with:
+#7 21.09 
+#7 21.09   git switch -
+#7 21.09 
+#7 21.09 Turn off this advice by setting config variable advice.detachedHead to false
+#7 21.09 
+#7 21.09 HEAD is now at 0bd6474 Python binding: (#2873)
+#7 21.10 patch -d capstone-v5 -p1 < capstone-v5/capstone-patches/fix-x86-16.patch
+#7 21.10 patching file arch/X86/X86ATTInstPrinter.c
+#7 21.10 patching file arch/X86/X86IntelInstPrinter.c
+#7 21.10 wget: not found
+#7 21.10 
+#7 21.10 >>>>>>>>
+#7 21.11 HOST SDB
+#7 21.11 >>>>>>>>
+#7 21.11 
+#7 21.15 CC entry.c
+#7 21.16 CC cdb.c
+#7 21.16 CC cdb_make.c
+#7 21.16 CC ls.c
+#7 21.16 CC ht.c
+#7 21.16 CC ht_uu.c
+#7 21.17 CC sdb.c
+#7 21.17 CC num.c
+#7 21.17 CC base64.c
+#7 21.17 CC match.c
+#7 21.17 CC cgen.c
+#7 21.17 CC tool.c
+#7 21.18 CC json.c
+#7 21.19 CC ns.c
+#7 21.19 CC lock.c
+#7 21.20 CC util.c
+#7 21.20 CC query.c
+#7 21.20 CC disk.c
+#7 21.20 CC array.c
+#7 21.20 CC fmt.c
+#7 21.21 CC journal.c
+#7 21.22 CC text.c
+#7 21.22 CC dict.c
+#7 21.23 CC ht_pp.c
+#7 21.23 CC ht_up.c
+#7 21.24 CC ht_pu.c
+#7 21.24 CC ht_su.c
+#7 21.24 CC set.c
+#7 21.25 CC main.c
+#7 21.25 CC strbuf.c
+#7 21.25 CC diff.c
+#7 21.25 CC heap.c
+#7 21.31 AR libsdb.a
+#7 21.31 ar: creating libsdb.a
+#7 21.32 BIN sdb
+#7 21.33 gmake[2]: file: No such file or directory
+#7 21.34 wget: not found
+#7 21.34 wget: not found
+#7 21.35 
+#7 21.35 >>>>>>>>>>
+#7 21.35 TARGET SDB
+#7 21.35 >>>>>>>>>>
+#7 21.35 
+#7 21.41 CC cdb.c
+#7 21.41 CC cdb_make.c
+#7 21.41 CC ls.c
+#7 21.41 CC ht.c
+#7 21.41 CC ht_uu.c
+#7 21.41 CC sdb.c
+#7 21.42 CC num.c
+#7 21.42 CC base64.c
+#7 21.42 CC match.c
+#7 21.42 CC cgen.c
+#7 21.42 CC tool.c
+#7 21.42 CC json.c
+#7 21.44 CC ns.c
+#7 21.44 CC lock.c
+#7 21.45 CC util.c
+#7 21.45 CC disk.c
+#7 21.45 CC query.c
+#7 21.46 CC array.c
+#7 21.48 CC fmt.c
+#7 21.48 CC journal.c
+#7 21.48 CC text.c
+#7 21.48 CC dict.c
+#7 21.48 CC ht_pp.c
+#7 21.49 CC ht_up.c
+#7 21.49 CC ht_pu.c
+#7 21.50 CC ht_su.c
+#7 21.50 CC set.c
+#7 21.50 CC diff.c
+#7 21.51 CC main.c
+#7 21.51 CC strbuf.c
+#7 21.51 CC heap.c
+#7 21.56 AR libsdb.a
+#7 21.56 ar: creating libsdb.a
+#7 21.76 [util] CC ../../shlr/spp/spp.c
+#7 21.89 [util] CC mem.c
+#7 21.89 [util] CC arena.c
+#7 21.89 [util] CC unum.c
+#7 21.90 [util] CC str.c
+#7 21.90 [util] CC hex.c
+#7 21.90 [util] CC file.c
+#7 21.91 [util] CC range.c
+#7 21.91 [util] CC xdg.c
+#7 21.92 [util] CC rxml.c
+#7 21.93 [util] CC rlz4.c
+#7 21.94 [util] CC prof.c
+#7 21.95 [util] CC sys.c
+#7 21.96 [util] CC buf.c
+#7 21.97 [util] CC sys_w32.c
+#7 21.98 [util] CC ubase64.c
+#7 21.99 [util] CC base85.c
+#7 22.01 [util] CC base91.c
+#7 22.01 [util] CC base36.c
+#7 22.02 [util] CC str_pseudo.c
+#7 22.04 [util] CC list.c
+#7 22.05 [util] CC chmod.c
+#7 22.06 [util] CC graph.c
+#7 22.06 [util] CC event.c
+#7 22.07 [util] CC alloc.c
+#7 22.08 [util] CC donut.c
+#7 22.09 [util] CC print_code.c
+#7 22.10 [util] CC regex/regcomp.c
+#7 22.10 [util] CC regex/regerror.c
+#7 22.11 [util] CC regex/regexec.c
+#7 22.13 [util] CC uleb128.c
+#7 22.14 [util] CC rstr.c
+#7 22.15 [util] CC str_strip.c
+#7 22.16 [util] CC sandbox.c
+#7 22.17 [util] CC math.c
+#7 22.18 [util] CC thread.c
+#7 22.18 [util] CC thread_sem.c
+#7 22.19 [util] CC thread_lock.c
+#7 22.21 [util] CC thread_cond.c
+#7 22.21 [util] CC thread_chan.c
+#7 22.22 [util] CC strpool.c
+#7 22.22 [util] CC bitmap.c
+#7 22.23 [util] CC time.c
+#7 22.24 [util] CC format.c
+#7 22.25 [util] CC pie.c
+#7 22.26 [util] CC print.c
+#7 22.27 [util] CC utype.c
+#7 22.28 [util] CC w32.c
+#7 22.28 [util] CC w32dw.c
+#7 22.29 [util] CC randomart.c
+#7 22.30 [util] CC zip.c
+#7 22.31 [util] CC debruijn.c
+#7 22.31 [util] CC log.c
+#7 22.32 [util] CC getopt.c
+#7 22.34 [util] CC table.c
+#7 22.35 [util] CC sys_sh.c
+#7 22.36 [util] CC cfloat.c
+#7 22.37 [util] CC utf8.c
+#7 22.38 [util] CC utf16.c
+#7 22.39 [util] CC utf32.c
+#7 22.39 [util] CC strbuf.c
+#7 22.41 [util] CC lib.c
+#7 22.42 [util] CC name.c
+#7 22.45 [util] CC spaces.c
+#7 22.46 [util] CC signal.c
+#7 22.47 [util] CC syscmd.c
+#7 22.48 [util] CC udiff.c
+#7 22.49 [util] CC bdiff.c
+#7 22.51 [util] CC stack.c
+#7 22.51 [util] CC queue.c
+#7 22.52 [util] CC tree.c
+#7 22.53 [util] CC idpool.c
+#7 22.53 [util] CC assert.c
+#7 22.55 [util] CC bplist.c
+#7 22.55 [util] CC treemap.c
+#7 22.56 [util] CC punycode.c
+#7 22.57 [util] CC pkcs7.c
+#7 22.59 [util] CC x509.c
+#7 22.59 [util] CC asn1.c
+#7 22.60 [util] CC asn1_str.c
+#7 22.61 [util] CC json_parser.c
+#7 22.62 [util] CC json_indent.c
+#7 22.63 [util] CC skiplist.c
+#7 22.63 [util] CC pj.c
+#7 22.64 [util] CC rbtree.c
+#7 22.65 [util] CC intervaltree.c
+#7 22.65 [util] CC qrcode.c
+#7 22.66 [util] CC str_constpool.c
+#7 22.68 [util] CC str_trim.c
+#7 22.69 [util] CC chartable.c
+#7 22.69 [util] CC protobuf.c
+#7 22.70 [util] CC graph_drawable.c
+#7 22.70 [util] CC axml.c
+#7 22.71 [util] CC sstext.c
+#7 22.71 [util] CC new_rbtree.c
+#7 22.72 [util] CC token.c
+#7 22.73 [util] CC rvc.c
+#7 22.74 [util] CC rvc_git.c
+#7 22.75 [util] CC rvc_rvc.c
+#7 22.76 [util] CC bscanf.c
+#7 22.77 [util] CC rprintf.c
+#7 22.78 [util] CC base32.c
+#7 22.78 [util] CC bloom.c
+#7 22.79 [util] CC mmap.c
+#7 22.80 [util] CC rxmldom.c
+#7 22.81 [util] CC print_regcolor.c
+#7 22.82 [util] CC big_gmp.c
+#7 22.82 [util] CC big_ssl.c
+#7 22.82 [util] CC big.c
+#7 22.93 LD libr_util.so
+#7 23.02 [socket] CC socket.c
+#7 23.03 [socket] CC socket_proc.c
+#7 23.03 [socket] CC socket_http.c
+#7 23.03 [socket] CC socket_http_server.c
+#7 23.04 [socket] CC socket_rap_server.c
+#7 23.04 [socket] CC socket_rap_client.c
+#7 23.04 [socket] CC run.c
+#7 23.05 [socket] CC r2pipe.c
+#7 23.05 [socket] CC socket_serial.c
+#7 23.14 LD libr_socket.so
+#7 23.16 wget: not found
+#7 23.17 wget: not found
+#7 23.17 [bochs] CC src/libbochs.c
+#7 23.19   CC      cs.o
+#7 23.19   CC      utils.o
+#7 23.19   CC      SStream.o
+#7 23.19   CC      MCInstrDesc.o
+#7 23.19   CC      MCRegisterInfo.o
+#7 23.19   CC      MCInst.o
+#7 23.21   CC      Mapping.o
+#7 23.22   CC      arch/ARM/ARMDisassembler.o
+#7 23.22   CC      arch/ARM/ARMInstPrinter.o
+#7 23.23   CC      arch/ARM/ARMMapping.o
+#7 23.24   CC      arch/ARM/ARMModule.o
+#7 23.24 a - src/libbochs.o
+#7 23.24 ar: creating lib/libbochs.a
+#7 23.24   CC      arch/AArch64/AArch64BaseInfo.o
+#7 23.24   CC      arch/AArch64/AArch64Disassembler.o
+#7 23.25   CC      arch/AArch64/AArch64InstPrinter.o
+#7 23.25   CC      arch/AArch64/AArch64Mapping.o
+#7 23.26   CC      arch/AArch64/AArch64Module.o
+#7 23.27   CC      arch/M68K/M68KDisassembler.o
+#7 23.28 ar: creating libr_winkd.a
+#7 23.28   CC      arch/M68K/M68KInstPrinter.o
+#7 23.28   CC      arch/M68K/M68KModule.o
+#7 23.32   CC      arch/Mips/MipsDisassembler.o
+#7 23.33   CC      arch/Mips/MipsInstPrinter.o
+#7 23.33   CC      arch/Mips/MipsMapping.o
+#7 23.34   CC      arch/Mips/MipsModule.o
+#7 23.35   CC      arch/PowerPC/PPCDisassembler.o
+#7 23.36   CC      arch/PowerPC/PPCInstPrinter.o
+#7 23.40   CC      arch/PowerPC/PPCMapping.o
+#7 23.41   CC      arch/PowerPC/PPCModule.o
+#7 23.42   CC      arch/RISCV/RISCVDisassembler.o
+#7 23.44   CC      arch/RISCV/RISCVInstPrinter.o
+#7 23.46   CC      arch/RISCV/RISCVMapping.o
+#7 23.53   CC      arch/RISCV/RISCVModule.o
+#7 23.56   CC      arch/Sparc/SparcDisassembler.o
+#7 23.57   CC      arch/Sparc/SparcInstPrinter.o
+#7 23.58   CC      arch/Sparc/SparcMapping.o
+#7 23.59   CC      arch/Sparc/SparcModule.o
+#7 23.60   CC      arch/SystemZ/SystemZDisassembler.o
+#7 23.61   CC      arch/SystemZ/SystemZMCTargetDesc.o
+#7 23.61   CC      arch/SystemZ/SystemZInstPrinter.o
+#7 23.62   CC      arch/SystemZ/SystemZMapping.o
+#7 23.63   CC      arch/SystemZ/SystemZModule.o
+#7 23.63   CC      arch/SH/SHDisassembler.o
+#7 23.64   CC      arch/SH/SHInstPrinter.o
+#7 23.70   CC      arch/SH/SHModule.o
+#7 23.71   CC      arch/X86/X86DisassemblerDecoder.o
+#7 23.72   CC      arch/X86/X86Disassembler.o
+#7 23.73   CC      arch/X86/X86InstPrinterCommon.o
+#7 23.75   CC      arch/X86/X86IntelInstPrinter.o
+#7 23.75   CC      arch/X86/X86ATTInstPrinter.o
+#7 23.77   CC      arch/X86/X86Mapping.o
+#7 23.79   CC      arch/X86/X86Module.o
+#7 23.82   CC      arch/XCore/XCoreDisassembler.o
+#7 23.86   CC      arch/XCore/XCoreInstPrinter.o
+#7 23.88   CC      arch/XCore/XCoreMapping.o
+#7 23.93   CC      arch/XCore/XCoreModule.o
+#7 23.94   CC      arch/TMS320C64x/TMS320C64xDisassembler.o
+#7 23.96   CC      arch/TMS320C64x/TMS320C64xInstPrinter.o
+#7 23.96   CC      arch/TMS320C64x/TMS320C64xMapping.o
+#7 23.96   CC      arch/TMS320C64x/TMS320C64xModule.o
+#7 23.96   CC      arch/M680X/M680XDisassembler.o
+#7 23.97   CC      arch/M680X/M680XInstPrinter.o
+#7 23.98   CC      arch/M680X/M680XModule.o
+#7 24.01   CC      arch/EVM/EVMDisassembler.o
+#7 24.02   CC      arch/EVM/EVMInstPrinter.o
+#7 24.02   CC      arch/EVM/EVMMapping.o
+#7 24.03   CC      arch/EVM/EVMModule.o
+#7 24.03   CC      arch/MOS65XX/MOS65XXDisassembler.o
+#7 24.03   CC      arch/MOS65XX/MOS65XXModule.o
+#7 24.04   CC      arch/WASM/WASMDisassembler.o
+#7 24.04   CC      arch/WASM/WASMInstPrinter.o
+#7 24.06   CC      arch/WASM/WASMMapping.o
+#7 24.06   CC      arch/WASM/WASMModule.o
+#7 24.07   CC      arch/BPF/BPFDisassembler.o
+#7 24.09   CC      arch/BPF/BPFInstPrinter.o
+#7 24.09   CC      arch/BPF/BPFMapping.o
+#7 24.10   CC      arch/BPF/BPFModule.o
+#7 24.10   CC      arch/TriCore/TriCoreInstPrinter.o
+#7 24.10   CC      arch/TriCore/TriCoreDisassembler.o
+#7 24.10   CC      arch/TriCore/TriCoreMapping.o
+#7 24.11   CC      arch/TriCore/TriCoreModule.o
+#7 24.22   AR      libcapstone.a
+#7 24.23 ar: creating ./libcapstone.a
+#7 24.31 gmake -C zip
+#7 24.32 gmake -C java
+#7 24.33 [java] CC code.c
+#7 24.33 [java] CC class.c
+#7 24.34 [java] CC ops.c
+#7 24.73 ar: creating libr_java.a
+#7 24.74 gmake -C gdb
+#7 24.75 [gdb] CC src/arch.c
+#7 24.75 [gdb] CC src/common.c
+#7 24.76 [gdb] CC src/libgdbr.c
+#7 24.76 [gdb] CC src/packet.c
+#7 24.76 [gdb] CC src/utils.c
+#7 24.77 [gdb] CC src/gdbclient/core.c
+#7 24.77 [gdb] CC src/gdbclient/responses.c
+#7 24.77 [gdb] CC src/gdbclient/xml.c
+#7 24.78 [gdb] CC src/gdbserver/core.c
+#7 24.94 ar: creating lib/libgdbr.a
+#7 24.94 a - src/arch.o
+#7 24.94 a - src/common.o
+#7 24.94 a - src/libgdbr.o
+#7 24.94 a - src/packet.o
+#7 24.94 a - src/utils.o
+#7 24.94 a - src/gdbclient/core.o
+#7 24.94 a - src/gdbclient/responses.o
+#7 24.94 a - src/gdbclient/xml.o
+#7 24.94 a - src/gdbserver/core.o
+#7 24.94 gmake -C qnx
+#7 24.95 [qnx] CC src/core.c
+#7 24.96 [qnx] CC src/libqnxr.c
+#7 24.96 [qnx] CC src/packet.c
+#7 24.96 [qnx] CC src/sigutil.c
+#7 24.97 [qnx] CC src/utils.c
+#7 25.10 ar: creating lib/libqnxr.a
+#7 25.10 a - src/core.o
+#7 25.10 a - src/libqnxr.o
+#7 25.10 a - src/packet.o
+#7 25.10 a - src/sigutil.o
+#7 25.10 a - src/utils.o
+#7 25.21 DIR util
+#7 25.39 DIR socket
+#7 25.39 DIR reg
+#7 25.39 DIR cons
+#7 25.39 DIR bp
+#7 25.40 DIR config
+#7 25.40 DIR muta
+#7 25.40 DIR syscall
+#7 25.41 SDBTOOL (mirror=1) from=/opt/radare2/libr/syscall/d to=/opt/radare2/libr/syscall/d
+#7 25.41 [reg] CC reg.c
+#7 25.41 [cons] CC cons.c
+#7 25.42 [config] CC config.c
+#7 25.42 [reg] CC arena.c
+#7 25.42 [bp] CC bp.c
+#7 25.42 [reg] CC rvalue.c
+#7 25.42 [config] CC callback.c
+#7 25.42 [config] CC hold.c
+#7 25.42 [cons] CC cpipe.c
+#7 25.43 [bp] CC bp_watch.c
+#7 25.47 [syscall] CC syscall.c
+#7 25.49 [reg] CC rcond.c
+#7 25.50 [syscall] CC ioports.c
+#7 25.51 [syscall] CC splugs.c
+#7 25.51 [bp] CC bp_io.c
+#7 25.51 [cons] CC winutils.c
+#7 25.51 [muta] CC p/muta_add.c
+#7 25.52 [bp] CC bp_plugin.c
+#7 25.52 [reg] CC double.c
+#7 25.53 [cons] CC grep.c
+#7 25.54 LD libr_config.so
+#7 25.56 [bp] CC bp_traptrace.c
+#7 25.56 [muta] CC p/muta_aes.c
+#7 25.57 [reg] CC profile.c
+#7 25.57 [cons] CC less.c
+#7 25.58 [muta] CC p/algo/crypto_aes.c
+#7 25.58 [bp] CC p/bp_arm.c
+#7 25.59 [cons] CC pager.c
+#7 25.59 LD libr_syscall.so
+#7 25.60 [muta] CC p/muta_aes_cbc.c
+#7 25.62 [muta] CC p/muta_aes_wrap.c
+#7 25.62 [bp] CC p/bp_bf.c
+#7 25.62 SDBTOOL (mirror=1) from=/opt/radare2/libr/syscall/d to=/opt/radare2/libr/syscall/d
+#7 25.63 [cons] CC cutf8.c
+#7 25.71 [bp] CC p/bp_mips.c
+#7 25.71 LD libr_reg.so
+#7 25.71 [cons] CC line.c
+#7 25.71 [muta] CC p/muta_base64.c
+#7 25.71 [muta] CC p/muta_base91.c
+#7 25.71 [cons] CC hud.c
+#7 25.71 [bp] CC p/bp_null.c
+#7 25.72 [bp] CC p/bp_ppc.c
+#7 25.73 [muta] CC p/muta_bech32.c
+#7 25.73 [cons] CC rgb.c
+#7 25.73 [muta] CC p/muta_blowfish.c
+#7 25.73 [cons] CC input.c
+#7 25.73 [bp] CC p/bp_riscv.c
+#7 25.77 [muta] CC p/muta_charset_arabic_iso.c
+#7 25.78 [cons] CC pal.c
+#7 25.78 [muta] CC p/muta_charset_arabic_windows.c
+#7 25.78 [cons] CC editor.c
+#7 25.80 [bp] CC p/bp_s390x.c
+#7 25.80 [muta] CC p/muta_charset_ascii.c
+#7 25.80 [muta] CC p/muta_charset_ascii_ansi.c
+#7 25.81 [cons] CC 2048.c
+#7 25.81 [bp] CC p/bp_x86.c
+#7 25.82 [cons] CC msg.c
+#7 25.82 [muta] CC p/muta_charset_ascii_oem.c
+#7 25.83 [muta] CC p/muta_charset_big5.c
+#7 25.84 [muta] CC p/muta_charset_cyrillic_iso.c
+#7 25.84 [cons] CC canvas.c
+#7 25.85 [muta] CC p/muta_charset_cyrillic_windows.c
+#7 25.87 [muta] CC p/muta_charset_ebcdic37.c
+#7 25.87 [muta] CC p/muta_charset_greek_iso.c
+#7 25.89 [cons] CC canvas_line.c
+#7 25.89 [muta] CC p/muta_charset_greek_windows.c
+#7 25.89 [cons] CC stiv.c
+#7 25.89 LD libr_bp.so
+#7 25.90 [muta] CC p/muta_charset_hebrew_iso.c
+#7 25.91 [muta] CC p/muta_charset_hebrew_windows.c
+#7 25.93 [muta] CC p/muta_charset_hiragana.c
+#7 25.94 [cons] CC pixel.c
+#7 25.94 [cons] CC help.c
+#7 25.95 [muta] CC p/muta_charset_iso8859_1.c
+#7 25.95 [cons] CC visual.c
+#7 25.95 [muta] CC p/muta_charset_iso_646.c
+#7 25.96 [cons] CC dietline.c
+#7 25.96 [muta] CC p/muta_charset_jis7.c
+#7 25.97 [muta] CC p/muta_charset_katakana.c
+#7 25.97 [muta] CC p/muta_charset_macintosh.c
+#7 25.99 [muta] CC p/muta_charset_pokemon.c
+#7 25.99 [muta] CC p/muta_charset_pokered.c
+#7 26.00 [muta] CC p/muta_charset_seven.c
+#7 26.01 [muta] CC p/muta_cps2.c
+#7 26.02 [muta] CC p/muta_crc.c
+#7 26.04 [muta] CC p/muta_des.c
+#7 26.05 [muta] CC p/muta_ed25519.c
+#7 26.06 [muta] CC p/muta_entropy.c
+#7 26.06 [muta] CC p/muta_fletcher.c
+#7 26.07 [muta] CC p/muta_md4.c
+#7 26.08 [muta] CC p/muta_md5.c
+#7 26.08 [muta] CC p/muta_null.c
+#7 26.09 [muta] CC p/muta_punycode.c
+#7 26.10 [muta] CC p/muta_rc.c
+#7 26.11 [muta] CC p/muta_rot.c
+#7 26.12 [muta] CC p/muta_serpent.c
+#7 26.13 [muta] CC p/algo/serpent.c
+#7 26.13 [muta] CC p/muta_sha.c
+#7 26.14 [muta] CC p/muta_simplehash.c
+#7 26.15 [muta] CC p/muta_sip.c
+#7 26.15 [muta] CC p/muta_sm4.c
+#7 26.16 [muta] CC p/algo/sm4.c
+#7 26.17 [muta] CC p/muta_ssdeep.c
+#7 26.17 [muta] CC p/muta_strhash.c
+#7 26.18 [muta] CC p/muta_xor.c
+#7 26.20 [muta] CC p/muta_xxhash.c
+#7 26.20 [muta] CC muta.c
+#7 26.20 LD libr_cons.so
+#7 26.22 [muta] CC muta_session.c
+#7 26.22 [muta] CC muta_bind.c
+#7 26.23 [muta] CC muta_process.c
+#7 26.24 [muta] CC charset.c
+#7 26.24 [muta] CC hash/state.c
+#7 26.25 [muta] CC hash/hash.c
+#7 26.26 [muta] CC hash/hamdist.c
+#7 26.27 [muta] CC hash/crca.c
+#7 26.28 [muta] CC hash/fletcher.c
+#7 26.29 [muta] CC hash/entropy.c
+#7 26.29 [muta] CC hash/hcalc.c
+#7 26.30 [muta] CC hash/adler32.c
+#7 26.31 [muta] CC hash/luhn.c
+#7 26.31 [muta] CC hash/ssdeep.c
+#7 26.33 [muta] CC hash/sip.c
+#7 26.33 [muta] CC hash/md4.c
+#7 26.34 [muta] CC hash/md5.c
+#7 26.34 [muta] CC hash/sha1.c
+#7 26.35 [muta] CC hash/sha2.c
+#7 26.36 [muta] CC hash/xxhash.c
+#7 26.36 [muta] CC signature/ed25519/fe.c
+#7 26.37 [muta] CC signature/ed25519/ge.c
+#7 26.37 [muta] CC signature/ed25519/sc.c
+#7 26.44 LD libr_muta.so
+#7 26.54 DIR search
+#7 26.54 DIR flag
+#7 26.54 DIR esil
+#7 26.54 DIR io
+#7 26.56 [search] CC search.c
+#7 26.56 [flag] CC flag.c
+#7 26.56 [esil] CC esil.c
+#7 26.56 [flag] CC zones.c
+#7 26.56 [search] CC bytepat.c
+#7 26.56 [esil] CC esil_plugin.c
+#7 26.57 [flag] CC tags.c
+#7 26.57 [search] CC strings.c
+#7 26.58 [esil] CC esil_handler.c
+#7 26.58 [search] CC aes_find.c
+#7 26.59 [esil] CC esil_stats.c
+#7 26.60 [io] CC p/io_ar.c
+#7 26.64 [io] CC p/../p/ar/ar.c
+#7 26.64 [esil] CC esil_compiler.c
+#7 26.65 [search] CC privkey.c
+#7 26.67 [io] CC p/io_bfdbg.c
+#7 26.67 [esil] CC esil_ops.c
+#7 26.68 LD libr_flag.so
+#7 26.69 [search] CC regexp.c
+#7 26.69 [esil] CC esil_toc.c
+#7 26.71 [search] CC keyword.c
+#7 26.72 [esil] CC esil_trace.c
+#7 26.73 [search] CC uds.c
+#7 26.73 [esil] CC p/esil_dummy.c
+#7 26.74 [io] CC p/io_bochs.c
+#7 26.76 [io] CC p/io_cyclic.c
+#7 26.77 [search] CC karp.c
+#7 26.78 [io] CC p/io_debug.c
+#7 26.78 [esil] CC p/esil_forth.c
+#7 26.78 [search] CC sm4_find.c
+#7 26.80 [io] CC p/io_default.c
+#7 26.81 [search] CC tire.c
+#7 26.84 [esil] CC p/esil_null.c
+#7 26.85 [io] CC p/io_dsc.c
+#7 26.86 [io] CC p/io_fd.c
+#7 26.89 [io] CC p/io_gdb.c
+#7 26.89 [io] CC p/io_gprobe.c
+#7 26.90 LD libr_search.so
+#7 26.91 [io] CC p/io_gzip.c
+#7 26.92 [io] CC p/io_http.c
+#7 26.93 [io] CC p/io_ihex.c
+#7 26.94 [io] CC p/io_isotp.c
+#7 26.95 [io] CC p/io_mach.c
+#7 26.97 [io] CC p/io_malloc.c
+#7 26.99 [io] CC p/io_mmap.c
+#7 27.00 [io] CC p/io_null.c
+#7 27.00 LD libr_esil.so
+#7 27.01 [io] CC p/io_procpid.c
+#7 27.01 [io] CC p/io_ptrace.c
+#7 27.02 [io] CC p/io_pvm.c
+#7 27.04 [io] CC p/io_qnx.c
+#7 27.05 [io] CC p/io_r2k.c
+#7 27.05 [io] CC p/io_r2k_linux.c
+#7 27.06 [io] CC p/io_r2pipe.c
+#7 27.07 [io] CC p/io_r2web.c
+#7 27.08 [io] CC p/io_rap.c
+#7 27.08 [io] CC p/io_rbuf.c
+#7 27.09 [io] CC p/io_reg.c
+#7 27.11 [io] CC p/io_self.c
+#7 27.11 [io] CC p/io_serial.c
+#7 27.12 [io] CC p/io_shm.c
+#7 27.12 [io] CC p/io_socket.c
+#7 27.14 [io] CC p/io_sparse.c
+#7 27.16 [io] CC p/io_srec.c
+#7 27.17 [io] CC p/io_sysgdb.c
+#7 27.17 [io] CC p/io_tap.c
+#7 27.18 [io] CC p/io_tcpslurp.c
+#7 27.19 [io] CC p/io_treebuf.c
+#7 27.20 [io] CC p/io_uf2.c
+#7 27.21 [io] CC p/io_w32.c
+#7 27.22 [io] CC p/io_w32dbg.c
+#7 27.22 [io] CC p/io_winedbg.c
+#7 27.23 [io] CC p/io_winkd.c
+#7 27.24 [io] CC p/io_xalz.c
+#7 27.25 [io] CC p/io_xattr.c
+#7 27.26 [io] CC p/io_zip.c
+#7 27.28 [io] CC io.c
+#7 27.28 [io] CC io_plugin.c
+#7 27.29 [io] CC io_map.c
+#7 27.30 [io] CC io_desc.c
+#7 27.30 [io] CC io_cache.c
+#7 27.31 [io] CC p_cache.c
+#7 27.32 [io] CC io_stream.c
+#7 27.32 [io] CC io_bank.c
+#7 27.33 [io] CC io_submap.c
+#7 27.34 [io] CC undo.c
+#7 27.34 [io] CC ioutils.c
+#7 27.36 [io] CC io_fd.c
+#7 27.38 [io] CC io_memory.c
+#7 27.39 [io] CC ptrace_wrap.c
+#7 27.45 LD libr_io.so
+#7 27.59 DIR arch
+#7 27.60 DIR fs
+#7 27.62 SDBTOOL (mirror=0) from=. to=.
+#7 27.67 [fs] CC fs.c
+#7 27.67 [fs] CC fs_file.c
+#7 27.68 [fs] CC fs_shell.c
+#7 27.68 [fs] CC p/grub/grubfs.c
+#7 27.68 [fs] CC p/grub/kern/device.c
+#7 27.69 [fs] CC p/grub/kern/file.c
+#7 27.69 [fs] CC p/grub/kern/env.c
+#7 27.70 [fs] CC p/grub/kern/err.c
+#7 27.70 [fs] CC p/grub/kern/time.c
+#7 27.71 [fs] CC p/grub/kern/fs.c
+#7 27.71 [arch] CC arch.c
+#7 27.72 [fs] CC p/grub/kern/partition.c
+#7 27.72 [arch] CC arch_config.c
+#7 27.73 [fs] CC p/grub/kern/disk.c
+#7 27.74 [fs] CC p/grub/kern/misc.c
+#7 27.74 [arch] CC arch_switch.c
+#7 27.74 [fs] CC p/grub/kern/term.c
+#7 27.75 [arch] CC arch_op.c
+#7 27.75 [fs] CC p/grub/kern/mm.c
+#7 27.76 [fs] CC p/grub/partmap/sunpc.c
+#7 27.77 [arch] CC arch_value.c
+#7 27.77 [arch] CC arch_cond.c
+#7 27.78 [fs] CC p/grub/partmap/sun.c
+#7 27.79 [arch] CC arch_session.c
+#7 27.79 [fs] CC p/grub/partmap/amiga.c
+#7 27.80 [arch] CC arch_platform.c
+#7 27.81 [fs] CC p/grub/partmap/apple.c
+#7 27.81 [arch] CC p/6502/plugin.c
+#7 27.83 [arch] CC p/6502_cs/plugin.c
+#7 27.83 [fs] CC p/grub/partmap/msdos.c
+#7 27.84 [arch] CC p/8051/plugin.c
+#7 27.84 [fs] CC p/grub/partmap/gpt.c
+#7 27.84 [arch] CC p/alpha/plugin.c
+#7 27.88 [arch] CC p/alpha/alpha-dis.c
+#7 27.88 [fs] CC p/grub/partmap/bsdlabel.c
+#7 27.88 [arch] CC p/alpha/alpha-opc.c
+#7 27.89 [fs] CC p/grub/fs/udf.c
+#7 27.89 [arch] CC p/amd29k/plugin.c
+#7 27.90 [fs] CC p/grub/fs/ufs.c
+#7 27.91 [fs] CC p/grub/fs/sfs.c
+#7 27.92 [arch] CC p/any_as/plugin.c
+#7 27.92 [arch] CC p/any_vasm/plugin.c
+#7 27.93 [fs] CC p/grub/fs/hfsplus.c
+#7 27.95 [fs] CC p/grub/fs/iso9660.c
+#7 27.95 [arch] CC p/arc/plugin.c
+#7 27.96 [arch] CC p/arc/gnu/arc-dis.c
+#7 27.97 [arch] CC p/arc/gnu/arc-ext.c
+#7 27.98 [fs] CC p/grub/fs/ntfs.c
+#7 27.98 [arch] CC p/arc/gnu/arc-opc.c
+#7 28.01 [arch] CC p/arc/gnu/arcompact-dis.c
+#7 28.01 [fs] CC p/grub/fs/fshelp.c
+#7 28.02 [arch] CC p/arm/plugin.c
+#7 28.04 [arch] CC p/arm/armass64.c
+#7 28.04 [fs] CC p/grub/fs/reiserfs.c
+#7 28.04 [arch] CC p/arm/armass.c
+#7 28.05 [arch] CC p/arm/plugin_cs.c
+#7 28.06 [fs] CC p/grub/fs/tar.c
+#7 28.06 [arch] CC p/arm/cs/arm.c
+#7 28.08 [fs] CC p/grub/fs/xfs.c
+#7 28.09 [arch] CC p/arm/cs/arm64.c
+#7 28.11 [arch] CC p/arm/plugin_gnu.c
+#7 28.11 [fs] CC p/grub/fs/fb.c
+#7 28.13 [arch] CC p/arm/gnu/arm-dis.c
+#7 28.13 [arch] CC p/arm/winedbg/be_arm.c
+#7 28.15 [arch] CC p/arm/aarch64/aarch64-dis.c
+#7 28.15 [fs] CC p/grub/fs/hfs.c
+#7 28.21 [fs] CC p/grub/fs/jfs.c
+#7 28.22 [fs] CC p/grub/fs/fat.c
+#7 28.22 [arch] CC p/arm/aarch64/aarch64-dis-2.c
+#7 28.24 [arch] CC p/arm/aarch64/aarch64-opc.c
+#7 28.26 [arch] CC p/arm/aarch64/aarch64-opc-2.c
+#7 28.28 [fs] CC p/grub/fs/ext2.c
+#7 28.28 [arch] CC p/arm/plugin_v35.c
+#7 28.29 [arch] CC p/avr/plugin.c
+#7 28.30 [fs] CC p/grub/fs/ntfscomp.c
+#7 28.30 [arch] CC p/avr/avr_disasm.c
+#7 28.31 [arch] CC p/avr/format.c
+#7 28.31 [fs] CC p/grub/fs/minix.c
+#7 28.34 [fs] CC p/grub/fs/cpio.c
+#7 28.35 [arch] CC p/avr/disasm.c
+#7 28.38 [fs] CC p/fs_apfs.c
+#7 28.38 [arch] CC p/avr/assemble.c
+#7 28.40 [fs] CC p/fs_bfs.c
+#7 28.42 [arch] CC p/bf/plugin.c
+#7 28.46 [arch] CC p/bpf/plugin.c
+#7 28.47 [fs] CC p/fs_ext2.c
+#7 28.47 [arch] CC p/bpf_cs/plugin.c
+#7 28.48 [arch] CC p/chip8/plugin.c
+#7 28.48 [fs] CC p/fs_fat.c
+#7 28.53 [fs] CC p/fs_fb.c
+#7 28.54 [arch] CC p/cil/plugin.c
+#7 28.55 [arch] CC p/cosmac/plugin.c
+#7 28.55 [fs] CC p/fs_hfs.c
+#7 28.56 [arch] CC p/cr16/plugin.c
+#7 28.57 [fs] CC p/fs_hfsplus.c
+#7 28.59 [fs] CC p/fs_io.c
+#7 28.60 [arch] CC p/cr16/cr16_disas.c
+#7 28.62 [fs] CC p/fs_iso9660.c
+#7 28.64 [arch] CC p/cris/plugin.c
+#7 28.67 [arch] CC p/cris/gnu/cris-dis.c
+#7 28.67 [fs] CC p/fs_jfs.c
+#7 28.68 [arch] CC p/cris/gnu/cris-opc.c
+#7 28.68 [fs] CC p/fs_minix.c
+#7 28.69 [fs] CC p/fs_ntfs.c
+#7 28.69 [arch] CC p/dalvik/plugin.c
+#7 28.70 [arch] CC p/dis/plugin.c
+#7 28.70 [fs] CC p/fs_posix.c
+#7 28.70 [arch] CC p/ebc/plugin.c
+#7 28.72 [fs] CC p/fs_r2.c
+#7 28.73 [arch] CC p/ebc/ebc_disas.c
+#7 28.73 [fs] CC p/fs_reiserfs.c
+#7 28.77 [arch] CC p/evm/plugin.c
+#7 28.78 [fs] CC p/fs_sfs.c
+#7 28.79 [arch] CC p/fslsp/plugin.c
+#7 28.79 [fs] CC p/fs_squashfs.c
+#7 28.80 [arch] CC p/gb/plugin.c
+#7 28.80 [fs] CC p/fs_tar.c
+#7 28.81 [arch] CC p/h8300/plugin.c
+#7 28.81 [fs] CC p/fs_tmp.c
+#7 28.82 [fs] CC p/fs_ubifs.c
+#7 28.82 [arch] CC p/h8300/h8300_disas.c
+#7 28.87 [fs] CC p/fs_udf.c
+#7 28.87 [arch] CC p/hppa/plugin_gnu.c
+#7 28.88 [fs] CC p/fs_ufs.c
+#7 28.89 [arch] CC p/hppa/gnu/hppa-dis.c
+#7 28.91 [fs] CC p/fs_xfs.c
+#7 28.91 [arch] CC p/i4004/plugin.c
+#7 28.92 [arch] CC p/i8080/plugin.c
+#7 28.92 [fs] CC p/fs_zip.c
+#7 28.93 [arch] CC p/i8080/i8080.c
+#7 28.95 [arch] CC p/java/plugin.c
+#7 28.96 [arch] CC p/jdh8/plugin.c
+#7 28.98 [arch] CC p/kvx/plugin.c
+#7 28.98 [arch] CC p/kvx/kvx-dis.c
+#7 28.99 [arch] CC p/kvx/kvx-reg.c
+#7 29.00 [arch] CC p/lanai/plugin.c
+#7 29.00 LD libr_fs.so
+#7 29.03 [arch] CC p/lanai/gnu/lanai-dis.c
+#7 29.04 [arch] CC p/lanai/gnu/lanai-opc.c
+#7 29.06 [arch] CC p/lh5801/plugin.c
+#7 29.07 [arch] CC p/lm32/plugin.c
+#7 29.08 [arch] CC p/loongarch/plugin.c
+#7 29.09 [arch] CC p/loongarch/loongarch-dis.c
+#7 29.10 [arch] CC p/loongarch/loongarch-opc.c
+#7 29.10 [arch] CC p/loongarch/loongarch-coder.c
+#7 29.11 [arch] CC p/lua/plugin.c
+#7 29.12 [arch] CC p/m680x_cs/plugin.c
+#7 29.13 [arch] CC p/m68k_cs/plugin.c
+#7 29.14 [arch] CC p/m68k_gnu/plugin.c
+#7 29.14 [arch] CC p/m68k_gnu/m68k-dis.c
+#7 29.16 [arch] CC p/m68k_gnu/m68k-opc.c
+#7 29.18 [arch] CC p/arm/gnu/floatformat.c
+#7 29.20 [arch] CC p/mcore/plugin.c
+#7 29.21 [arch] CC p/mcore/mcore.c
+#7 29.23 [arch] CC p/mcs96/plugin.c
+#7 29.23 [arch] CC p/mips/plugin_cs.c
+#7 29.24 [arch] CC p/mips/mipsasm.c
+#7 29.24 [arch] CC p/mips_gnu/plugin.c
+#7 29.25 [arch] CC p/mips_gnu/mips-dis.c
+#7 29.26 [arch] CC p/mips_gnu/mips16-opc.c
+#7 29.27 [arch] CC p/mips_gnu/micromips-opc.c
+#7 29.30 [arch] CC p/mips_gnu/mips-opc.c
+#7 29.30 [arch] CC p/msp430/plugin.c
+#7 29.31 [arch] CC p/msp430/msp430_disas.c
+#7 29.33 [arch] CC p/nds32/plugin.c
+#7 29.34 [arch] CC p/nios2/plugin.c
+#7 29.34 [arch] CC p/nios2/nios2-dis.c
+#7 29.36 [arch] CC p/nios2/nios2-opc.c
+#7 29.36 [arch] CC p/null/plugin.c
+#7 29.38 [arch] CC p/or1k/plugin.c
+#7 29.39 [arch] CC p/or1k/or1k_disas.c
+#7 29.40 [arch] CC p/pdp11/plugin.c
+#7 29.41 [arch] CC p/pdp11/pdp11-dis.c
+#7 29.41 [arch] CC p/pdp11/pdp11-opc.c
+#7 29.42 [arch] CC p/pic/plugin.c
+#7 29.44 [arch] CC p/pic/pic_midrange.c
+#7 29.45 [arch] CC p/pic/pic_baseline.c
+#7 29.46 [arch] CC p/pic/pic_pic18.c
+#7 29.46 [arch] CC p/pickle/plugin.c
+#7 29.47 [arch] CC p/ppc_cs/plugin.c
+#7 29.50 [arch] CC p/ppc/libvle/vle.c
+#7 29.51 [arch] CC p/ppc/libps/libps.c
+#7 29.51 [arch] CC p/ppc/plugin_gnu.c
+#7 29.52 [arch] CC p/ppc/gnu/ppc-dis.c
+#7 29.53 [arch] CC p/ppc/gnu/ppc-opc.c
+#7 29.56 [arch] CC p/propeller/plugin.c
+#7 29.58 [arch] CC p/propeller/propeller_disas.c
+#7 29.59 [arch] CC p/pyc/plugin.c
+#7 29.60 [arch] CC p/pyc/opcode_all.c
+#7 29.61 [arch] CC p/pyc/opcode_anal.c
+#7 29.62 [arch] CC p/pyc/opcode_arg_fmt.c
+#7 29.64 [arch] CC p/pyc/opcode.c
+#7 29.65 [arch] CC p/pyc/pyc_dis.c
+#7 29.66 [arch] CC p/riscv/plugin.c
+#7 29.67 [arch] CC p/riscv_cs/plugin.c
+#7 29.68 [arch] CC p/rsp/plugin.c
+#7 29.70 [arch] CC p/rsp/rsp_idec.c
+#7 29.74 [arch] CC p/s390/plugin.c
+#7 29.74 [arch] CC p/s390_gnu/plugin.c
+#7 29.75 [arch] CC p/s390_gnu/s390-dis.c
+#7 29.76 [arch] CC p/s390_gnu/s390-opc.c
+#7 29.79 [arch] CC p/sbpf_cs/plugin.c
+#7 29.80 [arch] CC p/sh/plugin.c
+#7 29.81 [arch] CC p/sh/gnu/sh-dis.c
+#7 29.82 [arch] CC p/sh_cs/plugin.c
+#7 29.83 [arch] CC p/sm5xx/plugin.c
+#7 29.85 [arch] CC p/sm5xx/sm5xx.c
+#7 29.86 [arch] CC p/snes/plugin.c
+#7 29.87 [arch] CC p/sparc_cs/plugin.c
+#7 29.88 [arch] CC p/sparc/plugin_gnu.c
+#7 29.89 [arch] CC p/sparc/gnu/sparc-dis.c
+#7 29.94 [arch] CC p/sparc/gnu/sparc-opc.c
+#7 29.95 [arch] CC p/stm8/plugin.c
+#7 29.97 [arch] CC p/tms320/plugin.c
+#7 29.98 [arch] CC p/tms320/tms320_dasm.c
+#7 29.98 [arch] CC p/tms320/c55x_plus/ins.c
+#7 29.99 [arch] CC p/tms320/c55x_plus/c55plus.c
+#7 30.00 [arch] CC p/tms320/c55x_plus/c55plus_decode.c
+#7 30.00 [arch] CC p/tms320/c55x_plus/decode_funcs.c
+#7 30.01 [arch] CC p/tms320/c55x_plus/utils.c
+#7 30.02 [arch] CC p/tms320/c55x_plus/hashtable.c
+#7 30.03 [arch] CC p/tms320/c55x_plus/hashvector.c
+#7 30.05 [arch] CC p/tms320/plugin_gnu.c
+#7 30.06 [arch] CC p/tms320/gnu/tic30-dis.c
+#7 30.08 [arch] CC p/tms320/gnu/tic4x-dis.c
+#7 30.08 [arch] CC p/tms320/gnu/tic54x-dis.c
+#7 30.09 [arch] CC p/tms320/gnu/tic54x-opc.c
+#7 30.10 [arch] CC p/tms320/gnu/tic6x-dis.c
+#7 30.11 [arch] CC p/tricore/tricore.c
+#7 30.11 [arch] CC p/tricore/gnu/tricore-dis.c
+#7 30.12 [arch] CC p/tricore/gnu/tricore-opc.c
+#7 30.13 [arch] CC p/tricore/gnu/cpu-tricore.c
+#7 30.13 [arch] CC p/tricore_cs/plugin.c
+#7 30.13 [arch] CC p/uxn/plugin.c
+#7 30.14 [arch] CC p/v810/plugin.c
+#7 30.15 [arch] CC p/v810/v810_disas.c
+#7 30.16 [arch] CC p/v850/plugin.c
+#7 30.16 [arch] CC p/v850/v850dis.c
+#7 30.17 [arch] CC p/v850/v850e0.c
+#7 30.17 [arch] CC p/vax/vax.c
+#7 30.19 [arch] CC p/vax/vax-dis.c
+#7 30.23 [arch] CC p/wasm/plugin.c
+#7 30.24 [arch] CC p/ws/plugin.c
+#7 30.25 [arch] CC p/x86/plugin_cs.c
+#7 30.25 [arch] CC p/x86_nasm/plugin.c
+#7 30.26 [arch] CC p/x86_nz/plugin.c
+#7 30.28 [arch] CC p/xap/plugin.c
+#7 30.28 [arch] CC p/xcore_cs/plugin.c
+#7 30.29 [arch] CC p/xtensa/plugin.c
+#7 30.31 [arch] CC p/xtensa/gnu/xtensa-dis.c
+#7 30.32 [arch] CC p/xtensa/gnu/xtensa-isa.c
+#7 30.33 [arch] CC p/xtensa/gnu/xtensa-modules.c
+#7 30.37 [arch] CC p/xtensa/gnu/elf32-xtensa.c
+#7 30.38 [arch] CC p/z80/plugin.c
+#7 30.40 [arch] CC p/z80/z80asm.c
+#7 30.40 [arch] CC p/z80/z80dis.c
+#7 30.64 LD libr_arch.so
+#7 30.98 DIR asm
+#7 30.98 DIR anal
+#7 30.98 DIR magic
+#7 30.99 SDBTOOL (mirror=0) from=. to=.
+#7 31.02 [magic] CC apprentice.c
+#7 31.02 [magic] CC ascmagic.c
+#7 31.02 [magic] CC funcs.c
+#7 31.03 [magic] CC is_tar.c
+#7 31.03 [magic] CC magic.c
+#7 31.03 SDBTOOL (mirror=0) from=. to=.
+#7 31.03 SDBTOOL (mirror=0) from=. to=.
+#7 31.03 SDBTOOL (mirror=0) from=. to=.
+#7 31.03 SDBTOOL (mirror=0) from=. to=.
+#7 31.04 SDBTOOL (mirror=0) from=. to=.
+#7 31.04 [magic] CC softmagic.c
+#7 31.06 SDBTOOL (mirror=0) from=. to=.
+#7 31.07 [magic] CC mdump.c
+#7 31.13 [asm] CC /opt/radare2/libr/arch/p/6502/pseudo.c
+#7 31.14 [asm] CC /opt/radare2/libr/arch/p/snes/pseudo.c
+#7 31.14 [asm] CC /opt/radare2/libr/arch/p/8051/pseudo.c
+#7 31.14 [asm] CC /opt/radare2/libr/arch/p/arc/pseudo.c
+#7 31.15 [asm] CC /opt/radare2/libr/arch/p/arm/pseudo.c
+#7 31.15 [asm] CC /opt/radare2/libr/arch/p/x86_nz/att2intel.c
+#7 31.15 LD libr_magic.so
+#7 31.16 [asm] CC /opt/radare2/libr/arch/p/avr/pseudo.c
+#7 31.16 [asm] CC /opt/radare2/libr/arch/p/bpf/pseudo.c
+#7 31.17 [asm] CC /opt/radare2/libr/arch/p/chip8/pseudo.c
+#7 31.18 [asm] CC /opt/radare2/libr/arch/p/cil/pseudo.c
+#7 31.19 [asm] CC /opt/radare2/libr/arch/p/cosmac/pseudo.c
+#7 31.27 SDBTOOL (mirror=0) from=. to=.
+#7 31.29 [asm] CC /opt/radare2/libr/arch/p/dalvik/pseudo.c
+#7 31.30 [asm] CC /opt/radare2/libr/arch/p/evm/pseudo.c
+#7 31.30 [anal] CC /opt/radare2/libr/..//libr/anal/p/anal_a2f.c
+#7 31.30 [asm] CC /opt/radare2/libr/arch/p/gb/pseudo.c
+#7 31.31 [anal] CC /opt/radare2/libr/..//libr/anal/p/anal_blaze.c
+#7 31.32 [anal] CC /opt/radare2/libr/..//libr/anal/p/anal_drcov.c
+#7 31.32 [asm] CC /opt/radare2/libr/arch/p/hppa/pseudo.c
+#7 31.33 [asm] CC /opt/radare2/libr/arch/p/java/pseudo.c
+#7 31.33 [anal] CC /opt/radare2/libr/..//libr/anal/p/anal_null.c
+#7 31.33 [asm] CC /opt/radare2/libr/arch/p/m68k_cs/pseudo.c
+#7 31.33 [anal] CC /opt/radare2/libr/..//libr/anal/p/anal_path.c
+#7 31.37 [asm] CC /opt/radare2/libr/arch/p/mips/pseudo.c
+#7 31.45 [anal] CC /opt/radare2/libr/..//libr/anal/p/anal_sbpf.c
+#7 31.47 [anal] CC /opt/radare2/libr/..//libr/anal/p/anal_six.c
+#7 31.48 [anal] CC /opt/radare2/libr/..//libr/anal/p/anal_tcc.c
+#7 31.49 [asm] CC /opt/radare2/libr/arch/p/msp430/pseudo.c
+#7 31.50 [anal] CC /opt/radare2/libr/..//libr/anal/p/anal_tp.c
+#7 31.50 [asm] CC /opt/radare2/libr/arch/p/nds32/pseudo.c
+#7 31.51 [asm] CC /opt/radare2/libr/arch/p/null/pseudo.c
+#7 31.51 [anal] CC meta.c
+#7 31.51 [anal] CC reflines.c
+#7 31.51 [asm] CC /opt/radare2/libr/arch/p/pickle/pseudo.c
+#7 31.53 [asm] CC /opt/radare2/libr/arch/p/ppc/pseudo.c
+#7 31.53 [anal] CC op.c
+#7 31.64 [asm] CC /opt/radare2/libr/arch/p/pyc/pseudo.c
+#7 31.66 [asm] CC /opt/radare2/libr/arch/p/riscv/pseudo.c
+#7 31.67 [asm] CC /opt/radare2/libr/arch/p/sh/pseudo.c
+#7 31.68 [anal] CC fcn.c
+#7 31.70 [asm] CC /opt/radare2/libr/arch/p/sparc/pseudo.c
+#7 31.72 [asm] CC /opt/radare2/libr/arch/p/stm8/pseudo.c
+#7 31.72 [anal] CC bb.c
+#7 31.73 [asm] CC /opt/radare2/libr/arch/p/tms320/pseudo.c
+#7 31.74 [asm] CC /opt/radare2/libr/arch/p/tricore/pseudo.c
+#7 31.76 [asm] CC /opt/radare2/libr/arch/p/v850/pseudo.c
+#7 31.81 [anal] CC var.c
+#7 31.81 [asm] CC /opt/radare2/libr/arch/p/vax/pseudo.c
+#7 31.84 [anal] CC block.c
+#7 31.88 [asm] CC /opt/radare2/libr/arch/p/wasm/pseudo.c
+#7 31.88 [anal] CC c2/kv.c
+#7 31.89 [asm] CC /opt/radare2/libr/arch/p/x86_nz/pseudo.c
+#7 31.90 [asm] CC /opt/radare2/libr/arch/p/z80/pseudo.c
+#7 31.90 [anal] CC value.c
+#7 31.91 [asm] CC asm.c
+#7 31.91 [anal] CC class.c
+#7 31.93 [asm] CC acode.c
+#7 31.95 [anal] CC type.c
+#7 32.01 [anal] CC type_pdb.c
+#7 32.04 [asm] CC agperf.c
+#7 32.07 [asm] CC filter.c
+#7 32.07 [anal] CC dwarf_process.c
+#7 32.08 [asm] CC parse.c
+#7 32.08 [anal] CC hint.c
+#7 32.10 [anal] CC anal.c
+#7 32.11 [anal] CC data.c
+#7 32.12 [anal] CC xrefs.c
+#7 32.14 [anal] CC sign.c
+#7 32.16 [anal] CC btrace.c
+#7 32.16 [anal] CC switch.c
+#7 32.18 [anal] CC cycles.c
+#7 32.21 [anal] CC esil_dfg.c
+#7 32.24 [anal] CC esil_cfg.c
+#7 32.25 [anal] CC cond.c
+#7 32.30 [anal] CC flirt.c
+#7 32.31 [anal] CC labels.c
+#7 32.31 LD libr_asm.so
+#7 32.32 [anal] CC cparse.c
+#7 32.32 [anal] CC tid.c
+#7 32.33 [anal] CC diff.c
+#7 32.33 [anal] CC cc.c
+#7 32.39 [anal] CC pin.c
+#7 32.40 [anal] CC vtable.c
+#7 32.40 [anal] CC rtti.c
+#7 32.42 [anal] CC codemeta.c
+#7 32.44 [anal] CC anplugs.c
+#7 32.46 [anal] CC global.c
+#7 32.46 [anal] CC rtti_msvc.c
+#7 32.48 [anal] CC rtti_itanium.c
+#7 32.49 [anal] CC jmptbl.c
+#7 32.49 [anal] CC function.c
+#7 32.66 LD libr_anal.so
+#7 32.73 SDBTOOL (mirror=0) from=. to=.
+#7 32.73 DIR lang
+#7 32.73 DIR egg
+#7 32.74 DIR bin
+#7 32.75 [lang] CC lang.c
+#7 32.75 [lang] CC /opt/radare2/libr/..//subprojects/qjs/quickjs.c
+#7 32.86 [lang] CC /opt/radare2/libr/..//subprojects/qjs/libregexp.c
+#7 32.86 [bin] CC bin.c
+#7 32.86 [lang] CC /opt/radare2/libr/..//subprojects/qjs/libunicode.c
+#7 32.86 [lang] CC /opt/radare2/libr/..//subprojects/qjs/dtoa.c
+#7 32.86 [bin] CC addrline.c
+#7 32.87 [bin] CC bin_ldr.c
+#7 32.88 [bin] CC bin_write.c
+#7 32.89 [bin] CC demangle.c
+#7 32.89 [bin] CC dwarf.c
+#7 32.95 [bin] CC bfilter.c
+#7 32.96 [bin] CC bfile.c
+#7 32.97 [bin] CC bobj.c
+#7 32.98 [bin] CC blang.c
+#7 32.99 [bin] CC mangling/cxx/cp-demangle.c
+#7 33.00 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_any.c
+#7 33.01 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_art.c
+#7 33.05 [plan] ops (encryption order): rol(2) -> xor(key=0xee) -> transpose(seed=0x37d6f275)
+#7 33.05 [ok] Wrote out/decrypt.inc.c
+#7 33.05 [ok] Wrote out/arm-linux-bind.c (203 bytes mangled across 50 literals)
+#7 33.05 [ok] Wrote out/arm-linux-binsh.c (54 bytes mangled across 5 literals)
+#7 33.05 [ok] Wrote out/armle-osx-reverse.c (152 bytes mangled across 10 literals)
+#7 33.05 [ok] Wrote out/sparc-linux-bind4444.c (232 bytes mangled across 15 literals)
+#7 33.05 [ok] Wrote out/thumb-linux-binsh.c (38 bytes mangled across 3 literals)
+#7 33.05 [ok] Wrote out/x86-freebsd-reverse.c (126 bytes mangled across 7 literals)
+#7 33.05 [ok] Wrote out/x86-linux-bind4444.c (109 bytes mangled across 6 literals)
+#7 33.05 [ok] Wrote out/x86-linux-binsh.c (24 bytes mangled across 3 literals)
+#7 33.05 [ok] Wrote out/x86-linux-udp4444.c (125 bytes mangled across 7 literals)
+#7 33.05 [ok] Wrote out/x86-openbsd-bind6969.c (141 bytes mangled across 9 literals)
+#7 33.05 [ok] Wrote out/x86-osx-bind4444.c (112 bytes mangled across 7 literals)
+#7 33.05 [ok] Wrote out/x86-osx-binsh.c (50 bytes mangled across 5 literals)
+#7 33.05 [ok] Wrote out/x86-osx-suidbinsh.c (50 bytes mangled across 5 literals)
+#7 33.05 [ok] Wrote out/x86-solaris-bind4444.c (120 bytes mangled across 8 literals)
+#7 33.05 [ok] Wrote out/x86-w32-tcp4444.c (312 bytes mangled across 20 literals)
+#7 33.05 [ok] Wrote out/x86_64-linux-binsh.c (73 bytes mangled across 4 literals)
+#7 33.06 HAVE_PYTHON=1
+#7 33.06 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_avr.c
+#7 33.09 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_bf.c
+#7 33.09 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_bflt.c
+#7 33.10 [egg] CC egg.c
+#7 33.10 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/bflt/bflt.c
+#7 33.11 [egg] CC egg_lang.c
+#7 33.11 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_bios.c
+#7 33.13 [egg] CC emit_x86.c
+#7 33.15 [egg] CC emit_arm.c
+#7 33.18 [egg] CC emit_a64.c
+#7 33.19 [egg] CC emit_x64.c
+#7 33.20 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_bootimg.c
+#7 33.21 [egg] CC emit_esil.c
+#7 33.22 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_cgc.c
+#7 33.25 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_coff.c
+#7 33.30 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/coff/coff.c
+#7 33.31 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_dex.c
+#7 33.32 [egg] CC emit_trace.c
+#7 33.33 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/dex/dex.c
+#7 33.34 [egg] CC egg_cfile.c
+#7 33.35 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_dis.c
+#7 33.36 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_dmp64.c
+#7 33.39 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/dmp/dmp64.c
+#7 33.40 [egg] CC p/egg_bind.c
+#7 33.41 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_dol.c
+#7 33.42 [egg] CC p/egg_exec.c
+#7 33.45 [egg] CC p/egg_nullby.c
+#7 33.47 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_dyldcache.c
+#7 33.47 [egg] CC p/egg_reverse.c
+#7 33.48 [egg] CC p/egg_xor.c
+#7 33.50 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_elf.c
+#7 33.50 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_write_elf.c
+#7 33.51 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/elf/elf.c
+#7 33.53 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/elf/elf_write.c
+#7 33.54 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_elf64.c
+#7 33.56 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_write_elf64.c
+#7 33.57 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/elf/elf64.c
+#7 33.60 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/elf/elf64_write.c
+#7 33.61 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_fs.c
+#7 33.62 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_gns1.c
+#7 33.63 LD libr_egg.so
+#7 33.65 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_hunk.c
+#7 33.67 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_io.c
+#7 33.71 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_java.c
+#7 33.73 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_le.c
+#7 33.74 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/le/le.c
+#7 33.74 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_lua.c
+#7 33.74 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/lua/lua.c
+#7 33.75 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_mach0.c
+#7 33.76 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/mach0/mach0.c
+#7 33.82 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/objc/mach0_classes.c
+#7 33.85 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/objc/mach064_classes.c
+#7 33.86 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_write_mach0.c
+#7 33.86 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_mach064.c
+#7 33.87 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_write_mach064.c
+#7 33.88 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/mach0/mach064.c
+#7 33.90 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_mbn.c
+#7 33.95 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_mclf.c
+#7 33.97 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_mdmp.c
+#7 33.98 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/mdmp/mdmp.c
+#7 33.98 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/mdmp/mdmp_pe.c
+#7 33.99 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/mdmp/mdmp_pe64.c
+#7 34.00 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_menuet.c
+#7 34.03 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_msx.c
+#7 34.08 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_mz.c
+#7 34.09 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/mz/mz.c
+#7 34.09 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_ne.c
+#7 34.11 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/ne/ne.c
+#7 34.12 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_nes.c
+#7 34.13 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_nin3ds.c
+#7 34.14 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_ninds.c
+#7 34.15 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_ningb.c
+#7 34.15 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_ningba.c
+#7 34.16 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_nro.c
+#7 34.19 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_nso.c
+#7 34.20 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/nxo/nxo.c
+#7 34.22 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_off.c
+#7 34.23 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_omf.c
+#7 34.24 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/omf/omf.c
+#7 34.24 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_p9.c
+#7 34.25 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/p9/p9bin.c
+#7 34.26 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_pcap.c
+#7 34.26 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/pcap/pcap.c
+#7 34.27 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_pdb.c
+#7 34.29 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_pdp11.c
+#7 34.29 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_pe.c
+#7 34.30 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_write_pe.c
+#7 34.34 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/pe/pe.c
+#7 34.36 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/pe/pe_write.c
+#7 34.37 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/pe/dotnet.c
+#7 34.39 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_pe64.c
+#7 34.39 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_write_pe64.c
+#7 34.40 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/pe/pe64.c
+#7 34.40 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/pe/pe64_write.c
+#7 34.41 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_pebble.c
+#7 34.42 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_pef.c
+#7 34.43 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_prg.c
+#7 34.48 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_psxexe.c
+#7 34.49 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_pyc.c
+#7 34.50 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/pyc/marshal.c
+#7 34.53 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/pyc/pyc_magic.c
+#7 34.54 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/pyc/pyc.c
+#7 34.54 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_qnx.c
+#7 34.55 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_rel.c
+#7 34.56 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_s390.c
+#7 34.58 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_sfc.c
+#7 34.59 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_smd.c
+#7 34.60 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_sms.c
+#7 34.61 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_som.c
+#7 34.64 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/som/som.c
+#7 34.64 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_symbols.c
+#7 34.65 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/mach0/coresymbolication.c
+#7 34.66 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_te.c
+#7 34.68 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/te/te.c
+#7 34.68 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_tic.c
+#7 34.69 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_uf2.c
+#7 34.71 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_vsf.c
+#7 34.71 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_wad.c
+#7 34.76 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_wasm.c
+#7 34.76 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/wasm/wasm.c
+#7 34.77 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_xbe.c
+#7 34.78 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_xcoff64.c
+#7 34.79 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/coff/xcoff64.c
+#7 34.79 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_xnu_kernelcache.c
+#7 34.80 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/xnu/r_cf_dict.c
+#7 34.80 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_xtac.c
+#7 34.82 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_z64.c
+#7 34.83 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_zimg.c
+#7 34.85 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/zimg/zimg.c
+#7 34.88 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_xtr_dyldcache.c
+#7 34.89 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/mach0/dyldcache.c
+#7 34.90 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_xtr_fatmach0.c
+#7 34.91 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/mach0/fatmach0.c
+#7 34.92 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_xtr_pemixed.c
+#7 34.92 [bin] CC /opt/radare2/libr/..//libr/bin/p/../format/pe/pemixed.c
+#7 34.93 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_xtr_sep64.c
+#7 34.94 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_xtr_xalz.c
+#7 34.96 [bin] CC /opt/radare2/libr/..//libr/bin/p/bin_ldr_linux.c
+#7 34.97 [bin] CC mangling/demangler.c
+#7 34.98 [bin] CC mangling/microsoft.c
+#7 34.99 [bin] CC mangling/objc.c
+#7 35.00 [bin] CC mangling/cxx.c
+#7 35.02 [bin] CC mangling/msvc.c
+#7 35.03 [bin] CC mangling/swift.c
+#7 35.03 [bin] CC mangling/swift-sd.c
+#7 35.04 [bin] CC mangling/java.c
+#7 35.05 [bin] CC mangling/pascal.c
+#7 35.06 [bin] CC mangling/rust.c
+#7 35.07 [bin] CC format/pdb/pdb_downloader.c
+#7 35.09 [bin] CC format/pdb/omap.c
+#7 35.10 [bin] CC format/pdb/stream_pe.c
+#7 35.12 [bin] CC format/pdb/fpo.c
+#7 35.12 [bin] CC format/pdb/dbi.c
+#7 35.13 [bin] CC format/pdb/tpi.c
+#7 35.14 [bin] CC format/pdb/stream_file.c
+#7 35.14 [bin] CC format/pdb/pdb.c
+#7 35.27 LD libr_bin.so
+#7 35.37 SDBTOOL (mirror=0) from=/opt/radare2/libr/bin/d to=/opt/radare2/libr/bin/d
+#7 35.37 SDBTOOL (mirror=0) from=/opt/radare2/libr/bin/d/dll to=/opt/radare2/libr/bin/d/dll
+#7 38.45 LD libr_lang.so
+#7 38.49 DIR debug
+#7 38.52 [debug] CC dsignal.c
+#7 38.53 [debug] CC dmap.c
+#7 38.53 [debug] CC trace.c
+#7 38.53 [debug] CC arg.c
+#7 38.54 [debug] CC debug.c
+#7 38.54 [debug] CC plugin.c
+#7 38.54 [debug] CC snap.c
+#7 38.55 [debug] CC dsession.c
+#7 38.55 [debug] CC pid.c
+#7 38.56 [debug] CC dreg.c
+#7 38.57 [debug] CC ddesc.c
+#7 38.59 [debug] CC desil.c
+#7 38.70 [debug] CC p/debug_bf.c
+#7 38.71 [debug] CC p/debug_bochs.c
+#7 38.71 [debug] CC p/debug_esil.c
+#7 38.72 [debug] CC p/debug_evm.c
+#7 38.73 [debug] CC p/debug_gdb.c
+#7 38.74 [debug] CC p/debug_io.c
+#7 38.74 [debug] CC p/debug_native.c
+#7 38.75 [debug] CC p/debug_null.c
+#7 38.77 [debug] CC p/debug_qnx.c
+#7 38.77 [debug] CC p/debug_rap.c
+#7 38.79 [debug] CC p/debug_rv32ima.c
+#7 38.82 [debug] CC p/debug_winkd.c
+#7 38.87 [debug] CC p/native/linux/linux_debug.c
+#7 38.88 [debug] CC p/native/procfs.c
+#7 38.88 [debug] CC p/native/linux/linux_coredump.c
+#7 39.05 LD libr_debug.so
+#7 39.37 DIR core
+#7 39.40 [core] CC core.c
+#7 39.40 [core] CC cmd.c
+#7 39.40 [core] CC cfile.c
+#7 39.41 [core] CC cconfig.c
+#7 39.41 [core] CC visual.c
+#7 39.41 [core] CC cio.c
+#7 39.42 [core] CC yank.c
+#7 39.42 [core] CC libs.c
+#7 39.43 [core] CC agraph.c
+#7 39.44 [core] CC xpatch.c
+#7 39.44 [core] CC fortune.c
+#7 39.45 [core] CC vasm.c
+#7 39.59 [core] CC patch.c
+#7 39.61 [core] CC cbin.c
+#7 39.63 [core] CC corelog.c
+#7 39.63 [core] CC rtr.c
+#7 39.64 [core] CC cmd_api.c
+#7 39.66 [core] CC cundo.c
+#7 39.66 [core] CC cproject.c
+#7 39.80 [core] CC carg.c
+#7 39.81 [core] CC canal.c
+#7 39.81 [core] CC project.c
+#7 39.82 [core] CC gdiff.c
+#7 39.83 [core] CC casm.c
+#7 39.83 [core] CC disasm.c
+#7 39.84 [core] CC cplugin.c
+#7 39.85 [core] CC cmd_print_list.c
+#7 39.87 [core] CC vmenus.c
+#7 39.91 [core] CC vmenus_graph.c
+#7 39.99 [core] CC vmenus_zigns.c
+#7 40.00 [core] CC zdiff.c
+#7 40.01 [core] CC citem.c
+#7 40.03 [core] CC vslides.c
+#7 40.04 [core] CC clist.c
+#7 40.05 [core] CC task.c
+#7 40.06 [core] CC panels.c
+#7 40.10 [core] CC pseudo.c
+#7 40.20 [core] CC vmarks.c
+#7 40.21 [core] CC anal_objc.c
+#7 40.21 [core] CC core_esil.c
+#7 40.23 [core] CC vmatrix.c
+#7 40.23 [core] CC prompt.c
+#7 40.24 [core] CC /opt/radare2/libr/..//libr/core/p/core_agD.c
+#7 40.27 [core] CC /opt/radare2/libr/..//libr/core/p/core_java.c
+#7 40.32 [core] CC /opt/radare2/libr/..//libr/core/p/core_prj.c
+#7 40.35 [core] CC /opt/radare2/libr/..//libr/core/p/core_writedwarf.c
+#7 42.52 LD libr_core.so
+#7 42.63 DIR main
+#7 42.64 [main] CC main.c
+#7 42.64 [main] CC ravc2.c
+#7 42.65 [main] CC rax2.c
+#7 42.65 [main] CC r2pm.c
+#7 42.65 [main] CC rasm2.c
+#7 42.65 [main] CC ragg2.c
+#7 42.66 [main] CC rarun2.c
+#7 42.66 [main] CC rabin2.c
+#7 42.66 [main] CC rasign2.c
+#7 42.67 [main] CC rafind2.c
+#7 42.68 [main] CC r2agent.c
+#7 42.69 [main] CC radiff2.c
+#7 42.71 [main] CC rapatch2.c
+#7 42.71 [main] CC radare2.c
+#7 42.72 [main] CC rahash2.c
+#7 42.76 [main] CC rafs2.c
+#7 42.91 LD libr_main.so
+#7 42.98 [r2r] CC load.c
+#7 42.98 [r2r] CC run.c
+#7 42.98 [r2r] CC r2r.c
+#7 43.11 LD r2r
+#7 43.15 [r2pm] CC r2pm.c
+#7 43.19 LD r2pm
+#7 43.24 [ravc2] CC ravc2.c
+#7 43.28 LD ravc2
+#7 43.33 [rax2] CC rax2.c
+#7 43.37 LD rax2
+#7 43.42 [rasm2] CC rasm2.c
+#7 43.46 LD rasm2
+#7 43.51 [rabin2] CC rabin2.c
+#7 43.55 LD rabin2
+#7 43.60 [rahash2] CC rahash2.c
+#7 43.64 LD rahash2
+#7 43.68 [radiff2] CC radiff2.c
+#7 43.73 LD radiff2
+#7 43.82 [rapatch2] CC rapatch2.c
+#7 43.86 LD rapatch2
+#7 43.96 [radare2] CC radare2.c
+#7 44.01 LD radare2
+#7 44.06 [rafind2] CC rafind2.c
+#7 44.10 LD rafind2
+#7 44.17 [rarun2] CC rarun2.c
+#7 44.21 LD rarun2
+#7 44.25 [ragg2] CC ragg2.c
+#7 44.30 LD ragg2
+#7 44.39 [r2agent] CC r2agent.c
+#7 44.43 LD r2agent
+#7 44.48 [rasign2] CC rasign2.c
+#7 44.52 LD rasign2
+#7 44.58 [rafs2] CC rafs2.c
+#7 44.62 LD rafs2
+#7 44.66 [INFO] We need sudo to run the following command:
+#7 44.66  gmake symstall
+#7 44.67 mkdir -p "/usr/local/share/man/man1"
+#7 44.67 mkdir -p "/usr/local/share/man/man7"
+#7 44.68 mkdir -p "/usr/local/share/man/man3"
+#7 44.68 for FILE in r2agent.1 r2pm.1 r2r.1 rabin2.1 radare2.1 radiff2.1 rafind2.1 ragg2.1 rahash2.1 rapatch2.1 rarun2.1 rasign2.1 rasm2.1 ravc2.1 rax2.1 ; do \
+#7 44.68 	ln -fs "/opt/radare2/man/$FILE" "/usr/local/share/man/man1/$FILE" ; done
+#7 44.69 cd "/usr/local/share/man/man1" && ln -fs radare2.1 r2.1
+#7 44.69 for FILE in esil.7 ; do \
+#7 44.69 	ln -fs "/opt/radare2/man/$FILE" "/usr/local/share/man/man7/$FILE" ; done
+#7 44.69 for FILE in r_anal.3 r_arch.3 r_asm.3 r_bin.3 r_bp.3 r_config.3 r_cons.3 r_core.3 r_debug.3 r_egg.3 r_esil.3 r_flag.3 r_fs.3 r_hash.3 r_io.3 r_lang.3 r_magic.3 r_muta.3 r_reg.3 r_search.3 r_socket.3 r_syscall.3 r_util.3 ; do \
+#7 44.69 	ln -fs "/opt/radare2/man/3/$FILE" "/usr/local/share/man/man3/$FILE" ; done
+#7 44.70 mkdir -p "/usr/local/share/doc/radare2"
+#7 44.70 /usr/bin/install -d "/usr/local/share/doc/radare2"
+#7 44.70 for FILE in 3D abi.md all68k.r2 android.md avr.md bash_autocompletion.sh brainfuck.md calling-conventions.md capstone.md cross-compile.md debug-internals.md debug.md devdebug.md dexdump.sh dospart dwarf-line.rsc emscripten.md esil.md flirt.md fortunes freebsd.md gdb.md gprobe.md haiku.md hud ida.md images indent-example.c intro.md io-fixing.md io.md iocache ios.md iphone.md kvast.md lang-plugins licenses licenses.md macos.md macros.md maemo.md objc.pl openbsd.md pdb portscan.r2 qnx.md r2ascii.txt r2pipe.html r2pipe2.md rap.md rapatch.md releases.md repo rgraph.md sandbox sdb_ordinal.md siol.md slides slides.r2.md snap.md solaris.md static.md strings.md termux.md uncrustify.cfg vim vim2r2.js vlang-example.v wasm.md windbg.md windows.md yara.md zsh ; do \
+#7 44.70 	ln -fs "/opt/radare2/doc/$FILE" "/usr/local/share/doc/radare2" ; done
+#7 44.72 mkdir -p "/usr/local/lib/pkgconfig"
+#7 44.72 for FILE in r_anal.pc r_arch.pc r_asm.pc r_bin.pc r_bp.pc r_config.pc r_cons.pc r_core.pc r_debug.pc r_egg.pc r_esil.pc r_flag.pc r_fs.pc r_io.pc r_lang.pc r_magic.pc r_muta.pc r_reg.pc r_search.pc r_socket.pc r_syscall.pc r_util.pc ; do \
+#7 44.72 	ln -fs "/opt/radare2/pkgcfg/$FILE" "/usr/local/lib/pkgconfig/$FILE" ; done
+#7 44.73 rm -rf "/usr/local/share/radare2/6.1.3/www"
+#7 44.73 rm -rf "/usr/local/lib/radare2/6.1.3/www" # old dir
+#7 44.73 mkdir -p "/usr/local/share/radare2/6.1.3/www"
+#7 44.73 for FILE in bolt console.html d3 f favicon.ico icon.png index.html index.old.html log.html m old r2.svg rlogo.png t upload.html ; do \
+#7 44.73 	ln -fs "/opt/radare2/shlr/www/$FILE" "/usr/local/share/radare2/6.1.3/www" ; done
+#7 44.74 rm -rf "/usr/local/share/radare2/6.1.3/panels"
+#7 44.74 mkdir -p "/usr/local/share/radare2/6.1.3/panels"
+#7 44.74 for FILE in layout-x86.json layout-x86_x64.json ; do \
+#7 44.74 	FILE2=$(echo $FILE | cut -d . -f 1); \
+#7 44.74 	ln -fs "/opt/radare2/shlr/panels/$FILE" "/usr/local/share/radare2/6.1.3/panels/$FILE2" ; done
+#7 44.74 for DIR in libr/cons/d libr/flag/d libr/bin/d libr/asm/d libr/syscall/d libr/magic/d libr/anal/d libr/arch/d ; do (\
+#7 44.74 	cd "$DIR" || exit 1 ; \
+#7 44.74 	echo "$DIR" ; \
+#7 44.74 	gmake install-symlink ); \
+#7 44.74 done
+#7 44.74 libr/cons/d
+#7 44.74 gmake[1]: Entering directory '/opt/radare2/libr/cons/d'
+#7 44.74 mkdir -p "/usr/local/share/radare2/6.1.3/cons"
+#7 44.74 for FILE in * ; do \
+#7 44.74 	if [ $FILE != Makefile -a $FILE != meson.build -a -f $FILE ]; then \
+#7 44.74 		ln -fs "/opt/radare2/libr/cons/d/$FILE" "/usr/local/share/radare2/6.1.3/cons/$FILE" ; \
+#7 44.74 	fi ; \
+#7 44.74 done
+#7 44.76 gmake[1]: Leaving directory '/opt/radare2/libr/cons/d'
+#7 44.76 libr/flag/d
+#7 44.76 gmake[1]: Entering directory '/opt/radare2/libr/flag/d'
+#7 44.76 mkdir -p "/usr/local/share/radare2/6.1.3/flag"
+#7 44.76 ln -fs /opt/radare2/libr/flag/d/tags.r2 /usr/local/share/radare2/6.1.3/flag/tags.r2
+#7 44.76 gmake[1]: Leaving directory '/opt/radare2/libr/flag/d'
+#7 44.76 libr/bin/d
+#7 44.76 gmake[1]: Entering directory '/opt/radare2/libr/bin/d'
+#7 44.76 mkdir -p "/usr/local/share/radare2/6.1.3/format"
+#7 44.76 rm -rf "/usr/local/share/radare2/6.1.3/format/dll"
+#7 44.77 for FILE in *.r2 *.h dll symclass.sdb ; do \
+#7 44.77 	[ ! -d "/usr/local/share/radare2/6.1.3/format/$FILE" ] && ln -fs "/opt/radare2/libr/bin/d/$FILE" "/usr/local/share/radare2/6.1.3/format/$FILE" ; \
+#7 44.77 done
+#7 44.77 gmake[1]: Leaving directory '/opt/radare2/libr/bin/d'
+#7 44.77 libr/asm/d
+#7 44.77 gmake[1]: Entering directory '/opt/radare2/libr/asm/d'
+#7 44.78 mkdir -p "/usr/local/share/radare2/6.1.3/opcodes"
+#7 44.78 for FILE in *.sdb ; do ln -fs "/opt/radare2/libr/asm/d/$FILE" "/usr/local/share/radare2/6.1.3/opcodes/$FILE" ; done
+#7 44.79 gmake[1]: Leaving directory '/opt/radare2/libr/asm/d'
+#7 44.79 libr/syscall/d
+#7 44.79 gmake[1]: Entering directory '/opt/radare2/libr/syscall/d'
+#7 44.79 mkdir -p "/usr/local/share/radare2/6.1.3/syscall"
+#7 44.80 for FILE in *.sdb ; do ln -fs "/opt/radare2/libr/syscall/d/$FILE" "/usr/local/share/radare2/6.1.3/syscall/$FILE" ; done
+#7 44.80 gmake[1]: Leaving directory '/opt/radare2/libr/syscall/d'
+#7 44.80 libr/magic/d
+#7 44.80 gmake[1]: Entering directory '/opt/radare2/libr/magic/d'
+#7 44.81 mkdir -p "/usr/local/share/radare2/6.1.3/magic"
+#7 44.81 for FILE in apple archive cafebabe code compressed crc database dis elf encoding filesystems firmware flash flutter freebsd gimp gpg hermes html images java jpeg linux mach microsoft mime netbsd network openbsd pdf perl python riff sniffer sql ssh uuencode video vim vorbis zfs ; do \
+#7 44.81 	ln -fs "/opt/radare2/libr/magic/d/default/$FILE" "/usr/local/share/radare2/6.1.3/magic/$FILE" ; \
+#7 44.81 done
+#7 44.82 gmake[1]: Leaving directory '/opt/radare2/libr/magic/d'
+#7 44.82 libr/anal/d
+#7 44.82 gmake[1]: Entering directory '/opt/radare2/libr/anal/d'
+#7 44.82 cd ../../.. && mkdir -p "/usr/local/share/radare2/6.1.3/fcnsign" && \
+#7 44.82 for FILE in cc-arm-16.sdb cc-arm-32.sdb cc-arm-64.sdb cc-avr-8.sdb cc-hexagon-32.sdb cc-m68k-32.sdb cc-mips-16.sdb cc-mips-32.sdb cc-mips-64.sdb cc-ppc-32.sdb cc-ppc-64.sdb cc-riscv-64.sdb cc-s390-64.sdb cc-sh-32.sdb cc-sparc-32.sdb cc-stm8-16.sdb cc-v850-32.sdb cc-x86-16.sdb cc-x86-32.sdb cc-x86-64.sdb cc-xtensa-32.sdb spec.sdb types-16.sdb types-32.sdb types-64.sdb types-android.sdb types-arm-ios-16.sdb types-arm-ios-32.sdb types-arm-ios-64.sdb types-darwin.sdb types-iokit.sdb types-linux.sdb types-windows.sdb types-x86-macos-64.sdb types-x86-windows-32.sdb types-x86-windows-64.sdb types.sdb; do \
+#7 44.82 	ln -fs "/opt/radare2/libr/anal/d/$FILE" "/usr/local/share/radare2/6.1.3/fcnsign/$FILE" ; \
+#7 44.82 done
+#7 44.83 gmake[1]: Leaving directory '/opt/radare2/libr/anal/d'
+#7 44.83 libr/arch/d
+#7 44.83 gmake[1]: Entering directory '/opt/radare2/libr/arch/d'
+#7 44.84 mkdir -p "//usr/local/share/radare2/6.1.3/platform"
+#7 44.84 for a in nes bf stm8 ; do \
+#7 44.84 	ln -fs "/opt/radare2/libr/arch/d/$a-init.r2" "//usr/local/share/radare2/6.1.3/platform/$a-init.r2" ; \
+#7 44.84 	ln -fs "/opt/radare2/libr/arch/d/$a-fini.r2" "//usr/local/share/radare2/6.1.3/platform/$a-fini.r2" ; \
+#7 44.84 done
+#7 44.84 gmake[1]: Leaving directory '/opt/radare2/libr/arch/d'
+#7 44.84 cd libr && gmake install-symlink
+#7 44.84 gmake[1]: Entering directory '/opt/radare2/libr'
+#7 44.89 gmake[2]: Entering directory '/opt/radare2'
+#7 44.90 mkdir -p "/usr/local/lib/pkgconfig"
+#7 44.90 for FILE in r_anal.pc r_arch.pc r_asm.pc r_bin.pc r_bp.pc r_config.pc r_cons.pc r_core.pc r_debug.pc r_egg.pc r_esil.pc r_flag.pc r_fs.pc r_io.pc r_lang.pc r_magic.pc r_muta.pc r_reg.pc r_search.pc r_socket.pc r_syscall.pc r_util.pc ; do \
+#7 44.90 	ln -fs "/opt/radare2/pkgcfg/$FILE" "/usr/local/lib/pkgconfig/$FILE" ; done
+#7 44.91 gmake[2]: Leaving directory '/opt/radare2'
+#7 44.93 gmake[1]: Leaving directory '/opt/radare2/libr'
+#7 44.93 cd binr && gmake install-symlink
+#7 44.93 gmake[1]: Entering directory '/opt/radare2/binr'
+#7 44.94 cd .. && \
+#7 44.94 mkdir -p "/usr/local/bin" && \
+#7 44.94 for BINARY in r2r r2pm ravc2 rax2 rasm2 rabin2 rahash2 radiff2 rapatch2 radare2 rafind2 rarun2 ragg2 r2agent rasign2 rafs2 ; do ln -fs "/opt/radare2/binr/$BINARY/$BINARY" "/usr/local/bin/$BINARY" ; done
+#7 44.94 cd .. && ln -fs "/opt/radare2/binr/r2pm/r2pm" "/usr/local/bin/r2pm"
+#7 44.94 cd .. && rm -rf "/usr/local/share/radare2/6.1.3/r2pm"
+#7 44.94 cd .. && mkdir -p "/usr/local/share/radare2/6.1.3/"
+#7 44.94 rm -f "/usr/local/bin/r2"
+#7 44.94 cd .. && ln -fs "/opt/radare2/binr/radare2/radare2" "/usr/local/bin/r2"
+#7 44.95 cd .. && ln -fs "/usr/local/bin/radare2" "/usr/local/bin/r2p"
+#7 44.95 cd .. && ln -fs "/opt/radare2/binr/preload/libr2.so" "/usr/local/lib/libr2.so"
+#7 44.95 cd .. && cd "/usr/local/lib" && \
+#7 44.95 	mv libr2.so libr2.so.6.1.3 && \
+#7 44.95 	ln -fs libr2.so.6.1.3 libr2.so
+#7 44.95 gmake[1]: Leaving directory '/opt/radare2/binr'
+#7 44.95 cd shlr && gmake install-symlink
+#7 44.95 gmake[1]: Entering directory '/opt/radare2/shlr'
+#7 44.95 wget: not found
+#7 44.96 mkdir -p "/usr/local/lib"
+#7 44.96 ln -fs "/opt/radare2/shlr/libr_shlr.a" "/usr/local/lib/libr_shlr.a"
+#7 44.96 gmake[1]: Leaving directory '/opt/radare2/shlr'
+#7 44.96 mkdir -p "/usr/local/bin"
+#7 44.96 rm -f "/usr/local/bin/clang-format-radare2"
+#7 44.96 rm -f "/usr/local/bin/r2-indent"
+#7 44.96 ln -fs "/opt/radare2/sys/clang-format-radare2" "/usr/local/bin/clang-format-radare2"
+#7 44.96 rm -rf "/usr/local/share/radare2/6.1.3/scripts"
+#7 44.96 ln -fs scripts "/usr/local/share/radare2/6.1.3/scripts"
+#7 44.96 mkdir -p "/usr/local/share/radare2/6.1.3/hud"
+#7 44.96 ln -fs "/opt/radare2/doc/hud" "/usr/local/share/radare2/6.1.3/hud/main"
+#7 44.96 rm -rf "/usr/local/share/radare2/6.1.3/fortunes"
+#7 44.96 ln -fs "/opt/radare2/doc/fortunes" "/usr/local/share/radare2/6.1.3/fortunes"
+#7 44.97 #mkdir -p "/usr/local/share/radare2/6.1.3/flag"
+#7 44.97 #ln -fs /opt/radare2/libr/flag/d/tags.r2 "/usr/local/share/radare2/6.1.3/flag/tags.r2"
+#7 44.97 cd "/usr/local/lib/radare2/" && rm -f last && ln -fs 6.1.3 last
+#7 44.97 cd "/usr/local/share/radare2/" && rm -f last && ln -fs 6.1.3 last
+#7 44.97 mkdir -p "/usr/local/share/radare2/6.1.3/"
+#7 44.97 /bin/sh ./configure-plugins --rm-static //usr/local/lib/radare2/last/
+#7 44.97 [INFO] Statically linking third-party plugins: 
+#7 44.97 configure-plugins: Loading ./plugins.cfg ..
+#7 45.14 Removed 0 shared plugins that are already static
+#7 DONE 45.2s
+
+#8 [4/9] WORKDIR /app
+#8 DONE 0.1s
+
+#9 [5/9] COPY requirements.txt ./
+#9 DONE 0.0s
+
+#10 [6/9] RUN pip install --no-cache-dir -r requirements.txt
+#10 0.928 Collecting fastmcp>=2.0.0 (from -r requirements.txt (line 1))
+#10 1.060   Downloading fastmcp-3.1.1-py3-none-any.whl.metadata (8.1 kB)
+#10 1.081 Collecting authlib>=1.6.5 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 1.089   Downloading authlib-1.6.9-py2.py3-none-any.whl.metadata (9.8 kB)
+#10 1.124 Collecting cyclopts>=4.0.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 1.132   Downloading cyclopts-4.10.0-py3-none-any.whl.metadata (12 kB)
+#10 1.158 Collecting exceptiongroup>=1.2.2 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 1.165   Downloading exceptiongroup-1.3.1-py3-none-any.whl.metadata (6.7 kB)
+#10 1.182 Collecting httpx<1.0,>=0.28.1 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 1.191   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#10 1.203 Collecting jsonref>=1.1.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 1.212   Downloading jsonref-1.1.0-py3-none-any.whl.metadata (2.7 kB)
+#10 1.224 Collecting jsonschema-path>=0.3.4 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 1.231   Downloading jsonschema_path-0.4.5-py3-none-any.whl.metadata (5.9 kB)
+#10 1.246 Collecting mcp<2.0,>=1.24.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 1.254   Downloading mcp-1.26.0-py3-none-any.whl.metadata (89 kB)
+#10 1.284 Collecting openapi-pydantic>=0.5.1 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 1.293   Downloading openapi_pydantic-0.5.1-py3-none-any.whl.metadata (10 kB)
+#10 1.308 Collecting opentelemetry-api>=1.20.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 1.316   Downloading opentelemetry_api-1.40.0-py3-none-any.whl.metadata (1.5 kB)
+#10 1.329 Collecting packaging>=24.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 1.337   Downloading packaging-26.0-py3-none-any.whl.metadata (3.3 kB)
+#10 1.351 Collecting platformdirs>=4.0.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 1.359   Downloading platformdirs-4.9.4-py3-none-any.whl.metadata (4.7 kB)
+#10 1.371 Collecting py-key-value-aio<0.5.0,>=0.4.4 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 1.379   Downloading py_key_value_aio-0.4.4-py3-none-any.whl.metadata (15 kB)
+#10 1.459 Collecting pydantic>=2.11.7 (from pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 1.469   Downloading pydantic-2.12.5-py3-none-any.whl.metadata (90 kB)
+#10 1.483 Collecting pyperclip>=1.9.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 1.570   Downloading pyperclip-1.11.0-py3-none-any.whl.metadata (2.4 kB)
+#10 1.585 Collecting python-dotenv>=1.1.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 1.594   Downloading python_dotenv-1.2.2-py3-none-any.whl.metadata (27 kB)
+#10 1.624 Collecting pyyaml<7.0,>=6.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 1.632   Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (2.4 kB)
+#10 1.655 Collecting rich>=13.9.4 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 1.665   Downloading rich-14.3.3-py3-none-any.whl.metadata (18 kB)
+#10 1.675 Collecting uncalled-for>=0.2.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 1.683   Downloading uncalled_for-0.2.0-py3-none-any.whl.metadata (2.9 kB)
+#10 1.706 Collecting uvicorn>=0.35 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 1.715   Downloading uvicorn-0.42.0-py3-none-any.whl.metadata (6.7 kB)
+#10 1.756 Collecting watchfiles>=1.0.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 1.765   Downloading watchfiles-1.1.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (4.9 kB)
+#10 1.806 Collecting websockets>=15.0.1 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 1.815   Downloading websockets-16.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (6.8 kB)
+#10 1.892 Collecting cryptography (from authlib>=1.6.5->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 1.902   Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_aarch64.whl.metadata (5.7 kB)
+#10 1.916 Collecting attrs>=23.1.0 (from cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 1.924   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+#10 1.935 Collecting docstring-parser<4.0,>=0.15 (from cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 1.944   Downloading docstring_parser-0.17.0-py3-none-any.whl.metadata (3.5 kB)
+#10 1.955 Collecting rich-rst<2.0.0,>=1.3.1 (from cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 1.962   Downloading rich_rst-1.3.2-py3-none-any.whl.metadata (6.1 kB)
+#10 1.983 Collecting typing-extensions>=4.6.0 (from exceptiongroup>=1.2.2->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 1.992   Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+#10 2.007 Collecting anyio (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 2.099   Downloading anyio-4.12.1-py3-none-any.whl.metadata (4.3 kB)
+#10 2.118 Collecting certifi (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 2.127   Downloading certifi-2026.2.25-py3-none-any.whl.metadata (2.5 kB)
+#10 2.145 Collecting httpcore==1.* (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 2.153   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#10 2.167 Collecting idna (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 2.176   Downloading idna-3.11-py3-none-any.whl.metadata (8.4 kB)
+#10 2.189 Collecting h11>=0.16 (from httpcore==1.*->httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 2.197   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#10 2.212 Collecting pathable<0.6.0,>=0.5.0 (from jsonschema-path>=0.3.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 2.220   Downloading pathable-0.5.0-py3-none-any.whl.metadata (5.9 kB)
+#10 2.240 Collecting referencing<0.38.0 (from jsonschema-path>=0.3.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 2.248   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+#10 2.261 Collecting httpx-sse>=0.4 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 2.269   Downloading httpx_sse-0.4.3-py3-none-any.whl.metadata (9.7 kB)
+#10 2.290 Collecting jsonschema>=4.20.0 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 2.298   Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+#10 2.314 Collecting pydantic-settings>=2.5.2 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 2.323   Downloading pydantic_settings-2.13.1-py3-none-any.whl.metadata (3.4 kB)
+#10 2.346 Collecting pyjwt>=2.10.1 (from pyjwt[crypto]>=2.10.1->mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 2.354   Downloading pyjwt-2.12.1-py3-none-any.whl.metadata (4.1 kB)
+#10 2.369 Collecting python-multipart>=0.0.9 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 2.378   Downloading python_multipart-0.0.22-py3-none-any.whl.metadata (1.8 kB)
+#10 2.393 Collecting sse-starlette>=1.6.1 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 2.401   Downloading sse_starlette-3.3.3-py3-none-any.whl.metadata (14 kB)
+#10 2.425 Collecting starlette>=0.27 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 2.438   Downloading starlette-0.52.1-py3-none-any.whl.metadata (6.3 kB)
+#10 2.453 Collecting typing-inspection>=0.4.1 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 2.461   Downloading typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+#10 2.495 Collecting importlib-metadata<8.8.0,>=6.0 (from opentelemetry-api>=1.20.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 2.504   Downloading importlib_metadata-8.7.1-py3-none-any.whl.metadata (4.7 kB)
+#10 2.523 Collecting beartype>=0.20.0 (from py-key-value-aio<0.5.0,>=0.4.4->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 2.530   Downloading beartype-0.22.9-py3-none-any.whl.metadata (37 kB)
+#10 2.630 Collecting aiofile>=3.5.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 2.638   Downloading aiofile-3.9.0-py3-none-any.whl.metadata (14 kB)
+#10 2.664 Collecting keyring>=25.6.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 2.673   Downloading keyring-25.7.0-py3-none-any.whl.metadata (21 kB)
+#10 2.690 Collecting cachetools>=5.0.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 2.698   Downloading cachetools-7.0.5-py3-none-any.whl.metadata (5.6 kB)
+#10 2.709 Collecting annotated-types>=0.6.0 (from pydantic>=2.11.7->pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 2.719   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+#10 2.972 Collecting pydantic-core==2.41.5 (from pydantic>=2.11.7->pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 2.980   Downloading pydantic_core-2.41.5-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (7.3 kB)
+#10 3.005 Collecting email-validator>=2.0.0 (from pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 3.015   Downloading email_validator-2.3.0-py3-none-any.whl.metadata (26 kB)
+#10 3.028 Collecting markdown-it-py>=2.2.0 (from rich>=13.9.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 3.036   Downloading markdown_it_py-4.0.0-py3-none-any.whl.metadata (7.3 kB)
+#10 3.052 Collecting pygments<3.0.0,>=2.13.0 (from rich>=13.9.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 3.149   Downloading pygments-2.19.2-py3-none-any.whl.metadata (2.5 kB)
+#10 3.168 Collecting click>=7.0 (from uvicorn>=0.35->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 3.176   Downloading click-8.3.1-py3-none-any.whl.metadata (2.6 kB)
+#10 3.207 Collecting caio<0.10.0,>=0.9.0 (from aiofile>=3.5.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 3.216   Downloading caio-0.9.25-cp312-cp312-manylinux_2_34_aarch64.whl.metadata (3.3 kB)
+#10 3.236 Collecting dnspython>=2.0.0 (from email-validator>=2.0.0->pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 3.244   Downloading dnspython-2.8.0-py3-none-any.whl.metadata (5.7 kB)
+#10 3.267 Collecting zipp>=3.20 (from importlib-metadata<8.8.0,>=6.0->opentelemetry-api>=1.20.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 3.275   Downloading zipp-3.23.0-py3-none-any.whl.metadata (3.6 kB)
+#10 3.290 Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.20.0->mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 3.297   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+#10 3.402 Collecting rpds-py>=0.25.0 (from jsonschema>=4.20.0->mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 3.409   Downloading rpds_py-0.30.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (4.1 kB)
+#10 3.419 Collecting SecretStorage>=3.2 (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 3.427   Downloading secretstorage-3.5.0-py3-none-any.whl.metadata (4.0 kB)
+#10 3.437 Collecting jeepney>=0.4.2 (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 3.442   Downloading jeepney-0.9.0-py3-none-any.whl.metadata (1.2 kB)
+#10 3.453 Collecting jaraco.classes (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 3.461   Downloading jaraco.classes-3.4.0-py3-none-any.whl.metadata (2.6 kB)
+#10 3.475 Collecting jaraco.functools (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 3.483   Downloading jaraco_functools-4.4.0-py3-none-any.whl.metadata (3.0 kB)
+#10 3.494 Collecting jaraco.context (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 3.500   Downloading jaraco_context-6.1.1-py3-none-any.whl.metadata (4.3 kB)
+#10 3.510 Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich>=13.9.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 3.518   Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+#10 3.582 Collecting cffi>=2.0.0 (from cryptography->authlib>=1.6.5->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 3.671   Downloading cffi-2.0.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.whl.metadata (2.6 kB)
+#10 3.688 Collecting docutils (from rich-rst<2.0.0,>=1.3.1->cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 3.696   Downloading docutils-0.22.4-py3-none-any.whl.metadata (15 kB)
+#10 3.727 Collecting pycparser (from cffi>=2.0.0->cryptography->authlib>=1.6.5->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 3.735   Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+#10 3.767 Collecting more-itertools (from jaraco.classes->keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#10 3.775   Downloading more_itertools-10.8.0-py3-none-any.whl.metadata (39 kB)
+#10 3.788 Downloading fastmcp-3.1.1-py3-none-any.whl (633 kB)
+#10 3.806    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 633.8/633.8 kB 40.6 MB/s eta 0:00:00
+#10 3.814 Downloading authlib-1.6.9-py2.py3-none-any.whl (244 kB)
+#10 3.825 Downloading cyclopts-4.10.0-py3-none-any.whl (204 kB)
+#10 3.837 Downloading exceptiongroup-1.3.1-py3-none-any.whl (16 kB)
+#10 3.844 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#10 3.853 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#10 3.863 Downloading jsonref-1.1.0-py3-none-any.whl (9.4 kB)
+#10 3.871 Downloading jsonschema_path-0.4.5-py3-none-any.whl (19 kB)
+#10 3.878 Downloading mcp-1.26.0-py3-none-any.whl (233 kB)
+#10 3.887 Downloading openapi_pydantic-0.5.1-py3-none-any.whl (96 kB)
+#10 3.898 Downloading opentelemetry_api-1.40.0-py3-none-any.whl (68 kB)
+#10 3.907 Downloading packaging-26.0-py3-none-any.whl (74 kB)
+#10 3.916 Downloading platformdirs-4.9.4-py3-none-any.whl (21 kB)
+#10 3.924 Downloading py_key_value_aio-0.4.4-py3-none-any.whl (152 kB)
+#10 3.932 Downloading pydantic-2.12.5-py3-none-any.whl (463 kB)
+#10 3.949 Downloading pydantic_core-2.41.5-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (1.9 MB)
+#10 4.021    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.9/1.9 MB 23.6 MB/s eta 0:00:00
+#10 4.029 Downloading pyperclip-1.11.0-py3-none-any.whl (11 kB)
+#10 4.037 Downloading python_dotenv-1.2.2-py3-none-any.whl (22 kB)
+#10 4.045 Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (775 kB)
+#10 4.083    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 775.1/775.1 kB 14.8 MB/s eta 0:00:00
+#10 4.091 Downloading rich-14.3.3-py3-none-any.whl (310 kB)
+#10 4.200 Downloading uncalled_for-0.2.0-py3-none-any.whl (11 kB)
+#10 4.210 Downloading uvicorn-0.42.0-py3-none-any.whl (68 kB)
+#10 4.218 Downloading watchfiles-1.1.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (449 kB)
+#10 4.234 Downloading websockets-16.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (186 kB)
+#10 4.243 Downloading aiofile-3.9.0-py3-none-any.whl (19 kB)
+#10 4.250 Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+#10 4.257 Downloading anyio-4.12.1-py3-none-any.whl (113 kB)
+#10 4.266 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+#10 4.275 Downloading beartype-0.22.9-py3-none-any.whl (1.3 MB)
+#10 4.292    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 78.2 MB/s eta 0:00:00
+#10 4.301 Downloading cachetools-7.0.5-py3-none-any.whl (13 kB)
+#10 4.308 Downloading click-8.3.1-py3-none-any.whl (108 kB)
+#10 4.318 Downloading docstring_parser-0.17.0-py3-none-any.whl (36 kB)
+#10 4.327 Downloading email_validator-2.3.0-py3-none-any.whl (35 kB)
+#10 4.335 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#10 4.343 Downloading httpx_sse-0.4.3-py3-none-any.whl (9.0 kB)
+#10 4.352 Downloading idna-3.11-py3-none-any.whl (71 kB)
+#10 4.360 Downloading importlib_metadata-8.7.1-py3-none-any.whl (27 kB)
+#10 4.367 Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+#10 4.377 Downloading keyring-25.7.0-py3-none-any.whl (39 kB)
+#10 4.383 Downloading markdown_it_py-4.0.0-py3-none-any.whl (87 kB)
+#10 4.394 Downloading pathable-0.5.0-py3-none-any.whl (16 kB)
+#10 4.401 Downloading pydantic_settings-2.13.1-py3-none-any.whl (58 kB)
+#10 4.411 Downloading pygments-2.19.2-py3-none-any.whl (1.2 MB)
+#10 4.430    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 56.9 MB/s eta 0:00:00
+#10 4.439 Downloading pyjwt-2.12.1-py3-none-any.whl (29 kB)
+#10 4.447 Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_aarch64.whl (4.3 MB)
+#10 4.762    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.3/4.3 MB 13.1 MB/s eta 0:00:00
+#10 4.773 Downloading python_multipart-0.0.22-py3-none-any.whl (24 kB)
+#10 4.784 Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+#10 4.796 Downloading rich_rst-1.3.2-py3-none-any.whl (12 kB)
+#10 4.805 Downloading sse_starlette-3.3.3-py3-none-any.whl (14 kB)
+#10 4.815 Downloading starlette-0.52.1-py3-none-any.whl (74 kB)
+#10 4.826 Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+#10 4.837 Downloading typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+#10 4.849 Downloading certifi-2026.2.25-py3-none-any.whl (153 kB)
+#10 4.858 Downloading caio-0.9.25-cp312-cp312-manylinux_2_34_aarch64.whl (81 kB)
+#10 4.868 Downloading cffi-2.0.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.whl (220 kB)
+#10 4.879 Downloading dnspython-2.8.0-py3-none-any.whl (331 kB)
+#10 4.891 Downloading jeepney-0.9.0-py3-none-any.whl (49 kB)
+#10 4.900 Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+#10 4.910 Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+#10 4.921 Downloading rpds_py-0.30.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (390 kB)
+#10 4.932 Downloading secretstorage-3.5.0-py3-none-any.whl (15 kB)
+#10 4.941 Downloading zipp-3.23.0-py3-none-any.whl (10 kB)
+#10 4.951 Downloading docutils-0.22.4-py3-none-any.whl (633 kB)
+#10 4.959    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 633.2/633.2 kB 105.6 MB/s eta 0:00:00
+#10 4.969 Downloading jaraco.classes-3.4.0-py3-none-any.whl (6.8 kB)
+#10 4.978 Downloading jaraco_context-6.1.1-py3-none-any.whl (7.0 kB)
+#10 4.989 Downloading jaraco_functools-4.4.0-py3-none-any.whl (10 kB)
+#10 4.998 Downloading more_itertools-10.8.0-py3-none-any.whl (69 kB)
+#10 5.007 Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+#10 5.117 Installing collected packages: pyperclip, zipp, websockets, uncalled-for, typing-extensions, rpds-py, pyyaml, python-multipart, python-dotenv, pyjwt, pygments, pycparser, platformdirs, pathable, packaging, more-itertools, mdurl, jsonref, jeepney, jaraco.context, idna, httpx-sse, h11, docutils, docstring-parser, dnspython, click, certifi, caio, cachetools, beartype, attrs, annotated-types, uvicorn, typing-inspection, referencing, pydantic-core, py-key-value-aio, markdown-it-py, jaraco.functools, jaraco.classes, importlib-metadata, httpcore, exceptiongroup, email-validator, cffi, anyio, aiofile, watchfiles, starlette, rich, pydantic, opentelemetry-api, jsonschema-specifications, jsonschema-path, httpx, cryptography, sse-starlette, SecretStorage, rich-rst, pydantic-settings, openapi-pydantic, jsonschema, authlib, mcp, keyring, cyclopts, fastmcp
+#10 7.565 Successfully installed SecretStorage-3.5.0 aiofile-3.9.0 annotated-types-0.7.0 anyio-4.12.1 attrs-26.1.0 authlib-1.6.9 beartype-0.22.9 cachetools-7.0.5 caio-0.9.25 certifi-2026.2.25 cffi-2.0.0 click-8.3.1 cryptography-46.0.5 cyclopts-4.10.0 dnspython-2.8.0 docstring-parser-0.17.0 docutils-0.22.4 email-validator-2.3.0 exceptiongroup-1.3.1 fastmcp-3.1.1 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 httpx-sse-0.4.3 idna-3.11 importlib-metadata-8.7.1 jaraco.classes-3.4.0 jaraco.context-6.1.1 jaraco.functools-4.4.0 jeepney-0.9.0 jsonref-1.1.0 jsonschema-4.26.0 jsonschema-path-0.4.5 jsonschema-specifications-2025.9.1 keyring-25.7.0 markdown-it-py-4.0.0 mcp-1.26.0 mdurl-0.1.2 more-itertools-10.8.0 openapi-pydantic-0.5.1 opentelemetry-api-1.40.0 packaging-26.0 pathable-0.5.0 platformdirs-4.9.4 py-key-value-aio-0.4.4 pycparser-3.0 pydantic-2.12.5 pydantic-core-2.41.5 pydantic-settings-2.13.1 pygments-2.19.2 pyjwt-2.12.1 pyperclip-1.11.0 python-dotenv-1.2.2 python-multipart-0.0.22 pyyaml-6.0.3 referencing-0.37.0 rich-14.3.3 rich-rst-1.3.2 rpds-py-0.30.0 sse-starlette-3.3.3 starlette-0.52.1 typing-extensions-4.15.0 typing-inspection-0.4.2 uncalled-for-0.2.0 uvicorn-0.42.0 watchfiles-1.1.1 websockets-16.0 zipp-3.23.0
+#10 7.565 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#10 7.672 
+#10 7.672 [notice] A new release of pip is available: 25.0.1 -> 26.0.1
+#10 7.672 [notice] To update, run: pip install --upgrade pip
+#10 DONE 7.9s
+
+#11 [7/9] COPY mcp_server.py ./
+#11 DONE 0.0s
+
+#12 [8/9] COPY hd_fetch.py ./
+#12 DONE 0.0s
+
+#13 [9/9] RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+#13 DONE 0.1s
+
+#14 exporting to image
+#14 exporting layers
+#14 exporting layers 17.7s done
+#14 exporting manifest sha256:937034e11e67f7238b99c85eb4063ede89a03b21ba3be8714e06272691c4b99d done
+#14 exporting config sha256:4df5d9948e2662d325baaa924bec8907b878745d0674fe0c5fb59bf1d93a0436 done
+#14 exporting attestation manifest sha256:49e00b7a5e4ff6e8cadd69746ead1b2fb4c869e59bc68ded46d4682c40d18629 done
+#14 exporting manifest list sha256:2fcc28d4a3a7426a49f2196a77dc8338c7e915b55aa73419fe0f1898eba37ec5 done
+#14 naming to docker.io/hackerdogs/radare2-mcp:latest done
+#14 unpacking to docker.io/hackerdogs/radare2-mcp:latest
+#14 unpacking to docker.io/hackerdogs/radare2-mcp:latest 3.0s done
+#14 DONE 20.8s
+  [0;32m✅ PASS: Docker image hackerdogs/radare2-mcp:latest exists[0m
+
+[0;34m[Test 2] CLI binary inside container[0m
+  [0;32m✅ PASS: r2 binary responds[0m
+       ERROR: Missing file to open
+
+[0;34m[Test 3] MCP stdio mode — initialize + tools/list[0m
+  [0;32m✅ PASS: stdio mode returned tools/list response (       2 tool names found)[0m
+
+[0;34m[Test 4] MCP HTTP streamable mode — initialize[0m
+  [0;32m✅ PASS: HTTP streamable mode responded (status 200)[0m
+       Session ID: 0a9ddfb8b6e14f15...
+
+[0;34m[Test 5] MCP HTTP — tools/list[0m
+  [0;32m✅ PASS: HTTP tools/list returned tools[0m
+
+[0;34m[Test 6] MCP HTTP — tools/call (run_radare2)[0m
+  [0;32m✅ PASS: tools/call run_radare2 returned a result[0m
+
+=================================================================================
+[0;34mResults: [0;32m6 passed[0m, [0;31m0 failed[0m
+=================================================================================
+radare2-mcp-test
+radare2-mcp-test

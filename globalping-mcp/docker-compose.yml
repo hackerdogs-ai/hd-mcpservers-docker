@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  globalping-mcp:
+    image: hackerdogs/globalping-mcp:latest
+    build: .
+    ports:
+      - "8643:8643"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8643
+

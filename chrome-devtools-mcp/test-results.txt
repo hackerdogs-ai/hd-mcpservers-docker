@@ -1,0 +1,77 @@
+========== Retesting chrome-devtools-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 DONE 0.0s
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 475B done
+#1 DONE 0.0s
+
+#2 [auth] library/node:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 1.4s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#5 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 72B done
+#6 DONE 0.0s
+
+#7 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#7 CACHED
+
+#8 [6/7] COPY entrypoint.sh /entrypoint.sh
+#8 CACHED
+
+#9 [2/7] WORKDIR /app
+#9 CACHED
+
+#10 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [4/7] RUN npm install -g @mcp-b/chrome-devtools-mcp supergateway 2>/dev/null || npm install -g supergateway
+#11 CACHED
+
+#12 [7/7] RUN chmod +x /entrypoint.sh
+#12 CACHED
+
+#13 exporting to image
+#13 exporting layers 0.0s done
+#13 exporting manifest sha256:fa38b49d4d299d3fed7172e671774a9bf62994b4e24d3c8998560828d6b8d7de done
+#13 exporting config sha256:5349d2e29481f0e3108ef0ca342e102d461651f2ae10eb7768b775b83846a551 done
+#13 exporting attestation manifest sha256:2f548ede5f983a9e84aaaeecfe38857666fb105d11200b17844ded53164f80fa 0.0s done
+#13 exporting manifest list sha256:03aa7069b34d1fa1d84fa02e4f5a59bd72613c4049982f8f20efd7379481f6c3 0.0s done
+#13 naming to docker.io/library/chrome-devtools-mcp:latest
+#13 naming to docker.io/library/chrome-devtools-mcp:latest done
+#13 unpacking to docker.io/library/chrome-devtools-mcp:latest done
+#13 naming to docker.io/hackerdogs/chrome-devtools-mcp:latest done
+#13 unpacking to docker.io/hackerdogs/chrome-devtools-mcp:latest 0.0s done
+#13 DONE 0.5s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/u3tguycel0ku1c7m93lsmuquj
+========== chrome-devtools-mcp test (compliance) ==========
+[0;34m[1] Install[0m
+  [0;32mPASS: image exists[0m
+[0;34m[2] Stdio tools/list[0m
+  [0;31mFAIL: stdio tools/list[0m
+[0;34m[3] Stdio tools/call (skipped — upstream package)[0m
+  [0;32mPASS: stdio tools/call (upstream)[0m
+[0;34m[4] HTTP streamable tools/list[0m
+  [0;31mFAIL: HTTP tools/list[0m
+[0;34m[5] HTTP streamable tools/call (skipped — upstream package)[0m
+  [0;32mPASS: HTTP tools/call (upstream)[0m
+
+Total: 3 passed, 2 failed
+chrome-devtools-mcp-test
+chrome-devtools-mcp-test
+
+❌ FAIL (Test): chrome-devtools-mcp

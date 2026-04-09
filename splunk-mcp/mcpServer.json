@@ -1,0 +1,24 @@
+{
+  "mcpServers": {
+    "splunk-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "MCP_TRANSPORT",
+        "-e",
+        "SPLUNK_URL",
+        "-e",
+        "SPLUNK_TOKEN",
+        "hackerdogs/splunk-mcp:latest"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio",
+        "SPLUNK_URL": "",
+        "SPLUNK_TOKEN": ""
+      }
+    }
+  }
+}

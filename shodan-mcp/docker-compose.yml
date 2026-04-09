@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  shodan-mcp:
+    image: hackerdogs/shodan-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: shodan-mcp
+    ports:
+      - "8453:8453"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8453
+    restart: unless-stopped

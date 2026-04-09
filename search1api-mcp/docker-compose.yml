@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  search1api-mcp:
+    image: hackerdogs/search1api-mcp:latest
+    build: .
+    ports:
+      - "8664:8664"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8664
+      - SEARCH1API_KEY=${SEARCH1API_KEY:-}

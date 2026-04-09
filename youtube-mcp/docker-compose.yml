@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  youtube-mcp:
+    image: hackerdogs/youtube-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: youtube-mcp
+    ports:
+      - "8462:8462"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8462
+    restart: unless-stopped

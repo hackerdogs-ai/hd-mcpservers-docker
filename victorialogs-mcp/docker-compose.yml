@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  victorialogs-mcp:
+    image: hackerdogs/victorialogs-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: victorialogs-mcp
+    ports:
+      - "8527:8527"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8527
+      - VICTORIALOGS_URL=${VICTORIALOGS_URL:-http://localhost:9428}
+    restart: unless-stopped

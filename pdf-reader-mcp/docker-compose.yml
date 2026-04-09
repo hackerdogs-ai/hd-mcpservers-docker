@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  pdf-reader-mcp:
+    image: hackerdogs/pdf-reader-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pdf-reader-mcp
+    ports:
+      - "8442:8442"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8442
+    restart: unless-stopped

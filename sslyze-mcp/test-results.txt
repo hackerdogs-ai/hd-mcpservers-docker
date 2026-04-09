@@ -1,0 +1,136 @@
+MCP test run - sslyze-mcp
+Generated (UTC): 2026-03-20T19:44:40Z
+Exit code: 0
+Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
+---------------------------------------------------------------------------------
+=================================================================================
+[0;34mSSLyze MCP Server — Test Suite[0m
+=================================================================================
+
+[0;34m[Test 1] Docker image[0m
+  Image not found. Building...
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.81kB done
+#1 DONE 0.0s
+
+#2 [auth] library/python:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#3 DONE 0.8s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/9] FROM docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0
+#5 resolve docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0 done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 4.63kB done
+#6 DONE 0.0s
+
+#7 [2/9] RUN groupadd -g 1000 mcpuser &&     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
+#7 CACHED
+
+#8 [4/9] WORKDIR /app
+#8 CACHED
+
+#9 [3/9] RUN apt-get update && apt-get install -y --no-install-recommends     tini     ca-certificates     && rm -rf /var/lib/apt/lists/*
+#9 CACHED
+
+#10 [5/9] COPY requirements.txt ./
+#10 CACHED
+
+#11 [6/9] RUN pip install --no-cache-dir -r requirements.txt
+#11 CACHED
+
+#12 [7/9] RUN pip install --no-cache-dir sslyze
+#12 0.602 Collecting sslyze
+#12 0.673   Downloading sslyze-6.3.0.tar.gz (1.0 MB)
+#12 0.729      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.0/1.0 MB 38.9 MB/s eta 0:00:00
+#12 0.767   Installing build dependencies: started
+#12 1.660   Installing build dependencies: finished with status 'done'
+#12 1.660   Getting requirements to build wheel: started
+#12 1.758   Getting requirements to build wheel: finished with status 'done'
+#12 1.759   Preparing metadata (pyproject.toml): started
+#12 1.841   Preparing metadata (pyproject.toml): finished with status 'done'
+#12 2.088 Collecting nassl<6,>=5.4 (from sslyze)
+#12 2.693   Downloading nassl-5.4.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.whl.metadata (1.1 kB)
+#12 2.805 Collecting cryptography<45,>=43 (from sslyze)
+#12 2.815   Downloading cryptography-44.0.3-cp39-abi3-manylinux_2_34_aarch64.whl.metadata (5.7 kB)
+#12 3.033 Collecting tls-parser<3,>=2 (from sslyze)
+#12 3.044   Downloading tls_parser-2.0.2-py3-none-any.whl.metadata (388 bytes)
+#12 3.047 Requirement already satisfied: pydantic<3,>=2.3 in /usr/local/lib/python3.12/site-packages (from sslyze) (2.12.5)
+#12 3.049 Requirement already satisfied: cffi>=1.12 in /usr/local/lib/python3.12/site-packages (from cryptography<45,>=43->sslyze) (2.0.0)
+#12 3.053 Requirement already satisfied: annotated-types>=0.6.0 in /usr/local/lib/python3.12/site-packages (from pydantic<3,>=2.3->sslyze) (0.7.0)
+#12 3.053 Requirement already satisfied: pydantic-core==2.41.5 in /usr/local/lib/python3.12/site-packages (from pydantic<3,>=2.3->sslyze) (2.41.5)
+#12 3.055 Requirement already satisfied: typing-extensions>=4.14.1 in /usr/local/lib/python3.12/site-packages (from pydantic<3,>=2.3->sslyze) (4.15.0)
+#12 3.056 Requirement already satisfied: typing-inspection>=0.4.2 in /usr/local/lib/python3.12/site-packages (from pydantic<3,>=2.3->sslyze) (0.4.2)
+#12 3.059 Requirement already satisfied: pycparser in /usr/local/lib/python3.12/site-packages (from cffi>=1.12->cryptography<45,>=43->sslyze) (3.0)
+#12 3.070 Downloading cryptography-44.0.3-cp39-abi3-manylinux_2_34_aarch64.whl (4.0 MB)
+#12 3.303    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.0/4.0 MB 16.6 MB/s eta 0:00:00
+#12 3.667 Downloading nassl-5.4.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.whl (2.6 MB)
+#12 4.400    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.6/2.6 MB 3.2 MB/s eta 0:00:00
+#12 4.627 Downloading tls_parser-2.0.2-py3-none-any.whl (11 kB)
+#12 4.635 Building wheels for collected packages: sslyze
+#12 4.636   Building wheel for sslyze (pyproject.toml): started
+#12 4.816   Building wheel for sslyze (pyproject.toml): finished with status 'done'
+#12 4.817   Created wheel for sslyze: filename=sslyze-6.3.0-py3-none-any.whl size=1063445 sha256=83db968c6582cee28bf65d2f05605e48778b7dfd2443f993b6780caf1b19664c
+#12 4.817   Stored in directory: /tmp/pip-ephem-wheel-cache-3perwerv/wheels/2a/df/37/205bca9963323a061af1dfbb5505a407c8380a4e0652ae263a
+#12 4.819 Successfully built sslyze
+#12 4.860 Installing collected packages: tls-parser, nassl, cryptography, sslyze
+#12 4.903   Attempting uninstall: cryptography
+#12 4.904     Found existing installation: cryptography 46.0.5
+#12 4.912     Uninstalling cryptography-46.0.5:
+#12 4.964       Successfully uninstalled cryptography-46.0.5
+#12 5.116 Successfully installed cryptography-44.0.3 nassl-5.4.0 sslyze-6.3.0 tls-parser-2.0.2
+#12 5.116 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#12 5.202 
+#12 5.202 [notice] A new release of pip is available: 25.0.1 -> 26.0.1
+#12 5.202 [notice] To update, run: pip install --upgrade pip
+#12 DONE 5.3s
+
+#13 [8/9] COPY mcp_server.py ./
+#13 DONE 0.3s
+
+#14 [9/9] RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+#14 DONE 0.1s
+
+#15 exporting to image
+#15 exporting layers
+#15 exporting layers 0.6s done
+#15 exporting manifest sha256:bb01d00557d0812648f7b8a97ff93db97a16b157e75c4ed527b6494a60ff38df done
+#15 exporting config sha256:214652d925cb99292480d91f54dfd657e8f4f202704ddc3b1035ba8f8dff7996 done
+#15 exporting attestation manifest sha256:29af981185b0abf861329486d402aa657062e8f4fc5e976e0c33d367003a3402 done
+#15 exporting manifest list sha256:fea0ae27b9656e9541ac01cb5ca9241e84b73272c68e9fde6c958b8e9c64b8d1 done
+#15 naming to docker.io/hackerdogs/sslyze-mcp:latest done
+#15 unpacking to docker.io/hackerdogs/sslyze-mcp:latest 0.1s done
+#15 DONE 0.7s
+  [0;32m✅ PASS: Docker image hackerdogs/sslyze-mcp:latest exists[0m
+
+[0;34m[Test 2] CLI binary inside container[0m
+  [0;32m✅ PASS: sslyze binary responds[0m
+       usage: sslyze [-h] [--update_trust_stores] [--cert CERTIFICATE_FILE]
+
+[0;34m[Test 3] MCP stdio mode — initialize + tools/list[0m
+  [0;32m✅ PASS: stdio mode returned tools/list response (       1 tool names found)[0m
+
+[0;34m[Test 4] MCP HTTP streamable mode — initialize[0m
+  [0;32m✅ PASS: HTTP streamable mode responded (status 200)[0m
+       Session ID: 5419065e2b3c4e63...
+
+[0;34m[Test 5] MCP HTTP — tools/list[0m
+  [0;32m✅ PASS: HTTP tools/list returned tools[0m
+
+[0;34m[Test 6] MCP HTTP — tools/call (run_sslyze)[0m
+  [0;32m✅ PASS: tools/call run_sslyze returned a result[0m
+
+=================================================================================
+[0;34mResults: [0;32m6 passed[0m, [0;31m0 failed[0m
+=================================================================================
+sslyze-mcp-test
+sslyze-mcp-test

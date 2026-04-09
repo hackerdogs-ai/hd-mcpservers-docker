@@ -1,0 +1,87 @@
+========== Testing dns-mcp-server-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 478B 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 ...
+
+#3 [auth] library/node:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 1.9s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.1s
+
+#5 [internal] load build context
+#5 DONE 0.0s
+
+#6 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#6 DONE 0.0s
+
+#7 [2/7] WORKDIR /app
+#7 CACHED
+
+#8 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#5 [internal] load build context
+#5 transferring context: 10.75kB done
+#5 DONE 0.1s
+
+#9 [4/7] RUN npm install -g @cenemiljezweb/dns-mcp-server supergateway 2>/dev/null || npm install -g supergateway
+#9 12.14 
+#9 12.14 added 234 packages in 12s
+#9 12.14 
+#9 12.14 35 packages are looking for funding
+#9 12.14   run `npm fund` for details
+#9 DONE 12.4s
+
+#10 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#10 DONE 0.1s
+
+#11 [6/7] COPY entrypoint.sh /entrypoint.sh
+#11 DONE 0.1s
+
+#12 [7/7] RUN chmod +x /entrypoint.sh
+#12 DONE 0.4s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 2.3s done
+#13 exporting manifest sha256:264d13e70488e31618b3ee560b264db462bed880050462630c579fdb9a1cda22 0.0s done
+#13 exporting config sha256:9143b307e2d6f0d1570e4cb3afa4676e68ea2711d68b64e3117c3d2a98b6a38c 0.0s done
+#13 exporting attestation manifest sha256:c791a952ff9d0f380115824c15366d84a600e136a8fc8122efff39b492cc842e
+#13 exporting attestation manifest sha256:c791a952ff9d0f380115824c15366d84a600e136a8fc8122efff39b492cc842e 0.0s done
+#13 exporting manifest list sha256:0c3407852a1f95071d5dc2b75dcdfca10f679a93c1d871ed003659334c98880a 0.0s done
+#13 naming to docker.io/library/dns-mcp-server-mcp:latest 0.0s done
+#13 unpacking to docker.io/library/dns-mcp-server-mcp:latest
+#13 unpacking to docker.io/library/dns-mcp-server-mcp:latest 1.7s done
+#13 naming to docker.io/hackerdogs/dns-mcp-server-mcp:latest done
+#13 unpacking to docker.io/hackerdogs/dns-mcp-server-mcp:latest 0.0s done
+#13 DONE 4.4s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/ucvetkj9714vr8m4swjowchpc
+========== dns-mcp-server-mcp test (compliance) ==========
+[0;34m[1] Install[0m
+  [0;32mPASS: image exists[0m
+[0;34m[2] Stdio tools/list[0m
+  [0;31mFAIL: stdio tools/list[0m
+[0;34m[3] Stdio tools/call (skipped — upstream package)[0m
+  [0;32mPASS: stdio tools/call (upstream)[0m
+[0;34m[4] HTTP streamable tools/list[0m
+  [0;31mFAIL: HTTP tools/list[0m
+[0;34m[5] HTTP streamable tools/call (skipped — upstream package)[0m
+  [0;32mPASS: HTTP tools/call (upstream)[0m
+
+Total: 3 passed, 2 failed
+dns-mcp-server-mcp-test
+dns-mcp-server-mcp-test
+
+❌ FAIL (Test): dns-mcp-server-mcp

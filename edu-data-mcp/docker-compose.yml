@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  edu-data-mcp:
+    image: hackerdogs/edu-data-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: edu-data-mcp
+    ports:
+      - "8416:8416"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8416
+    restart: unless-stopped

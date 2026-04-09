@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  postman-mcp:
+    image: hackerdogs/postman-mcp:latest
+    build: .
+    ports:
+      - "8658:8658"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8658
+      - POSTMAN_API_KEY=${POSTMAN_API_KEY:-}

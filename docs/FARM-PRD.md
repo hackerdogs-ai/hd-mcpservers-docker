@@ -367,6 +367,29 @@ Each MCP server runs as an independent container:
 - **No exposed host ports** — only reachable within the Docker network via Caddy
 - **Health check:** Each server exposes `/mcp/` which returns the MCP capability negotiation
 
+### 4.6 Relationship to Acuvity/Cyproxio Migration (No Minibridge)
+
+The farm architecture **depends on every MCP server being a Hackerdogs-built image** that exposes **native FastMCP streamable-http** on a single port (e.g. `MCP_PORT=8105`). Caddy routes to `https://mcp.hackerdogs.ai/{server-name}/mcp/`, strips the path prefix, and reverse-proxies to the container; the health checker expects the **`/mcp/`** endpoint. This design is **incompatible with Acuvity’s Minibridge-based images** and is **reinforced** by the Acuvity/Cyproxio migration.
+
+**Why the farm does not use Acuvity/Minibridge images:**
+
+| Farm requirement | Acuvity image (Minibridge) | Hackerdogs image (FastMCP) |
+|------------------|---------------------------|----------------------------|
+| **Endpoint path** | Minibridge exposes `/sse` and `/mcp` (configurable); default listen is `:8000`. | FastMCP exposes `/mcp/` (streamable-http). |
+| **Process model** | Two processes: Minibridge (Go) + child (e.g. Node MCP over stdio). | Single process: Python FastMCP (stdio + streamable-http in one). |
+| **Health check** | Would need to target Minibridge’s path/port; differs from our canonical `/mcp/`. | Matches farm: one container, one port, `/mcp/` for health and traffic. |
+| **Image source** | `acuvity/mcp-server-*` (external). | `hackerdogs/*-mcp:latest` (our registry, one pattern). |
+
+Using Acuvity images in the farm would require Caddy/routes and health checks to treat those servers differently (path, port 8000, possibly different session semantics). That would complicate the farm’s uniform URL scheme and dynamic registration. **Therefore the farm uses only Hackerdogs-built servers** — no Minibridge, no Acuvity images as primary runtime.
+
+**How the migration affects the farm:**
+
+- **Audit:** Many security tools (e.g. alterx, amass, nuclei, nmap) exist today as Cyproxio (stdio-only) or Acuvity (Minibridge + Cyproxio). The [Acuvity/Cyproxio audit](../tools-to-migrate-to-mcp/ACUVITY_CYPROXIO_AUDIT.md) lists which are already Hackerdogs-built (e.g. commix, scoutsuite, sslscan, smuggler, wpscan) and which must be added as new `*-mcp` servers.
+- **Next steps:** [NEXT_STEPS_ACUVITY_CYPROXIO_COMPLIANCE.md](../tools-to-migrate-to-mcp/NEXT_STEPS_ACUVITY_CYPROXIO_COMPLIANCE.md) describes copying tool semantics from Cyproxio into FastMCP (Python) wrappers, building Hackerdogs images with **no Minibridge**, and ensuring each server has stdio + streamable-http and a compliant `test.sh`.
+- **Result:** Once migration is complete, every Cyproxio-related server that the farm needs is a `hackerdogs/*-mcp:latest` container with native `/mcp/`. The farm’s Caddy config, health checks, dynamic registration, and URL scheme apply uniformly. The 155+ server count includes these tools as first-class farm services with no special handling.
+
+**Summary:** The decision to **remove the Minibridge dependency** and use only Hackerdogs FastMCP servers **is required for the farm**. It keeps one URL scheme, one health endpoint, one process per container, and one image pattern — and allows the farm to scale to 155+ servers without branching logic for “Acuvity vs Hackerdogs” images.
+
 ---
 
 ## 5. Dynamic Server Registration

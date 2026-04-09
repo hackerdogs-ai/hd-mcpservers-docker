@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "mitre-attack-remote": {
+      "url": "https://attack-mcp.mitre.org/mcp"
+    }
+  }
+}

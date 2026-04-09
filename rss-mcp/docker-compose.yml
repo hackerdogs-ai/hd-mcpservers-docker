@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  rss-mcp:
+    image: hackerdogs/rss-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rss-mcp
+    ports:
+      - "8448:8448"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8448
+    restart: unless-stopped

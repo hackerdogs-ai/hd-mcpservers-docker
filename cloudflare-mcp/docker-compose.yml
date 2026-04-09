@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  cloudflare-mcp:
+    image: hackerdogs/cloudflare-mcp:latest
+    build: .
+    ports:
+      - "8633:8633"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8633
+      - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN:-}

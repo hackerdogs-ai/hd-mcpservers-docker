@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "postman-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "MCP_TRANSPORT",
+        "-e",
+        "POSTMAN_API_KEY",
+        "hackerdogs/postman-mcp:latest"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio",
+        "POSTMAN_API_KEY": ""
+      }
+    }
+  }
+}

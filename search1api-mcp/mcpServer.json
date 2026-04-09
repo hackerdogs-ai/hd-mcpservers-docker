@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "search1api-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "MCP_TRANSPORT",
+        "-e",
+        "SEARCH1API_KEY",
+        "hackerdogs/search1api-mcp:latest"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio",
+        "SEARCH1API_KEY": ""
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  builtwith-mcp:
+    image: hackerdogs/builtwith-mcp:latest
+    build: { context: ., dockerfile: Dockerfile }
+    container_name: builtwith-mcp
+    ports: ["8375:8375"]
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8375
+      - BUILTWITH_API_KEY=${BUILTWITH_API_KEY:-}
+    restart: unless-stopped

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  marinetraffic-mcp:
+    image: hackerdogs/marinetraffic-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: marinetraffic-mcp
+    ports:
+      - "8430:8430"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8430
+    restart: unless-stopped

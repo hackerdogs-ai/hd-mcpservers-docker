@@ -1,0 +1,1 @@
+{"mcpServers":{"builtwith-mcp":{"command":"docker","args":["run","-i","--rm","-e","MCP_TRANSPORT","-e","MCP_PORT","-e","BUILTWITH_API_KEY","hackerdogs/builtwith-mcp:latest"],"env":{"MCP_TRANSPORT":"stdio","BUILTWITH_API_KEY":""}}}}

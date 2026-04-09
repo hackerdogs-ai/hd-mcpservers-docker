@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  acuvity-mcp-server-duckduckgo-mcp:
+    image: hackerdogs/acuvity-mcp-server-duckduckgo-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: acuvity-mcp-server-duckduckgo-mcp
+    ports:
+      - "8414:8414"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8414
+    restart: unless-stopped

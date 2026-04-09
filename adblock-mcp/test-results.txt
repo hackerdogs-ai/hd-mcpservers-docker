@@ -1,0 +1,15 @@
+========== adblock-mcp test (compliance) ==========
+[1] Install
+  PASS: image exists
+[2] Stdio tools/list
+  PASS: stdio tools/list
+[3] Stdio tools/call
+  PASS: stdio tools/call
+[4] HTTP streamable tools/list
+  PASS: HTTP tools/list
+[5] HTTP streamable tools/call
+  PASS: HTTP tools/call
+
+Total: 5 passed, 0 failed
+adblock-mcp-test
+adblock-mcp-test

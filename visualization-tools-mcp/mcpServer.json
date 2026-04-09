@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "visualization-tools-mcp": {
+      "url": "http://localhost:8506/mcp"
+    }
+  }
+}

@@ -1,0 +1,1566 @@
+MCP test run - clinicaltrialsgov-mcp-server-mcp
+Generated (UTC): 2026-03-25T06:54:29Z
+Note: Live log below (same as terminal). Footer records exit code.
+---------------------------------------------------------------------------------
+========== clinicaltrialsgov-mcp-server-mcp test (compliance) ==========
+[0;34m[1] Install[0m
+========== clinicaltrialsgov-mcp-server-mcp test (compliance) ==========
+[0;34m[1] Install[0m
+  [0;32mPASS: image exists[0m
+  [0;32mPASS: image exists[0m
+
+
+[1;33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[1;33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[0;32mRESULT  [1]  Install (image exists)  →  PASS[0m
+[0;32mRESULT  [1]  Install (image exists)  →  PASS[0m
+[1;33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[0;34m[2] Stdio tools/list[0m
+[1;33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[0;34m[2] Stdio tools/list[0m
+[0;36m>>> [2] MCP requests sent on container stdin (one JSON-RPC per line):[0m
+[0;36m>>> [2] MCP requests sent on container stdin (one JSON-RPC per line):[0m
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}
+{"jsonrpc":"2.0","method":"notifications/initialized"}
+{"jsonrpc":"2.0","method":"notifications/initialized"}
+{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}
+{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}
+[0;36m>>> [2] Running: python mcp_stdio_docker_tools_list.py[0m
+[0;36m>>> [2] Running: python mcp_stdio_docker_tools_list.py[0m
+[0;36m>>> [2] Full raw MCP stdout from container:[0m
+[0;36m>>> [2] Full raw MCP stdout from container:[0m
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+  [0;31mFAIL: stdio tools/list[0m
+  [0;31mFAIL: stdio tools/list[0m
+
+
+[1;33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[1;33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[0;31mRESULT  [2]  Stdio tools/list  →  FAIL[0m
+[0;31mRESULT  [2]  Stdio tools/list  →  FAIL[0m
+[1;33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[1;33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[0;34m[3] Stdio tools/call (skipped — upstream package)[0m
+[0;34m[3] Stdio tools/call (skipped — upstream package)[0m
+  [0;32mPASS: stdio tools/call (upstream)[0m
+  [0;32mPASS: stdio tools/call (upstream)[0m
+
+
+[1;33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[1;33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[0;32mRESULT  [3]  Stdio tools/call (skipped)  →  PASS[0m
+[0;32mRESULT  [3]  Stdio tools/call (skipped)  →  PASS[0m
+[1;33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[1;33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[0;34m[4] HTTP streamable tools/list[0m
+[0;34m[4] HTTP streamable tools/list[0m
+[0;36m>>> [4] Starting HTTP container[0m
+[0;36m>>> [4] Starting HTTP container[0m
+c2c64e84b90941279f8708b5ad19f7ae91679ac9aa564d51ec23f928f7bc3716
+c2c64e84b90941279f8708b5ad19f7ae91679ac9aa564d51ec23f928f7bc3716
+[0;36m>>> [4] Waiting 15s for HTTP listener[0m
+[0;36m>>> [4] Waiting 15s for HTTP listener[0m
+[0;36m>>> [4] HTTP attempt WAITED=0s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=0s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2267 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2267 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=3s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=3s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2258 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2258 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=6s — POST initialize (max 30s)[0m
+[0;36m>>> [4] HTTP attempt WAITED=6s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2265 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2265 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=9s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=9s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2248 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2248 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+      wrong MCP_PORT, or container not publishing the port).
+
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=12s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=12s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2254 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2254 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=15s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=15s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2270 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2270 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=18s — POST initialize (max 30s)[0m
+[0;36m>>> [4] HTTP attempt WAITED=18s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2258 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2258 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=21s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=21s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2270 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2270 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=24s — POST initialize (max 30s)[0m
+[0;36m>>> [4] HTTP attempt WAITED=24s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2268 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2268 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=27s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=27s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2252 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2252 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=30s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=30s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2247 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2247 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=33s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=33s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2271 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2271 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=36s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=36s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2248 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2248 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=39s — POST initialize (max 30s)[0m
+[0;36m>>> [4] HTTP attempt WAITED=39s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2243 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2243 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=42s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=42s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2266 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2266 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=45s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=45s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2266 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2266 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=48s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=48s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2252 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2252 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=51s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=51s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2249 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2249 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+      wrong MCP_PORT, or container not publishing the port).
+
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=54s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=54s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2244 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2244 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=57s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=57s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2231 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2231 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=60s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=60s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2269 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2269 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=63s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=63s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2270 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2270 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=66s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=66s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2248 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2248 ms: Couldn't connect to server
+
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+      wrong MCP_PORT, or container not publishing the port).
+
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=69s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=69s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2243 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2243 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=72s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=72s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2252 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2252 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=75s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=75s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2246 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2246 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=78s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=78s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2245 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2245 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=81s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=81s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2235 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2235 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=84s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=84s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2232 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2232 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=87s — POST initialize (max 30s)[0m
+[0;36m>>> [4] HTTP attempt WAITED=87s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2263 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2263 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=90s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=90s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2247 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2247 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=93s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=93s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2264 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2264 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=96s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=96s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2246 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2246 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=99s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=99s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2243 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2243 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=102s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=102s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2250 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2250 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=105s — POST initialize (max 30s)[0m
+[0;36m>>> [4] HTTP attempt WAITED=105s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2219 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2219 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=108s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=108s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2244 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2244 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=111s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=111s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2247 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2247 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=114s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=114s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2242 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2242 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+[0;36m>>> [4] HTTP attempt WAITED=117s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+[0;36m>>> [4] HTTP attempt WAITED=117s — POST initialize (max 30s)[0m
+[0;36m    Request body: {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}[0m
+curl: (7) Failed to connect to localhost port 8632 after 2246 ms: Couldn't connect to server
+curl: (7) Failed to connect to localhost port 8632 after 2246 ms: Couldn't connect to server
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ WHAT THIS CURL LINE MEANS (exit 7 — initialize)                        ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    • Exit 7 = FAILED TO CONNECT (nothing listening on host:port yet,
+      wrong MCP_PORT, or container not publishing the port).
+
+      wrong MCP_PORT, or container not publishing the port).
+
+[0;36m    Response headers:[0m
+[0;36m    Response headers:[0m
+[0;36m    Response body:[0m
+[0;36m    Response body:[0m
+
+
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    Parsed mcp-session-id: <empty>[0m
+
+[0;36m    *** SKIP tools/list this round: no mcp-session-id from initialize. ***[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+[0;36m    (Often stale /tmp after a timeout, or the HTTP server was blocked — restarting container.)[0m
+
+
+  [0;31mFAIL: HTTP tools/list[0m
+
+  [0;31mFAIL: HTTP tools/list[0m
+
+[1;33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[1;33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[0;31mRESULT  [4]  HTTP streamable tools/list  →  FAIL[0m
+[0;31mRESULT  [4]  HTTP streamable tools/list  →  FAIL[0m
+[1;33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[1;33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[0;34m[5] HTTP streamable tools/call (skipped — upstream package)[0m
+[0;34m[5] HTTP streamable tools/call (skipped — upstream package)[0m
+  [0;32mPASS: HTTP tools/call (upstream)[0m
+  [0;32mPASS: HTTP tools/call (upstream)[0m
+
+
+[1;33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[1;33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[0;32mRESULT  [5]  HTTP tools/call (skipped)  →  PASS[0m
+[0;32mRESULT  [5]  HTTP tools/call (skipped)  →  PASS[0m
+[1;33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[1;33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+
+
+[1;33m══════════════════════════════════════════════════════════════════════════════[0m
+[1;33m══════════════════════════════════════════════════════════════════════════════[0m
+[0;34mFINAL SUMMARY (read this)[0m
+[0;34mFINAL SUMMARY (read this)[0m
+[1;33m══════════════════════════════════════════════════════════════════════════════[0m
+[1;33m══════════════════════════════════════════════════════════════════════════════[0m
+  [1] Install:                    PASS
+  [1] Install:                    PASS
+  [2] Stdio tools/list:           FAIL
+  [2] Stdio tools/list:           FAIL
+  [3] Stdio tools/call:           PASS(skip)
+  [3] Stdio tools/call:           PASS(skip)
+  [4] HTTP tools/list:            FAIL
+  [4] HTTP tools/list:            FAIL
+  [5] HTTP tools/call:            PASS(skip)
+  [5] HTTP tools/call:            PASS(skip)
+  Counters: 3 passed, 2 failed
+  Counters: 3 passed, 2 failed
+  [0;31mOVERALL: FAIL[0m
+  [0;31mOVERALL: FAIL[0m
+[1;33m══════════════════════════════════════════════════════════════════════════════[0m
+[1;33m══════════════════════════════════════════════════════════════════════════════[0m
+
+
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Exit code: 1  |  step counters: 3 passed, 2 failed
+Exit code: 1  |  step counters: 3 passed, 2 failed
+clinicaltrialsgov-mcp-server-mcp-test
+clinicaltrialsgov-mcp-server-mcp-test
+clinicaltrialsgov-mcp-server-mcp-test
+clinicaltrialsgov-mcp-server-mcp-test
+
+❌ FAIL (Test): clinicaltrialsgov-mcp-server-mcp

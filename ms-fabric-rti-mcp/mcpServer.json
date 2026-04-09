@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "ms-fabric-rti-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "MCP_TRANSPORT",
+        "-e",
+        "FABRIC_API_KEY",
+        "hackerdogs/ms-fabric-rti-mcp:latest"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio",
+        "FABRIC_API_KEY": ""
+      }
+    }
+  }
+}

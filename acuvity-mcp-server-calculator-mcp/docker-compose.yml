@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  acuvity-mcp-server-calculator-mcp:
+    image: hackerdogs/acuvity-mcp-server-calculator-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: acuvity-mcp-server-calculator-mcp
+    ports:
+      - "8407:8407"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8407
+    restart: unless-stopped

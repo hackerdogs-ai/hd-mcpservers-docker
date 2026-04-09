@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "hackerdogs-mcp-server": {
+      "url": "https://mcp.hackerdogs.ai/mcp"
+    }
+  }
+}

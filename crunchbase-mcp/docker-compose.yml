@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  crunchbase-mcp:
+    image: hackerdogs/crunchbase-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: crunchbase-mcp
+    ports:
+      - "8411:8411"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8411
+    restart: unless-stopped

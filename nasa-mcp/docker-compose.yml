@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  nasa-mcp:
+    image: hackerdogs/nasa-mcp:latest
+    build: .
+    ports:
+      - "8651:8651"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8651
+      - NASA_API_KEY=${NASA_API_KEY:-}

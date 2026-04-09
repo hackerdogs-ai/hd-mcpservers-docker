@@ -1,0 +1,92 @@
+========== Testing a2a-scanner-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.78kB 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#2 ...
+
+#3 [auth] library/python:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#2 DONE 2.2s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/8] FROM docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0
+#5 resolve docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0 0.0s done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 70B done
+#6 DONE 0.0s
+
+#7 [4/8] WORKDIR /app
+#7 CACHED
+
+#8 [3/8] RUN apt-get update && apt-get install -y --no-install-recommends     git tini ca-certificates     && rm -rf /var/lib/apt/lists/*     && git clone --depth 1 https://github.com/cisco-ai-defense/a2a-scanner.git /opt/a2a-scanner-src     && cd /opt/a2a-scanner-src && (pip install --no-cache-dir -r requirements.txt 2>/dev/null || true)     && (pip install --no-cache-dir . 2>/dev/null || true)
+#8 CACHED
+
+#9 [5/8] COPY requirements.txt ./
+#9 CACHED
+
+#10 [6/8] RUN pip install --no-cache-dir -r requirements.txt
+#10 CACHED
+
+#11 [7/8] COPY mcp_server.py ./
+#11 CACHED
+
+#12 [2/8] RUN groupadd -g 1000 mcpuser &&     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
+#12 CACHED
+
+#13 [8/8] RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+#13 CACHED
+
+#14 exporting to image
+#14 exporting layers done
+#14 exporting manifest sha256:e26807ffa80148742c30dc179ece16e28fb4d009506c6d99da909ff0d795050d done
+#14 exporting config sha256:04e0aa94eccb20a7d038bee542847254fef3ea3dcf06644bfcc071d1f2fac691 done
+#14 exporting attestation manifest sha256:f691281020a7f8f46779a56fd0b4fec294a902d61ddb725822cf95fb61c49a20 0.1s done
+#14 exporting manifest list sha256:7b6c5e6ed2eeb21d1c83b5d64b55994fbc3739bdb803fb6c824838e44c60139b 0.0s done
+#14 naming to docker.io/hackerdogs/a2a-scanner-mcp:latest
+#14 naming to docker.io/hackerdogs/a2a-scanner-mcp:latest done
+#14 unpacking to docker.io/hackerdogs/a2a-scanner-mcp:latest 0.0s done
+#14 DONE 0.2s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/jqkrqau5913wkxe0lh04c4lmt
+=================================================================================
+[0;34mA2A Scanner MCP Server — Test Suite[0m
+=================================================================================
+
+[0;34m[Test 1] Docker image[0m
+  [0;32mPASS: Docker image hackerdogs/a2a-scanner-mcp:latest exists[0m
+
+[0;34m[Test 2] CLI binary inside container[0m
+  [0;32mPASS: a2a-scanner binary responds[0m
+       Usage: a2a-scanner [OPTIONS] COMMAND [ARGS]...
+
+[0;34m[Test 3] MCP stdio mode — initialize + tools/list[0m
+  [0;32mPASS: stdio mode returned tools/list response (2 tool names found)[0m
+
+[0;34m[Test 4] MCP HTTP streamable mode — initialize[0m
+  [0;32mPASS: HTTP streamable mode responded (status 200)[0m
+       Session ID: 1d0b49b3a1834fda...
+
+[0;34m[Test 5] MCP HTTP — tools/list[0m
+  [0;32mPASS: HTTP tools/list returned tools[0m
+
+[0;34m[Test 6] MCP HTTP — tools/call (run_a2a_scanner)[0m
+  [0;32mPASS: tools/call run_a2a_scanner returned a result[0m
+
+=================================================================================
+[0;34mResults: [0;32m6 passed[0m, [0;31m0 failed[0m
+=================================================================================
+a2a-scanner-mcp-test
+a2a-scanner-mcp-test
+
+✅ PASS: a2a-scanner-mcp

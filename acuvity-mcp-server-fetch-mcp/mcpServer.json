@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-fetch-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "-e", "MCP_PORT", "acuvity/mcp-server-fetch:latest"],
+      "env": {
+        "MCP_TRANSPORT": "stdio",
+        "MCP_PORT": "8419"
+      }
+    }
+  }
+}

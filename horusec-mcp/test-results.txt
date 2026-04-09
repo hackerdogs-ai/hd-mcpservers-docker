@@ -1,0 +1,25 @@
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/f163y1mbmt1k0e8d8efay2otr
+  PASS: Docker image hackerdogs/horusec-mcp:latest exists
+
+[Test 2] CLI binary inside container
+  PASS: horusec binary responds
+       Version:          v2.8.0
+
+[Test 3] MCP stdio mode — initialize + tools/list
+  PASS: stdio mode returned tools/list response (1 tool names found)
+
+[Test 4] MCP HTTP streamable mode — initialize
+  PASS: HTTP streamable mode responded (status 200)
+       Session ID: d9eb99b9616547d3...
+
+[Test 5] MCP HTTP — tools/list
+  PASS: HTTP tools/list returned tools
+
+[Test 6] MCP HTTP — tools/call (run_horusec)
+  PASS: tools/call run_horusec returned a result
+
+=================================================================================
+Results: 6 passed, 0 failed
+=================================================================================
+horusec-mcp-test
+horusec-mcp-test

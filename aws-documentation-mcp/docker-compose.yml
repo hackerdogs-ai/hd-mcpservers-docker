@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  aws-documentation-mcp:
+    image: hackerdogs/aws-documentation-mcp:latest
+    build: .
+    ports:
+      - "8610:8610"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8610
+

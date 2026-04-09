@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  brave-search-mcp:
+    image: hackerdogs/brave-search-mcp:latest
+    build: .
+    ports:
+      - "8629:8629"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8629
+      - BRAVE_API_KEY=${BRAVE_API_KEY:-}

@@ -1,0 +1,81 @@
+========== Testing globalping-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 475B done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 1.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.1s
+
+#4 [internal] load build context
+#4 DONE 0.0s
+
+#5 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#5 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#5 DONE 0.1s
+
+#6 [2/7] WORKDIR /app
+#6 CACHED
+
+#7 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#4 [internal] load build context
+#4 transferring context: 10.74kB done
+#4 DONE 0.2s
+
+#8 [4/7] RUN npm install -g @globalping/globalping-mcp supergateway 2>/dev/null || npm install -g supergateway
+#8 12.13 
+#8 12.13 added 244 packages in 12s
+#8 12.13 
+#8 12.13 38 packages are looking for funding
+#8 12.13   run `npm fund` for details
+#8 DONE 12.4s
+
+#9 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#9 DONE 0.2s
+
+#10 [6/7] COPY entrypoint.sh /entrypoint.sh
+#10 DONE 0.2s
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 DONE 0.4s
+
+#12 exporting to image
+#12 exporting layers
+#12 exporting layers 2.4s done
+#12 exporting manifest sha256:87563c51986a3628ddd9968744d35d587afcc689cc7346c2668a8bbab7150843 0.0s done
+#12 exporting config sha256:30986a32c263490173b18d5424482aff6575b8264b8a63c55aebefee221703ac 0.0s done
+#12 exporting attestation manifest sha256:f4fd9a85d61c85f69f03e46126fdd604700b3d11cb87e3fa529b72ca0b43f268 0.1s done
+#12 exporting manifest list sha256:f2cdb746b3b5ac4a0a245ad2ff0827708e569934ddbffac370a247cbc77daff3
+#12 exporting manifest list sha256:f2cdb746b3b5ac4a0a245ad2ff0827708e569934ddbffac370a247cbc77daff3 0.0s done
+#12 naming to docker.io/library/globalping-mcp:latest done
+#12 unpacking to docker.io/library/globalping-mcp:latest
+#12 unpacking to docker.io/library/globalping-mcp:latest 1.5s done
+#12 naming to docker.io/hackerdogs/globalping-mcp:latest done
+#12 unpacking to docker.io/hackerdogs/globalping-mcp:latest 0.0s done
+#12 DONE 4.2s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/z3dgejtsbdcvpgn4a6057ywxc
+========== globalping-mcp test (compliance) ==========
+[0;34m[1] Install[0m
+  [0;32mPASS: image exists[0m
+[0;34m[2] Stdio tools/list[0m
+  [0;31mFAIL: stdio tools/list[0m
+[0;34m[3] Stdio tools/call (skipped — upstream package)[0m
+  [0;32mPASS: stdio tools/call (upstream)[0m
+[0;34m[4] HTTP streamable tools/list[0m
+  [0;31mFAIL: HTTP tools/list[0m
+[0;34m[5] HTTP streamable tools/call (skipped — upstream package)[0m
+  [0;32mPASS: HTTP tools/call (upstream)[0m
+
+Total: 3 passed, 2 failed
+globalping-mcp-test
+globalping-mcp-test
+
+❌ FAIL (Test): globalping-mcp

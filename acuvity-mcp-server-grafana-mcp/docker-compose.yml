@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  acuvity-mcp-server-grafana-mcp:
+    image: hackerdogs/acuvity-mcp-server-grafana-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: acuvity-mcp-server-grafana-mcp
+    ports:
+      - "8425:8425"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8425
+    restart: unless-stopped

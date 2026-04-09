@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  hibp-mcp:
+    image: hackerdogs/hibp-mcp:latest
+    build: .
+    ports:
+      - "8646:8646"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8646
+      - HIBP_API_KEY=${HIBP_API_KEY:-}

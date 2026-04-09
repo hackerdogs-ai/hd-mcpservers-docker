@@ -1,0 +1,216 @@
+========== Testing jira-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 775B 0.0s done
+#1 DONE 0.1s
+
+#2 [auth] library/python:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [auth] library/node:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#4 [internal] load metadata for docker.io/library/python:3.11-slim
+#4 DONE 1.6s
+
+#5 [internal] load metadata for docker.io/library/node:20-slim
+#5 DONE 1.7s
+
+#6 [internal] load .dockerignore
+#6 transferring context:
+#6 transferring context: 2B done
+#6 DONE 0.1s
+
+#7 [internal] load build context
+#7 DONE 0.0s
+
+#8 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#8 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.1s done
+#8 DONE 0.1s
+
+#9 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+#9 resolve docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634 0.1s done
+#9 DONE 0.1s
+
+#10 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [stage-1 3/9] WORKDIR /app
+#11 CACHED
+
+#12 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#12 CACHED
+
+#7 [internal] load build context
+#7 transferring context: 11.22kB 0.0s done
+#7 DONE 0.2s
+
+#13 [stage-1 4/9] RUN pip install --no-cache-dir mcp-server-jira
+#13 2.558 Collecting mcp-server-jira
+#13 2.724   Downloading mcp_server_jira-0.1.1-py3-none-any.whl.metadata (8.6 kB)
+#13 2.815 Collecting httpx>=0.25.0 (from mcp-server-jira)
+#13 2.858   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#13 2.937 Collecting mcp>=1.0.0 (from mcp-server-jira)
+#13 2.983   Downloading mcp-1.26.0-py3-none-any.whl.metadata (89 kB)
+#13 3.042      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 89.5/89.5 kB 1.6 MB/s eta 0:00:00
+#13 3.364 Collecting pydantic>=2.0.0 (from mcp-server-jira)
+#13 3.409   Downloading pydantic-2.12.5-py3-none-any.whl.metadata (90 kB)
+#13 3.426      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 90.6/90.6 kB 6.0 MB/s eta 0:00:00
+#13 3.520 Collecting anyio (from httpx>=0.25.0->mcp-server-jira)
+#13 3.563   Downloading anyio-4.13.0-py3-none-any.whl.metadata (4.5 kB)
+#13 3.630 Collecting certifi (from httpx>=0.25.0->mcp-server-jira)
+#13 3.674   Downloading certifi-2026.2.25-py3-none-any.whl.metadata (2.5 kB)
+#13 3.740 Collecting httpcore==1.* (from httpx>=0.25.0->mcp-server-jira)
+#13 3.785   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#13 3.845 Collecting idna (from httpx>=0.25.0->mcp-server-jira)
+#13 3.890   Downloading idna-3.11-py3-none-any.whl.metadata (8.4 kB)
+#13 3.951 Collecting h11>=0.16 (from httpcore==1.*->httpx>=0.25.0->mcp-server-jira)
+#13 3.996   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#13 4.070 Collecting httpx-sse>=0.4 (from mcp>=1.0.0->mcp-server-jira)
+#13 4.114   Downloading httpx_sse-0.4.3-py3-none-any.whl.metadata (9.7 kB)
+#13 4.198 Collecting jsonschema>=4.20.0 (from mcp>=1.0.0->mcp-server-jira)
+#13 4.248   Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+#13 4.321 Collecting pydantic-settings>=2.5.2 (from mcp>=1.0.0->mcp-server-jira)
+#13 4.365   Downloading pydantic_settings-2.13.1-py3-none-any.whl.metadata (3.4 kB)
+#13 4.450 Collecting pyjwt>=2.10.1 (from pyjwt[crypto]>=2.10.1->mcp>=1.0.0->mcp-server-jira)
+#13 4.493   Downloading pyjwt-2.12.1-py3-none-any.whl.metadata (4.1 kB)
+#13 4.555 Collecting python-multipart>=0.0.9 (from mcp>=1.0.0->mcp-server-jira)
+#13 4.601   Downloading python_multipart-0.0.22-py3-none-any.whl.metadata (1.8 kB)
+#13 4.668 Collecting sse-starlette>=1.6.1 (from mcp>=1.0.0->mcp-server-jira)
+#13 4.711   Downloading sse_starlette-3.3.3-py3-none-any.whl.metadata (14 kB)
+#13 4.802 Collecting starlette>=0.27 (from mcp>=1.0.0->mcp-server-jira)
+#13 4.847   Downloading starlette-1.0.0-py3-none-any.whl.metadata (6.3 kB)
+#13 5.002 Collecting typing-extensions>=4.9.0 (from mcp>=1.0.0->mcp-server-jira)
+#13 5.052   Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+#13 5.116 Collecting typing-inspection>=0.4.1 (from mcp>=1.0.0->mcp-server-jira)
+#13 5.163   Downloading typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+#13 5.254 Collecting uvicorn>=0.31.1 (from mcp>=1.0.0->mcp-server-jira)
+#13 5.300   Downloading uvicorn-0.42.0-py3-none-any.whl.metadata (6.7 kB)
+#13 5.366 Collecting annotated-types>=0.6.0 (from pydantic>=2.0.0->mcp-server-jira)
+#13 5.410   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+#13 6.734 Collecting pydantic-core==2.41.5 (from pydantic>=2.0.0->mcp-server-jira)
+#13 6.779   Downloading pydantic_core-2.41.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (7.3 kB)
+#13 6.878 Collecting attrs>=22.2.0 (from jsonschema>=4.20.0->mcp>=1.0.0->mcp-server-jira)
+#13 6.920   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+#13 6.979 Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.20.0->mcp>=1.0.0->mcp-server-jira)
+#13 7.022   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+#13 7.101 Collecting referencing>=0.28.4 (from jsonschema>=4.20.0->mcp>=1.0.0->mcp-server-jira)
+#13 7.145   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+#13 7.694 Collecting rpds-py>=0.25.0 (from jsonschema>=4.20.0->mcp>=1.0.0->mcp-server-jira)
+#13 7.739   Downloading rpds_py-0.30.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)
+#13 7.824 Collecting python-dotenv>=0.21.0 (from pydantic-settings>=2.5.2->mcp>=1.0.0->mcp-server-jira)
+#13 7.878   Downloading python_dotenv-1.2.2-py3-none-any.whl.metadata (27 kB)
+#13 8.344 Collecting cryptography>=3.4.0 (from pyjwt[crypto]>=2.10.1->mcp>=1.0.0->mcp-server-jira)
+#13 8.392   Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (5.7 kB)
+#13 8.534 Collecting click>=7.0 (from uvicorn>=0.31.1->mcp>=1.0.0->mcp-server-jira)
+#13 8.576   Downloading click-8.3.1-py3-none-any.whl.metadata (2.6 kB)
+#13 8.824 Collecting cffi>=2.0.0 (from cryptography>=3.4.0->pyjwt[crypto]>=2.10.1->mcp>=1.0.0->mcp-server-jira)
+#13 8.870   Downloading cffi-2.0.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.6 kB)
+#13 8.975 Collecting pycparser (from cffi>=2.0.0->cryptography>=3.4.0->pyjwt[crypto]>=2.10.1->mcp>=1.0.0->mcp-server-jira)
+#13 9.019   Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+#13 9.314 Downloading mcp_server_jira-0.1.1-py3-none-any.whl (9.7 kB)
+#13 9.360 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#13 9.371    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.5/73.5 kB 7.2 MB/s eta 0:00:00
+#13 9.416 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#13 9.431    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.8/78.8 kB 6.7 MB/s eta 0:00:00
+#13 9.478 Downloading mcp-1.26.0-py3-none-any.whl (233 kB)
+#13 9.524    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 233.6/233.6 kB 5.2 MB/s eta 0:00:00
+#13 9.568 Downloading pydantic-2.12.5-py3-none-any.whl (463 kB)
+#13 9.671    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 463.6/463.6 kB 4.5 MB/s eta 0:00:00
+#13 9.722 Downloading pydantic_core-2.41.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.1 MB)
+#13 10.06    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 6.1 MB/s eta 0:00:00
+#13 10.11 Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+#13 10.16 Downloading anyio-4.13.0-py3-none-any.whl (114 kB)
+#13 10.17    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 114.4/114.4 kB 14.7 MB/s eta 0:00:00
+#13 10.21 Downloading httpx_sse-0.4.3-py3-none-any.whl (9.0 kB)
+#13 10.26 Downloading idna-3.11-py3-none-any.whl (71 kB)
+#13 10.27    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 71.0/71.0 kB 17.6 MB/s eta 0:00:00
+#13 10.32 Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+#13 10.33    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 90.6/90.6 kB 20.3 MB/s eta 0:00:00
+#13 10.38 Downloading pydantic_settings-2.13.1-py3-none-any.whl (58 kB)
+#13 10.39    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 58.9/58.9 kB 8.4 MB/s eta 0:00:00
+#13 10.43 Downloading pyjwt-2.12.1-py3-none-any.whl (29 kB)
+#13 10.48 Downloading python_multipart-0.0.22-py3-none-any.whl (24 kB)
+#13 10.52 Downloading sse_starlette-3.3.3-py3-none-any.whl (14 kB)
+#13 10.57 Downloading starlette-1.0.0-py3-none-any.whl (72 kB)
+#13 10.58    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 72.7/72.7 kB 27.3 MB/s eta 0:00:00
+#13 10.63 Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+#13 10.63    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 44.6/44.6 kB 75.0 MB/s eta 0:00:00
+#13 10.68 Downloading typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+#13 10.73 Downloading uvicorn-0.42.0-py3-none-any.whl (68 kB)
+#13 10.74    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 68.8/68.8 kB 11.7 MB/s eta 0:00:00
+#13 10.78 Downloading certifi-2026.2.25-py3-none-any.whl (153 kB)
+#13 10.80    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 153.7/153.7 kB 13.1 MB/s eta 0:00:00
+#13 10.84 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+#13 10.85    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 67.5/67.5 kB 23.5 MB/s eta 0:00:00
+#13 10.90 Downloading click-8.3.1-py3-none-any.whl (108 kB)
+#13 10.91    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 108.3/108.3 kB 9.1 MB/s eta 0:00:00
+#13 10.95 Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_x86_64.whl (4.5 MB)
+#13 11.47    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.5/4.5 MB 8.7 MB/s eta 0:00:00
+#13 11.58 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#13 11.63 Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+#13 11.68 Downloading python_dotenv-1.2.2-py3-none-any.whl (22 kB)
+#13 11.72 Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+#13 11.77 Downloading rpds_py-0.30.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (390 kB)
+#13 11.80    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 390.8/390.8 kB 12.7 MB/s eta 0:00:00
+#13 11.85 Downloading cffi-2.0.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (215 kB)
+#13 11.88    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 215.6/215.6 kB 6.8 MB/s eta 0:00:00
+#13 11.93 Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+#13 11.94    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 48.2/48.2 kB 6.8 MB/s eta 0:00:00
+#13 12.19 Installing collected packages: typing-extensions, rpds-py, python-multipart, python-dotenv, pyjwt, pycparser, idna, httpx-sse, h11, click, certifi, attrs, annotated-types, uvicorn, typing-inspection, referencing, pydantic-core, httpcore, cffi, anyio, starlette, pydantic, jsonschema-specifications, httpx, cryptography, sse-starlette, pydantic-settings, jsonschema, mcp, mcp-server-jira
+#13 14.54 Successfully installed annotated-types-0.7.0 anyio-4.13.0 attrs-26.1.0 certifi-2026.2.25 cffi-2.0.0 click-8.3.1 cryptography-46.0.5 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 httpx-sse-0.4.3 idna-3.11 jsonschema-4.26.0 jsonschema-specifications-2025.9.1 mcp-1.26.0 mcp-server-jira-0.1.1 pycparser-3.0 pydantic-2.12.5 pydantic-core-2.41.5 pydantic-settings-2.13.1 pyjwt-2.12.1 python-dotenv-1.2.2 python-multipart-0.0.22 referencing-0.37.0 rpds-py-0.30.0 sse-starlette-3.3.3 starlette-1.0.0 typing-extensions-4.15.0 typing-inspection-0.4.2 uvicorn-0.42.0
+#13 14.54 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+#13 14.80 
+#13 14.80 [notice] A new release of pip is available: 24.0 -> 26.0.1
+#13 14.80 [notice] To update, run: pip install --upgrade pip
+#13 DONE 15.4s
+
+#14 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#14 DONE 0.4s
+
+#15 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#15 DONE 0.6s
+
+#16 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#16 DONE 0.1s
+
+#17 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#17 DONE 0.1s
+
+#18 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#18 DONE 0.4s
+
+#19 exporting to image
+#19 exporting layers
+#19 exporting layers 5.3s done
+#19 exporting manifest sha256:b23140a44102ae0b87680d3c0f49372bf436496832ccb7238f2c3c5416d323c7 0.0s done
+#19 exporting config sha256:27c8f5bbe71c083ec16a93894f16e8c6e48d483acd5bdf4cc9ec40984612663b 0.0s done
+#19 exporting attestation manifest sha256:061f7d09185a0d20e5a449374a2cc99e8057495622a244218a65b3a32dae43fb 0.1s done
+#19 exporting manifest list sha256:4c2c6b97200115db6bf4c2f1c46f13ce0951a14a0201b436324669972338f87d
+#19 exporting manifest list sha256:4c2c6b97200115db6bf4c2f1c46f13ce0951a14a0201b436324669972338f87d 0.0s done
+#19 naming to docker.io/library/jira-mcp:latest 0.0s done
+#19 unpacking to docker.io/library/jira-mcp:latest
+#19 unpacking to docker.io/library/jira-mcp:latest 2.7s done
+#19 naming to docker.io/hackerdogs/jira-mcp:latest done
+#19 unpacking to docker.io/hackerdogs/jira-mcp:latest 0.0s done
+#19 DONE 8.5s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/ll4tbdv7o6we4bwv9flfrc37l
+========== jira-mcp test (compliance) ==========
+[0;34m[1] Install[0m
+  [0;32mPASS: image exists[0m
+[0;34m[2] Stdio tools/list[0m
+  [0;31mFAIL: stdio tools/list[0m
+[0;34m[3] Stdio tools/call (skipped — upstream package)[0m
+  [0;32mPASS: stdio tools/call (upstream)[0m
+[0;34m[4] HTTP streamable tools/list[0m
+  [0;31mFAIL: HTTP tools/list[0m
+[0;34m[5] HTTP streamable tools/call (skipped — upstream package)[0m
+  [0;32mPASS: HTTP tools/call (upstream)[0m
+
+Total: 3 passed, 2 failed
+jira-mcp-test
+jira-mcp-test
+
+❌ FAIL (Test): jira-mcp

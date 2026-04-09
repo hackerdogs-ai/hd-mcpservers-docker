@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  aws-bedrock-agentcore-mcp:
+    image: hackerdogs/aws-bedrock-agentcore-mcp:latest
+    build: .
+    ports:
+      - "8604:8604"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8604
+      - AWS_REGION=${AWS_REGION:-}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-}

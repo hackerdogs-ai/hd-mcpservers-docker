@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  yfmcp-mcp:
+    image: hackerdogs/yfmcp-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: yfmcp-mcp
+    ports:
+      - "8460:8460"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8460
+    restart: unless-stopped

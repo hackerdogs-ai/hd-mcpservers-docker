@@ -1,0 +1,11 @@
+services:
+  phoneinfoga-mcp:
+    build: .
+    ports:
+      - "8503:8503"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8503
+      - NUMVERIFY_API_KEY=${NUMVERIFY_API_KEY:-}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY:-}
+      - GOOGLECSE_CX=${GOOGLECSE_CX:-}

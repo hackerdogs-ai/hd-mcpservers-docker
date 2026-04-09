@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  dnstwist-mcp:
+    image: hackerdogs/dnstwist-mcp:latest
+    build: .
+    ports:
+      - "8636:8636"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8636
+

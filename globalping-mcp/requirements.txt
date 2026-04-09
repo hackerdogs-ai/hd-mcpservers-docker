@@ -1,0 +1,1 @@
+# NPX-based server — no Python requirements

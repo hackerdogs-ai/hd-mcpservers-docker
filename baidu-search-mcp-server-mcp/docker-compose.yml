@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  baidu-search-mcp-server-mcp:
+    image: hackerdogs/baidu-search-mcp-server-mcp:latest
+    build: .
+    ports:
+      - "8628:8628"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8628
+

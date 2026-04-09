@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  puppeteer-mcp:
+    image: hackerdogs/puppeteer-mcp:latest
+    build: .
+    ports:
+      - "8659:8659"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8659
+

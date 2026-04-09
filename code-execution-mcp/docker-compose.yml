@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  code-execution-mcp:
+    image: hackerdogs/code-execution-mcp:latest
+    build: { context: ., dockerfile: Dockerfile }
+    container_name: code-execution-mcp
+    ports: ["8376:8376"]
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8376
+    restart: unless-stopped

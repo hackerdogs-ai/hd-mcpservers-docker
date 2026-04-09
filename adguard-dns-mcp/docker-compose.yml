@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  adguard-dns-mcp:
+    image: hackerdogs/adguard-dns-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: adguard-dns-mcp
+    ports:
+      - "8509:8509"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8509
+    restart: unless-stopped

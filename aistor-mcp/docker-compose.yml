@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  aistor-mcp:
+    image: hackerdogs/aistor-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aistor-mcp
+    ports:
+      - "8434:8434"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8434
+    restart: unless-stopped

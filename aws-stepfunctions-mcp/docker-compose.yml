@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  aws-stepfunctions-mcp:
+    image: hackerdogs/aws-stepfunctions-mcp:latest
+    build: .
+    ports:
+      - "8625:8625"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8625
+      - AWS_REGION=${AWS_REGION:-}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-}

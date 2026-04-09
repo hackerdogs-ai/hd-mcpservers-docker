@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "trivy-security-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "-e", "MCP_PORT", "hackerdogs/trivy-security-mcp:latest"],
+      "env": {
+        "MCP_TRANSPORT": "stdio",
+        "MCP_PORT": "8456"
+      }
+    }
+  }
+}

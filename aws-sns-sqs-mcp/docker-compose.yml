@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  aws-sns-sqs-mcp:
+    image: hackerdogs/aws-sns-sqs-mcp:latest
+    build: .
+    ports:
+      - "8624:8624"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8624
+      - AWS_REGION=${AWS_REGION:-}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-}

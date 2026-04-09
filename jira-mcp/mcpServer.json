@@ -1,0 +1,27 @@
+{
+  "mcpServers": {
+    "jira-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "MCP_TRANSPORT",
+        "-e",
+        "JIRA_URL",
+        "-e",
+        "JIRA_EMAIL",
+        "-e",
+        "JIRA_API_TOKEN",
+        "hackerdogs/jira-mcp:latest"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio",
+        "JIRA_URL": "",
+        "JIRA_EMAIL": "",
+        "JIRA_API_TOKEN": ""
+      }
+    }
+  }
+}

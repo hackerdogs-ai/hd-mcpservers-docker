@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  tomtom-mcp:
+    image: hackerdogs/tomtom-mcp:latest
+    build: .
+    ports:
+      - "8671:8671"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8671
+      - TOMTOM_API_KEY=${TOMTOM_API_KEY:-}

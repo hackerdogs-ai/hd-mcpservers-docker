@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  aws-prometheus-mcp:
+    image: hackerdogs/aws-prometheus-mcp:latest
+    build: .
+    ports:
+      - "8620:8620"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8620
+      - AWS_REGION=${AWS_REGION:-}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-}

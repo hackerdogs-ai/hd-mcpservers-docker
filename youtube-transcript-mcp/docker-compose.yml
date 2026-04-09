@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  youtube-transcript-mcp:
+    image: hackerdogs/youtube-transcript-mcp:latest
+    build: .
+    ports:
+      - "8675:8675"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8675
+

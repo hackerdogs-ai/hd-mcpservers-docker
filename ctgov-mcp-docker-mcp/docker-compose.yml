@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  ctgov-mcp-docker-mcp:
+    image: hackerdogs/ctgov-mcp-docker-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ctgov-mcp-docker-mcp
+    ports:
+      - "8401:8401"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8401
+    restart: unless-stopped

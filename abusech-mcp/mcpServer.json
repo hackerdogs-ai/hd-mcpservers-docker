@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "abusech-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "-e", "MCP_PORT", "-e", "ABUSECH_API_KEY", "hackerdogs/abusech-mcp:latest"],
+      "env": {
+        "MCP_TRANSPORT": "stdio",
+        "ABUSECH_API_KEY": ""
+      }
+    }
+  }
+}

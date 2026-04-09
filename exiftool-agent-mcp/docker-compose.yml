@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  exiftool-agent-mcp:
+    image: hackerdogs/exiftool-agent-mcp:latest
+    build: .
+    ports:
+      - "8638:8638"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8638
+

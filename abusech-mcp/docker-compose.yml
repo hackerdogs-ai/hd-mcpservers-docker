@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  abusech-mcp:
+    image: hackerdogs/abusech-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: abusech-mcp
+    ports:
+      - "8373:8373"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8373
+      - ABUSECH_API_KEY=${ABUSECH_API_KEY:-}
+    restart: unless-stopped

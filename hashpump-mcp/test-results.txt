@@ -1,0 +1,1094 @@
+========== Testing hashpump-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.59kB done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#2 DONE 0.5s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.1s
+
+#4 [stage-1  2/11] RUN groupadd -g 1000 mcpuser &&     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
+#4 CACHED
+
+#5 [builder 1/5] FROM docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0
+#5 resolve docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0 0.1s done
+#5 CACHED
+
+#6 [internal] load build context
+#6 transferring context: 18.38kB 0.0s done
+#6 DONE 0.2s
+
+#7 [stage-1  3/11] RUN apt-get update && apt-get install -y --no-install-recommends     tini     git     unzip     ca-certificates     libssl3     && rm -rf /var/lib/apt/lists/*
+#7 0.943 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#7 1.084 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#7 1.134 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [48.0 kB]
+#7 1.197 Get:4 http://deb.debian.org/debian bookworm/main amd64 Packages [8792 kB]
+#7 4.523 Get:5 http://deb.debian.org/debian bookworm-updates/main amd64 Packages [6924 B]
+#7 4.587 Get:6 http://deb.debian.org/debian-security bookworm-security/main amd64 Packages [294 kB]
+#7 5.777 Fetched 9347 kB in 5s (1836 kB/s)
+#7 5.777 Reading package lists...
+#7 6.459 Reading package lists...
+#7 7.117 Building dependency tree...
+#7 7.267 Reading state information...
+#7 7.433 ca-certificates is already the newest version (20230311+deb12u1).
+#7 7.433 libssl3 is already the newest version (3.0.18-1~deb12u2).
+#7 7.433 The following additional packages will be installed:
+#7 7.433   git-man libbrotli1 libcurl3-gnutls liberror-perl libexpat1 libgdbm-compat4
+#7 7.433   libldap-2.5-0 libnghttp2-14 libperl5.36 libpsl5 librtmp1 libsasl2-2
+#7 7.433   libsasl2-modules-db libssh2-1 perl perl-modules-5.36
+#7 7.435 Suggested packages:
+#7 7.435   gettext-base git-daemon-run | git-daemon-sysvinit git-doc git-email git-gui
+#7 7.435   gitk gitweb git-cvs git-mediawiki git-svn sensible-utils perl-doc
+#7 7.435   libterm-readline-gnu-perl | libterm-readline-perl-perl make
+#7 7.435   libtap-harness-archive-perl zip
+#7 7.435 Recommended packages:
+#7 7.435   patch less ssh-client libldap-common publicsuffix libsasl2-modules
+#7 7.612 The following NEW packages will be installed:
+#7 7.612   git git-man libbrotli1 libcurl3-gnutls liberror-perl libexpat1
+#7 7.612   libgdbm-compat4 libldap-2.5-0 libnghttp2-14 libperl5.36 libpsl5 librtmp1
+#7 7.613   libsasl2-2 libsasl2-modules-db libssh2-1 perl perl-modules-5.36 tini unzip
+#7 7.763 0 upgraded, 19 newly installed, 0 to remove and 0 not upgraded.
+#7 7.763 Need to get 18.5 MB of archives.
+#7 7.763 After this operation, 102 MB of additional disk space will be used.
+#7 7.763 Get:1 http://deb.debian.org/debian bookworm/main amd64 perl-modules-5.36 all 5.36.0-7+deb12u3 [2815 kB]
+#7 ...
+
+#8 [builder 2/5] RUN apt-get update && apt-get install -y --no-install-recommends     git     g++     make     libssl-dev     && rm -rf /var/lib/apt/lists/*
+#8 0.970 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#8 1.169 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#8 1.237 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [48.0 kB]
+#8 1.315 Get:4 http://deb.debian.org/debian bookworm/main amd64 Packages [8792 kB]
+#8 2.630 Get:5 http://deb.debian.org/debian bookworm-updates/main amd64 Packages [6924 B]
+#8 2.636 Get:6 http://deb.debian.org/debian-security bookworm-security/main amd64 Packages [294 kB]
+#8 4.094 Fetched 9347 kB in 3s (2745 kB/s)
+#8 4.094 Reading package lists...
+#8 4.734 Reading package lists...
+#8 5.375 Building dependency tree...
+#8 5.519 Reading state information...
+#8 5.690 The following additional packages will be installed:
+#8 5.690   binutils binutils-common binutils-x86-64-linux-gnu cpp cpp-12 g++-12 gcc
+#8 5.690   gcc-12 git-man libasan8 libatomic1 libbinutils libbrotli1 libc-dev-bin
+#8 5.690   libc6-dev libcc1-0 libcrypt-dev libctf-nobfd0 libctf0 libcurl3-gnutls
+#8 5.691   liberror-perl libexpat1 libgcc-12-dev libgdbm-compat4 libgomp1 libgprofng0
+#8 5.691   libisl23 libitm1 libjansson4 libldap-2.5-0 liblsan0 libmpc3 libmpfr6
+#8 5.691   libnghttp2-14 libnsl-dev libperl5.36 libpsl5 libquadmath0 librtmp1
+#8 5.691   libsasl2-2 libsasl2-modules-db libssh2-1 libstdc++-12-dev libtirpc-dev
+#8 5.691   libtsan2 libubsan1 linux-libc-dev perl perl-modules-5.36 rpcsvc-proto
+#8 5.694 Suggested packages:
+#8 5.694   binutils-doc cpp-doc gcc-12-locales cpp-12-doc g++-multilib g++-12-multilib
+#8 5.694   gcc-12-doc gcc-multilib manpages-dev autoconf automake libtool flex bison
+#8 5.694   gdb gcc-doc gcc-12-multilib gettext-base git-daemon-run
+#8 5.694   | git-daemon-sysvinit git-doc git-email git-gui gitk gitweb git-cvs
+#8 5.694   git-mediawiki git-svn glibc-doc sensible-utils libssl-doc libstdc++-12-doc
+#8 5.694   make-doc perl-doc libterm-readline-gnu-perl | libterm-readline-perl-perl
+#8 5.694   libtap-harness-archive-perl
+#8 5.694 Recommended packages:
+#8 5.694   patch less ssh-client manpages manpages-dev libc-devtools libldap-common
+#8 5.694   publicsuffix libsasl2-modules
+#8 5.998 The following NEW packages will be installed:
+#8 5.998   binutils binutils-common binutils-x86-64-linux-gnu cpp cpp-12 g++ g++-12 gcc
+#8 5.998   gcc-12 git git-man libasan8 libatomic1 libbinutils libbrotli1 libc-dev-bin
+#8 5.998   libc6-dev libcc1-0 libcrypt-dev libctf-nobfd0 libctf0 libcurl3-gnutls
+#8 5.998   liberror-perl libexpat1 libgcc-12-dev libgdbm-compat4 libgomp1 libgprofng0
+#8 5.998   libisl23 libitm1 libjansson4 libldap-2.5-0 liblsan0 libmpc3 libmpfr6
+#8 5.998   libnghttp2-14 libnsl-dev libperl5.36 libpsl5 libquadmath0 librtmp1
+#8 5.998   libsasl2-2 libsasl2-modules-db libssh2-1 libssl-dev libstdc++-12-dev
+#8 5.999   libtirpc-dev libtsan2 libubsan1 linux-libc-dev make perl perl-modules-5.36
+#8 5.999   rpcsvc-proto
+#8 6.132 0 upgraded, 54 newly installed, 0 to remove and 0 not upgraded.
+#8 6.132 Need to get 84.2 MB of archives.
+#8 6.132 After this operation, 373 MB of additional disk space will be used.
+#8 6.132 Get:1 http://deb.debian.org/debian bookworm/main amd64 perl-modules-5.36 all 5.36.0-7+deb12u3 [2815 kB]
+#8 7.315 Get:2 http://deb.debian.org/debian bookworm/main amd64 libgdbm-compat4 amd64 1.23-3 [48.2 kB]
+#8 7.522 Get:3 http://deb.debian.org/debian bookworm/main amd64 libperl5.36 amd64 5.36.0-7+deb12u3 [4196 kB]
+#8 8.414 Get:4 http://deb.debian.org/debian bookworm/main amd64 perl amd64 5.36.0-7+deb12u3 [239 kB]
+#8 8.558 Get:5 http://deb.debian.org/debian bookworm/main amd64 binutils-common amd64 2.40-2 [2487 kB]
+#8 ...
+
+#7 [stage-1  3/11] RUN apt-get update && apt-get install -y --no-install-recommends     tini     git     unzip     ca-certificates     libssl3     && rm -rf /var/lib/apt/lists/*
+#7 9.284 Get:2 http://deb.debian.org/debian bookworm/main amd64 libgdbm-compat4 amd64 1.23-3 [48.2 kB]
+#7 9.522 Get:3 http://deb.debian.org/debian bookworm/main amd64 libperl5.36 amd64 5.36.0-7+deb12u3 [4196 kB]
+#7 10.82 Get:4 http://deb.debian.org/debian bookworm/main amd64 perl amd64 5.36.0-7+deb12u3 [239 kB]
+#7 10.96 Get:5 http://deb.debian.org/debian bookworm/main amd64 libbrotli1 amd64 1.0.9-2+b6 [275 kB]
+#7 11.12 Get:6 http://deb.debian.org/debian bookworm/main amd64 libsasl2-modules-db amd64 2.1.28+dfsg-10 [20.3 kB]
+#7 11.12 Get:7 http://deb.debian.org/debian bookworm/main amd64 libsasl2-2 amd64 2.1.28+dfsg-10 [59.7 kB]
+#7 11.13 Get:8 http://deb.debian.org/debian bookworm/main amd64 libldap-2.5-0 amd64 2.5.13+dfsg-5 [183 kB]
+#7 11.17 Get:9 http://deb.debian.org/debian bookworm/main amd64 libnghttp2-14 amd64 1.52.0-1+deb12u2 [73.0 kB]
+#7 11.18 Get:10 http://deb.debian.org/debian bookworm/main amd64 libpsl5 amd64 0.21.2-1 [58.7 kB]
+#7 11.19 Get:11 http://deb.debian.org/debian bookworm/main amd64 librtmp1 amd64 2.4+20151223.gitfa8646d.1-2+b2 [60.8 kB]
+#7 11.21 Get:12 http://deb.debian.org/debian bookworm/main amd64 libssh2-1 amd64 1.10.0-3+b1 [179 kB]
+#7 11.26 Get:13 http://deb.debian.org/debian bookworm/main amd64 libcurl3-gnutls amd64 7.88.1-10+deb12u14 [386 kB]
+#7 11.35 Get:14 http://deb.debian.org/debian bookworm/main amd64 libexpat1 amd64 2.5.0-1+deb12u2 [99.9 kB]
+#7 11.37 Get:15 http://deb.debian.org/debian bookworm/main amd64 liberror-perl all 0.17029-2 [29.0 kB]
+#7 11.38 Get:16 http://deb.debian.org/debian bookworm/main amd64 git-man all 1:2.39.5-0+deb12u3 [2053 kB]
+#7 11.90 Get:17 http://deb.debian.org/debian bookworm/main amd64 git amd64 1:2.39.5-0+deb12u3 [7264 kB]
+#7 14.92 Get:18 http://deb.debian.org/debian bookworm/main amd64 tini amd64 0.19.0-1+b3 [267 kB]
+#7 15.05 Get:19 http://deb.debian.org/debian bookworm/main amd64 unzip amd64 6.0-28 [166 kB]
+#7 15.29 debconf: delaying package configuration, since apt-utils is not installed
+#7 15.34 Fetched 18.5 MB in 7s (2471 kB/s)
+#7 15.38 Selecting previously unselected package perl-modules-5.36.
+#7 15.38 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6695 files and directories currently installed.)
+#7 15.39 Preparing to unpack .../00-perl-modules-5.36_5.36.0-7+deb12u3_all.deb ...
+#7 15.40 Unpacking perl-modules-5.36 (5.36.0-7+deb12u3) ...
+#7 15.98 Selecting previously unselected package libgdbm-compat4:amd64.
+#7 15.98 Preparing to unpack .../01-libgdbm-compat4_1.23-3_amd64.deb ...
+#7 16.00 Unpacking libgdbm-compat4:amd64 (1.23-3) ...
+#7 16.09 Selecting previously unselected package libperl5.36:amd64.
+#7 16.09 Preparing to unpack .../02-libperl5.36_5.36.0-7+deb12u3_amd64.deb ...
+#7 16.10 Unpacking libperl5.36:amd64 (5.36.0-7+deb12u3) ...
+#7 16.77 Selecting previously unselected package perl.
+#7 16.77 Preparing to unpack .../03-perl_5.36.0-7+deb12u3_amd64.deb ...
+#7 16.79 Unpacking perl (5.36.0-7+deb12u3) ...
+#7 16.91 Selecting previously unselected package libbrotli1:amd64.
+#7 16.91 Preparing to unpack .../04-libbrotli1_1.0.9-2+b6_amd64.deb ...
+#7 16.92 Unpacking libbrotli1:amd64 (1.0.9-2+b6) ...
+#7 17.04 Selecting previously unselected package libsasl2-modules-db:amd64.
+#7 17.04 Preparing to unpack .../05-libsasl2-modules-db_2.1.28+dfsg-10_amd64.deb ...
+#7 17.05 Unpacking libsasl2-modules-db:amd64 (2.1.28+dfsg-10) ...
+#7 17.13 Selecting previously unselected package libsasl2-2:amd64.
+#7 17.13 Preparing to unpack .../06-libsasl2-2_2.1.28+dfsg-10_amd64.deb ...
+#7 17.14 Unpacking libsasl2-2:amd64 (2.1.28+dfsg-10) ...
+#7 17.24 Selecting previously unselected package libldap-2.5-0:amd64.
+#7 17.24 Preparing to unpack .../07-libldap-2.5-0_2.5.13+dfsg-5_amd64.deb ...
+#7 17.25 Unpacking libldap-2.5-0:amd64 (2.5.13+dfsg-5) ...
+#7 17.36 Selecting previously unselected package libnghttp2-14:amd64.
+#7 17.36 Preparing to unpack .../08-libnghttp2-14_1.52.0-1+deb12u2_amd64.deb ...
+#7 17.37 Unpacking libnghttp2-14:amd64 (1.52.0-1+deb12u2) ...
+#7 17.48 Selecting previously unselected package libpsl5:amd64.
+#7 17.48 Preparing to unpack .../09-libpsl5_0.21.2-1_amd64.deb ...
+#7 17.49 Unpacking libpsl5:amd64 (0.21.2-1) ...
+#7 17.59 Selecting previously unselected package librtmp1:amd64.
+#7 17.59 Preparing to unpack .../10-librtmp1_2.4+20151223.gitfa8646d.1-2+b2_amd64.deb ...
+#7 17.60 Unpacking librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2+b2) ...
+#7 17.70 Selecting previously unselected package libssh2-1:amd64.
+#7 17.70 Preparing to unpack .../11-libssh2-1_1.10.0-3+b1_amd64.deb ...
+#7 17.71 Unpacking libssh2-1:amd64 (1.10.0-3+b1) ...
+#7 17.83 Selecting previously unselected package libcurl3-gnutls:amd64.
+#7 17.83 Preparing to unpack .../12-libcurl3-gnutls_7.88.1-10+deb12u14_amd64.deb ...
+#7 17.85 Unpacking libcurl3-gnutls:amd64 (7.88.1-10+deb12u14) ...
+#7 17.97 Selecting previously unselected package libexpat1:amd64.
+#7 17.97 Preparing to unpack .../13-libexpat1_2.5.0-1+deb12u2_amd64.deb ...
+#7 17.99 Unpacking libexpat1:amd64 (2.5.0-1+deb12u2) ...
+#7 18.07 Selecting previously unselected package liberror-perl.
+#7 18.07 Preparing to unpack .../14-liberror-perl_0.17029-2_all.deb ...
+#7 18.08 Unpacking liberror-perl (0.17029-2) ...
+#7 18.16 Selecting previously unselected package git-man.
+#7 18.16 Preparing to unpack .../15-git-man_1%3a2.39.5-0+deb12u3_all.deb ...
+#7 18.17 Unpacking git-man (1:2.39.5-0+deb12u3) ...
+#7 18.44 Selecting previously unselected package git.
+#7 18.44 Preparing to unpack .../16-git_1%3a2.39.5-0+deb12u3_amd64.deb ...
+#7 18.46 Unpacking git (1:2.39.5-0+deb12u3) ...
+#7 19.41 Selecting previously unselected package tini.
+#7 19.42 Preparing to unpack .../17-tini_0.19.0-1+b3_amd64.deb ...
+#7 19.43 Unpacking tini (0.19.0-1+b3) ...
+#7 19.59 Selecting previously unselected package unzip.
+#7 19.59 Preparing to unpack .../18-unzip_6.0-28_amd64.deb ...
+#7 19.60 Unpacking unzip (6.0-28) ...
+#7 19.73 Setting up libexpat1:amd64 (2.5.0-1+deb12u2) ...
+#7 ...
+
+#8 [builder 2/5] RUN apt-get update && apt-get install -y --no-install-recommends     git     g++     make     libssl-dev     && rm -rf /var/lib/apt/lists/*
+#8 9.731 Get:6 http://deb.debian.org/debian bookworm/main amd64 libbinutils amd64 2.40-2 [572 kB]
+#8 9.839 Get:7 http://deb.debian.org/debian bookworm/main amd64 libctf-nobfd0 amd64 2.40-2 [153 kB]
+#8 9.855 Get:8 http://deb.debian.org/debian bookworm/main amd64 libctf0 amd64 2.40-2 [89.8 kB]
+#8 9.929 Get:9 http://deb.debian.org/debian bookworm/main amd64 libgprofng0 amd64 2.40-2 [812 kB]
+#8 10.56 Get:10 http://deb.debian.org/debian bookworm/main amd64 libjansson4 amd64 2.14-2 [40.8 kB]
+#8 10.61 Get:11 http://deb.debian.org/debian bookworm/main amd64 binutils-x86-64-linux-gnu amd64 2.40-2 [2246 kB]
+#8 11.51 Get:12 http://deb.debian.org/debian bookworm/main amd64 binutils amd64 2.40-2 [65.0 kB]
+#8 11.56 Get:13 http://deb.debian.org/debian bookworm/main amd64 libisl23 amd64 0.25-1.1 [683 kB]
+#8 11.82 Get:14 http://deb.debian.org/debian bookworm/main amd64 libmpfr6 amd64 4.2.0-1 [701 kB]
+#8 12.04 Get:15 http://deb.debian.org/debian bookworm/main amd64 libmpc3 amd64 1.3.1-1 [51.5 kB]
+#8 12.05 Get:16 http://deb.debian.org/debian bookworm/main amd64 cpp-12 amd64 12.2.0-14+deb12u1 [9768 kB]
+#8 14.96 Get:17 http://deb.debian.org/debian bookworm/main amd64 cpp amd64 4:12.2.0-3 [6836 B]
+#8 14.97 Get:18 http://deb.debian.org/debian bookworm/main amd64 libcc1-0 amd64 12.2.0-14+deb12u1 [41.7 kB]
+#8 15.05 Get:19 http://deb.debian.org/debian bookworm/main amd64 libgomp1 amd64 12.2.0-14+deb12u1 [116 kB]
+#8 15.06 Get:20 http://deb.debian.org/debian bookworm/main amd64 libitm1 amd64 12.2.0-14+deb12u1 [26.1 kB]
+#8 15.09 Get:21 http://deb.debian.org/debian bookworm/main amd64 libatomic1 amd64 12.2.0-14+deb12u1 [9376 B]
+#8 15.09 Get:22 http://deb.debian.org/debian bookworm/main amd64 libasan8 amd64 12.2.0-14+deb12u1 [2193 kB]
+#8 15.76 Get:23 http://deb.debian.org/debian bookworm/main amd64 liblsan0 amd64 12.2.0-14+deb12u1 [969 kB]
+#8 16.04 Get:24 http://deb.debian.org/debian bookworm/main amd64 libtsan2 amd64 12.2.0-14+deb12u1 [2197 kB]
+#8 17.04 Get:25 http://deb.debian.org/debian bookworm/main amd64 libubsan1 amd64 12.2.0-14+deb12u1 [883 kB]
+#8 17.42 Get:26 http://deb.debian.org/debian bookworm/main amd64 libquadmath0 amd64 12.2.0-14+deb12u1 [145 kB]
+#8 17.46 Get:27 http://deb.debian.org/debian bookworm/main amd64 libgcc-12-dev amd64 12.2.0-14+deb12u1 [2437 kB]
+#8 17.97 Get:28 http://deb.debian.org/debian bookworm/main amd64 gcc-12 amd64 12.2.0-14+deb12u1 [19.3 MB]
+#8 ...
+
+#7 [stage-1  3/11] RUN apt-get update && apt-get install -y --no-install-recommends     tini     git     unzip     ca-certificates     libssl3     && rm -rf /var/lib/apt/lists/*
+#7 19.78 Setting up libpsl5:amd64 (0.21.2-1) ...
+#7 19.82 Setting up unzip (6.0-28) ...
+#7 19.87 Setting up libbrotli1:amd64 (1.0.9-2+b6) ...
+#7 19.92 Setting up libnghttp2-14:amd64 (1.52.0-1+deb12u2) ...
+#7 19.98 Setting up libsasl2-modules-db:amd64 (2.1.28+dfsg-10) ...
+#7 20.03 Setting up perl-modules-5.36 (5.36.0-7+deb12u3) ...
+#7 20.07 Setting up librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2+b2) ...
+#7 20.14 Setting up tini (0.19.0-1+b3) ...
+#7 20.18 Setting up libgdbm-compat4:amd64 (1.23-3) ...
+#7 20.22 Setting up libsasl2-2:amd64 (2.1.28+dfsg-10) ...
+#7 20.26 Setting up git-man (1:2.39.5-0+deb12u3) ...
+#7 20.30 Setting up libssh2-1:amd64 (1.10.0-3+b1) ...
+#7 20.34 Setting up libperl5.36:amd64 (5.36.0-7+deb12u3) ...
+#7 20.39 Setting up libldap-2.5-0:amd64 (2.5.13+dfsg-5) ...
+#7 20.44 Setting up perl (5.36.0-7+deb12u3) ...
+#7 20.51 Setting up libcurl3-gnutls:amd64 (7.88.1-10+deb12u14) ...
+#7 20.56 Setting up liberror-perl (0.17029-2) ...
+#7 20.60 Setting up git (1:2.39.5-0+deb12u3) ...
+#7 20.67 Processing triggers for libc-bin (2.36-9+deb12u13) ...
+#7 DONE 21.2s
+
+#8 [builder 2/5] RUN apt-get update && apt-get install -y --no-install-recommends     git     g++     make     libssl-dev     && rm -rf /var/lib/apt/lists/*
+#8 20.09 Get:29 http://deb.debian.org/debian bookworm/main amd64 gcc amd64 4:12.2.0-3 [5216 B]
+#8 20.09 Get:30 http://deb.debian.org/debian bookworm/main amd64 libc-dev-bin amd64 2.36-9+deb12u13 [47.4 kB]
+#8 20.09 Get:31 http://deb.debian.org/debian-security bookworm-security/main amd64 linux-libc-dev amd64 6.1.164-1 [2240 kB]
+#8 20.41 Get:32 http://deb.debian.org/debian bookworm/main amd64 libcrypt-dev amd64 1:4.4.33-2 [118 kB]
+#8 20.42 Get:33 http://deb.debian.org/debian bookworm/main amd64 libtirpc-dev amd64 1.3.3+ds-1 [191 kB]
+#8 20.44 Get:34 http://deb.debian.org/debian bookworm/main amd64 libnsl-dev amd64 1.3.0-2 [66.4 kB]
+#8 20.45 Get:35 http://deb.debian.org/debian bookworm/main amd64 rpcsvc-proto amd64 1.4.3-1 [63.3 kB]
+#8 20.45 Get:36 http://deb.debian.org/debian bookworm/main amd64 libc6-dev amd64 2.36-9+deb12u13 [1904 kB]
+#8 20.65 Get:37 http://deb.debian.org/debian bookworm/main amd64 libstdc++-12-dev amd64 12.2.0-14+deb12u1 [2047 kB]
+#8 21.04 Get:38 http://deb.debian.org/debian bookworm/main amd64 g++-12 amd64 12.2.0-14+deb12u1 [10.7 MB]
+#8 23.17 Get:39 http://deb.debian.org/debian bookworm/main amd64 g++ amd64 4:12.2.0-3 [1356 B]
+#8 23.17 Get:40 http://deb.debian.org/debian bookworm/main amd64 libbrotli1 amd64 1.0.9-2+b6 [275 kB]
+#8 23.22 Get:41 http://deb.debian.org/debian bookworm/main amd64 libsasl2-modules-db amd64 2.1.28+dfsg-10 [20.3 kB]
+#8 23.22 Get:42 http://deb.debian.org/debian bookworm/main amd64 libsasl2-2 amd64 2.1.28+dfsg-10 [59.7 kB]
+#8 23.23 Get:43 http://deb.debian.org/debian bookworm/main amd64 libldap-2.5-0 amd64 2.5.13+dfsg-5 [183 kB]
+#8 23.26 Get:44 http://deb.debian.org/debian bookworm/main amd64 libnghttp2-14 amd64 1.52.0-1+deb12u2 [73.0 kB]
+#8 23.28 Get:45 http://deb.debian.org/debian bookworm/main amd64 libpsl5 amd64 0.21.2-1 [58.7 kB]
+#8 23.29 Get:46 http://deb.debian.org/debian bookworm/main amd64 librtmp1 amd64 2.4+20151223.gitfa8646d.1-2+b2 [60.8 kB]
+#8 23.39 Get:47 http://deb.debian.org/debian bookworm/main amd64 libssh2-1 amd64 1.10.0-3+b1 [179 kB]
+#8 23.94 Get:48 http://deb.debian.org/debian bookworm/main amd64 libcurl3-gnutls amd64 7.88.1-10+deb12u14 [386 kB]
+#8 24.19 Get:49 http://deb.debian.org/debian bookworm/main amd64 libexpat1 amd64 2.5.0-1+deb12u2 [99.9 kB]
+#8 24.21 Get:50 http://deb.debian.org/debian bookworm/main amd64 liberror-perl all 0.17029-2 [29.0 kB]
+#8 24.22 Get:51 http://deb.debian.org/debian bookworm/main amd64 git-man all 1:2.39.5-0+deb12u3 [2053 kB]
+#8 24.64 Get:52 http://deb.debian.org/debian bookworm/main amd64 git amd64 1:2.39.5-0+deb12u3 [7264 kB]
+#8 25.53 Get:53 http://deb.debian.org/debian-security bookworm-security/main amd64 libssl-dev amd64 3.0.18-1~deb12u2 [2444 kB]
+#8 25.78 Get:54 http://deb.debian.org/debian bookworm/main amd64 make amd64 4.3-4.1 [396 kB]
+#8 26.03 debconf: delaying package configuration, since apt-utils is not installed
+#8 26.08 Fetched 84.2 MB in 20s (4252 kB/s)
+#8 26.13 Selecting previously unselected package perl-modules-5.36.
+#8 26.13 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6695 files and directories currently installed.)
+#8 26.14 Preparing to unpack .../00-perl-modules-5.36_5.36.0-7+deb12u3_all.deb ...
+#8 26.15 Unpacking perl-modules-5.36 (5.36.0-7+deb12u3) ...
+#8 26.67 Selecting previously unselected package libgdbm-compat4:amd64.
+#8 26.67 Preparing to unpack .../01-libgdbm-compat4_1.23-3_amd64.deb ...
+#8 26.69 Unpacking libgdbm-compat4:amd64 (1.23-3) ...
+#8 26.79 Selecting previously unselected package libperl5.36:amd64.
+#8 26.79 Preparing to unpack .../02-libperl5.36_5.36.0-7+deb12u3_amd64.deb ...
+#8 26.81 Unpacking libperl5.36:amd64 (5.36.0-7+deb12u3) ...
+#8 27.42 Selecting previously unselected package perl.
+#8 27.42 Preparing to unpack .../03-perl_5.36.0-7+deb12u3_amd64.deb ...
+#8 27.44 Unpacking perl (5.36.0-7+deb12u3) ...
+#8 27.54 Selecting previously unselected package binutils-common:amd64.
+#8 27.54 Preparing to unpack .../04-binutils-common_2.40-2_amd64.deb ...
+#8 27.55 Unpacking binutils-common:amd64 (2.40-2) ...
+#8 27.95 Selecting previously unselected package libbinutils:amd64.
+#8 27.95 Preparing to unpack .../05-libbinutils_2.40-2_amd64.deb ...
+#8 27.96 Unpacking libbinutils:amd64 (2.40-2) ...
+#8 28.12 Selecting previously unselected package libctf-nobfd0:amd64.
+#8 28.12 Preparing to unpack .../06-libctf-nobfd0_2.40-2_amd64.deb ...
+#8 28.13 Unpacking libctf-nobfd0:amd64 (2.40-2) ...
+#8 28.23 Selecting previously unselected package libctf0:amd64.
+#8 28.23 Preparing to unpack .../07-libctf0_2.40-2_amd64.deb ...
+#8 28.25 Unpacking libctf0:amd64 (2.40-2) ...
+#8 28.34 Selecting previously unselected package libgprofng0:amd64.
+#8 28.34 Preparing to unpack .../08-libgprofng0_2.40-2_amd64.deb ...
+#8 28.35 Unpacking libgprofng0:amd64 (2.40-2) ...
+#8 28.55 Selecting previously unselected package libjansson4:amd64.
+#8 28.55 Preparing to unpack .../09-libjansson4_2.14-2_amd64.deb ...
+#8 28.56 Unpacking libjansson4:amd64 (2.14-2) ...
+#8 28.63 Selecting previously unselected package binutils-x86-64-linux-gnu.
+#8 28.63 Preparing to unpack .../10-binutils-x86-64-linux-gnu_2.40-2_amd64.deb ...
+#8 28.65 Unpacking binutils-x86-64-linux-gnu (2.40-2) ...
+#8 29.02 Selecting previously unselected package binutils.
+#8 29.02 Preparing to unpack .../11-binutils_2.40-2_amd64.deb ...
+#8 29.03 Unpacking binutils (2.40-2) ...
+#8 29.13 Selecting previously unselected package libisl23:amd64.
+#8 29.13 Preparing to unpack .../12-libisl23_0.25-1.1_amd64.deb ...
+#8 29.14 Unpacking libisl23:amd64 (0.25-1.1) ...
+#8 29.32 Selecting previously unselected package libmpfr6:amd64.
+#8 29.32 Preparing to unpack .../13-libmpfr6_4.2.0-1_amd64.deb ...
+#8 29.33 Unpacking libmpfr6:amd64 (4.2.0-1) ...
+#8 29.47 Selecting previously unselected package libmpc3:amd64.
+#8 29.47 Preparing to unpack .../14-libmpc3_1.3.1-1_amd64.deb ...
+#8 29.49 Unpacking libmpc3:amd64 (1.3.1-1) ...
+#8 29.56 Selecting previously unselected package cpp-12.
+#8 29.56 Preparing to unpack .../15-cpp-12_12.2.0-14+deb12u1_amd64.deb ...
+#8 29.57 Unpacking cpp-12 (12.2.0-14+deb12u1) ...
+#8 30.66 Selecting previously unselected package cpp.
+#8 30.66 Preparing to unpack .../16-cpp_4%3a12.2.0-3_amd64.deb ...
+#8 30.67 Unpacking cpp (4:12.2.0-3) ...
+#8 30.76 Selecting previously unselected package libcc1-0:amd64.
+#8 30.76 Preparing to unpack .../17-libcc1-0_12.2.0-14+deb12u1_amd64.deb ...
+#8 30.77 Unpacking libcc1-0:amd64 (12.2.0-14+deb12u1) ...
+#8 30.86 Selecting previously unselected package libgomp1:amd64.
+#8 30.86 Preparing to unpack .../18-libgomp1_12.2.0-14+deb12u1_amd64.deb ...
+#8 30.87 Unpacking libgomp1:amd64 (12.2.0-14+deb12u1) ...
+#8 30.97 Selecting previously unselected package libitm1:amd64.
+#8 30.97 Preparing to unpack .../19-libitm1_12.2.0-14+deb12u1_amd64.deb ...
+#8 30.98 Unpacking libitm1:amd64 (12.2.0-14+deb12u1) ...
+#8 31.06 Selecting previously unselected package libatomic1:amd64.
+#8 31.07 Preparing to unpack .../20-libatomic1_12.2.0-14+deb12u1_amd64.deb ...
+#8 31.08 Unpacking libatomic1:amd64 (12.2.0-14+deb12u1) ...
+#8 31.16 Selecting previously unselected package libasan8:amd64.
+#8 31.16 Preparing to unpack .../21-libasan8_12.2.0-14+deb12u1_amd64.deb ...
+#8 31.17 Unpacking libasan8:amd64 (12.2.0-14+deb12u1) ...
+#8 31.55 Selecting previously unselected package liblsan0:amd64.
+#8 31.55 Preparing to unpack .../22-liblsan0_12.2.0-14+deb12u1_amd64.deb ...
+#8 31.56 Unpacking liblsan0:amd64 (12.2.0-14+deb12u1) ...
+#8 31.77 Selecting previously unselected package libtsan2:amd64.
+#8 31.77 Preparing to unpack .../23-libtsan2_12.2.0-14+deb12u1_amd64.deb ...
+#8 31.78 Unpacking libtsan2:amd64 (12.2.0-14+deb12u1) ...
+#8 32.14 Selecting previously unselected package libubsan1:amd64.
+#8 32.14 Preparing to unpack .../24-libubsan1_12.2.0-14+deb12u1_amd64.deb ...
+#8 32.15 Unpacking libubsan1:amd64 (12.2.0-14+deb12u1) ...
+#8 32.37 Selecting previously unselected package libquadmath0:amd64.
+#8 32.38 Preparing to unpack .../25-libquadmath0_12.2.0-14+deb12u1_amd64.deb ...
+#8 32.40 Unpacking libquadmath0:amd64 (12.2.0-14+deb12u1) ...
+#8 32.52 Selecting previously unselected package libgcc-12-dev:amd64.
+#8 32.53 Preparing to unpack .../26-libgcc-12-dev_12.2.0-14+deb12u1_amd64.deb ...
+#8 32.54 Unpacking libgcc-12-dev:amd64 (12.2.0-14+deb12u1) ...
+#8 32.91 Selecting previously unselected package gcc-12.
+#8 32.91 Preparing to unpack .../27-gcc-12_12.2.0-14+deb12u1_amd64.deb ...
+#8 32.92 Unpacking gcc-12 (12.2.0-14+deb12u1) ...
+#8 34.21 Selecting previously unselected package gcc.
+#8 34.21 Preparing to unpack .../28-gcc_4%3a12.2.0-3_amd64.deb ...
+#8 34.22 Unpacking gcc (4:12.2.0-3) ...
+#8 34.32 Selecting previously unselected package libc-dev-bin.
+#8 34.32 Preparing to unpack .../29-libc-dev-bin_2.36-9+deb12u13_amd64.deb ...
+#8 34.34 Unpacking libc-dev-bin (2.36-9+deb12u13) ...
+#8 34.43 Selecting previously unselected package linux-libc-dev:amd64.
+#8 34.43 Preparing to unpack .../30-linux-libc-dev_6.1.164-1_amd64.deb ...
+#8 34.45 Unpacking linux-libc-dev:amd64 (6.1.164-1) ...
+#8 34.71 Selecting previously unselected package libcrypt-dev:amd64.
+#8 34.71 Preparing to unpack .../31-libcrypt-dev_1%3a4.4.33-2_amd64.deb ...
+#8 34.74 Unpacking libcrypt-dev:amd64 (1:4.4.33-2) ...
+#8 34.82 Selecting previously unselected package libtirpc-dev:amd64.
+#8 34.82 Preparing to unpack .../32-libtirpc-dev_1.3.3+ds-1_amd64.deb ...
+#8 34.83 Unpacking libtirpc-dev:amd64 (1.3.3+ds-1) ...
+#8 34.93 Selecting previously unselected package libnsl-dev:amd64.
+#8 34.93 Preparing to unpack .../33-libnsl-dev_1.3.0-2_amd64.deb ...
+#8 34.94 Unpacking libnsl-dev:amd64 (1.3.0-2) ...
+#8 35.03 Selecting previously unselected package rpcsvc-proto.
+#8 35.03 Preparing to unpack .../34-rpcsvc-proto_1.4.3-1_amd64.deb ...
+#8 35.06 Unpacking rpcsvc-proto (1.4.3-1) ...
+#8 35.13 Selecting previously unselected package libc6-dev:amd64.
+#8 35.13 Preparing to unpack .../35-libc6-dev_2.36-9+deb12u13_amd64.deb ...
+#8 35.15 Unpacking libc6-dev:amd64 (2.36-9+deb12u13) ...
+#8 35.47 Selecting previously unselected package libstdc++-12-dev:amd64.
+#8 35.47 Preparing to unpack .../36-libstdc++-12-dev_12.2.0-14+deb12u1_amd64.deb ...
+#8 35.49 Unpacking libstdc++-12-dev:amd64 (12.2.0-14+deb12u1) ...
+#8 35.79 Selecting previously unselected package g++-12.
+#8 35.80 Preparing to unpack .../37-g++-12_12.2.0-14+deb12u1_amd64.deb ...
+#8 35.81 Unpacking g++-12 (12.2.0-14+deb12u1) ...
+#8 36.82 Selecting previously unselected package g++.
+#8 36.83 Preparing to unpack .../38-g++_4%3a12.2.0-3_amd64.deb ...
+#8 36.85 Unpacking g++ (4:12.2.0-3) ...
+#8 36.92 Selecting previously unselected package libbrotli1:amd64.
+#8 36.93 Preparing to unpack .../39-libbrotli1_1.0.9-2+b6_amd64.deb ...
+#8 36.95 Unpacking libbrotli1:amd64 (1.0.9-2+b6) ...
+#8 37.06 Selecting previously unselected package libsasl2-modules-db:amd64.
+#8 37.06 Preparing to unpack .../40-libsasl2-modules-db_2.1.28+dfsg-10_amd64.deb ...
+#8 37.07 Unpacking libsasl2-modules-db:amd64 (2.1.28+dfsg-10) ...
+#8 37.16 Selecting previously unselected package libsasl2-2:amd64.
+#8 37.16 Preparing to unpack .../41-libsasl2-2_2.1.28+dfsg-10_amd64.deb ...
+#8 37.17 Unpacking libsasl2-2:amd64 (2.1.28+dfsg-10) ...
+#8 37.26 Selecting previously unselected package libldap-2.5-0:amd64.
+#8 37.26 Preparing to unpack .../42-libldap-2.5-0_2.5.13+dfsg-5_amd64.deb ...
+#8 37.27 Unpacking libldap-2.5-0:amd64 (2.5.13+dfsg-5) ...
+#8 37.39 Selecting previously unselected package libnghttp2-14:amd64.
+#8 37.39 Preparing to unpack .../43-libnghttp2-14_1.52.0-1+deb12u2_amd64.deb ...
+#8 37.40 Unpacking libnghttp2-14:amd64 (1.52.0-1+deb12u2) ...
+#8 37.50 Selecting previously unselected package libpsl5:amd64.
+#8 37.50 Preparing to unpack .../44-libpsl5_0.21.2-1_amd64.deb ...
+#8 37.51 Unpacking libpsl5:amd64 (0.21.2-1) ...
+#8 37.60 Selecting previously unselected package librtmp1:amd64.
+#8 37.60 Preparing to unpack .../45-librtmp1_2.4+20151223.gitfa8646d.1-2+b2_amd64.deb ...
+#8 37.61 Unpacking librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2+b2) ...
+#8 37.71 Selecting previously unselected package libssh2-1:amd64.
+#8 37.71 Preparing to unpack .../46-libssh2-1_1.10.0-3+b1_amd64.deb ...
+#8 37.73 Unpacking libssh2-1:amd64 (1.10.0-3+b1) ...
+#8 37.84 Selecting previously unselected package libcurl3-gnutls:amd64.
+#8 37.85 Preparing to unpack .../47-libcurl3-gnutls_7.88.1-10+deb12u14_amd64.deb ...
+#8 37.86 Unpacking libcurl3-gnutls:amd64 (7.88.1-10+deb12u14) ...
+#8 37.99 Selecting previously unselected package libexpat1:amd64.
+#8 38.00 Preparing to unpack .../48-libexpat1_2.5.0-1+deb12u2_amd64.deb ...
+#8 38.01 Unpacking libexpat1:amd64 (2.5.0-1+deb12u2) ...
+#8 38.10 Selecting previously unselected package liberror-perl.
+#8 38.10 Preparing to unpack .../49-liberror-perl_0.17029-2_all.deb ...
+#8 38.12 Unpacking liberror-perl (0.17029-2) ...
+#8 38.21 Selecting previously unselected package git-man.
+#8 38.21 Preparing to unpack .../50-git-man_1%3a2.39.5-0+deb12u3_all.deb ...
+#8 38.22 Unpacking git-man (1:2.39.5-0+deb12u3) ...
+#8 38.44 Selecting previously unselected package git.
+#8 38.44 Preparing to unpack .../51-git_1%3a2.39.5-0+deb12u3_amd64.deb ...
+#8 38.46 Unpacking git (1:2.39.5-0+deb12u3) ...
+#8 39.02 Selecting previously unselected package libssl-dev:amd64.
+#8 39.02 Preparing to unpack .../52-libssl-dev_3.0.18-1~deb12u2_amd64.deb ...
+#8 39.03 Unpacking libssl-dev:amd64 (3.0.18-1~deb12u2) ...
+#8 39.35 Selecting previously unselected package make.
+#8 39.36 Preparing to unpack .../53-make_4.3-4.1_amd64.deb ...
+#8 39.37 Unpacking make (4.3-4.1) ...
+#8 39.50 Setting up libexpat1:amd64 (2.5.0-1+deb12u2) ...
+#8 39.53 Setting up libpsl5:amd64 (0.21.2-1) ...
+#8 39.57 Setting up libbrotli1:amd64 (1.0.9-2+b6) ...
+#8 39.61 Setting up binutils-common:amd64 (2.40-2) ...
+#8 39.68 Setting up libnghttp2-14:amd64 (1.52.0-1+deb12u2) ...
+#8 39.71 Setting up linux-libc-dev:amd64 (6.1.164-1) ...
+#8 39.75 Setting up libctf-nobfd0:amd64 (2.40-2) ...
+#8 39.80 Setting up libgomp1:amd64 (12.2.0-14+deb12u1) ...
+#8 39.84 Setting up libjansson4:amd64 (2.14-2) ...
+#8 39.88 Setting up libsasl2-modules-db:amd64 (2.1.28+dfsg-10) ...
+#8 39.92 Setting up perl-modules-5.36 (5.36.0-7+deb12u3) ...
+#8 39.96 Setting up libtirpc-dev:amd64 (1.3.3+ds-1) ...
+#8 40.01 Setting up rpcsvc-proto (1.4.3-1) ...
+#8 40.08 Setting up make (4.3-4.1) ...
+#8 40.13 Setting up libmpfr6:amd64 (4.2.0-1) ...
+#8 40.17 Setting up librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2+b2) ...
+#8 40.23 Setting up libquadmath0:amd64 (12.2.0-14+deb12u1) ...
+#8 40.27 Setting up libssl-dev:amd64 (3.0.18-1~deb12u2) ...
+#8 40.32 Setting up libmpc3:amd64 (1.3.1-1) ...
+#8 40.38 Setting up libatomic1:amd64 (12.2.0-14+deb12u1) ...
+#8 40.42 Setting up libgdbm-compat4:amd64 (1.23-3) ...
+#8 40.46 Setting up libsasl2-2:amd64 (2.1.28+dfsg-10) ...
+#8 40.50 Setting up libubsan1:amd64 (12.2.0-14+deb12u1) ...
+#8 40.55 Setting up libnsl-dev:amd64 (1.3.0-2) ...
+#8 40.60 Setting up libcrypt-dev:amd64 (1:4.4.33-2) ...
+#8 40.66 Setting up libasan8:amd64 (12.2.0-14+deb12u1) ...
+#8 40.69 Setting up git-man (1:2.39.5-0+deb12u3) ...
+#8 40.74 Setting up libssh2-1:amd64 (1.10.0-3+b1) ...
+#8 40.78 Setting up libtsan2:amd64 (12.2.0-14+deb12u1) ...
+#8 40.83 Setting up libbinutils:amd64 (2.40-2) ...
+#8 40.86 Setting up libisl23:amd64 (0.25-1.1) ...
+#8 40.89 Setting up libc-dev-bin (2.36-9+deb12u13) ...
+#8 40.94 Setting up libcc1-0:amd64 (12.2.0-14+deb12u1) ...
+#8 40.98 Setting up libperl5.36:amd64 (5.36.0-7+deb12u3) ...
+#8 41.02 Setting up liblsan0:amd64 (12.2.0-14+deb12u1) ...
+#8 41.06 Setting up libitm1:amd64 (12.2.0-14+deb12u1) ...
+#8 41.11 Setting up libctf0:amd64 (2.40-2) ...
+#8 41.15 Setting up cpp-12 (12.2.0-14+deb12u1) ...
+#8 41.19 Setting up libldap-2.5-0:amd64 (2.5.13+dfsg-5) ...
+#8 41.23 Setting up perl (5.36.0-7+deb12u3) ...
+#8 41.28 Setting up libgprofng0:amd64 (2.40-2) ...
+#8 41.33 Setting up libgcc-12-dev:amd64 (12.2.0-14+deb12u1) ...
+#8 41.37 Setting up cpp (4:12.2.0-3) ...
+#8 41.43 Setting up libc6-dev:amd64 (2.36-9+deb12u13) ...
+#8 41.46 Setting up binutils-x86-64-linux-gnu (2.40-2) ...
+#8 41.51 Setting up libstdc++-12-dev:amd64 (12.2.0-14+deb12u1) ...
+#8 41.55 Setting up libcurl3-gnutls:amd64 (7.88.1-10+deb12u14) ...
+#8 41.58 Setting up binutils (2.40-2) ...
+#8 41.62 Setting up liberror-perl (0.17029-2) ...
+#8 41.66 Setting up gcc-12 (12.2.0-14+deb12u1) ...
+#8 41.70 Setting up git (1:2.39.5-0+deb12u3) ...
+#8 41.76 Setting up g++-12 (12.2.0-14+deb12u1) ...
+#8 41.81 Setting up gcc (4:12.2.0-3) ...
+#8 41.87 Setting up g++ (4:12.2.0-3) ...
+#8 41.91 update-alternatives: using /usr/bin/g++ to provide /usr/bin/c++ (c++) in auto mode
+#8 41.92 Processing triggers for libc-bin (2.36-9+deb12u13) ...
+#8 DONE 42.6s
+
+#9 [builder 3/5] RUN git clone --depth 1 https://github.com/mheistermann/HashPump-partialhash.git /opt/HashPump
+#9 0.665 Cloning into '/opt/HashPump'...
+#9 DONE 2.5s
+
+#10 [builder 4/5] WORKDIR /opt/HashPump
+#10 DONE 0.2s
+
+#11 [builder 5/5] RUN make
+#11 0.388 g++ -c -Wall main.cpp
+#11 0.880 g++ -c -Wall Extender.cpp
+#11 1.217 g++ -c -Wall MD4ex.cpp
+#11 1.493 MD4ex.cpp: In member function ‘virtual int MD4ex::GenerateSignature(std::vector<unsigned char>, std::vector<unsigned char>, unsigned char**)’:
+#11 1.493 MD4ex.cpp:15:17: warning: ‘int MD4_Init(MD4_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 1.493    15 |         MD4_Init(&original);
+#11 1.493       |         ~~~~~~~~^~~~~~~~~~~
+#11 1.493 In file included from MD4ex.h:5,
+#11 1.493                  from MD4ex.cpp:1:
+#11 1.493 /usr/include/openssl/md4.h:50:27: note: declared here
+#11 1.493    50 | OSSL_DEPRECATEDIN_3_0 int MD4_Init(MD4_CTX *c);
+#11 1.493       |                           ^~~~~~~~
+#11 1.493 MD4ex.cpp:26:19: warning: ‘int MD4_Update(MD4_CTX*, const void*, size_t)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 1.493    26 |         MD4_Update(&original, tohash, totalLen);
+#11 1.493       |         ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#11 1.493 /usr/include/openssl/md4.h:51:27: note: declared here
+#11 1.493    51 | OSSL_DEPRECATEDIN_3_0 int MD4_Update(MD4_CTX *c, const void *data, size_t len);
+#11 1.493       |                           ^~~~~~~~~~
+#11 1.493 MD4ex.cpp:28:18: warning: ‘int MD4_Final(unsigned char*, MD4_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 1.493    28 |         MD4_Final(*signature, &original);
+#11 1.493       |         ~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~
+#11 1.493 /usr/include/openssl/md4.h:52:27: note: declared here
+#11 1.493    52 | OSSL_DEPRECATEDIN_3_0 int MD4_Final(unsigned char *md, MD4_CTX *c);
+#11 1.493       |                           ^~~~~~~~~
+#11 1.493 MD4ex.cpp: In member function ‘virtual bool MD4ex::ValidateSignature(std::vector<unsigned char>, std::vector<unsigned char>, unsigned char*)’:
+#11 1.493 MD4ex.cpp:35:17: warning: ‘int MD4_Init(MD4_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 1.493    35 |         MD4_Init(&original);
+#11 1.493       |         ~~~~~~~~^~~~~~~~~~~
+#11 1.493 /usr/include/openssl/md4.h:50:27: note: declared here
+#11 1.493    50 | OSSL_DEPRECATEDIN_3_0 int MD4_Init(MD4_CTX *c);
+#11 1.493       |                           ^~~~~~~~
+#11 1.494 MD4ex.cpp:46:19: warning: ‘int MD4_Update(MD4_CTX*, const void*, size_t)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 1.494    46 |         MD4_Update(&original, tohash, totalLen);
+#11 1.494       |         ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#11 1.494 /usr/include/openssl/md4.h:51:27: note: declared here
+#11 1.494    51 | OSSL_DEPRECATEDIN_3_0 int MD4_Update(MD4_CTX *c, const void *data, size_t len);
+#11 1.494       |                           ^~~~~~~~~~
+#11 1.494 MD4ex.cpp:49:18: warning: ‘int MD4_Final(unsigned char*, MD4_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 1.494    49 |         MD4_Final(hash, &original);
+#11 1.494       |         ~~~~~~~~~^~~~~~~~~~~~~~~~~
+#11 1.494 /usr/include/openssl/md4.h:52:27: note: declared here
+#11 1.494    52 | OSSL_DEPRECATEDIN_3_0 int MD4_Final(unsigned char *md, MD4_CTX *c);
+#11 1.494       |                           ^~~~~~~~~
+#11 1.495 MD4ex.cpp: In member function ‘virtual std::vector<unsigned char>* MD4ex::GenerateStretchedData(std::vector<unsigned char>, int, unsigned char*, std::vector<unsigned char>, unsigned char**)’:
+#11 1.495 MD4ex.cpp:80:17: warning: ‘int MD4_Init(MD4_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 1.495    80 |         MD4_Init(&stretch);
+#11 1.495       |         ~~~~~~~~^~~~~~~~~~
+#11 1.495 /usr/include/openssl/md4.h:50:27: note: declared here
+#11 1.495    50 | OSSL_DEPRECATEDIN_3_0 int MD4_Init(MD4_CTX *c);
+#11 1.495       |                           ^~~~~~~~
+#11 1.496 MD4ex.cpp:91:19: warning: ‘int MD4_Update(MD4_CTX*, const void*, size_t)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 1.496    91 |         MD4_Update(&stretch, toadd, added.size());
+#11 1.496       |         ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#11 1.496 /usr/include/openssl/md4.h:51:27: note: declared here
+#11 1.496    51 | OSSL_DEPRECATEDIN_3_0 int MD4_Update(MD4_CTX *c, const void *data, size_t len);
+#11 1.496       |                           ^~~~~~~~~~
+#11 1.496 MD4ex.cpp:93:18: warning: ‘int MD4_Final(unsigned char*, MD4_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 1.496    93 |         MD4_Final(*newSig, &stretch);
+#11 1.496       |         ~~~~~~~~~^~~~~~~~~~~~~~~~~~~
+#11 1.496 /usr/include/openssl/md4.h:52:27: note: declared here
+#11 1.496    52 | OSSL_DEPRECATEDIN_3_0 int MD4_Final(unsigned char *md, MD4_CTX *c);
+#11 1.496       |                           ^~~~~~~~~
+#11 1.598 g++ -c -Wall MD5ex.cpp
+#11 1.882 MD5ex.cpp: In member function ‘virtual int MD5ex::GenerateSignature(std::vector<unsigned char>, std::vector<unsigned char>, unsigned char**)’:
+#11 1.882 MD5ex.cpp:12:17: warning: ‘int MD5_Init(MD5_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 1.882    12 |         MD5_Init(&original);
+#11 1.882       |         ~~~~~~~~^~~~~~~~~~~
+#11 1.882 In file included from MD5ex.h:5,
+#11 1.882                  from MD5ex.cpp:1:
+#11 1.882 /usr/include/openssl/md5.h:49:27: note: declared here
+#11 1.882    49 | OSSL_DEPRECATEDIN_3_0 int MD5_Init(MD5_CTX *c);
+#11 1.882       |                           ^~~~~~~~
+#11 1.882 MD5ex.cpp:23:19: warning: ‘int MD5_Update(MD5_CTX*, const void*, size_t)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 1.882    23 |         MD5_Update(&original, tohash, totalLen);
+#11 1.882       |         ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#11 1.882 /usr/include/openssl/md5.h:50:27: note: declared here
+#11 1.882    50 | OSSL_DEPRECATEDIN_3_0 int MD5_Update(MD5_CTX *c, const void *data, size_t len);
+#11 1.882       |                           ^~~~~~~~~~
+#11 1.882 MD5ex.cpp:25:18: warning: ‘int MD5_Final(unsigned char*, MD5_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 1.882    25 |         MD5_Final(*signature, &original);
+#11 1.882       |         ~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~
+#11 1.882 /usr/include/openssl/md5.h:51:27: note: declared here
+#11 1.882    51 | OSSL_DEPRECATEDIN_3_0 int MD5_Final(unsigned char *md, MD5_CTX *c);
+#11 1.882       |                           ^~~~~~~~~
+#11 1.882 MD5ex.cpp: In member function ‘virtual bool MD5ex::ValidateSignature(std::vector<unsigned char>, std::vector<unsigned char>, unsigned char*)’:
+#11 1.882 MD5ex.cpp:32:17: warning: ‘int MD5_Init(MD5_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 1.882    32 |         MD5_Init(&original);
+#11 1.882       |         ~~~~~~~~^~~~~~~~~~~
+#11 1.882 /usr/include/openssl/md5.h:49:27: note: declared here
+#11 1.882    49 | OSSL_DEPRECATEDIN_3_0 int MD5_Init(MD5_CTX *c);
+#11 1.882       |                           ^~~~~~~~
+#11 1.882 MD5ex.cpp:43:19: warning: ‘int MD5_Update(MD5_CTX*, const void*, size_t)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 1.882    43 |         MD5_Update(&original, tohash, totalLen);
+#11 1.882       |         ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#11 1.882 /usr/include/openssl/md5.h:50:27: note: declared here
+#11 1.882    50 | OSSL_DEPRECATEDIN_3_0 int MD5_Update(MD5_CTX *c, const void *data, size_t len);
+#11 1.882       |                           ^~~~~~~~~~
+#11 1.882 MD5ex.cpp:46:18: warning: ‘int MD5_Final(unsigned char*, MD5_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 1.882    46 |         MD5_Final(hash, &original);
+#11 1.882       |         ~~~~~~~~~^~~~~~~~~~~~~~~~~
+#11 1.882 /usr/include/openssl/md5.h:51:27: note: declared here
+#11 1.882    51 | OSSL_DEPRECATEDIN_3_0 int MD5_Final(unsigned char *md, MD5_CTX *c);
+#11 1.882       |                           ^~~~~~~~~
+#11 1.884 MD5ex.cpp: In member function ‘virtual std::vector<unsigned char>* MD5ex::GenerateStretchedData(std::vector<unsigned char>, int, unsigned char*, std::vector<unsigned char>, unsigned char**)’:
+#11 1.884 MD5ex.cpp:77:17: warning: ‘int MD5_Init(MD5_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 1.884    77 |         MD5_Init(&stretch);
+#11 1.884       |         ~~~~~~~~^~~~~~~~~~
+#11 1.884 /usr/include/openssl/md5.h:49:27: note: declared here
+#11 1.884    49 | OSSL_DEPRECATEDIN_3_0 int MD5_Init(MD5_CTX *c);
+#11 1.884       |                           ^~~~~~~~
+#11 1.884 MD5ex.cpp:88:19: warning: ‘int MD5_Update(MD5_CTX*, const void*, size_t)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 1.884    88 |         MD5_Update(&stretch, toadd, added.size());
+#11 1.884       |         ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#11 1.884 /usr/include/openssl/md5.h:50:27: note: declared here
+#11 1.884    50 | OSSL_DEPRECATEDIN_3_0 int MD5_Update(MD5_CTX *c, const void *data, size_t len);
+#11 1.884       |                           ^~~~~~~~~~
+#11 1.884 MD5ex.cpp:90:18: warning: ‘int MD5_Final(unsigned char*, MD5_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 1.884    90 |         MD5_Final(*newSig, &stretch);
+#11 1.884       |         ~~~~~~~~~^~~~~~~~~~~~~~~~~~~
+#11 1.884 /usr/include/openssl/md5.h:51:27: note: declared here
+#11 1.884    51 | OSSL_DEPRECATEDIN_3_0 int MD5_Final(unsigned char *md, MD5_CTX *c);
+#11 1.884       |                           ^~~~~~~~~
+#11 1.987 g++ -c -Wall SHA1.cpp
+#11 2.253 SHA1.cpp: In member function ‘virtual int SHA1ex::GenerateSignature(std::vector<unsigned char>, std::vector<unsigned char>, unsigned char**)’:
+#11 2.253 SHA1.cpp:12:18: warning: ‘int SHA1_Init(SHA_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 2.253    12 |         SHA1_Init(&original);
+#11 2.253       |         ~~~~~~~~~^~~~~~~~~~~
+#11 2.253 In file included from SHA1.h:5,
+#11 2.253                  from SHA1.cpp:1:
+#11 2.253 /usr/include/openssl/sha.h:49:27: note: declared here
+#11 2.253    49 | OSSL_DEPRECATEDIN_3_0 int SHA1_Init(SHA_CTX *c);
+#11 2.253       |                           ^~~~~~~~~
+#11 2.253 SHA1.cpp:23:20: warning: ‘int SHA1_Update(SHA_CTX*, const void*, size_t)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 2.253    23 |         SHA1_Update(&original, tohash, totalLen);
+#11 2.253       |         ~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#11 2.253 /usr/include/openssl/sha.h:50:27: note: declared here
+#11 2.253    50 | OSSL_DEPRECATEDIN_3_0 int SHA1_Update(SHA_CTX *c, const void *data, size_t len);
+#11 2.253       |                           ^~~~~~~~~~~
+#11 2.253 SHA1.cpp:25:19: warning: ‘int SHA1_Final(unsigned char*, SHA_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 2.253    25 |         SHA1_Final(*signature, &original);
+#11 2.253       |         ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~
+#11 2.253 /usr/include/openssl/sha.h:51:27: note: declared here
+#11 2.253    51 | OSSL_DEPRECATEDIN_3_0 int SHA1_Final(unsigned char *md, SHA_CTX *c);
+#11 2.253       |                           ^~~~~~~~~~
+#11 2.253 SHA1.cpp: In member function ‘virtual bool SHA1ex::ValidateSignature(std::vector<unsigned char>, std::vector<unsigned char>, unsigned char*)’:
+#11 2.253 SHA1.cpp:32:18: warning: ‘int SHA1_Init(SHA_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 2.253    32 |         SHA1_Init(&original);
+#11 2.253       |         ~~~~~~~~~^~~~~~~~~~~
+#11 2.253 /usr/include/openssl/sha.h:49:27: note: declared here
+#11 2.253    49 | OSSL_DEPRECATEDIN_3_0 int SHA1_Init(SHA_CTX *c);
+#11 2.253       |                           ^~~~~~~~~
+#11 2.253 SHA1.cpp:43:20: warning: ‘int SHA1_Update(SHA_CTX*, const void*, size_t)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 2.253    43 |         SHA1_Update(&original, tohash, totalLen);
+#11 2.253       |         ~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#11 2.253 /usr/include/openssl/sha.h:50:27: note: declared here
+#11 2.253    50 | OSSL_DEPRECATEDIN_3_0 int SHA1_Update(SHA_CTX *c, const void *data, size_t len);
+#11 2.253       |                           ^~~~~~~~~~~
+#11 2.253 SHA1.cpp:46:19: warning: ‘int SHA1_Final(unsigned char*, SHA_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 2.253    46 |         SHA1_Final(hash, &original);
+#11 2.253       |         ~~~~~~~~~~^~~~~~~~~~~~~~~~~
+#11 2.253 /usr/include/openssl/sha.h:51:27: note: declared here
+#11 2.253    51 | OSSL_DEPRECATEDIN_3_0 int SHA1_Final(unsigned char *md, SHA_CTX *c);
+#11 2.253       |                           ^~~~~~~~~~
+#11 2.255 SHA1.cpp: In member function ‘virtual std::vector<unsigned char>* SHA1ex::GenerateStretchedData(std::vector<unsigned char>, int, unsigned char*, std::vector<unsigned char>, unsigned char**)’:
+#11 2.255 SHA1.cpp:71:18: warning: ‘int SHA1_Init(SHA_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 2.255    71 |         SHA1_Init(&stretch);
+#11 2.255       |         ~~~~~~~~~^~~~~~~~~~
+#11 2.255 /usr/include/openssl/sha.h:49:27: note: declared here
+#11 2.255    49 | OSSL_DEPRECATEDIN_3_0 int SHA1_Init(SHA_CTX *c);
+#11 2.255       |                           ^~~~~~~~~
+#11 2.255 SHA1.cpp:83:20: warning: ‘int SHA1_Update(SHA_CTX*, const void*, size_t)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 2.255    83 |         SHA1_Update(&stretch, toadd, added.size());
+#11 2.255       |         ~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#11 2.255 /usr/include/openssl/sha.h:50:27: note: declared here
+#11 2.255    50 | OSSL_DEPRECATEDIN_3_0 int SHA1_Update(SHA_CTX *c, const void *data, size_t len);
+#11 2.255       |                           ^~~~~~~~~~~
+#11 2.255 SHA1.cpp:85:19: warning: ‘int SHA1_Final(unsigned char*, SHA_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 2.255    85 |         SHA1_Final(*newSig, &stretch);
+#11 2.255       |         ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~
+#11 2.255 /usr/include/openssl/sha.h:51:27: note: declared here
+#11 2.255    51 | OSSL_DEPRECATEDIN_3_0 int SHA1_Final(unsigned char *md, SHA_CTX *c);
+#11 2.255       |                           ^~~~~~~~~~
+#11 2.358 g++ -c -Wall SHA256.cpp
+#11 2.639 SHA256.cpp: In member function ‘virtual int SHA256ex::GenerateSignature(std::vector<unsigned char>, std::vector<unsigned char>, unsigned char**)’:
+#11 2.639 SHA256.cpp:17:20: warning: ‘int SHA256_Init(SHA256_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 2.639    17 |         SHA256_Init(&original);
+#11 2.639       |         ~~~~~~~~~~~^~~~~~~~~~~
+#11 2.639 In file included from SHA256.h:5,
+#11 2.639                  from SHA256.cpp:1:
+#11 2.639 /usr/include/openssl/sha.h:73:27: note: declared here
+#11 2.639    73 | OSSL_DEPRECATEDIN_3_0 int SHA256_Init(SHA256_CTX *c);
+#11 2.639       |                           ^~~~~~~~~~~
+#11 2.639 SHA256.cpp:28:22: warning: ‘int SHA256_Update(SHA256_CTX*, const void*, size_t)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 2.639    28 |         SHA256_Update(&original, tohash, totalLen);
+#11 2.639       |         ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#11 2.639 /usr/include/openssl/sha.h:74:27: note: declared here
+#11 2.639    74 | OSSL_DEPRECATEDIN_3_0 int SHA256_Update(SHA256_CTX *c,
+#11 2.639       |                           ^~~~~~~~~~~~~
+#11 2.639 SHA256.cpp:30:21: warning: ‘int SHA256_Final(unsigned char*, SHA256_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 2.639    30 |         SHA256_Final(*signature, &original);
+#11 2.639       |         ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~
+#11 2.639 /usr/include/openssl/sha.h:76:27: note: declared here
+#11 2.639    76 | OSSL_DEPRECATEDIN_3_0 int SHA256_Final(unsigned char *md, SHA256_CTX *c);
+#11 2.639       |                           ^~~~~~~~~~~~
+#11 2.639 SHA256.cpp: In member function ‘virtual bool SHA256ex::ValidateSignature(std::vector<unsigned char>, std::vector<unsigned char>, unsigned char*)’:
+#11 2.639 SHA256.cpp:37:20: warning: ‘int SHA256_Init(SHA256_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 2.639    37 |         SHA256_Init(&original);
+#11 2.639       |         ~~~~~~~~~~~^~~~~~~~~~~
+#11 2.639 /usr/include/openssl/sha.h:73:27: note: declared here
+#11 2.639    73 | OSSL_DEPRECATEDIN_3_0 int SHA256_Init(SHA256_CTX *c);
+#11 2.639       |                           ^~~~~~~~~~~
+#11 2.640 SHA256.cpp:48:22: warning: ‘int SHA256_Update(SHA256_CTX*, const void*, size_t)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 2.640    48 |         SHA256_Update(&original, tohash, totalLen);
+#11 2.640       |         ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#11 2.640 /usr/include/openssl/sha.h:74:27: note: declared here
+#11 2.640    74 | OSSL_DEPRECATEDIN_3_0 int SHA256_Update(SHA256_CTX *c,
+#11 2.640       |                           ^~~~~~~~~~~~~
+#11 2.640 SHA256.cpp:51:21: warning: ‘int SHA256_Final(unsigned char*, SHA256_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 2.640    51 |         SHA256_Final(hash, &original);
+#11 2.640       |         ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~
+#11 2.640 /usr/include/openssl/sha.h:76:27: note: declared here
+#11 2.640    76 | OSSL_DEPRECATEDIN_3_0 int SHA256_Final(unsigned char *md, SHA256_CTX *c);
+#11 2.640       |                           ^~~~~~~~~~~~
+#11 2.641 SHA256.cpp: In member function ‘virtual std::vector<unsigned char>* SHA256ex::GenerateStretchedData(std::vector<unsigned char>, int, unsigned char*, std::vector<unsigned char>, unsigned char**)’:
+#11 2.641 SHA256.cpp:76:20: warning: ‘int SHA256_Init(SHA256_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 2.641    76 |         SHA256_Init(&stretch);
+#11 2.641       |         ~~~~~~~~~~~^~~~~~~~~~
+#11 2.641 /usr/include/openssl/sha.h:73:27: note: declared here
+#11 2.641    73 | OSSL_DEPRECATEDIN_3_0 int SHA256_Init(SHA256_CTX *c);
+#11 2.641       |                           ^~~~~~~~~~~
+#11 2.642 SHA256.cpp:91:22: warning: ‘int SHA256_Update(SHA256_CTX*, const void*, size_t)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 2.642    91 |         SHA256_Update(&stretch, toadd, added.size());
+#11 2.642       |         ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#11 2.642 /usr/include/openssl/sha.h:74:27: note: declared here
+#11 2.642    74 | OSSL_DEPRECATEDIN_3_0 int SHA256_Update(SHA256_CTX *c,
+#11 2.642       |                           ^~~~~~~~~~~~~
+#11 2.642 SHA256.cpp:93:21: warning: ‘int SHA256_Final(unsigned char*, SHA256_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 2.642    93 |         SHA256_Final(*newSig, &stretch);
+#11 2.642       |         ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~
+#11 2.642 /usr/include/openssl/sha.h:76:27: note: declared here
+#11 2.642    76 | OSSL_DEPRECATEDIN_3_0 int SHA256_Final(unsigned char *md, SHA256_CTX *c);
+#11 2.642       |                           ^~~~~~~~~~~~
+#11 2.746 g++ -c -Wall SHA512ex.cpp
+#11 3.020 SHA512ex.cpp: In member function ‘virtual int SHA512ex::GenerateSignature(std::vector<unsigned char>, std::vector<unsigned char>, unsigned char**)’:
+#11 3.020 SHA512ex.cpp:16:20: warning: ‘int SHA512_Init(SHA512_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 3.020    16 |         SHA512_Init(&original);
+#11 3.020       |         ~~~~~~~~~~~^~~~~~~~~~~
+#11 3.020 In file included from SHA512ex.h:5,
+#11 3.020                  from SHA512ex.cpp:1:
+#11 3.020 /usr/include/openssl/sha.h:123:27: note: declared here
+#11 3.020   123 | OSSL_DEPRECATEDIN_3_0 int SHA512_Init(SHA512_CTX *c);
+#11 3.020       |                           ^~~~~~~~~~~
+#11 3.020 SHA512ex.cpp:27:22: warning: ‘int SHA512_Update(SHA512_CTX*, const void*, size_t)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 3.020    27 |         SHA512_Update(&original, tohash, totalLen);
+#11 3.020       |         ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#11 3.020 /usr/include/openssl/sha.h:124:27: note: declared here
+#11 3.020   124 | OSSL_DEPRECATEDIN_3_0 int SHA512_Update(SHA512_CTX *c,
+#11 3.020       |                           ^~~~~~~~~~~~~
+#11 3.020 SHA512ex.cpp:29:21: warning: ‘int SHA512_Final(unsigned char*, SHA512_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 3.020    29 |         SHA512_Final(*signature, &original);
+#11 3.020       |         ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~
+#11 3.020 /usr/include/openssl/sha.h:126:27: note: declared here
+#11 3.020   126 | OSSL_DEPRECATEDIN_3_0 int SHA512_Final(unsigned char *md, SHA512_CTX *c);
+#11 3.020       |                           ^~~~~~~~~~~~
+#11 3.021 SHA512ex.cpp: In member function ‘virtual bool SHA512ex::ValidateSignature(std::vector<unsigned char>, std::vector<unsigned char>, unsigned char*)’:
+#11 3.021 SHA512ex.cpp:36:20: warning: ‘int SHA512_Init(SHA512_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 3.021    36 |         SHA512_Init(&original);
+#11 3.021       |         ~~~~~~~~~~~^~~~~~~~~~~
+#11 3.021 /usr/include/openssl/sha.h:123:27: note: declared here
+#11 3.021   123 | OSSL_DEPRECATEDIN_3_0 int SHA512_Init(SHA512_CTX *c);
+#11 3.021       |                           ^~~~~~~~~~~
+#11 3.021 SHA512ex.cpp:47:22: warning: ‘int SHA512_Update(SHA512_CTX*, const void*, size_t)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 3.021    47 |         SHA512_Update(&original, tohash, totalLen);
+#11 3.021       |         ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#11 3.021 /usr/include/openssl/sha.h:124:27: note: declared here
+#11 3.021   124 | OSSL_DEPRECATEDIN_3_0 int SHA512_Update(SHA512_CTX *c,
+#11 3.021       |                           ^~~~~~~~~~~~~
+#11 3.021 SHA512ex.cpp:50:21: warning: ‘int SHA512_Final(unsigned char*, SHA512_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 3.021    50 |         SHA512_Final(hash, &original);
+#11 3.021       |         ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~
+#11 3.021 /usr/include/openssl/sha.h:126:27: note: declared here
+#11 3.021   126 | OSSL_DEPRECATEDIN_3_0 int SHA512_Final(unsigned char *md, SHA512_CTX *c);
+#11 3.021       |                           ^~~~~~~~~~~~
+#11 3.023 SHA512ex.cpp: In member function ‘virtual std::vector<unsigned char>* SHA512ex::GenerateStretchedData(std::vector<unsigned char>, int, unsigned char*, std::vector<unsigned char>, unsigned char**)’:
+#11 3.023 SHA512ex.cpp:75:20: warning: ‘int SHA512_Init(SHA512_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 3.023    75 |         SHA512_Init(&stretch);
+#11 3.023       |         ~~~~~~~~~~~^~~~~~~~~~
+#11 3.023 /usr/include/openssl/sha.h:123:27: note: declared here
+#11 3.023   123 | OSSL_DEPRECATEDIN_3_0 int SHA512_Init(SHA512_CTX *c);
+#11 3.023       |                           ^~~~~~~~~~~
+#11 3.023 SHA512ex.cpp:95:22: warning: ‘int SHA512_Update(SHA512_CTX*, const void*, size_t)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 3.023    95 |         SHA512_Update(&stretch, toadd, added.size());
+#11 3.023       |         ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#11 3.023 /usr/include/openssl/sha.h:124:27: note: declared here
+#11 3.023   124 | OSSL_DEPRECATEDIN_3_0 int SHA512_Update(SHA512_CTX *c,
+#11 3.023       |                           ^~~~~~~~~~~~~
+#11 3.023 SHA512ex.cpp:97:21: warning: ‘int SHA512_Final(unsigned char*, SHA512_CTX*)’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+#11 3.023    97 |         SHA512_Final(*newSig, &stretch);
+#11 3.023       |         ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~
+#11 3.023 /usr/include/openssl/sha.h:126:27: note: declared here
+#11 3.023   126 | OSSL_DEPRECATEDIN_3_0 int SHA512_Final(unsigned char *md, SHA512_CTX *c);
+#11 3.023       |                           ^~~~~~~~~~~~
+#11 3.123 g++ main.o Extender.o MD4ex.o MD5ex.o SHA1.o SHA256.o SHA512ex.o -lcrypto -o hashpump
+#11 DONE 3.3s
+
+#12 [stage-1  4/11] COPY --from=builder /opt/HashPump/hashpump /usr/local/bin/hashpump
+#12 DONE 0.1s
+
+#13 [stage-1  5/11] RUN chmod +x /usr/local/bin/hashpump
+#13 DONE 0.5s
+
+#14 [stage-1  6/11] WORKDIR /app
+#14 DONE 0.1s
+
+#15 [stage-1  7/11] COPY requirements.txt ./
+#15 DONE 0.1s
+
+#16 [stage-1  8/11] RUN pip install --no-cache-dir -r requirements.txt
+#16 2.730 Collecting fastmcp>=2.0.0 (from -r requirements.txt (line 1))
+#16 3.024   Downloading fastmcp-3.1.1-py3-none-any.whl.metadata (8.1 kB)
+#16 3.089 Collecting authlib>=1.6.5 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 3.134   Downloading authlib-1.6.9-py2.py3-none-any.whl.metadata (9.8 kB)
+#16 3.291 Collecting cyclopts>=4.0.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 3.338   Downloading cyclopts-4.10.1-py3-none-any.whl.metadata (12 kB)
+#16 3.401 Collecting exceptiongroup>=1.2.2 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 3.444   Downloading exceptiongroup-1.3.1-py3-none-any.whl.metadata (6.7 kB)
+#16 3.508 Collecting httpx<1.0,>=0.28.1 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 3.551   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#16 3.609 Collecting jsonref>=1.1.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 3.653   Downloading jsonref-1.1.0-py3-none-any.whl.metadata (2.7 kB)
+#16 3.706 Collecting jsonschema-path>=0.3.4 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 3.750   Downloading jsonschema_path-0.4.5-py3-none-any.whl.metadata (5.9 kB)
+#16 3.826 Collecting mcp<2.0,>=1.24.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 3.872   Downloading mcp-1.26.0-py3-none-any.whl.metadata (89 kB)
+#16 3.988 Collecting openapi-pydantic>=0.5.1 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 4.034   Downloading openapi_pydantic-0.5.1-py3-none-any.whl.metadata (10 kB)
+#16 4.105 Collecting opentelemetry-api>=1.20.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 4.150   Downloading opentelemetry_api-1.40.0-py3-none-any.whl.metadata (1.5 kB)
+#16 4.209 Collecting packaging>=24.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 4.252   Downloading packaging-26.0-py3-none-any.whl.metadata (3.3 kB)
+#16 4.319 Collecting platformdirs>=4.0.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 4.362   Downloading platformdirs-4.9.4-py3-none-any.whl.metadata (4.7 kB)
+#16 4.412 Collecting py-key-value-aio<0.5.0,>=0.4.4 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 4.456   Downloading py_key_value_aio-0.4.4-py3-none-any.whl.metadata (15 kB)
+#16 4.784 Collecting pydantic>=2.11.7 (from pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 4.829   Downloading pydantic-2.12.5-py3-none-any.whl.metadata (90 kB)
+#16 4.900 Collecting pyperclip>=1.9.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 4.945   Downloading pyperclip-1.11.0-py3-none-any.whl.metadata (2.4 kB)
+#16 5.022 Collecting python-dotenv>=1.1.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 5.069   Downloading python_dotenv-1.2.2-py3-none-any.whl.metadata (27 kB)
+#16 5.190 Collecting pyyaml<7.0,>=6.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 5.236   Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+#16 5.343 Collecting rich>=13.9.4 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 5.389   Downloading rich-14.3.3-py3-none-any.whl.metadata (18 kB)
+#16 5.451 Collecting uncalled-for>=0.2.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 5.494   Downloading uncalled_for-0.2.0-py3-none-any.whl.metadata (2.9 kB)
+#16 5.576 Collecting uvicorn>=0.35 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 5.621   Downloading uvicorn-0.42.0-py3-none-any.whl.metadata (6.7 kB)
+#16 5.804 Collecting watchfiles>=1.0.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 5.849   Downloading watchfiles-1.1.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.9 kB)
+#16 6.055 Collecting websockets>=15.0.1 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 6.101   Downloading websockets-16.0-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (6.8 kB)
+#16 6.510 Collecting cryptography (from authlib>=1.6.5->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 6.555   Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (5.7 kB)
+#16 6.619 Collecting attrs>=23.1.0 (from cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 6.662   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+#16 6.721 Collecting docstring-parser<4.0,>=0.15 (from cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 6.767   Downloading docstring_parser-0.17.0-py3-none-any.whl.metadata (3.5 kB)
+#16 6.825 Collecting rich-rst<2.0.0,>=1.3.1 (from cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 6.870   Downloading rich_rst-1.3.2-py3-none-any.whl.metadata (6.1 kB)
+#16 6.948 Collecting typing-extensions>=4.6.0 (from exceptiongroup>=1.2.2->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 6.992   Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+#16 7.052 Collecting anyio (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 7.096   Downloading anyio-4.13.0-py3-none-any.whl.metadata (4.5 kB)
+#16 7.162 Collecting certifi (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 7.214   Downloading certifi-2026.2.25-py3-none-any.whl.metadata (2.5 kB)
+#16 7.278 Collecting httpcore==1.* (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 7.321   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#16 7.379 Collecting idna (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 7.423   Downloading idna-3.11-py3-none-any.whl.metadata (8.4 kB)
+#16 7.488 Collecting h11>=0.16 (from httpcore==1.*->httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 7.533   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#16 7.585 Collecting pathable<0.6.0,>=0.5.0 (from jsonschema-path>=0.3.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 7.629   Downloading pathable-0.5.0-py3-none-any.whl.metadata (5.9 kB)
+#16 7.711 Collecting referencing<0.38.0 (from jsonschema-path>=0.3.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 7.754   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+#16 7.812 Collecting httpx-sse>=0.4 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 7.855   Downloading httpx_sse-0.4.3-py3-none-any.whl.metadata (9.7 kB)
+#16 7.934 Collecting jsonschema>=4.20.0 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 7.980   Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+#16 8.041 Collecting pydantic-settings>=2.5.2 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 8.086   Downloading pydantic_settings-2.13.1-py3-none-any.whl.metadata (3.4 kB)
+#16 8.159 Collecting pyjwt>=2.10.1 (from pyjwt[crypto]>=2.10.1->mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 8.211   Downloading pyjwt-2.12.1-py3-none-any.whl.metadata (4.1 kB)
+#16 8.272 Collecting python-multipart>=0.0.9 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 8.315   Downloading python_multipart-0.0.22-py3-none-any.whl.metadata (1.8 kB)
+#16 8.374 Collecting sse-starlette>=1.6.1 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 8.418   Downloading sse_starlette-3.3.3-py3-none-any.whl.metadata (14 kB)
+#16 8.504 Collecting starlette>=0.27 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 8.548   Downloading starlette-1.0.0-py3-none-any.whl.metadata (6.3 kB)
+#16 8.622 Collecting typing-inspection>=0.4.1 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 8.664   Downloading typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+#16 8.768 Collecting importlib-metadata<8.8.0,>=6.0 (from opentelemetry-api>=1.20.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 8.813   Downloading importlib_metadata-8.7.1-py3-none-any.whl.metadata (4.7 kB)
+#16 8.885 Collecting beartype>=0.20.0 (from py-key-value-aio<0.5.0,>=0.4.4->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 8.928   Downloading beartype-0.22.9-py3-none-any.whl.metadata (37 kB)
+#16 9.048 Collecting aiofile>=3.5.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 9.090   Downloading aiofile-3.9.0-py3-none-any.whl.metadata (14 kB)
+#16 9.187 Collecting keyring>=25.6.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 9.236   Downloading keyring-25.7.0-py3-none-any.whl.metadata (21 kB)
+#16 9.311 Collecting cachetools>=5.0.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 9.364   Downloading cachetools-7.0.5-py3-none-any.whl.metadata (5.6 kB)
+#16 9.416 Collecting annotated-types>=0.6.0 (from pydantic>=2.11.7->pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 9.460   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+#16 10.67 Collecting pydantic-core==2.41.5 (from pydantic>=2.11.7->pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 10.71   Downloading pydantic_core-2.41.5-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (7.3 kB)
+#16 10.77 Collecting email-validator>=2.0.0 (from pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 10.82   Downloading email_validator-2.3.0-py3-none-any.whl.metadata (26 kB)
+#16 10.93 Collecting markdown-it-py>=2.2.0 (from rich>=13.9.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 10.98   Downloading markdown_it_py-4.0.0-py3-none-any.whl.metadata (7.3 kB)
+#16 11.05 Collecting pygments<3.0.0,>=2.13.0 (from rich>=13.9.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 11.09   Downloading pygments-2.19.2-py3-none-any.whl.metadata (2.5 kB)
+#16 11.16 Collecting click>=7.0 (from uvicorn>=0.35->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 11.21   Downloading click-8.3.1-py3-none-any.whl.metadata (2.6 kB)
+#16 11.32 Collecting caio<0.10.0,>=0.9.0 (from aiofile>=3.5.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 11.36   Downloading caio-0.9.25-cp312-cp312-manylinux_2_34_x86_64.whl.metadata (3.3 kB)
+#16 11.43 Collecting dnspython>=2.0.0 (from email-validator>=2.0.0->pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 11.48   Downloading dnspython-2.8.0-py3-none-any.whl.metadata (5.7 kB)
+#16 11.55 Collecting zipp>=3.20 (from importlib-metadata<8.8.0,>=6.0->opentelemetry-api>=1.20.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 11.62   Downloading zipp-3.23.0-py3-none-any.whl.metadata (3.6 kB)
+#16 11.68 Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.20.0->mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 11.73   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+#16 12.18 Collecting rpds-py>=0.25.0 (from jsonschema>=4.20.0->mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 12.22   Downloading rpds_py-0.30.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)
+#16 12.28 Collecting SecretStorage>=3.2 (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 12.33   Downloading secretstorage-3.5.0-py3-none-any.whl.metadata (4.0 kB)
+#16 12.38 Collecting jeepney>=0.4.2 (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 12.42   Downloading jeepney-0.9.0-py3-none-any.whl.metadata (1.2 kB)
+#16 12.50 Collecting jaraco.classes (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 12.55   Downloading jaraco.classes-3.4.0-py3-none-any.whl.metadata (2.6 kB)
+#16 12.63 Collecting jaraco.functools (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 12.67   Downloading jaraco_functools-4.4.0-py3-none-any.whl.metadata (3.0 kB)
+#16 12.74 Collecting jaraco.context (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 12.78   Downloading jaraco_context-6.1.2-py3-none-any.whl.metadata (4.2 kB)
+#16 12.83 Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich>=13.9.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 12.87   Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+#16 13.11 Collecting cffi>=2.0.0 (from cryptography->authlib>=1.6.5->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 13.15   Downloading cffi-2.0.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.6 kB)
+#16 13.23 Collecting docutils (from rich-rst<2.0.0,>=1.3.1->cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 13.27   Downloading docutils-0.22.4-py3-none-any.whl.metadata (15 kB)
+#16 13.41 Collecting pycparser (from cffi>=2.0.0->cryptography->authlib>=1.6.5->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 13.46   Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+#16 13.61 Collecting more-itertools (from jaraco.classes->keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 13.66   Downloading more_itertools-10.8.0-py3-none-any.whl.metadata (39 kB)
+#16 13.72 Downloading fastmcp-3.1.1-py3-none-any.whl (633 kB)
+#16 13.83    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 633.8/633.8 kB 7.7 MB/s eta 0:00:00
+#16 13.88 Downloading authlib-1.6.9-py2.py3-none-any.whl (244 kB)
+#16 13.94 Downloading cyclopts-4.10.1-py3-none-any.whl (204 kB)
+#16 14.00 Downloading exceptiongroup-1.3.1-py3-none-any.whl (16 kB)
+#16 14.04 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#16 14.09 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#16 14.14 Downloading jsonref-1.1.0-py3-none-any.whl (9.4 kB)
+#16 14.19 Downloading jsonschema_path-0.4.5-py3-none-any.whl (19 kB)
+#16 14.24 Downloading mcp-1.26.0-py3-none-any.whl (233 kB)
+#16 14.33 Downloading openapi_pydantic-0.5.1-py3-none-any.whl (96 kB)
+#16 14.38 Downloading opentelemetry_api-1.40.0-py3-none-any.whl (68 kB)
+#16 14.44 Downloading packaging-26.0-py3-none-any.whl (74 kB)
+#16 14.49 Downloading platformdirs-4.9.4-py3-none-any.whl (21 kB)
+#16 14.54 Downloading py_key_value_aio-0.4.4-py3-none-any.whl (152 kB)
+#16 14.59 Downloading pydantic-2.12.5-py3-none-any.whl (463 kB)
+#16 14.68 Downloading pydantic_core-2.41.5-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.1 MB)
+#16 14.88    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 10.9 MB/s eta 0:00:00
+#16 14.92 Downloading pyperclip-1.11.0-py3-none-any.whl (11 kB)
+#16 14.97 Downloading python_dotenv-1.2.2-py3-none-any.whl (22 kB)
+#16 15.03 Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (807 kB)
+#16 15.11    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 807.9/807.9 kB 10.4 MB/s eta 0:00:00
+#16 15.15 Downloading rich-14.3.3-py3-none-any.whl (310 kB)
+#16 15.22 Downloading uncalled_for-0.2.0-py3-none-any.whl (11 kB)
+#16 15.27 Downloading uvicorn-0.42.0-py3-none-any.whl (68 kB)
+#16 15.33 Downloading watchfiles-1.1.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (456 kB)
+#16 15.43 Downloading websockets-16.0-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (184 kB)
+#16 15.50 Downloading aiofile-3.9.0-py3-none-any.whl (19 kB)
+#16 15.54 Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+#16 15.59 Downloading anyio-4.13.0-py3-none-any.whl (114 kB)
+#16 15.65 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+#16 15.70 Downloading beartype-0.22.9-py3-none-any.whl (1.3 MB)
+#16 15.83    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 12.6 MB/s eta 0:00:00
+#16 15.87 Downloading cachetools-7.0.5-py3-none-any.whl (13 kB)
+#16 15.92 Downloading click-8.3.1-py3-none-any.whl (108 kB)
+#16 15.97 Downloading docstring_parser-0.17.0-py3-none-any.whl (36 kB)
+#16 16.03 Downloading email_validator-2.3.0-py3-none-any.whl (35 kB)
+#16 16.07 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#16 16.12 Downloading httpx_sse-0.4.3-py3-none-any.whl (9.0 kB)
+#16 16.16 Downloading idna-3.11-py3-none-any.whl (71 kB)
+#16 16.24 Downloading importlib_metadata-8.7.1-py3-none-any.whl (27 kB)
+#16 16.29 Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+#16 16.36 Downloading keyring-25.7.0-py3-none-any.whl (39 kB)
+#16 16.45 Downloading markdown_it_py-4.0.0-py3-none-any.whl (87 kB)
+#16 16.50 Downloading pathable-0.5.0-py3-none-any.whl (16 kB)
+#16 16.56 Downloading pydantic_settings-2.13.1-py3-none-any.whl (58 kB)
+#16 16.61 Downloading pygments-2.19.2-py3-none-any.whl (1.2 MB)
+#16 16.71    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 13.2 MB/s eta 0:00:00
+#16 16.75 Downloading pyjwt-2.12.1-py3-none-any.whl (29 kB)
+#16 16.79 Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_x86_64.whl (4.5 MB)
+#16 17.15    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.5/4.5 MB 13.0 MB/s eta 0:00:00
+#16 17.20 Downloading python_multipart-0.0.22-py3-none-any.whl (24 kB)
+#16 17.24 Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+#16 17.29 Downloading rich_rst-1.3.2-py3-none-any.whl (12 kB)
+#16 17.33 Downloading sse_starlette-3.3.3-py3-none-any.whl (14 kB)
+#16 17.38 Downloading starlette-1.0.0-py3-none-any.whl (72 kB)
+#16 17.43 Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+#16 17.49 Downloading typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+#16 17.53 Downloading certifi-2026.2.25-py3-none-any.whl (153 kB)
+#16 17.59 Downloading caio-0.9.25-cp312-cp312-manylinux_2_34_x86_64.whl (80 kB)
+#16 17.65 Downloading cffi-2.0.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (219 kB)
+#16 17.74 Downloading dnspython-2.8.0-py3-none-any.whl (331 kB)
+#16 17.82 Downloading jeepney-0.9.0-py3-none-any.whl (49 kB)
+#16 17.86 Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+#16 17.91 Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+#16 17.96 Downloading rpds_py-0.30.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (394 kB)
+#16 18.04 Downloading secretstorage-3.5.0-py3-none-any.whl (15 kB)
+#16 18.08 Downloading zipp-3.23.0-py3-none-any.whl (10 kB)
+#16 18.12 Downloading docutils-0.22.4-py3-none-any.whl (633 kB)
+#16 18.18    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 633.2/633.2 kB 12.7 MB/s eta 0:00:00
+#16 18.23 Downloading jaraco.classes-3.4.0-py3-none-any.whl (6.8 kB)
+#16 18.28 Downloading jaraco_context-6.1.2-py3-none-any.whl (7.9 kB)
+#16 18.32 Downloading jaraco_functools-4.4.0-py3-none-any.whl (10 kB)
+#16 18.37 Downloading more_itertools-10.8.0-py3-none-any.whl (69 kB)
+#16 18.41 Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+#16 18.71 Installing collected packages: pyperclip, zipp, websockets, uncalled-for, typing-extensions, rpds-py, pyyaml, python-multipart, python-dotenv, pyjwt, pygments, pycparser, platformdirs, pathable, packaging, more-itertools, mdurl, jsonref, jeepney, jaraco.context, idna, httpx-sse, h11, docutils, docstring-parser, dnspython, click, certifi, caio, cachetools, beartype, attrs, annotated-types, uvicorn, typing-inspection, referencing, pydantic-core, py-key-value-aio, markdown-it-py, jaraco.functools, jaraco.classes, importlib-metadata, httpcore, exceptiongroup, email-validator, cffi, anyio, aiofile, watchfiles, starlette, rich, pydantic, opentelemetry-api, jsonschema-specifications, jsonschema-path, httpx, cryptography, sse-starlette, SecretStorage, rich-rst, pydantic-settings, openapi-pydantic, jsonschema, authlib, mcp, keyring, cyclopts, fastmcp
+#16 26.35 Successfully installed SecretStorage-3.5.0 aiofile-3.9.0 annotated-types-0.7.0 anyio-4.13.0 attrs-26.1.0 authlib-1.6.9 beartype-0.22.9 cachetools-7.0.5 caio-0.9.25 certifi-2026.2.25 cffi-2.0.0 click-8.3.1 cryptography-46.0.5 cyclopts-4.10.1 dnspython-2.8.0 docstring-parser-0.17.0 docutils-0.22.4 email-validator-2.3.0 exceptiongroup-1.3.1 fastmcp-3.1.1 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 httpx-sse-0.4.3 idna-3.11 importlib-metadata-8.7.1 jaraco.classes-3.4.0 jaraco.context-6.1.2 jaraco.functools-4.4.0 jeepney-0.9.0 jsonref-1.1.0 jsonschema-4.26.0 jsonschema-path-0.4.5 jsonschema-specifications-2025.9.1 keyring-25.7.0 markdown-it-py-4.0.0 mcp-1.26.0 mdurl-0.1.2 more-itertools-10.8.0 openapi-pydantic-0.5.1 opentelemetry-api-1.40.0 packaging-26.0 pathable-0.5.0 platformdirs-4.9.4 py-key-value-aio-0.4.4 pycparser-3.0 pydantic-2.12.5 pydantic-core-2.41.5 pydantic-settings-2.13.1 pygments-2.19.2 pyjwt-2.12.1 pyperclip-1.11.0 python-dotenv-1.2.2 python-multipart-0.0.22 pyyaml-6.0.3 referencing-0.37.0 rich-14.3.3 rich-rst-1.3.2 rpds-py-0.30.0 sse-starlette-3.3.3 starlette-1.0.0 typing-extensions-4.15.0 typing-inspection-0.4.2 uncalled-for-0.2.0 uvicorn-0.42.0 watchfiles-1.1.1 websockets-16.0 zipp-3.23.0
+#16 26.35 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#16 26.75 
+#16 26.75 [notice] A new release of pip is available: 25.0.1 -> 26.0.1
+#16 26.75 [notice] To update, run: pip install --upgrade pip
+#16 DONE 27.1s
+
+#17 [stage-1  9/11] COPY mcp_server.py ./
+#17 DONE 0.2s
+
+#18 [stage-1 10/11] COPY hd_fetch.py ./
+#18 DONE 0.1s
+
+#19 [stage-1 11/11] RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+#19 DONE 0.5s
+
+#20 exporting to image
+#20 exporting layers
+#20 exporting layers 6.2s done
+#20 exporting manifest sha256:896a106c18f5a7a98e7a6cb0618cfb078cbad57dba5e380e5c5ecf662de974e8 0.0s done
+#20 exporting config sha256:bde801d2695dc0029d57be5ad7961191e462d50c0106aa9542590f3c1fc2aba4 0.0s done
+#20 exporting attestation manifest sha256:806c7963c04a80a99cb711d368ce724e080df49c23d9019a7dc8f745a3210bbe
+#20 exporting attestation manifest sha256:806c7963c04a80a99cb711d368ce724e080df49c23d9019a7dc8f745a3210bbe 0.1s done
+#20 exporting manifest list sha256:93a8bda696221b063b63afe8d7c07a4296c6e476bedfb9e0bd0ae45c49f06bd7 0.0s done
+#20 naming to docker.io/library/hashpump-mcp:latest
+#20 naming to docker.io/library/hashpump-mcp:latest done
+#20 unpacking to docker.io/library/hashpump-mcp:latest
+#20 unpacking to docker.io/library/hashpump-mcp:latest 3.2s done
+#20 naming to docker.io/hackerdogs/hashpump-mcp:latest done
+#20 unpacking to docker.io/hackerdogs/hashpump-mcp:latest 0.0s done
+#20 DONE 9.8s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/ldpvamm7f52ngmu66w46xjoym
+=================================================================================
+[0;34mHashPump MCP Server — Test Suite[0m
+=================================================================================
+
+[0;34m[Test 1] Docker image[0m
+  [0;32m✅ PASS: Docker image hackerdogs/hashpump-mcp:latest exists[0m
+
+[0;34m[Test 2] CLI binary inside container[0m
+  [0;32m✅ PASS: HashPump binary responds[0m
+       [FATAL tini (7)] exec HashPump failed: No such file or directory
+
+[0;34m[Test 3] MCP stdio mode — initialize + tools/list[0m
+  [0;32m✅ PASS: stdio mode returned tools/list response (4 tool names found)[0m
+
+[0;34m[Test 4] MCP HTTP streamable mode — initialize[0m
+  [0;32m✅ PASS: HTTP streamable mode responded (status 200)[0m
+       Session ID: 53396e8b86184408...
+
+[0;34m[Test 5] MCP HTTP — tools/list[0m
+  [0;32m✅ PASS: HTTP tools/list returned tools[0m
+
+[0;34m[Test 6] MCP HTTP — tools/call (run_hashpump)[0m
+  [0;32m✅ PASS: tools/call run_hashpump returned a result[0m
+
+=================================================================================
+[0;34mResults: [0;32m6 passed[0m, [0;31m0 failed[0m
+=================================================================================
+hashpump-mcp-test
+hashpump-mcp-test
+
+✅ PASS: hashpump-mcp

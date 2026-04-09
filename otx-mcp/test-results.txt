@@ -1,0 +1,49 @@
+MCP test run - otx-mcp
+Generated (UTC): 2026-03-20T19:07:17Z
+Exit code: 0
+Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
+---------------------------------------------------------------------------------
+=================================================================================
+[0;34mAlienVault OTX MCP Server — Test Suite[0m
+=================================================================================
+
+[0;34m[Test 1] Docker image[0m
+  [0;32m✅ PASS: Docker image hackerdogs/otx-mcp:latest exists[0m
+
+[0;34m[Test 2] OTXv2 Python SDK inside container[0m
+  [0;32m✅ PASS: OTXv2 Python SDK is available[0m
+       OTXv2 version: installed
+
+[0;34m[Test 3] MCP stdio mode — initialize + tools/list[0m
+  [0;32m✅ PASS: stdio mode returned tools/list response (       1 tool names found)[0m
+
+[0;34m[Test 4] MCP HTTP streamable mode — initialize[0m
+  [0;32m✅ PASS: HTTP streamable mode responded (status 200)[0m
+       Session ID: ac511a0f98e84098...
+
+[0;34m[Test 5] MCP HTTP — tools/list[0m
+  [0;32m✅ PASS: HTTP tools/list returned tools[0m
+       - otx_file_report: Query AlienVault OTX for a file hash (MD5, SHA1, or SHA256).
+
+Returns threat int
+       - otx_url_report: Query AlienVault OTX for a URL.
+
+Returns threat intelligence data including puls
+       - otx_domain_report: Query AlienVault OTX for a domain.
+
+Returns threat intelligence including pulse 
+       - otx_ip_report: Query AlienVault OTX for an IP address.
+
+Returns threat intelligence including p
+       - otx_submit_url: Submit a URL to AlienVault OTX for analysis.
+
+Submits the URL to OTX for scannin
+
+[0;34m[Test 6] MCP HTTP — tools/call (otx_domain_report)[0m
+  [0;32m✅ PASS: tools/call otx_domain_report returned a result[0m
+
+=================================================================================
+[0;34mResults: [0;32m6 passed[0m, [0;31m0 failed[0m
+=================================================================================
+otx-mcp-test
+otx-mcp-test

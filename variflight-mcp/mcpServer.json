@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "variflight-mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "MCP_TRANSPORT",
+        "-e",
+        "VARIFLIGHT_API_KEY",
+        "hackerdogs/variflight-mcp:latest"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio",
+        "VARIFLIGHT_API_KEY": ""
+      }
+    }
+  }
+}

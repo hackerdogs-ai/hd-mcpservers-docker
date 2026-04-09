@@ -1,0 +1,95 @@
+========== Retesting aws-s3-tables-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 788B 0.0s done
+#1 DONE 0.1s
+
+#2 [auth] library/python:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [auth] library/node:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#4 [internal] load metadata for docker.io/library/node:20-slim
+#4 ...
+
+#5 [internal] load metadata for docker.io/library/python:3.11-slim
+#5 DONE 1.7s
+
+#4 [internal] load metadata for docker.io/library/node:20-slim
+#4 DONE 1.9s
+
+#6 [internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+#7 resolve docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634 0.0s done
+#7 DONE 0.0s
+
+#8 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#8 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#8 DONE 0.1s
+
+#9 [internal] load build context
+#9 transferring context: 72B done
+#9 DONE 0.0s
+
+#10 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#10 CACHED
+
+#11 [stage-1 3/9] WORKDIR /app
+#11 CACHED
+
+#12 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#12 CACHED
+
+#13 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.s3-tables-mcp-server
+#13 CACHED
+
+#14 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#14 CACHED
+
+#15 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#15 CACHED
+
+#16 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#16 CACHED
+
+#17 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#17 CACHED
+
+#18 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#18 CACHED
+
+#19 exporting to image
+#19 exporting layers done
+#19 exporting manifest sha256:99f51c5e8829779b186ccd371a638b3cf3f624227701d1141aba7788db128e55 done
+#19 exporting config sha256:53cffc141f4b487d407f1ccfb08f569749884a945d8a39002301842ce45b691b done
+#19 exporting attestation manifest sha256:902baf1236e0c5489432752b569d74910890886176a2bf595ecf7ed403746cd0 0.0s done
+#19 exporting manifest list sha256:9f45f04ca946fa54e4dee8f7ebee96e1973aa3c2de1ceee6699d6cba83eeca51 0.0s done
+#19 naming to docker.io/library/aws-s3-tables-mcp:latest done
+#19 unpacking to docker.io/library/aws-s3-tables-mcp:latest 0.0s done
+#19 naming to docker.io/hackerdogs/aws-s3-tables-mcp:latest done
+#19 unpacking to docker.io/hackerdogs/aws-s3-tables-mcp:latest done
+#19 DONE 0.2s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/j5byfpg3dxgrejyy9gg1v0377
+========== aws-s3-tables-mcp test (compliance) ==========
+[0;34m[1] Install[0m
+  [0;32mPASS: image exists[0m
+[0;34m[2] Stdio tools/list[0m
+  [0;31mFAIL: stdio tools/list[0m
+[0;34m[3] Stdio tools/call (skipped — upstream package)[0m
+  [0;32mPASS: stdio tools/call (upstream)[0m
+[0;34m[4] HTTP streamable tools/list[0m
+  [0;31mFAIL: HTTP tools/list[0m
+[0;34m[5] HTTP streamable tools/call (skipped — upstream package)[0m
+  [0;32mPASS: HTTP tools/call (upstream)[0m
+
+Total: 3 passed, 2 failed
+aws-s3-tables-mcp-test
+aws-s3-tables-mcp-test
+
+❌ FAIL (Test): aws-s3-tables-mcp

@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "baidusearch-mcp": {
+      "url": "http://localhost:8514/mcp"
+    }
+  }
+}

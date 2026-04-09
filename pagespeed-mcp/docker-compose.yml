@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  pagespeed-mcp:
+    image: hackerdogs/pagespeed-mcp:latest
+    build: { context: ., dockerfile: Dockerfile }
+    container_name: pagespeed-mcp
+    ports: ["8378:8378"]
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8378
+      - PAGESPEED_API_KEY=${PAGESPEED_API_KEY:-}
+    restart: unless-stopped

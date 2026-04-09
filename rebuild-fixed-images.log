@@ -1,0 +1,4856 @@
+===================================================================================
+rebuild-fixed-images.sh started (UTC) 2026-03-22T17:05:09Z
+Repo: /Users/tredkar/Documents/GitHub/hd-mcpservers-docker
+Log:  /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/rebuild-fixed-images.log  (same output is printed here and saved to this file)
+===================================================================================
+
+--------------------------------------------------------------------------------
+[BUILD] ai-humanizer-mcp  (docker build -t ai-humanizer-mcp -t hackerdogs/ai-humanizer-mcp:latest /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/ai-humanizer-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 549B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [4/7] RUN npm install -g ai-humanizer-mcp-server supergateway
+#7 CACHED
+
+#8 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#8 CACHED
+
+#9 [2/7] WORKDIR /app
+#9 CACHED
+
+#10 [6/7] COPY entrypoint.sh /entrypoint.sh
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:c62152771e6b6a614ed9786f5b30dfdfb2f1b15687a80bd5dc26d03d7083e9ee done
+#12 exporting config sha256:fdf3e713fda893cb428e2b9e20c23d2952d26cc4846a2e9e02bc9e116d178215 done
+#12 exporting attestation manifest sha256:3eb2189a874c3c95e52bd02ef05a859b80a6c3f19008eed6a0f40ebe3bda6b5f done
+#12 exporting manifest list sha256:65e3db0ab3dfbb6ab328182135d444538bb4e7b723433ca190cf50d56042e9b2 done
+#12 naming to docker.io/library/ai-humanizer-mcp:latest done
+#12 unpacking to docker.io/library/ai-humanizer-mcp:latest done
+#12 naming to docker.io/hackerdogs/ai-humanizer-mcp:latest done
+#12 unpacking to docker.io/hackerdogs/ai-humanizer-mcp:latest done
+#12 DONE 0.1s
+[OK] ai-humanizer-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] aws-api-mcp  (docker build -t aws-api-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/aws-api-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 767B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#5 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#5 DONE 0.0s
+
+#6 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#6 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 3/9] WORKDIR /app
+#8 CACHED
+
+#9 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#9 CACHED
+
+#10 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#11 CACHED
+
+#12 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#12 CACHED
+
+#13 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#13 CACHED
+
+#14 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.aws-api-mcp-server
+#14 CACHED
+
+#15 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:0875aa5effa3363ab5e4a480b611dfda50f1339b4de3060a3662197357464899 0.0s done
+#17 exporting config sha256:778c7524e88a6f36f1cc354a728023b657b48e7824a6d58db069181b19ad572d done
+#17 exporting attestation manifest sha256:1ea0bc7264ce57beb8e3838eefab6edc7432e724c2068ae6ea3746da05f13d42 done
+#17 exporting manifest list sha256:761cba6cee38b8fbfdd60181e645abe902e8042c23bb1092f880573ea00ef256 done
+#17 naming to docker.io/library/aws-api-mcp:latest done
+#17 unpacking to docker.io/library/aws-api-mcp:latest done
+#17 DONE 0.1s
+[OK] aws-api-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] aws-aurora-dsql-mcp  (docker build -t aws-aurora-dsql-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/aws-aurora-dsql-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 771B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#5 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#5 DONE 0.0s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#8 CACHED
+
+#9 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#9 CACHED
+
+#10 [stage-1 3/9] WORKDIR /app
+#10 CACHED
+
+#11 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#11 CACHED
+
+#12 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#12 CACHED
+
+#13 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.aurora-dsql-mcp-server
+#13 CACHED
+
+#14 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#14 CACHED
+
+#15 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:9ada1d940fd77fc376b12b154563f79b2b562e4e5a59bc755675f9baf24bf3f7 done
+#17 exporting config sha256:0c6383863370505bd8c496fd31bc2db05a98d7cd854cef90145e5ec62e94653a done
+#17 exporting attestation manifest sha256:a5b6698f99d255895db0949f03d8284799e73b3fa49c8e9aba0aeeeaedd3b8c9 0.0s done
+#17 exporting manifest list sha256:94b035f87ab76b754e176ebd575a3bddfc51309bc0f5d1e5dba22249aaf25bef done
+#17 naming to docker.io/library/aws-aurora-dsql-mcp:latest done
+#17 unpacking to docker.io/library/aws-aurora-dsql-mcp:latest 0.0s done
+#17 DONE 0.1s
+[OK] aws-aurora-dsql-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] aws-bedrock-agentcore-mcp  (docker build -t aws-bedrock-agentcore-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/aws-bedrock-agentcore-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 784B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#5 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#5 DONE 0.0s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#9 CACHED
+
+#10 [stage-1 3/9] WORKDIR /app
+#10 CACHED
+
+#11 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#11 CACHED
+
+#12 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#12 CACHED
+
+#13 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.amazon-bedrock-agentcore-mcp-server
+#13 CACHED
+
+#14 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#14 CACHED
+
+#15 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:e829302c419b9f59ac9472d155ef25f30207c6cf063a680979d2362a5427756e done
+#17 exporting config sha256:ee527b1ef25d77125cd3cdfb5cacd4bffae2bf5c8f5f9401bb7ffcd47ed26b1e done
+#17 exporting attestation manifest sha256:c0a4aa639ad487e216e99e2fa9af240fcd4f6f4ac6b31a9e00914aef2279c676 0.0s done
+#17 exporting manifest list sha256:3a0879e70196dcd9a266697844c5f82d7815896da96ea6ba9e7a8f4aa8574b00 done
+#17 naming to docker.io/library/aws-bedrock-agentcore-mcp:latest done
+#17 unpacking to docker.io/library/aws-bedrock-agentcore-mcp:latest done
+#17 DONE 0.1s
+[OK] aws-bedrock-agentcore-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] aws-bedrock-custom-model-mcp  (docker build -t aws-bedrock-custom-model-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/aws-bedrock-custom-model-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 791B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#5 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#5 DONE 0.0s
+
+#6 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#6 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#8 CACHED
+
+#9 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#9 CACHED
+
+#10 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#10 CACHED
+
+#11 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#11 CACHED
+
+#12 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.aws-bedrock-custom-model-import-mcp-server
+#12 CACHED
+
+#13 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#13 CACHED
+
+#14 [stage-1 3/9] WORKDIR /app
+#14 CACHED
+
+#15 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:ff8feb5a6957847792f66946df1b9ba3fafa180c7b3c4fe50edaaa0c2e58a330 done
+#17 exporting config sha256:a72513bf06c4f00c63c8e3a23f02e84363810881a4702dd4ecf2486d1570cd57 done
+#17 exporting attestation manifest sha256:caf232546554025a6468dc6e6782ec1a60a2eb13fbc4f2175ad95c71dfb899a8 0.0s done
+#17 exporting manifest list sha256:585266ed71b5e47a626bd4cd9ecb178a41b0734ad0fbbe226df86b8fa7e30192 done
+#17 naming to docker.io/library/aws-bedrock-custom-model-mcp:latest done
+#17 unpacking to docker.io/library/aws-bedrock-custom-model-mcp:latest 0.0s done
+#17 DONE 0.1s
+[OK] aws-bedrock-custom-model-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] aws-cloudtrail-mcp  (docker build -t aws-cloudtrail-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/aws-cloudtrail-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 770B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#5 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a done
+#5 DONE 0.0s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#8 CACHED
+
+#9 [stage-1 3/9] WORKDIR /app
+#9 CACHED
+
+#10 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#11 CACHED
+
+#12 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#12 CACHED
+
+#13 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#13 CACHED
+
+#14 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.cloudtrail-mcp-server
+#14 CACHED
+
+#15 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:0452884d7360baa516c312d9d81f9e77e16b3b3950091c7eb98ced2d1b333872 done
+#17 exporting config sha256:99d393d9e11ddd826ed95c4be20f6b6f3969576a753cb8d5a9e313e0a3a30ced done
+#17 exporting attestation manifest sha256:c24590ac4febc1478d8d87667f7f9380b35804fc450b39ec580d5edc623977d7
+#17 exporting attestation manifest sha256:c24590ac4febc1478d8d87667f7f9380b35804fc450b39ec580d5edc623977d7 done
+#17 exporting manifest list sha256:4473271936c0dfc7f8dcff8561b3744040d08f38a3f7f4e1a0490f5cd72c6d3e 0.0s done
+#17 naming to docker.io/library/aws-cloudtrail-mcp:latest done
+#17 unpacking to docker.io/library/aws-cloudtrail-mcp:latest done
+#17 DONE 0.1s
+[OK] aws-cloudtrail-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] aws-cloudwatch-appsignals-mcp  (docker build -t aws-cloudwatch-appsignals-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/aws-cloudwatch-appsignals-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 781B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#5 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd done
+#5 DONE 0.0s
+
+#6 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#6 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#8 CACHED
+
+#9 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#9 CACHED
+
+#10 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#10 CACHED
+
+#11 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#11 CACHED
+
+#12 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.cloudwatch-appsignals-mcp-server
+#12 CACHED
+
+#13 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#13 CACHED
+
+#14 [stage-1 3/9] WORKDIR /app
+#14 CACHED
+
+#15 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:a784c8391e92bc925cdb684ca6f040e45b55eacbaca6452308ec466dce79f1da done
+#17 exporting config sha256:17e2222998f003c4379cdcaa5349061ce9210ff78152e0b4159af732fdc4277b done
+#17 exporting attestation manifest sha256:dac879db83f5a7cfa030042598fc07a9afc09713123fdb9af42d4b64734ed52b 0.0s done
+#17 exporting manifest list sha256:510ca9c658958ce58440435af947c8376570841ddab80d2e6358c8da995f0554 done
+#17 naming to docker.io/library/aws-cloudwatch-appsignals-mcp:latest done
+#17 unpacking to docker.io/library/aws-cloudwatch-appsignals-mcp:latest done
+#17 DONE 0.1s
+[OK] aws-cloudwatch-appsignals-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] aws-cloudwatch-mcp  (docker build -t aws-cloudwatch-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/aws-cloudwatch-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 770B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#5 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#5 DONE 0.0s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#8 CACHED
+
+#9 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#9 CACHED
+
+#10 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [stage-1 3/9] WORKDIR /app
+#11 CACHED
+
+#12 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.cloudwatch-mcp-server
+#12 CACHED
+
+#13 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#13 CACHED
+
+#14 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#14 CACHED
+
+#15 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:569c44ced1b168f02f32384aa34d1ab8d9283204b22f8aab2b6a9cbdc3c6e958 done
+#17 exporting config sha256:059c9626dcee75e83de88cbce6546df7e386609ae126ccefaae150e28e4c1437 done
+#17 exporting attestation manifest sha256:5b3c96380e5d2e05ad0f6a453b9e8b31d99e7e336200304ccc30235cbe85c7ac 0.0s done
+#17 exporting manifest list sha256:f3e6112ce536bb2272377f489fbd75b39769211559c7f9232bcb83fd08c7740a done
+#17 naming to docker.io/library/aws-cloudwatch-mcp:latest done
+#17 unpacking to docker.io/library/aws-cloudwatch-mcp:latest done
+#17 DONE 0.1s
+[OK] aws-cloudwatch-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] aws-core-mcp  (docker build -t aws-core-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/aws-core-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 764B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#5 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#5 DONE 0.0s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#8 CACHED
+
+#9 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#9 CACHED
+
+#10 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#10 CACHED
+
+#11 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#11 CACHED
+
+#12 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#12 CACHED
+
+#13 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.core-mcp-server
+#13 CACHED
+
+#14 [stage-1 3/9] WORKDIR /app
+#14 CACHED
+
+#15 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:53c2504e5d81816f6edfd0ef3b2ede591ff7e6bd00fcd532b1946602be32311f done
+#17 exporting config sha256:8477981b06f72104d253bc8e48daf8cf26cf7382a42430bf541737a1733787d1 done
+#17 exporting attestation manifest sha256:1fc82d4b70f2dccbe20c7e4b951dafeac3cb2c3eca3611877fd7faf50e1b28cb 0.0s done
+#17 exporting manifest list sha256:8f62ce1b732e01530b5bf747623ff132052aa2672e478f1405cc83fb5a6fc7af done
+#17 naming to docker.io/library/aws-core-mcp:latest
+#17 naming to docker.io/library/aws-core-mcp:latest done
+#17 unpacking to docker.io/library/aws-core-mcp:latest done
+#17 DONE 0.1s
+[OK] aws-core-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] aws-documentation-mcp  (docker build -t aws-documentation-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/aws-documentation-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 777B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#5 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a done
+#5 DONE 0.0s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#8 CACHED
+
+#9 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#9 CACHED
+
+#10 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#10 CACHED
+
+#11 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.aws-documentation-mcp-server
+#11 CACHED
+
+#12 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#12 CACHED
+
+#13 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#13 CACHED
+
+#14 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#14 CACHED
+
+#15 [stage-1 3/9] WORKDIR /app
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:54c5c981c2124227a1d72453ed8d210167c48224cef9ff33658d4fad1154ed7f done
+#17 exporting config sha256:760bc60f13e476bd10bea9846da8e10312cc1cee5be672eccb02fb9491c6bef4 done
+#17 exporting attestation manifest sha256:b7b6dcb5942639f76940396f89b7a8264a5270d0f643004412b7c7703a9f19e0 0.0s done
+#17 exporting manifest list sha256:b2287b10fae93666a9ef2ca61a2a86bffb07eceee26ded1c4caf10a8968415cc done
+#17 naming to docker.io/library/aws-documentation-mcp:latest done
+#17 unpacking to docker.io/library/aws-documentation-mcp:latest 0.0s done
+#17 DONE 0.1s
+[OK] aws-documentation-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] aws-documentdb-mcp  (docker build -t aws-documentdb-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/aws-documentdb-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 770B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#5 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#5 DONE 0.0s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.documentdb-mcp-server
+#8 CACHED
+
+#9 [stage-1 3/9] WORKDIR /app
+#9 CACHED
+
+#10 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#10 CACHED
+
+#11 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#11 CACHED
+
+#12 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#12 CACHED
+
+#13 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#13 CACHED
+
+#14 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#14 CACHED
+
+#15 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:e0fa2748ade34dd32e12ed498ce392a68dd8fac0ab6d7658365d3fa6e1cde9bf done
+#17 exporting config sha256:9ae5dd585ca9811537e6afb6f1d1974bb5e819f31aead575e710bc06ce41e407 done
+#17 exporting attestation manifest sha256:edb90b3c4bad24cfe687e9eed95f4651bb52e99b9e2e30a18013c3ecc5db989d done
+#17 exporting manifest list sha256:337fccade82e0b6c36c9df5d1563e77f85523a4a5d194633c04517c6ed9ecc4c done
+#17 naming to docker.io/library/aws-documentdb-mcp:latest done
+#17 unpacking to docker.io/library/aws-documentdb-mcp:latest 0.0s done
+#17 DONE 0.1s
+[OK] aws-documentdb-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] aws-dynamodb-mcp  (docker build -t aws-dynamodb-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/aws-dynamodb-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 768B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#5 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd done
+#5 DONE 0.0s
+
+#6 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#6 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.dynamodb-mcp-server
+#8 CACHED
+
+#9 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#9 CACHED
+
+#10 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#10 CACHED
+
+#11 [stage-1 3/9] WORKDIR /app
+#11 CACHED
+
+#12 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#12 CACHED
+
+#13 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#13 CACHED
+
+#14 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#14 CACHED
+
+#15 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:8ece955ed48261ae32831687d57e24f1dc532078ecf015ff206fcbe001b230a1 done
+#17 exporting config sha256:9922f04b168bfc196faffc9c152f816805fcf260c3a122e129787cc4f92ec5d4 done
+#17 exporting attestation manifest sha256:5a0608a368852cca96f272309e939ef54e62cccec0b5805106f789bc0a6cb5b5 0.0s done
+#17 exporting manifest list sha256:d3aa1ea111c6eedb7f0d0587ef0513bc5482119df19360d9e161ba2584df674e done
+#17 naming to docker.io/library/aws-dynamodb-mcp:latest done
+#17 unpacking to docker.io/library/aws-dynamodb-mcp:latest done
+#17 DONE 0.1s
+[OK] aws-dynamodb-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] aws-ecs-mcp  (docker build -t aws-ecs-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/aws-ecs-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 763B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#5 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#5 DONE 0.0s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#8 CACHED
+
+#9 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#9 CACHED
+
+#10 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#10 CACHED
+
+#11 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#11 CACHED
+
+#12 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#12 CACHED
+
+#13 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#13 CACHED
+
+#14 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.ecs-mcp-server
+#14 CACHED
+
+#15 [stage-1 3/9] WORKDIR /app
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:e2ee14cb46892d82e273e858c069cd060f4098fed3ec231502b512e5f1be5763 done
+#17 exporting config sha256:ffff67d307c7f56890aa7de004866cb6d7a981132e231cee37e6ee87cbed9494 done
+#17 exporting attestation manifest sha256:62f052b8ac78626c50acd31079a69bf6cfb6305601fe90f1010bfc8e18f0e606 0.0s done
+#17 exporting manifest list sha256:f63e6b9d89d7e9f60811b17fbc82110a9f1e2f34c3b71786831b3e4008faeb62 done
+#17 naming to docker.io/library/aws-ecs-mcp:latest
+#17 naming to docker.io/library/aws-ecs-mcp:latest done
+#17 unpacking to docker.io/library/aws-ecs-mcp:latest done
+#17 DONE 0.1s
+[OK] aws-ecs-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] aws-eks-mcp  (docker build -t aws-eks-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/aws-eks-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 763B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#5 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#5 DONE 0.0s
+
+#6 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#6 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#8 CACHED
+
+#9 [stage-1 3/9] WORKDIR /app
+#9 CACHED
+
+#10 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.eks-mcp-server
+#10 CACHED
+
+#11 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#11 CACHED
+
+#12 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#12 CACHED
+
+#13 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#13 CACHED
+
+#14 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#14 CACHED
+
+#15 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:6c037d9e5cb7c344b12367f2939a5cc08972d4c00816efd1f1a108cd1dd30af2 done
+#17 exporting config sha256:a0314075861f52e3ac7ad4b8b294f27b3aa36917c384c92fb1bd010a1f08cbb3 done
+#17 exporting attestation manifest sha256:df7f547acc9ff47c7a5ba97ad864b4d1c458e9f8e8bedf55758a425acdbd0f26 done
+#17 exporting manifest list sha256:dc493ab987087f8552e0a06d26eeea3783c6d762b922b9ad83a083feefa1483c done
+#17 naming to docker.io/library/aws-eks-mcp:latest
+#17 naming to docker.io/library/aws-eks-mcp:latest done
+#17 unpacking to docker.io/library/aws-eks-mcp:latest done
+#17 DONE 0.1s
+[OK] aws-eks-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] aws-iam-mcp  (docker build -t aws-iam-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/aws-iam-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 763B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#5 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#5 DONE 0.0s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.iam-mcp-server
+#8 CACHED
+
+#9 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#9 CACHED
+
+#10 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#10 CACHED
+
+#11 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#11 CACHED
+
+#12 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#12 CACHED
+
+#13 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#13 CACHED
+
+#14 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#14 CACHED
+
+#15 [stage-1 3/9] WORKDIR /app
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:5a3b34f4810d7ab6b51d43f2dac7faa4ed68ee2d245414ca5efba5d7c52ed995 0.0s done
+#17 exporting config sha256:f6f11b8661fceb8abb9e14e119e895fca161a22f41ed9e9641a7cfbadc05af7c done
+#17 exporting attestation manifest sha256:1594479cb1988ba087abfadbc3e360c42f0aa63ad9e5cc19075aaff80cee2e18 0.0s done
+#17 exporting manifest list sha256:7e7e0f23f78ac0c1fde8ed1588399dd53dde18b2b225ee51ff4d77a6499ca5f3 done
+#17 naming to docker.io/library/aws-iam-mcp:latest done
+#17 unpacking to docker.io/library/aws-iam-mcp:latest done
+#17 DONE 0.1s
+[OK] aws-iam-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] aws-mq-mcp  (docker build -t aws-mq-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/aws-mq-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 769B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#5 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#5 DONE 0.0s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.amazon-mq-mcp-server
+#8 CACHED
+
+#9 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#9 CACHED
+
+#10 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#10 CACHED
+
+#11 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#11 CACHED
+
+#12 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#12 CACHED
+
+#13 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#13 CACHED
+
+#14 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#14 CACHED
+
+#15 [stage-1 3/9] WORKDIR /app
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:f553a6b4e9fc0323e2d23714e03251c9052c9cd878f3728504205b1e08eacf4f done
+#17 exporting config sha256:a7fbb4da3ab5d3473bbca1fa71ac05dac2cd84d95a58837d6197bd130dce6fbb done
+#17 exporting attestation manifest sha256:300c971e5a0976acab41ed35216dc7fab942d704ab8c1fda3116d7bddd0efda7 done
+#17 exporting manifest list sha256:8f9cfe77d1011c452b0d64c751f521f0a316753939d1b2d8e89f853a80ba4319 done
+#17 naming to docker.io/library/aws-mq-mcp:latest done
+#17 unpacking to docker.io/library/aws-mq-mcp:latest done
+#17 DONE 0.1s
+[OK] aws-mq-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] aws-neptune-mcp  (docker build -t aws-neptune-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/aws-neptune-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 774B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#5 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a done
+#5 DONE 0.0s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#9 CACHED
+
+#10 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#10 CACHED
+
+#11 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#11 CACHED
+
+#12 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#12 CACHED
+
+#13 [stage-1 3/9] WORKDIR /app
+#13 CACHED
+
+#14 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.amazon-neptune-mcp-server
+#14 CACHED
+
+#15 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:9bc6ba124d9017bc7966e66f309b1bd6fc90c9c52e036b88b0e4b5be7f2cf639 done
+#17 exporting config sha256:75eabf1c7ca1f95f05fefcdc0a40afd147c7bccd91bb10ef52fc4b81a3100c88 done
+#17 exporting attestation manifest sha256:fd77900622a976dc18540d4ad3d380d04a1347946885da38827c37f1492e2a64 done
+#17 exporting manifest list sha256:d170fc44076511880bbf96325c60238dfccfa532ee5b5d590537bff7c23a5866 done
+#17 naming to docker.io/library/aws-neptune-mcp:latest done
+#17 unpacking to docker.io/library/aws-neptune-mcp:latest done
+#17 DONE 0.0s
+[OK] aws-neptune-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] aws-network-mcp  (docker build -t aws-network-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/aws-network-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 771B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#5 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#5 DONE 0.0s
+
+#6 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#6 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#9 CACHED
+
+#10 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#10 CACHED
+
+#11 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#11 CACHED
+
+#12 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#12 CACHED
+
+#13 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#13 CACHED
+
+#14 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.aws-network-mcp-server
+#14 CACHED
+
+#15 [stage-1 3/9] WORKDIR /app
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:a3353491a8e57868f41e8ed386e5b7c1f8f5a4b742e60f3833a54de7a866897e done
+#17 exporting config sha256:2e9da5d0ab95d0983d35aa31ea982184c188501f99ba7f1e9c1eacf2dcc63d57 done
+#17 exporting attestation manifest sha256:50d2b34f3a69751fbf0f5cace02c9669e5eb6b9c1ccf3ba6c7df3bc2a9a3ab43 0.0s done
+#17 exporting manifest list sha256:1401ac8722db05f788908b59f3ac2e8efae0f6548ea96db53fb696b6a7a31afa done
+#17 naming to docker.io/library/aws-network-mcp:latest
+#17 naming to docker.io/library/aws-network-mcp:latest done
+#17 unpacking to docker.io/library/aws-network-mcp:latest done
+#17 DONE 0.1s
+[OK] aws-network-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] aws-postgres-mcp  (docker build -t aws-postgres-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/aws-postgres-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 768B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#5 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#5 DONE 0.0s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#8 CACHED
+
+#9 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#9 CACHED
+
+#10 [stage-1 3/9] WORKDIR /app
+#10 CACHED
+
+#11 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.postgres-mcp-server
+#11 CACHED
+
+#12 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#12 CACHED
+
+#13 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#13 CACHED
+
+#14 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#14 CACHED
+
+#15 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:0cd1f4d574eb35a00f46a2a3ed63bfd4d7da39a48e3a8c8f10bf8b1c8177aa45 done
+#17 exporting config sha256:2c53e842bc4ddb0315321622bc3d2c9647212e55ac7b7f2e4ffbceed5b11acf1 done
+#17 exporting attestation manifest sha256:e56a13edd56068b6d93c7202a30d1b5ee528cbb8de44021db468f1f1e6abd366 0.0s done
+#17 exporting manifest list sha256:510773aa72c29777515fc2bc4f23c1b673a64a35233a53d437ca67b999bd976b
+#17 exporting manifest list sha256:510773aa72c29777515fc2bc4f23c1b673a64a35233a53d437ca67b999bd976b done
+#17 naming to docker.io/library/aws-postgres-mcp:latest done
+#17 unpacking to docker.io/library/aws-postgres-mcp:latest done
+#17 DONE 0.1s
+[OK] aws-postgres-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] aws-prometheus-mcp  (docker build -t aws-prometheus-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/aws-prometheus-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 770B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#5 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#5 DONE 0.0s
+
+#6 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#6 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#8 CACHED
+
+#9 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#9 CACHED
+
+#10 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#10 CACHED
+
+#11 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.prometheus-mcp-server
+#11 CACHED
+
+#12 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#12 CACHED
+
+#13 [stage-1 3/9] WORKDIR /app
+#13 CACHED
+
+#14 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#14 CACHED
+
+#15 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:2dd96ad381ecc679f72e98d0caa6606120e0d3c1865ed7d1693b6907f3a72e2f done
+#17 exporting config sha256:6e16f863cf5864c3fca60bfa1d60a7ad40c4a3e9513b77686e984ecec1fb1cc6 done
+#17 exporting attestation manifest sha256:be2a34a2baca6c63cc237b0b76087d6228e1b26e99bd9a7b3b5b0ccd7b3205f0 done
+#17 exporting manifest list sha256:de794f41d3fa3d13df4259099efab6dcdd5276f4719b63d7db431239d0cff189 done
+#17 naming to docker.io/library/aws-prometheus-mcp:latest
+#17 naming to docker.io/library/aws-prometheus-mcp:latest done
+#17 unpacking to docker.io/library/aws-prometheus-mcp:latest done
+#17 DONE 0.1s
+[OK] aws-prometheus-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] aws-redshift-mcp  (docker build -t aws-redshift-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/aws-redshift-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 768B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#5 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#5 DONE 0.0s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#8 CACHED
+
+#9 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#9 CACHED
+
+#10 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#11 CACHED
+
+#12 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.redshift-mcp-server
+#12 CACHED
+
+#13 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#13 CACHED
+
+#14 [stage-1 3/9] WORKDIR /app
+#14 CACHED
+
+#15 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:ec3be8b331d5324540d9f20d7160d893de1a0a5841c2e824fbd48d9bb3d8d1c8 done
+#17 exporting config sha256:9da4ac6c8d613502ff690e079c5584a21c1460ab7ee5854203678d264eec15ee done
+#17 exporting attestation manifest sha256:6df81581f0077e8fd8c4e0ec7a5c975945aa2c75de4af559c2ed107539fb2b27 done
+#17 exporting manifest list sha256:9285747fc7954a7315da6912018775c5fb8f3890c90ad63402918bcf44d82248 done
+#17 naming to docker.io/library/aws-redshift-mcp:latest done
+#17 unpacking to docker.io/library/aws-redshift-mcp:latest done
+#17 DONE 0.1s
+[OK] aws-redshift-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] aws-s3-tables-mcp  (docker build -t aws-s3-tables-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/aws-s3-tables-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 769B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#5 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#5 DONE 0.0s
+
+#6 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#6 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 3/9] WORKDIR /app
+#8 CACHED
+
+#9 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.s3-tables-mcp-server
+#9 CACHED
+
+#10 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#10 CACHED
+
+#11 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#11 CACHED
+
+#12 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#12 CACHED
+
+#13 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#13 CACHED
+
+#14 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#14 CACHED
+
+#15 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:61a5798d0e7a7b7a954f04c2e19d15455d836f4fbd4f5bf06e47e79ca69f2fcb done
+#17 exporting config sha256:1add57b7f1561d745f594e0d82c8d0e83777d4d3b5b03798df1d6006b5756a99 done
+#17 exporting attestation manifest sha256:ce88004762f684fe01a74fdde7b7aa082dc2afa5e03938dfdaa9d68a39c90d33 0.0s done
+#17 exporting manifest list sha256:77a33f9f6ba9886a3ab2215f52362ab81d3f35248e5f8ccb711fbabf64ecca11 done
+#17 naming to docker.io/library/aws-s3-tables-mcp:latest done
+#17 unpacking to docker.io/library/aws-s3-tables-mcp:latest done
+#17 DONE 0.1s
+[OK] aws-s3-tables-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] aws-serverless-mcp  (docker build -t aws-serverless-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/aws-serverless-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 774B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#5 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#5 DONE 0.0s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#8 CACHED
+
+#9 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#9 CACHED
+
+#10 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.aws-serverless-mcp-server
+#10 CACHED
+
+#11 [stage-1 3/9] WORKDIR /app
+#11 CACHED
+
+#12 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#12 CACHED
+
+#13 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#13 CACHED
+
+#14 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#14 CACHED
+
+#15 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:26ab8fe777fcffa7fa9c9f53bddd7d21d995e398b67e4616bea5a7a8f00f58ac done
+#17 exporting config sha256:341842bc3aeba0823cb56cf6d4f046525dbb08bd4523f782c9406cd372aab007 done
+#17 exporting attestation manifest sha256:4c697c68e257d6f4f2e521aac8156de21c695033cb3964bf70fa39a3eebdad3f done
+#17 exporting manifest list sha256:af0d96210ccc07656e4387c13312bebb59ff488023dc5a64b1181987664deea9 done
+#17 naming to docker.io/library/aws-serverless-mcp:latest done
+#17 unpacking to docker.io/library/aws-serverless-mcp:latest
+#17 unpacking to docker.io/library/aws-serverless-mcp:latest done
+#17 DONE 0.1s
+[OK] aws-serverless-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] aws-sns-sqs-mcp  (docker build -t aws-sns-sqs-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/aws-sns-sqs-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 774B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#5 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#5 DONE 0.0s
+
+#6 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#6 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#8 CACHED
+
+#9 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#9 CACHED
+
+#10 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#10 CACHED
+
+#11 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#11 CACHED
+
+#12 [stage-1 3/9] WORKDIR /app
+#12 CACHED
+
+#13 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#13 CACHED
+
+#14 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#14 CACHED
+
+#15 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.amazon-sns-sqs-mcp-server
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:ab19590deedc49ad922d4883dad7ce83d30aa05fe51b750a97a3473fdf50425b done
+#17 exporting config sha256:9b585997a33c9faa32d804ece545830112a47f7236d5090c495636b5348a0784 done
+#17 exporting attestation manifest sha256:96f0433df16575f6a9eceb27be9689f4dc98e146e6803422c309fadbf64a26e5 0.0s done
+#17 exporting manifest list sha256:09bd7eb60bc153347ab213bbf3aa508a66979bf01a5d06660dba7903998449f6 done
+#17 naming to docker.io/library/aws-sns-sqs-mcp:latest
+#17 naming to docker.io/library/aws-sns-sqs-mcp:latest done
+#17 unpacking to docker.io/library/aws-sns-sqs-mcp:latest 0.0s done
+#17 DONE 0.1s
+[OK] aws-sns-sqs-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] aws-stepfunctions-mcp  (docker build -t aws-stepfunctions-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/aws-stepfunctions-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 342B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#4 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 105B done
+#5 DONE 0.0s
+
+#6 [2/7] WORKDIR /app
+#6 CACHED
+
+#7 [3/7] RUN pip install --no-cache-dir fastmcp uvicorn httpx boto3
+#7 CACHED
+
+#8 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#8 CACHED
+
+#9 [6/7] COPY entrypoint.sh /entrypoint.sh
+#9 CACHED
+
+#10 [4/7] COPY mcp_server.py .
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:ced4a78dfcffd63602444e0d9a203d064619d74f376aa19e973f20d94629124e done
+#12 exporting config sha256:4c52ed1392ef70d2121408e771bfbf9b91d761634e419df0c64aa70bb12b4310 done
+#12 exporting attestation manifest sha256:b8167856766f7219e27ba5af0db54ed3a54e87f263b8bfdacdb9519a4e0762f8 0.0s done
+#12 exporting manifest list sha256:7ca3d229f74b14b7ce7787b59c8d12b0221f196d6d2867eba398bdbb2d02a8ce
+#12 exporting manifest list sha256:7ca3d229f74b14b7ce7787b59c8d12b0221f196d6d2867eba398bdbb2d02a8ce done
+#12 naming to docker.io/library/aws-stepfunctions-mcp:latest done
+#12 unpacking to docker.io/library/aws-stepfunctions-mcp:latest done
+#12 DONE 0.1s
+[OK] aws-stepfunctions-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] aws-well-architected-security-mcp  (docker build -t aws-well-architected-security-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/aws-well-architected-security-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 785B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#5 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#5 DONE 0.0s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#8 CACHED
+
+#9 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#9 CACHED
+
+#10 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#10 CACHED
+
+#11 [stage-1 3/9] WORKDIR /app
+#11 CACHED
+
+#12 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#12 CACHED
+
+#13 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.well-architected-security-mcp-server
+#13 CACHED
+
+#14 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#14 CACHED
+
+#15 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:ab7f7c307f81d1fe98a41bcaee0971bdb191c628c8da0c4aa373822ad84a636d done
+#17 exporting config sha256:0d7dce6fb5419a36d1b078ddb13a92351813bb804ac9d58c792c3be46b3f3a96 done
+#17 exporting attestation manifest sha256:536da741daf00e935d140b7fe11de826ba977ea2e70f7e149821565166f242c8 0.0s done
+#17 exporting manifest list sha256:634fb1201290db66bc40701eb9fa4525e2a4673cea5fc3c21532f85f40e96e24 done
+#17 naming to docker.io/library/aws-well-architected-security-mcp:latest
+#17 naming to docker.io/library/aws-well-architected-security-mcp:latest done
+#17 unpacking to docker.io/library/aws-well-architected-security-mcp:latest 0.0s done
+#17 DONE 0.1s
+[OK] aws-well-architected-security-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] azure-mcp  (docker build -t azure-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/azure-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 457B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [4/7] RUN npm install -g @azure/mcp supergateway 2>/dev/null || npm install -g supergateway
+#6 CACHED
+
+#7 [6/7] COPY entrypoint.sh /entrypoint.sh
+#7 CACHED
+
+#8 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 libicu72 && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#9 CACHED
+
+#10 [2/7] WORKDIR /app
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:d8c8910dcbc42f18c30638d6d440ddf4b840189b5c359e0db19bd3bd1097c8ca done
+#12 exporting config sha256:39b35dc0940678607bc139ea45ec99629e596e176269439f642466811483bb8b done
+#12 exporting attestation manifest sha256:b3a2e7a8bc85b6a3e8886ad1fa2d77edaafe311733420fee938f33e7cf3e5e2b done
+#12 exporting manifest list sha256:97986f2485bb1bb7dbdbc1277a94eb0a171ecf20b96a075d656aaea216fa5fd8 done
+#12 naming to docker.io/library/azure-mcp:latest done
+#12 unpacking to docker.io/library/azure-mcp:latest done
+#12 DONE 0.1s
+[OK] azure-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] baidu-search-mcp-server-mcp  (docker build -t baidu-search-mcp-server-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/baidu-search-mcp-server-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 757B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.1s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 0.1s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#5 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#5 DONE 0.0s
+
+#6 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#6 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#8 CACHED
+
+#9 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#9 CACHED
+
+#10 [stage-1 4/9] RUN pip install --no-cache-dir baidu-mcp-server
+#10 CACHED
+
+#11 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#11 CACHED
+
+#12 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#12 CACHED
+
+#13 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#13 CACHED
+
+#14 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#14 CACHED
+
+#15 [stage-1 3/9] WORKDIR /app
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:f5a4e7a48bafe15338917c76ec7b670d7b5bc7003441c2afa1782e2be065f9ac done
+#17 exporting config sha256:cdf9ead9e514da822a5992b869606cf989faeddae4ffcdd8f1bdc769a6c48041 done
+#17 exporting attestation manifest sha256:b97f445937e719a0f101305b3a8dfd50a5642c5a82ef2d855fce4680389da3ce done
+#17 exporting manifest list sha256:fc45f6d90b243ecde8bc5280d072cb11691f080779b61caebb100233239e1b93 done
+#17 naming to docker.io/library/baidu-search-mcp-server-mcp:latest done
+#17 unpacking to docker.io/library/baidu-search-mcp-server-mcp:latest done
+#17 DONE 0.0s
+[OK] baidu-search-mcp-server-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] brave-search-mcp  (docker build -t brave-search-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/brave-search-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 551B done
+#1 WARN: SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "BRAVE_API_KEY") (line 8)
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [2/7] WORKDIR /app
+#6 CACHED
+
+#7 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [4/7] RUN npm install -g @modelcontextprotocol/server-brave-search supergateway 2>/dev/null || npm install -g supergateway
+#8 CACHED
+
+#9 [6/7] COPY entrypoint.sh /entrypoint.sh
+#9 CACHED
+
+#10 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:0ae0d7b7d3953999fe6868ee6db064aebfc59767e30bd9f0adba95888426e8e5 done
+#12 exporting config sha256:545a064325ac11876b95c40f4ba4e61d67628b25a05964e661db6ee6dfb53345 done
+#12 exporting attestation manifest sha256:9bfcc45bfe5810ff6abd0ebbc85011e1dfd60a6348c18ec2c031f238a8283cda done
+#12 exporting manifest list sha256:876c21e4a6cec5172ec62a42c695abf5ee20c15c162a44f16df4fdb8fe259943 done
+#12 naming to docker.io/library/brave-search-mcp:latest done
+#12 unpacking to docker.io/library/brave-search-mcp:latest done
+#12 DONE 0.1s
+
+ [33m1 warning found (use docker --debug to expand):
+[0m - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "BRAVE_API_KEY") (line 8)
+[OK] brave-search-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] brightdata-mcp-server-mcp  (docker build -t brightdata-mcp-server-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/brightdata-mcp-server-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 525B done
+#1 WARN: SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "BRIGHTDATA_API_TOKEN") (line 8)
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [2/7] WORKDIR /app
+#6 CACHED
+
+#7 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [4/7] RUN npm install -g @brightdata/mcp supergateway 2>/dev/null || npm install -g supergateway
+#8 CACHED
+
+#9 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#9 CACHED
+
+#10 [6/7] COPY entrypoint.sh /entrypoint.sh
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:79b3ba867ff0cf38c2ce45556ca2bfc29e464074c44cf48f4d09e8ac647e6489 done
+#12 exporting config sha256:9a6ef7fc5e36ccb7d68deed1cb780b3d19765451676bfb88ae2c4853d3790bdc done
+#12 exporting attestation manifest sha256:a16add1db2d2b17abb38b7d09318fe2fc23b2c2e43221d1d2c0267674b80733e 0.0s done
+#12 exporting manifest list sha256:044d855f8b6d877733c8a07d63cbd572b9c865f9e15e371f31afaf053c7d574c done
+#12 naming to docker.io/library/brightdata-mcp-server-mcp:latest done
+#12 unpacking to docker.io/library/brightdata-mcp-server-mcp:latest done
+#12 DONE 0.1s
+
+ [33m1 warning found (use docker --debug to expand):
+[0m - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "BRIGHTDATA_API_TOKEN") (line 8)
+[OK] brightdata-mcp-server-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] chrome-devtools-mcp  (docker build -t chrome-devtools-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/chrome-devtools-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 464B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [2/7] WORKDIR /app
+#6 CACHED
+
+#7 [6/7] COPY entrypoint.sh /entrypoint.sh
+#7 CACHED
+
+#8 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#8 CACHED
+
+#9 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#9 CACHED
+
+#10 [4/7] RUN npm install -g @mcp-b/chrome-devtools-mcp supergateway 2>/dev/null || npm install -g supergateway
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:71c7744c530eead819236695b7b709957bd82a83fa16dcb540175d45054deef7 done
+#12 exporting config sha256:e2220769872b34aa24d40552b74a2aa4c5bbf627a1d722227000e5452a7dceb3 done
+#12 exporting attestation manifest sha256:b13288da6f7942555493ed6d6c917a880004fc28055f42878be7d2afe71bd969 done
+#12 exporting manifest list sha256:31c04949da857729b45098b8052bc75adf08d99c1377608486a78ad3d8c06f0f done
+#12 naming to docker.io/library/chrome-devtools-mcp:latest done
+#12 unpacking to docker.io/library/chrome-devtools-mcp:latest done
+#12 DONE 0.1s
+[OK] chrome-devtools-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] clinicaltrialsgov-mcp-server-mcp  (docker build -t clinicaltrialsgov-mcp-server-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/clinicaltrialsgov-mcp-server-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 466B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [6/7] COPY entrypoint.sh /entrypoint.sh
+#6 CACHED
+
+#7 [2/7] WORKDIR /app
+#7 CACHED
+
+#8 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#8 CACHED
+
+#9 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#9 CACHED
+
+#10 [4/7] RUN npm install -g clinicaltrialsgov-mcp-server supergateway 2>/dev/null || npm install -g supergateway
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:024bcd98ce25760a0f38029574523537f9ab1354339039a1328dc78848590720 done
+#12 exporting config sha256:09ac04ce3582529da49c509e47dba0d21d0f18c141b6dc5670e8a8d75e1a34b8 done
+#12 exporting attestation manifest sha256:9f3479f44a7d88c89e2a4969dd74d6f302c6fb6066a57ba9f5eb45ead5fe4ac4 0.0s done
+#12 exporting manifest list sha256:6b55f907a047324b474e84ecdbbe488b11390da30a6647a3acaa2d770b5672ef done
+#12 naming to docker.io/library/clinicaltrialsgov-mcp-server-mcp:latest done
+#12 unpacking to docker.io/library/clinicaltrialsgov-mcp-server-mcp:latest done
+#12 DONE 0.1s
+[OK] clinicaltrialsgov-mcp-server-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] cloudflare-mcp  (docker build -t cloudflare-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/cloudflare-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 598B done
+#1 WARN: SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "CLOUDFLARE_API_TOKEN") (line 8)
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [2/7] WORKDIR /app
+#7 CACHED
+
+#8 [4/7] RUN npm install -g @cloudflare/mcp-server-cloudflare supergateway 2>/dev/null || npm install -g supergateway
+#8 CACHED
+
+#9 [6/7] COPY entrypoint.sh /entrypoint.sh
+#9 CACHED
+
+#10 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:dc89c2564e4374f6970a360241aaba809bab6d847bbad3004830c7466be21c94 done
+#12 exporting config sha256:71f1e63f5d60408de447469691fa7f43f9f7f167291856d60e3078efbd5e1898 done
+#12 exporting attestation manifest sha256:150512360d8b599ab3c9821bdb97e9ff4b958b24f6516656e4c2952460f3d35b 0.0s done
+#12 exporting manifest list sha256:03d31beb440bf4da51b7b286aa39c22b496b603cc80ab4dbb8cf29b069385f2a done
+#12 naming to docker.io/library/cloudflare-mcp:latest done
+#12 unpacking to docker.io/library/cloudflare-mcp:latest done
+#12 DONE 0.1s
+
+ [33m1 warning found (use docker --debug to expand):
+[0m - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "CLOUDFLARE_API_TOKEN") (line 8)
+[OK] cloudflare-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] context7-mcp  (docker build -t context7-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/context7-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 459B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [4/7] RUN npm install -g @upstash/context7-mcp supergateway 2>/dev/null || npm install -g supergateway
+#6 CACHED
+
+#7 [6/7] COPY entrypoint.sh /entrypoint.sh
+#7 CACHED
+
+#8 [2/7] WORKDIR /app
+#8 CACHED
+
+#9 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#9 CACHED
+
+#10 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:bbddd3c7ef246c78912a5219f0887860f71f5e76f68ff86bdfc774c0637cb72e done
+#12 exporting config sha256:91ae97f22f9b4d909365958b16282a2223072d0a6735259dfcb0c83ab796a0a5 done
+#12 exporting attestation manifest sha256:d2a2d4cdec7614af112a408ff4790d38f67ab8d0900bddde6fa9626bc2968426 done
+#12 exporting manifest list sha256:eb33662f8162325670a6438a83da2ea9c2b2bfce78364d51ad90cbdbed759b86 done
+#12 naming to docker.io/library/context7-mcp:latest done
+#12 unpacking to docker.io/library/context7-mcp:latest done
+#12 DONE 0.0s
+[OK] context7-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] dirb-mcp  (docker build -t hackerdogs/dirb-mcp:latest -t dirb-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/dirb-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.02kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#2 DONE 0.8s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/9] FROM docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0
+#4 resolve docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 101B done
+#5 DONE 0.0s
+
+#6 [2/9] RUN groupadd -g 1000 mcpuser &&     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
+#6 CACHED
+
+#7 [3/9] RUN apt-get update && apt-get install -y --no-install-recommends     dirb     tini     ca-certificates     && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [4/9] WORKDIR /app
+#8 CACHED
+
+#9 [5/9] COPY requirements.txt ./
+#9 CACHED
+
+#10 [8/9] COPY mcp_server.py ./
+#10 CACHED
+
+#11 [6/9] RUN pip install --no-cache-dir -r requirements.txt
+#11 CACHED
+
+#12 [7/9] COPY hd_fetch.py ./
+#12 CACHED
+
+#13 [9/9] RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+#13 CACHED
+
+#14 exporting to image
+#14 exporting layers done
+#14 exporting manifest sha256:94a8482c8fdaa5a02b149e583229ad00d8963060d05d7d46a50a615d575bd485 done
+#14 exporting config sha256:01f1b661f4ae531c4e4ab7b47d85fa5d6da086da2c8d4ec871aff61cb0ba72c1 done
+#14 exporting attestation manifest sha256:6daa3f4ba40f899eed743cd6c9b8944fdd9aaea5f5d56006567f5b8f555a906e 0.0s done
+#14 exporting manifest list sha256:953268c726f5928e6eac70bb941fc39d9970b3fdb760edd3ede0976a12fe356f done
+#14 naming to docker.io/hackerdogs/dirb-mcp:latest done
+#14 unpacking to docker.io/hackerdogs/dirb-mcp:latest done
+#14 naming to docker.io/library/dirb-mcp:latest done
+#14 unpacking to docker.io/library/dirb-mcp:latest done
+#14 DONE 0.1s
+
+ [33m1 warning found (use docker --debug to expand):
+[0m - MultipleInstructionsDisallowed: Multiple CMD instructions should not be used in the same stage because only the last one will be used (line 60)
+[OK] dirb-mcp in 2s
+
+--------------------------------------------------------------------------------
+[BUILD] dirsearch-mcp  (docker build -t hackerdogs/dirsearch-mcp:latest -t dirsearch-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/dirsearch-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.80kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#2 DONE 0.3s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [ 1/11] FROM docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0
+#4 resolve docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 101B done
+#5 DONE 0.0s
+
+#6 [ 6/11] WORKDIR /app
+#6 CACHED
+
+#7 [ 9/11] COPY hd_fetch.py ./
+#7 CACHED
+
+#8 [ 5/11] RUN ln -s /opt/dirsearch/dirsearch.py /usr/local/bin/dirsearch     && chmod +x /opt/dirsearch/dirsearch.py
+#8 CACHED
+
+#9 [ 7/11] COPY requirements.txt ./
+#9 CACHED
+
+#10 [ 3/11] RUN groupadd -g 1000 mcpuser     && useradd -m -u 1000 -g mcpuser -s /bin/bash mcpuser
+#10 CACHED
+
+#11 [ 4/11] RUN git clone https://github.com/maurosoria/dirsearch.git /opt/dirsearch     && pip install --no-cache-dir -r /opt/dirsearch/requirements.txt
+#11 CACHED
+
+#12 [ 2/11] RUN apt-get update && apt-get install -y --no-install-recommends     git     tini     ca-certificates     && rm -rf /var/lib/apt/lists/*
+#12 CACHED
+
+#13 [ 8/11] RUN pip install --no-cache-dir --upgrade pip     && pip install --no-cache-dir -r requirements.txt
+#13 CACHED
+
+#14 [10/11] COPY mcp_server.py ./
+#14 CACHED
+
+#15 [11/11] RUN mkdir -p /app/output     && chown -R mcpuser:mcpuser /app /opt/dirsearch
+#15 CACHED
+
+#16 exporting to image
+#16 exporting layers done
+#16 exporting manifest sha256:474107fad69f5782aa2762359f6c165355e0680955556f5499dfca38ce5df520 done
+#16 exporting config sha256:6d1016510cc21bb2bca3424c49bc54acb4b11688415bb79fbed9500b2aecd19f done
+#16 exporting attestation manifest sha256:c6671ae30f543e07539688156d06627bc1adbf68832dc9d206a66b7dbbe523e7 0.0s done
+#16 exporting manifest list sha256:915fbe70ddb059d2ee82f244bce8c78ed445477ce56deda49720ec2bf23c9cdf done
+#16 naming to docker.io/hackerdogs/dirsearch-mcp:latest done
+#16 unpacking to docker.io/hackerdogs/dirsearch-mcp:latest 0.0s done
+#16 naming to docker.io/library/dirsearch-mcp:latest done
+#16 unpacking to docker.io/library/dirsearch-mcp:latest 0.0s done
+#16 DONE 0.2s
+[OK] dirsearch-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] dns-mcp-server-mcp  (docker build -t dns-mcp-server-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/dns-mcp-server-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 467B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [6/7] COPY entrypoint.sh /entrypoint.sh
+#6 CACHED
+
+#7 [2/7] WORKDIR /app
+#7 CACHED
+
+#8 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [4/7] RUN npm install -g @cenemiljezweb/dns-mcp-server supergateway 2>/dev/null || npm install -g supergateway
+#9 CACHED
+
+#10 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:0bcc3e568384368ca836a0a55ee13d40fa04cec28cedd7496b2c99eac8d14e21 done
+#12 exporting config sha256:0f7a3e00cb3a2ca742d164e526dd97f407a964450253e121c854b1069ef54cff done
+#12 exporting attestation manifest sha256:14903bc70fddf5b1003bfb6f618be502341ab0a160f8796e4070eef1e1ef3b73 done
+#12 exporting manifest list sha256:0e000d13a62a4a2654032e6c890d4f22cc9677e58504dd542db3e9e67489ebf2 done
+#12 naming to docker.io/library/dns-mcp-server-mcp:latest done
+#12 unpacking to docker.io/library/dns-mcp-server-mcp:latest done
+#12 DONE 0.0s
+[OK] dns-mcp-server-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] dnstwist-mcp  (docker build -t dnstwist-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/dnstwist-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 464B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#7 CACHED
+
+#8 [6/7] COPY entrypoint.sh /entrypoint.sh
+#8 CACHED
+
+#9 [2/7] WORKDIR /app
+#9 CACHED
+
+#10 [4/7] RUN npm install -g @burtthecoder/mcp-dnstwist supergateway 2>/dev/null || npm install -g supergateway
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:7a4c80d9bd1b39049acd355da9543356bfd6e863891c58a41fcac9c6e9237cd9 done
+#12 exporting config sha256:7ef1a4a2ac3d8ceb6f6ae8042ce23528a291f76379b6845d445f6144aa4418ea done
+#12 exporting attestation manifest sha256:3a1a8e7bfdfb4e825c743316950eef1688aa5e35968f5c9adcda5578b419042d done
+#12 exporting manifest list sha256:9c23156da340c7f2b62003d067883996961d71d6dc2db61de19c8ce9c87ac641 done
+#12 naming to docker.io/library/dnstwist-mcp:latest done
+#12 unpacking to docker.io/library/dnstwist-mcp:latest done
+#12 DONE 0.1s
+[OK] dnstwist-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] exa-mcp  (docker build -t exa-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/exa-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 452B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [2/7] WORKDIR /app
+#6 CACHED
+
+#7 [6/7] COPY entrypoint.sh /entrypoint.sh
+#7 CACHED
+
+#8 [4/7] RUN npm install -g exa-mcp-server supergateway 2>/dev/null || npm install -g supergateway
+#8 CACHED
+
+#9 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#9 CACHED
+
+#10 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:b3fe2f889cf7b6cfb0a412c00a3276f55b41ef13005f2c3d296dbbae0ba61634 done
+#12 exporting config sha256:86409f6f9d2fc350aaeadde8d397820039fc66137c3173353c7a0bb1954fd00a done
+#12 exporting attestation manifest sha256:e56fb924fdd1675610b7ff96800998bf034bdeaa19847b39a3312350ce9dd755 done
+#12 exporting manifest list sha256:3306f419b821580f669be34b3ece869234af483d1ee7f6b1af50375cc4873f89 done
+#12 naming to docker.io/library/exa-mcp:latest done
+#12 unpacking to docker.io/library/exa-mcp:latest done
+#12 DONE 0.1s
+[OK] exa-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] exiftool-agent-mcp  (docker build -t exiftool-agent-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/exiftool-agent-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 459B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [4/7] RUN npm install -g exiftool-mcp-ai-agent supergateway 2>/dev/null || npm install -g supergateway
+#7 CACHED
+
+#8 [6/7] COPY entrypoint.sh /entrypoint.sh
+#8 CACHED
+
+#9 [2/7] WORKDIR /app
+#9 CACHED
+
+#10 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:8030974e48303ed3ce6d21834c9fe2530e21628372f60eaab334dbe69687f95d done
+#12 exporting config sha256:08732ca05d47a21a61068b7c1fcdc91927a678328d754497d9e0bc0bc937d09d done
+#12 exporting attestation manifest sha256:4cd63c129445d76572994bfd29f1e74a4fbfa56d71a9e05ad2a2ba229e2344e3 done
+#12 exporting manifest list sha256:474d8846c7b1081028adda71fc9cdaa8904b0988293c5defffec8896e20b88ac done
+#12 naming to docker.io/library/exiftool-agent-mcp:latest done
+#12 unpacking to docker.io/library/exiftool-agent-mcp:latest done
+#12 DONE 0.1s
+[OK] exiftool-agent-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] feroxbuster-mcp  (docker build -t hackerdogs/feroxbuster-mcp:latest -t feroxbuster-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/feroxbuster-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.68kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#2 DONE 0.3s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [ 1/10] FROM docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0
+#4 resolve docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 101B done
+#5 DONE 0.0s
+
+#6 [ 2/10] RUN groupadd -g 1000 mcpuser &&     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
+#6 CACHED
+
+#7 [ 7/10] RUN pip install --no-cache-dir -r requirements.txt
+#7 CACHED
+
+#8 [ 9/10] COPY mcp_server.py ./
+#8 CACHED
+
+#9 [ 8/10] COPY hd_fetch.py ./
+#9 CACHED
+
+#10 [ 6/10] COPY requirements.txt ./
+#10 CACHED
+
+#11 [ 3/10] RUN apt-get update && apt-get install -y --no-install-recommends     tini     ca-certificates     curl     unzip     && rm -rf /var/lib/apt/lists/*
+#11 CACHED
+
+#12 [ 4/10] RUN arch=$(dpkg --print-architecture) &&     if [ "$arch" = "amd64" ]; then         FEROX_URL="https://github.com/epi052/feroxbuster/releases/latest/download/x86_64-linux-feroxbuster.zip";     elif [ "$arch" = "arm64" ]; then         FEROX_URL="https://github.com/epi052/feroxbuster/releases/latest/download/aarch64-linux-feroxbuster.zip";     fi &&     curl -sL "$FEROX_URL" -o feroxbuster.zip &&     unzip feroxbuster.zip &&     mv feroxbuster /usr/local/bin/ &&     chmod +x /usr/local/bin/feroxbuster &&     rm feroxbuster.zip
+#12 CACHED
+
+#13 [ 5/10] WORKDIR /app
+#13 CACHED
+
+#14 [10/10] RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+#14 CACHED
+
+#15 exporting to image
+#15 exporting layers done
+#15 exporting manifest sha256:f600d417096686e0ab349502aba56f2ea737df4d677bf8f976a9d7a95165338d done
+#15 exporting config sha256:762cb6e07fb8854be72f83db95e140e62b2adf4455ad93576d568457d96ca70b done
+#15 exporting attestation manifest sha256:7a03ce842b0ede9f9e13b4aa124444c38844bec424bf645d44cb5f8cd8ca3459 0.0s done
+#15 exporting manifest list sha256:22f951d7104a26e9880889cec138cf44a78289bfd05d8d0a5e50e5f7068fe58a done
+#15 naming to docker.io/hackerdogs/feroxbuster-mcp:latest done
+#15 unpacking to docker.io/hackerdogs/feroxbuster-mcp:latest 0.0s done
+#15 naming to docker.io/library/feroxbuster-mcp:latest done
+#15 unpacking to docker.io/library/feroxbuster-mcp:latest 0.0s done
+#15 DONE 0.1s
+[OK] feroxbuster-mcp in 2s
+
+--------------------------------------------------------------------------------
+[BUILD] fetch-mcp  (docker build -t fetch-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/fetch-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 757B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#5 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a done
+#5 DONE 0.0s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 3/9] WORKDIR /app
+#8 CACHED
+
+#9 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#9 CACHED
+
+#10 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#10 CACHED
+
+#11 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#11 CACHED
+
+#12 [stage-1 4/9] RUN pip install --no-cache-dir mcp-server-fetch
+#12 CACHED
+
+#13 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#13 CACHED
+
+#14 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#14 CACHED
+
+#15 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:d39868b1910463bf4dc739f3d40ba136810626b3b8db217cc367a6cc0bd24d8d done
+#17 exporting config sha256:0a6c69f94eb0f511036176ab83d3d76cc67aa0b78e4845976c268bb246288380 done
+#17 exporting attestation manifest sha256:54ea27667d73e51d8b45f8a79784525ca56205b017dbbb87eeb8ffb9475c4171 0.0s done
+#17 exporting manifest list sha256:d635339675bef56ef77781a898c92490903bc0be42b4219f9d2b210900d8859c done
+#17 naming to docker.io/library/fetch-mcp:latest done
+#17 unpacking to docker.io/library/fetch-mcp:latest done
+#17 DONE 0.1s
+[OK] fetch-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] firecrawl-mcp  (docker build -t firecrawl-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/firecrawl-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 517B done
+#1 WARN: SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "FIRECRAWL_API_KEY") (line 8)
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [2/7] WORKDIR /app
+#6 CACHED
+
+#7 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [4/7] RUN npm install -g firecrawl-mcp supergateway 2>/dev/null || npm install -g supergateway
+#8 CACHED
+
+#9 [6/7] COPY entrypoint.sh /entrypoint.sh
+#9 CACHED
+
+#10 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:0c9cd54670856670090fa3db285c74a4efa05970b583a276830d80268500fb54 done
+#12 exporting config sha256:a79f4f3248b014d0e9cf3b3e6e54f8600dde067ebb2c8980865c036cad013425 done
+#12 exporting attestation manifest sha256:7d436dfb626088c616d0ac77d0f5147c2404aa6bef1abd2fba6913b2485e8b1b 0.0s done
+#12 exporting manifest list sha256:57a78ff51bfda5d6fbf0ee7a2dc949e5f0697402759f0c52823daf50855995b8 done
+#12 naming to docker.io/library/firecrawl-mcp:latest done
+#12 unpacking to docker.io/library/firecrawl-mcp:latest done
+#12 DONE 0.1s
+
+ [33m1 warning found (use docker --debug to expand):
+[0m - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "FIRECRAWL_API_KEY") (line 8)
+[OK] firecrawl-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] geocoding-mcp  (docker build -t geocoding-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/geocoding-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 752B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.12-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [stage-1 1/9] FROM docker.io/library/python:3.12-slim@sha256:7026274c107626d7e940e0e5d6730481a4600ae95d5ca7eb532dd4180313fea9
+#5 resolve docker.io/library/python:3.12-slim@sha256:7026274c107626d7e940e0e5d6730481a4600ae95d5ca7eb532dd4180313fea9 0.0s done
+#5 DONE 0.0s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#8 CACHED
+
+#9 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#9 CACHED
+
+#10 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#10 CACHED
+
+#11 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#11 CACHED
+
+#12 [stage-1 4/9] RUN pip install --no-cache-dir geocode-mcp
+#12 CACHED
+
+#13 [stage-1 3/9] WORKDIR /app
+#13 CACHED
+
+#14 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#14 CACHED
+
+#15 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:70eed37246059f377ee678ef181dd03695dd0651354808d596d26a33aada83af done
+#17 exporting config sha256:4011f03c2cb70f36dda7f3288a855bb01bb69281fce6f782cb5cd3f98e4194d5 done
+#17 exporting attestation manifest sha256:3f95f7d2b2b6591f4f6716db7771958fed1b3cc769506a3424459acf6eb96109 0.0s done
+#17 exporting manifest list sha256:0b4d4f3f4643fa2bef706062d417d4ce0f5e70b3e17a79fef076f23f60f37452 done
+#17 naming to docker.io/library/geocoding-mcp:latest done
+#17 unpacking to docker.io/library/geocoding-mcp:latest 0.0s done
+#17 DONE 0.1s
+[OK] geocoding-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] gitlab-mcp  (docker build -t gitlab-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/gitlab-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 524B done
+#1 WARN: SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "GITLAB_TOKEN") (line 8)
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [4/7] RUN npm install -g @zereight/mcp-gitlab supergateway 2>/dev/null || npm install -g supergateway
+#7 CACHED
+
+#8 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#8 CACHED
+
+#9 [2/7] WORKDIR /app
+#9 CACHED
+
+#10 [6/7] COPY entrypoint.sh /entrypoint.sh
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:8151c98ef885fd8574b3a171682c0f54d9d6118e0fe8ce40d2c950d0849e0c06 done
+#12 exporting config sha256:a56df891d47e41ba02458e3a6412c1169d9a51e220b5e0d865e77fbf1db32984 done
+#12 exporting attestation manifest sha256:1504efd5ddcda1dd3d1216ae9b78b0c73a16285a221a634e779f6c5fc8d8c930 done
+#12 exporting manifest list sha256:b821178f1f463f89aa7b33e8fa2f6b86cccaa32e20bc4d56b54dfcb7f7531484 done
+#12 naming to docker.io/library/gitlab-mcp:latest done
+#12 unpacking to docker.io/library/gitlab-mcp:latest done
+#12 DONE 0.0s
+
+ [33m1 warning found (use docker --debug to expand):
+[0m - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "GITLAB_TOKEN") (line 8)
+[OK] gitlab-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] globalping-mcp  (docker build -t globalping-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/globalping-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 464B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#6 CACHED
+
+#7 [6/7] COPY entrypoint.sh /entrypoint.sh
+#7 CACHED
+
+#8 [2/7] WORKDIR /app
+#8 CACHED
+
+#9 [4/7] RUN npm install -g @globalping/globalping-mcp supergateway 2>/dev/null || npm install -g supergateway
+#9 CACHED
+
+#10 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:93aa639101165fefbd6bb5024797737f9dd797eca2f3638f6f13456ddbeea135 done
+#12 exporting config sha256:8fb2dd82ead291916d560d8502233f240bea910e559f990f2233a12eb838836e done
+#12 exporting attestation manifest sha256:2dd2ea7bd730851c4db2cf0be4d839b7e35c4a4ae42254e644d19bac5ade14a8 0.0s done
+#12 exporting manifest list sha256:b7d058896868849d0b0ebab4e84fb099ce5ddb6c9d1b770bbf877c1d3b3b9023 done
+#12 naming to docker.io/library/globalping-mcp:latest done
+#12 unpacking to docker.io/library/globalping-mcp:latest 0.0s done
+#12 DONE 0.1s
+[OK] globalping-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] gobuster-mcp  (docker build -t hackerdogs/gobuster-mcp:latest -t gobuster-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/gobuster-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.01kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#2 DONE 0.4s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/9] FROM docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0
+#4 resolve docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 101B done
+#5 DONE 0.0s
+
+#6 [5/9] COPY requirements.txt ./
+#6 CACHED
+
+#7 [7/9] COPY hd_fetch.py ./
+#7 CACHED
+
+#8 [4/9] WORKDIR /app
+#8 CACHED
+
+#9 [6/9] RUN pip install --no-cache-dir -r requirements.txt
+#9 CACHED
+
+#10 [8/9] COPY mcp_server.py ./
+#10 CACHED
+
+#11 [2/9] RUN groupadd -g 1000 mcpuser &&     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
+#11 CACHED
+
+#12 [3/9] RUN apt-get update && apt-get install -y --no-install-recommends     gobuster     tini     ca-certificates     && rm -rf /var/lib/apt/lists/*
+#12 CACHED
+
+#13 [9/9] RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+#13 CACHED
+
+#14 exporting to image
+#14 exporting layers done
+#14 exporting manifest sha256:f3b1edee50b8b3d0401ef6f6eb3cb602fbe8bf7f35127384ae5a9d1d56acdb33 done
+#14 exporting config sha256:a1f28162673829d03a2e5fa217a055f1bf3342b2ccc328f511b633a7ccb9443f done
+#14 exporting attestation manifest sha256:c50826a820bc051ae826a8e4776cbc600469c29626065e84ba58ee11a7e46d29 0.0s done
+#14 exporting manifest list sha256:ae3819cab4cc08ddc771f05f43a3ecaadca991eae140c95dfe51fd857d3fa025 done
+#14 naming to docker.io/hackerdogs/gobuster-mcp:latest done
+#14 unpacking to docker.io/hackerdogs/gobuster-mcp:latest done
+#14 naming to docker.io/library/gobuster-mcp:latest done
+#14 unpacking to docker.io/library/gobuster-mcp:latest done
+#14 DONE 0.1s
+[OK] gobuster-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] google-threat-intelligence-mcp  (docker build -t google-threat-intelligence-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/google-threat-intelligence-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 748B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#5 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#5 DONE 0.0s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 3/9] WORKDIR /app
+#8 CACHED
+
+#9 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#9 CACHED
+
+#10 [stage-1 4/9] RUN pip install --no-cache-dir gti-mcp
+#10 CACHED
+
+#11 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#11 CACHED
+
+#12 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#12 CACHED
+
+#13 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#13 CACHED
+
+#14 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#14 CACHED
+
+#15 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:84806a2d96a60a9c3a766687ebced4c0b11dfa972f89798a3744facc73f8db4e done
+#17 exporting config sha256:6002bb304be9d3fa2f2511577da8888d281d40132be4effa641b44aef126af59 done
+#17 exporting attestation manifest sha256:06bd62db87fb92e0ef61cd78e204b77e642dc6ddf12f456499689eb315d728f8 0.0s done
+#17 exporting manifest list sha256:89575de6985cf90aca745b7dfb97cb7637f97486f785b3186b0b57dea3ef760c
+#17 exporting manifest list sha256:89575de6985cf90aca745b7dfb97cb7637f97486f785b3186b0b57dea3ef760c done
+#17 naming to docker.io/library/google-threat-intelligence-mcp:latest done
+#17 unpacking to docker.io/library/google-threat-intelligence-mcp:latest 0.0s done
+#17 DONE 0.1s
+[OK] google-threat-intelligence-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] greynoise-mcp  (docker build -t greynoise-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/greynoise-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 535B done
+#1 WARN: SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "GREYNOISE_API_KEY") (line 8)
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [2/7] WORKDIR /app
+#6 CACHED
+
+#7 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#8 CACHED
+
+#9 [6/7] COPY entrypoint.sh /entrypoint.sh
+#9 CACHED
+
+#10 [4/7] RUN npm install -g @greynoise/greynoise-mcp-server supergateway 2>/dev/null || npm install -g supergateway
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:5dfc3d96e17fc33b8b0cd2a9bf8489fca0a811fbe1a3b53d0c7254fabbe5e0ef done
+#12 exporting config sha256:170584d98eea42e58e764ef1e8d9ccc86ca8c62b9902820722ed2c46cfe00695 done
+#12 exporting attestation manifest sha256:7d193153e84e7efd5ce5062e8ac794a2fbf5e718176dd29ff34576f0e68c7990 0.0s done
+#12 exporting manifest list sha256:c4ca8ec87f5f2f6fa36ccd4856a4fa1746fb86cbae2b0de05769ccf8873dc348 done
+#12 naming to docker.io/library/greynoise-mcp:latest done
+#12 unpacking to docker.io/library/greynoise-mcp:latest done
+#12 DONE 0.1s
+
+ [33m1 warning found (use docker --debug to expand):
+[0m - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "GREYNOISE_API_KEY") (line 8)
+[OK] greynoise-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] hibp-mcp  (docker build -t hibp-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/hibp-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 523B done
+#1 WARN: SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "HIBP_API_KEY") (line 8)
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [4/7] RUN npm install -g @darrenjrobinson/hibp-mcp supergateway 2>/dev/null || npm install -g supergateway
+#7 CACHED
+
+#8 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#8 CACHED
+
+#9 [2/7] WORKDIR /app
+#9 CACHED
+
+#10 [6/7] COPY entrypoint.sh /entrypoint.sh
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:b3eecae4297799e72ef229b20e104733dcef0111ce9e1cf753a5410a8dbad7e8 done
+#12 exporting config sha256:0c124b9342c4be0c285a385716e35045ea3acde4a98d8f3d15565ee2a5422364 done
+#12 exporting attestation manifest sha256:a37c83e959ade9d51f1d23e9ae7a12995e8820a91e693b1ba9ed62f1b888b0c4 done
+#12 exporting manifest list sha256:e2a8c4647ecbf4fd1b7e42edcf7cc858afbe160e2c111825a360e31397e8ba40 done
+#12 naming to docker.io/library/hibp-mcp:latest done
+#12 unpacking to docker.io/library/hibp-mcp:latest done
+#12 DONE 0.1s
+
+ [33m1 warning found (use docker --debug to expand):
+[0m - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "HIBP_API_KEY") (line 8)
+[OK] hibp-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] imf-data-mcp  (docker build -t imf-data-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/imf-data-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 759B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#5 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#5 DONE 0.0s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#8 CACHED
+
+#9 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#9 CACHED
+
+#10 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#10 CACHED
+
+#11 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#11 CACHED
+
+#12 [stage-1 4/9] RUN pip install --no-cache-dir mseep-imf-data-mcp
+#12 CACHED
+
+#13 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#13 CACHED
+
+#14 [stage-1 3/9] WORKDIR /app
+#14 CACHED
+
+#15 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:28bc3bf6ef296afbf3fc97d1a720c6ad8ea33ef38bde86c2efcf97d1af28b9ad done
+#17 exporting config sha256:60c1f6e3d43b00d17237acd85ab120faae621922d46ac35e296716ee24b70abe done
+#17 exporting attestation manifest sha256:47a5b4882f81f14374bfea4a0f35a2f26ea77ee5a02ffaa55b45cad686591ad1 0.0s done
+#17 exporting manifest list sha256:0198e6081cc2b64efb0afbc320b1fb40446829a626fdee2afeae8c1782e7b9be done
+#17 naming to docker.io/library/imf-data-mcp:latest done
+#17 unpacking to docker.io/library/imf-data-mcp:latest done
+#17 DONE 0.1s
+[OK] imf-data-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] iplocate-mcp  (docker build -t iplocate-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/iplocate-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 458B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [6/7] COPY entrypoint.sh /entrypoint.sh
+#7 CACHED
+
+#8 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#8 CACHED
+
+#9 [4/7] RUN npm install -g @iplocate/mcp-server supergateway 2>/dev/null || npm install -g supergateway
+#9 CACHED
+
+#10 [2/7] WORKDIR /app
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:7a84c7b1253b8f815b1c2435841727a029ec38f170497453c4829a01149ff0e2 done
+#12 exporting config sha256:6b464e5ca451888afbd50fd8f74c3e10af81c104ea47ed9d38ead2c135976898 done
+#12 exporting attestation manifest sha256:43f232397afb32ed562c761f951f2a55ec0b7c2a8537e952a87ac75542647702 0.0s done
+#12 exporting manifest list sha256:af6f550f78dbe0bb5ad86bf19c4486ce69092f129d2cc6f06639dcb29a98fceb done
+#12 naming to docker.io/library/iplocate-mcp:latest done
+#12 unpacking to docker.io/library/iplocate-mcp:latest done
+#12 DONE 0.1s
+[OK] iplocate-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] jira-mcp  (docker build -t jira-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/jira-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 756B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#5 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#5 DONE 0.0s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#8 CACHED
+
+#9 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#9 CACHED
+
+#10 [stage-1 3/9] WORKDIR /app
+#10 CACHED
+
+#11 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#11 CACHED
+
+#12 [stage-1 4/9] RUN pip install --no-cache-dir mcp-server-jira
+#12 CACHED
+
+#13 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#13 CACHED
+
+#14 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#14 CACHED
+
+#15 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:7f9358bb1eb83f37d986314478017e52512142158007f04fdb45a2e5af8332d9 done
+#17 exporting config sha256:635d545ab6b6c1a291dbe61d32f19176c07d811414b7e4fd7b37b6b99dfcca02 done
+#17 exporting attestation manifest sha256:e2c8f4417338e916f22213676e86e3091c113c0b5d7b94edf4e2684ee5633cc5 0.0s done
+#17 exporting manifest list sha256:3e682a8efc7432e7c34d5a4d4ca0b9b6d6c4622f7f968f3dd5a301fd0a5b03f7
+#17 exporting manifest list sha256:3e682a8efc7432e7c34d5a4d4ca0b9b6d6c4622f7f968f3dd5a301fd0a5b03f7 done
+#17 naming to docker.io/library/jira-mcp:latest done
+#17 unpacking to docker.io/library/jira-mcp:latest 0.0s done
+#17 DONE 0.1s
+[OK] jira-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] ms-fabric-rti-mcp  (docker build -t ms-fabric-rti-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/ms-fabric-rti-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 916B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#5 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#5 DONE 0.0s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#8 CACHED
+
+#9 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#9 CACHED
+
+#10 [stage-1 3/9] WORKDIR /app
+#10 CACHED
+
+#11 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#11 CACHED
+
+#12 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#12 CACHED
+
+#13 [stage-1 4/9] RUN pip install --no-cache-dir microsoft-fabric-rti-mcp
+#13 CACHED
+
+#14 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#14 CACHED
+
+#15 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:53ca498660a144d30c7ce3f28d200ae443f92cd34babaf5c4fc28b5a1cef85bf done
+#17 exporting config sha256:a3608f1ec362509ec83f69185bc71180b931ddcede0adbab71e3a87a2377dc26 done
+#17 exporting attestation manifest sha256:efc0cff168085020fcd2c6ee42490629bda653521b3a0b1d755483868a4e67c6 0.0s done
+#17 exporting manifest list sha256:c569489c2a0d2e263542754dc677a5c0e1fce5890f73a59c3196d61492be6b47 done
+#17 naming to docker.io/library/ms-fabric-rti-mcp:latest
+#17 naming to docker.io/library/ms-fabric-rti-mcp:latest done
+#17 unpacking to docker.io/library/ms-fabric-rti-mcp:latest done
+#17 DONE 0.1s
+[OK] ms-fabric-rti-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] nasa-mcp  (docker build -t nasa-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/nasa-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 496B done
+#1 WARN: SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "NASA_API_KEY") (line 8)
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [2/7] WORKDIR /app
+#7 CACHED
+
+#8 [4/7] RUN npm install -g @programcomputer/nasa-mcp-server supergateway 2>/dev/null || npm install -g supergateway
+#8 CACHED
+
+#9 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#9 CACHED
+
+#10 [6/7] COPY entrypoint.sh /entrypoint.sh
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:59f48ef741e1c5a5539a9a8782ce5779e147e26aa20aab42402751bc3bb2df11 done
+#12 exporting config sha256:606f48173d1960b918cbc48608fcf2c93600a4a56ccafbcf32d4168ce6a43043 done
+#12 exporting attestation manifest sha256:721a3e192e89bc315633baaf7d28bd01c3c3050ee038068409054ee690bc239a done
+#12 exporting manifest list sha256:99368f3ee832b2d8b2b61e79582d1ec1f416ebeb5345b69cc54fa11815bedabd done
+#12 naming to docker.io/library/nasa-mcp:latest done
+#12 unpacking to docker.io/library/nasa-mcp:latest done
+#12 DONE 0.0s
+
+ [33m1 warning found (use docker --debug to expand):
+[0m - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "NASA_API_KEY") (line 8)
+[OK] nasa-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] notion-mcp  (docker build -t notion-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/notion-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 465B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [2/7] WORKDIR /app
+#6 CACHED
+
+#7 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#7 CACHED
+
+#8 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [4/7] RUN npm install -g @notionhq/notion-mcp-server supergateway 2>/dev/null || npm install -g supergateway
+#9 CACHED
+
+#10 [6/7] COPY entrypoint.sh /entrypoint.sh
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:c1c2cfab68cc660707a2f319db61c674cf65cb74c9b3d6d30e01c902e588c264 done
+#12 exporting config sha256:940983d2c60e228cfe405aa632fdf0ea44f0dfa87930e73f100bcbcdc44abc57 done
+#12 exporting attestation manifest sha256:2c9eb2f24c84b4920beaf0d30eba5ab9d7ac767ce929e1e30b8c60cce98e42b8 0.0s done
+#12 exporting manifest list sha256:2293684c67ae442d0bf2a4871c59e8a239f86f3043d474d3611131edaf166b15 done
+#12 naming to docker.io/library/notion-mcp:latest done
+#12 unpacking to docker.io/library/notion-mcp:latest done
+#12 DONE 0.1s
+[OK] notion-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] octagon-mcp-server-mcp  (docker build -t octagon-mcp-server-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/octagon-mcp-server-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 449B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#7 CACHED
+
+#8 [2/7] WORKDIR /app
+#8 CACHED
+
+#9 [4/7] RUN npm install -g octagon-mcp supergateway 2>/dev/null || npm install -g supergateway
+#9 CACHED
+
+#10 [6/7] COPY entrypoint.sh /entrypoint.sh
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:0966adfc8ef4eba867f9a293c303923b88eeb91b727c03be55094490742e40b2 done
+#12 exporting config sha256:76015ddb844bff6e6cc34b1a73507ab7f87a7e0f1275e5d4794e92a72fe84d62 done
+#12 exporting attestation manifest sha256:bcb1f108940bc0107e2528ad1f5408957a924db56c355a4c7fd46b45b56fe7be 0.0s done
+#12 exporting manifest list sha256:3be260d16284c6fd71d063e46501db18f7f1d5bf4bc94248d8955337d00d1cac done
+#12 naming to docker.io/library/octagon-mcp-server-mcp:latest done
+#12 unpacking to docker.io/library/octagon-mcp-server-mcp:latest done
+#12 DONE 0.1s
+[OK] octagon-mcp-server-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] octocode-mcp  (docker build -t octocode-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/octocode-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 450B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [4/7] RUN npm install -g octocode-mcp supergateway 2>/dev/null || npm install -g supergateway
+#6 CACHED
+
+#7 [6/7] COPY entrypoint.sh /entrypoint.sh
+#7 CACHED
+
+#8 [2/7] WORKDIR /app
+#8 CACHED
+
+#9 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#9 CACHED
+
+#10 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:8a1f06786e1392fb85fc1887fceaeb3ca36ea80efa2151a56f5066417e8db770 done
+#12 exporting config sha256:5eb4dc713edf6502f4615ce94de0f3426bea1cab3c0b7dfe082a6e0fb05dbc66 done
+#12 exporting attestation manifest sha256:8d78cf8a72c9be57f29af6792c2c77b5cc8f73f957085038cec2793eb1ecac46 0.0s done
+#12 exporting manifest list sha256:8e6cb69cfab90623965bb3e683c41f3b8909f77bc0b45db2568e7c112fd26dbd done
+#12 naming to docker.io/library/octocode-mcp:latest done
+#12 unpacking to docker.io/library/octocode-mcp:latest done
+#12 DONE 0.1s
+[OK] octocode-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] openfda-mcp  (docker build -t openfda-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/openfda-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 458B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [4/7] RUN npm install -g @ythalorossy/openfda supergateway 2>/dev/null || npm install -g supergateway
+#6 CACHED
+
+#7 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#7 CACHED
+
+#8 [6/7] COPY entrypoint.sh /entrypoint.sh
+#8 CACHED
+
+#9 [2/7] WORKDIR /app
+#9 CACHED
+
+#10 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:c79038f7411d9d58a53c81f60ded9e8412bb72ffe5e04fb47d29b928fb0be60f done
+#12 exporting config sha256:b9121563a06ccce50e401c673fda16565163a9feafeaacb448b9751180fd93a4 done
+#12 exporting attestation manifest sha256:43409a022e761a1a85391cfb70133448a65823f348a9a76e908dbad2926312a4 0.0s done
+#12 exporting manifest list sha256:08cc43208cc5068fb6356f8bb1cf1cd9a21f6a8c6a6bb0ab3f96fd8ba4fc5583 done
+#12 naming to docker.io/library/openfda-mcp:latest done
+#12 unpacking to docker.io/library/openfda-mcp:latest done
+#12 DONE 0.1s
+[OK] openfda-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] osm-mcp-server-mcp  (docker build -t osm-mcp-server-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/osm-mcp-server-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 755B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.13-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#5 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd done
+#5 DONE 0.0s
+
+#6 [stage-1 1/9] FROM docker.io/library/python:3.13-slim@sha256:5a7bc62572092e849a3de833858cd2e5542fe24bc49e3fc54948c8b0d8ca4b29
+#6 resolve docker.io/library/python:3.13-slim@sha256:5a7bc62572092e849a3de833858cd2e5542fe24bc49e3fc54948c8b0d8ca4b29 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#8 CACHED
+
+#9 [stage-1 4/9] RUN pip install --no-cache-dir osm-mcp-server
+#9 CACHED
+
+#10 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#10 CACHED
+
+#11 [stage-1 3/9] WORKDIR /app
+#11 CACHED
+
+#12 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#12 CACHED
+
+#13 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#13 CACHED
+
+#14 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#14 CACHED
+
+#15 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:09472b7af29b139cf3ce62b2a534148db04082b79049b49db0a649d88c339ee0 done
+#17 exporting config sha256:cd9a0aa919d4ff8fa870186503d190338b754d57e9de3ccc7c951fcdc24b7e50 done
+#17 exporting attestation manifest sha256:73be012171dfc9082d0139fc670bc9e7dcb6868ea7e32fc5ec0dc03751ec815e done
+#17 exporting manifest list sha256:340a80e51c40c1230c6e98448174a82fab6218e04e7d4ca4e7b68db2967bed0c done
+#17 naming to docker.io/library/osm-mcp-server-mcp:latest done
+#17 unpacking to docker.io/library/osm-mcp-server-mcp:latest 0.0s done
+#17 DONE 0.1s
+[OK] osm-mcp-server-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] pinecone-mcp  (docker build -t pinecone-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/pinecone-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 460B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [2/7] WORKDIR /app
+#6 CACHED
+
+#7 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [6/7] COPY entrypoint.sh /entrypoint.sh
+#8 CACHED
+
+#9 [4/7] RUN npm install -g @pinecone-database/mcp supergateway 2>/dev/null || npm install -g supergateway
+#9 CACHED
+
+#10 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:c971ea66f605d995c8ca323b06c7b55c038009e1537869ce390b0be0d913add3 done
+#12 exporting config sha256:2d48da86e1a4e5fa51131e90ae9582b31911834bf9bc9cbe2e7f0d158c906fb5 done
+#12 exporting attestation manifest sha256:7b09b516f5ac0a4e815d84d50a5a6095fd35e2255021f914a3a2f72bedbddc8c done
+#12 exporting manifest list sha256:a497d9b37829b92b17fed26090685ff55d1bb1019e7c6c86741c073846ffa99a done
+#12 naming to docker.io/library/pinecone-mcp:latest done
+#12 unpacking to docker.io/library/pinecone-mcp:latest done
+#12 DONE 0.0s
+[OK] pinecone-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] postman-mcp  (docker build -t postman-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/postman-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 465B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [2/7] WORKDIR /app
+#6 CACHED
+
+#7 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#7 CACHED
+
+#8 [6/7] COPY entrypoint.sh /entrypoint.sh
+#8 CACHED
+
+#9 [4/7] RUN npm install -g @postman/postman-mcp-server supergateway 2>/dev/null || npm install -g supergateway
+#9 CACHED
+
+#10 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:b48a657d2051af5c841e65969e2ba5f0c6b5aa90cd8abe7c589fd46970d58368 done
+#12 exporting config sha256:de95f81fc0d005d8d06b4d4953053688e55ba4ae5e88e41f61600329d8529e4c done
+#12 exporting attestation manifest sha256:e72fd7ae91cae28d61f31733a45471ed201e7ef3809267f910d5f17838bfd5dc 0.0s done
+#12 exporting manifest list sha256:fd62b69579b7f47c0f8c45beb7e2ce509fadbefd9978461dbaf452e93282325f done
+#12 naming to docker.io/library/postman-mcp:latest done
+#12 unpacking to docker.io/library/postman-mcp:latest done
+#12 DONE 0.1s
+[OK] postman-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] puppeteer-mcp  (docker build -t puppeteer-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/puppeteer-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 476B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [4/7] RUN npm install -g @modelcontextprotocol/server-puppeteer supergateway 2>/dev/null || npm install -g supergateway
+#6 CACHED
+
+#7 [2/7] WORKDIR /app
+#7 CACHED
+
+#8 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#8 CACHED
+
+#9 [6/7] COPY entrypoint.sh /entrypoint.sh
+#9 CACHED
+
+#10 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:d551faa06ebbe2dc9ff5ecdf69dc8562e4b4033bd4769e795ce536921b9340fd done
+#12 exporting config sha256:4942b77f526edba6192168580c0539fa118b826c9a673aa68b4c5a9778bb8bf7 done
+#12 exporting attestation manifest sha256:c3320cb7acf1748e380d29b461069be3f1f856a7f2e1edc4173170625d1b5eb1 done
+#12 exporting manifest list sha256:7a657228944c1e38bf400beea217c94df4385839d4ed2dd88e1c390b450a7e38 done
+#12 naming to docker.io/library/puppeteer-mcp:latest done
+#12 unpacking to docker.io/library/puppeteer-mcp:latest done
+#12 DONE 0.1s
+[OK] puppeteer-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] rapidapi-hub-reverse-image-search-by-copyseeker-mcp  (docker build -t rapidapi-hub-reverse-image-search-by-copyseeker-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/rapidapi-hub-reverse-image-search-by-copyseeker-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 478B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/8] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 103B done
+#5 DONE 0.0s
+
+#6 [7/8] COPY entrypoint.sh /entrypoint.sh
+#6 CACHED
+
+#7 [2/8] WORKDIR /app
+#7 CACHED
+
+#8 [6/8] COPY mock_mcp.py /mock_mcp.py
+#8 CACHED
+
+#9 [4/8] RUN npm install -g mcp-remote supergateway 2>/dev/null || npm install -g supergateway
+#9 CACHED
+
+#10 [3/8] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [5/8] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#11 CACHED
+
+#12 [8/8] RUN chmod +x /entrypoint.sh
+#12 CACHED
+
+#13 exporting to image
+#13 exporting layers done
+#13 exporting manifest sha256:e3f3ead7ff6f97b4dedc72f97c42291c82ffdf46a6e42489c797e25887b146a6 done
+#13 exporting config sha256:489e076dbefc321bb25f2deceb3e57a8aa786d22d715a67e10cc0f221b8e64ee done
+#13 exporting attestation manifest sha256:6c7fd95d1e3de6da7018d4b3511a52e3785ef0b5e8186a0256d0c1f9c2706396 done
+#13 exporting manifest list sha256:d9a0ca270e25762403a0125d2ff2e2dc8526bfb50297ecce4850d5ea29ca89ae done
+#13 naming to docker.io/library/rapidapi-hub-reverse-image-search-by-copyseeker-mcp:latest done
+#13 unpacking to docker.io/library/rapidapi-hub-reverse-image-search-by-copyseeker-mcp:latest done
+#13 DONE 0.1s
+[OK] rapidapi-hub-reverse-image-search-by-copyseeker-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] reddit-mcp  (docker build -t reddit-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/reddit-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 758B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#5 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#5 DONE 0.0s
+
+#6 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#6 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#8 CACHED
+
+#9 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#9 CACHED
+
+#10 [stage-1 4/9] RUN pip install --no-cache-dir mcp-server-reddit
+#10 CACHED
+
+#11 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#11 CACHED
+
+#12 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#12 CACHED
+
+#13 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#13 CACHED
+
+#14 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#14 CACHED
+
+#15 [stage-1 3/9] WORKDIR /app
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:cb74a28f85471cdc017859e73e57a88571301a9a39b2f8af6fa966596c94d470 done
+#17 exporting config sha256:86432b2c7f5d709c3065c47176bc3cbd48bbd9f7048307ee31cc95aa50d1344a done
+#17 exporting attestation manifest sha256:bc98427ce907213d11a232014f18c9a7372a4f545e91f7d31ca2db0aab79ac40 0.0s done
+#17 exporting manifest list sha256:d4be555baabc4fa16073f97819806cca0643683fa516007105554b3869427dbc done
+#17 naming to docker.io/library/reddit-mcp:latest done
+#17 unpacking to docker.io/library/reddit-mcp:latest done
+#17 DONE 0.1s
+[OK] reddit-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] s3-mcp-server-mcp  (docker build -t s3-mcp-server-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/s3-mcp-server-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 459B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [2/7] WORKDIR /app
+#6 CACHED
+
+#7 [6/7] COPY entrypoint.sh /entrypoint.sh
+#7 CACHED
+
+#8 [4/7] RUN npm install -g @geunoh/s3-mcp-server supergateway 2>/dev/null || npm install -g supergateway
+#8 CACHED
+
+#9 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#9 CACHED
+
+#10 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:f43e7065b0240e2637efea29eacf2bd44079160f951a367433ba76f93ef3897f done
+#12 exporting config sha256:055fd4fcd87ba9301dca72a03fbebf265b57902395d8a45e305042882acf4d64 done
+#12 exporting attestation manifest sha256:b8096e75d9013bc14c749e29ddd51c9ac13f6dd4a7f5ac8b787e932e52f081be 0.0s done
+#12 exporting manifest list sha256:32c35f73558e036d2521fe15a0bb599787b3430ee3eb782a32cf6d515e73d0ac done
+#12 naming to docker.io/library/s3-mcp-server-mcp:latest done
+#12 unpacking to docker.io/library/s3-mcp-server-mcp:latest 0.0s done
+#12 DONE 0.1s
+[OK] s3-mcp-server-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] scc-mcp  (docker build -t scc-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/scc-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 748B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#5 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd done
+#5 DONE 0.0s
+
+#6 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#6 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#8 CACHED
+
+#9 [stage-1 4/9] RUN pip install --no-cache-dir scc-mcp
+#9 CACHED
+
+#10 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#10 CACHED
+
+#11 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#11 CACHED
+
+#12 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#12 CACHED
+
+#13 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#13 CACHED
+
+#14 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#14 CACHED
+
+#15 [stage-1 3/9] WORKDIR /app
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:d19980a9672d7df8364ec53ba5bc8c1852fa53af88935da4e2d4b0fdadf8574a done
+#17 exporting config sha256:bb5f0859463107efaabaf664ab572a19f21e9cc19fdb367c53e962f301da5f86 done
+#17 exporting attestation manifest sha256:f211f18e77d356621499fa40d078bbed0e1c2d9cdc1a29fb44ab55365bca5ce6 done
+#17 exporting manifest list sha256:e5cb0092da551bb1833e8346a1b93c95240d4765bc5900e7f82adce4e288b9ab done
+#17 naming to docker.io/library/scc-mcp:latest done
+#17 unpacking to docker.io/library/scc-mcp:latest done
+#17 DONE 0.0s
+[OK] scc-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] search1api-mcp  (docker build -t search1api-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/search1api-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 452B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [4/7] RUN npm install -g search1api-mcp supergateway 2>/dev/null || npm install -g supergateway
+#6 CACHED
+
+#7 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#7 CACHED
+
+#8 [2/7] WORKDIR /app
+#8 CACHED
+
+#9 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#9 CACHED
+
+#10 [6/7] COPY entrypoint.sh /entrypoint.sh
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:9bd6fa42ecc3b51d80d96f4ecf2cf074be991d5d21bfcf858245ba460ff15b75 done
+#12 exporting config sha256:de116a492a011d554a2a21a4ecc8893aa55586cd7f4f88d7d0689dd849609e05 done
+#12 exporting attestation manifest sha256:7dc53b5b445f33c0fa6efe144e822330fd5b791f909ff69d83132eed76651775 0.0s done
+#12 exporting manifest list sha256:f109f51a06be489dc1feb66e17321d5cfcadb7a686d65a03a0ac750f56bf2a84 done
+#12 naming to docker.io/library/search1api-mcp:latest done
+#12 unpacking to docker.io/library/search1api-mcp:latest done
+#12 DONE 0.1s
+[OK] search1api-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] sentry-mcp  (docker build -t sentry-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/sentry-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 456B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#7 CACHED
+
+#8 [4/7] RUN npm install -g @sentry/mcp-server supergateway 2>/dev/null || npm install -g supergateway
+#8 CACHED
+
+#9 [2/7] WORKDIR /app
+#9 CACHED
+
+#10 [6/7] COPY entrypoint.sh /entrypoint.sh
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:f0689cc31f583a1e569cc3e7f002b3bce2b583a6a832ea28a43ef68f107b7d4b done
+#12 exporting config sha256:176c2df8b3286d6a9789e253f5fee20bb4306478173de1746c29cd0f7db6c9c7 done
+#12 exporting attestation manifest sha256:cc83aaf3973260e87b8a9bc227f0227e67a6d87a3b2b7f358010b9aee7518fca 0.0s done
+#12 exporting manifest list sha256:b44a0ed8e2b24dbdcf48f78cc93ea30d031d175323e50a16d7eec540a09cb1a4 done
+#12 naming to docker.io/library/sentry-mcp:latest done
+#12 unpacking to docker.io/library/sentry-mcp:latest done
+#12 DONE 0.1s
+[OK] sentry-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] serper-search-mcp  (docker build -t serper-search-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/serper-search-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 469B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [6/7] COPY entrypoint.sh /entrypoint.sh
+#6 CACHED
+
+#7 [4/7] RUN npm install -g serper-search-scrape-mcp-server supergateway 2>/dev/null || npm install -g supergateway
+#7 CACHED
+
+#8 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#8 CACHED
+
+#9 [2/7] WORKDIR /app
+#9 CACHED
+
+#10 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:2d9f180339695be22e0a396cf109d1e1e4a9b4e8aabcb92214ebd6d5bd844cfb done
+#12 exporting config sha256:c7d13a95124058d5812fc99270f422e0a88abed344f1036a03f226aa12887b60 done
+#12 exporting attestation manifest sha256:012cd82a1da5aa2e0a275b7fa99896f0d06e1329f76ca3ca12102f557a4158ce 0.0s done
+#12 exporting manifest list sha256:b290b2d8d4e8230708098d09a37fb07d49b61746956be7a61ecc313b3eceaec1 done
+#12 naming to docker.io/library/serper-search-mcp:latest done
+#12 unpacking to docker.io/library/serper-search-mcp:latest done
+#12 DONE 0.1s
+[OK] serper-search-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] splunk-mcp  (docker build -t splunk-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/splunk-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 448B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [2/7] WORKDIR /app
+#6 CACHED
+
+#7 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#7 CACHED
+
+#8 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [4/7] RUN npm install -g splunk-mcp supergateway 2>/dev/null || npm install -g supergateway
+#9 CACHED
+
+#10 [6/7] COPY entrypoint.sh /entrypoint.sh
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:07becd8c4d63fc13fcb13a8f3753723938ee21ffc4cc2f09637faebd845dea58 done
+#12 exporting config sha256:e3c94f94883c48f091cf5336dcfab06d546e03108d79272bd4cca5c80f39832d done
+#12 exporting attestation manifest sha256:221aeace0f06af55aa2c1aa887c2c86d920a468a303751c2d514cb354531fdd1 0.0s done
+#12 exporting manifest list sha256:7d78bbece7dc93ca493db446645600c9d2a3ae1ed9e71cc216f29a8ba62fd1a3 0.0s done
+#12 naming to docker.io/library/splunk-mcp:latest done
+#12 unpacking to docker.io/library/splunk-mcp:latest done
+#12 DONE 0.1s
+[OK] splunk-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] steampipe-mcp  (docker build -t steampipe-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/steampipe-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 761B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#5 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#5 DONE 0.0s
+
+#6 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a
+#6 resolve docker.io/library/python:3.11-slim@sha256:6d98ca198cea726f2c86da2699594339a7b7ff08e49728797b4ed6e3b5c3b62a 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#8 CACHED
+
+#9 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#9 CACHED
+
+#10 [stage-1 3/9] WORKDIR /app
+#10 CACHED
+
+#11 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#11 CACHED
+
+#12 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#12 CACHED
+
+#13 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#13 CACHED
+
+#14 [stage-1 4/9] RUN pip install --no-cache-dir steampipe-mcp-server
+#14 CACHED
+
+#15 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:d6c0ab71d8c5baeac2244e4f75bb569fe12e9bd0d22c01aafc69f61fdfc493db done
+#17 exporting config sha256:1c10c4ad2f68951eb35dc881fd15c3929877255253893c256fdd6aa1698e7f47 done
+#17 exporting attestation manifest sha256:87c4186205ae9914665a33f1144476ed9c0d3918076634c346b9bfd71a547184 0.0s done
+#17 exporting manifest list sha256:f6b90d72b4a3d780e6e946788233c944c73a8a152c5cfbf686beee48b792f2ba done
+#17 naming to docker.io/library/steampipe-mcp:latest done
+#17 unpacking to docker.io/library/steampipe-mcp:latest
+#17 unpacking to docker.io/library/steampipe-mcp:latest done
+#17 DONE 0.1s
+[OK] steampipe-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] stripe-mcp  (docker build -t stripe-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/stripe-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 479B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/8] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 103B done
+#5 DONE 0.0s
+
+#6 [2/8] WORKDIR /app
+#6 CACHED
+
+#7 [3/8] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [4/8] RUN npm install -g @stripe/mcp supergateway 2>/dev/null || npm install -g supergateway
+#8 CACHED
+
+#9 [7/8] COPY entrypoint.sh /entrypoint.sh
+#9 CACHED
+
+#10 [6/8] COPY mock_mcp.py /mock_mcp.py
+#10 CACHED
+
+#11 [5/8] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#11 CACHED
+
+#12 [8/8] RUN chmod +x /entrypoint.sh
+#12 CACHED
+
+#13 exporting to image
+#13 exporting layers done
+#13 exporting manifest sha256:54ad3ef54a363ac9d631cdc53975f5a663550da6423507d220a32b17322f9f34 done
+#13 exporting config sha256:010d1416fd52883b02ad32b27cdadfb3449e2ff0e7d423cfe618317f0dac0ed5 done
+#13 exporting attestation manifest sha256:569e07cec90884b9759274d047763974cce2c9fa2b240cea0f54df0479204545 0.0s done
+#13 exporting manifest list sha256:c89d1c46b3c42c217a9ad6ebcd7a8bfa50b2377285a8f42fef926d2bfdc79510 done
+#13 naming to docker.io/library/stripe-mcp:latest done
+#13 unpacking to docker.io/library/stripe-mcp:latest done
+#13 DONE 0.1s
+[OK] stripe-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] terraform-mcp  (docker build -t terraform-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/terraform-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 458B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [6/7] COPY entrypoint.sh /entrypoint.sh
+#6 CACHED
+
+#7 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#7 CACHED
+
+#8 [2/7] WORKDIR /app
+#8 CACHED
+
+#9 [4/7] RUN npm install -g terraform-mcp-server supergateway 2>/dev/null || npm install -g supergateway
+#9 CACHED
+
+#10 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:e04d990e7a9f287bf1b163d10e549fa418d29ea8922002ca623d800dec6b0553 done
+#12 exporting config sha256:8367730775036e1fc4c1aa1d8ed56e8866d9b9b60b3ec396e3215cae62831eaf done
+#12 exporting attestation manifest sha256:cbb4457eef64d0ffdb9ffd1caf86166b45c5cb640f39c59efc85a00a5847e134 0.0s done
+#12 exporting manifest list sha256:6a84bd5f59cd0c5812f066440b71595cea3f5a1e72cfed14bbf22996ac5b130d done
+#12 naming to docker.io/library/terraform-mcp:latest done
+#12 unpacking to docker.io/library/terraform-mcp:latest done
+#12 DONE 0.1s
+[OK] terraform-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] tomtom-mcp  (docker build -t tomtom-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/tomtom-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 460B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [4/7] RUN npm install -g @tomtom-org/tomtom-mcp supergateway 2>/dev/null || npm install -g supergateway
+#7 CACHED
+
+#8 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#8 CACHED
+
+#9 [2/7] WORKDIR /app
+#9 CACHED
+
+#10 [6/7] COPY entrypoint.sh /entrypoint.sh
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:bb5f832bae55532cf8986c07bbae839255d2cc1efa84ae49bd1f5a9c465578e9 done
+#12 exporting config sha256:37915480af328a7247f79109a8ef11a0783737c8a7441dbc15692220056b1e06 done
+#12 exporting attestation manifest sha256:06d3891e8d38bd3fdc96f540d08a660a6759248b98936746f9174b90b310f279 done
+#12 exporting manifest list sha256:91a0c3761c6d1139b7d3fb75dff1feb14ad7e3d0301bf45f101cf4d9e1bb095b done
+#12 naming to docker.io/library/tomtom-mcp:latest done
+#12 unpacking to docker.io/library/tomtom-mcp:latest done
+#12 DONE 0.1s
+[OK] tomtom-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] variflight-mcp  (docker build -t variflight-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/variflight-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 467B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [6/7] COPY entrypoint.sh /entrypoint.sh
+#6 CACHED
+
+#7 [2/7] WORKDIR /app
+#7 CACHED
+
+#8 [4/7] RUN npm install -g @variflight-ai/variflight-mcp supergateway 2>/dev/null || npm install -g supergateway
+#8 CACHED
+
+#9 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#9 CACHED
+
+#10 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:4be1a9c72910d6331e91d218f8aaf7984f2b938a0af10105faf503100e750bcc done
+#12 exporting config sha256:90f833cd757d69d1a452004f6b7a1264eb1d5eb47629ab59f4fda9a226c71df4 done
+#12 exporting attestation manifest sha256:1b0a18de6a72aec8a0c758c077b65111333f22eed67642fe661d0183d46ee9f4 done
+#12 exporting manifest list sha256:b81473e9fbb93dc3d88ca82382d8670b406a19909af475ba5488a63b613b2b4a done
+#12 naming to docker.io/library/variflight-mcp:latest done
+#12 unpacking to docker.io/library/variflight-mcp:latest done
+#12 DONE 0.1s
+[OK] variflight-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] whois-mcp  (docker build -t whois-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/whois-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 447B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [4/7] RUN npm install -g whois-mcp supergateway 2>/dev/null || npm install -g supergateway
+#7 CACHED
+
+#8 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#8 CACHED
+
+#9 [2/7] WORKDIR /app
+#9 CACHED
+
+#10 [6/7] COPY entrypoint.sh /entrypoint.sh
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:1ca92461acc8df0255103994b5c9989b7130c7bfed98a14011e26fee0008bead done
+#12 exporting config sha256:68fcdf541d4ef0877924e0fa5f34dd72114c3f0ffd168b932cff50d230095666 done
+#12 exporting attestation manifest sha256:ad984c50f85c39623050515f616d4927ffaa894ed36df348b68343b939da2dfc 0.0s done
+#12 exporting manifest list sha256:c7a7a5ea5937502a1bccc2c9403e7e7724f2d5155e2b344291e34cbf60711e12 done
+#12 naming to docker.io/library/whois-mcp:latest done
+#12 unpacking to docker.io/library/whois-mcp:latest done
+#12 DONE 0.1s
+[OK] whois-mcp in 1s
+
+--------------------------------------------------------------------------------
+[BUILD] winston-ai-mcp  (docker build -t winston-ai-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/winston-ai-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 452B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#6 CACHED
+
+#7 [4/7] RUN npm install -g winston-ai-mcp supergateway 2>/dev/null || npm install -g supergateway
+#7 CACHED
+
+#8 [2/7] WORKDIR /app
+#8 CACHED
+
+#9 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#9 CACHED
+
+#10 [6/7] COPY entrypoint.sh /entrypoint.sh
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:ba332983b69428b8e37bc829a75643737cf2f7a891822140ebe7ca8a6b1a35f1 done
+#12 exporting config sha256:b4c3f538b2ae950aa0051f51efb44ce7b9e1f6896689b6141a653a38b4983696 done
+#12 exporting attestation manifest sha256:9d396d3dd81ab1bd1a6584c2b1a19172eaf9f10b7523c81e3614487dc8b9c962 done
+#12 exporting manifest list sha256:5c6bffbec777607f81467b08b916dfff984f100f63bd78b9afdc023dec44091b done
+#12 naming to docker.io/library/winston-ai-mcp:latest done
+#12 unpacking to docker.io/library/winston-ai-mcp:latest done
+#12 DONE 0.0s
+[OK] winston-ai-mcp in 0s
+
+--------------------------------------------------------------------------------
+[BUILD] youtube-transcript-mcp  (docker build -t youtube-transcript-mcp /Users/tredkar/Documents/GitHub/hd-mcpservers-docker/youtube-transcript-mcp)
+--------------------------------------------------------------------------------
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 481B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#4 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [4/7] RUN npm install -g @kimtaeyoon83/mcp-server-youtube-transcript supergateway 2>/dev/null || npm install -g supergateway
+#6 CACHED
+
+#7 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#7 CACHED
+
+#8 [2/7] WORKDIR /app
+#8 CACHED
+
+#9 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#9 CACHED
+
+#10 [6/7] COPY entrypoint.sh /entrypoint.sh
+#10 CACHED
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:eea3b2603fe5c40d85151d292e279ba517de156bea98044b5b81aad642dcf229 done
+#12 exporting config sha256:163c477140031cc3fc4b83363f402a07e73e92852d1e17cf0d0f45c2de20d54d done
+#12 exporting attestation manifest sha256:ee4011abaeb86b9aa54a1dc9802fd2e46586ede5c637e4db0af6e9e4c6f298bb done
+#12 exporting manifest list sha256:58ca05fc93fbc30e8966768757620eaf06b2b1322683d5eb314078bfabd4cf56 done
+#12 naming to docker.io/library/youtube-transcript-mcp:latest done
+#12 unpacking to docker.io/library/youtube-transcript-mcp:latest done
+#12 DONE 0.1s
+[OK] youtube-transcript-mcp in 0s
+
+===================================================================================
+Finished (UTC): 2026-03-22T17:05:48Z
+OK: 79  FAIL: 0  skipped: 0
+===================================================================================

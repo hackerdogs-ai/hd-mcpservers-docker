@@ -1,0 +1,93 @@
+========== Retesting aws-prometheus-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 789B 0.1s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 2.2s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 17.8s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.1s
+
+#5 [internal] load build context
+#5 DONE 0.0s
+
+#6 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+#6 resolve docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+#6 resolve docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634 0.4s done
+#6 DONE 0.4s
+
+#7 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#7 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.3s done
+#7 DONE 0.4s
+
+#5 [internal] load build context
+#5 transferring context: 72B 0.0s done
+#5 DONE 0.1s
+
+#8 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#8 CACHED
+
+#9 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#9 CACHED
+
+#10 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#11 CACHED
+
+#12 [stage-1 3/9] WORKDIR /app
+#12 CACHED
+
+#13 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.prometheus-mcp-server
+#13 CACHED
+
+#14 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#14 CACHED
+
+#15 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:bc7a71df983a01620e1a69555ed9864718f9c5cd55e2079dda075fc3f29862d9 0.0s done
+#17 exporting config sha256:5f13abf8ad9f719c9f80e748eff21d8ab6e7930eba0dceb1a0b1dc7e197dab10 0.0s done
+#17 exporting attestation manifest sha256:bd3b0398f400767e246aff0c24489372492de0209be0a8b4f4d65767798ebbad
+#17 exporting attestation manifest sha256:bd3b0398f400767e246aff0c24489372492de0209be0a8b4f4d65767798ebbad 0.3s done
+#17 exporting manifest list sha256:eb115527d21795ba7ab3663dd39082b7577d43c576a607a588dac9cfb01986a2
+#17 exporting manifest list sha256:eb115527d21795ba7ab3663dd39082b7577d43c576a607a588dac9cfb01986a2 0.1s done
+#17 naming to docker.io/library/aws-prometheus-mcp:latest
+#17 naming to docker.io/library/aws-prometheus-mcp:latest 0.0s done
+#17 unpacking to docker.io/library/aws-prometheus-mcp:latest 0.0s done
+#17 naming to docker.io/hackerdogs/aws-prometheus-mcp:latest 0.0s done
+#17 unpacking to docker.io/hackerdogs/aws-prometheus-mcp:latest 0.0s done
+#17 DONE 1.0s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/4l7rxr7zr9xli7dpr57nwrqlu
+========== aws-prometheus-mcp test (compliance) ==========
+[0;34m[1] Install[0m
+  [0;32mPASS: image exists[0m
+[0;34m[2] Stdio tools/list[0m
+  [0;31mFAIL: stdio tools/list[0m
+[0;34m[3] Stdio tools/call (skipped — upstream package)[0m
+  [0;32mPASS: stdio tools/call (upstream)[0m
+[0;34m[4] HTTP streamable tools/list[0m
+  [0;31mFAIL: HTTP tools/list[0m
+[0;34m[5] HTTP streamable tools/call (skipped — upstream package)[0m
+  [0;32mPASS: HTTP tools/call (upstream)[0m
+
+Total: 3 passed, 2 failed
+aws-prometheus-mcp-test
+aws-prometheus-mcp-test
+
+❌ FAIL (Test): aws-prometheus-mcp

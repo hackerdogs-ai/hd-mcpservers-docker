@@ -1,0 +1,236 @@
+========== Retesting azure-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 468B 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 1.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.1s
+
+#4 [internal] load build context
+#4 DONE 0.0s
+
+#5 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#5 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#5 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.1s done
+#5 DONE 0.1s
+
+#6 [2/7] WORKDIR /app
+#6 CACHED
+
+#4 [internal] load build context
+#4 transferring context: 11.43kB 0.0s done
+#4 DONE 0.1s
+
+#7 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 libicu72 && rm -rf /var/lib/apt/lists/*
+#7 0.633 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#7 0.796 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#7 0.900 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [48.0 kB]
+#7 1.030 Get:4 http://deb.debian.org/debian bookworm/main amd64 Packages [8792 kB]
+#7 3.463 Get:5 http://deb.debian.org/debian bookworm-updates/main amd64 Packages [6924 B]
+#7 3.586 Get:6 http://deb.debian.org/debian-security bookworm-security/main amd64 Packages [294 kB]
+#7 4.300 Fetched 9347 kB in 4s (2399 kB/s)
+#7 4.300 Reading package lists...
+#7 4.695 Reading package lists...
+#7 5.064 Building dependency tree...
+#7 5.139 Reading state information...
+#7 5.232 The following additional packages will be installed:
+#7 5.232   libexpat1 libgssapi-krb5-2 libk5crypto3 libkeyutils1 libkrb5-3
+#7 5.232   libkrb5support0 libncursesw6 libnsl2 libpython3-stdlib libpython3.11-minimal
+#7 5.232   libpython3.11-stdlib libreadline8 libsqlite3-0 libssl3 libtirpc-common
+#7 5.232   libtirpc3 media-types python3-minimal python3.11 python3.11-minimal
+#7 5.232   readline-common
+#7 5.233 Suggested packages:
+#7 5.233   krb5-doc krb5-user python3-doc python3-tk python3-venv python3.11-venv
+#7 5.233   python3.11-doc binutils binfmt-support readline-doc
+#7 5.233 Recommended packages:
+#7 5.233   krb5-locales libgpm2 ca-certificates
+#7 5.374 The following NEW packages will be installed:
+#7 5.374   libexpat1 libgssapi-krb5-2 libicu72 libk5crypto3 libkeyutils1 libkrb5-3
+#7 5.374   libkrb5support0 libncursesw6 libnsl2 libpython3-stdlib libpython3.11-minimal
+#7 5.374   libpython3.11-stdlib libreadline8 libsqlite3-0 libssl3 libtirpc-common
+#7 5.374   libtirpc3 media-types python3 python3-minimal python3.11 python3.11-minimal
+#7 5.374   readline-common
+#7 5.563 0 upgraded, 23 newly installed, 0 to remove and 0 not upgraded.
+#7 5.563 Need to get 18.8 MB of archives.
+#7 5.563 After this operation, 70.5 MB of additional disk space will be used.
+#7 5.563 Get:1 http://deb.debian.org/debian-security bookworm-security/main amd64 libssl3 amd64 3.0.18-1~deb12u2 [2030 kB]
+#7 6.509 Get:2 http://deb.debian.org/debian bookworm/main amd64 libpython3.11-minimal amd64 3.11.2-6+deb12u6 [817 kB]
+#7 7.133 Get:3 http://deb.debian.org/debian bookworm/main amd64 libexpat1 amd64 2.5.0-1+deb12u2 [99.9 kB]
+#7 7.140 Get:4 http://deb.debian.org/debian bookworm/main amd64 python3.11-minimal amd64 3.11.2-6+deb12u6 [2064 kB]
+#7 7.633 Get:5 http://deb.debian.org/debian bookworm/main amd64 python3-minimal amd64 3.11.2-1+b1 [26.3 kB]
+#7 7.641 Get:6 http://deb.debian.org/debian bookworm/main amd64 media-types all 10.0.0 [26.1 kB]
+#7 7.651 Get:7 http://deb.debian.org/debian bookworm/main amd64 libncursesw6 amd64 6.4-4 [134 kB]
+#7 7.697 Get:8 http://deb.debian.org/debian bookworm/main amd64 libkrb5support0 amd64 1.20.1-2+deb12u4 [33.2 kB]
+#7 7.713 Get:9 http://deb.debian.org/debian bookworm/main amd64 libk5crypto3 amd64 1.20.1-2+deb12u4 [79.8 kB]
+#7 7.739 Get:10 http://deb.debian.org/debian bookworm/main amd64 libkeyutils1 amd64 1.6.3-2 [8808 B]
+#7 7.741 Get:11 http://deb.debian.org/debian bookworm/main amd64 libkrb5-3 amd64 1.20.1-2+deb12u4 [334 kB]
+#7 7.975 Get:12 http://deb.debian.org/debian bookworm/main amd64 libgssapi-krb5-2 amd64 1.20.1-2+deb12u4 [135 kB]
+#7 7.992 Get:13 http://deb.debian.org/debian bookworm/main amd64 libtirpc-common all 1.3.3+ds-1 [14.0 kB]
+#7 7.995 Get:14 http://deb.debian.org/debian bookworm/main amd64 libtirpc3 amd64 1.3.3+ds-1 [85.2 kB]
+#7 8.062 Get:15 http://deb.debian.org/debian bookworm/main amd64 libnsl2 amd64 1.3.0-2 [39.5 kB]
+#7 8.140 Get:16 http://deb.debian.org/debian bookworm/main amd64 readline-common all 8.2-1.3 [69.0 kB]
+#7 8.250 Get:17 http://deb.debian.org/debian bookworm/main amd64 libreadline8 amd64 8.2-1.3 [166 kB]
+#7 8.376 Get:18 http://deb.debian.org/debian bookworm/main amd64 libsqlite3-0 amd64 3.40.1-2+deb12u2 [839 kB]
+#7 9.092 Get:19 http://deb.debian.org/debian bookworm/main amd64 libpython3.11-stdlib amd64 3.11.2-6+deb12u6 [1798 kB]
+#7 10.39 Get:20 http://deb.debian.org/debian bookworm/main amd64 python3.11 amd64 3.11.2-6+deb12u6 [573 kB]
+#7 10.76 Get:21 http://deb.debian.org/debian bookworm/main amd64 libpython3-stdlib amd64 3.11.2-1+b1 [9312 B]
+#7 10.77 Get:22 http://deb.debian.org/debian bookworm/main amd64 python3 amd64 3.11.2-1+b1 [26.3 kB]
+#7 10.85 Get:23 http://deb.debian.org/debian bookworm/main amd64 libicu72 amd64 72.1-3+deb12u1 [9376 kB]
+#7 13.45 debconf: delaying package configuration, since apt-utils is not installed
+#7 13.47 Fetched 18.8 MB in 8s (2367 kB/s)
+#7 13.51 Selecting previously unselected package libssl3:amd64.
+#7 13.51 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6096 files and directories currently installed.)
+#7 13.54 Preparing to unpack .../libssl3_3.0.18-1~deb12u2_amd64.deb ...
+#7 13.56 Unpacking libssl3:amd64 (3.0.18-1~deb12u2) ...
+#7 13.72 Selecting previously unselected package libpython3.11-minimal:amd64.
+#7 13.72 Preparing to unpack .../libpython3.11-minimal_3.11.2-6+deb12u6_amd64.deb ...
+#7 13.72 Unpacking libpython3.11-minimal:amd64 (3.11.2-6+deb12u6) ...
+#7 13.82 Selecting previously unselected package libexpat1:amd64.
+#7 13.82 Preparing to unpack .../libexpat1_2.5.0-1+deb12u2_amd64.deb ...
+#7 13.82 Unpacking libexpat1:amd64 (2.5.0-1+deb12u2) ...
+#7 13.88 Selecting previously unselected package python3.11-minimal.
+#7 13.88 Preparing to unpack .../python3.11-minimal_3.11.2-6+deb12u6_amd64.deb ...
+#7 13.89 Unpacking python3.11-minimal (3.11.2-6+deb12u6) ...
+#7 14.09 Setting up libssl3:amd64 (3.0.18-1~deb12u2) ...
+#7 14.11 Setting up libpython3.11-minimal:amd64 (3.11.2-6+deb12u6) ...
+#7 14.13 Setting up libexpat1:amd64 (2.5.0-1+deb12u2) ...
+#7 14.14 Setting up python3.11-minimal (3.11.2-6+deb12u6) ...
+#7 14.67 Selecting previously unselected package python3-minimal.
+#7 14.67 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6424 files and directories currently installed.)
+#7 14.67 Preparing to unpack .../00-python3-minimal_3.11.2-1+b1_amd64.deb ...
+#7 14.68 Unpacking python3-minimal (3.11.2-1+b1) ...
+#7 14.71 Selecting previously unselected package media-types.
+#7 14.71 Preparing to unpack .../01-media-types_10.0.0_all.deb ...
+#7 14.72 Unpacking media-types (10.0.0) ...
+#7 14.76 Selecting previously unselected package libncursesw6:amd64.
+#7 14.76 Preparing to unpack .../02-libncursesw6_6.4-4_amd64.deb ...
+#7 14.76 Unpacking libncursesw6:amd64 (6.4-4) ...
+#7 14.81 Selecting previously unselected package libkrb5support0:amd64.
+#7 14.81 Preparing to unpack .../03-libkrb5support0_1.20.1-2+deb12u4_amd64.deb ...
+#7 14.81 Unpacking libkrb5support0:amd64 (1.20.1-2+deb12u4) ...
+#7 14.85 Selecting previously unselected package libk5crypto3:amd64.
+#7 14.85 Preparing to unpack .../04-libk5crypto3_1.20.1-2+deb12u4_amd64.deb ...
+#7 14.86 Unpacking libk5crypto3:amd64 (1.20.1-2+deb12u4) ...
+#7 14.91 Selecting previously unselected package libkeyutils1:amd64.
+#7 14.91 Preparing to unpack .../05-libkeyutils1_1.6.3-2_amd64.deb ...
+#7 14.92 Unpacking libkeyutils1:amd64 (1.6.3-2) ...
+#7 14.98 Selecting previously unselected package libkrb5-3:amd64.
+#7 14.98 Preparing to unpack .../06-libkrb5-3_1.20.1-2+deb12u4_amd64.deb ...
+#7 14.99 Unpacking libkrb5-3:amd64 (1.20.1-2+deb12u4) ...
+#7 15.05 Selecting previously unselected package libgssapi-krb5-2:amd64.
+#7 15.05 Preparing to unpack .../07-libgssapi-krb5-2_1.20.1-2+deb12u4_amd64.deb ...
+#7 15.06 Unpacking libgssapi-krb5-2:amd64 (1.20.1-2+deb12u4) ...
+#7 15.10 Selecting previously unselected package libtirpc-common.
+#7 15.10 Preparing to unpack .../08-libtirpc-common_1.3.3+ds-1_all.deb ...
+#7 15.11 Unpacking libtirpc-common (1.3.3+ds-1) ...
+#7 15.16 Selecting previously unselected package libtirpc3:amd64.
+#7 15.16 Preparing to unpack .../09-libtirpc3_1.3.3+ds-1_amd64.deb ...
+#7 15.17 Unpacking libtirpc3:amd64 (1.3.3+ds-1) ...
+#7 15.21 Selecting previously unselected package libnsl2:amd64.
+#7 15.21 Preparing to unpack .../10-libnsl2_1.3.0-2_amd64.deb ...
+#7 15.22 Unpacking libnsl2:amd64 (1.3.0-2) ...
+#7 15.27 Selecting previously unselected package readline-common.
+#7 15.27 Preparing to unpack .../11-readline-common_8.2-1.3_all.deb ...
+#7 15.28 Unpacking readline-common (8.2-1.3) ...
+#7 15.33 Selecting previously unselected package libreadline8:amd64.
+#7 15.33 Preparing to unpack .../12-libreadline8_8.2-1.3_amd64.deb ...
+#7 15.34 Unpacking libreadline8:amd64 (8.2-1.3) ...
+#7 15.39 Selecting previously unselected package libsqlite3-0:amd64.
+#7 15.39 Preparing to unpack .../13-libsqlite3-0_3.40.1-2+deb12u2_amd64.deb ...
+#7 15.40 Unpacking libsqlite3-0:amd64 (3.40.1-2+deb12u2) ...
+#7 15.48 Selecting previously unselected package libpython3.11-stdlib:amd64.
+#7 15.48 Preparing to unpack .../14-libpython3.11-stdlib_3.11.2-6+deb12u6_amd64.deb ...
+#7 15.49 Unpacking libpython3.11-stdlib:amd64 (3.11.2-6+deb12u6) ...
+#7 15.65 Selecting previously unselected package python3.11.
+#7 15.65 Preparing to unpack .../15-python3.11_3.11.2-6+deb12u6_amd64.deb ...
+#7 15.65 Unpacking python3.11 (3.11.2-6+deb12u6) ...
+#7 15.70 Selecting previously unselected package libpython3-stdlib:amd64.
+#7 15.71 Preparing to unpack .../16-libpython3-stdlib_3.11.2-1+b1_amd64.deb ...
+#7 15.71 Unpacking libpython3-stdlib:amd64 (3.11.2-1+b1) ...
+#7 15.75 Setting up python3-minimal (3.11.2-1+b1) ...
+#7 15.89 Selecting previously unselected package python3.
+#7 15.89 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6932 files and directories currently installed.)
+#7 15.89 Preparing to unpack .../python3_3.11.2-1+b1_amd64.deb ...
+#7 15.91 Unpacking python3 (3.11.2-1+b1) ...
+#7 15.95 Selecting previously unselected package libicu72:amd64.
+#7 15.96 Preparing to unpack .../libicu72_72.1-3+deb12u1_amd64.deb ...
+#7 15.96 Unpacking libicu72:amd64 (72.1-3+deb12u1) ...
+#7 16.53 Setting up media-types (10.0.0) ...
+#7 16.55 Setting up libkeyutils1:amd64 (1.6.3-2) ...
+#7 16.57 Setting up libicu72:amd64 (72.1-3+deb12u1) ...
+#7 16.58 Setting up libtirpc-common (1.3.3+ds-1) ...
+#7 16.60 Setting up libsqlite3-0:amd64 (3.40.1-2+deb12u2) ...
+#7 16.62 Setting up libkrb5support0:amd64 (1.20.1-2+deb12u4) ...
+#7 16.63 Setting up libncursesw6:amd64 (6.4-4) ...
+#7 16.65 Setting up libk5crypto3:amd64 (1.20.1-2+deb12u4) ...
+#7 16.66 Setting up libkrb5-3:amd64 (1.20.1-2+deb12u4) ...
+#7 16.68 Setting up readline-common (8.2-1.3) ...
+#7 16.69 Setting up libreadline8:amd64 (8.2-1.3) ...
+#7 16.72 Setting up libgssapi-krb5-2:amd64 (1.20.1-2+deb12u4) ...
+#7 16.74 Setting up libtirpc3:amd64 (1.3.3+ds-1) ...
+#7 16.76 Setting up libnsl2:amd64 (1.3.0-2) ...
+#7 16.78 Setting up libpython3.11-stdlib:amd64 (3.11.2-6+deb12u6) ...
+#7 16.79 Setting up libpython3-stdlib:amd64 (3.11.2-1+b1) ...
+#7 16.82 Setting up python3.11 (3.11.2-6+deb12u6) ...
+#7 17.38 Setting up python3 (3.11.2-1+b1) ...
+#7 17.40 running python rtupdate hooks for python3.11...
+#7 17.40 running python post-rtupdate hooks for python3.11...
+#7 17.46 Processing triggers for libc-bin (2.36-9+deb12u13) ...
+#7 DONE 17.6s
+
+#8 [4/7] RUN npm install -g @azure/mcp supergateway 2>/dev/null || npm install -g supergateway
+#8 17.08 
+#8 17.08 added 142 packages in 17s
+#8 17.08 
+#8 17.08 34 packages are looking for funding
+#8 17.08   run `npm fund` for details
+#8 DONE 17.5s
+
+#9 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#9 DONE 0.1s
+
+#10 [6/7] COPY entrypoint.sh /entrypoint.sh
+#10 DONE 0.1s
+
+#11 [7/7] RUN chmod +x /entrypoint.sh
+#11 DONE 0.3s
+
+#12 exporting to image
+#12 exporting layers
+#12 exporting layers 8.0s done
+#12 exporting manifest sha256:170536e1cc36ebced7e9d3a480ab68bf69f1e19b868767c7b2008eeba2b6f3cf 0.0s done
+#12 exporting config sha256:28f7a43496744e017a8790293974edad48f5d0ee662c9f8c8670167b29783f50 0.0s done
+#12 exporting attestation manifest sha256:bf9a09c781feb9b371dafbbcf53cf60a4046f4408e315d7af5315078fc7c2ade 0.0s done
+#12 exporting manifest list sha256:3904d169e6521b074c9235b369b4811de177644171c15fb9e2b7f60ec44c8ee8 0.0s done
+#12 naming to docker.io/library/azure-mcp:latest
+#12 naming to docker.io/library/azure-mcp:latest done
+#12 unpacking to docker.io/library/azure-mcp:latest
+#12 unpacking to docker.io/library/azure-mcp:latest 2.4s done
+#12 naming to docker.io/hackerdogs/azure-mcp:latest done
+#12 unpacking to docker.io/hackerdogs/azure-mcp:latest 0.0s done
+#12 DONE 10.6s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/vd3btu3f5mr0mt3t5k3jemqzs
+========== azure-mcp test (compliance) ==========
+[0;34m[1] Install[0m
+  [0;32mPASS: image exists[0m
+[0;34m[2] Stdio tools/list[0m
+  [0;31mFAIL: stdio tools/list[0m
+[0;34m[3] Stdio tools/call (skipped — upstream package)[0m
+  [0;32mPASS: stdio tools/call (upstream)[0m
+[0;34m[4] HTTP streamable tools/list[0m
+  [0;31mFAIL: HTTP tools/list[0m
+[0;34m[5] HTTP streamable tools/call (skipped — upstream package)[0m
+  [0;32mPASS: HTTP tools/call (upstream)[0m
+
+Total: 3 passed, 2 failed
+azure-mcp-test
+azure-mcp-test
+
+❌ FAIL (Test): azure-mcp

@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  crawl4ai-mcp:
+    image: hackerdogs/crawl4ai-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: crawl4ai-mcp
+    ports:
+      - "8521:8521"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8521
+      - CRAWL4AI_URL=${CRAWL4AI_URL:-http://localhost:11235}
+      - CRAWL4AI_API_TOKEN=${CRAWL4AI_API_TOKEN:-}
+    restart: unless-stopped

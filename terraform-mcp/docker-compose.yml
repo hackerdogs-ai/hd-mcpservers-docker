@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  terraform-mcp:
+    image: hackerdogs/terraform-mcp:latest
+    build: .
+    ports:
+      - "8670:8670"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8670
+

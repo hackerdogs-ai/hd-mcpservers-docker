@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  acuvity-mcp-server-elevenlabs-mcp:
+    image: hackerdogs/acuvity-mcp-server-elevenlabs-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: acuvity-mcp-server-elevenlabs-mcp
+    ports:
+      - "8417:8417"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8417
+    restart: unless-stopped

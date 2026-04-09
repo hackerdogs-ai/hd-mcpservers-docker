@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "bevigil-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "-e", "MCP_PORT", "-e", "BEVIGIL_API_KEY", "hackerdogs/bevigil-mcp:latest"],
+      "env": {
+        "MCP_TRANSPORT": "stdio",
+        "BEVIGIL_API_KEY": ""
+      }
+    }
+  }
+}

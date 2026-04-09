@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  mcp-server-code-runner-mcp:
+    image: hackerdogs/mcp-server-code-runner-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mcp-server-code-runner-mcp
+    ports:
+      - "8409:8409"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8409
+    restart: unless-stopped

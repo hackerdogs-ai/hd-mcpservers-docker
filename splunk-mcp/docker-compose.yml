@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  splunk-mcp:
+    image: hackerdogs/splunk-mcp:latest
+    build: .
+    ports:
+      - "8667:8667"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8667
+      - SPLUNK_URL=${SPLUNK_URL:-}
+      - SPLUNK_TOKEN=${SPLUNK_TOKEN:-}

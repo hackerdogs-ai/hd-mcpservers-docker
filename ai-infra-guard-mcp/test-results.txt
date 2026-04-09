@@ -1,0 +1,150 @@
+AI-Infra-Guard MCP — test evidence
+Generated (UTC): 2026-03-24T16:17:55Z
+Image: hackerdogs/ai-infra-guard-mcp:latest
+HTTP port: 8294
+Container (HTTP): ai-infra-guard-mcp-test
+
+Below: raw outputs from each step (not only PASS/FAIL).
+=================================================================================
+[0;34mAI-Infra-Guard MCP Server — Test Suite[0m
+Evidence file: [0;34m/c/Users/Utkarsh Singhal/Desktop/hd-mcpservers-docker/ai-infra-guard-mcp/test-results.txt[0m
+=================================================================================
+
+[0;34m[Test 1] Docker image[0m
+  [0;32mPASS: Docker image hackerdogs/ai-infra-guard-mcp:latest exists[0m
+
+=================================================================================
+[Test 1] Docker image
+Status: PASS
+---------------------------------------------------------------------------------
+(Image hackerdogs/ai-infra-guard-mcp:latest already present locally — docker build was skipped.)
+
+Id=sha256:af03a149629563913e7f9a613306ebd687bc8514ae8f4bad883721e0037f0801
+Created=2026-03-24T16:17:48.522757915Z
+Size=136815963
+Architecture=amd64
+---------------------------------------------------------------------------------
+
+[0;34m[Test 2] CLI binary inside container[0m
+  [0;32mPASS: ai-infra-guard binary responds[0m
+       [FATAL tini (8)] exec ai-infra-guard failed: No such file or directory
+
+=================================================================================
+[Test 2] CLI binary (docker run ... ai-infra-guard --help)
+Status: PASS
+---------------------------------------------------------------------------------
+[FATAL tini (8)] exec ai-infra-guard failed: No such file or directory
+---------------------------------------------------------------------------------
+
+[0;34m[Test 3] MCP stdio mode — initialize + tools/list[0m
+  [0;32mPASS: stdio mode returned tools/list response (2 tool names found)[0m
+
+=================================================================================
+[Test 3] MCP stdio — full docker stdout/stderr
+Status: PASS
+---------------------------------------------------------------------------------
+{"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"prompts":{"listChanged":false},"resources":{"subscribe":false,"listChanged":false},"tools":{"listChanged":true},"extensions":{"io.modelcontextprotocol/ui":{}}},"serverInfo":{"name":"AI-Infra-Guard MCP Server","version":"3.1.1"},"instructions":"AI infrastructure security scanning and assessment."}}
+{"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"run_ai_infra_guard","description":"Run ai-infra-guard with the given arguments.\n\nPass arguments as you would on the command line.\n\nArgs:\n    arguments: Command-line arguments string.\n    timeout_seconds: Maximum execution time in seconds (default 600).","inputSchema":{"additionalProperties":false,"properties":{"arguments":{"type":"string"},"timeout_seconds":{"default":600,"type":"integer"}},"required":["arguments"],"type":"object"},"outputSchema":{"properties":{"result":{"type":"string"}},"required":["result"],"type":"object","x-fastmcp-wrap-result":true},"_meta":{"fastmcp":{"tags":[]}}}]}}
+---------------------------------------------------------------------------------
+
+[0;34m[Test 4] MCP HTTP streamable mode — initialize[0m
+  [0;32mPASS: HTTP streamable mode responded (status 200)[0m
+       Session ID: b0a40d7c4d8a486a...
+
+=================================================================================
+[Test 4] HTTP initialize — headers + body + docker logs (tail)
+Status: PASS
+---------------------------------------------------------------------------------
+--- Response headers (initialize) ---
+HTTP/1.1 200 OK
+date: Tue, 24 Mar 2026 16:18:09 GMT
+server: uvicorn
+cache-control: no-cache, no-transform
+connection: keep-alive
+content-type: text/event-stream
+mcp-session-id: b0a40d7c4d8a486aae168c28ac06d5b4
+x-accel-buffering: no
+Transfer-Encoding: chunked
+
+--- Response body (initialize) ---
+event: message
+data: {"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"prompts":{"listChanged":true},"resources":{"subscribe":false,"listChanged":true},"tools":{"listChanged":true},"extensions":{"io.modelcontextprotocol/ui":{}}},"serverInfo":{"name":"AI-Infra-Guard MCP Server","version":"3.1.1"},"instructions":"AI infrastructure security scanning and assessment."}}
+
+--- docker logs (last 80 lines) ---
+2026-03-24 16:18:09,686 [ai-infra-guard-mcp] INFO: Starting ai-infra-guard-mcp server (transport=streamable-http, port=8294)
+2026-03-24 16:18:09,876 [httpx] INFO: HTTP Request: GET https://pypi.org/pypi/fastmcp/json "HTTP/1.1 200 OK"
+
+
+╭──────────────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│                                                                              │
+│                         ▄▀▀ ▄▀█ █▀▀ ▀█▀ █▀▄▀█ █▀▀ █▀█                        │
+│                         █▀  █▀█ ▄▄█  █  █ ▀ █ █▄▄ █▀▀                        │
+│                                                                              │
+│                                                                              │
+│                                FastMCP 3.1.1                                 │
+│                            https://gofastmcp.com                             │
+│                                                                              │
+│               🖥  Server:      AI-Infra-Guard MCP Server, 3.1.1               │
+│               🚀 Deploy free: https://fastmcp.cloud                          │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+[03/24/26 16:18:09] INFO     Starting MCP server                transport.py:273
+                             'AI-Infra-Guard MCP Server' with                   
+                             transport 'streamable-http' on                     
+                             http://0.0.0.0:8294/mcp                            
+INFO:     Started server process [7]
+INFO:     Waiting for application startup.
+2026-03-24 16:18:09,906 [mcp.server.streamable_http_manager] INFO: StreamableHTTP session manager started
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8294 (Press CTRL+C to quit)
+2026-03-24 16:18:10,798 [mcp.server.streamable_http_manager] INFO: Created new transport with session ID: b0a40d7c4d8a486aae168c28ac06d5b4
+INFO:     172.17.0.1:34322 - "POST /mcp HTTP/1.1" 200 OK
+---------------------------------------------------------------------------------
+
+[0;34m[Test 5] MCP HTTP — tools/list[0m
+  [0;32mPASS: HTTP tools/list returned tools[0m
+       - run_ai_infra_guard: Run ai-infra-guard with the given arguments.
+
+Pass arguments as you would on the
+
+=================================================================================
+[Test 5] HTTP tools/list — raw response
+Status: PASS
+---------------------------------------------------------------------------------
+event: message
+data: {"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"run_ai_infra_guard","description":"Run ai-infra-guard with the given arguments.\n\nPass arguments as you would on the command line.\n\nArgs:\n    arguments: Command-line arguments string.\n    timeout_seconds: Maximum execution time in seconds (default 600).","inputSchema":{"additionalProperties":false,"properties":{"arguments":{"type":"string"},"timeout_seconds":{"default":600,"type":"integer"}},"required":["arguments"],"type":"object"},"outputSchema":{"properties":{"result":{"type":"string"}},"required":["result"],"type":"object","x-fastmcp-wrap-result":true},"_meta":{"fastmcp":{"tags":[]}}}]}}
+---------------------------------------------------------------------------------
+
+[0;34m[Test 6] MCP HTTP — tools/call (run_ai_infra_guard)[0m
+  [0;32mPASS: tools/call run_ai_infra_guard returned a result[0m
+
+=================================================================================
+[Test 6] HTTP tools/call — request JSON + raw response
+Status: PASS
+---------------------------------------------------------------------------------
+--- tools/call request ---
+{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"run_ai_infra_guard","arguments":{"arguments":"--help"}}}
+
+--- tools/call response ---
+event: message
+data: {"jsonrpc":"2.0","id":3,"result":{"content":[{"type":"text","text":"{\n  \"error\": true,\n  \"message\": \"ai-infra-guard failed (exit code -1)\",\n  \"detail\": \"Failed to execute command: [Errno 2] No such file or directory: '/usr/local/bin/ai-infra-guard'\",\n  \"command\": \"ai-infra-guard --help\"\n}"}],"structuredContent":{"result":"{\n  \"error\": true,\n  \"message\": \"ai-infra-guard failed (exit code -1)\",\n  \"detail\": \"Failed to execute command: [Errno 2] No such file or directory: '/usr/local/bin/ai-infra-guard'\",\n  \"command\": \"ai-infra-guard --help\"\n}"},"isError":false}}
+---------------------------------------------------------------------------------
+
+
+=================================================================================
+SUMMARY
+=================================================================================
+Steps passed: 6  Steps failed: 0
+Overall: PASS
+=================================================================================
+=================================================================================
+[0;34mResults: [0;32m6 passed[0m, [0;31m0 failed[0m
+Evidence: /c/Users/Utkarsh Singhal/Desktop/hd-mcpservers-docker/ai-infra-guard-mcp/test-results.txt
+=================================================================================
+ai-infra-guard-mcp-test
+ai-infra-guard-mcp-test
+
+✅ PASS: ai-infra-guard-mcp

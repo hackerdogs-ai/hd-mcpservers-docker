@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  mermaid-mcp:
+    image: hackerdogs/mermaid-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mermaid-mcp
+    ports:
+      - "8524:8524"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8524
+    restart: unless-stopped

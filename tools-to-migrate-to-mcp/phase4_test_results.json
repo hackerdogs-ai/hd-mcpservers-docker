@@ -1,0 +1,729 @@
+[
+  {
+    "server": "ai-humanizer-mcp",
+    "port": 8601,
+    "has_keys": false,
+    "stdio_list": "PASS",
+    "stdio_tools": 1,
+    "http_list": "PASS",
+    "http_tools": 1
+  },
+  {
+    "server": "aws-api-mcp",
+    "port": 8602,
+    "has_keys": true,
+    "stdio_list": "FAIL",
+    "stdio_tools": 0,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0,
+    "call_result": "no response"
+  },
+  {
+    "server": "aws-aurora-dsql-mcp",
+    "port": 8603,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 6,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0,
+    "call_result": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3,\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"Unknown tool: help\"\n      }\n    ],\n    \"isError\": true\n  }\n}"
+  },
+  {
+    "server": "aws-bedrock-agentcore-mcp",
+    "port": 8604,
+    "has_keys": true,
+    "stdio_list": "FAIL",
+    "stdio_tools": 0,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0,
+    "call_result": "no response"
+  },
+  {
+    "server": "aws-bedrock-custom-model-mcp",
+    "port": 8605,
+    "has_keys": true,
+    "stdio_list": "FAIL",
+    "stdio_tools": 0,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0,
+    "call_result": "no response"
+  },
+  {
+    "server": "aws-cloudtrail-mcp",
+    "port": 8606,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 5,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0,
+    "call_result": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3,\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"Unknown tool: help\"\n      }\n    ],\n    \"isError\": true\n  }\n}"
+  },
+  {
+    "server": "aws-cloudwatch-appsignals-mcp",
+    "port": 8607,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 13,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0,
+    "call_result": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3,\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"Unknown tool: help\"\n      }\n    ],\n    \"isError\": true\n  }\n}"
+  },
+  {
+    "server": "aws-cloudwatch-mcp",
+    "port": 8608,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 11,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0,
+    "call_result": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3,\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"Unknown tool: help\"\n      }\n    ],\n    \"isError\": true\n  }\n}"
+  },
+  {
+    "server": "aws-core-mcp",
+    "port": 8609,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 1,
+    "http_list": "PASS",
+    "http_tools": 1,
+    "call_result": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3,\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"Unknown tool: 'help'\"\n      }\n    ],\n    \"isError\": true\n  }\n}"
+  },
+  {
+    "server": "aws-documentation-mcp",
+    "port": 8610,
+    "has_keys": false,
+    "stdio_list": "PASS",
+    "stdio_tools": 4,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0
+  },
+  {
+    "server": "aws-documentdb-mcp",
+    "port": 8611,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 16,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0,
+    "call_result": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3,\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"Unknown tool: help\"\n      }\n    ],\n    \"isError\": true\n  }\n}"
+  },
+  {
+    "server": "aws-dynamodb-mcp",
+    "port": 8612,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 8,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0,
+    "call_result": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3,\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"Unknown tool: help\"\n      }\n    ],\n    \"isError\": true\n  }\n}"
+  },
+  {
+    "server": "aws-ecs-mcp",
+    "port": 8613,
+    "has_keys": true,
+    "stdio_list": "FAIL",
+    "stdio_tools": 0,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0,
+    "call_result": "no response"
+  },
+  {
+    "server": "aws-eks-mcp",
+    "port": 8614,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 16,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0,
+    "call_result": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3,\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"Unknown tool: help\"\n      }\n    ],\n    \"isError\": true\n  }\n}"
+  },
+  {
+    "server": "aws-iam-mcp",
+    "port": 8615,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 29,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0,
+    "call_result": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3,\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"Unknown tool: help\"\n      }\n    ],\n    \"isError\": true\n  }\n}"
+  },
+  {
+    "server": "aws-mq-mcp",
+    "port": 8616,
+    "has_keys": true,
+    "stdio_list": "FAIL",
+    "stdio_tools": 0,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0,
+    "call_result": "no response"
+  },
+  {
+    "server": "aws-neptune-mcp",
+    "port": 8617,
+    "has_keys": true,
+    "stdio_list": "FAIL",
+    "stdio_tools": 0,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0,
+    "call_result": "no response"
+  },
+  {
+    "server": "aws-network-mcp",
+    "port": 8618,
+    "has_keys": true,
+    "stdio_list": "FAIL",
+    "stdio_tools": 0,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0,
+    "call_result": "no response"
+  },
+  {
+    "server": "aws-postgres-mcp",
+    "port": 8619,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 7,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0,
+    "call_result": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3,\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"Unknown tool: help\"\n      }\n    ],\n    \"isError\": true\n  }\n}"
+  },
+  {
+    "server": "aws-prometheus-mcp",
+    "port": 8620,
+    "has_keys": true,
+    "stdio_list": "FAIL",
+    "stdio_tools": 0,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0,
+    "call_result": "no response"
+  },
+  {
+    "server": "aws-redshift-mcp",
+    "port": 8621,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 6,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0,
+    "call_result": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3,\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"Unknown tool: help\"\n      }\n    ],\n    \"isError\": true\n  }\n}"
+  },
+  {
+    "server": "aws-s3-tables-mcp",
+    "port": 8622,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 16,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0,
+    "call_result": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3,\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"Unknown tool: help\"\n      }\n    ],\n    \"isError\": true\n  }\n}"
+  },
+  {
+    "server": "aws-serverless-mcp",
+    "port": 8623,
+    "has_keys": true,
+    "stdio_list": "FAIL",
+    "stdio_tools": 0,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0,
+    "call_result": "no response"
+  },
+  {
+    "server": "aws-sns-sqs-mcp",
+    "port": 8624,
+    "has_keys": true,
+    "stdio_list": "FAIL",
+    "stdio_tools": 0,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0,
+    "call_result": "no response"
+  },
+  {
+    "server": "aws-stepfunctions-mcp",
+    "port": 8625,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 2,
+    "http_list": "PASS",
+    "http_tools": 2,
+    "call_result": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3,\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"Unknown tool: 'help'\"\n      }\n    ],\n    \"isError\": true\n  }\n}"
+  },
+  {
+    "server": "aws-well-architected-security-mcp",
+    "port": 8626,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 6,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0,
+    "call_result": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3,\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"Unknown tool: help\"\n      }\n    ],\n    \"isError\": true\n  }\n}"
+  },
+  {
+    "server": "azure-mcp",
+    "port": 8627,
+    "has_keys": true,
+    "stdio_list": "FAIL",
+    "stdio_tools": 0,
+    "http_list": "FAIL",
+    "http_tools": 0,
+    "call_result": "no response"
+  },
+  {
+    "server": "baidu-search-mcp-server-mcp",
+    "port": 8628,
+    "has_keys": false,
+    "stdio_list": "FAIL",
+    "stdio_tools": 0,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0
+  },
+  {
+    "server": "brave-search-mcp",
+    "port": 8629,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 2,
+    "http_list": "PASS",
+    "http_tools": 2,
+    "call_result": "{\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"Error: Brave API error: 422 \\n{\\\"error\\\":{\\\"code\\\":\\\"SUBSCRIPTION_TOKEN_INVALID\\\",\\\"detail\\\":\\\"The provided subscription token is invalid.\\\",\\\"meta\\\":{\\\"component\\\":\\\"authentication\\\"},\\\"status\\\":422},\\\"type\\\":\\\"ErrorResponse\\\"}\"\n      }\n    ],\n    \"isError\": true\n  },\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3\n}"
+  },
+  {
+    "server": "brightdata-mcp-server-mcp",
+    "port": 8630,
+    "has_keys": true,
+    "stdio_list": "FAIL",
+    "stdio_tools": 0,
+    "http_list": "FAIL",
+    "http_tools": 0,
+    "call_result": "no response"
+  },
+  {
+    "server": "chrome-devtools-mcp",
+    "port": 8631,
+    "has_keys": false,
+    "stdio_list": "FAIL",
+    "stdio_tools": 0,
+    "http_list": "FAIL",
+    "http_tools": 0
+  },
+  {
+    "server": "clinicaltrialsgov-mcp-server-mcp",
+    "port": 8632,
+    "has_keys": false,
+    "stdio_list": "PASS",
+    "stdio_tools": 7,
+    "http_list": "PASS",
+    "http_tools": 7
+  },
+  {
+    "server": "cloudflare-mcp",
+    "port": 8633,
+    "has_keys": true,
+    "stdio_list": "FAIL",
+    "stdio_tools": 0,
+    "http_list": "FAIL",
+    "http_tools": 0,
+    "call_result": "no response"
+  },
+  {
+    "server": "context7-mcp",
+    "port": 8634,
+    "has_keys": false,
+    "stdio_list": "PASS",
+    "stdio_tools": 2,
+    "http_list": "PASS",
+    "http_tools": 2
+  },
+  {
+    "server": "dns-mcp-server-mcp",
+    "port": 8635,
+    "has_keys": false,
+    "stdio_list": "PASS",
+    "stdio_tools": 4,
+    "http_list": "PASS",
+    "http_tools": 4
+  },
+  {
+    "server": "dnstwist-mcp",
+    "port": 8636,
+    "has_keys": false,
+    "stdio_list": "PASS",
+    "stdio_tools": 1,
+    "http_list": "FAIL",
+    "http_tools": 0
+  },
+  {
+    "server": "exa-mcp",
+    "port": 8637,
+    "has_keys": true,
+    "stdio_list": "FAIL",
+    "stdio_tools": 0,
+    "http_list": "FAIL",
+    "http_tools": 0,
+    "call_result": "no response"
+  },
+  {
+    "server": "exiftool-agent-mcp",
+    "port": 8638,
+    "has_keys": false,
+    "stdio_list": "PASS",
+    "stdio_tools": 4,
+    "http_list": "PASS",
+    "http_tools": 4
+  },
+  {
+    "server": "fetch-mcp",
+    "port": 8639,
+    "has_keys": false,
+    "stdio_list": "PASS",
+    "stdio_tools": 1,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0
+  },
+  {
+    "server": "firecrawl-mcp",
+    "port": 8640,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 12,
+    "http_list": "PASS",
+    "http_tools": 12,
+    "call_result": "{\n  \"result\": {\n    \"content\": [\n      {\n        \"text\": \"Tool 'firecrawl_scrape' execution failed: Unauthorized: Invalid token\",\n        \"type\": \"text\"\n      }\n    ],\n    \"isError\": true\n  },\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3\n}"
+  },
+  {
+    "server": "geocoding-mcp",
+    "port": 8641,
+    "has_keys": false,
+    "stdio_list": "PASS",
+    "stdio_tools": 1,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0
+  },
+  {
+    "server": "gitlab-mcp",
+    "port": 8642,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 114,
+    "http_list": "PASS",
+    "http_tools": 114,
+    "call_result": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3,\n  \"error\": {\n    \"code\": -32603,\n    \"message\": \"GitLab API error: 401 Unauthorized\\n{\\\"message\\\":\\\"401 Unauthorized\\\"}\"\n  }\n}"
+  },
+  {
+    "server": "globalping-mcp",
+    "port": 8643,
+    "has_keys": false,
+    "stdio_list": "PASS",
+    "stdio_tools": 6,
+    "http_list": "PASS",
+    "http_tools": 6
+  },
+  {
+    "server": "google-threat-intelligence-mcp",
+    "port": 8644,
+    "has_keys": true,
+    "stdio_list": "FAIL",
+    "stdio_tools": 0,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0,
+    "call_result": "no response"
+  },
+  {
+    "server": "greynoise-mcp",
+    "port": 8645,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 12,
+    "http_list": "PASS",
+    "http_tools": 12,
+    "call_result": "{\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"MCP error -32602: Tool greynoise_ip_lookup not found\"\n      }\n    ],\n    \"isError\": true\n  },\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3\n}"
+  },
+  {
+    "server": "hibp-mcp",
+    "port": 8646,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 3,
+    "http_list": "PASS",
+    "http_tools": 3,
+    "call_result": "{\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"MCP error -32602: Tool get_breaches_for_account not found\"\n      }\n    ],\n    \"isError\": true\n  },\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3\n}"
+  },
+  {
+    "server": "imf-data-mcp",
+    "port": 8647,
+    "has_keys": false,
+    "stdio_list": "FAIL",
+    "stdio_tools": 0,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0
+  },
+  {
+    "server": "iplocate-mcp",
+    "port": 8648,
+    "has_keys": false,
+    "stdio_list": "PASS",
+    "stdio_tools": 6,
+    "http_list": "PASS",
+    "http_tools": 6
+  },
+  {
+    "server": "jira-mcp",
+    "port": 8649,
+    "has_keys": true,
+    "stdio_list": "FAIL",
+    "stdio_tools": 0,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0,
+    "call_result": "no response"
+  },
+  {
+    "server": "ms-fabric-rti-mcp",
+    "port": 8650,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 36,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0,
+    "call_result": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3,\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"Unknown tool: help\"\n      }\n    ],\n    \"isError\": true\n  }\n}"
+  },
+  {
+    "server": "nasa-mcp",
+    "port": 8651,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 23,
+    "http_list": "PASS",
+    "http_tools": 23,
+    "call_result": "{\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"Unknown tool: apod\"\n      }\n    ],\n    \"isError\": true\n  },\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3\n}"
+  },
+  {
+    "server": "notion-mcp",
+    "port": 8652,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 22,
+    "http_list": "PASS",
+    "http_tools": 22,
+    "call_result": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3,\n  \"error\": {\n    \"code\": -32603,\n    \"message\": \"Method search not found\"\n  }\n}"
+  },
+  {
+    "server": "octagon-mcp-server-mcp",
+    "port": 8653,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 4,
+    "http_list": "PASS",
+    "http_tools": 4,
+    "call_result": "{\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"MCP error -32602: Tool help not found\"\n      }\n    ],\n    \"isError\": true\n  },\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3\n}"
+  },
+  {
+    "server": "octocode-mcp",
+    "port": 8654,
+    "has_keys": false,
+    "stdio_list": "PASS",
+    "stdio_tools": 6,
+    "http_list": "PASS",
+    "http_tools": 6
+  },
+  {
+    "server": "openfda-mcp",
+    "port": 8655,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 7,
+    "http_list": "PASS",
+    "http_tools": 7,
+    "call_result": "{\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"MCP error -32602: Tool help not found\"\n      }\n    ],\n    \"isError\": true\n  },\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3\n}"
+  },
+  {
+    "server": "osm-mcp-server-mcp",
+    "port": 8656,
+    "has_keys": false,
+    "stdio_list": "PASS",
+    "stdio_tools": 12,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0
+  },
+  {
+    "server": "pinecone-mcp",
+    "port": 8657,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 9,
+    "http_list": "PASS",
+    "http_tools": 9,
+    "call_result": "{\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"MCP error -32602: Tool list_indexes not found\"\n      }\n    ],\n    \"isError\": true\n  },\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3\n}"
+  },
+  {
+    "server": "postman-mcp",
+    "port": 8658,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 41,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0,
+    "call_result": "{\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"MCP error -32602: Tool list_collections not found\"\n      }\n    ],\n    \"isError\": true\n  },\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3\n}"
+  },
+  {
+    "server": "puppeteer-mcp",
+    "port": 8659,
+    "has_keys": false,
+    "stdio_list": "PASS",
+    "stdio_tools": 7,
+    "http_list": "PASS",
+    "http_tools": 7
+  },
+  {
+    "server": "rapidapi-hub-reverse-image-search-by-copyseeker-mcp",
+    "port": 8660,
+    "has_keys": true,
+    "stdio_list": "FAIL",
+    "stdio_tools": 0,
+    "http_list": "FAIL",
+    "http_tools": 0,
+    "call_result": "no response"
+  },
+  {
+    "server": "reddit-mcp",
+    "port": 8661,
+    "has_keys": false,
+    "stdio_list": "PASS",
+    "stdio_tools": 8,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0
+  },
+  {
+    "server": "s3-mcp-server-mcp",
+    "port": 8662,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 3,
+    "http_list": "PASS",
+    "http_tools": 3,
+    "call_result": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3,\n  \"error\": {\n    \"code\": -32602,\n    \"message\": \"MCP error -32602: Tool help not found\"\n  }\n}"
+  },
+  {
+    "server": "scc-mcp",
+    "port": 8663,
+    "has_keys": false,
+    "stdio_list": "FAIL",
+    "stdio_tools": 0,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0
+  },
+  {
+    "server": "search1api-mcp",
+    "port": 8664,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 6,
+    "http_list": "PASS",
+    "http_tools": 6,
+    "call_result": "{\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"Search API error: API error: 401 Unauthorized\"\n      }\n    ],\n    \"isError\": true\n  },\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3\n}"
+  },
+  {
+    "server": "sentry-mcp",
+    "port": 8665,
+    "has_keys": true,
+    "stdio_list": "FAIL",
+    "stdio_tools": 0,
+    "http_list": "FAIL",
+    "http_tools": 0,
+    "call_result": "no response"
+  },
+  {
+    "server": "serper-search-mcp",
+    "port": 8666,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 2,
+    "http_list": "PASS",
+    "http_tools": 2,
+    "call_result": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3,\n  \"error\": {\n    \"code\": -32603,\n    \"message\": \"Search query and region code and language are required\"\n  }\n}"
+  },
+  {
+    "server": "splunk-mcp",
+    "port": 8667,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 11,
+    "http_list": "PASS",
+    "http_tools": 11,
+    "call_result": "{\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"Error: Unknown tool: search\"\n      }\n    ],\n    \"isError\": true\n  },\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3\n}"
+  },
+  {
+    "server": "steampipe-mcp",
+    "port": 8668,
+    "has_keys": false,
+    "stdio_list": "FAIL",
+    "stdio_tools": 0,
+    "http_list": "FAIL_INIT",
+    "http_tools": 0
+  },
+  {
+    "server": "stripe-mcp",
+    "port": 8669,
+    "has_keys": true,
+    "stdio_list": "FAIL",
+    "stdio_tools": 0,
+    "http_list": "FAIL",
+    "http_tools": 0,
+    "call_result": "no response"
+  },
+  {
+    "server": "terraform-mcp",
+    "port": 8670,
+    "has_keys": false,
+    "stdio_list": "PASS",
+    "stdio_tools": 10,
+    "http_list": "PASS",
+    "http_tools": 10
+  },
+  {
+    "server": "tomtom-mcp",
+    "port": 8671,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 10,
+    "http_list": "PASS",
+    "http_tools": 10,
+    "call_result": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3,\n  \"error\": {\n    \"code\": -32602,\n    \"message\": \"MCP error -32602: Tool geocode not found\"\n  }\n}"
+  },
+  {
+    "server": "variflight-mcp",
+    "port": 8672,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 8,
+    "http_list": "PASS",
+    "http_tools": 8,
+    "call_result": "{\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"MCP error -32602: Tool help not found\"\n      }\n    ],\n    \"isError\": true\n  },\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3\n}"
+  },
+  {
+    "server": "whois-mcp",
+    "port": 8673,
+    "has_keys": false,
+    "stdio_list": "PASS",
+    "stdio_tools": 3,
+    "http_list": "PASS",
+    "http_tools": 3
+  },
+  {
+    "server": "winston-ai-mcp",
+    "port": 8674,
+    "has_keys": true,
+    "stdio_list": "PASS",
+    "stdio_tools": 4,
+    "http_list": "PASS",
+    "http_tools": 4,
+    "call_result": "{\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"MCP error -32602: Tool help not found\"\n      }\n    ],\n    \"isError\": true\n  },\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3\n}"
+  },
+  {
+    "server": "youtube-transcript-mcp",
+    "port": 8675,
+    "has_keys": false,
+    "stdio_list": "PASS",
+    "stdio_tools": 1,
+    "http_list": "PASS",
+    "http_tools": 1
+  }
+]

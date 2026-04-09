@@ -160,6 +160,8 @@ docker build -t hackerdogs/ai-infra-guard-mcp:latest .
 ./test.sh
 ```
 
+Full raw output from each step (build log, stdio/HTTP bodies, etc.) is written to **`test-results.txt`** in this directory. Optional: `MCP_TEST_RESULT_MAX_CHARS` (default `200000`; `0` = unlimited), same as other Hackerdogs MCP images.
+
 ### Test directly with Docker
 
 **1. Start the server in HTTP mode:**

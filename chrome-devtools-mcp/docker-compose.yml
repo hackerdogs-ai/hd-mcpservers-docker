@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  chrome-devtools-mcp:
+    image: hackerdogs/chrome-devtools-mcp:latest
+    build: .
+    ports:
+      - "8631:8631"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8631
+

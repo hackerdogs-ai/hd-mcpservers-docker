@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  acuvity-mcp-server-kagisearch-mcp:
+    image: hackerdogs/acuvity-mcp-server-kagisearch-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: acuvity-mcp-server-kagisearch-mcp
+    ports:
+      - "8428:8428"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8428
+    restart: unless-stopped

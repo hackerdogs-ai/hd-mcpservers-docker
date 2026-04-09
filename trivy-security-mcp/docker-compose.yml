@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  trivy-security-mcp:
+    image: hackerdogs/trivy-security-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: trivy-security-mcp
+    ports:
+      - "8456:8456"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8456
+    restart: unless-stopped

@@ -1,0 +1,71 @@
+========== Testing acuvity-mcp-server-fetch-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 927B 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim-bookworm
+#2 DONE 0.4s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/8] FROM docker.io/library/python:3.11-slim-bookworm@sha256:420310dd2ff7895895f0f1f9d15cae5a95dabceb8f1d6b9a23ef33c2c1c542c3
+#4 resolve docker.io/library/python:3.11-slim-bookworm@sha256:420310dd2ff7895895f0f1f9d15cae5a95dabceb8f1d6b9a23ef33c2c1c542c3 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 1.33kB 0.0s done
+#5 DONE 0.1s
+
+#6 [2/8] RUN groupadd -g 1000 mcpuser && useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
+#6 CACHED
+
+#7 [3/8] RUN apt-get update && apt-get install -y --no-install-recommends tini ca-certificates && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [4/8] WORKDIR /app
+#8 CACHED
+
+#9 [5/8] COPY requirements.txt ./
+#9 CACHED
+
+#10 [6/8] RUN pip install --no-cache-dir -r requirements.txt
+#10 CACHED
+
+#11 [7/8] COPY mcp_server.py ./
+#11 DONE 0.0s
+
+#12 [8/8] RUN chown -R mcpuser:mcpuser /app
+#12 DONE 0.3s
+
+#13 exporting to image
+#13 exporting layers 0.1s done
+#13 exporting manifest sha256:614380038b18ff4de48d6a14c77be916475b1c5b4629d3976ec5c61f7c13111a 0.0s done
+#13 exporting config sha256:2674fd08aaeb8cc9109c12fe84994b9585e7f3334896021acd9f9e453e6884fe 0.0s done
+#13 exporting attestation manifest sha256:dce1e80479e110b1712fec5e7f8279461595d6643d19e29524ed94e9ceef1c85 0.0s done
+#13 exporting manifest list sha256:4904ffdcc0ce17bedd4c84e74f253bb99c75ee1254a9abb614230b89cfb940f5 0.0s done
+#13 naming to docker.io/hackerdogs/acuvity-mcp-server-fetch-mcp:latest done
+#13 unpacking to docker.io/hackerdogs/acuvity-mcp-server-fetch-mcp:latest 0.0s done
+#13 DONE 0.4s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/odqqbx7yw1va0n7wsstc3hys6
+========== acuvity-mcp-server-fetch-mcp test (compliance) ==========
+[0;34m[1] Install[0m
+  [0;32mPASS: image exists[0m
+[0;34m[2] Stdio tools/list[0m
+  [0;32mPASS: stdio tools/list[0m
+[0;34m[3] Stdio tools/call[0m
+  [0;32mPASS: stdio tools/call[0m
+[0;34m[4] HTTP streamable tools/list[0m
+  [0;32mPASS: HTTP tools/list[0m
+[0;34m[5] HTTP streamable tools/call[0m
+  [0;32mPASS: HTTP tools/call[0m
+
+Total: 5 passed, 0 failed
+acuvity-mcp-server-fetch-mcp-test
+acuvity-mcp-server-fetch-mcp-test
+
+✅ PASS: acuvity-mcp-server-fetch-mcp

@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  stripe-mcp:
+    image: hackerdogs/stripe-mcp:latest
+    build: .
+    ports:
+      - "8669:8669"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8669
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY:-}

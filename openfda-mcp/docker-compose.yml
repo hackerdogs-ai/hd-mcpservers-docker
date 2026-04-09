@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  openfda-mcp:
+    image: hackerdogs/openfda-mcp:latest
+    build: .
+    ports:
+      - "8655:8655"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8655
+

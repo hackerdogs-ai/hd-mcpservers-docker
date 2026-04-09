@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  aws-postgres-mcp:
+    image: hackerdogs/aws-postgres-mcp:latest
+    build: .
+    ports:
+      - "8619:8619"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8619
+      - AWS_REGION=${AWS_REGION:-}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-}

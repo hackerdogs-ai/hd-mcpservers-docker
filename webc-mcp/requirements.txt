@@ -1,0 +1,8 @@
+fastmcp
+httpx
+beautifulsoup4
+python-whois
+dnspython
+tldextract
+langdetect
+uvicorn

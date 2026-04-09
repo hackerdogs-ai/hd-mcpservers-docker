@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  reddit-mcp-server-mcp:
+    image: hackerdogs/reddit-mcp-server-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: reddit-mcp-server-mcp
+    ports:
+      - "8447:8447"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8447
+    restart: unless-stopped

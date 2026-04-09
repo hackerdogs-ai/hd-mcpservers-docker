@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  zscaler-mcp-server-mcp:
+    image: hackerdogs/zscaler-mcp-server-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: zscaler-mcp-server-mcp
+    ports:
+      - "8463:8463"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8463
+    restart: unless-stopped

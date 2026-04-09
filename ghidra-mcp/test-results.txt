@@ -1,0 +1,767 @@
+========== Testing ghidra-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.46kB 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#2 DONE 1.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.1s
+
+#4 [internal] load build context
+#4 DONE 0.0s
+
+#5 [ 1/10] FROM docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0
+#5 resolve docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0
+#5 resolve docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0 0.1s done
+#5 DONE 0.1s
+
+#6 [ 2/10] RUN groupadd -g 1000 mcpuser &&     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
+#6 CACHED
+
+#4 [internal] load build context
+#4 transferring context: 17.15kB 0.0s done
+#4 DONE 0.1s
+
+#7 [ 3/10] RUN apt-get update && apt-get install -y --no-install-recommends     tini     git     unzip     ca-certificates     wget     unzip     openjdk-17-jdk-headless     && rm -rf /var/lib/apt/lists/*
+#7 0.488 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#7 0.703 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#7 0.747 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [48.0 kB]
+#7 0.808 Get:4 http://deb.debian.org/debian bookworm/main amd64 Packages [8792 kB]
+#7 2.910 Get:5 http://deb.debian.org/debian bookworm-updates/main amd64 Packages [6924 B]
+#7 2.950 Get:6 http://deb.debian.org/debian-security bookworm-security/main amd64 Packages [294 kB]
+#7 4.034 Fetched 9347 kB in 4s (2529 kB/s)
+#7 4.034 Reading package lists...
+#7 4.516 Reading package lists...
+#7 4.997 Building dependency tree...
+#7 5.100 Reading state information...
+#7 5.222 ca-certificates is already the newest version (20230311+deb12u1).
+#7 5.222 The following additional packages will be installed:
+#7 5.222   ca-certificates-java fontconfig-config fonts-dejavu-core git-man java-common
+#7 5.222   libasound2 libasound2-data libavahi-client3 libavahi-common-data
+#7 5.222   libavahi-common3 libbrotli1 libcups2 libcurl3-gnutls libdbus-1-3
+#7 5.222   liberror-perl libexpat1 libfontconfig1 libfreetype6 libgdbm-compat4
+#7 5.222   libglib2.0-0 libgraphite2-3 libharfbuzz0b libjpeg62-turbo liblcms2-2
+#7 5.223   libldap-2.5-0 libnghttp2-14 libnspr4 libnss3 libpcsclite1 libperl5.36
+#7 5.223   libpng16-16 libpsl5 librtmp1 libsasl2-2 libsasl2-modules-db libssh2-1
+#7 5.223   openjdk-17-jre-headless perl perl-modules-5.36
+#7 5.224 Suggested packages:
+#7 5.224   gettext-base git-daemon-run | git-daemon-sysvinit git-doc git-email git-gui
+#7 5.224   gitk gitweb git-cvs git-mediawiki git-svn default-jre libasound2-plugins
+#7 5.224   alsa-utils cups-common low-memory-monitor liblcms2-utils pcscd
+#7 5.224   sensible-utils openjdk-17-demo openjdk-17-source libnss-mdns
+#7 5.224   fonts-dejavu-extra fonts-ipafont-gothic fonts-ipafont-mincho
+#7 5.224   fonts-wqy-microhei | fonts-wqy-zenhei fonts-indic perl-doc
+#7 5.224   libterm-readline-gnu-perl | libterm-readline-perl-perl make
+#7 5.224   libtap-harness-archive-perl zip
+#7 5.224 Recommended packages:
+#7 5.224   patch less ssh-client alsa-ucm-conf alsa-topology-conf dbus libglib2.0-data
+#7 5.224   shared-mime-info xdg-user-dirs libldap-common publicsuffix libsasl2-modules
+#7 5.407 The following NEW packages will be installed:
+#7 5.407   ca-certificates-java fontconfig-config fonts-dejavu-core git git-man
+#7 5.407   java-common libasound2 libasound2-data libavahi-client3 libavahi-common-data
+#7 5.407   libavahi-common3 libbrotli1 libcups2 libcurl3-gnutls libdbus-1-3
+#7 5.407   liberror-perl libexpat1 libfontconfig1 libfreetype6 libgdbm-compat4
+#7 5.407   libglib2.0-0 libgraphite2-3 libharfbuzz0b libjpeg62-turbo liblcms2-2
+#7 5.407   libldap-2.5-0 libnghttp2-14 libnspr4 libnss3 libpcsclite1 libperl5.36
+#7 5.407   libpng16-16 libpsl5 librtmp1 libsasl2-2 libsasl2-modules-db libssh2-1
+#7 5.407   openjdk-17-jdk-headless openjdk-17-jre-headless perl perl-modules-5.36 tini
+#7 5.407   unzip wget
+#7 5.581 0 upgraded, 44 newly installed, 0 to remove and 0 not upgraded.
+#7 5.581 Need to get 144 MB of archives.
+#7 5.581 After this operation, 399 MB of additional disk space will be used.
+#7 5.581 Get:1 http://deb.debian.org/debian bookworm/main amd64 perl-modules-5.36 all 5.36.0-7+deb12u3 [2815 kB]
+#7 7.185 Get:2 http://deb.debian.org/debian bookworm/main amd64 libgdbm-compat4 amd64 1.23-3 [48.2 kB]
+#7 7.500 Get:3 http://deb.debian.org/debian bookworm/main amd64 libperl5.36 amd64 5.36.0-7+deb12u3 [4196 kB]
+#7 8.670 Get:4 http://deb.debian.org/debian bookworm/main amd64 perl amd64 5.36.0-7+deb12u3 [239 kB]
+#7 9.240 Get:5 http://deb.debian.org/debian bookworm/main amd64 libpsl5 amd64 0.21.2-1 [58.7 kB]
+#7 9.502 Get:6 http://deb.debian.org/debian bookworm/main amd64 wget amd64 1.21.3-1+deb12u1 [937 kB]
+#7 9.851 Get:7 http://deb.debian.org/debian bookworm/main amd64 ca-certificates-java all 20230710~deb12u1 [11.9 kB]
+#7 9.905 Get:8 http://deb.debian.org/debian bookworm/main amd64 fonts-dejavu-core all 2.37-6 [1068 kB]
+#7 10.26 Get:9 http://deb.debian.org/debian bookworm/main amd64 fontconfig-config amd64 2.14.1-4 [315 kB]
+#7 10.47 Get:10 http://deb.debian.org/debian bookworm/main amd64 libbrotli1 amd64 1.0.9-2+b6 [275 kB]
+#7 10.63 Get:11 http://deb.debian.org/debian bookworm/main amd64 libsasl2-modules-db amd64 2.1.28+dfsg-10 [20.3 kB]
+#7 10.64 Get:12 http://deb.debian.org/debian bookworm/main amd64 libsasl2-2 amd64 2.1.28+dfsg-10 [59.7 kB]
+#7 10.68 Get:13 http://deb.debian.org/debian bookworm/main amd64 libldap-2.5-0 amd64 2.5.13+dfsg-5 [183 kB]
+#7 10.80 Get:14 http://deb.debian.org/debian bookworm/main amd64 libnghttp2-14 amd64 1.52.0-1+deb12u2 [73.0 kB]
+#7 10.85 Get:15 http://deb.debian.org/debian bookworm/main amd64 librtmp1 amd64 2.4+20151223.gitfa8646d.1-2+b2 [60.8 kB]
+#7 10.89 Get:16 http://deb.debian.org/debian bookworm/main amd64 libssh2-1 amd64 1.10.0-3+b1 [179 kB]
+#7 11.01 Get:17 http://deb.debian.org/debian bookworm/main amd64 libcurl3-gnutls amd64 7.88.1-10+deb12u14 [386 kB]
+#7 11.25 Get:18 http://deb.debian.org/debian bookworm/main amd64 libexpat1 amd64 2.5.0-1+deb12u2 [99.9 kB]
+#7 11.31 Get:19 http://deb.debian.org/debian bookworm/main amd64 liberror-perl all 0.17029-2 [29.0 kB]
+#7 11.32 Get:20 http://deb.debian.org/debian bookworm/main amd64 git-man all 1:2.39.5-0+deb12u3 [2053 kB]
+#7 12.56 Get:21 http://deb.debian.org/debian bookworm/main amd64 git amd64 1:2.39.5-0+deb12u3 [7264 kB]
+#7 15.10 Get:22 http://deb.debian.org/debian bookworm/main amd64 java-common all 0.74 [6388 B]
+#7 15.10 Get:23 http://deb.debian.org/debian bookworm/main amd64 libasound2-data all 1.2.8-1 [20.5 kB]
+#7 15.11 Get:24 http://deb.debian.org/debian bookworm/main amd64 libasound2 amd64 1.2.8-1+b1 [362 kB]
+#7 15.21 Get:25 http://deb.debian.org/debian bookworm/main amd64 libavahi-common-data amd64 0.8-10+deb12u1 [107 kB]
+#7 15.24 Get:26 http://deb.debian.org/debian bookworm/main amd64 libavahi-common3 amd64 0.8-10+deb12u1 [42.1 kB]
+#7 15.25 Get:27 http://deb.debian.org/debian bookworm/main amd64 libdbus-1-3 amd64 1.14.10-1~deb12u1 [201 kB]
+#7 15.31 Get:28 http://deb.debian.org/debian bookworm/main amd64 libavahi-client3 amd64 0.8-10+deb12u1 [45.8 kB]
+#7 15.38 Get:29 http://deb.debian.org/debian bookworm/main amd64 libcups2 amd64 2.4.2-3+deb12u9 [245 kB]
+#7 15.53 Get:30 http://deb.debian.org/debian-security bookworm-security/main amd64 libpng16-16 amd64 1.6.39-2+deb12u3 [276 kB]
+#7 15.72 Get:31 http://deb.debian.org/debian bookworm/main amd64 libfreetype6 amd64 2.12.1+dfsg-5+deb12u4 [398 kB]
+#7 16.09 Get:32 http://deb.debian.org/debian bookworm/main amd64 libfontconfig1 amd64 2.14.1-4 [386 kB]
+#7 16.39 Get:33 http://deb.debian.org/debian bookworm/main amd64 libglib2.0-0 amd64 2.74.6-2+deb12u8 [1402 kB]
+#7 17.19 Get:34 http://deb.debian.org/debian bookworm/main amd64 libgraphite2-3 amd64 1.3.14-1 [81.2 kB]
+#7 17.24 Get:35 http://deb.debian.org/debian bookworm/main amd64 libharfbuzz0b amd64 6.0.0+dfsg-3 [1945 kB]
+#7 18.40 Get:36 http://deb.debian.org/debian bookworm/main amd64 libjpeg62-turbo amd64 1:2.1.5-2 [166 kB]
+#7 18.61 Get:37 http://deb.debian.org/debian bookworm/main amd64 liblcms2-2 amd64 2.14-2 [154 kB]
+#7 18.70 Get:38 http://deb.debian.org/debian bookworm/main amd64 libnspr4 amd64 2:4.35-1 [113 kB]
+#7 18.76 Get:39 http://deb.debian.org/debian-security bookworm-security/main amd64 libnss3 amd64 2:3.87.1-1+deb12u2 [1332 kB]
+#7 19.44 Get:40 http://deb.debian.org/debian bookworm/main amd64 libpcsclite1 amd64 1.9.9-2 [49.7 kB]
+#7 19.55 Get:41 http://deb.debian.org/debian-security bookworm-security/main amd64 openjdk-17-jre-headless amd64 17.0.18+8-1~deb12u1 [43.9 MB]
+#7 37.46 Get:42 http://deb.debian.org/debian-security bookworm-security/main amd64 openjdk-17-jdk-headless amd64 17.0.18+8-1~deb12u1 [71.6 MB]
+#7 78.82 Get:43 http://deb.debian.org/debian bookworm/main amd64 tini amd64 0.19.0-1+b3 [267 kB]
+#7 78.98 Get:44 http://deb.debian.org/debian bookworm/main amd64 unzip amd64 6.0-28 [166 kB]
+#7 79.17 debconf: delaying package configuration, since apt-utils is not installed
+#7 79.20 Fetched 144 MB in 1min 14s (1951 kB/s)
+#7 79.24 Selecting previously unselected package perl-modules-5.36.
+#7 79.24 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6695 files and directories currently installed.)
+#7 79.28 Preparing to unpack .../00-perl-modules-5.36_5.36.0-7+deb12u3_all.deb ...
+#7 79.29 Unpacking perl-modules-5.36 (5.36.0-7+deb12u3) ...
+#7 79.76 Selecting previously unselected package libgdbm-compat4:amd64.
+#7 79.76 Preparing to unpack .../01-libgdbm-compat4_1.23-3_amd64.deb ...
+#7 79.79 Unpacking libgdbm-compat4:amd64 (1.23-3) ...
+#7 79.88 Selecting previously unselected package libperl5.36:amd64.
+#7 79.88 Preparing to unpack .../02-libperl5.36_5.36.0-7+deb12u3_amd64.deb ...
+#7 79.89 Unpacking libperl5.36:amd64 (5.36.0-7+deb12u3) ...
+#7 80.50 Selecting previously unselected package perl.
+#7 80.50 Preparing to unpack .../03-perl_5.36.0-7+deb12u3_amd64.deb ...
+#7 80.51 Unpacking perl (5.36.0-7+deb12u3) ...
+#7 80.62 Selecting previously unselected package libpsl5:amd64.
+#7 80.62 Preparing to unpack .../04-libpsl5_0.21.2-1_amd64.deb ...
+#7 80.64 Unpacking libpsl5:amd64 (0.21.2-1) ...
+#7 80.72 Selecting previously unselected package wget.
+#7 80.72 Preparing to unpack .../05-wget_1.21.3-1+deb12u1_amd64.deb ...
+#7 80.73 Unpacking wget (1.21.3-1+deb12u1) ...
+#7 80.91 Selecting previously unselected package ca-certificates-java.
+#7 80.91 Preparing to unpack .../06-ca-certificates-java_20230710~deb12u1_all.deb ...
+#7 80.92 Unpacking ca-certificates-java (20230710~deb12u1) ...
+#7 81.02 Selecting previously unselected package fonts-dejavu-core.
+#7 81.02 Preparing to unpack .../07-fonts-dejavu-core_2.37-6_all.deb ...
+#7 81.03 Unpacking fonts-dejavu-core (2.37-6) ...
+#7 81.26 Selecting previously unselected package fontconfig-config.
+#7 81.26 Preparing to unpack .../08-fontconfig-config_2.14.1-4_amd64.deb ...
+#7 81.37 Unpacking fontconfig-config (2.14.1-4) ...
+#7 81.47 Selecting previously unselected package libbrotli1:amd64.
+#7 81.47 Preparing to unpack .../09-libbrotli1_1.0.9-2+b6_amd64.deb ...
+#7 81.48 Unpacking libbrotli1:amd64 (1.0.9-2+b6) ...
+#7 81.59 Selecting previously unselected package libsasl2-modules-db:amd64.
+#7 81.59 Preparing to unpack .../10-libsasl2-modules-db_2.1.28+dfsg-10_amd64.deb ...
+#7 81.60 Unpacking libsasl2-modules-db:amd64 (2.1.28+dfsg-10) ...
+#7 81.68 Selecting previously unselected package libsasl2-2:amd64.
+#7 81.69 Preparing to unpack .../11-libsasl2-2_2.1.28+dfsg-10_amd64.deb ...
+#7 81.70 Unpacking libsasl2-2:amd64 (2.1.28+dfsg-10) ...
+#7 81.79 Selecting previously unselected package libldap-2.5-0:amd64.
+#7 81.79 Preparing to unpack .../12-libldap-2.5-0_2.5.13+dfsg-5_amd64.deb ...
+#7 81.80 Unpacking libldap-2.5-0:amd64 (2.5.13+dfsg-5) ...
+#7 81.92 Selecting previously unselected package libnghttp2-14:amd64.
+#7 81.93 Preparing to unpack .../13-libnghttp2-14_1.52.0-1+deb12u2_amd64.deb ...
+#7 81.94 Unpacking libnghttp2-14:amd64 (1.52.0-1+deb12u2) ...
+#7 82.03 Selecting previously unselected package librtmp1:amd64.
+#7 82.03 Preparing to unpack .../14-librtmp1_2.4+20151223.gitfa8646d.1-2+b2_amd64.deb ...
+#7 82.04 Unpacking librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2+b2) ...
+#7 82.14 Selecting previously unselected package libssh2-1:amd64.
+#7 82.14 Preparing to unpack .../15-libssh2-1_1.10.0-3+b1_amd64.deb ...
+#7 82.16 Unpacking libssh2-1:amd64 (1.10.0-3+b1) ...
+#7 82.26 Selecting previously unselected package libcurl3-gnutls:amd64.
+#7 82.26 Preparing to unpack .../16-libcurl3-gnutls_7.88.1-10+deb12u14_amd64.deb ...
+#7 82.28 Unpacking libcurl3-gnutls:amd64 (7.88.1-10+deb12u14) ...
+#7 82.40 Selecting previously unselected package libexpat1:amd64.
+#7 82.40 Preparing to unpack .../17-libexpat1_2.5.0-1+deb12u2_amd64.deb ...
+#7 82.42 Unpacking libexpat1:amd64 (2.5.0-1+deb12u2) ...
+#7 82.50 Selecting previously unselected package liberror-perl.
+#7 82.50 Preparing to unpack .../18-liberror-perl_0.17029-2_all.deb ...
+#7 82.51 Unpacking liberror-perl (0.17029-2) ...
+#7 82.58 Selecting previously unselected package git-man.
+#7 82.58 Preparing to unpack .../19-git-man_1%3a2.39.5-0+deb12u3_all.deb ...
+#7 82.60 Unpacking git-man (1:2.39.5-0+deb12u3) ...
+#7 82.82 Selecting previously unselected package git.
+#7 82.82 Preparing to unpack .../20-git_1%3a2.39.5-0+deb12u3_amd64.deb ...
+#7 82.85 Unpacking git (1:2.39.5-0+deb12u3) ...
+#7 83.45 Selecting previously unselected package java-common.
+#7 83.45 Preparing to unpack .../21-java-common_0.74_all.deb ...
+#7 83.48 Unpacking java-common (0.74) ...
+#7 83.58 Selecting previously unselected package libasound2-data.
+#7 83.58 Preparing to unpack .../22-libasound2-data_1.2.8-1_all.deb ...
+#7 83.59 Unpacking libasound2-data (1.2.8-1) ...
+#7 83.71 Selecting previously unselected package libasound2:amd64.
+#7 83.71 Preparing to unpack .../23-libasound2_1.2.8-1+b1_amd64.deb ...
+#7 83.73 Unpacking libasound2:amd64 (1.2.8-1+b1) ...
+#7 83.84 Selecting previously unselected package libavahi-common-data:amd64.
+#7 83.84 Preparing to unpack .../24-libavahi-common-data_0.8-10+deb12u1_amd64.deb ...
+#7 83.85 Unpacking libavahi-common-data:amd64 (0.8-10+deb12u1) ...
+#7 83.95 Selecting previously unselected package libavahi-common3:amd64.
+#7 83.95 Preparing to unpack .../25-libavahi-common3_0.8-10+deb12u1_amd64.deb ...
+#7 83.97 Unpacking libavahi-common3:amd64 (0.8-10+deb12u1) ...
+#7 84.05 Selecting previously unselected package libdbus-1-3:amd64.
+#7 84.05 Preparing to unpack .../26-libdbus-1-3_1.14.10-1~deb12u1_amd64.deb ...
+#7 84.07 Unpacking libdbus-1-3:amd64 (1.14.10-1~deb12u1) ...
+#7 84.17 Selecting previously unselected package libavahi-client3:amd64.
+#7 84.17 Preparing to unpack .../27-libavahi-client3_0.8-10+deb12u1_amd64.deb ...
+#7 84.19 Unpacking libavahi-client3:amd64 (0.8-10+deb12u1) ...
+#7 84.30 Selecting previously unselected package libcups2:amd64.
+#7 84.30 Preparing to unpack .../28-libcups2_2.4.2-3+deb12u9_amd64.deb ...
+#7 84.32 Unpacking libcups2:amd64 (2.4.2-3+deb12u9) ...
+#7 84.43 Selecting previously unselected package libpng16-16:amd64.
+#7 84.44 Preparing to unpack .../29-libpng16-16_1.6.39-2+deb12u3_amd64.deb ...
+#7 84.45 Unpacking libpng16-16:amd64 (1.6.39-2+deb12u3) ...
+#7 84.59 Selecting previously unselected package libfreetype6:amd64.
+#7 84.59 Preparing to unpack .../30-libfreetype6_2.12.1+dfsg-5+deb12u4_amd64.deb ...
+#7 84.60 Unpacking libfreetype6:amd64 (2.12.1+dfsg-5+deb12u4) ...
+#7 84.73 Selecting previously unselected package libfontconfig1:amd64.
+#7 84.73 Preparing to unpack .../31-libfontconfig1_2.14.1-4_amd64.deb ...
+#7 84.76 Unpacking libfontconfig1:amd64 (2.14.1-4) ...
+#7 84.87 Selecting previously unselected package libglib2.0-0:amd64.
+#7 84.87 Preparing to unpack .../32-libglib2.0-0_2.74.6-2+deb12u8_amd64.deb ...
+#7 84.89 Unpacking libglib2.0-0:amd64 (2.74.6-2+deb12u8) ...
+#7 85.11 Selecting previously unselected package libgraphite2-3:amd64.
+#7 85.12 Preparing to unpack .../33-libgraphite2-3_1.3.14-1_amd64.deb ...
+#7 85.13 Unpacking libgraphite2-3:amd64 (1.3.14-1) ...
+#7 85.23 Selecting previously unselected package libharfbuzz0b:amd64.
+#7 85.23 Preparing to unpack .../34-libharfbuzz0b_6.0.0+dfsg-3_amd64.deb ...
+#7 85.24 Unpacking libharfbuzz0b:amd64 (6.0.0+dfsg-3) ...
+#7 85.38 Selecting previously unselected package libjpeg62-turbo:amd64.
+#7 85.38 Preparing to unpack .../35-libjpeg62-turbo_1%3a2.1.5-2_amd64.deb ...
+#7 85.39 Unpacking libjpeg62-turbo:amd64 (1:2.1.5-2) ...
+#7 85.49 Selecting previously unselected package liblcms2-2:amd64.
+#7 85.49 Preparing to unpack .../36-liblcms2-2_2.14-2_amd64.deb ...
+#7 85.50 Unpacking liblcms2-2:amd64 (2.14-2) ...
+#7 85.59 Selecting previously unselected package libnspr4:amd64.
+#7 85.59 Preparing to unpack .../37-libnspr4_2%3a4.35-1_amd64.deb ...
+#7 85.61 Unpacking libnspr4:amd64 (2:4.35-1) ...
+#7 85.69 Selecting previously unselected package libnss3:amd64.
+#7 85.70 Preparing to unpack .../38-libnss3_2%3a3.87.1-1+deb12u2_amd64.deb ...
+#7 85.72 Unpacking libnss3:amd64 (2:3.87.1-1+deb12u2) ...
+#7 85.93 Selecting previously unselected package libpcsclite1:amd64.
+#7 85.94 Preparing to unpack .../39-libpcsclite1_1.9.9-2_amd64.deb ...
+#7 85.95 Unpacking libpcsclite1:amd64 (1.9.9-2) ...
+#7 86.04 Selecting previously unselected package openjdk-17-jre-headless:amd64.
+#7 86.04 Preparing to unpack .../40-openjdk-17-jre-headless_17.0.18+8-1~deb12u1_amd64.deb ...
+#7 86.06 Unpacking openjdk-17-jre-headless:amd64 (17.0.18+8-1~deb12u1) ...
+#7 88.45 Selecting previously unselected package openjdk-17-jdk-headless:amd64.
+#7 88.45 Preparing to unpack .../41-openjdk-17-jdk-headless_17.0.18+8-1~deb12u1_amd64.deb ...
+#7 88.46 Unpacking openjdk-17-jdk-headless:amd64 (17.0.18+8-1~deb12u1) ...
+#7 91.07 Selecting previously unselected package tini.
+#7 91.07 Preparing to unpack .../42-tini_0.19.0-1+b3_amd64.deb ...
+#7 91.08 Unpacking tini (0.19.0-1+b3) ...
+#7 91.20 Selecting previously unselected package unzip.
+#7 91.20 Preparing to unpack .../43-unzip_6.0-28_amd64.deb ...
+#7 91.21 Unpacking unzip (6.0-28) ...
+#7 91.31 Setting up libexpat1:amd64 (2.5.0-1+deb12u2) ...
+#7 91.34 Setting up libgraphite2-3:amd64 (1.3.14-1) ...
+#7 91.38 Setting up liblcms2-2:amd64 (2.14-2) ...
+#7 91.41 Setting up libpsl5:amd64 (0.21.2-1) ...
+#7 91.45 Setting up wget (1.21.3-1+deb12u1) ...
+#7 91.50 Setting up java-common (0.74) ...
+#7 91.54 Setting up libglib2.0-0:amd64 (2.74.6-2+deb12u8) ...
+#7 91.57 No schema files found: doing nothing.
+#7 91.58 Setting up unzip (6.0-28) ...
+#7 91.64 Setting up libbrotli1:amd64 (1.0.9-2+b6) ...
+#7 91.67 Setting up libnghttp2-14:amd64 (1.52.0-1+deb12u2) ...
+#7 91.71 Setting up libsasl2-modules-db:amd64 (2.1.28+dfsg-10) ...
+#7 91.75 Setting up libasound2-data (1.2.8-1) ...
+#7 91.78 Setting up perl-modules-5.36 (5.36.0-7+deb12u3) ...
+#7 91.81 Setting up libjpeg62-turbo:amd64 (1:2.1.5-2) ...
+#7 91.85 Setting up libnspr4:amd64 (2:4.35-1) ...
+#7 91.88 Setting up librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2+b2) ...
+#7 91.92 Setting up libavahi-common-data:amd64 (0.8-10+deb12u1) ...
+#7 91.95 Setting up libdbus-1-3:amd64 (1.14.10-1~deb12u1) ...
+#7 91.99 Setting up libpng16-16:amd64 (1.6.39-2+deb12u3) ...
+#7 92.02 Setting up tini (0.19.0-1+b3) ...
+#7 92.06 Setting up fonts-dejavu-core (2.37-6) ...
+#7 92.26 Setting up libgdbm-compat4:amd64 (1.23-3) ...
+#7 92.30 Setting up libpcsclite1:amd64 (1.9.9-2) ...
+#7 92.33 Setting up libsasl2-2:amd64 (2.1.28+dfsg-10) ...
+#7 92.37 Setting up libasound2:amd64 (1.2.8-1+b1) ...
+#7 92.40 Setting up git-man (1:2.39.5-0+deb12u3) ...
+#7 92.45 Setting up libssh2-1:amd64 (1.10.0-3+b1) ...
+#7 92.48 Setting up ca-certificates-java (20230710~deb12u1) ...
+#7 92.54 No JRE found. Skipping Java certificates setup.
+#7 92.55 Setting up libperl5.36:amd64 (5.36.0-7+deb12u3) ...
+#7 92.59 Setting up fontconfig-config (2.14.1-4) ...
+#7 92.69 debconf: unable to initialize frontend: Dialog
+#7 92.69 debconf: (TERM is not set, so the dialog frontend is not usable.)
+#7 92.69 debconf: falling back to frontend: Readline
+#7 92.69 debconf: unable to initialize frontend: Readline
+#7 92.69 debconf: (This frontend requires a controlling tty.)
+#7 92.69 debconf: falling back to frontend: Teletype
+#7 92.83 Setting up libavahi-common3:amd64 (0.8-10+deb12u1) ...
+#7 92.87 Setting up libnss3:amd64 (2:3.87.1-1+deb12u2) ...
+#7 92.90 Setting up libldap-2.5-0:amd64 (2.5.13+dfsg-5) ...
+#7 92.94 Setting up perl (5.36.0-7+deb12u3) ...
+#7 93.00 Setting up libfreetype6:amd64 (2.12.1+dfsg-5+deb12u4) ...
+#7 93.03 Setting up libharfbuzz0b:amd64 (6.0.0+dfsg-3) ...
+#7 93.06 Setting up libfontconfig1:amd64 (2.14.1-4) ...
+#7 93.10 Setting up libavahi-client3:amd64 (0.8-10+deb12u1) ...
+#7 93.13 Setting up libcurl3-gnutls:amd64 (7.88.1-10+deb12u14) ...
+#7 93.17 Setting up liberror-perl (0.17029-2) ...
+#7 93.21 Setting up git (1:2.39.5-0+deb12u3) ...
+#7 93.27 Setting up libcups2:amd64 (2.4.2-3+deb12u9) ...
+#7 93.31 Setting up openjdk-17-jre-headless:amd64 (17.0.18+8-1~deb12u1) ...
+#7 93.71 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/java to provide /usr/bin/java (java) in auto mode
+#7 93.71 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jpackage to provide /usr/bin/jpackage (jpackage) in auto mode
+#7 93.72 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/keytool to provide /usr/bin/keytool (keytool) in auto mode
+#7 93.73 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/rmiregistry to provide /usr/bin/rmiregistry (rmiregistry) in auto mode
+#7 93.73 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/lib/jexec to provide /usr/bin/jexec (jexec) in auto mode
+#7 93.81 Processing triggers for libc-bin (2.36-9+deb12u13) ...
+#7 93.85 Processing triggers for ca-certificates-java (20230710~deb12u1) ...
+#7 94.11 Adding debian:ACCVRAIZ1.pem
+#7 94.12 Adding debian:AC_RAIZ_FNMT-RCM.pem
+#7 94.13 Adding debian:AC_RAIZ_FNMT-RCM_SERVIDORES_SEGUROS.pem
+#7 94.13 Adding debian:ANF_Secure_Server_Root_CA.pem
+#7 94.13 Adding debian:Actalis_Authentication_Root_CA.pem
+#7 94.13 Adding debian:AffirmTrust_Commercial.pem
+#7 94.13 Adding debian:AffirmTrust_Networking.pem
+#7 94.14 Adding debian:AffirmTrust_Premium.pem
+#7 94.14 Adding debian:AffirmTrust_Premium_ECC.pem
+#7 94.14 Adding debian:Amazon_Root_CA_1.pem
+#7 94.14 Adding debian:Amazon_Root_CA_2.pem
+#7 94.14 Adding debian:Amazon_Root_CA_3.pem
+#7 94.14 Adding debian:Amazon_Root_CA_4.pem
+#7 94.15 Adding debian:Atos_TrustedRoot_2011.pem
+#7 94.15 Adding debian:Autoridad_de_Certificacion_Firmaprofesional_CIF_A62634068.pem
+#7 94.15 Adding debian:Autoridad_de_Certificacion_Firmaprofesional_CIF_A62634068_2.pem
+#7 94.15 Adding debian:Baltimore_CyberTrust_Root.pem
+#7 94.16 Adding debian:Buypass_Class_2_Root_CA.pem
+#7 94.16 Adding debian:Buypass_Class_3_Root_CA.pem
+#7 94.16 Adding debian:CA_Disig_Root_R2.pem
+#7 94.16 Adding debian:CFCA_EV_ROOT.pem
+#7 94.17 Adding debian:COMODO_Certification_Authority.pem
+#7 94.17 Adding debian:COMODO_ECC_Certification_Authority.pem
+#7 94.17 Adding debian:COMODO_RSA_Certification_Authority.pem
+#7 94.17 Adding debian:Certainly_Root_E1.pem
+#7 94.17 Adding debian:Certainly_Root_R1.pem
+#7 94.17 Adding debian:Certigna.pem
+#7 94.18 Adding debian:Certigna_Root_CA.pem
+#7 94.18 Adding debian:Certum_EC-384_CA.pem
+#7 94.18 Adding debian:Certum_Trusted_Network_CA.pem
+#7 94.18 Adding debian:Certum_Trusted_Network_CA_2.pem
+#7 94.18 Adding debian:Certum_Trusted_Root_CA.pem
+#7 94.19 Adding debian:Comodo_AAA_Services_root.pem
+#7 94.19 Adding debian:D-TRUST_BR_Root_CA_1_2020.pem
+#7 94.19 Adding debian:D-TRUST_EV_Root_CA_1_2020.pem
+#7 94.19 Adding debian:D-TRUST_Root_Class_3_CA_2_2009.pem
+#7 94.19 Adding debian:D-TRUST_Root_Class_3_CA_2_EV_2009.pem
+#7 94.20 Adding debian:DigiCert_Assured_ID_Root_CA.pem
+#7 94.20 Adding debian:DigiCert_Assured_ID_Root_G2.pem
+#7 94.20 Adding debian:DigiCert_Assured_ID_Root_G3.pem
+#7 94.20 Adding debian:DigiCert_Global_Root_CA.pem
+#7 94.20 Adding debian:DigiCert_Global_Root_G2.pem
+#7 94.20 Adding debian:DigiCert_Global_Root_G3.pem
+#7 94.20 Adding debian:DigiCert_High_Assurance_EV_Root_CA.pem
+#7 94.20 Adding debian:DigiCert_TLS_ECC_P384_Root_G5.pem
+#7 94.21 Adding debian:DigiCert_TLS_RSA4096_Root_G5.pem
+#7 94.21 Adding debian:DigiCert_Trusted_Root_G4.pem
+#7 94.21 Adding debian:E-Tugra_Certification_Authority.pem
+#7 94.21 Adding debian:E-Tugra_Global_Root_CA_ECC_v3.pem
+#7 94.21 Adding debian:E-Tugra_Global_Root_CA_RSA_v3.pem
+#7 94.21 Adding debian:Entrust.net_Premium_2048_Secure_Server_CA.pem
+#7 94.22 Adding debian:Entrust_Root_Certification_Authority.pem
+#7 94.22 Adding debian:Entrust_Root_Certification_Authority_-_EC1.pem
+#7 94.22 Adding debian:Entrust_Root_Certification_Authority_-_G2.pem
+#7 94.22 Adding debian:Entrust_Root_Certification_Authority_-_G4.pem
+#7 94.22 Adding debian:GDCA_TrustAUTH_R5_ROOT.pem
+#7 94.22 Adding debian:GLOBALTRUST_2020.pem
+#7 94.23 Adding debian:GTS_Root_R1.pem
+#7 94.23 Adding debian:GTS_Root_R2.pem
+#7 94.23 Adding debian:GTS_Root_R3.pem
+#7 94.23 Adding debian:GTS_Root_R4.pem
+#7 94.23 Adding debian:GlobalSign_ECC_Root_CA_-_R4.pem
+#7 94.23 Adding debian:GlobalSign_ECC_Root_CA_-_R5.pem
+#7 94.23 Adding debian:GlobalSign_Root_CA.pem
+#7 94.23 Adding debian:GlobalSign_Root_CA_-_R3.pem
+#7 94.24 Adding debian:GlobalSign_Root_CA_-_R6.pem
+#7 94.24 Adding debian:GlobalSign_Root_E46.pem
+#7 94.24 Adding debian:GlobalSign_Root_R46.pem
+#7 94.24 Adding debian:Go_Daddy_Class_2_CA.pem
+#7 94.24 Adding debian:Go_Daddy_Root_Certificate_Authority_-_G2.pem
+#7 94.24 Adding debian:HARICA_TLS_ECC_Root_CA_2021.pem
+#7 94.25 Adding debian:HARICA_TLS_RSA_Root_CA_2021.pem
+#7 94.25 Adding debian:Hellenic_Academic_and_Research_Institutions_ECC_RootCA_2015.pem
+#7 94.25 Adding debian:Hellenic_Academic_and_Research_Institutions_RootCA_2015.pem
+#7 94.25 Adding debian:HiPKI_Root_CA_-_G1.pem
+#7 94.25 Adding debian:Hongkong_Post_Root_CA_1.pem
+#7 94.25 Adding debian:Hongkong_Post_Root_CA_3.pem
+#7 94.26 Adding debian:ISRG_Root_X1.pem
+#7 94.26 Adding debian:ISRG_Root_X2.pem
+#7 94.26 Adding debian:IdenTrust_Commercial_Root_CA_1.pem
+#7 94.26 Adding debian:IdenTrust_Public_Sector_Root_CA_1.pem
+#7 94.26 Adding debian:Izenpe.com.pem
+#7 94.26 Adding debian:Microsec_e-Szigno_Root_CA_2009.pem
+#7 94.26 Adding debian:Microsoft_ECC_Root_Certificate_Authority_2017.pem
+#7 94.27 Adding debian:Microsoft_RSA_Root_Certificate_Authority_2017.pem
+#7 94.27 Adding debian:NAVER_Global_Root_Certification_Authority.pem
+#7 94.27 Adding debian:NetLock_Arany_=Class_Gold=_Főtanúsítvány.pem
+#7 94.27 Adding debian:OISTE_WISeKey_Global_Root_GB_CA.pem
+#7 94.27 Adding debian:OISTE_WISeKey_Global_Root_GC_CA.pem
+#7 94.28 Adding debian:QuoVadis_Root_CA_1_G3.pem
+#7 94.28 Adding debian:QuoVadis_Root_CA_2.pem
+#7 94.28 Adding debian:QuoVadis_Root_CA_2_G3.pem
+#7 94.28 Adding debian:QuoVadis_Root_CA_3.pem
+#7 94.28 Adding debian:QuoVadis_Root_CA_3_G3.pem
+#7 94.28 Adding debian:SSL.com_EV_Root_Certification_Authority_ECC.pem
+#7 94.29 Adding debian:SSL.com_EV_Root_Certification_Authority_RSA_R2.pem
+#7 94.29 Adding debian:SSL.com_Root_Certification_Authority_ECC.pem
+#7 94.29 Adding debian:SSL.com_Root_Certification_Authority_RSA.pem
+#7 94.29 Adding debian:SZAFIR_ROOT_CA2.pem
+#7 94.29 Adding debian:Sectigo_Public_Server_Authentication_Root_E46.pem
+#7 94.29 Adding debian:Sectigo_Public_Server_Authentication_Root_R46.pem
+#7 94.30 Adding debian:SecureSign_RootCA11.pem
+#7 94.30 Adding debian:SecureTrust_CA.pem
+#7 94.30 Adding debian:Secure_Global_CA.pem
+#7 94.30 Adding debian:Security_Communication_ECC_RootCA1.pem
+#7 94.30 Adding debian:Security_Communication_RootCA2.pem
+#7 94.30 Adding debian:Security_Communication_RootCA3.pem
+#7 94.31 Adding debian:Security_Communication_Root_CA.pem
+#7 94.31 Adding debian:Starfield_Class_2_CA.pem
+#7 94.31 Adding debian:Starfield_Root_Certificate_Authority_-_G2.pem
+#7 94.31 Adding debian:Starfield_Services_Root_Certificate_Authority_-_G2.pem
+#7 94.31 Adding debian:SwissSign_Gold_CA_-_G2.pem
+#7 94.32 Adding debian:SwissSign_Silver_CA_-_G2.pem
+#7 94.32 Adding debian:T-TeleSec_GlobalRoot_Class_2.pem
+#7 94.32 Adding debian:T-TeleSec_GlobalRoot_Class_3.pem
+#7 94.32 Adding debian:TUBITAK_Kamu_SM_SSL_Kok_Sertifikasi_-_Surum_1.pem
+#7 94.32 Adding debian:TWCA_Global_Root_CA.pem
+#7 94.32 Adding debian:TWCA_Root_Certification_Authority.pem
+#7 94.33 Adding debian:TeliaSonera_Root_CA_v1.pem
+#7 94.33 Adding debian:Telia_Root_CA_v2.pem
+#7 94.33 Adding debian:TrustCor_ECA-1.pem
+#7 94.33 Adding debian:TrustCor_RootCert_CA-1.pem
+#7 94.33 Adding debian:TrustCor_RootCert_CA-2.pem
+#7 94.33 Adding debian:Trustwave_Global_Certification_Authority.pem
+#7 94.34 Adding debian:Trustwave_Global_ECC_P256_Certification_Authority.pem
+#7 94.34 Adding debian:Trustwave_Global_ECC_P384_Certification_Authority.pem
+#7 94.34 Adding debian:TunTrust_Root_CA.pem
+#7 94.34 Adding debian:UCA_Extended_Validation_Root.pem
+#7 94.34 Adding debian:UCA_Global_G2_Root.pem
+#7 94.35 Adding debian:USERTrust_ECC_Certification_Authority.pem
+#7 94.35 Adding debian:USERTrust_RSA_Certification_Authority.pem
+#7 94.35 Adding debian:XRamp_Global_CA_Root.pem
+#7 94.35 Adding debian:certSIGN_ROOT_CA.pem
+#7 94.35 Adding debian:certSIGN_Root_CA_G2.pem
+#7 94.35 Adding debian:e-Szigno_Root_CA_2017.pem
+#7 94.36 Adding debian:ePKI_Root_Certification_Authority.pem
+#7 94.36 Adding debian:emSign_ECC_Root_CA_-_C3.pem
+#7 94.36 Adding debian:emSign_ECC_Root_CA_-_G3.pem
+#7 94.36 Adding debian:emSign_Root_CA_-_C1.pem
+#7 94.37 Adding debian:emSign_Root_CA_-_G1.pem
+#7 94.37 Adding debian:vTrus_ECC_Root_CA.pem
+#7 94.37 Adding debian:vTrus_Root_CA.pem
+#7 94.41 done.
+#7 94.42 Setting up openjdk-17-jdk-headless:amd64 (17.0.18+8-1~deb12u1) ...
+#7 94.45 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jar to provide /usr/bin/jar (jar) in auto mode
+#7 94.46 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jarsigner to provide /usr/bin/jarsigner (jarsigner) in auto mode
+#7 94.47 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/javac to provide /usr/bin/javac (javac) in auto mode
+#7 94.47 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/javadoc to provide /usr/bin/javadoc (javadoc) in auto mode
+#7 94.48 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/javap to provide /usr/bin/javap (javap) in auto mode
+#7 94.49 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jcmd to provide /usr/bin/jcmd (jcmd) in auto mode
+#7 94.49 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jdb to provide /usr/bin/jdb (jdb) in auto mode
+#7 94.50 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jdeprscan to provide /usr/bin/jdeprscan (jdeprscan) in auto mode
+#7 94.51 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jdeps to provide /usr/bin/jdeps (jdeps) in auto mode
+#7 94.51 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jfr to provide /usr/bin/jfr (jfr) in auto mode
+#7 94.52 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jimage to provide /usr/bin/jimage (jimage) in auto mode
+#7 94.53 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jinfo to provide /usr/bin/jinfo (jinfo) in auto mode
+#7 94.53 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jlink to provide /usr/bin/jlink (jlink) in auto mode
+#7 94.54 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jmap to provide /usr/bin/jmap (jmap) in auto mode
+#7 94.55 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jmod to provide /usr/bin/jmod (jmod) in auto mode
+#7 94.56 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jps to provide /usr/bin/jps (jps) in auto mode
+#7 94.56 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jrunscript to provide /usr/bin/jrunscript (jrunscript) in auto mode
+#7 94.57 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jshell to provide /usr/bin/jshell (jshell) in auto mode
+#7 94.58 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jstack to provide /usr/bin/jstack (jstack) in auto mode
+#7 94.58 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jstat to provide /usr/bin/jstat (jstat) in auto mode
+#7 94.59 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jstatd to provide /usr/bin/jstatd (jstatd) in auto mode
+#7 94.60 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/serialver to provide /usr/bin/serialver (serialver) in auto mode
+#7 94.61 update-alternatives: using /usr/lib/jvm/java-17-openjdk-amd64/bin/jhsdb to provide /usr/bin/jhsdb (jhsdb) in auto mode
+#7 DONE 95.2s
+
+#8 [ 4/10] RUN wget -q https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_11.0.1_build/ghidra_11.0.1_PUBLIC_20240130.zip -O /tmp/ghidra.zip &&     unzip -q /tmp/ghidra.zip -d /opt &&     rm /tmp/ghidra.zip &&     mv /opt/ghidra_11.0.1_PUBLIC /opt/ghidra &&     chmod +x /opt/ghidra/support/analyzeHeadless &&     ln -sf /opt/ghidra/support/analyzeHeadless /usr/local/bin/analyzeHeadless
+#8 DONE 96.2s
+
+#9 [ 5/10] WORKDIR /app
+#9 DONE 0.5s
+
+#10 [ 6/10] COPY requirements.txt ./
+#10 DONE 0.5s
+
+#11 [ 7/10] RUN pip install --no-cache-dir -r requirements.txt
+#11 2.729 Collecting fastmcp>=2.0.0 (from -r requirements.txt (line 1))
+#11 2.933   Downloading fastmcp-3.1.1-py3-none-any.whl.metadata (8.1 kB)
+#11 2.990 Collecting authlib>=1.6.5 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 3.032   Downloading authlib-1.6.9-py2.py3-none-any.whl.metadata (9.8 kB)
+#11 3.107 Collecting cyclopts>=4.0.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 3.150   Downloading cyclopts-4.10.1-py3-none-any.whl.metadata (12 kB)
+#11 3.209 Collecting exceptiongroup>=1.2.2 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 3.254   Downloading exceptiongroup-1.3.1-py3-none-any.whl.metadata (6.7 kB)
+#11 3.315 Collecting httpx<1.0,>=0.28.1 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 3.357   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#11 3.409 Collecting jsonref>=1.1.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 3.453   Downloading jsonref-1.1.0-py3-none-any.whl.metadata (2.7 kB)
+#11 3.504 Collecting jsonschema-path>=0.3.4 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 3.552   Downloading jsonschema_path-0.4.5-py3-none-any.whl.metadata (5.9 kB)
+#11 3.618 Collecting mcp<2.0,>=1.24.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 3.668   Downloading mcp-1.26.0-py3-none-any.whl.metadata (89 kB)
+#11 3.777 Collecting openapi-pydantic>=0.5.1 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 3.822   Downloading openapi_pydantic-0.5.1-py3-none-any.whl.metadata (10 kB)
+#11 3.880 Collecting opentelemetry-api>=1.20.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 3.923   Downloading opentelemetry_api-1.40.0-py3-none-any.whl.metadata (1.5 kB)
+#11 3.979 Collecting packaging>=24.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 4.021   Downloading packaging-26.0-py3-none-any.whl.metadata (3.3 kB)
+#11 4.077 Collecting platformdirs>=4.0.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 4.129   Downloading platformdirs-4.9.4-py3-none-any.whl.metadata (4.7 kB)
+#11 4.177 Collecting py-key-value-aio<0.5.0,>=0.4.4 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 4.222   Downloading py_key_value_aio-0.4.4-py3-none-any.whl.metadata (15 kB)
+#11 4.460 Collecting pydantic>=2.11.7 (from pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 4.512   Downloading pydantic-2.12.5-py3-none-any.whl.metadata (90 kB)
+#11 4.570 Collecting pyperclip>=1.9.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 4.614   Downloading pyperclip-1.11.0-py3-none-any.whl.metadata (2.4 kB)
+#11 4.669 Collecting python-dotenv>=1.1.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 4.712   Downloading python_dotenv-1.2.2-py3-none-any.whl.metadata (27 kB)
+#11 4.793 Collecting pyyaml<7.0,>=6.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 4.836   Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+#11 4.913 Collecting rich>=13.9.4 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 4.958   Downloading rich-14.3.3-py3-none-any.whl.metadata (18 kB)
+#11 5.011 Collecting uncalled-for>=0.2.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 5.053   Downloading uncalled_for-0.2.0-py3-none-any.whl.metadata (2.9 kB)
+#11 5.120 Collecting uvicorn>=0.35 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 5.165   Downloading uvicorn-0.42.0-py3-none-any.whl.metadata (6.7 kB)
+#11 5.321 Collecting watchfiles>=1.0.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 5.364   Downloading watchfiles-1.1.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.9 kB)
+#11 5.503 Collecting websockets>=15.0.1 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 5.550   Downloading websockets-16.0-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (6.8 kB)
+#11 5.824 Collecting cryptography (from authlib>=1.6.5->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 5.870   Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (5.7 kB)
+#11 5.928 Collecting attrs>=23.1.0 (from cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 5.975   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+#11 6.026 Collecting docstring-parser<4.0,>=0.15 (from cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 6.070   Downloading docstring_parser-0.17.0-py3-none-any.whl.metadata (3.5 kB)
+#11 6.122 Collecting rich-rst<2.0.0,>=1.3.1 (from cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 6.164   Downloading rich_rst-1.3.2-py3-none-any.whl.metadata (6.1 kB)
+#11 6.233 Collecting typing-extensions>=4.6.0 (from exceptiongroup>=1.2.2->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 6.276   Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+#11 6.331 Collecting anyio (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 6.374   Downloading anyio-4.13.0-py3-none-any.whl.metadata (4.5 kB)
+#11 6.433 Collecting certifi (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 6.545   Downloading certifi-2026.2.25-py3-none-any.whl.metadata (2.5 kB)
+#11 6.612 Collecting httpcore==1.* (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 6.657   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#11 6.709 Collecting idna (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 6.750   Downloading idna-3.11-py3-none-any.whl.metadata (8.4 kB)
+#11 6.812 Collecting h11>=0.16 (from httpcore==1.*->httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 6.856   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#11 6.911 Collecting pathable<0.6.0,>=0.5.0 (from jsonschema-path>=0.3.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 6.953   Downloading pathable-0.5.0-py3-none-any.whl.metadata (5.9 kB)
+#11 7.022 Collecting referencing<0.38.0 (from jsonschema-path>=0.3.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 7.065   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+#11 7.114 Collecting httpx-sse>=0.4 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 7.159   Downloading httpx_sse-0.4.3-py3-none-any.whl.metadata (9.7 kB)
+#11 7.229 Collecting jsonschema>=4.20.0 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 7.275   Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+#11 7.329 Collecting pydantic-settings>=2.5.2 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 7.372   Downloading pydantic_settings-2.13.1-py3-none-any.whl.metadata (3.4 kB)
+#11 7.444 Collecting pyjwt>=2.10.1 (from pyjwt[crypto]>=2.10.1->mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 7.488   Downloading pyjwt-2.12.1-py3-none-any.whl.metadata (4.1 kB)
+#11 7.539 Collecting python-multipart>=0.0.9 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 7.583   Downloading python_multipart-0.0.22-py3-none-any.whl.metadata (1.8 kB)
+#11 7.638 Collecting sse-starlette>=1.6.1 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 7.683   Downloading sse_starlette-3.3.3-py3-none-any.whl.metadata (14 kB)
+#11 7.754 Collecting starlette>=0.27 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 7.797   Downloading starlette-1.0.0-py3-none-any.whl.metadata (6.3 kB)
+#11 7.849 Collecting typing-inspection>=0.4.1 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 7.892   Downloading typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+#11 7.993 Collecting importlib-metadata<8.8.0,>=6.0 (from opentelemetry-api>=1.20.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 8.037   Downloading importlib_metadata-8.7.1-py3-none-any.whl.metadata (4.7 kB)
+#11 8.099 Collecting beartype>=0.20.0 (from py-key-value-aio<0.5.0,>=0.4.4->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 8.142   Downloading beartype-0.22.9-py3-none-any.whl.metadata (37 kB)
+#11 8.260 Collecting aiofile>=3.5.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 8.302   Downloading aiofile-3.9.0-py3-none-any.whl.metadata (14 kB)
+#11 8.382 Collecting keyring>=25.6.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 8.427   Downloading keyring-25.7.0-py3-none-any.whl.metadata (21 kB)
+#11 8.486 Collecting cachetools>=5.0.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 8.528   Downloading cachetools-7.0.5-py3-none-any.whl.metadata (5.6 kB)
+#11 8.577 Collecting annotated-types>=0.6.0 (from pydantic>=2.11.7->pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 8.622   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+#11 9.786 Collecting pydantic-core==2.41.5 (from pydantic>=2.11.7->pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 9.834   Downloading pydantic_core-2.41.5-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (7.3 kB)
+#11 9.889 Collecting email-validator>=2.0.0 (from pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 9.943   Downloading email_validator-2.3.0-py3-none-any.whl.metadata (26 kB)
+#11 10.05 Collecting markdown-it-py>=2.2.0 (from rich>=13.9.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 10.15   Downloading markdown_it_py-4.0.0-py3-none-any.whl.metadata (7.3 kB)
+#11 10.26 Collecting pygments<3.0.0,>=2.13.0 (from rich>=13.9.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 10.32   Downloading pygments-2.19.2-py3-none-any.whl.metadata (2.5 kB)
+#11 10.40 Collecting click>=7.0 (from uvicorn>=0.35->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 10.44   Downloading click-8.3.1-py3-none-any.whl.metadata (2.6 kB)
+#11 10.53 Collecting caio<0.10.0,>=0.9.0 (from aiofile>=3.5.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 10.58   Downloading caio-0.9.25-cp312-cp312-manylinux_2_34_x86_64.whl.metadata (3.3 kB)
+#11 10.77 Collecting dnspython>=2.0.0 (from email-validator>=2.0.0->pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 10.81   Downloading dnspython-2.8.0-py3-none-any.whl.metadata (5.7 kB)
+#11 10.88 Collecting zipp>=3.20 (from importlib-metadata<8.8.0,>=6.0->opentelemetry-api>=1.20.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 10.93   Downloading zipp-3.23.0-py3-none-any.whl.metadata (3.6 kB)
+#11 10.99 Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.20.0->mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 11.08   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+#11 11.46 Collecting rpds-py>=0.25.0 (from jsonschema>=4.20.0->mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 11.50   Downloading rpds_py-0.30.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)
+#11 11.55 Collecting SecretStorage>=3.2 (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 11.60   Downloading secretstorage-3.5.0-py3-none-any.whl.metadata (4.0 kB)
+#11 11.65 Collecting jeepney>=0.4.2 (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 11.69   Downloading jeepney-0.9.0-py3-none-any.whl.metadata (1.2 kB)
+#11 11.74 Collecting jaraco.classes (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 11.83   Downloading jaraco.classes-3.4.0-py3-none-any.whl.metadata (2.6 kB)
+#11 11.89 Collecting jaraco.functools (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 11.93   Downloading jaraco_functools-4.4.0-py3-none-any.whl.metadata (3.0 kB)
+#11 11.98 Collecting jaraco.context (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 12.03   Downloading jaraco_context-6.1.2-py3-none-any.whl.metadata (4.2 kB)
+#11 12.08 Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich>=13.9.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 12.12   Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+#11 12.32 Collecting cffi>=2.0.0 (from cryptography->authlib>=1.6.5->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 12.37   Downloading cffi-2.0.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.6 kB)
+#11 12.44 Collecting docutils (from rich-rst<2.0.0,>=1.3.1->cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 12.48   Downloading docutils-0.22.4-py3-none-any.whl.metadata (15 kB)
+#11 12.59 Collecting pycparser (from cffi>=2.0.0->cryptography->authlib>=1.6.5->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 12.64   Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+#11 12.77 Collecting more-itertools (from jaraco.classes->keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#11 12.81   Downloading more_itertools-10.8.0-py3-none-any.whl.metadata (39 kB)
+#11 12.89 Downloading fastmcp-3.1.1-py3-none-any.whl (633 kB)
+#11 13.12    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 633.8/633.8 kB 22.5 MB/s eta 0:00:00
+#11 13.21 Downloading authlib-1.6.9-py2.py3-none-any.whl (244 kB)
+#11 13.34 Downloading cyclopts-4.10.1-py3-none-any.whl (204 kB)
+#11 13.43 Downloading exceptiongroup-1.3.1-py3-none-any.whl (16 kB)
+#11 13.47 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#11 13.53 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#11 13.60 Downloading jsonref-1.1.0-py3-none-any.whl (9.4 kB)
+#11 13.64 Downloading jsonschema_path-0.4.5-py3-none-any.whl (19 kB)
+#11 13.70 Downloading mcp-1.26.0-py3-none-any.whl (233 kB)
+#11 13.81 Downloading openapi_pydantic-0.5.1-py3-none-any.whl (96 kB)
+#11 13.86 Downloading opentelemetry_api-1.40.0-py3-none-any.whl (68 kB)
+#11 13.94 Downloading packaging-26.0-py3-none-any.whl (74 kB)
+#11 13.99 Downloading platformdirs-4.9.4-py3-none-any.whl (21 kB)
+#11 14.04 Downloading py_key_value_aio-0.4.4-py3-none-any.whl (152 kB)
+#11 14.17 Downloading pydantic-2.12.5-py3-none-any.whl (463 kB)
+#11 14.29 Downloading pydantic_core-2.41.5-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.1 MB)
+#11 14.66    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 5.7 MB/s eta 0:00:00
+#11 14.70 Downloading pyperclip-1.11.0-py3-none-any.whl (11 kB)
+#11 14.74 Downloading python_dotenv-1.2.2-py3-none-any.whl (22 kB)
+#11 14.79 Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (807 kB)
+#11 14.91    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 807.9/807.9 kB 6.3 MB/s eta 0:00:00
+#11 14.96 Downloading rich-14.3.3-py3-none-any.whl (310 kB)
+#11 15.04 Downloading uncalled_for-0.2.0-py3-none-any.whl (11 kB)
+#11 15.09 Downloading uvicorn-0.42.0-py3-none-any.whl (68 kB)
+#11 15.14 Downloading watchfiles-1.1.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (456 kB)
+#11 15.25 Downloading websockets-16.0-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (184 kB)
+#11 15.31 Downloading aiofile-3.9.0-py3-none-any.whl (19 kB)
+#11 15.36 Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+#11 15.41 Downloading anyio-4.13.0-py3-none-any.whl (114 kB)
+#11 15.46 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+#11 15.52 Downloading beartype-0.22.9-py3-none-any.whl (1.3 MB)
+#11 15.72    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 6.2 MB/s eta 0:00:00
+#11 15.77 Downloading cachetools-7.0.5-py3-none-any.whl (13 kB)
+#11 15.81 Downloading click-8.3.1-py3-none-any.whl (108 kB)
+#11 15.87 Downloading docstring_parser-0.17.0-py3-none-any.whl (36 kB)
+#11 15.92 Downloading email_validator-2.3.0-py3-none-any.whl (35 kB)
+#11 15.97 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#11 16.01 Downloading httpx_sse-0.4.3-py3-none-any.whl (9.0 kB)
+#11 16.06 Downloading idna-3.11-py3-none-any.whl (71 kB)
+#11 16.11 Downloading importlib_metadata-8.7.1-py3-none-any.whl (27 kB)
+#11 16.16 Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+#11 16.21 Downloading keyring-25.7.0-py3-none-any.whl (39 kB)
+#11 16.26 Downloading markdown_it_py-4.0.0-py3-none-any.whl (87 kB)
+#11 16.31 Downloading pathable-0.5.0-py3-none-any.whl (16 kB)
+#11 16.36 Downloading pydantic_settings-2.13.1-py3-none-any.whl (58 kB)
+#11 16.41 Downloading pygments-2.19.2-py3-none-any.whl (1.2 MB)
+#11 16.60    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 6.8 MB/s eta 0:00:00
+#11 16.65 Downloading pyjwt-2.12.1-py3-none-any.whl (29 kB)
+#11 16.70 Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_x86_64.whl (4.5 MB)
+#11 17.41    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.5/4.5 MB 6.2 MB/s eta 0:00:00
+#11 17.46 Downloading python_multipart-0.0.22-py3-none-any.whl (24 kB)
+#11 17.50 Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+#11 17.56 Downloading rich_rst-1.3.2-py3-none-any.whl (12 kB)
+#11 17.60 Downloading sse_starlette-3.3.3-py3-none-any.whl (14 kB)
+#11 17.65 Downloading starlette-1.0.0-py3-none-any.whl (72 kB)
+#11 17.70 Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+#11 17.75 Downloading typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+#11 17.80 Downloading certifi-2026.2.25-py3-none-any.whl (153 kB)
+#11 17.87 Downloading caio-0.9.25-cp312-cp312-manylinux_2_34_x86_64.whl (80 kB)
+#11 17.94 Downloading cffi-2.0.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (219 kB)
+#11 18.02 Downloading dnspython-2.8.0-py3-none-any.whl (331 kB)
+#11 18.11 Downloading jeepney-0.9.0-py3-none-any.whl (49 kB)
+#11 18.16 Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+#11 18.21 Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+#11 18.26 Downloading rpds_py-0.30.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (394 kB)
+#11 18.37 Downloading secretstorage-3.5.0-py3-none-any.whl (15 kB)
+#11 18.41 Downloading zipp-3.23.0-py3-none-any.whl (10 kB)
+#11 18.46 Downloading docutils-0.22.4-py3-none-any.whl (633 kB)
+#11 18.57    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 633.2/633.2 kB 5.8 MB/s eta 0:00:00
+#11 18.61 Downloading jaraco.classes-3.4.0-py3-none-any.whl (6.8 kB)
+#11 18.66 Downloading jaraco_context-6.1.2-py3-none-any.whl (7.9 kB)
+#11 18.70 Downloading jaraco_functools-4.4.0-py3-none-any.whl (10 kB)
+#11 18.75 Downloading more_itertools-10.8.0-py3-none-any.whl (69 kB)
+#11 18.81 Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+#11 19.04 Installing collected packages: pyperclip, zipp, websockets, uncalled-for, typing-extensions, rpds-py, pyyaml, python-multipart, python-dotenv, pyjwt, pygments, pycparser, platformdirs, pathable, packaging, more-itertools, mdurl, jsonref, jeepney, jaraco.context, idna, httpx-sse, h11, docutils, docstring-parser, dnspython, click, certifi, caio, cachetools, beartype, attrs, annotated-types, uvicorn, typing-inspection, referencing, pydantic-core, py-key-value-aio, markdown-it-py, jaraco.functools, jaraco.classes, importlib-metadata, httpcore, exceptiongroup, email-validator, cffi, anyio, aiofile, watchfiles, starlette, rich, pydantic, opentelemetry-api, jsonschema-specifications, jsonschema-path, httpx, cryptography, sse-starlette, SecretStorage, rich-rst, pydantic-settings, openapi-pydantic, jsonschema, authlib, mcp, keyring, cyclopts, fastmcp
+#11 25.98 Successfully installed SecretStorage-3.5.0 aiofile-3.9.0 annotated-types-0.7.0 anyio-4.13.0 attrs-26.1.0 authlib-1.6.9 beartype-0.22.9 cachetools-7.0.5 caio-0.9.25 certifi-2026.2.25 cffi-2.0.0 click-8.3.1 cryptography-46.0.5 cyclopts-4.10.1 dnspython-2.8.0 docstring-parser-0.17.0 docutils-0.22.4 email-validator-2.3.0 exceptiongroup-1.3.1 fastmcp-3.1.1 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 httpx-sse-0.4.3 idna-3.11 importlib-metadata-8.7.1 jaraco.classes-3.4.0 jaraco.context-6.1.2 jaraco.functools-4.4.0 jeepney-0.9.0 jsonref-1.1.0 jsonschema-4.26.0 jsonschema-path-0.4.5 jsonschema-specifications-2025.9.1 keyring-25.7.0 markdown-it-py-4.0.0 mcp-1.26.0 mdurl-0.1.2 more-itertools-10.8.0 openapi-pydantic-0.5.1 opentelemetry-api-1.40.0 packaging-26.0 pathable-0.5.0 platformdirs-4.9.4 py-key-value-aio-0.4.4 pycparser-3.0 pydantic-2.12.5 pydantic-core-2.41.5 pydantic-settings-2.13.1 pygments-2.19.2 pyjwt-2.12.1 pyperclip-1.11.0 python-dotenv-1.2.2 python-multipart-0.0.22 pyyaml-6.0.3 referencing-0.37.0 rich-14.3.3 rich-rst-1.3.2 rpds-py-0.30.0 sse-starlette-3.3.3 starlette-1.0.0 typing-extensions-4.15.0 typing-inspection-0.4.2 uncalled-for-0.2.0 uvicorn-0.42.0 watchfiles-1.1.1 websockets-16.0 zipp-3.23.0
+#11 25.98 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#11 26.27 
+#11 26.27 [notice] A new release of pip is available: 25.0.1 -> 26.0.1
+#11 26.27 [notice] To update, run: pip install --upgrade pip
+#11 DONE 26.5s
+
+#12 [ 8/10] COPY mcp_server.py ./
+#12 DONE 0.2s
+
+#13 [ 9/10] COPY hd_fetch.py ./
+#13 DONE 0.1s
+
+#14 [10/10] RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+#14 DONE 0.4s
+
+#15 exporting to image
+#15 exporting layers
+#15 exporting layers 35.2s done
+#15 exporting manifest sha256:19cfcb2a9ce1bcf3574b9790e67ea836bf6e76e7c2fb223625410fa5e5d4ecfc 0.0s done
+#15 exporting config sha256:03f69a7e12e2ffbd77bf3269c510b42b2250081c8f037b7b33f4b3f57d03d261 0.0s done
+#15 exporting attestation manifest sha256:2fad40c02aa7f760a8f2346d31594e76286c6afece86363811addb14ddc18318 0.1s done
+#15 exporting manifest list sha256:263de6498c94a004afea845cc398a8adc7f844620891a1caacd3897241f5d1e9
+#15 exporting manifest list sha256:263de6498c94a004afea845cc398a8adc7f844620891a1caacd3897241f5d1e9 0.0s done
+#15 naming to docker.io/library/ghidra-mcp:latest done
+#15 unpacking to docker.io/library/ghidra-mcp:latest
+#15 unpacking to docker.io/library/ghidra-mcp:latest 11.0s done
+#15 naming to docker.io/hackerdogs/ghidra-mcp:latest done
+#15 unpacking to docker.io/hackerdogs/ghidra-mcp:latest 0.0s done
+#15 DONE 46.5s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/jhtaclhjs6guqq3tbo03ftvuz
+=================================================================================
+[0;34mGhidra MCP Server — Test Suite[0m
+=================================================================================
+
+[0;34m[Test 1] Docker image[0m
+  [0;32m✅ PASS: Docker image hackerdogs/ghidra-mcp:latest exists[0m
+
+[0;34m[Test 2] CLI binary inside container[0m
+  [0;32m✅ PASS: analyzeHeadless binary responds[0m
+       openjdk version "17.0.18" 2026-01-20
+
+[0;34m[Test 3] MCP stdio mode — initialize + tools/list[0m
+  [0;32m✅ PASS: stdio mode returned tools/list response (2 tool names found)[0m
+
+[0;34m[Test 4] MCP HTTP streamable mode — initialize[0m
+  [0;32m✅ PASS: HTTP streamable mode responded (status 200)[0m
+       Session ID: 53a82926bce14cfc...
+
+[0;34m[Test 5] MCP HTTP — tools/list[0m
+  [0;32m✅ PASS: HTTP tools/list returned tools[0m
+
+[0;34m[Test 6] MCP HTTP — tools/call (run_ghidra)[0m
+  [0;32m✅ PASS: tools/call run_ghidra returned a result[0m
+
+=================================================================================
+[0;34mResults: [0;32m6 passed[0m, [0;31m0 failed[0m
+=================================================================================
+ghidra-mcp-test
+ghidra-mcp-test
+
+✅ PASS: ghidra-mcp

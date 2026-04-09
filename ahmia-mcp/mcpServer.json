@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "ahmia-mcp": {
+      "url": "http://localhost:8510/mcp"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  osm-mcp-server-mcp:
+    image: hackerdogs/osm-mcp-server-mcp:latest
+    build: .
+    ports:
+      - "8656:8656"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8656
+

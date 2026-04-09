@@ -20,9 +20,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl unzip tini ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Install horusec — download the latest release binary
-# See https://github.com/ZupIT/horusec/releases for installation
-RUN curl -fsSL https://raw.githubusercontent.com/ZupIT/horusec/main/deployments/scripts/install.sh | bash -s latest
+# Install horusec: Bypass the flawed install.sh script and fetch the binary directly 
+# using architecture detection to perfectly support your multi-arch goals.
+RUN ARCH=$(uname -m) && \
+    if [ "$ARCH" = "x86_64" ]; then BIN_ARCH="amd64"; \
+    elif [ "$ARCH" = "aarch64" ]; then BIN_ARCH="arm64"; \
+    else BIN_ARCH="amd64"; fi && \
+    curl -fsSL -o /usr/local/bin/horusec "https://github.com/ZupIT/horusec/releases/latest/download/horusec_linux_${BIN_ARCH}" && \
+    chmod +x /usr/local/bin/horusec
 
 WORKDIR /app
 

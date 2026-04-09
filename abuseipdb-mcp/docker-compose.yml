@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  abuseipdb-mcp:
+    image: hackerdogs/abuseipdb-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: abuseipdb-mcp
+    ports:
+      - "8374:8374"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8374
+      - ABUSEIPDB_API_KEY=${ABUSEIPDB_API_KEY:-}
+    restart: unless-stopped

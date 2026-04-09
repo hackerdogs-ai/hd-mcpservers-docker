@@ -1,0 +1,2076 @@
+========== Testing cloudlist-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.66kB 0.0s done
+#1 DONE 0.0s
+
+#2 [auth] library/python:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [auth] library/golang:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#4 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#4 ...
+
+#5 [internal] load metadata for docker.io/library/golang:1.24-bookworm
+#5 DONE 1.7s
+
+#4 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#4 DONE 1.8s
+
+#6 [internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 DONE 0.0s
+
+#8 [stage-1  1/10] FROM docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0
+#8 resolve docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0 0.1s done
+#8 DONE 0.1s
+
+#9 [builder 1/2] FROM docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
+#9 resolve docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
+#9 resolve docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac 0.1s done
+#9 CACHED
+
+#10 [stage-1  2/10] RUN groupadd -g 1000 mcpuser &&     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
+#10 CACHED
+
+#7 [internal] load build context
+#7 transferring context: 17.89kB 0.0s done
+#7 DONE 0.1s
+
+#11 [builder 2/2] RUN go install -v github.com/projectdiscovery/cloudlist/cmd/cloudlist@latest
+#11 3.807 go: downloading github.com/projectdiscovery/cloudlist v1.4.0
+#11 4.448 go: downloading github.com/projectdiscovery/gologger v1.1.68
+#11 4.451 go: downloading github.com/pkg/errors v0.9.1
+#11 4.452 go: downloading gopkg.in/yaml.v2 v2.4.0
+#11 4.452 go: downloading github.com/projectdiscovery/goflags v0.1.74
+#11 4.452 go: downloading github.com/projectdiscovery/utils v0.9.0
+#11 4.452 go: downloading git.arvancloud.ir/arvancloud/cdn-go-sdk v0.12.1
+#11 4.453 go: downloading github.com/json-iterator/go v1.1.12
+#11 4.454 go: downloading github.com/aws/aws-sdk-go v1.45.19
+#11 5.199 go: downloading k8s.io/api v0.30.0
+#11 5.199 go: downloading k8s.io/apimachinery v0.30.0
+#11 6.081 go: downloading k8s.io/client-go v0.30.0
+#11 6.667 go: downloading sigs.k8s.io/aws-iam-authenticator v0.6.20
+#11 7.429 go: downloading github.com/cloudflare/cloudflare-go v0.77.0
+#11 7.754 go: downloading github.com/Azure/azure-sdk-for-go/sdk/azcore v1.19.1
+#11 7.754 go: downloading github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.13.0
+#11 ...
+
+#12 [stage-1  3/10] RUN apt-get update && apt-get install -y --no-install-recommends     tini     git     unzip     ca-certificates     && rm -rf /var/lib/apt/lists/*
+#12 0.691 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#12 0.824 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#12 0.877 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [48.0 kB]
+#12 0.921 Get:4 http://deb.debian.org/debian bookworm/main amd64 Packages [8792 kB]
+#12 4.066 Get:5 http://deb.debian.org/debian bookworm-updates/main amd64 Packages [6924 B]
+#12 4.124 Get:6 http://deb.debian.org/debian-security bookworm-security/main amd64 Packages [294 kB]
+#12 5.492 Fetched 9347 kB in 5s (1894 kB/s)
+#12 5.492 Reading package lists...
+#12 6.261 Reading package lists...
+#12 7.253 Building dependency tree...
+#12 7.387 Reading state information...
+#12 7.537 ca-certificates is already the newest version (20230311+deb12u1).
+#12 7.537 The following additional packages will be installed:
+#12 7.537   git-man libbrotli1 libcurl3-gnutls liberror-perl libexpat1 libgdbm-compat4
+#12 7.537   libldap-2.5-0 libnghttp2-14 libperl5.36 libpsl5 librtmp1 libsasl2-2
+#12 7.537   libsasl2-modules-db libssh2-1 perl perl-modules-5.36
+#12 7.538 Suggested packages:
+#12 7.538   gettext-base git-daemon-run | git-daemon-sysvinit git-doc git-email git-gui
+#12 7.538   gitk gitweb git-cvs git-mediawiki git-svn sensible-utils perl-doc
+#12 7.538   libterm-readline-gnu-perl | libterm-readline-perl-perl make
+#12 7.538   libtap-harness-archive-perl zip
+#12 7.538 Recommended packages:
+#12 7.538   patch less ssh-client libldap-common publicsuffix libsasl2-modules
+#12 7.694 The following NEW packages will be installed:
+#12 7.694   git git-man libbrotli1 libcurl3-gnutls liberror-perl libexpat1
+#12 7.695   libgdbm-compat4 libldap-2.5-0 libnghttp2-14 libperl5.36 libpsl5 librtmp1
+#12 7.695   libsasl2-2 libsasl2-modules-db libssh2-1 perl perl-modules-5.36 tini unzip
+#12 7.860 0 upgraded, 19 newly installed, 0 to remove and 0 not upgraded.
+#12 7.860 Need to get 18.5 MB of archives.
+#12 7.860 After this operation, 102 MB of additional disk space will be used.
+#12 7.860 Get:1 http://deb.debian.org/debian bookworm/main amd64 perl-modules-5.36 all 5.36.0-7+deb12u3 [2815 kB]
+#12 ...
+
+#11 [builder 2/2] RUN go install -v github.com/projectdiscovery/cloudlist/cmd/cloudlist@latest
+#11 8.464 go: downloading github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement v1.1.1
+#11 8.690 go: downloading github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers v1.1.0
+#11 8.916 go: downloading github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice v1.0.0
+#11 9.737 go: downloading github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn v1.1.1
+#11 9.857 go: downloading github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute v1.0.0
+#11 10.19 go: downloading github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance v1.0.0
+#11 10.60 go: downloading github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice v1.0.0
+#11 11.02 go: downloading github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns v1.2.0
+#11 11.15 go: downloading github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor v1.4.0
+#11 11.18 go: downloading github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork v1.1.0
+#11 12.15 go: downloading github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources v1.2.0
+#11 12.24 go: downloading github.com/hashicorp/consul/api v1.20.0
+#11 12.58 go: downloading github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions v1.3.0
+#11 12.79 go: downloading github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage v1.8.1
+#11 13.21 go: downloading github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/trafficmanager/armtrafficmanager v1.3.0
+#11 13.23 go: downloading github.com/alitto/pond/v2 v2.3.2
+#11 13.40 go: downloading github.com/digitalocean/godo v1.102.1
+#11 14.03 go: downloading github.com/projectdiscovery/networkpolicy v0.1.34
+#11 14.30 go: downloading github.com/projectdiscovery/retryablehttp-go v1.3.6
+#11 14.42 go: downloading github.com/dnsimple/dnsimple-go v1.7.0
+#11 14.49 go: downloading github.com/fastly/go-fastly/v3 v3.12.0
+#11 14.75 go: downloading cloud.google.com/go/asset v1.21.1
+#11 15.70 go: downloading cloud.google.com/go v0.120.0
+#11 16.31 go: downloading github.com/heroku/heroku-go/v5 v5.5.0
+#11 16.48 go: downloading golang.org/x/oauth2 v0.30.0
+#11 16.76 go: downloading github.com/hetznercloud/hcloud-go v1.45.1
+#11 17.24 go: downloading google.golang.org/api v0.240.0
+#11 ...
+
+#12 [stage-1  3/10] RUN apt-get update && apt-get install -y --no-install-recommends     tini     git     unzip     ca-certificates     && rm -rf /var/lib/apt/lists/*
+#12 9.435 Get:2 http://deb.debian.org/debian bookworm/main amd64 libgdbm-compat4 amd64 1.23-3 [48.2 kB]
+#12 9.585 Get:3 http://deb.debian.org/debian bookworm/main amd64 libperl5.36 amd64 5.36.0-7+deb12u3 [4196 kB]
+#12 12.40 Get:4 http://deb.debian.org/debian bookworm/main amd64 perl amd64 5.36.0-7+deb12u3 [239 kB]
+#12 12.89 Get:5 http://deb.debian.org/debian bookworm/main amd64 libbrotli1 amd64 1.0.9-2+b6 [275 kB]
+#12 13.07 Get:6 http://deb.debian.org/debian bookworm/main amd64 libsasl2-modules-db amd64 2.1.28+dfsg-10 [20.3 kB]
+#12 13.07 Get:7 http://deb.debian.org/debian bookworm/main amd64 libsasl2-2 amd64 2.1.28+dfsg-10 [59.7 kB]
+#12 13.09 Get:8 http://deb.debian.org/debian bookworm/main amd64 libldap-2.5-0 amd64 2.5.13+dfsg-5 [183 kB]
+#12 13.14 Get:9 http://deb.debian.org/debian bookworm/main amd64 libnghttp2-14 amd64 1.52.0-1+deb12u2 [73.0 kB]
+#12 13.19 Get:10 http://deb.debian.org/debian bookworm/main amd64 libpsl5 amd64 0.21.2-1 [58.7 kB]
+#12 13.21 Get:11 http://deb.debian.org/debian bookworm/main amd64 librtmp1 amd64 2.4+20151223.gitfa8646d.1-2+b2 [60.8 kB]
+#12 13.25 Get:12 http://deb.debian.org/debian bookworm/main amd64 libssh2-1 amd64 1.10.0-3+b1 [179 kB]
+#12 13.34 Get:13 http://deb.debian.org/debian bookworm/main amd64 libcurl3-gnutls amd64 7.88.1-10+deb12u14 [386 kB]
+#12 13.91 Get:14 http://deb.debian.org/debian bookworm/main amd64 libexpat1 amd64 2.5.0-1+deb12u2 [99.9 kB]
+#12 14.09 Get:15 http://deb.debian.org/debian bookworm/main amd64 liberror-perl all 0.17029-2 [29.0 kB]
+#12 14.16 Get:16 http://deb.debian.org/debian bookworm/main amd64 git-man all 1:2.39.5-0+deb12u3 [2053 kB]
+#12 16.80 Get:17 http://deb.debian.org/debian bookworm/main amd64 git amd64 1:2.39.5-0+deb12u3 [7264 kB]
+#12 18.64 Get:18 http://deb.debian.org/debian bookworm/main amd64 tini amd64 0.19.0-1+b3 [267 kB]
+#12 19.25 Get:19 http://deb.debian.org/debian bookworm/main amd64 unzip amd64 6.0-28 [166 kB]
+#12 20.38 debconf: delaying package configuration, since apt-utils is not installed
+#12 20.43 Fetched 18.5 MB in 12s (1575 kB/s)
+#12 20.48 Selecting previously unselected package perl-modules-5.36.
+#12 20.48 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6695 files and directories currently installed.)
+#12 20.50 Preparing to unpack .../00-perl-modules-5.36_5.36.0-7+deb12u3_all.deb ...
+#12 20.51 Unpacking perl-modules-5.36 (5.36.0-7+deb12u3) ...
+#12 21.27 Selecting previously unselected package libgdbm-compat4:amd64.
+#12 21.27 Preparing to unpack .../01-libgdbm-compat4_1.23-3_amd64.deb ...
+#12 21.28 Unpacking libgdbm-compat4:amd64 (1.23-3) ...
+#12 21.35 Selecting previously unselected package libperl5.36:amd64.
+#12 21.36 Preparing to unpack .../02-libperl5.36_5.36.0-7+deb12u3_amd64.deb ...
+#12 21.36 Unpacking libperl5.36:amd64 (5.36.0-7+deb12u3) ...
+#12 22.29 Selecting previously unselected package perl.
+#12 22.29 Preparing to unpack .../03-perl_5.36.0-7+deb12u3_amd64.deb ...
+#12 22.30 Unpacking perl (5.36.0-7+deb12u3) ...
+#12 22.38 Selecting previously unselected package libbrotli1:amd64.
+#12 22.39 Preparing to unpack .../04-libbrotli1_1.0.9-2+b6_amd64.deb ...
+#12 22.39 Unpacking libbrotli1:amd64 (1.0.9-2+b6) ...
+#12 22.49 Selecting previously unselected package libsasl2-modules-db:amd64.
+#12 22.49 Preparing to unpack .../05-libsasl2-modules-db_2.1.28+dfsg-10_amd64.deb ...
+#12 22.49 Unpacking libsasl2-modules-db:amd64 (2.1.28+dfsg-10) ...
+#12 22.55 Selecting previously unselected package libsasl2-2:amd64.
+#12 22.55 Preparing to unpack .../06-libsasl2-2_2.1.28+dfsg-10_amd64.deb ...
+#12 22.56 Unpacking libsasl2-2:amd64 (2.1.28+dfsg-10) ...
+#12 22.64 Selecting previously unselected package libldap-2.5-0:amd64.
+#12 22.64 Preparing to unpack .../07-libldap-2.5-0_2.5.13+dfsg-5_amd64.deb ...
+#12 22.65 Unpacking libldap-2.5-0:amd64 (2.5.13+dfsg-5) ...
+#12 22.74 Selecting previously unselected package libnghttp2-14:amd64.
+#12 22.74 Preparing to unpack .../08-libnghttp2-14_1.52.0-1+deb12u2_amd64.deb ...
+#12 22.75 Unpacking libnghttp2-14:amd64 (1.52.0-1+deb12u2) ...
+#12 22.82 Selecting previously unselected package libpsl5:amd64.
+#12 22.82 Preparing to unpack .../09-libpsl5_0.21.2-1_amd64.deb ...
+#12 22.82 Unpacking libpsl5:amd64 (0.21.2-1) ...
+#12 22.89 Selecting previously unselected package librtmp1:amd64.
+#12 22.89 Preparing to unpack .../10-librtmp1_2.4+20151223.gitfa8646d.1-2+b2_amd64.deb ...
+#12 22.90 Unpacking librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2+b2) ...
+#12 22.97 Selecting previously unselected package libssh2-1:amd64.
+#12 22.97 Preparing to unpack .../11-libssh2-1_1.10.0-3+b1_amd64.deb ...
+#12 22.98 Unpacking libssh2-1:amd64 (1.10.0-3+b1) ...
+#12 23.06 Selecting previously unselected package libcurl3-gnutls:amd64.
+#12 ...
+
+#11 [builder 2/2] RUN go install -v github.com/projectdiscovery/cloudlist/cmd/cloudlist@latest
+#11 22.95 go: downloading github.com/linode/linodego v1.22.0
+#11 22.95 go: downloading github.com/namecheap/go-namecheap-sdk/v2 v2.1.0
+#11 22.95 go: downloading github.com/hashicorp/nomad/api v0.0.0-20210711205811-0ef51f1383ff
+#11 22.95 go: downloading github.com/gophercloud/gophercloud v1.7.0
+#11 22.95 go: downloading google.golang.org/protobuf v1.36.6
+#11 25.55 go: downloading github.com/scaleway/scaleway-sdk-go v1.0.0-beta.14
+#11 25.56 go: downloading github.com/aliyun/alibaba-cloud-sdk-go v1.62.560
+#11 ...
+
+#12 [stage-1  3/10] RUN apt-get update && apt-get install -y --no-install-recommends     tini     git     unzip     ca-certificates     && rm -rf /var/lib/apt/lists/*
+#12 23.06 Preparing to unpack .../12-libcurl3-gnutls_7.88.1-10+deb12u14_amd64.deb ...
+#12 23.07 Unpacking libcurl3-gnutls:amd64 (7.88.1-10+deb12u14) ...
+#12 23.15 Selecting previously unselected package libexpat1:amd64.
+#12 23.15 Preparing to unpack .../13-libexpat1_2.5.0-1+deb12u2_amd64.deb ...
+#12 23.16 Unpacking libexpat1:amd64 (2.5.0-1+deb12u2) ...
+#12 23.23 Selecting previously unselected package liberror-perl.
+#12 23.23 Preparing to unpack .../14-liberror-perl_0.17029-2_all.deb ...
+#12 23.23 Unpacking liberror-perl (0.17029-2) ...
+#12 23.29 Selecting previously unselected package git-man.
+#12 23.30 Preparing to unpack .../15-git-man_1%3a2.39.5-0+deb12u3_all.deb ...
+#12 23.30 Unpacking git-man (1:2.39.5-0+deb12u3) ...
+#12 23.49 Selecting previously unselected package git.
+#12 23.49 Preparing to unpack .../16-git_1%3a2.39.5-0+deb12u3_amd64.deb ...
+#12 23.50 Unpacking git (1:2.39.5-0+deb12u3) ...
+#12 24.33 Selecting previously unselected package tini.
+#12 24.34 Preparing to unpack .../17-tini_0.19.0-1+b3_amd64.deb ...
+#12 24.34 Unpacking tini (0.19.0-1+b3) ...
+#12 24.43 Selecting previously unselected package unzip.
+#12 24.43 Preparing to unpack .../18-unzip_6.0-28_amd64.deb ...
+#12 24.44 Unpacking unzip (6.0-28) ...
+#12 24.51 Setting up libexpat1:amd64 (2.5.0-1+deb12u2) ...
+#12 24.53 Setting up libpsl5:amd64 (0.21.2-1) ...
+#12 24.55 Setting up unzip (6.0-28) ...
+#12 24.57 Setting up libbrotli1:amd64 (1.0.9-2+b6) ...
+#12 24.59 Setting up libnghttp2-14:amd64 (1.52.0-1+deb12u2) ...
+#12 24.61 Setting up libsasl2-modules-db:amd64 (2.1.28+dfsg-10) ...
+#12 24.63 Setting up perl-modules-5.36 (5.36.0-7+deb12u3) ...
+#12 24.65 Setting up librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2+b2) ...
+#12 24.66 Setting up tini (0.19.0-1+b3) ...
+#12 24.68 Setting up libgdbm-compat4:amd64 (1.23-3) ...
+#12 24.70 Setting up libsasl2-2:amd64 (2.1.28+dfsg-10) ...
+#12 24.72 Setting up git-man (1:2.39.5-0+deb12u3) ...
+#12 24.74 Setting up libssh2-1:amd64 (1.10.0-3+b1) ...
+#12 24.76 Setting up libperl5.36:amd64 (5.36.0-7+deb12u3) ...
+#12 24.78 Setting up libldap-2.5-0:amd64 (2.5.13+dfsg-5) ...
+#12 24.80 Setting up perl (5.36.0-7+deb12u3) ...
+#12 24.83 Setting up libcurl3-gnutls:amd64 (7.88.1-10+deb12u14) ...
+#12 24.85 Setting up liberror-perl (0.17029-2) ...
+#12 24.87 Setting up git (1:2.39.5-0+deb12u3) ...
+#12 24.90 Processing triggers for libc-bin (2.36-9+deb12u13) ...
+#12 DONE 25.8s
+
+#11 [builder 2/2] RUN go install -v github.com/projectdiscovery/cloudlist/cmd/cloudlist@latest
+#11 25.79 go: downloading github.com/cnf/structhash v0.0.0-20201127153200-e1b16c1ebc08
+#11 25.79 go: downloading github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510
+#11 25.95 go: downloading golang.org/x/exp v0.0.0-20250106191152-7588d65b2ba8
+#11 26.31 go: downloading gopkg.in/yaml.v3 v3.0.1
+#11 26.46 go: downloading github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
+#11 26.47 go: downloading github.com/modern-go/reflect2 v1.0.2
+#11 26.47 go: downloading github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2
+#11 26.48 go: downloading github.com/mattn/go-isatty v0.0.20
+#11 26.49 go: downloading github.com/Masterminds/semver/v3 v3.2.1
+#11 26.57 go: downloading github.com/charmbracelet/glamour v0.8.0
+#11 26.60 go: downloading github.com/cheggaaa/pb/v3 v3.1.4
+#11 26.60 go: downloading github.com/google/go-github/v30 v30.1.0
+#11 27.20 go: downloading github.com/google/uuid v1.6.0
+#11 27.21 go: downloading github.com/logrusorgru/aurora v2.0.3+incompatible
+#11 27.21 go: downloading github.com/minio/selfupdate v0.6.1-0.20230907112617-f11e74f84ca7
+#11 27.47 go: downloading github.com/projectdiscovery/machineid v0.0.0-20250715113114-c77eb3567582
+#11 27.72 go: downloading github.com/zcalusic/sysinfo v1.0.2
+#11 27.72 go: downloading github.com/projectdiscovery/blackrock v0.0.1
+#11 27.73 go: downloading github.com/miekg/dns v1.1.62
+#11 27.73 go: downloading github.com/tidwall/gjson v1.18.0
+#11 27.83 go: downloading github.com/gogo/protobuf v1.3.2
+#11 28.21 go: downloading github.com/google/gofuzz v1.2.0
+#11 28.21 go: downloading github.com/gofrs/flock v0.8.1
+#11 28.33 go: downloading github.com/prometheus/client_golang v1.16.0
+#11 28.55 go: downloading github.com/sirupsen/logrus v1.9.3
+#11 28.56 go: downloading golang.org/x/net v0.48.0
+#11 28.56 go: downloading k8s.io/klog/v2 v2.120.1
+#11 28.90 go: downloading k8s.io/utils v0.0.0-20240102154912-e7106e64919e
+#11 28.93 go: downloading github.com/Azure/azure-sdk-for-go/sdk/internal v1.11.2
+#11 29.09 go: downloading github.com/AzureAD/microsoft-authentication-library-for-go v1.5.0
+#11 29.27 go: downloading golang.org/x/crypto v0.46.0
+#11 29.95 go: downloading github.com/goccy/go-json v0.10.2
+#11 29.96 go: downloading github.com/google/go-querystring v1.1.0
+#11 30.44 go: downloading github.com/hashicorp/go-retryablehttp v0.7.4
+#11 30.50 go: downloading golang.org/x/time v0.12.0
+#11 30.58 go: downloading github.com/hashicorp/go-cleanhttp v0.5.2
+#11 30.58 go: downloading github.com/hashicorp/go-hclog v1.2.0
+#11 30.59 go: downloading github.com/hashicorp/go-rootcerts v1.0.2
+#11 30.59 go: downloading github.com/hashicorp/serf v0.10.1
+#11 30.62 go: downloading github.com/mitchellh/mapstructure v1.4.1
+#11 30.86 go: downloading github.com/gaissmai/bart v0.26.0
+#11 30.86 go: downloading github.com/Mzack9999/go-http-digest-auth-client v0.6.1-0.20220414142836-eb8883508809
+#11 30.86 go: downloading github.com/projectdiscovery/fastdialer v0.5.3
+#11 30.86 go: downloading github.com/shopspring/decimal v1.3.1
+#11 30.86 go: downloading cloud.google.com/go/longrunning v0.6.7
+#11 30.86 go: downloading github.com/googleapis/gax-go/v2 v2.14.2
+#11 31.04 go: downloading google.golang.org/grpc v1.73.0
+#11 32.02 go: downloading cloud.google.com/go/accesscontextmanager v1.9.6
+#11 32.48 go: downloading cloud.google.com/go/iam v1.5.2
+#11 32.48 go: downloading cloud.google.com/go/orgpolicy v1.15.0
+#11 32.73 go: downloading cloud.google.com/go/osconfig v1.14.6
+#11 32.74 go: downloading google.golang.org/genproto/googleapis/api v0.0.0-20250505200425-f936aa4a68b2
+#11 32.74 go: downloading google.golang.org/genproto/googleapis/rpc v0.0.0-20250603155806-513f23925822
+#11 32.89 go: downloading google.golang.org/genproto v0.0.0-20250505200425-f936aa4a68b2
+#11 33.30 go: downloading github.com/cenkalti/backoff v2.1.1+incompatible
+#11 33.30 go: downloading github.com/pborman/uuid v1.2.0
+#11 33.30 go: downloading cloud.google.com/go/compute/metadata v0.7.0
+#11 34.25 go: downloading github.com/ajg/form v0.0.0-20160802194845-cc2954064ec9
+#11 34.25 go: downloading github.com/google/jsonapi v0.0.0-20201022225600-f822737867f6
+#11 34.25 go: downloading github.com/imdario/mergo v0.3.16
+#11 34.26 go: downloading github.com/spf13/pflag v1.0.5
+#11 34.26 go: downloading golang.org/x/term v0.38.0
+#11 34.67 go: downloading go.uber.org/multierr v1.11.0
+#11 34.67 go: downloading github.com/weppos/publicsuffix-go v0.50.3-0.20260104170930-90713dec78f2
+#11 34.68 go: downloading github.com/gorilla/websocket v1.5.0
+#11 34.68 go: downloading github.com/hashicorp/cronexpr v1.1.0
+#11 34.68 go: downloading github.com/go-resty/resty/v2 v2.7.0
+#11 34.68 go: downloading gopkg.in/ini.v1 v1.66.6
+#11 34.94 go: downloading golang.org/x/sys v0.39.0
+#11 35.11 go: downloading github.com/microcosm-cc/bluemonday v1.0.27
+#11 35.21 go: downloading github.com/saintfish/chardet v0.0.0-20230101081208-5e3ef4b5456d
+#11 35.28 go: downloading github.com/logrusorgru/aurora/v4 v4.0.0
+#11 35.29 go: downloading github.com/djherbis/times v1.6.0
+#11 35.50 go: downloading github.com/mholt/archives v0.1.5
+#11 35.61 go: downloading github.com/VividCortex/ewma v1.2.0
+#11 35.87 go: downloading github.com/fatih/color v1.15.0
+#11 35.89 go: downloading github.com/mattn/go-colorable v0.1.13
+#11 35.89 go: downloading github.com/mattn/go-runewidth v0.0.16
+#11 35.90 go: downloading github.com/shirou/gopsutil/v3 v3.23.7
+#11 35.92 go: downloading aead.dev/minisign v0.2.0
+#11 35.93 go: downloading github.com/tidwall/match v1.1.1
+#11 35.98 go: downloading github.com/tidwall/pretty v1.2.1
+#11 35.99 go: downloading gopkg.in/inf.v0 v0.9.1
+#11 36.02 go: downloading sigs.k8s.io/structured-merge-diff/v4 v4.4.1
+#11 36.02 go: downloading github.com/muesli/termenv v0.15.3-0.20240618155329-98d742f6907a
+#11 36.02 go: downloading github.com/yuin/goldmark v1.7.4
+#11 36.12 go: downloading github.com/yuin/goldmark-emoji v1.0.3
+#11 36.23 go: downloading github.com/golang/protobuf v1.5.4
+#11 36.23 go: downloading github.com/google/gnostic-models v0.6.8
+#11 36.40 go: downloading github.com/beorn7/perks v1.0.1
+#11 36.47 go: downloading github.com/cespare/xxhash/v2 v2.3.0
+#11 36.47 go: downloading github.com/prometheus/client_model v0.4.0
+#11 36.50 go: downloading github.com/prometheus/common v0.44.0
+#11 36.53 go: downloading github.com/prometheus/procfs v0.10.1
+#11 36.56 go: downloading github.com/go-logr/logr v1.4.2
+#11 36.62 go: downloading golang.org/x/text v0.32.0
+#11 36.63 go: downloading github.com/kylelemons/godebug v1.1.0
+#11 36.63 go: downloading github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
+#11 36.64 go: downloading github.com/docker/go-units v0.5.0
+#11 36.64 go: downloading cloud.google.com/go/auth v0.16.2
+#11 36.98 go: downloading go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.61.0
+#11 36.98 go: downloading cloud.google.com/go/auth/oauth2adapt v0.2.8
+#11 37.77 go: downloading go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.61.0
+#11 37.92 go: downloading github.com/armon/go-metrics v0.3.10
+#11 38.16 go: downloading github.com/Mzack9999/gcache v0.0.0-20230410081825-519e28eab057
+#11 38.16 go: downloading github.com/dimchansky/utfbom v1.1.1
+#11 38.16 go: downloading github.com/projectdiscovery/hmap v0.0.100
+#11 38.17 go: downloading github.com/projectdiscovery/retryabledns v1.0.113
+#11 38.19 go: downloading github.com/refraction-networking/utls v1.7.1
+#11 38.20 go: downloading github.com/zmap/zcrypto v0.0.0-20240803002437-3a861682ac77
+#11 38.26 go: downloading golang.org/x/sync v0.19.0
+#11 38.40 go: downloading github.com/jmespath/go-jmespath v0.4.0
+#11 38.73 go: downloading github.com/aymerick/douceur v0.2.0
+#11 38.91 go: downloading github.com/rivo/uniseg v0.4.7
+#11 38.91 go: downloading sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd
+#11 38.97 go: downloading github.com/alecthomas/chroma/v2 v2.14.0
+#11 39.05 go: downloading github.com/charmbracelet/lipgloss v0.13.0
+#11 39.14 go: downloading github.com/charmbracelet/x/ansi v0.3.2
+#11 39.27 go: downloading github.com/muesli/reflow v0.3.0
+#11 39.30 go: downloading github.com/STARRY-S/zip v0.2.3
+#11 39.39 go: downloading github.com/andybalholm/brotli v1.2.0
+#11 39.41 go: downloading github.com/bodgit/sevenzip v1.6.1
+#11 39.41 go: downloading github.com/dsnet/compress v0.0.2-0.20230904184137-39efe44ab707
+#11 39.41 go: downloading github.com/klauspost/compress v1.18.2
+#11 40.25 go: downloading github.com/klauspost/pgzip v1.2.6
+#11 40.25 go: downloading github.com/mikelolasagasti/xz v1.0.1
+#11 40.25 go: downloading github.com/minio/minlz v1.0.1
+#11 40.25 go: downloading github.com/nwaples/rardecode/v2 v2.2.2
+#11 40.25 go: downloading github.com/pierrec/lz4/v4 v4.1.23
+#11 40.49 go: downloading github.com/sorairolake/lzip-go v0.3.8
+#11 40.62 go: downloading github.com/ulikunitz/xz v0.5.15
+#11 40.62 go: downloading k8s.io/kube-openapi v0.0.0-20240228011516-70dd3763d340
+#11 40.62 go: downloading github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc
+#11 40.69 go: downloading github.com/golang-jwt/jwt/v5 v5.3.0
+#11 41.10 go: downloading github.com/tklauser/go-sysconf v0.3.12
+#11 41.78 go: downloading github.com/google/s2a-go v0.1.9
+#11 41.87 go: downloading github.com/aymanbagabas/go-osc52/v2 v2.0.1
+#11 42.02 go: downloading github.com/lucasb-eyer/go-colorful v1.2.0
+#11 42.02 go: downloading github.com/googleapis/enterprise-certificate-proxy v0.3.6
+#11 42.02 go: downloading github.com/matttproud/golang_protobuf_extensions v1.0.4
+#11 42.21 go: downloading go.opentelemetry.io/otel v1.36.0
+#11 43.81 go: downloading go.opentelemetry.io/otel/metric v1.36.0
+#11 44.64 go: downloading go.opentelemetry.io/otel/trace v1.36.0
+#11 44.74 go: downloading github.com/felixge/httpsnoop v1.0.4
+#11 44.75 go: downloading sigs.k8s.io/yaml v1.4.0
+#11 45.29 go: downloading github.com/gorilla/css v1.0.1
+#11 45.29 go: downloading github.com/hashicorp/go-immutable-radix v1.3.0
+#11 45.29 go: downloading github.com/cloudflare/circl v1.6.1
+#11 45.29 go: downloading github.com/zmap/rc2 v0.0.0-20190804163417-abaa70531248
+#11 45.32 go: downloading github.com/dlclark/regexp2 v1.11.5
+#11 45.32 go: downloading github.com/bodgit/plumbing v1.3.0
+#11 45.37 go: downloading github.com/bodgit/windows v1.0.1
+#11 46.29 go: downloading github.com/spf13/afero v1.15.0
+#11 47.08 go: downloading go4.org v0.0.0-20230225012048-214862532bf5
+#11 47.35 go: downloading github.com/tklauser/numcpus v0.6.1
+#11 47.81 go: downloading github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822
+#11 48.20 go: downloading github.com/go-openapi/swag v0.22.7
+#11 48.20 go: downloading github.com/go-openapi/jsonreference v0.20.4
+#11 48.20 go: downloading github.com/akrylysov/pogreb v0.10.1
+#11 48.33 go: downloading github.com/syndtr/goleveldb v1.0.0
+#11 48.98 go: downloading go.etcd.io/bbolt v1.3.7
+#11 48.98 go: downloading github.com/tidwall/buntdb v1.3.0
+#11 48.99 go: downloading github.com/hashicorp/golang-lru/v2 v2.0.7
+#11 49.26 go: downloading github.com/hashicorp/golang-lru v0.5.4
+#11 49.26 go: downloading github.com/emicklei/go-restful/v3 v3.11.0
+#11 49.26 go: downloading github.com/go-logr/stdr v1.2.2
+#11 49.26 go: downloading go.opentelemetry.io/auto/sdk v1.1.0
+#11 49.26 go: downloading github.com/golang/snappy v0.0.4
+#11 49.36 go: downloading github.com/mailru/easyjson v0.7.7
+#11 49.49 go: downloading github.com/go-openapi/jsonpointer v0.20.2
+#11 49.74 go: downloading github.com/josharian/intern v1.0.0
+#11 49.80 go: downloading github.com/tidwall/rtred v0.1.2
+#11 49.80 go: downloading github.com/tidwall/btree v1.4.3
+#11 49.80 go: downloading github.com/tidwall/grect v0.1.4
+#11 50.39 go: downloading github.com/tidwall/tinyqueue v0.1.1
+#11 50.39 go: downloading github.com/opentracing/opentracing-go v1.2.1-0.20220228012449-10b1cf09e00b
+#11 69.36 internal/profilerecord
+#11 69.36 internal/byteorder
+#11 69.36 cmp
+#11 69.36 encoding
+#11 69.36 internal/itoa
+#11 69.36 unicode/utf8
+#11 69.36 internal/coverage/rtcov
+#11 69.36 internal/goexperiment
+#11 69.36 math/bits
+#11 69.36 internal/goos
+#11 69.36 unicode
+#11 69.37 internal/msan
+#11 69.37 internal/goarch
+#11 69.37 internal/asan
+#11 69.37 internal/godebugs
+#11 69.38 internal/unsafeheader
+#11 69.51 unicode/utf16
+#11 69.52 internal/runtime/math
+#11 69.52 log/internal
+#11 69.52 crypto/internal/fips140/alias
+#11 69.52 container/list
+#11 69.56 internal/cpu
+#11 69.56 internal/runtime/syscall
+#11 69.57 internal/abi
+#11 69.57 sync/atomic
+#11 69.58 internal/runtime/atomic
+#11 69.58 crypto/internal/boring/sig
+#11 69.58 vendor/golang.org/x/crypto/cryptobyte/asn1
+#11 69.58 vendor/golang.org/x/crypto/internal/alias
+#11 69.59 internal/nettrace
+#11 69.59 internal/runtime/sys
+#11 69.62 github.com/aliyun/alibaba-cloud-sdk-go/sdk/auth/credentials
+#11 69.65 internal/chacha8rand
+#11 69.68 crypto/internal/fips140deps/byteorder
+#11 69.69 golang.org/x/net/internal/iana
+#11 69.73 crypto/internal/fips140/subtle
+#11 69.73 github.com/projectdiscovery/utils/conversion
+#11 69.73 log/slog/internal
+#11 69.73 golang.org/x/exp/constraints
+#11 69.77 github.com/aws/aws-sdk-go/aws/client/metadata
+#11 69.85 k8s.io/apimachinery/pkg/selection
+#11 69.88 k8s.io/utils/strings/slices
+#11 69.90 github.com/tidwall/match
+#11 69.93 k8s.io/apimachinery/pkg/types
+#11 69.93 google.golang.org/protobuf/internal/flags
+#11 69.95 github.com/AzureAD/microsoft-authentication-library-for-go/apps/internal/exported
+#11 69.95 sigs.k8s.io/aws-iam-authenticator/pkg
+#11 69.95 github.com/AzureAD/microsoft-authentication-library-for-go/apps/internal/oauth/ops/internal/grant
+#11 69.95 github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud
+#11 69.96 google.golang.org/protobuf/internal/set
+#11 70.00 github.com/AzureAD/microsoft-authentication-library-for-go/apps/internal/version
+#11 70.00 github.com/projectdiscovery/gologger/levels
+#11 70.05 golang.org/x/text/encoding/internal/identifier
+#11 70.08 golang.org/x/text/internal/utf8internal
+#11 70.14 github.com/klauspost/compress/internal/le
+#11 70.15 github.com/pierrec/lz4/v4/internal/lz4errors
+#11 70.16 github.com/ulikunitz/xz/internal/hash
+#11 70.17 github.com/klauspost/compress/internal/cpuinfo
+#11 70.20 github.com/bodgit/windows
+#11 70.20 github.com/dsnet/compress/bzip2/internal/sais
+#11 70.20 github.com/dsnet/compress/internal
+#11 70.21 github.com/klauspost/compress/internal/race
+#11 70.22 github.com/minio/minlz/internal/race
+#11 70.22 github.com/gaissmai/bart/internal/art
+#11 70.31 github.com/gaissmai/bart/internal/bitset
+#11 70.33 golang.org/x/net/html/atom
+#11 70.33 github.com/Mzack9999/gcache/internal/list
+#11 70.33 golang.org/x/crypto/cryptobyte/asn1
+#11 70.35 github.com/cloudflare/circl/pke/kyber/internal/common/params
+#11 70.35 golang.org/x/crypto/internal/alias
+#11 70.36 github.com/cloudflare/circl/sign/internal/dilithium/params
+#11 70.37 github.com/refraction-networking/utls/internal/byteorder
+#11 70.37 github.com/refraction-networking/utls/dicttls
+#11 70.40 github.com/refraction-networking/utls/internal/fips140tls
+#11 70.41 github.com/tidwall/tinyqueue
+#11 70.43 internal/runtime/exithook
+#11 70.44 crypto/internal/fips140deps/cpu
+#11 70.45 github.com/zmap/zcrypto/cryptobyte/asn1
+#11 70.45 internal/bytealg
+#11 70.48 github.com/projectdiscovery/utils/ptr
+#11 70.48 math
+#11 70.49 google.golang.org/grpc/serviceconfig
+#11 70.50 cloud.google.com/go/asset/internal
+#11 70.51 github.com/googleapis/gax-go/v2/internal
+#11 70.53 go.opentelemetry.io/otel/trace/embedded
+#11 70.57 go.opentelemetry.io/otel/metric/embedded
+#11 70.63 github.com/projectdiscovery/utils/race
+#11 70.64 github.com/VividCortex/ewma
+#11 70.64 image/color
+#11 70.64 github.com/hashicorp/nomad/api/contexts
+#11 70.64 github.com/shirou/gopsutil/v3/common
+#11 70.64 github.com/zcalusic/sysinfo/cpuid
+#11 70.64 github.com/rivo/uniseg
+#11 70.65 github.com/gaissmai/bart/internal/allot
+#11 70.65 github.com/gaissmai/bart/internal/sparse
+#11 70.65 github.com/gaissmai/bart/internal/lpm
+#11 70.70 internal/stringslite
+#11 70.82 internal/race
+#11 70.83 internal/runtime/maps
+#11 70.83 internal/sync
+#11 70.87 github.com/projectdiscovery/blackrock
+#11 70.87 github.com/klauspost/compress
+#11 70.87 github.com/tidwall/rtred/base
+#11 70.87 github.com/aws/aws-sdk-go/internal/sdkmath
+#11 70.87 github.com/charmbracelet/x/ansi/parser
+#11 71.06 runtime
+#11 72.84 crypto/subtle
+#11 72.84 weak
+#11 72.84 k8s.io/klog/v2/internal/dbg
+#11 72.84 iter
+#11 72.84 runtime/metrics
+#11 72.84 internal/reflectlite
+#11 72.84 github.com/projectdiscovery/utils/os
+#11 72.84 sync
+#11 72.85 maps
+#11 72.85 slices
+#11 72.86 golang.org/x/exp/maps
+#11 72.94 errors
+#11 72.94 sort
+#11 72.96 internal/bisect
+#11 72.96 internal/testlog
+#11 72.96 internal/singleflight
+#11 72.96 unique
+#11 72.96 log/slog/internal/buffer
+#11 72.96 github.com/josharian/intern
+#11 72.96 github.com/tidwall/rtred
+#11 72.96 github.com/tidwall/btree
+#11 72.96 github.com/yuin/goldmark-emoji/definition
+#11 72.96 github.com/aws/aws-sdk-go/internal/sync/singleflight
+#11 72.96 google.golang.org/protobuf/internal/pragma
+#11 72.96 internal/oserror
+#11 72.96 github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo
+#11 72.97 vendor/golang.org/x/net/dns/dnsmessage
+#11 72.97 math/rand/v2
+#11 72.97 io
+#11 72.97 path
+#11 72.97 strconv
+#11 72.99 syscall
+#11 73.00 github.com/hashicorp/golang-lru/simplelru
+#11 73.00 github.com/alitto/pond/v2/internal/linkedbuffer
+#11 73.00 github.com/projectdiscovery/utils/consts
+#11 73.00 github.com/cloudflare/circl/kem
+#11 73.01 google.golang.org/grpc/internal/buffer
+#11 73.01 golang.org/x/crypto/cast5
+#11 73.02 runtime/cgo
+#11 73.10 internal/godebug
+#11 73.16 hash
+#11 73.16 github.com/dimchansky/utfbom
+#11 73.16 github.com/zmap/zcrypto/internal/randutil
+#11 73.16 github.com/cloudflare/circl/internal/sha3
+#11 73.16 internal/saferio
+#11 73.16 bytes
+#11 73.16 github.com/bodgit/plumbing
+#11 73.16 github.com/aws/aws-sdk-go/internal/sdkio
+#11 73.16 strings
+#11 73.17 crypto/internal/randutil
+#11 73.30 github.com/gogo/protobuf/sortkeys
+#11 73.30 hash/fnv
+#11 73.30 container/heap
+#11 73.30 hash/adler32
+#11 73.30 hash/crc64
+#11 73.30 github.com/beorn7/perks/quantile
+#11 73.30 k8s.io/apimachinery/pkg/util/sets
+#11 73.30 hash/crc32
+#11 73.59 crypto
+#11 73.59 math/rand
+#11 73.59 reflect
+#11 73.64 golang.org/x/text/transform
+#11 73.64 crypto/internal/impl
+#11 73.64 net/http/internal/ascii
+#11 73.64 net/netip
+#11 73.64 vendor/golang.org/x/text/transform
+#11 73.64 crypto/internal/fips140deps/godebug
+#11 73.64 github.com/aws/aws-sdk-go/internal/sdkuri
+#11 73.64 k8s.io/klog/v2/internal/severity
+#11 73.64 go/build/constraint
+#11 73.64 regexp/syntax
+#11 73.64 github.com/aws/aws-sdk-go/aws/arn
+#11 73.65 encoding/base32
+#11 73.65 github.com/aws/aws-sdk-go/internal/strings
+#11 73.65 bufio
+#11 73.70 github.com/munnerz/goautoneg
+#11 73.70 github.com/prometheus/common/internal/bitbucket.org/ww/goautoneg
+#11 73.70 crypto/internal/fips140
+#11 73.70 html
+#11 73.71 github.com/bodgit/sevenzip/internal/util
+#11 73.73 github.com/dsnet/compress/internal/errors
+#11 73.76 github.com/hashicorp/go-immutable-radix
+#11 73.77 github.com/saintfish/chardet
+#11 73.80 github.com/cloudflare/circl/sign
+#11 73.81 github.com/syndtr/goleveldb/leveldb/comparer
+#11 73.82 golang.org/x/text/encoding
+#11 73.82 golang.org/x/text/runes
+#11 73.84 golang.org/x/crypto/openpgp/errors
+#11 73.86 github.com/bodgit/sevenzip/internal/pool
+#11 73.88 crypto/internal/fips140/sha3
+#11 73.88 crypto/internal/fips140/sha256
+#11 73.88 crypto/internal/fips140/sha512
+#11 73.88 crypto/tls/internal/fips140tls
+#11 73.89 compress/bzip2
+#11 73.93 github.com/dsnet/compress
+#11 73.94 golang.org/x/crypto/openpgp/s2k
+#11 73.94 image
+#11 73.98 golang.org/x/text/encoding/internal
+#11 74.05 internal/syscall/execenv
+#11 74.05 internal/syscall/unix
+#11 74.06 golang.org/x/text/encoding/unicode
+#11 74.07 time
+#11 74.20 crypto/sha3
+#11 74.20 crypto/internal/fips140/hmac
+#11 74.25 crypto/internal/fips140/check
+#11 74.27 crypto/internal/fips140hash
+#11 74.30 crypto/internal/fips140/hkdf
+#11 74.30 crypto/internal/fips140/tls12
+#11 74.30 crypto/internal/fips140/edwards25519/field
+#11 74.30 crypto/internal/fips140/bigmod
+#11 74.30 crypto/internal/fips140/aes
+#11 74.30 crypto/internal/fips140/nistec/fiat
+#11 74.31 image/internal/imageutil
+#11 74.34 crypto/internal/fips140/tls13
+#11 74.35 regexp
+#11 74.36 image/jpeg
+#11 74.44 crypto/internal/fips140/edwards25519
+#11 74.78 github.com/microcosm-cc/bluemonday/css
+#11 74.78 google.golang.org/api/internal/third_party/uritemplates
+#11 74.78 k8s.io/apimachinery/pkg/version
+#11 74.83 k8s.io/klog/v2/internal/clock
+#11 74.83 k8s.io/utils/clock
+#11 74.83 github.com/hashicorp/golang-lru/v2/internal
+#11 74.83 github.com/Azure/azure-sdk-for-go/sdk/internal/temporal
+#11 74.83 context
+#11 74.83 github.com/projectdiscovery/utils/slice
+#11 74.83 google.golang.org/grpc/balancer/pickfirst/internal
+#11 74.83 google.golang.org/grpc/backoff
+#11 74.83 github.com/aws/aws-sdk-go/internal/sdkrand
+#11 74.83 github.com/namecheap/go-namecheap-sdk/v2/namecheap/internal/syncretry
+#11 74.83 github.com/linode/linodego/internal/parseabletime
+#11 74.83 google.golang.org/grpc/keepalive
+#11 74.83 github.com/projectdiscovery/hmap/store/cache
+#11 74.84 io/fs
+#11 74.84 internal/poll
+#11 74.88 github.com/scaleway/scaleway-sdk-go/namegenerator
+#11 74.89 github.com/hashicorp/golang-lru/v2/simplelru
+#11 74.93 k8s.io/utils/clock/testing
+#11 74.97 github.com/hashicorp/golang-lru/v2
+#11 75.03 github.com/AzureAD/microsoft-authentication-library-for-go/apps/cache
+#11 75.03 github.com/spf13/afero/internal/common
+#11 75.03 google.golang.org/grpc/internal/backoff
+#11 75.03 google.golang.org/grpc/internal/grpcsync
+#11 75.03 github.com/cenkalti/backoff
+#11 75.03 golang.org/x/sync/semaphore
+#11 75.03 go.opentelemetry.io/otel/internal/baggage
+#11 75.03 github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing
+#11 75.04 internal/filepathlite
+#11 75.04 embed
+#11 75.04 github.com/projectdiscovery/utils/context
+#11 75.07 github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal
+#11 75.18 google.golang.org/protobuf/internal/editiondefaults
+#11 75.25 crypto/internal/fips140/nistec
+#11 75.25 os
+#11 75.33 sigs.k8s.io/structured-merge-diff/v4/schema
+#11 75.33 github.com/goccy/go-json/internal/runtime
+#11 75.33 internal/fmtsort
+#11 75.33 go.opentelemetry.io/otel/attribute/internal
+#11 75.33 github.com/scaleway/scaleway-sdk-go/internal/generic
+#11 75.33 encoding/binary
+#11 75.34 github.com/modern-go/reflect2
+#11 75.60 vendor/golang.org/x/crypto/internal/poly1305
+#11 75.60 github.com/google/gofuzz/bytesource
+#11 75.60 github.com/cespare/xxhash/v2
+#11 75.60 github.com/pierrec/lz4/v4/internal/xxh32
+#11 75.60 github.com/klauspost/compress/internal/snapref
+#11 75.60 golang.org/x/crypto/internal/poly1305
+#11 75.60 github.com/klauspost/compress/zstd/internal/xxhash
+#11 75.60 encoding/base64
+#11 75.60 github.com/golang/snappy
+#11 75.60 golang.org/x/sys/unix
+#11 75.75 golang.org/x/crypto/openpgp/armor
+#11 75.75 encoding/pem
+#11 75.85 io/ioutil
+#11 75.85 crypto/internal/sysrand
+#11 75.85 k8s.io/klog/v2/internal/buffer
+#11 75.85 github.com/prometheus/procfs/internal/util
+#11 75.85 github.com/klauspost/compress/internal/godebug
+#11 75.85 vendor/golang.org/x/sys/cpu
+#11 75.85 os/signal
+#11 75.85 golang.org/x/sys/cpu
+#11 75.85 github.com/gofrs/flock
+#11 75.85 internal/lazyregexp
+#11 75.85 github.com/projectdiscovery/utils/env
+#11 75.85 google.golang.org/protobuf/internal/detrand
+#11 75.85 github.com/projectdiscovery/utils/reader/rawmode
+#11 75.85 path/filepath
+#11 75.86 fmt
+#11 75.89 google.golang.org/grpc/internal/envconfig
+#11 75.90 internal/sysinfo
+#11 75.96 crypto/internal/entropy
+#11 75.96 github.com/mattn/go-runewidth
+#11 76.02 crypto/internal/fips140/drbg
+#11 76.08 golang.org/x/crypto/sha3
+#11 76.09 golang.org/x/crypto/blake2b
+#11 76.10 github.com/cloudflare/circl/sign/internal/dilithium
+#11 76.10 github.com/cloudflare/circl/simd/keccakf1600
+#11 76.11 github.com/muesli/reflow/ansi
+#11 76.13 crypto/internal/fips140only
+#11 76.13 crypto/internal/fips140/ed25519
+#11 76.13 crypto/internal/fips140/ecdh
+#11 76.13 crypto/internal/fips140/ecdsa
+#11 76.13 crypto/internal/fips140/aes/gcm
+#11 76.13 crypto/internal/fips140/mlkem
+#11 76.13 crypto/internal/fips140/rsa
+#11 76.14 github.com/spf13/afero/mem
+#11 76.14 net
+#11 76.14 github.com/akrylysov/pogreb/fs
+#11 76.14 os/exec
+#11 76.17 crypto/md5
+#11 76.23 crypto/rc4
+#11 76.24 github.com/cloudflare/circl/pke/kyber/internal/common
+#11 76.27 crypto/hkdf
+#11 76.30 github.com/refraction-networking/utls/internal/hkdf
+#11 76.31 k8s.io/client-go/util/homedir
+#11 76.35 github.com/refraction-networking/utls/internal/tls13
+#11 76.36 github.com/muesli/reflow/indent
+#11 76.37 github.com/muesli/reflow/padding
+#11 76.38 github.com/muesli/reflow/wordwrap
+#11 76.49 crypto/cipher
+#11 76.52 github.com/cloudflare/circl/pke/kyber/kyber768/internal
+#11 76.56 crypto/mlkem
+#11 76.57 github.com/minio/selfupdate/internal/binarydist
+#11 76.61 runtime/debug
+#11 76.62 net/http/internal
+#11 76.62 github.com/opentracing/opentracing-go/log
+#11 76.62 log
+#11 76.62 mime/quotedprintable
+#11 76.62 net/url
+#11 76.62 mime
+#11 76.62 vendor/golang.org/x/net/http2/hpack
+#11 76.62 compress/flate
+#11 76.62 encoding/hex
+#11 76.62 gopkg.in/ini.v1
+#11 76.62 encoding/json
+#11 76.62 vendor/golang.org/x/text/unicode/norm
+#11 76.62 encoding/xml
+#11 76.62 crypto/internal/boring
+#11 76.63 math/big
+#11 76.67 crypto/des
+#11 76.68 crypto/aes
+#11 76.71 crypto/ecdh
+#11 76.72 crypto/sha512
+#11 76.78 crypto/hmac
+#11 76.80 vendor/golang.org/x/crypto/chacha20
+#11 76.81 crypto/sha1
+#11 76.81 crypto/sha256
+#11 76.85 golang.org/x/net/bpf
+#11 76.86 vendor/golang.org/x/text/unicode/bidi
+#11 76.86 github.com/pkg/errors
+#11 76.87 github.com/aws/aws-sdk-go/aws/awserr
+#11 76.88 os/user
+#11 76.89 github.com/modern-go/concurrent
+#11 76.92 github.com/aws/aws-sdk-go/internal/s3shared/arn
+#11 76.97 github.com/google/gofuzz
+#11 77.10 github.com/aws/aws-sdk-go/internal/ini
+#11 77.10 k8s.io/apimachinery/third_party/forked/golang/reflect
+#11 77.12 k8s.io/apimachinery/pkg/fields
+#11 77.12 vendor/golang.org/x/crypto/chacha20poly1305
+#11 77.16 k8s.io/apimachinery/pkg/util/errors
+#11 77.18 flag
+#11 77.34 compress/gzip
+#11 77.50 go/token
+#11 77.51 go/doc/comment
+#11 77.52 k8s.io/apimachinery/pkg/util/validation/field
+#11 77.56 k8s.io/apimachinery/pkg/conversion/queryparams
+#11 77.59 vendor/golang.org/x/text/secure/bidirule
+#11 77.60 k8s.io/apimachinery/pkg/util/naming
+#11 77.67 k8s.io/apimachinery/pkg/conversion
+#11 77.67 gopkg.in/yaml.v2
+#11 77.69 golang.org/x/text/unicode/bidi
+#11 77.70 golang.org/x/text/unicode/norm
+#11 77.73 golang.org/x/net/http2/hpack
+#11 77.74 google.golang.org/protobuf/internal/errors
+#11 77.75 google.golang.org/protobuf/internal/version
+#11 77.77 gopkg.in/yaml.v3
+#11 77.78 vendor/golang.org/x/net/idna
+#11 77.81 sigs.k8s.io/yaml/goyaml.v2
+#11 77.83 github.com/go-openapi/jsonreference/internal
+#11 77.86 k8s.io/kube-openapi/pkg/internal/third_party/go-json-experiment/json
+#11 77.86 google.golang.org/protobuf/encoding/protowire
+#11 77.95 go/scanner
+#11 77.98 k8s.io/client-go/pkg/version
+#11 78.00 github.com/davecgh/go-spew/spew
+#11 78.04 google.golang.org/protobuf/reflect/protoreflect
+#11 78.12 k8s.io/client-go/tools/metrics
+#11 78.16 golang.org/x/text/secure/bidirule
+#11 78.18 golang.org/x/time/rate
+#11 78.25 database/sql/driver
+#11 78.34 k8s.io/kube-openapi/pkg/cached
+#11 78.35 go/ast
+#11 78.35 github.com/jmespath/go-jmespath
+#11 78.36 log/slog
+#11 78.43 github.com/tidwall/pretty
+#11 78.46 github.com/aws/aws-sdk-go/aws/endpoints
+#11 78.52 sigs.k8s.io/json/internal/golang/encoding/json
+#11 78.54 k8s.io/apimachinery/pkg/util/framer
+#11 78.57 github.com/gogo/protobuf/proto
+#11 78.57 github.com/mailru/easyjson/jlexer
+#11 78.66 golang.org/x/term
+#11 78.66 k8s.io/apimachinery/pkg/util/dump
+#11 78.71 github.com/json-iterator/go
+#11 78.72 crypto/elliptic
+#11 78.77 crypto/internal/boring/bbig
+#11 78.82 encoding/asn1
+#11 78.92 crypto/rand
+#11 79.05 crypto/dsa
+#11 79.11 crypto/ed25519
+#11 79.29 crypto/internal/hpke
+#11 79.31 crypto/rsa
+#11 79.31 github.com/aliyun/alibaba-cloud-sdk-go/sdk/utils
+#11 79.37 github.com/tidwall/gjson
+#11 79.42 github.com/aws/aws-sdk-go/aws/awsutil
+#11 79.45 github.com/projectdiscovery/utils/errkit
+#11 79.47 github.com/aliyun/alibaba-cloud-sdk-go/sdk/errors
+#11 79.49 gopkg.in/inf.v0
+#11 79.58 github.com/go-logr/logr
+#11 79.59 k8s.io/klog/v2/internal/sloghandler
+#11 79.63 go/doc
+#11 79.65 vendor/golang.org/x/crypto/cryptobyte
+#11 79.73 crypto/x509/pkix
+#11 79.74 github.com/aws/aws-sdk-go/internal/shareddefaults
+#11 79.76 go/parser
+#11 79.80 golang.org/x/net/idna
+#11 79.80 google.golang.org/protobuf/internal/encoding/messageset
+#11 79.81 github.com/aws/aws-sdk-go/aws/credentials
+#11 79.87 google.golang.org/protobuf/internal/strs
+#11 79.88 google.golang.org/protobuf/internal/genid
+#11 79.93 google.golang.org/protobuf/internal/order
+#11 79.95 google.golang.org/protobuf/reflect/protoregistry
+#11 80.00 k8s.io/klog/v2/internal/serialize
+#11 80.01 google.golang.org/protobuf/internal/encoding/text
+#11 80.04 github.com/aws/aws-sdk-go/aws/credentials/processcreds
+#11 80.08 google.golang.org/protobuf/runtime/protoiface
+#11 80.09 google.golang.org/protobuf/internal/descfmt
+#11 80.13 google.golang.org/protobuf/internal/descopts
+#11 80.17 sigs.k8s.io/yaml
+#11 80.20 sigs.k8s.io/json
+#11 80.22 github.com/google/gnostic-models/jsonschema
+#11 80.23 k8s.io/client-go/util/flowcontrol
+#11 80.24 google.golang.org/protobuf/internal/protolazy
+#11 80.25 google.golang.org/protobuf/proto
+#11 80.29 crypto/ecdsa
+#11 80.30 k8s.io/klog/v2
+#11 80.30 compress/zlib
+#11 80.32 k8s.io/apimachinery/pkg/util/json
+#11 80.39 github.com/emicklei/go-restful/v3/log
+#11 80.45 github.com/prometheus/common/model
+#11 80.50 github.com/prometheus/procfs/internal/fs
+#11 80.56 github.com/Azure/azure-sdk-for-go/sdk/internal/log
+#11 80.56 github.com/sirupsen/logrus
+#11 80.59 github.com/Azure/azure-sdk-for-go/sdk/internal/diag
+#11 80.60 github.com/Azure/azure-sdk-for-go/sdk/internal/uuid
+#11 80.62 k8s.io/apimachinery/pkg/util/yaml
+#11 80.65 google.golang.org/protobuf/internal/encoding/defval
+#11 80.67 github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/resource
+#11 80.68 github.com/kylelemons/godebug/diff
+#11 80.69 github.com/AzureAD/microsoft-authentication-library-for-go/apps/internal/json
+#11 80.71 github.com/Azure/azure-sdk-for-go/sdk/azcore/log
+#11 80.77 github.com/AzureAD/microsoft-authentication-library-for-go/apps/internal/json/types/time
+#11 80.78 github.com/AzureAD/microsoft-authentication-library-for-go/apps/internal/options
+#11 80.79 github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/log
+#11 80.80 github.com/pkg/browser
+#11 80.82 golang.org/x/crypto/pkcs12/internal/rc2
+#11 80.83 github.com/djherbis/times
+#11 80.83 github.com/logrusorgru/aurora/v4
+#11 80.84 github.com/alitto/pond/v2/internal/future
+#11 80.89 github.com/STARRY-S/zip
+#11 80.90 archive/tar
+#11 80.90 github.com/andybalholm/brotli/matchfinder
+#11 80.91 github.com/bodgit/sevenzip/internal/aes7z
+#11 80.95 github.com/bodgit/sevenzip/internal/bcj2
+#11 81.25 github.com/bodgit/sevenzip/internal/bra
+#11 81.25 github.com/bodgit/sevenzip/internal/bzip2
+#11 81.28 github.com/klauspost/compress/flate
+#11 81.28 google.golang.org/protobuf/encoding/prototext
+#11 81.30 github.com/alitto/pond/v2
+#11 81.30 github.com/bodgit/sevenzip/internal/delta
+#11 81.31 github.com/pierrec/lz4/v4/internal/lz4block
+#11 81.32 google.golang.org/protobuf/internal/filedesc
+#11 81.33 github.com/ulikunitz/xz/internal/xlog
+#11 81.34 github.com/klauspost/compress/fse
+#11 81.34 github.com/dsnet/compress/internal/prefix
+#11 81.36 github.com/klauspost/compress/s2
+#11 81.37 github.com/mikelolasagasti/xz
+#11 81.40 github.com/nwaples/rardecode/v2
+#11 81.52 github.com/ulikunitz/xz/lzma
+#11 81.65 github.com/goccy/go-json/internal/errors
+#11 81.68 github.com/pierrec/lz4/v4/internal/lz4stream
+#11 81.69 github.com/google/go-querystring/query
+#11 81.72 github.com/mattn/go-isatty
+#11 81.77 github.com/gaissmai/bart/internal/nodes
+#11 81.81 github.com/goccy/go-json/internal/encoder
+#11 81.81 github.com/goccy/go-json/internal/decoder
+#11 81.82 github.com/klauspost/compress/huff0
+#11 81.85 github.com/mattn/go-colorable
+#11 81.89 github.com/dsnet/compress/bzip2
+#11 81.90 github.com/aymerick/douceur/css
+#11 81.96 github.com/pierrec/lz4/v4
+#11 82.02 github.com/gorilla/css/scanner
+#11 82.24 sigs.k8s.io/structured-merge-diff/v4/value
+#11 82.29 github.com/fatih/color
+#11 82.37 github.com/gaissmai/bart
+#11 82.39 github.com/aymerick/douceur/parser
+#11 82.40 golang.org/x/net/html
+#11 82.40 go.uber.org/multierr
+#11 82.52 github.com/hashicorp/go-hclog
+#11 82.54 github.com/bodgit/sevenzip/internal/lz4
+#11 82.57 encoding/gob
+#11 82.59 github.com/Mzack9999/gcache
+#11 82.61 github.com/bodgit/sevenzip/internal/lzma
+#11 82.68 github.com/projectdiscovery/gologger/formatter
+#11 82.74 github.com/bodgit/sevenzip/internal/lzma2
+#11 82.76 github.com/sorairolake/lzip-go
+#11 82.87 google.golang.org/protobuf/internal/encoding/tag
+#11 82.89 github.com/ulikunitz/xz
+#11 82.95 github.com/klauspost/compress/zstd
+#11 83.02 github.com/docker/go-units
+#11 83.12 github.com/bodgit/sevenzip/internal/deflate
+#11 83.16 github.com/klauspost/compress/gzip
+#11 83.17 github.com/klauspost/compress/zip
+#11 83.17 github.com/klauspost/compress/zlib
+#11 83.22 github.com/klauspost/pgzip
+#11 83.35 golang.org/x/crypto/cryptobyte
+#11 83.35 github.com/cloudflare/circl/pke/kyber/kyber768
+#11 83.41 golang.org/x/crypto/chacha20
+#11 83.42 google.golang.org/protobuf/internal/impl
+#11 83.47 github.com/cloudflare/circl/kem/kyber/kyber768
+#11 83.49 github.com/cloudflare/circl/kem/mlkem/mlkem768
+#11 83.75 github.com/cloudflare/circl/sign/dilithium/mode2/internal
+#11 83.75 golang.org/x/crypto/hkdf
+#11 83.76 golang.org/x/crypto/chacha20poly1305
+#11 83.80 github.com/cloudflare/circl/sign/dilithium/mode3/internal
+#11 83.86 github.com/cloudflare/circl/sign/dilithium/mode5/internal
+#11 83.87 github.com/cloudflare/circl/math
+#11 84.00 github.com/goccy/go-json/internal/encoder/vm_color_indent
+#11 84.04 github.com/minio/minlz
+#11 84.10 github.com/cloudflare/circl/sign/mldsa/mldsa44/internal
+#11 84.14 k8s.io/apimachinery/pkg/api/resource
+#11 84.14 k8s.io/apimachinery/pkg/runtime/schema
+#11 84.21 k8s.io/apimachinery/pkg/util/intstr
+#11 84.24 sigs.k8s.io/structured-merge-diff/v4/fieldpath
+#11 84.27 github.com/cloudflare/circl/internal/conv
+#11 84.28 github.com/cloudflare/circl/sign/dilithium/mode2
+#11 84.31 github.com/cloudflare/circl/sign/dilithium/mode5
+#11 84.32 github.com/cloudflare/circl/sign/dilithium/mode3
+#11 84.41 github.com/cloudflare/circl/sign/mldsa/mldsa65/internal
+#11 84.43 github.com/cloudflare/circl/sign/mldsa/mldsa87/internal
+#11 84.43 github.com/cloudflare/circl/math/fp25519
+#11 84.47 github.com/cloudflare/circl/math/fp448
+#11 84.48 github.com/cloudflare/circl/math/mlsbset
+#11 84.48 github.com/refraction-networking/utls/internal/boring
+#11 84.52 github.com/refraction-networking/utls/internal/helper
+#11 84.52 github.com/refraction-networking/utls/internal/hpke
+#11 84.54 github.com/cloudflare/circl/sign/mldsa/mldsa44
+#11 84.55 github.com/microcosm-cc/bluemonday
+#11 84.56 crypto/x509
+#11 84.60 net/textproto
+#11 84.60 vendor/golang.org/x/net/http/httpproxy
+#11 84.62 github.com/projectdiscovery/cloudlist/pkg/schema/validate
+#11 84.65 golang.org/x/net/internal/socket
+#11 84.66 k8s.io/utils/internal/third_party/forked/golang/net
+#11 84.71 github.com/mailru/easyjson/buffer
+#11 84.72 k8s.io/client-go/util/connrotation
+#11 84.74 github.com/google/uuid
+#11 84.74 github.com/prometheus/procfs
+#11 84.76 github.com/kylelemons/godebug/pretty
+#11 84.78 github.com/cloudflare/circl/dh/x25519
+#11 84.78 github.com/cloudflare/circl/sign/ed25519
+#11 84.80 github.com/mitchellh/mapstructure
+#11 84.80 github.com/cloudflare/circl/sign/mldsa/mldsa65
+#11 84.83 github.com/cloudflare/circl/dh/x448
+#11 84.83 k8s.io/utils/net
+#11 84.87 github.com/mailru/easyjson/jwriter
+#11 85.00 mime/multipart
+#11 85.00 vendor/golang.org/x/net/http/httpguts
+#11 85.02 golang.org/x/net/http/httpguts
+#11 85.05 k8s.io/apimachinery/pkg/util/validation
+#11 85.08 github.com/cloudflare/circl/ecc/goldilocks
+#11 85.14 github.com/cloudflare/circl/sign/mldsa/mldsa87
+#11 85.14 github.com/refraction-networking/utls/internal/quicvarint/protocol
+#11 85.16 github.com/refraction-networking/utls/internal/tls12
+#11 85.23 sigs.k8s.io/structured-merge-diff/v4/typed
+#11 85.26 github.com/akrylysov/pogreb/internal/errors
+#11 85.27 github.com/cloudflare/circl/sign/eddilithium2
+#11 85.28 github.com/cloudflare/circl/kem/xwing
+#11 85.31 github.com/refraction-networking/utls/internal/quicvarint
+#11 85.32 github.com/akrylysov/pogreb/internal/hash
+#11 85.39 github.com/syndtr/goleveldb/leveldb/util
+#11 85.42 github.com/syndtr/goleveldb/leveldb/storage
+#11 85.42 github.com/tidwall/grect
+#11 85.43 github.com/projectdiscovery/utils/strings
+#11 85.44 go.etcd.io/bbolt
+#11 85.50 debug/dwarf
+#11 85.52 internal/zstd
+#11 85.55 github.com/cloudflare/circl/sign/ed448
+#11 85.57 github.com/syndtr/goleveldb/leveldb/cache
+#11 85.58 github.com/syndtr/goleveldb/leveldb/filter
+#11 85.58 github.com/cloudflare/circl/hpke
+#11 85.61 github.com/tidwall/buntdb
+#11 85.69 golang.org/x/net/internal/socks
+#11 85.69 github.com/cloudflare/circl/sign/eddilithium3
+#11 85.85 github.com/cloudflare/circl/sign/schemes
+#11 85.89 github.com/syndtr/goleveldb/leveldb/opt
+#11 85.94 k8s.io/client-go/util/keyutil
+#11 85.95 github.com/golang-jwt/jwt/v5
+#11 85.99 golang.org/x/crypto/pkcs12
+#11 86.01 crypto/tls
+#11 86.14 github.com/cloudflare/circl/pki
+#11 86.17 github.com/syndtr/goleveldb/leveldb/errors
+#11 86.18 github.com/bodgit/sevenzip/internal/zstd
+#11 86.25 github.com/syndtr/goleveldb/leveldb/iterator
+#11 86.26 github.com/syndtr/goleveldb/leveldb/journal
+#11 86.31 k8s.io/apimachinery/pkg/labels
+#11 86.39 github.com/zmap/rc2
+#11 86.40 sigs.k8s.io/structured-merge-diff/v4/merge
+#11 86.44 github.com/syndtr/goleveldb/leveldb/memdb
+#11 86.45 k8s.io/client-go/applyconfigurations/internal
+#11 86.46 github.com/syndtr/goleveldb/leveldb/table
+#11 86.48 github.com/zmap/zcrypto/dsa
+#11 86.48 golang.org/x/net/proxy
+#11 86.48 github.com/asaskevich/govalidator
+#11 86.49 github.com/zmap/zcrypto/json
+#11 86.52 github.com/zmap/zcrypto/encoding/asn1
+#11 86.57 golang.org/x/net/ipv4
+#11 86.57 golang.org/x/net/ipv6
+#11 86.59 debug/elf
+#11 86.60 github.com/zmap/zcrypto/util
+#11 86.60 github.com/zmap/zcrypto/x509/ct
+#11 86.66 golang.org/x/crypto/ed25519
+#11 86.75 golang.org/x/sync/singleflight
+#11 86.83 github.com/digitalocean/godo/metrics
+#11 86.84 github.com/projectdiscovery/utils/reader
+#11 86.91 github.com/shopspring/decimal
+#11 86.93 github.com/ajg/form
+#11 86.95 golang.org/x/net/internal/timeseries
+#11 86.97 github.com/google/jsonapi
+#11 86.97 text/template/parse
+#11 86.98 text/tabwriter
+#11 87.00 google.golang.org/grpc/grpclog/internal
+#11 87.02 google.golang.org/grpc/attributes
+#11 87.04 github.com/syndtr/goleveldb/leveldb
+#11 87.06 google.golang.org/protobuf/internal/encoding/json
+#11 87.07 google.golang.org/grpc/internal/idle
+#11 87.15 google.golang.org/grpc/internal/resolver/dns/internal
+#11 87.17 github.com/googleapis/gax-go/v2/callctx
+#11 87.20 github.com/googleapis/gax-go/v2/internallog/internal
+#11 87.21 google.golang.org/grpc/grpclog
+#11 87.22 google.golang.org/api/iterator
+#11 87.26 cloud.google.com/go/auth/internal/jwt
+#11 87.30 cloud.google.com/go/auth/internal/credsfile
+#11 87.30 github.com/googleapis/enterprise-certificate-proxy/client/util
+#11 87.31 golang.org/x/oauth2/jws
+#11 87.37 github.com/google/s2a-go/internal/record/internal/aeadcrypter
+#11 87.38 cloud.google.com/go/auth/internal/compute
+#11 87.40 github.com/zmap/zcrypto/cryptobyte
+#11 87.40 go.opentelemetry.io/otel/attribute
+#11 87.41 github.com/zmap/zcrypto/x509/pkix
+#11 87.47 google.golang.org/grpc/connectivity
+#11 87.49 google.golang.org/grpc/internal/grpclog
+#11 87.51 google.golang.org/grpc/internal/syscall
+#11 87.53 github.com/googleapis/gax-go/v2/iterator
+#11 87.53 github.com/google/s2a-go/retry
+#11 87.54 google.golang.org/grpc/internal
+#11 87.54 github.com/go-logr/logr/funcr
+#11 87.56 go.opentelemetry.io/auto/sdk/internal/telemetry
+#11 87.56 google.golang.org/protobuf/encoding/protojson
+#11 87.57 go.opentelemetry.io/otel/codes
+#11 87.61 go.opentelemetry.io/otel/trace/internal/telemetry
+#11 87.65 go.opentelemetry.io/otel/baggage
+#11 87.66 text/template
+#11 87.68 google.golang.org/grpc/metadata
+#11 87.68 google.golang.org/grpc/internal/googlecloud
+#11 87.68 github.com/imdario/mergo
+#11 87.73 google.golang.org/grpc/codes
+#11 87.78 google.golang.org/grpc/mem
+#11 87.79 encoding/csv
+#11 87.85 github.com/pborman/uuid
+#11 87.85 google.golang.org/grpc/stats
+#11 87.87 google.golang.org/grpc/internal/grpcutil
+#11 87.92 google.golang.org/grpc/internal/balancerload
+#11 87.97 google.golang.org/grpc/tap
+#11 88.01 google.golang.org/grpc/experimental/stats
+#11 88.02 github.com/go-logr/stdr
+#11 88.02 github.com/hetznercloud/hcloud-go/hcloud/schema
+#11 88.03 runtime/trace
+#11 88.06 github.com/linode/linodego/internal/duration
+#11 88.07 github.com/spf13/pflag
+#11 88.12 go.opentelemetry.io/otel/semconv/v1.30.0
+#11 88.12 go.opentelemetry.io/otel/semconv/v1.26.0
+#11 88.13 google.golang.org/grpc/encoding
+#11 88.16 go.opentelemetry.io/otel/metric
+#11 88.17 go.opentelemetry.io/otel/semconv/v1.20.0
+#11 88.19 google.golang.org/grpc/internal/stats
+#11 88.23 sigs.k8s.io/aws-iam-authenticator/pkg/arn
+#11 88.27 github.com/hashicorp/cronexpr
+#11 88.27 testing
+#11 88.30 github.com/scaleway/scaleway-sdk-go/internal/errors
+#11 88.32 github.com/scaleway/scaleway-sdk-go/internal/marshaler
+#11 88.34 github.com/scaleway/scaleway-sdk-go/internal/parameter
+#11 88.34 github.com/scaleway/scaleway-sdk-go/logger
+#11 88.35 github.com/scaleway/scaleway-sdk-go/validation
+#11 88.39 github.com/scaleway/scaleway-sdk-go/internal/async
+#11 88.40 github.com/cnf/structhash
+#11 88.40 github.com/google/shlex
+#11 88.41 github.com/projectdiscovery/utils/permission
+#11 88.43 github.com/projectdiscovery/utils/time
+#11 88.47 github.com/Masterminds/semver/v3
+#11 88.47 archive/zip
+#11 88.51 github.com/googleapis/gax-go/v2/internallog/grpclog
+#11 88.52 github.com/dlclark/regexp2/syntax
+#11 88.55 google.golang.org/protobuf/internal/filetype
+#11 88.55 github.com/charmbracelet/x/ansi
+#11 88.56 github.com/aymanbagabas/go-osc52/v2
+#11 88.58 github.com/lucasb-eyer/go-colorful
+#11 88.59 github.com/yuin/goldmark/util
+#11 88.69 github.com/cheggaaa/pb/v3/termutil
+#11 88.72 go.opentelemetry.io/otel/metric/noop
+#11 88.75 golang.org/x/crypto/openpgp/elgamal
+#11 88.76 github.com/logrusorgru/aurora
+#11 88.78 golang.org/x/crypto/pbkdf2
+#11 88.79 google.golang.org/protobuf/runtime/protoimpl
+#11 88.79 html/template
+#11 88.86 github.com/cheggaaa/pb/v3
+#11 88.86 github.com/minio/selfupdate/internal/osext
+#11 88.87 golang.org/x/crypto/scrypt
+#11 88.93 github.com/projectdiscovery/machineid
+#11 88.96 google.golang.org/protobuf/types/descriptorpb
+#11 88.97 golang.org/x/crypto/openpgp/packet
+#11 88.98 google.golang.org/protobuf/types/known/anypb
+#11 89.00 google.golang.org/protobuf/types/known/durationpb
+#11 89.12 google.golang.org/protobuf/types/known/timestamppb
+#11 89.14 google.golang.org/genproto/googleapis/api
+#11 89.15 google.golang.org/genproto/googleapis/type/expr
+#11 89.15 github.com/golang/protobuf/ptypes/any
+#11 89.19 google.golang.org/protobuf/protoadapt
+#11 89.27 github.com/golang/protobuf/ptypes/duration
+#11 89.30 google.golang.org/genproto/googleapis/rpc/status
+#11 89.32 google.golang.org/protobuf/types/known/fieldmaskpb
+#11 89.32 google.golang.org/protobuf/types/known/emptypb
+#11 89.35 github.com/golang/protobuf/ptypes/timestamp
+#11 89.37 github.com/prometheus/client_model/go
+#11 89.37 google.golang.org/grpc/internal/pretty
+#11 89.39 google.golang.org/grpc/encoding/proto
+#11 89.54 google.golang.org/grpc/internal/status
+#11 89.55 google.golang.org/grpc/binarylog/grpc_binarylog_v1
+#11 89.55 google.golang.org/genproto/googleapis/identity/accesscontextmanager/type
+#11 89.56 cloud.google.com/go/orgpolicy/apiv1/orgpolicypb
+#11 89.58 google.golang.org/genproto/googleapis/type/date
+#11 89.64 github.com/prometheus/client_golang/prometheus/internal
+#11 89.65 google.golang.org/genproto/googleapis/type/datetime
+#11 89.70 google.golang.org/genproto/googleapis/type/dayofweek
+#11 89.74 google.golang.org/genproto/googleapis/type/timeofday
+#11 89.76 google.golang.org/genproto/googleapis/rpc/code
+#11 89.78 google.golang.org/protobuf/types/known/structpb
+#11 89.83 google.golang.org/genproto/googleapis/rpc/errdetails
+#11 89.84 google.golang.org/grpc/status
+#11 89.93 github.com/google/s2a-go/internal/proto/common_go_proto
+#11 89.95 github.com/google/s2a-go/internal/proto/v2/common_go_proto
+#11 89.95 go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc/internal
+#11 89.97 go.opentelemetry.io/otel/trace
+#11 89.98 github.com/googleapis/gax-go/v2/apierror/internal/proto
+#11 89.99 github.com/dlclark/regexp2
+#11 89.99 net/http/httptrace
+#11 90.02 k8s.io/client-go/util/cert
+#11 90.03 github.com/hashicorp/go-rootcerts
+#11 90.05 github.com/miekg/dns
+#11 90.05 google.golang.org/grpc/internal/credentials
+#11 90.06 google.golang.org/grpc/internal/binarylog
+#11 90.11 github.com/muesli/termenv
+#11 90.14 golang.org/x/net/internal/httpcommon
+#11 90.15 aead.dev/minisign
+#11 90.16 google.golang.org/grpc/credentials
+#11 90.16 net/http
+#11 90.18 github.com/shirou/gopsutil/v3/internal/common
+#11 90.20 github.com/google/s2a-go/internal/proto/s2a_context_go_proto
+#11 90.22 github.com/google/s2a-go/internal/record/internal/halfconn
+#11 90.22 github.com/google/s2a-go/internal/tokenmanager
+#11 90.23 github.com/google/s2a-go/internal/proto/v2/s2a_context_go_proto
+#11 90.29 golang.org/x/crypto/openpgp
+#11 90.31 github.com/tklauser/numcpus
+#11 90.33 github.com/zcalusic/sysinfo
+#11 90.33 google.golang.org/protobuf/internal/editionssupport
+#11 90.36 google.golang.org/protobuf/types/gofeaturespb
+#11 90.38 google.golang.org/genproto/googleapis/api/annotations
+#11 90.45 google.golang.org/grpc/credentials/insecure
+#11 90.45 google.golang.org/grpc/resolver
+#11 90.46 google.golang.org/grpc/peer
+#11 90.47 github.com/google/s2a-go/fallback
+#11 90.47 google.golang.org/grpc/internal/channelz
+#11 90.48 google.golang.org/grpc/credentials/alts/internal
+#11 90.48 github.com/tklauser/go-sysconf
+#11 90.52 google.golang.org/grpc/credentials/alts/internal/conn
+#11 90.63 google.golang.org/grpc/internal/resolver/passthrough
+#11 90.63 google.golang.org/grpc/internal/transport/networktype
+#11 90.64 google.golang.org/grpc/internal/proxyattributes
+#11 90.64 google.golang.org/grpc/internal/metadata
+#11 90.64 google.golang.org/grpc/balancer/grpclb/state
+#11 90.65 google.golang.org/grpc/internal/xds
+#11 90.69 google.golang.org/grpc/internal/resolver/dns
+#11 90.70 google.golang.org/grpc/internal/resolver/unix
+#11 90.70 google.golang.org/grpc/resolver/manual
+#11 90.74 go.opentelemetry.io/otel/trace/noop
+#11 90.75 google.golang.org/protobuf/reflect/protodesc
+#11 90.76 github.com/shirou/gopsutil/v3/net
+#11 90.76 github.com/shirou/gopsutil/v3/cpu
+#11 90.76 github.com/shirou/gopsutil/v3/mem
+#11 90.79 github.com/charmbracelet/lipgloss
+#11 90.83 go.opentelemetry.io/auto/sdk
+#11 90.86 google.golang.org/grpc/resolver/dns
+#11 91.03 google.golang.org/grpc/channelz
+#11 91.06 google.golang.org/grpc/balancer
+#11 91.09 github.com/shirou/gopsutil/v3/process
+#11 91.17 google.golang.org/grpc/balancer/base
+#11 91.17 google.golang.org/grpc/balancer/pickfirst/pickfirstleaf
+#11 91.18 google.golang.org/grpc/internal/serviceconfig
+#11 91.25 github.com/alecthomas/chroma/v2
+#11 91.33 google.golang.org/grpc/internal/resolver
+#11 91.45 google.golang.org/grpc/balancer/endpointsharding
+#11 91.45 google.golang.org/grpc/internal/balancer/gracefulswitch
+#11 91.52 github.com/golang/protobuf/proto
+#11 91.56 google.golang.org/grpc/balancer/pickfirst
+#11 91.63 google.golang.org/grpc/balancer/roundrobin
+#11 91.63 github.com/charmbracelet/lipgloss/table
+#11 91.80 github.com/goccy/go-json/internal/encoder/vm_color
+#11 91.98 github.com/alecthomas/chroma/v2/formatters/html
+#11 91.98 github.com/alecthomas/chroma/v2/formatters/svg
+#11 91.99 github.com/alecthomas/chroma/v2/styles
+#11 92.00 github.com/alecthomas/chroma/v2/lexers
+#11 92.23 github.com/alecthomas/chroma/v2/formatters
+#11 92.31 github.com/matttproud/golang_protobuf_extensions/pbutil
+#11 92.31 github.com/golang/protobuf/ptypes
+#11 92.47 github.com/google/gnostic-models/extensions
+#11 93.40 github.com/alecthomas/chroma/v2/quick
+#11 93.87 github.com/yuin/goldmark/text
+#11 93.97 github.com/yuin/goldmark/ast
+#11 94.14 github.com/opentracing/opentracing-go
+#11 94.14 k8s.io/apimachinery/pkg/util/runtime
+#11 94.14 github.com/go-openapi/swag
+#11 94.14 net/http/httputil
+#11 94.14 github.com/aliyun/alibaba-cloud-sdk-go/sdk/responses
+#11 94.14 github.com/AzureAD/microsoft-authentication-library-for-go/apps/internal/shared
+#11 94.14 github.com/emicklei/go-restful/v3
+#11 94.14 github.com/google/gnostic-models/compiler
+#11 94.14 github.com/Azure/azure-sdk-for-go/sdk/internal/exported
+#11 94.14 github.com/AzureAD/microsoft-authentication-library-for-go/apps/internal/oauth/ops/authority
+#11 94.14 golang.org/x/oauth2/internal
+#11 94.14 github.com/AzureAD/microsoft-authentication-library-for-go/apps/internal/local
+#11 94.14 expvar
+#11 94.14 github.com/AzureAD/microsoft-authentication-library-for-go/apps/errors
+#11 94.14 github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared
+#11 94.15 github.com/aws/aws-sdk-go/aws
+#11 94.15 github.com/prometheus/common/expfmt
+#11 94.15 golang.org/x/net/http2
+#11 94.22 k8s.io/apimachinery/pkg/runtime
+#11 94.23 k8s.io/apimachinery/pkg/util/wait
+#11 94.23 k8s.io/client-go/util/workqueue
+#11 94.24 github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported
+#11 94.27 github.com/Azure/azure-sdk-for-go/sdk/internal/poller
+#11 94.35 github.com/AzureAD/microsoft-authentication-library-for-go/apps/internal/oauth/ops/internal/comm
+#11 94.36 github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests
+#11 94.42 github.com/opentracing/opentracing-go/ext
+#11 94.50 golang.org/x/oauth2
+#11 94.51 github.com/AzureAD/microsoft-authentication-library-for-go/apps/internal/oauth/ops/wstrust/defs
+#11 94.62 github.com/aws/aws-sdk-go/aws/auth/bearer
+#11 94.64 github.com/aws/aws-sdk-go/aws/request
+#11 94.67 github.com/andybalholm/brotli
+#11 94.68 github.com/aws/aws-sdk-go/private/protocol/eventstream
+#11 94.68 github.com/projectdiscovery/utils/maps
+#11 94.78 github.com/google/gnostic-models/openapiv2
+#11 94.82 github.com/google/gnostic-models/openapiv3
+#11 94.86 github.com/AzureAD/microsoft-authentication-library-for-go/apps/internal/oauth/ops/wstrust
+#11 94.91 github.com/spf13/afero
+#11 94.94 github.com/hashicorp/go-cleanhttp
+#11 94.97 github.com/prometheus/client_golang/prometheus
+#11 95.03 go4.org/readerutil
+#11 95.04 github.com/Azure/azure-sdk-for-go/sdk/azcore/policy
+#11 95.07 github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers
+#11 95.08 github.com/projectdiscovery/cloudlist/pkg/schema
+#11 95.14 git.arvancloud.ir/arvancloud/cdn-go-sdk
+#11 95.15 github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming
+#11 95.20 github.com/AzureAD/microsoft-authentication-library-for-go/apps/internal/oauth/ops/accesstokens
+#11 95.24 github.com/armon/go-metrics
+#11 95.28 github.com/hashicorp/go-retryablehttp
+#11 95.29 github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/async
+#11 95.35 github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/body
+#11 95.41 github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/fake
+#11 95.48 github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/loc
+#11 95.52 github.com/aws/aws-sdk-go/aws/client
+#11 95.54 github.com/aws/aws-sdk-go/aws/corehandlers
+#11 95.55 github.com/aws/aws-sdk-go/private/protocol
+#11 95.56 github.com/aliyun/alibaba-cloud-sdk-go/sdk/auth/signers
+#11 95.56 github.com/aliyun/alibaba-cloud-sdk-go/sdk/endpoints
+#11 95.67 github.com/aws/aws-sdk-go/aws/csm
+#11 95.68 github.com/aws/aws-sdk-go/internal/s3shared
+#11 95.71 github.com/aws/aws-sdk-go/internal/s3shared/s3err
+#11 95.88 github.com/aws/aws-sdk-go/private/checksum
+#11 95.88 github.com/go-openapi/jsonpointer
+#11 95.97 github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/op
+#11 96.00 github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy
+#11 96.03 github.com/aws/aws-sdk-go/aws/ec2metadata
+#11 96.04 github.com/aliyun/alibaba-cloud-sdk-go/sdk/auth
+#11 96.05 github.com/AzureAD/microsoft-authentication-library-for-go/apps/internal/oauth/ops
+#11 96.06 github.com/projectdiscovery/utils/ip
+#11 96.09 github.com/hashicorp/serf/coordinate
+#11 96.12 github.com/aws/aws-sdk-go/private/protocol/rest
+#11 96.18 github.com/aws/aws-sdk-go/private/protocol/query/queryutil
+#11 96.26 github.com/aws/aws-sdk-go/private/protocol/xml/xmlutil
+#11 96.27 github.com/aws/aws-sdk-go/private/protocol/json/jsonutil
+#11 96.28 github.com/aws/aws-sdk-go/private/protocol/eventstream/eventstreamapi
+#11 96.32 github.com/AzureAD/microsoft-authentication-library-for-go/apps/internal/oauth
+#11 96.39 github.com/aliyun/alibaba-cloud-sdk-go/sdk/auth/credentials/provider
+#11 96.42 github.com/go-openapi/jsonreference
+#11 96.50 github.com/projectdiscovery/utils/url
+#11 96.52 github.com/Mzack9999/go-http-digest-auth-client
+#11 96.56 github.com/hashicorp/consul/api
+#11 96.57 github.com/akrylysov/pogreb
+#11 96.66 k8s.io/kube-openapi/pkg/internal
+#11 96.67 github.com/projectdiscovery/utils/file
+#11 96.70 github.com/aws/aws-sdk-go/aws/credentials/ec2rolecreds
+#11 96.71 github.com/aliyun/alibaba-cloud-sdk-go/sdk
+#11 96.80 github.com/aws/aws-sdk-go/aws/credentials/endpointcreds
+#11 96.84 github.com/aws/aws-sdk-go/private/protocol/query
+#11 96.96 github.com/aws/aws-sdk-go/aws/signer/v4
+#11 97.02 github.com/aws/aws-sdk-go/private/protocol/jsonrpc
+#11 97.08 github.com/aws/aws-sdk-go/private/protocol/ec2query
+#11 97.14 k8s.io/apimachinery/pkg/runtime/serializer/recognizer
+#11 97.14 github.com/aws/aws-sdk-go/private/protocol/restxml
+#11 97.18 k8s.io/apimachinery/pkg/runtime/serializer/streaming
+#11 97.18 github.com/aws/aws-sdk-go/aws/defaults
+#11 97.20 k8s.io/client-go/tools/clientcmd/api
+#11 97.21 github.com/aws/aws-sdk-go/private/protocol/restjson
+#11 97.26 github.com/AzureAD/microsoft-authentication-library-for-go/apps/internal/base/storage
+#11 97.28 k8s.io/apimachinery/pkg/runtime/serializer/json
+#11 97.30 github.com/projectdiscovery/networkpolicy
+#11 97.45 github.com/projectdiscovery/hmap/store/disk
+#11 97.49 github.com/aws/aws-sdk-go/service/sts
+#11 97.53 github.com/aws/aws-sdk-go/service/cloudfront
+#11 97.66 github.com/aws/aws-sdk-go/service/ecs
+#11 97.71 github.com/aws/aws-sdk-go/service/elb
+#11 97.74 github.com/aliyun/alibaba-cloud-sdk-go/services/ecs
+#11 97.75 github.com/aws/aws-sdk-go/service/sso
+#11 97.75 github.com/aws/aws-sdk-go/service/elbv2
+#11 97.75 github.com/aws/aws-sdk-go/service/lightsail
+#11 97.75 github.com/aws/aws-sdk-go/service/ec2
+#11 97.77 github.com/aws/aws-sdk-go/service/ssooidc
+#11 97.81 github.com/aws/aws-sdk-go/service/apigateway
+#11 98.64 github.com/aws/aws-sdk-go/service/apigatewayv2
+#11 98.73 github.com/aws/aws-sdk-go/service/eks
+#11 98.78 github.com/aws/aws-sdk-go/service/sts/stsiface
+#11 98.78 github.com/aws/aws-sdk-go/service/lambda
+#11 98.83 github.com/aws/aws-sdk-go/service/sso/ssoiface
+#11 99.12 github.com/aws/aws-sdk-go/aws/credentials/stscreds
+#11 99.17 github.com/aws/aws-sdk-go/aws/credentials/ssocreds
+#11 100.0 github.com/aws/aws-sdk-go/service/route53
+#11 100.1 github.com/aws/aws-sdk-go/aws/session
+#11 100.4 github.com/aws/aws-sdk-go/service/s3
+#11 100.4 k8s.io/apimachinery/pkg/util/net
+#11 100.7 github.com/prometheus/client_golang/prometheus/promauto
+#11 100.8 github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime
+#11 101.1 sigs.k8s.io/aws-iam-authenticator/pkg/metrics
+#11 101.2 github.com/AzureAD/microsoft-authentication-library-for-go/apps/internal/base
+#11 101.3 github.com/goccy/go-json/internal/encoder/vm_indent
+#11 101.3 k8s.io/apimachinery/pkg/watch
+#11 101.4 k8s.io/client-go/transport
+#11 101.8 github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential
+#11 101.9 k8s.io/apimachinery/pkg/apis/meta/v1
+#11 102.1 k8s.io/kube-openapi/pkg/util/proto
+#11 102.1 k8s.io/kube-openapi/pkg/validation/spec
+#11 102.4 github.com/Azure/azure-sdk-for-go/sdk/azcore
+#11 102.9 github.com/AzureAD/microsoft-authentication-library-for-go/apps/managedidentity
+#11 103.4 github.com/AzureAD/microsoft-authentication-library-for-go/apps/public
+#11 103.5 github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime
+#11 103.6 github.com/projectdiscovery/cloudlist/pkg/providers/consul
+#11 104.1 github.com/projectdiscovery/hmap/store/hybrid
+#11 104.2 github.com/Azure/azure-sdk-for-go/sdk/azcore/arm
+#11 104.5 github.com/Azure/azure-sdk-for-go/sdk/azidentity
+#11 105.2 github.com/projectdiscovery/retryabledns/doh
+#11 105.4 k8s.io/kube-openapi/pkg/schemaconv
+#11 105.4 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers
+#11 105.5 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement
+#11 105.9 k8s.io/kube-openapi/pkg/spec3
+#11 106.0 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice
+#11 106.4 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn
+#11 106.6 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute
+#11 106.7 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance
+#11 106.9 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice
+#11 107.1 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns
+#11 107.1 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor
+#11 107.1 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources
+#11 107.4 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork
+#11 107.5 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions
+#11 108.1 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage
+#11 108.4 k8s.io/kube-openapi/pkg/common
+#11 108.5 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/trafficmanager/armtrafficmanager
+#11 109.0 github.com/bodgit/sevenzip/internal/brotli
+#11 109.4 github.com/bodgit/sevenzip
+#11 109.7 github.com/refraction-networking/utls
+#11 110.3 k8s.io/kube-openapi/pkg/handler3
+#11 110.5 k8s.io/api/core/v1
+#11 110.7 k8s.io/api/apidiscovery/v2
+#11 111.3 k8s.io/api/apidiscovery/v2beta1
+#11 111.9 k8s.io/apimachinery/pkg/api/errors
+#11 112.3 k8s.io/apimachinery/pkg/runtime/serializer/protobuf
+#11 112.6 k8s.io/apimachinery/pkg/apis/meta/v1/unstructured
+#11 113.7 k8s.io/api/apiserverinternal/v1alpha1
+#11 113.8 k8s.io/apimachinery/pkg/runtime/serializer/versioning
+#11 113.8 k8s.io/api/admissionregistration/v1
+#11 113.9 k8s.io/api/authentication/v1
+#11 113.9 k8s.io/api/authorization/v1
+#11 117.6 k8s.io/api/authorization/v1beta1
+#11 117.7 k8s.io/apimachinery/pkg/runtime/serializer
+#11 118.1 k8s.io/api/certificates/v1alpha1
+#11 118.2 k8s.io/api/coordination/v1
+#11 118.2 k8s.io/api/coordination/v1beta1
+#11 118.4 k8s.io/api/authentication/v1alpha1
+#11 118.6 k8s.io/api/flowcontrol/v1
+#11 118.6 k8s.io/api/authentication/v1beta1
+#11 118.7 k8s.io/api/flowcontrol/v1beta1
+#11 119.0 k8s.io/api/flowcontrol/v1beta2
+#11 119.2 k8s.io/api/flowcontrol/v1beta3
+#11 119.3 k8s.io/api/networking/v1alpha1
+#11 119.9 k8s.io/api/policy/v1
+#11 120.3 k8s.io/api/admissionregistration/v1alpha1
+#11 120.4 k8s.io/api/admissionregistration/v1beta1
+#11 120.6 k8s.io/api/policy/v1beta1
+#11 120.6 k8s.io/api/rbac/v1
+#11 121.0 k8s.io/api/rbac/v1alpha1
+#11 121.2 k8s.io/api/rbac/v1beta1
+#11 121.5 k8s.io/apimachinery/pkg/api/meta
+#11 121.7 k8s.io/apimachinery/pkg/api/equality
+#11 121.7 k8s.io/apimachinery/pkg/apis/meta/v1/validation
+#11 122.5 k8s.io/client-go/pkg/apis/clientauthentication
+#11 122.5 k8s.io/client-go/rest/watch
+#11 122.6 github.com/mholt/archives
+#11 122.8 github.com/projectdiscovery/retryabledns/hostsfile
+#11 122.9 k8s.io/client-go/pkg/apis/clientauthentication/v1
+#11 123.0 k8s.io/client-go/pkg/apis/clientauthentication/v1beta1
+#11 123.1 github.com/projectdiscovery/fastdialer/fastdialer/utils
+#11 123.1 github.com/projectdiscovery/retryabledns
+#11 123.2 net/http/cookiejar
+#11 123.4 github.com/digitalocean/godo
+#11 123.7 github.com/weppos/publicsuffix-go/publicsuffix
+#11 123.7 k8s.io/client-go/pkg/apis/clientauthentication/install
+#11 124.0 k8s.io/apimachinery/pkg/api/validation
+#11 124.4 k8s.io/client-go/plugin/pkg/client/auth/exec
+#11 124.8 sigs.k8s.io/aws-iam-authenticator/pkg/token
+#11 125.0 github.com/projectdiscovery/fastdialer/fastdialer/metafiles
+#11 125.1 github.com/zmap/zcrypto/x509
+#11 125.2 k8s.io/apimachinery/pkg/util/managedfields/internal
+#11 125.3 github.com/projectdiscovery/fastdialer/fastdialer/ja3/impersonate
+#11 125.3 github.com/dnsimple/dnsimple-go/dnsimple
+#11 125.4 k8s.io/client-go/rest
+#11 125.6 github.com/projectdiscovery/gologger/writer
+#11 125.7 golang.org/x/net/trace
+#11 125.7 github.com/fastly/go-fastly/v3/fastly
+#11 125.7 google.golang.org/grpc/internal/transport
+#11 125.8 google.golang.org/api/googleapi
+#11 126.1 github.com/projectdiscovery/gologger
+#11 126.4 github.com/googleapis/gax-go/v2/internallog
+#11 126.4 github.com/googleapis/gax-go/v2/apierror
+#11 126.9 cloud.google.com/go/compute/metadata
+#11 127.2 golang.org/x/oauth2/authhandler
+#11 127.6 k8s.io/apimachinery/pkg/util/managedfields
+#11 127.6 golang.org/x/oauth2/google/internal/impersonate
+#11 127.7 golang.org/x/oauth2/google/internal/stsexchange
+#11 127.8 golang.org/x/oauth2/jwt
+#11 128.0 net/rpc
+#11 128.2 golang.org/x/oauth2/google/externalaccount
+#11 128.3 github.com/goccy/go-json/internal/encoder/vm
+#11 128.6 github.com/zmap/zcrypto/tls
+#11 128.8 cloud.google.com/go/auth/internal
+#11 129.1 cloud.google.com/go/auth
+#11 129.2 golang.org/x/oauth2/google/internal/externalaccountauthorizeduser
+#11 129.2 github.com/projectdiscovery/cloudlist/pkg/providers/dnssimple
+#11 129.5 github.com/googleapis/enterprise-certificate-proxy/client
+#11 129.5 k8s.io/client-go/openapi
+#11 129.5 google.golang.org/api/internal/impersonate
+#11 129.6 golang.org/x/oauth2/google
+#11 129.8 cloud.google.com/go/auth/internal/transport/cert
+#11 130.2 go.opentelemetry.io/otel/propagation
+#11 130.2 google.golang.org/api/internal/cert
+#11 130.2 github.com/projectdiscovery/cloudlist/pkg/providers/digitalocean
+#11 130.3 google.golang.org/grpc/credentials/oauth
+#11 130.4 github.com/felixge/httpsnoop
+#11 130.5 go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp/internal/request
+#11 130.5 google.golang.org/grpc/internal/resolver/delegatingresolver
+#11 130.6 go.opentelemetry.io/otel/internal/global
+#11 130.6 go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp/internal/semconvutil
+#11 130.8 google.golang.org/api/googleapi/transport
+#11 131.0 cloud.google.com/go/auth/credentials/internal/impersonate
+#11 131.0 cloud.google.com/go/auth/credentials/internal/stsexchange
+#11 131.1 cloud.google.com/go/auth/credentials/internal/gdch
+#11 131.1 cloud.google.com/go/auth/oauth2adapt
+#11 131.4 k8s.io/client-go/tools/auth
+#11 131.4 cloud.google.com/go/auth/credentials/internal/externalaccountuser
+#11 131.5 k8s.io/client-go/tools/clientcmd/api/v1
+#11 131.6 github.com/heroku/heroku-go/v5
+#11 131.6 github.com/prometheus/client_golang/prometheus/promhttp
+#11 131.7 golang.org/x/net/publicsuffix
+#11 131.7 google.golang.org/grpc
+#11 131.7 cloud.google.com/go/auth/credentials/internal/externalaccount
+#11 131.7 github.com/namecheap/go-namecheap-sdk/v2/namecheap
+#11 131.9 github.com/gorilla/websocket
+#11 132.0 github.com/go-resty/resty/v2
+#11 132.2 go.opentelemetry.io/otel
+#11 132.3 k8s.io/client-go/tools/clientcmd/api/latest
+#11 132.6 go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp/internal/semconv
+#11 132.6 k8s.io/client-go/tools/clientcmd
+#11 132.7 github.com/projectdiscovery/cloudlist/pkg/providers/namecheap
+#11 132.8 cloud.google.com/go/auth/credentials
+#11 132.9 github.com/projectdiscovery/utils/crypto
+#11 133.8 github.com/projectdiscovery/fastdialer/fastdialer
+#11 133.9 github.com/gophercloud/gophercloud
+#11 134.5 github.com/hashicorp/nomad/api
+#11 134.9 github.com/linode/linodego
+#11 135.0 go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp
+#11 135.4 github.com/scaleway/scaleway-sdk-go/internal/auth
+#11 135.6 github.com/scaleway/scaleway-sdk-go/scw
+#11 135.8 github.com/hetznercloud/hcloud-go/hcloud/internal/instrumentation
+#11 135.9 github.com/projectdiscovery/cloudlist/pkg/providers/terraform
+#11 136.2 github.com/projectdiscovery/cloudlist/pkg/providers/vercel
+#11 136.5 github.com/projectdiscovery/cloudlist/pkg/providers/heroku
+#11 136.6 github.com/hetznercloud/hcloud-go/hcloud
+#11 136.6 github.com/gophercloud/gophercloud/pagination
+#11 137.5 github.com/gophercloud/gophercloud/openstack/identity/v2/tenants
+#11 137.5 github.com/gophercloud/gophercloud/openstack/identity/v3/tokens
+#11 138.0 github.com/projectdiscovery/cloudlist/pkg/providers/fastly
+#11 138.0 github.com/projectdiscovery/cloudlist/pkg/providers/nomad
+#11 138.0 github.com/gophercloud/gophercloud/openstack/identity/v3/extensions/ec2tokens
+#11 138.1 cloud.google.com/go/iam/apiv1/iampb
+#11 138.1 cloud.google.com/go/longrunning/autogen/longrunningpb
+#11 138.4 github.com/googleapis/gax-go/v2
+#11 138.5 github.com/google/s2a-go/internal/proto/s2a_go_proto
+#11 138.6 github.com/google/s2a-go/internal/handshaker/service
+#11 138.6 github.com/google/s2a-go/internal/proto/v2/s2a_go_proto
+#11 139.0 cloud.google.com/go/osconfig/apiv1/osconfigpb
+#11 139.2 go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc
+#11 139.3 google.golang.org/grpc/credentials/alts/internal/proto/grpc_gcp
+#11 139.4 google.golang.org/grpc/credentials/alts/internal/handshaker/service
+#11 139.5 cloud.google.com/go/accesscontextmanager/apiv1/accesscontextmanagerpb
+#11 139.7 google.golang.org/grpc/balancer/grpclb/grpc_lb_v1
+#11 139.7 github.com/gophercloud/gophercloud/openstack/identity/v2/tokens
+#11 139.9 github.com/google/s2a-go/internal/authinfo
+#11 140.0 github.com/google/s2a-go/internal/record
+#11 140.3 github.com/gophercloud/gophercloud/openstack/identity/v3/extensions/oauth1
+#11 140.3 github.com/gophercloud/gophercloud/openstack/utils
+#11 140.3 github.com/gophercloud/gophercloud/openstack/compute/v2/servers
+#11 140.6 github.com/google/s2a-go/stream
+#11 140.6 github.com/projectdiscovery/cloudlist/pkg/providers/linode
+#11 140.6 google.golang.org/grpc/balancer/grpclb
+#11 140.6 github.com/scaleway/scaleway-sdk-go/api/marketplace/v1
+#11 140.7 github.com/projectdiscovery/utils/folder
+#11 141.3 github.com/scaleway/scaleway-sdk-go/api/instance/v1
+#11 141.3 github.com/projectdiscovery/retryablehttp-go
+#11 141.3 github.com/projectdiscovery/cloudlist/pkg/providers/hetzner
+#11 141.4 github.com/gophercloud/gophercloud/openstack
+#11 141.5 github.com/google/s2a-go/internal/v2/certverifier
+#11 141.5 github.com/google/s2a-go/internal/v2/remotesigner
+#11 141.6 github.com/projectdiscovery/goflags
+#11 141.7 github.com/projectdiscovery/cloudlist/pkg/providers/arvancloud
+#11 141.7 github.com/yuin/goldmark-emoji/ast
+#11 141.8 github.com/yuin/goldmark/extension/ast
+#11 141.8 google.golang.org/grpc/credentials/alts/internal/authinfo
+#11 142.0 github.com/google/s2a-go/internal/handshaker
+#11 142.0 github.com/google/s2a-go/internal/v2/tlsconfigstore
+#11 142.1 github.com/yuin/goldmark/renderer
+#11 142.1 github.com/projectdiscovery/cloudlist/pkg/providers/openstack
+#11 142.1 google.golang.org/grpc/credentials/alts/internal/handshaker
+#11 142.2 github.com/yuin/goldmark/parser
+#11 142.3 github.com/yuin/goldmark/renderer/html
+#11 142.5 github.com/google/go-github/v30/github
+#11 142.7 github.com/google/s2a-go/internal/v2
+#11 142.8 google.golang.org/grpc/credentials/alts
+#11 143.2 github.com/minio/selfupdate
+#11 143.2 github.com/projectdiscovery/utils/process
+#11 143.5 google.golang.org/grpc/credentials/google
+#11 143.6 github.com/charmbracelet/glamour/ansi
+#11 144.3 cloud.google.com/go/asset/apiv1/assetpb
+#11 144.3 github.com/yuin/goldmark
+#11 144.5 github.com/google/s2a-go
+#11 144.6 github.com/charmbracelet/glamour/styles
+#11 144.6 github.com/projectdiscovery/cloudlist/pkg/providers/scaleway
+#11 144.6 github.com/yuin/goldmark-emoji
+#11 144.6 github.com/yuin/goldmark/extension
+#11 144.9 cloud.google.com/go/auth/internal/transport
+#11 144.9 google.golang.org/api/internal
+#11 145.0 github.com/projectdiscovery/cloudlist/pkg/providers/custom
+#11 145.3 cloud.google.com/go/auth/httptransport
+#11 145.3 github.com/charmbracelet/glamour
+#11 145.3 cloud.google.com/go/auth/grpctransport
+#11 145.9 google.golang.org/api/option
+#11 146.0 google.golang.org/api/internal/gensupport
+#11 146.2 google.golang.org/api/transport/http
+#11 146.3 google.golang.org/api/option/internaloption
+#11 146.3 k8s.io/api/autoscaling/v2
+#11 146.3 k8s.io/api/batch/v1
+#11 146.3 k8s.io/api/autoscaling/v2beta1
+#11 146.3 k8s.io/api/autoscaling/v1
+#11 146.3 k8s.io/api/apps/v1beta1
+#11 146.3 k8s.io/api/autoscaling/v2beta2
+#11 146.3 k8s.io/api/apps/v1beta2
+#11 146.3 k8s.io/api/apps/v1
+#11 146.3 k8s.io/api/certificates/v1
+#11 147.0 k8s.io/api/certificates/v1beta1
+#11 147.5 k8s.io/api/discovery/v1
+#11 147.6 k8s.io/api/discovery/v1beta1
+#11 147.9 k8s.io/api/events/v1
+#11 148.1 k8s.io/api/events/v1beta1
+#11 148.2 k8s.io/api/networking/v1
+#11 148.2 k8s.io/api/networking/v1beta1
+#11 148.2 k8s.io/api/node/v1
+#11 148.5 k8s.io/api/batch/v1beta1
+#11 148.9 k8s.io/api/node/v1alpha1
+#11 149.0 k8s.io/api/node/v1beta1
+#11 149.1 k8s.io/api/resource/v1alpha2
+#11 149.2 k8s.io/api/scheduling/v1
+#11 149.4 k8s.io/api/scheduling/v1alpha1
+#11 149.4 k8s.io/api/scheduling/v1beta1
+#11 149.8 k8s.io/api/storage/v1
+#11 149.9 k8s.io/api/storage/v1alpha1
+#11 150.0 k8s.io/api/storage/v1beta1
+#11 150.0 k8s.io/api/storagemigration/v1alpha1
+#11 150.4 k8s.io/client-go/tools/reference
+#11 150.4 google.golang.org/api/transport/grpc
+#11 150.5 google.golang.org/api/cloudfunctions/v1
+#11 150.5 google.golang.org/api/cloudfunctions/v2
+#11 150.6 k8s.io/api/extensions/v1beta1
+#11 150.9 google.golang.org/api/cloudresourcemanager/v1
+#11 151.0 google.golang.org/api/dns/v1
+#11 151.0 google.golang.org/api/container/v1beta1
+#11 151.0 google.golang.org/api/compute/v1
+#11 151.3 google.golang.org/api/iamcredentials/v1
+#11 151.6 cloud.google.com/go/longrunning/autogen
+#11 151.7 google.golang.org/api/run/v1
+#11 151.7 google.golang.org/api/storage/v1
+#11 152.8 cloud.google.com/go/longrunning
+#11 153.2 cloud.google.com/go/asset/apiv1
+#11 153.3 github.com/projectdiscovery/utils/update
+#11 155.0 k8s.io/client-go/kubernetes/scheme
+#11 155.4 k8s.io/client-go/discovery
+#11 155.4 k8s.io/client-go/kubernetes/typed/authentication/v1alpha1
+#11 155.4 k8s.io/client-go/kubernetes/typed/authentication/v1
+#11 155.4 k8s.io/client-go/kubernetes/typed/authentication/v1beta1
+#11 155.4 k8s.io/client-go/kubernetes/typed/authorization/v1beta1
+#11 155.5 k8s.io/client-go/kubernetes/typed/authorization/v1
+#11 157.0 k8s.io/client-go/applyconfigurations/meta/v1
+#11 157.3 k8s.io/client-go/applyconfigurations/coordination/v1
+#11 157.3 k8s.io/client-go/applyconfigurations/coordination/v1beta1
+#11 157.3 k8s.io/client-go/applyconfigurations/certificates/v1alpha1
+#11 157.3 k8s.io/client-go/applyconfigurations/apiserverinternal/v1alpha1
+#11 157.3 k8s.io/client-go/applyconfigurations/certificates/v1beta1
+#11 157.3 k8s.io/client-go/applyconfigurations/certificates/v1
+#11 157.3 k8s.io/client-go/applyconfigurations/autoscaling/v1
+#11 157.4 k8s.io/client-go/applyconfigurations/admissionregistration/v1
+#11 157.4 k8s.io/client-go/applyconfigurations/flowcontrol/v1
+#11 157.4 k8s.io/client-go/applyconfigurations/flowcontrol/v1beta1
+#11 157.4 k8s.io/client-go/applyconfigurations/flowcontrol/v1beta2
+#11 157.4 k8s.io/client-go/applyconfigurations/autoscaling/v2beta2
+#11 157.4 k8s.io/client-go/applyconfigurations/autoscaling/v2
+#11 157.4 k8s.io/client-go/applyconfigurations/autoscaling/v2beta1
+#11 157.4 k8s.io/client-go/applyconfigurations/flowcontrol/v1beta3
+#11 158.1 k8s.io/client-go/kubernetes/typed/coordination/v1beta1
+#11 158.1 k8s.io/client-go/kubernetes/typed/certificates/v1alpha1
+#11 158.2 k8s.io/client-go/kubernetes/typed/certificates/v1
+#11 158.2 k8s.io/client-go/applyconfigurations/core/v1
+#11 158.2 k8s.io/client-go/kubernetes/typed/autoscaling/v2beta2
+#11 158.2 k8s.io/client-go/kubernetes/typed/autoscaling/v1
+#11 158.2 k8s.io/client-go/kubernetes/typed/certificates/v1beta1
+#11 158.2 k8s.io/client-go/kubernetes/typed/coordination/v1
+#11 158.3 k8s.io/client-go/kubernetes/typed/apiserverinternal/v1alpha1
+#11 158.3 k8s.io/client-go/kubernetes/typed/flowcontrol/v1beta1
+#11 158.4 k8s.io/client-go/kubernetes/typed/autoscaling/v2
+#11 158.4 k8s.io/client-go/kubernetes/typed/autoscaling/v2beta1
+#11 158.4 k8s.io/client-go/kubernetes/typed/flowcontrol/v1beta2
+#11 158.4 k8s.io/client-go/kubernetes/typed/flowcontrol/v1beta3
+#11 158.5 k8s.io/client-go/applyconfigurations/networking/v1alpha1
+#11 158.7 k8s.io/client-go/applyconfigurations/policy/v1
+#11 158.9 k8s.io/client-go/applyconfigurations/scheduling/v1alpha1
+#11 158.9 k8s.io/client-go/applyconfigurations/scheduling/v1
+#11 158.9 k8s.io/client-go/applyconfigurations/policy/v1beta1
+#11 158.9 k8s.io/client-go/applyconfigurations/scheduling/v1beta1
+#11 158.9 k8s.io/client-go/kubernetes/typed/flowcontrol/v1
+#11 158.9 k8s.io/client-go/applyconfigurations/rbac/v1alpha1
+#11 158.9 k8s.io/client-go/applyconfigurations/storagemigration/v1alpha1
+#11 158.9 k8s.io/client-go/kubernetes/typed/admissionregistration/v1
+#11 158.9 k8s.io/client-go/applyconfigurations/rbac/v1
+#11 158.9 k8s.io/client-go/applyconfigurations/rbac/v1beta1
+#11 159.0 k8s.io/client-go/applyconfigurations/admissionregistration/v1alpha1
+#11 159.0 k8s.io/client-go/applyconfigurations/admissionregistration/v1beta1
+#11 159.3 k8s.io/client-go/kubernetes/typed/networking/v1alpha1
+#11 159.7 k8s.io/client-go/kubernetes/typed/policy/v1
+#11 159.7 k8s.io/client-go/kubernetes/typed/storagemigration/v1alpha1
+#11 159.7 k8s.io/client-go/kubernetes/typed/scheduling/v1
+#11 159.9 k8s.io/client-go/kubernetes/typed/scheduling/v1alpha1
+#11 159.9 k8s.io/client-go/kubernetes/typed/rbac/v1
+#11 159.9 k8s.io/client-go/kubernetes/typed/scheduling/v1beta1
+#11 159.9 k8s.io/client-go/kubernetes/typed/admissionregistration/v1beta1
+#11 160.0 k8s.io/client-go/kubernetes/typed/rbac/v1beta1
+#11 160.3 k8s.io/client-go/kubernetes/typed/admissionregistration/v1alpha1
+#11 160.3 k8s.io/client-go/kubernetes/typed/rbac/v1alpha1
+#11 160.3 k8s.io/client-go/kubernetes/typed/policy/v1beta1
+#11 161.1 k8s.io/client-go/applyconfigurations/events/v1
+#11 161.1 k8s.io/client-go/applyconfigurations/events/v1beta1
+#11 161.1 k8s.io/client-go/applyconfigurations/node/v1alpha1
+#11 161.1 k8s.io/client-go/applyconfigurations/discovery/v1beta1
+#11 161.1 k8s.io/client-go/applyconfigurations/discovery/v1
+#11 161.1 k8s.io/client-go/applyconfigurations/node/v1beta1
+#11 161.1 k8s.io/client-go/applyconfigurations/node/v1
+#11 161.1 k8s.io/client-go/applyconfigurations/apps/v1
+#11 161.1 k8s.io/client-go/applyconfigurations/apps/v1beta1
+#11 161.1 k8s.io/client-go/kubernetes/typed/core/v1
+#11 161.1 k8s.io/client-go/applyconfigurations/networking/v1beta1
+#11 161.1 k8s.io/client-go/applyconfigurations/networking/v1
+#11 161.1 k8s.io/client-go/applyconfigurations/batch/v1
+#11 161.1 k8s.io/client-go/applyconfigurations/apps/v1beta2
+#11 161.1 k8s.io/client-go/applyconfigurations/extensions/v1beta1
+#11 161.2 k8s.io/client-go/applyconfigurations/resource/v1alpha2
+#11 161.8 k8s.io/client-go/applyconfigurations/storage/v1
+#11 162.0 k8s.io/client-go/kubernetes/typed/events/v1beta1
+#11 162.1 k8s.io/client-go/kubernetes/typed/node/v1beta1
+#11 162.2 k8s.io/client-go/kubernetes/typed/events/v1
+#11 162.3 k8s.io/client-go/kubernetes/typed/batch/v1
+#11 162.3 k8s.io/client-go/applyconfigurations/batch/v1beta1
+#11 162.3 k8s.io/client-go/kubernetes/typed/discovery/v1
+#11 162.3 k8s.io/client-go/kubernetes/typed/discovery/v1beta1
+#11 162.4 k8s.io/client-go/kubernetes/typed/apps/v1beta1
+#11 162.4 k8s.io/client-go/kubernetes/typed/networking/v1
+#11 162.4 k8s.io/client-go/kubernetes/typed/apps/v1
+#11 162.5 k8s.io/client-go/applyconfigurations/storage/v1alpha1
+#11 162.5 k8s.io/client-go/kubernetes/typed/node/v1alpha1
+#11 162.6 k8s.io/client-go/applyconfigurations/storage/v1beta1
+#11 162.8 github.com/goccy/go-json
+#11 162.8 k8s.io/client-go/kubernetes/typed/networking/v1beta1
+#11 162.8 k8s.io/client-go/kubernetes/typed/apps/v1beta2
+#11 162.8 k8s.io/client-go/kubernetes/typed/resource/v1alpha2
+#11 162.9 k8s.io/client-go/kubernetes/typed/extensions/v1beta1
+#11 162.9 k8s.io/client-go/kubernetes/typed/node/v1
+#11 163.1 k8s.io/client-go/kubernetes/typed/storage/v1
+#11 163.1 k8s.io/client-go/kubernetes/typed/batch/v1beta1
+#11 163.2 k8s.io/client-go/kubernetes/typed/storage/v1alpha1
+#11 163.5 github.com/cloudflare/cloudflare-go
+#11 163.7 k8s.io/client-go/kubernetes/typed/storage/v1beta1
+#11 164.1 k8s.io/client-go/kubernetes
+#11 165.0 github.com/projectdiscovery/cloudlist/pkg/providers/k8s
+#11 165.1 github.com/projectdiscovery/cloudlist/pkg/providers/aws
+#11 168.0 github.com/projectdiscovery/cloudlist/pkg/providers/cloudflare
+#11 170.0 github.com/projectdiscovery/cloudlist/pkg/providers/alibaba
+#11 173.3 github.com/projectdiscovery/cloudlist/pkg/providers/azure
+#11 173.6 github.com/projectdiscovery/cloudlist/pkg/providers/gcp
+#11 175.2 github.com/projectdiscovery/cloudlist/pkg/inventory
+#11 175.9 github.com/projectdiscovery/cloudlist/internal/runner
+#11 176.1 github.com/projectdiscovery/cloudlist/cmd/cloudlist
+#11 DONE 191.9s
+
+#13 [stage-1  4/10] COPY --from=builder /go/bin/cloudlist /usr/local/bin/cloudlist
+#13 DONE 0.5s
+
+#14 [stage-1  5/10] WORKDIR /app
+#14 DONE 0.5s
+
+#15 [stage-1  6/10] COPY requirements.txt ./
+#15 DONE 0.6s
+
+#16 [stage-1  7/10] RUN pip install --no-cache-dir -r requirements.txt
+#16 4.974 Collecting fastmcp>=2.0.0 (from -r requirements.txt (line 1))
+#16 5.144   Downloading fastmcp-3.1.1-py3-none-any.whl.metadata (8.1 kB)
+#16 5.206 Collecting authlib>=1.6.5 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 5.248   Downloading authlib-1.6.9-py2.py3-none-any.whl.metadata (9.8 kB)
+#16 5.322 Collecting cyclopts>=4.0.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 5.366   Downloading cyclopts-4.10.1-py3-none-any.whl.metadata (12 kB)
+#16 5.429 Collecting exceptiongroup>=1.2.2 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 5.471   Downloading exceptiongroup-1.3.1-py3-none-any.whl.metadata (6.7 kB)
+#16 5.531 Collecting httpx<1.0,>=0.28.1 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 5.573   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#16 5.633 Collecting jsonref>=1.1.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 5.676   Downloading jsonref-1.1.0-py3-none-any.whl.metadata (2.7 kB)
+#16 5.727 Collecting jsonschema-path>=0.3.4 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 5.768   Downloading jsonschema_path-0.4.5-py3-none-any.whl.metadata (5.9 kB)
+#16 5.828 Collecting mcp<2.0,>=1.24.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 5.872   Downloading mcp-1.26.0-py3-none-any.whl.metadata (89 kB)
+#16 5.999 Collecting openapi-pydantic>=0.5.1 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 6.044   Downloading openapi_pydantic-0.5.1-py3-none-any.whl.metadata (10 kB)
+#16 6.106 Collecting opentelemetry-api>=1.20.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 6.151   Downloading opentelemetry_api-1.40.0-py3-none-any.whl.metadata (1.5 kB)
+#16 6.208 Collecting packaging>=24.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 6.252   Downloading packaging-26.0-py3-none-any.whl.metadata (3.3 kB)
+#16 6.310 Collecting platformdirs>=4.0.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 6.351   Downloading platformdirs-4.9.4-py3-none-any.whl.metadata (4.7 kB)
+#16 6.401 Collecting py-key-value-aio<0.5.0,>=0.4.4 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 6.445   Downloading py_key_value_aio-0.4.4-py3-none-any.whl.metadata (15 kB)
+#16 6.675 Collecting pydantic>=2.11.7 (from pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 6.720   Downloading pydantic-2.12.5-py3-none-any.whl.metadata (90 kB)
+#16 6.912 Collecting pyperclip>=1.9.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 6.959   Downloading pyperclip-1.11.0-py3-none-any.whl.metadata (2.4 kB)
+#16 7.036 Collecting python-dotenv>=1.1.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 7.152   Downloading python_dotenv-1.2.2-py3-none-any.whl.metadata (27 kB)
+#16 7.362 Collecting pyyaml<7.0,>=6.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 7.405   Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+#16 7.524 Collecting rich>=13.9.4 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 7.569   Downloading rich-14.3.3-py3-none-any.whl.metadata (18 kB)
+#16 7.644 Collecting uncalled-for>=0.2.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 7.689   Downloading uncalled_for-0.2.0-py3-none-any.whl.metadata (2.9 kB)
+#16 7.768 Collecting uvicorn>=0.35 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 7.816   Downloading uvicorn-0.42.0-py3-none-any.whl.metadata (6.7 kB)
+#16 8.031 Collecting watchfiles>=1.0.0 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 8.080   Downloading watchfiles-1.1.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.9 kB)
+#16 8.219 Collecting websockets>=15.0.1 (from fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 8.263   Downloading websockets-16.0-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (6.8 kB)
+#16 8.508 Collecting cryptography (from authlib>=1.6.5->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 8.550   Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (5.7 kB)
+#16 8.604 Collecting attrs>=23.1.0 (from cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 8.648   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+#16 8.698 Collecting docstring-parser<4.0,>=0.15 (from cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 8.740   Downloading docstring_parser-0.17.0-py3-none-any.whl.metadata (3.5 kB)
+#16 8.791 Collecting rich-rst<2.0.0,>=1.3.1 (from cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 8.844   Downloading rich_rst-1.3.2-py3-none-any.whl.metadata (6.1 kB)
+#16 8.912 Collecting typing-extensions>=4.6.0 (from exceptiongroup>=1.2.2->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 8.957   Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+#16 9.026 Collecting anyio (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 9.072   Downloading anyio-4.13.0-py3-none-any.whl.metadata (4.5 kB)
+#16 9.129 Collecting certifi (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 9.171   Downloading certifi-2026.2.25-py3-none-any.whl.metadata (2.5 kB)
+#16 9.225 Collecting httpcore==1.* (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 9.268   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#16 9.321 Collecting idna (from httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 9.364   Downloading idna-3.11-py3-none-any.whl.metadata (8.4 kB)
+#16 9.415 Collecting h11>=0.16 (from httpcore==1.*->httpx<1.0,>=0.28.1->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 9.458   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#16 9.509 Collecting pathable<0.6.0,>=0.5.0 (from jsonschema-path>=0.3.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 9.550   Downloading pathable-0.5.0-py3-none-any.whl.metadata (5.9 kB)
+#16 9.615 Collecting referencing<0.38.0 (from jsonschema-path>=0.3.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 9.658   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+#16 9.709 Collecting httpx-sse>=0.4 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 9.753   Downloading httpx_sse-0.4.3-py3-none-any.whl.metadata (9.7 kB)
+#16 9.820 Collecting jsonschema>=4.20.0 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 9.862   Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+#16 9.919 Collecting pydantic-settings>=2.5.2 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 9.960   Downloading pydantic_settings-2.13.1-py3-none-any.whl.metadata (3.4 kB)
+#16 10.02 Collecting pyjwt>=2.10.1 (from pyjwt[crypto]>=2.10.1->mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 10.07   Downloading pyjwt-2.12.1-py3-none-any.whl.metadata (4.1 kB)
+#16 10.12 Collecting python-multipart>=0.0.9 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 10.16   Downloading python_multipart-0.0.22-py3-none-any.whl.metadata (1.8 kB)
+#16 10.22 Collecting sse-starlette>=1.6.1 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 10.26   Downloading sse_starlette-3.3.3-py3-none-any.whl.metadata (14 kB)
+#16 10.33 Collecting starlette>=0.27 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 10.38   Downloading starlette-1.0.0-py3-none-any.whl.metadata (6.3 kB)
+#16 10.44 Collecting typing-inspection>=0.4.1 (from mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 10.49   Downloading typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+#16 10.58 Collecting importlib-metadata<8.8.0,>=6.0 (from opentelemetry-api>=1.20.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 10.63   Downloading importlib_metadata-8.7.1-py3-none-any.whl.metadata (4.7 kB)
+#16 10.69 Collecting beartype>=0.20.0 (from py-key-value-aio<0.5.0,>=0.4.4->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 10.73   Downloading beartype-0.22.9-py3-none-any.whl.metadata (37 kB)
+#16 10.83 Collecting aiofile>=3.5.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 10.88   Downloading aiofile-3.9.0-py3-none-any.whl.metadata (14 kB)
+#16 10.95 Collecting keyring>=25.6.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 11.00   Downloading keyring-25.7.0-py3-none-any.whl.metadata (21 kB)
+#16 11.06 Collecting cachetools>=5.0.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 11.10   Downloading cachetools-7.0.5-py3-none-any.whl.metadata (5.6 kB)
+#16 11.16 Collecting annotated-types>=0.6.0 (from pydantic>=2.11.7->pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 11.20   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+#16 12.19 Collecting pydantic-core==2.41.5 (from pydantic>=2.11.7->pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 12.23   Downloading pydantic_core-2.41.5-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (7.3 kB)
+#16 12.29 Collecting email-validator>=2.0.0 (from pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 12.33   Downloading email_validator-2.3.0-py3-none-any.whl.metadata (26 kB)
+#16 12.41 Collecting markdown-it-py>=2.2.0 (from rich>=13.9.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 12.46   Downloading markdown_it_py-4.0.0-py3-none-any.whl.metadata (7.3 kB)
+#16 12.52 Collecting pygments<3.0.0,>=2.13.0 (from rich>=13.9.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 12.56   Downloading pygments-2.19.2-py3-none-any.whl.metadata (2.5 kB)
+#16 12.63 Collecting click>=7.0 (from uvicorn>=0.35->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 12.67   Downloading click-8.3.1-py3-none-any.whl.metadata (2.6 kB)
+#16 12.76 Collecting caio<0.10.0,>=0.9.0 (from aiofile>=3.5.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 12.80   Downloading caio-0.9.25-cp312-cp312-manylinux_2_34_x86_64.whl.metadata (3.3 kB)
+#16 12.87 Collecting dnspython>=2.0.0 (from email-validator>=2.0.0->pydantic[email]>=2.11.7->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 12.91   Downloading dnspython-2.8.0-py3-none-any.whl.metadata (5.7 kB)
+#16 12.98 Collecting zipp>=3.20 (from importlib-metadata<8.8.0,>=6.0->opentelemetry-api>=1.20.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 13.02   Downloading zipp-3.23.0-py3-none-any.whl.metadata (3.6 kB)
+#16 13.08 Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.20.0->mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 13.12   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+#16 13.52 Collecting rpds-py>=0.25.0 (from jsonschema>=4.20.0->mcp<2.0,>=1.24.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 13.56   Downloading rpds_py-0.30.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)
+#16 13.61 Collecting SecretStorage>=3.2 (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 13.65   Downloading secretstorage-3.5.0-py3-none-any.whl.metadata (4.0 kB)
+#16 13.76 Collecting jeepney>=0.4.2 (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 13.81   Downloading jeepney-0.9.0-py3-none-any.whl.metadata (1.2 kB)
+#16 13.86 Collecting jaraco.classes (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 13.90   Downloading jaraco.classes-3.4.0-py3-none-any.whl.metadata (2.6 kB)
+#16 13.96 Collecting jaraco.functools (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 14.00   Downloading jaraco_functools-4.4.0-py3-none-any.whl.metadata (3.0 kB)
+#16 14.05 Collecting jaraco.context (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 14.09   Downloading jaraco_context-6.1.2-py3-none-any.whl.metadata (4.2 kB)
+#16 14.14 Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich>=13.9.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 14.19   Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+#16 14.37 Collecting cffi>=2.0.0 (from cryptography->authlib>=1.6.5->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 14.41   Downloading cffi-2.0.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.6 kB)
+#16 14.48 Collecting docutils (from rich-rst<2.0.0,>=1.3.1->cyclopts>=4.0.0->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 14.52   Downloading docutils-0.22.4-py3-none-any.whl.metadata (15 kB)
+#16 14.62 Collecting pycparser (from cffi>=2.0.0->cryptography->authlib>=1.6.5->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 14.66   Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+#16 14.77 Collecting more-itertools (from jaraco.classes->keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.0.0->-r requirements.txt (line 1))
+#16 14.81   Downloading more_itertools-10.8.0-py3-none-any.whl.metadata (39 kB)
+#16 14.87 Downloading fastmcp-3.1.1-py3-none-any.whl (633 kB)
+#16 14.99    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 633.8/633.8 kB 5.5 MB/s eta 0:00:00
+#16 15.05 Downloading authlib-1.6.9-py2.py3-none-any.whl (244 kB)
+#16 15.13 Downloading cyclopts-4.10.1-py3-none-any.whl (204 kB)
+#16 15.20 Downloading exceptiongroup-1.3.1-py3-none-any.whl (16 kB)
+#16 15.24 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#16 15.29 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#16 15.35 Downloading jsonref-1.1.0-py3-none-any.whl (9.4 kB)
+#16 15.39 Downloading jsonschema_path-0.4.5-py3-none-any.whl (19 kB)
+#16 15.43 Downloading mcp-1.26.0-py3-none-any.whl (233 kB)
+#16 15.51 Downloading openapi_pydantic-0.5.1-py3-none-any.whl (96 kB)
+#16 15.57 Downloading opentelemetry_api-1.40.0-py3-none-any.whl (68 kB)
+#16 15.62 Downloading packaging-26.0-py3-none-any.whl (74 kB)
+#16 15.67 Downloading platformdirs-4.9.4-py3-none-any.whl (21 kB)
+#16 15.72 Downloading py_key_value_aio-0.4.4-py3-none-any.whl (152 kB)
+#16 15.78 Downloading pydantic-2.12.5-py3-none-any.whl (463 kB)
+#16 15.89 Downloading pydantic_core-2.41.5-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.1 MB)
+#16 16.20    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 6.7 MB/s eta 0:00:00
+#16 16.25 Downloading pyperclip-1.11.0-py3-none-any.whl (11 kB)
+#16 16.30 Downloading python_dotenv-1.2.2-py3-none-any.whl (22 kB)
+#16 16.34 Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (807 kB)
+#16 16.50    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 807.9/807.9 kB 6.2 MB/s eta 0:00:00
+#16 16.55 Downloading rich-14.3.3-py3-none-any.whl (310 kB)
+#16 16.63 Downloading uncalled_for-0.2.0-py3-none-any.whl (11 kB)
+#16 16.67 Downloading uvicorn-0.42.0-py3-none-any.whl (68 kB)
+#16 16.74 Downloading watchfiles-1.1.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (456 kB)
+#16 16.84 Downloading websockets-16.0-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (184 kB)
+#16 16.91 Downloading aiofile-3.9.0-py3-none-any.whl (19 kB)
+#16 16.96 Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+#16 17.01 Downloading anyio-4.13.0-py3-none-any.whl (114 kB)
+#16 17.06 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+#16 17.11 Downloading beartype-0.22.9-py3-none-any.whl (1.3 MB)
+#16 17.26    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 8.4 MB/s eta 0:00:00
+#16 17.31 Downloading cachetools-7.0.5-py3-none-any.whl (13 kB)
+#16 17.35 Downloading click-8.3.1-py3-none-any.whl (108 kB)
+#16 17.41 Downloading docstring_parser-0.17.0-py3-none-any.whl (36 kB)
+#16 17.46 Downloading email_validator-2.3.0-py3-none-any.whl (35 kB)
+#16 17.51 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#16 17.55 Downloading httpx_sse-0.4.3-py3-none-any.whl (9.0 kB)
+#16 17.60 Downloading idna-3.11-py3-none-any.whl (71 kB)
+#16 17.64 Downloading importlib_metadata-8.7.1-py3-none-any.whl (27 kB)
+#16 17.69 Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+#16 17.74 Downloading keyring-25.7.0-py3-none-any.whl (39 kB)
+#16 17.79 Downloading markdown_it_py-4.0.0-py3-none-any.whl (87 kB)
+#16 17.84 Downloading pathable-0.5.0-py3-none-any.whl (16 kB)
+#16 17.88 Downloading pydantic_settings-2.13.1-py3-none-any.whl (58 kB)
+#16 17.94 Downloading pygments-2.19.2-py3-none-any.whl (1.2 MB)
+#16 18.09    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 8.0 MB/s eta 0:00:00
+#16 18.14 Downloading pyjwt-2.12.1-py3-none-any.whl (29 kB)
+#16 18.19 Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_x86_64.whl (4.5 MB)
+#16 18.74    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.5/4.5 MB 8.1 MB/s eta 0:00:00
+#16 18.79 Downloading python_multipart-0.0.22-py3-none-any.whl (24 kB)
+#16 18.83 Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+#16 18.88 Downloading rich_rst-1.3.2-py3-none-any.whl (12 kB)
+#16 18.92 Downloading sse_starlette-3.3.3-py3-none-any.whl (14 kB)
+#16 18.97 Downloading starlette-1.0.0-py3-none-any.whl (72 kB)
+#16 19.02 Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+#16 19.07 Downloading typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+#16 19.12 Downloading certifi-2026.2.25-py3-none-any.whl (153 kB)
+#16 19.18 Downloading caio-0.9.25-cp312-cp312-manylinux_2_34_x86_64.whl (80 kB)
+#16 19.23 Downloading cffi-2.0.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (219 kB)
+#16 19.30 Downloading dnspython-2.8.0-py3-none-any.whl (331 kB)
+#16 19.38 Downloading jeepney-0.9.0-py3-none-any.whl (49 kB)
+#16 19.42 Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+#16 19.47 Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+#16 19.52 Downloading rpds_py-0.30.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (394 kB)
+#16 19.60 Downloading secretstorage-3.5.0-py3-none-any.whl (15 kB)
+#16 19.64 Downloading zipp-3.23.0-py3-none-any.whl (10 kB)
+#16 19.69 Downloading docutils-0.22.4-py3-none-any.whl (633 kB)
+#16 19.75    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 633.2/633.2 kB 10.2 MB/s eta 0:00:00
+#16 19.79 Downloading jaraco.classes-3.4.0-py3-none-any.whl (6.8 kB)
+#16 19.84 Downloading jaraco_context-6.1.2-py3-none-any.whl (7.9 kB)
+#16 19.88 Downloading jaraco_functools-4.4.0-py3-none-any.whl (10 kB)
+#16 19.93 Downloading more_itertools-10.8.0-py3-none-any.whl (69 kB)
+#16 19.98 Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+#16 20.17 Installing collected packages: pyperclip, zipp, websockets, uncalled-for, typing-extensions, rpds-py, pyyaml, python-multipart, python-dotenv, pyjwt, pygments, pycparser, platformdirs, pathable, packaging, more-itertools, mdurl, jsonref, jeepney, jaraco.context, idna, httpx-sse, h11, docutils, docstring-parser, dnspython, click, certifi, caio, cachetools, beartype, attrs, annotated-types, uvicorn, typing-inspection, referencing, pydantic-core, py-key-value-aio, markdown-it-py, jaraco.functools, jaraco.classes, importlib-metadata, httpcore, exceptiongroup, email-validator, cffi, anyio, aiofile, watchfiles, starlette, rich, pydantic, opentelemetry-api, jsonschema-specifications, jsonschema-path, httpx, cryptography, sse-starlette, SecretStorage, rich-rst, pydantic-settings, openapi-pydantic, jsonschema, authlib, mcp, keyring, cyclopts, fastmcp
+#16 25.33 Successfully installed SecretStorage-3.5.0 aiofile-3.9.0 annotated-types-0.7.0 anyio-4.13.0 attrs-26.1.0 authlib-1.6.9 beartype-0.22.9 cachetools-7.0.5 caio-0.9.25 certifi-2026.2.25 cffi-2.0.0 click-8.3.1 cryptography-46.0.5 cyclopts-4.10.1 dnspython-2.8.0 docstring-parser-0.17.0 docutils-0.22.4 email-validator-2.3.0 exceptiongroup-1.3.1 fastmcp-3.1.1 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 httpx-sse-0.4.3 idna-3.11 importlib-metadata-8.7.1 jaraco.classes-3.4.0 jaraco.context-6.1.2 jaraco.functools-4.4.0 jeepney-0.9.0 jsonref-1.1.0 jsonschema-4.26.0 jsonschema-path-0.4.5 jsonschema-specifications-2025.9.1 keyring-25.7.0 markdown-it-py-4.0.0 mcp-1.26.0 mdurl-0.1.2 more-itertools-10.8.0 openapi-pydantic-0.5.1 opentelemetry-api-1.40.0 packaging-26.0 pathable-0.5.0 platformdirs-4.9.4 py-key-value-aio-0.4.4 pycparser-3.0 pydantic-2.12.5 pydantic-core-2.41.5 pydantic-settings-2.13.1 pygments-2.19.2 pyjwt-2.12.1 pyperclip-1.11.0 python-dotenv-1.2.2 python-multipart-0.0.22 pyyaml-6.0.3 referencing-0.37.0 rich-14.3.3 rich-rst-1.3.2 rpds-py-0.30.0 sse-starlette-3.3.3 starlette-1.0.0 typing-extensions-4.15.0 typing-inspection-0.4.2 uncalled-for-0.2.0 uvicorn-0.42.0 watchfiles-1.1.1 websockets-16.0 zipp-3.23.0
+#16 25.33 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#16 25.69 
+#16 25.69 [notice] A new release of pip is available: 25.0.1 -> 26.0.1
+#16 25.69 [notice] To update, run: pip install --upgrade pip
+#16 DONE 26.0s
+
+#17 [stage-1  8/10] COPY mcp_server.py ./
+#17 DONE 0.1s
+
+#18 [stage-1  9/10] COPY hd_fetch.py ./
+#18 DONE 0.0s
+
+#19 [stage-1 10/10] RUN mkdir -p /app/output /app/config /app/workdir && chown -R mcpuser:mcpuser /app
+#19 DONE 0.4s
+
+#20 exporting to image
+#20 exporting layers
+#20 exporting layers 7.6s done
+#20 exporting manifest sha256:79649a276d9808533f03fc31a668f53c0957cf021a5e79ca2ba423248d8ed406 0.0s done
+#20 exporting config sha256:f0036ee20e2ccd6b3ef0e9f7a61edf6efdc60fb2c9caa2769851be34fbbe8ba2 0.0s done
+#20 exporting attestation manifest sha256:22339da8c4eadd7aff5686d48bdb6c7c1493eea7494722d7a328129255b5c6c4 0.0s done
+#20 exporting manifest list sha256:591ebfc9d56763c174b1aea4b02c5530ed47ee9c71680f4aba1a61cd8838f433 0.0s done
+#20 naming to docker.io/library/cloudlist-mcp:latest
+#20 naming to docker.io/library/cloudlist-mcp:latest done
+#20 unpacking to docker.io/library/cloudlist-mcp:latest
+#20 unpacking to docker.io/library/cloudlist-mcp:latest 3.0s done
+#20 naming to docker.io/hackerdogs/cloudlist-mcp:latest done
+#20 unpacking to docker.io/hackerdogs/cloudlist-mcp:latest 0.0s done
+#20 DONE 10.9s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/bs9wm39nvgpzy34ox9wacde2a
+=================================================================================
+[0;34mCloudlist MCP Server — Test Suite[0m
+=================================================================================
+
+[0;34m[Test 1] Docker image[0m
+  [0;32m✅ PASS: Docker image hackerdogs/cloudlist-mcp:latest exists[0m
+
+[0;34m[Test 2] CLI binary inside container[0m
+  [0;32m✅ PASS: cloudlist binary responds[0m
+       
+
+[0;34m[Test 3] MCP stdio mode — initialize + tools/list[0m
+  [0;32m✅ PASS: stdio mode returned tools/list response (1 tool names found)[0m
+
+[0;34m[Test 4] MCP HTTP streamable mode — initialize[0m
+  [0;32m✅ PASS: HTTP streamable mode responded (status 200)[0m
+       Session ID: 60a2735dac154095...
+
+[0;34m[Test 5] MCP HTTP — tools/list[0m
+  [0;32m✅ PASS: HTTP tools/list returned tools[0m
+       - list_cloud_assets: List assets from cloud providers using cloudlist.
+
+Discovers assets (hosts, IPs)
+       - download_file: Download a file from a URL into the container workspace.
+
+Args:
+    url: HTTP(S)
+       - cleanup_downloads: Clean up downloaded files from the container workspace.
+
+Args:
+    job_id: Speci
+
+[0;34m[Test 6] MCP HTTP — tools/call (SKIPPED)[0m
+  [1;33m⚠️  Skipped: cloudlist requires cloud provider credentials to run tools/call[0m
+
+=================================================================================
+[0;34mResults: [0;32m5 passed[0m, [0;31m0 failed[0m
+=================================================================================
+cloudlist-mcp-test
+cloudlist-mcp-test
+
+✅ PASS: cloudlist-mcp

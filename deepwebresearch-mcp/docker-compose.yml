@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  deepwebresearch-mcp:
+    image: hackerdogs/deepwebresearch-mcp:latest
+    build: { context: ., dockerfile: Dockerfile }
+    container_name: deepwebresearch-mcp
+    ports: ["8377:8377"]
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8377
+    restart: unless-stopped

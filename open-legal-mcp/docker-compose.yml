@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  open-legal-mcp:
+    image: hackerdogs/open-legal-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: open-legal-mcp
+    ports:
+      - "8439:8439"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8439
+    restart: unless-stopped

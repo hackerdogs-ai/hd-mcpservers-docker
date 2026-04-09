@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  ahmia-mcp:
+    image: hackerdogs/ahmia-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ahmia-mcp
+    ports:
+      - "8510:8510"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8510
+    restart: unless-stopped

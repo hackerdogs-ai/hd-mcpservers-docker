@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "phoneinfoga-mcp": {
+      "url": "http://localhost:8503/mcp"
+    }
+  }
+}

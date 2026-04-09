@@ -33,18 +33,13 @@ echo -e "${BLUE}DNSDumpster MCP Server — Test Suite${NC}"
 echo "================================================================================="
 echo ""
 
-# Test 1: Build/verify Docker image
+# Test 1: Verify Docker image exists (build separately: docker build -t $IMAGE $PROJECT_DIR)
 info "[Test 1] Docker image"
-if ! docker image inspect "$IMAGE" > /dev/null 2>&1; then
-    echo "  Image not found. Building..."
-    docker build -t "$IMAGE" "$PROJECT_DIR"
+if ! docker image inspect "$IMAGE" >/dev/null 2>&1; then
+  echo "Build first: docker build -t $IMAGE $PROJECT_DIR" >&2
+  exit 1
 fi
-if docker image inspect "$IMAGE" > /dev/null 2>&1; then
-    pass "Docker image $IMAGE exists"
-else
-    fail "Docker image $IMAGE could not be built"
-    exit 1
-fi
+pass "Docker image $IMAGE exists"
 echo ""
 
 # Test 2: CLI binary available
@@ -64,10 +59,9 @@ INIT_REQ='{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersi
 INIT_NOTIF='{"jsonrpc":"2.0","method":"notifications/initialized"}'
 LIST_REQ='{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}'
 
-STDIO_OUT=$(printf '%s\n%s\n%s\n' "$INIT_REQ" "$INIT_NOTIF" "$LIST_REQ" | \
-    docker run -i --rm -e MCP_TRANSPORT=stdio "$IMAGE" 2>/dev/null || true)
+STDIO_OUT=$(python "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
 
-if echo "$STDIO_OUT" | grep -q '"tools"'; then
+if grep -q '"tools"' <<< "$STDIO_OUT"; then
     TOOL_COUNT=$(echo "$STDIO_OUT" | grep -o '"name"' | wc -l)
     pass "stdio mode returned tools/list response ($TOOL_COUNT tool names found)"
 else
@@ -124,7 +118,7 @@ TOOLS_RESP=$(curl -s -X POST "http://localhost:${PORT}/mcp" \
 
 if echo "$TOOLS_RESP" | grep -q '"tools"'; then
     pass "HTTP tools/list returned tools"
-    echo "$TOOLS_RESP" | python3 -c "
+    echo "$TOOLS_RESP" | python -c "
 import sys, json
 for line in sys.stdin:
     line = line.strip()

@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  arin-mcp:
+    image: hackerdogs/arin-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: arin-mcp
+    ports:
+      - "8513:8513"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8513
+    restart: unless-stopped

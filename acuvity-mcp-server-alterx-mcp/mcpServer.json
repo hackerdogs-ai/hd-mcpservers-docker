@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-alterx-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "acuvity/mcp-server-alterx:latest"],
+      "env": {}
+    }
+  }
+}

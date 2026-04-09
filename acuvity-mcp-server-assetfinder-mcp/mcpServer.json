@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "acuvity-mcp-server-assetfinder-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "acuvity/mcp-server-assetfinder:latest"],
+      "env": {}
+    }
+  }
+}

@@ -1,0 +1,1 @@
+{"mcpServers":{"pagespeed-mcp":{"command":"docker","args":["run","-i","--rm","-e","MCP_TRANSPORT","-e","MCP_PORT","-e","PAGESPEED_API_KEY","hackerdogs/pagespeed-mcp:latest"],"env":{"MCP_TRANSPORT":"stdio","PAGESPEED_API_KEY":""}}}}

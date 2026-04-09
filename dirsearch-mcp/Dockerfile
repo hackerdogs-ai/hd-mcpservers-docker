@@ -37,6 +37,7 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt
 
+COPY hd_fetch.py ./
 COPY mcp_server.py ./
 
 # Create output directory and assign ownership

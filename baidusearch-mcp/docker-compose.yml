@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  baidusearch-mcp:
+    image: hackerdogs/baidusearch-mcp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: baidusearch-mcp
+    ports:
+      - "8514:8514"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8514
+    restart: unless-stopped
