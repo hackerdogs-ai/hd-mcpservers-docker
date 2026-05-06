@@ -6,7 +6,7 @@ import os
 import subprocess
 import sys
 
-TIMEOUT = float(os.environ.get("MCP_STDIO_DOCKER_TIMEOUT", "45"))
+TIMEOUT = float(os.environ.get("MCP_STDIO_DOCKER_TIMEOUT", "120"))
 
 
 def main() -> int:

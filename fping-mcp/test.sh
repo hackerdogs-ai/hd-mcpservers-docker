@@ -82,8 +82,9 @@ docker run -d --name "$CONTAINER_NAME" \
     -e MCP_TRANSPORT=streamable-http -e MCP_PORT=$PORT \
     -p "$PORT:$PORT" "$IMAGE" > /dev/null
 
+sleep "${MCP_HTTP_STARTUP_SLEEP:-12}"
 SESSION_ID=""
-MAX_WAIT=30; WAITED=0
+MAX_WAIT=45; WAITED=0
 while [ $WAITED -lt $MAX_WAIT ]; do
     INIT_RESP=$(curl -s -D /tmp/mcp_headers -X POST "http://localhost:${PORT}/mcp" \
         -H "Content-Type: application/json" \

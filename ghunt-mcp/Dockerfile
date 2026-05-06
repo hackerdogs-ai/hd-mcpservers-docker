@@ -19,16 +19,13 @@ RUN groupadd -g 1000 mcpuser && \
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
     ca-certificates \
-    git \
     && rm -rf /var/lib/apt/lists/*
-
-# Install GHunt from source
-RUN pip install --no-cache-dir ghunt
 
 WORKDIR /app
 
+# One pip resolve (fastmcp + ghunt) — faster than separate ghunt then requirements passes
 COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt ghunt
 
 COPY mcp_server.py ./
 

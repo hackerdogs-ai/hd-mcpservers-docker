@@ -6,6 +6,8 @@ IMAGE="winston-ai-mcp"
 PORT=8674
 CONTAINER_NAME="winston-ai-mcp-test"
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Upstream exits before MCP handshake if unset; placeholder is enough for tools/list compliance.
+WINSTONAI_API_KEY="${WINSTONAI_API_KEY:-mcp-compliance-placeholder}"
 pass() { echo -e "  ${GREEN}PASS: $1${NC}"; PASS=$((PASS+1)); }
 fail() { echo -e "  ${RED}FAIL: $1${NC}"; FAIL=$((FAIL+1)); }
 info() { echo -e "${BLUE}$1${NC}"; }
@@ -19,13 +21,13 @@ info "[1] Install"
 if ! docker image inspect "$IMAGE" >/dev/null 2>&1; then echo "Build first: docker build -t $IMAGE $PROJECT_DIR" >&2; exit 1; fi
 pass "image exists"
 info "[2] Stdio tools/list"
-STDIO_OUT=$(python3 "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
+STDIO_OUT=$(python3 "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" -e "WINSTONAI_API_KEY=$WINSTONAI_API_KEY" "$IMAGE") || true
 if grep -q '"tools"' <<< "$STDIO_OUT"; then pass "stdio tools/list"; else fail "stdio tools/list"; fi
 info "[3] Stdio tools/call (skipped — upstream package)"
 pass "stdio tools/call (upstream)"
 info "[4] HTTP streamable tools/list"
 cleanup
-docker run -d --name "$CONTAINER_NAME" -e MCP_TRANSPORT=streamable-http -e MCP_PORT=$PORT -p "$PORT:$PORT" "$IMAGE" >/dev/null
+docker run -d --name "$CONTAINER_NAME" -e MCP_TRANSPORT=streamable-http -e MCP_PORT=$PORT -e "WINSTONAI_API_KEY=$WINSTONAI_API_KEY" -p "$PORT:$PORT" "$IMAGE" >/dev/null
 sleep ${MCP_HTTP_STARTUP_SLEEP:-10}
 SESSION_ID=""; WAITED=0; TOOLS_RESP=""
 while [ "$WAITED" -lt "${MCP_HTTP_LIST_MAX_WAIT:-30}" ]; do
