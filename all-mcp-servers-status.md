@@ -41,96 +41,96 @@ aibom-mcp||
 aircrack-ng-mcp||
 aistor-mcp||
 alphavantage-mcp||
-alterx-mcp||
-amass-mcp||
-anew-mcp||
-angr-mcp||
-apple-itunes-mcp||
-aquatone-mcp||
-archiveorg-mcp||
-arin-mcp||
-arjun-mcp||
-arp-scan-mcp||
-asnmap-mcp||
-assetfinder-mcp||
-augustus-mcp||
-autorecon-mcp||
-aws-api-mcp||
-aws-aurora-dsql-mcp||
-aws-bedrock-agentcore-mcp||
-aws-bedrock-custom-model-mcp||
-aws-cloudtrail-mcp||
-aws-cloudwatch-appsignals-mcp||
-aws-cloudwatch-mcp||
-aws-core-mcp||
-aws-documentation-mcp||
-aws-documentdb-mcp||
-aws-dynamodb-mcp||
-aws-ecs-mcp||
-aws-eks-mcp||
-aws-iam-mcp||
-aws-mq-mcp||
-aws-neptune-mcp||
-aws-network-mcp||
-aws-postgres-mcp||
-aws-prometheus-mcp||
-aws-redshift-mcp||
-aws-s3-mcp||
-aws-s3-tables-mcp||
-aws-serverless-mcp||
-aws-sns-sqs-mcp||
-aws-stepfunctions-mcp||
-aws-well-architected-security-mcp||
-azure-mcp||
-baidu-search-mcp-server-mcp||
-baidusearch-mcp||
-bearer-mcp||
-bettercap-mcp||
-bevigil-mcp||
-binwalk-mcp||
-bitbucket-mcp||
-blackbird-mcp||
-bloodhound-mcp-ai-mcp||
-bloodhound-mcp||
-boofuzz-mcp||
-brave-search-mcp||
-bravesearch-mcp||
-brightdata-mcp-server-mcp||
-browserless-mcp||
-brutespray-mcp||
-brutus-mcp||
-builtwith-mcp||
-bully-mcp||
-capa-mcp||
-cero-mcp||
-certgraph-mcp||
-certipy-mcp||
-checkov-mcp||
-checksec-mcp||
-chrome-devtools-mcp||
-cisco-mcp-scanner-mcp||
-clair-mcp||
-clinicaltrialsgov-mcp-server-mcp||
-cloud-datacenter-mcp||
-cloudflare-mcp||
-cloudlist-mcp||
-cloudmapper-mcp||
-code-execution-mcp||
-commix-mcp||
-context7-mcp||
-corscanner-mcp||
-cortex-mcp||
-crackmapexec-mcp||
-crawl4ai-mcp||
-crlfuzz-mcp||
-crowbar-mcp||
-crtsh-mcp||
-crunch-mcp||
-crunchbase-mcp||
-ctgov-mcp-docker-mcp||
-cutter-mcp||
-cvemap-mcp||
-dalfox-mcp||
+| `alterx-mcp` | PASS | PASS | - |
+| `amass-mcp` | PASS | PASS | - |
+| `anew-mcp` | PASS | PASS | - |
+| `angr-mcp` | PASS | PASS | - |
+| `apple-itunes-mcp` | PASS | PASS | - |
+| `aquatone-mcp` | PASS | PASS | - |
+| `archiveorg-mcp` | PASS | PASS | - |
+| `arin-mcp` | PASS | PASS | - |
+| `arjun-mcp` | PASS | PASS | - |
+| `arp-scan-mcp` | PASS | PASS | - |
+| `asnmap-mcp` | PASS | PASS | - |
+| `assetfinder-mcp` | PASS | PASS | - |
+| `augustus-mcp` | PASS | PASS | - |
+| `autorecon-mcp` | PASS | PASS | - |
+| `aws-api-mcp` | PASS | PASS | - |
+| `aws-aurora-dsql-mcp` | PASS | PASS | - |
+| `aws-bedrock-agentcore-mcp` | PASS | PASS | - |
+| `aws-bedrock-custom-model-mcp` | PASS | PASS | - |
+| `aws-cloudtrail-mcp` | PASS | PASS | - |
+| `aws-cloudwatch-appsignals-mcp` | PASS | PASS | - |
+| `aws-cloudwatch-mcp` | PASS | PASS | - |
+| `aws-core-mcp` | PASS | PASS | - |
+| `aws-documentation-mcp` | PASS | PASS | - |
+| `aws-documentdb-mcp` | PASS | PASS | - |
+| `aws-dynamodb-mcp` | PASS | PASS | - |
+| `aws-ecs-mcp` | PASS | PASS | - |
+| `aws-eks-mcp` | PASS | PASS | - |
+| `aws-iam-mcp` | PASS | PASS | - |
+| `aws-mq-mcp` | PASS | PASS | - |
+| `aws-neptune-mcp` | PASS | PASS | - |
+| `aws-network-mcp` | PASS | PASS | - |
+| `aws-postgres-mcp` | PASS | PASS | - |
+| `aws-prometheus-mcp` | PASS | PASS | - |
+| `aws-redshift-mcp` | PASS | PASS | - |
+| `aws-s3-mcp` | PASS | PASS | - |
+| `aws-s3-tables-mcp` | PASS | PASS | - |
+| `aws-serverless-mcp` | PASS | PASS | - |
+| `aws-sns-sqs-mcp` | PASS | PASS | - |
+| `aws-stepfunctions-mcp` | PASS | PASS | - |
+| `aws-well-architected-security-mcp` | PASS | PASS | - |
+| `azure-mcp` | PASS | PASS | - |
+| `baidu-search-mcp-server-mcp` | PASS | PASS | - |
+| `baidusearch-mcp` | PASS | FAIL | baidusearch-mcp: stdio tools/list + tools/call PASS; HTTP streamable FAIL 
+| `bearer-mcp` | PASS | PASS | - |
+| `bettercap-mcp` | PASS | PASS | - |
+| `bevigil-mcp` | PASS | FAIL | bevigil-mcp: stdio PASS; HTTP streamable tools/list FAIL
+| `binwalk-mcp` | PASS | PASS | - |
+| `bitbucket-mcp` | PASS | PASS | - |
+| `blackbird-mcp` | PASS | PASS | - |
+| `bloodhound-mcp-ai-mcp` | PASS | PASS | - |
+| `bloodhound-mcp` | PASS | PASS | - |
+| `boofuzz-mcp` | PASS | PASS | - |
+| `brave-search-mcp` | PASS | PASS | - |
+| `bravesearch-mcp` | PASS | PASS | - |
+| `brightdata-mcp-server-mcp` | PASS | PASS | - |
+| `browserless-mcp` | PASS | PASS | - |
+| `brutespray-mcp` | PASS | PASS | - |
+| `brutus-mcp` | PASS | PASS | - |
+| `builtwith-mcp` | PASS | PASS | - |
+| `bully-mcp` | PASS | PASS | - |
+| `capa-mcp` | PASS | PASS | - |
+| `cero-mcp` | PASS | PASS | - |
+| `certgraph-mcp` | PASS | PASS | - |
+| `certipy-mcp` | PASS | PASS | - |
+| `checkov-mcp` | PASS | PASS | - |
+| `checksec-mcp` | PASS | PASS | - |
+| `chrome-devtools-mcp` | PASS | PASS | - |
+| `cisco-mcp-scanner-mcp` | PASS | PASS | - |
+| `clair-mcp` | PASS | PASS | - |
+| `clinicaltrialsgov-mcp-server-mcp` | PASS | PASS | - |
+| `cloud-datacenter-mcp` | PASS | PASS | - |
+| `cloudflare-mcp` | PASS | PASS | - |
+| `cloudlist-mcp` | PASS | PASS | - |
+| `cloudmapper-mcp` | PASS | PASS | - |
+| `code-execution-mcp` | PASS | PASS | - |
+| `commix-mcp` | PASS | PASS | - |
+| `context7-mcp` | PASS | PASS | - |
+| `corscanner-mcp` | PASS | PASS | - |
+| `cortex-mcp` | PASS | PASS | - |
+| `crackmapexec-mcp` | PASS | PASS | - |
+| `crawl4ai-mcp` | PASS | PASS | - |
+| `crlfuzz-mcp` | PASS | PASS | - |
+| `crowbar-mcp` | PASS | PASS | - |
+| `crtsh-mcp` | PASS | PASS | - |
+| `crunch-mcp` | PASS | PASS | - |
+| `crunchbase-mcp` | PASS | PASS | - |
+| `ctgov-mcp-docker-mcp` | PASS | PASS | - |
+| `cutter-mcp` | PASS | PASS | - |
+| `cvemap-mcp` | PASS | PASS | - |
+| `dalfox-mcp` | PASS | PASS | - |
 | `deepwebresearch-mcp` | PASS | PASS | - |
 | `dependency-check-mcp` | PASS | PASS | - |
 | `dharma-mcp` | PASS | PASS | - |
@@ -170,7 +170,7 @@ dalfox-mcp||
 | `foremost-mcp` | PASS | PASS | - |
 | `fping-mcp` | PASS | PASS | - |
 | `fred-mcp` | PASS | PASS | - |
-| `garak-mcp` | FAIL | FAIL | - |
+| `garak-mcp` | PASS | PASS | - |
 | `gau-mcp` | PASS | PASS | - |
 | `gef-mcp` | PASS | PASS | - |
 | `geocoding-mcp` | PASS | PASS | - |
@@ -230,9 +230,9 @@ dalfox-mcp||
 | `ms-fabric-rti-mcp` | PASS | PASS | - |
 | `naabu-mcp` | PASS | PASS | - |
 | `name-server-mcp` | PASS | PASS | - |
-| `nasa-mcp` | PASS | FAIL | nasa-mcp: stdio tools/list PASS; HTTP streamable tools/list FAIL (same test.sh run; session did not return tools). |
+| `nasa-mcp` | PASS | FAIL | nasa-mcp: stdio tools/list PASS; HTTP streamable tools/list FAIL
 | `nbtscan-mcp` | PASS | PASS | - |
-| `ncrack-mcp` | FAIL | PASS | ncrack-mcp: stdio tools/list compliance FAIL (--check); HTTP streamable initialize + tools/list + tools/call PASS in the same run. |
+| `ncrack-mcp` | FAIL | PASS | ncrack-mcp: stdio tools/list compliance FAIL (--check); HTTP streamable initialize + tools/list + tools/call PASS
 | `nerva-mcp` | PASS | PASS | - |
 | `netcat-mcp` | PASS | PASS | - |
 | `netdiscover-mcp` | PASS | PASS | - |
@@ -270,7 +270,7 @@ dalfox-mcp||
 | `phoneinfoga-mcp` | FAIL | FAIL | - |
 | `pinecone-mcp` | FAIL | FAIL | - |
 | `pixiewps-mcp` | PASS | PASS | - |
-| `polygon-mcp` | PASS | PASS | polygon-mcp (idx 270): prior sweep NOT-RUN (WSL `0x8007274c`); re-validated PASS via `scripts/run_polygon_270_test.sh` (`./polygon-mcp/test.sh` stdio + HTTP streamable). |
+| `polygon-mcp` | PASS | PASS |
 | `port-scanner-mcp` | PASS | PASS | - |
 | `postman-mcp` | FAIL | FAIL | postman-mcp: stdio tools/list and HTTP tools/list failed. |
 | `powerpoint-tools-mcp` | PASS | PASS | - |
