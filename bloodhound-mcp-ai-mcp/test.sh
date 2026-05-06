@@ -17,6 +17,9 @@ PORT=8338
 BINARY="bloodhound-mcp"
 CONTAINER_NAME="bloodhound-mcp-ai-mcp-test"
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=/dev/null
+[[ -f "${PROJECT_DIR}/../scripts/mcp_test_bootstrap.sh" ]] && . "${PROJECT_DIR}/../scripts/mcp_test_bootstrap.sh"
+
 
 pass() { echo -e "  ${GREEN}PASS: $1${NC}"; PASS=$((PASS + 1)); }
 fail() { echo -e "  ${RED}FAIL: $1${NC}"; FAIL=$((FAIL + 1)); }
@@ -64,7 +67,15 @@ INIT_REQ='{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersi
 INIT_NOTIF='{"jsonrpc":"2.0","method":"notifications/initialized"}'
 LIST_REQ='{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}'
 
-STDIO_OUT=$(python "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
+if [[ -n "${MCP_PYTHON:-}" ]]; then
+  STDIO_OUT=$("$MCP_PYTHON" "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
+elif command -v python3 >/dev/null 2>&1; then
+  STDIO_OUT=$(python3 "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
+elif command -v py >/dev/null 2>&1; then
+  STDIO_OUT=$(py -3 "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
+else
+  STDIO_OUT=$(python "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
+fi
 
 if grep -q '"tools"' <<< "$STDIO_OUT"; then
     TOOL_COUNT=$(echo "$STDIO_OUT" | grep -o '"name"' | wc -l)

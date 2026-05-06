@@ -144,6 +144,7 @@ def main():
     if MCP_TRANSPORT == "stdio":
         mcp.run(transport="stdio", show_banner=False)
     else:
+        # FastMCP 3.x: host/port are transport kwargs (FastMCP 2.x had no streamable-http).
         mcp.run(transport="streamable-http", host="0.0.0.0", port=MCP_PORT)
 
 

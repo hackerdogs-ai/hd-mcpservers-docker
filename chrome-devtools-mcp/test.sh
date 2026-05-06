@@ -2,10 +2,12 @@
 set -euo pipefail
 RED='\033[0;31m'; GREEN='\033[0;32m'; BLUE='\033[0;34m'; NC='\033[0m'
 PASS=0; FAIL=0
-IMAGE="chrome-devtools-mcp"
+IMAGE="hackerdogs/chrome-devtools-mcp:latest"
 PORT=8631
 CONTAINER_NAME="chrome-devtools-mcp-test"
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=/dev/null
+[[ -f "${PROJECT_DIR}/../scripts/mcp_test_bootstrap.sh" ]] && . "${PROJECT_DIR}/../scripts/mcp_test_bootstrap.sh"
 pass() { echo -e "  ${GREEN}PASS: $1${NC}"; PASS=$((PASS+1)); }
 fail() { echo -e "  ${RED}FAIL: $1${NC}"; FAIL=$((FAIL+1)); }
 info() { echo -e "${BLUE}$1${NC}"; }
@@ -19,7 +21,12 @@ info "[1] Install"
 if ! docker image inspect "$IMAGE" >/dev/null 2>&1; then echo "Build first: docker build -t $IMAGE $PROJECT_DIR" >&2; exit 1; fi
 pass "image exists"
 info "[2] Stdio tools/list"
-STDIO_OUT=$(python "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
+if [[ -n "${MCP_PYTHON:-}" ]]; then PYTHON=("$MCP_PYTHON")
+elif command -v py >/dev/null 2>&1; then PYTHON=(py -3)
+elif command -v python3 >/dev/null 2>&1; then PYTHON=(python3)
+elif command -v python >/dev/null 2>&1; then PYTHON=(python)
+else echo "Need MCP_PYTHON, py, python3, or python on PATH for stdio probe" >&2; exit 1; fi
+STDIO_OUT=$("${PYTHON[@]}" "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
 if grep -q '"tools"' <<< "$STDIO_OUT"; then pass "stdio tools/list"; else fail "stdio tools/list"; fi
 info "[3] Stdio tools/call (skipped — upstream package)"
 pass "stdio tools/call (upstream)"

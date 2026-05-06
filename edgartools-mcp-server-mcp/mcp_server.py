@@ -29,6 +29,6 @@ def edgartools_mcp_server_info() -> str:
 if __name__ == "__main__":
     logger.info("Starting edgartools-mcp-server-mcp (transport=%s, port=%s)", MCP_TRANSPORT, MCP_PORT)
     if MCP_TRANSPORT == "stdio":
-        mcp.run(transport="stdio")
+        mcp.run(transport="stdio", show_banner=False)
     else:
         mcp.run(transport="streamable-http", host="0.0.0.0", port=MCP_PORT)
