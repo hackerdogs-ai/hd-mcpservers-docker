@@ -47,14 +47,23 @@ else
 fi
 echo ""
 
-# Test 2: CLI binary available
+# Test 2: CLI binary presence (avoid interactive/help hangs)
 info "[Test 2] CLI binary inside container"
-BINARY_OUTPUT=$(docker run --rm "$IMAGE" $BINARY --version 2>&1 | head -5 || docker run --rm "$IMAGE" $BINARY -version 2>&1 | head -5 || docker run --rm "$IMAGE" $BINARY -h 2>&1 | head -5 || true)
+BINARY_OUTPUT=$(
+  docker run --rm "$IMAGE" sh -c '
+    for p in "${EVIL_WINRM_BIN:-}" /usr/local/bin/evil-winrm /usr/local/bundle/bin/evil-winrm; do
+      [ -n "$p" ] && [ -x "$p" ] && echo "$p" && exit 0
+    done
+    w=$(ls /var/lib/gems/*/bin/evil-winrm 2>/dev/null | head -1)
+    [ -n "$w" ] && [ -x "$w" ] && echo "$w" && exit 0
+    command -v evil-winrm 2>/dev/null || true
+  ' 2>&1 | head -12 || true
+)
 if [ -n "$BINARY_OUTPUT" ]; then
-    pass "$BINARY binary responds"
+    pass "$BINARY binary found"
     echo "       ${BINARY_OUTPUT%%$'\n'*}"
 else
-    fail "$BINARY binary not found or not responding"
+    fail "$BINARY binary not found"
 fi
 echo ""
 

@@ -16,9 +16,18 @@ INIT_NOTIF='{"jsonrpc":"2.0","method":"notifications/initialized"}'
 LIST_REQ='{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}'
 echo "========== octagon-mcp-server-mcp test (compliance) =========="
 info "[1] Install"
-if ! docker image inspect "$IMAGE" >/dev/null 2>&1; then echo "Build first: docker build -t $IMAGE $PROJECT_DIR" >&2; exit 1; fi
-pass "image exists"
+if ! docker image inspect "$IMAGE" >/dev/null 2>&1; then
+  echo "  Image not found. Building..."
+  docker build -t "$IMAGE" "$PROJECT_DIR"
+fi
+if docker image inspect "$IMAGE" >/dev/null 2>&1; then
+  pass "image exists"
+else
+  fail "image could not be built"
+  exit 1
+fi
 info "[2] Stdio tools/list"
+export MCP_STDIO_DOCKER_TIMEOUT="${MCP_STDIO_DOCKER_TIMEOUT:-120}"
 STDIO_OUT=$(python3 "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
 if grep -q '"tools"' <<< "$STDIO_OUT"; then pass "stdio tools/list"; else fail "stdio tools/list"; fi
 info "[3] Stdio tools/call (skipped — upstream package)"

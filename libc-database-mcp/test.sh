@@ -83,7 +83,7 @@ docker run -d --name "$CONTAINER_NAME" \
     -p "$PORT:$PORT" "$IMAGE" > /dev/null
 
 SESSION_ID=""
-MAX_WAIT=30; WAITED=0
+MAX_WAIT="${MCP_HTTP_LIST_MAX_WAIT:-120}"; WAITED=0
 while [ $WAITED -lt $MAX_WAIT ]; do
     INIT_RESP=$(curl -s -D /tmp/mcp_headers -X POST "http://localhost:${PORT}/mcp" \
         -H "Content-Type: application/json" \

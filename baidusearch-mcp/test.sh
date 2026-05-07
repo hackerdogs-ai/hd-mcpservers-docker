@@ -6,6 +6,9 @@ IMAGE="baidusearch-mcp"
 PORT=8514
 CONTAINER_NAME="baidusearch-mcp-test"
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=/dev/null
+[[ -f "${PROJECT_DIR}/../scripts/mcp_test_bootstrap.sh" ]] && . "${PROJECT_DIR}/../scripts/mcp_test_bootstrap.sh"
+
 pass() { echo -e "  ${GREEN}PASS: $1${NC}"; PASS=$((PASS+1)); }
 fail() { echo -e "  ${RED}FAIL: $1${NC}"; FAIL=$((FAIL+1)); }
 info() { echo -e "${BLUE}$1${NC}"; }
@@ -20,7 +23,15 @@ info "[1] Install"
 if ! docker image inspect "$IMAGE" >/dev/null 2>&1; then echo "Build first: docker build -t $IMAGE $PROJECT_DIR" >&2; exit 1; fi
 pass "image exists"
 info "[2] Stdio tools/list"
-STDIO_OUT=$(python "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
+if [[ -n "${MCP_PYTHON:-}" ]]; then
+  STDIO_OUT=$("$MCP_PYTHON" "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
+elif command -v python3 >/dev/null 2>&1; then
+  STDIO_OUT=$(python3 "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
+elif command -v py >/dev/null 2>&1; then
+  STDIO_OUT=$(py -3 "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
+else
+  STDIO_OUT=$(python "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
+fi
 if grep -q '"tools"' <<< "$STDIO_OUT"; then pass "stdio tools/list"; else fail "stdio tools/list"; fi
 info "[3] Stdio tools/call"
 CALL_OUT=$( ( printf '%s\n%s\n%s\n' "$INIT_REQ" "$INIT_NOTIF" "$CALL_REQ"; sleep 4 ) | docker run -i --rm -e MCP_TRANSPORT=stdio "$IMAGE" 2>/dev/null) || true

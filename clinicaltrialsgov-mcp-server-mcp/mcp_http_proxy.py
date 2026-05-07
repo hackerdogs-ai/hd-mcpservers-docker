@@ -14,7 +14,8 @@ sessions = {}
 lock = threading.Lock()
 
 _INIT_TIMEOUT = float(os.environ.get("MCP_PROXY_INIT_TIMEOUT", "360"))
-_REQUEST_TIMEOUT = float(os.environ.get("MCP_PROXY_REQUEST_TIMEOUT", "600"))
+# clinicaltrialsgov tools/list is a single enormous NDJSON line; cold Docker needs headroom.
+_REQUEST_TIMEOUT = float(os.environ.get("MCP_PROXY_REQUEST_TIMEOUT", "7200"))
 _KEEPALIVE_INTERVAL = float(os.environ.get("MCP_PROXY_KEEPALIVE_INTERVAL", "10"))
 
 def read_jsonrpc_line(proc, timeout, keepalive_wfile=None):
@@ -64,6 +65,14 @@ def read_jsonrpc_line(proc, timeout, keepalive_wfile=None):
                 sys.stdout.write(f"[child-stdout-discarded] {line}\n")
                 sys.stdout.flush()
                 continue
+    # EOF or timeout: accept one final NDJSON object without trailing newline (some writers flush & exit).
+    if buf.strip():
+        line = buf.decode("utf-8", errors="replace").strip()
+        try:
+            json.loads(line)
+            return line
+        except (json.JSONDecodeError, ValueError):
+            pass
     return None
 
 class StdioSession:

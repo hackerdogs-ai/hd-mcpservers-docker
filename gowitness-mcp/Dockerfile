@@ -1,5 +1,6 @@
-# Gowitness MCP - Hackerdogs Ready (gowitness requires Go 1.25+)
+# Gowitness MCP - Hackerdogs Ready (upstream may require newer Go than the base image)
 FROM golang:1.25-bookworm AS builder
+ENV GOTOOLCHAIN=auto
 RUN go install github.com/sensepost/gowitness@latest
 
 FROM python:3.12-slim-bookworm

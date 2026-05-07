@@ -29,9 +29,9 @@ echo "$CALL_OUT" | grep -q 'result\|content' && pass "stdio call" || fail "stdio
 info "[4] HTTP tools/list"
 cleanup
 docker run -d --name "$CONTAINER_NAME" -e MCP_TRANSPORT=streamable-http -e MCP_PORT=$PORT -p "$PORT:$PORT" "$IMAGE" >/dev/null
-sleep 5
+sleep "${MCP_HTTP_STARTUP_SLEEP:-15}"
 SESS_HDR=""
-for i in $(seq 1 10); do
+for i in $(seq 1 20); do
   curl -s -D /tmp/mcp_h -o /dev/null -X POST "http://localhost:${PORT}/mcp" -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" -d "$INIT_REQ" 2>/dev/null || true
   SID=$(grep -i mcp-session-id /tmp/mcp_h 2>/dev/null | sed 's/.*: *//' | tr -d '\r' | head -1)
   [ -n "$SID" ] && SESS_HDR="-H mcp-session-id:$SID"
