@@ -2,45 +2,49 @@
 
 Name | Test Result | comment
 -----|-------------|--------
-a2a-scanner-mcp||
-abstract-mcp||
-abusech-mcp||
-abuseipdb-mcp||
-acuvity-mcp-server-atlas-docs-mcp||
-acuvity-mcp-server-atlassian-mcp||
-acuvity-mcp-server-azure-mcp||
-acuvity-mcp-server-bing-search-mcp||
-acuvity-mcp-server-brave-search-mcp||
-acuvity-mcp-server-calculator-mcp||
-acuvity-mcp-server-chroma-mcp||
-acuvity-mcp-server-docker-mcp||
-acuvity-mcp-server-duckduckgo-mcp||
-acuvity-mcp-server-elevenlabs-mcp||
-acuvity-mcp-server-everything-mcp||
-acuvity-mcp-server-everything-wrong-mcp||
-acuvity-mcp-server-fetch-mcp||
-acuvity-mcp-server-firecrawl-mcp||
-acuvity-mcp-server-google-maps-mcp||
-acuvity-mcp-server-grafana-mcp||
-acuvity-mcp-server-harness-mcp||
-acuvity-mcp-server-hyperbrowser-mcp||
-acuvity-mcp-server-kagisearch-mcp||
-acuvity-mcp-server-microsoft-graph-mcp||
-acuvity-mcp-server-notion-mcp||
-acuvity-mcp-server-oshp-mcp||
-acuvity-mcp-server-playwright-mcp||
-acuvity-mcp-server-scrapezy-mcp||
-acuvity-mcp-server-sentry-mcp||
-acuvity-mcp-server-slack-mcp||
-adblock-mcp||
-adguard-dns-mcp||
-ahmia-mcp||
-ai-humanizer-mcp||
-ai-infra-guard-mcp||
-aibom-mcp||
-aircrack-ng-mcp||
-aistor-mcp||
-alphavantage-mcp||
+| a2a-scanner-mcp                         | pass  | pass |
+| abstract-mcp                            | pass  | pass |
+| abusech-mcp                             | pass  | pass |
+| abuseipdb-mcp                           | pass  | pass |
+| acuvity-mcp-server-alterx-mcp           | pass  | pass |
+| acuvity-mcp-server-amass-mcp            | pass  | pass |
+| acuvity-mcp-server-arjun-mcp            | pass  | pass |
+| acuvity-mcp-server-assetfinder-mcp      | pass  | pass |
+| acuvity-mcp-server-atlas-docs-mcp       | pass  | pass |
+| acuvity-mcp-server-atlassian-mcp        | pass  | pass |
+| acuvity-mcp-server-azure-mcp            | pass  | pass |
+| acuvity-mcp-server-bing-search-mcp      | pass  | pass |
+| acuvity-mcp-server-brave-search-mcp     | pass  | pass |
+| acuvity-mcp-server-calculator-mcp       | pass  | pass |
+| acuvity-mcp-server-chroma-mcp           | pass  | pass |
+| acuvity-mcp-server-docker-mcp           | pass  | pass |
+| acuvity-mcp-server-duckduckgo-mcp       | pass  | pass |
+| acuvity-mcp-server-elevenlabs-mcp       | pass  | pass |
+| acuvity-mcp-server-everything-mcp       | pass  | pass |
+| acuvity-mcp-server-everything-wrong-mcp | pass  | pass |
+| acuvity-mcp-server-fetch-mcp            | pass  | pass |
+| acuvity-mcp-server-firecrawl-mcp        | pass  | pass |
+| acuvity-mcp-server-google-maps-mcp      | pass  | pass |
+| acuvity-mcp-server-grafana-mcp          | pass  | pass |
+| acuvity-mcp-server-harness-mcp          | pass  | pass |
+| acuvity-mcp-server-hyperbrowser-mcp     | pass  | pass |
+| acuvity-mcp-server-kagisearch-mcp       | pass  | pass |
+| acuvity-mcp-server-microsoft-graph-mcp  | pass  | pass |
+| acuvity-mcp-server-notion-mcp           | pass  | pass |
+| acuvity-mcp-server-oshp-mcp             | pass  | pass |
+| acuvity-mcp-server-playwright-mcp       | pass  | pass |
+| acuvity-mcp-server-scrapezy-mcp         | pass  | pass |
+| acuvity-mcp-server-sentry-mcp           | pass  | pass |
+| acuvity-mcp-server-slack-mcp            | pass  | pass |
+| adblock-mcp                             | pass  | pass |
+| adguard-dns-mcp                         | pass  | pass |
+| ahmia-mcp                               | pass  | pass |
+| ai-humanizer-mcp                        | pass  | pass |
+| ai-infra-guard-mcp                      | pass  | pass |
+| aibom-mcp                               | pass  | pass |
+| aircrack-ng-mcp                         | pass  | pass |
+| aistor-mcp                              | pass  | pass |
+| alphavantage-mcp                        | pass  | pass |
 | `alterx-mcp` | PASS | PASS | - |
 | `amass-mcp` | PASS | PASS | - |
 | `anew-mcp` | PASS | PASS | - |
