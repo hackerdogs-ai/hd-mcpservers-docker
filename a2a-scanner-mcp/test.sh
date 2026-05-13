@@ -17,6 +17,11 @@ PORT=8341
 BINARY="a2a-scanner"
 CONTAINER_NAME="a2a-scanner-mcp-test"
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PYTHON="$(command -v python3 2>/dev/null || command -v python 2>/dev/null || true)"
+if [ -z "$PYTHON" ]; then
+    echo "python3 or python is required on PATH (for MCP stdio helper)" >&2
+    exit 1
+fi
 
 pass() { echo -e "  ${GREEN}PASS: $1${NC}"; PASS=$((PASS + 1)); }
 fail() { echo -e "  ${RED}FAIL: $1${NC}"; FAIL=$((FAIL + 1)); }
@@ -64,7 +69,7 @@ INIT_REQ='{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersi
 INIT_NOTIF='{"jsonrpc":"2.0","method":"notifications/initialized"}'
 LIST_REQ='{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}'
 
-STDIO_OUT=$(python "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
+STDIO_OUT=$("$PYTHON" "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
 
 if grep -q '"tools"' <<< "$STDIO_OUT"; then
     TOOL_COUNT=$(echo "$STDIO_OUT" | grep -o '"name"' | wc -l)
@@ -123,7 +128,7 @@ TOOLS_RESP=$(curl -s -X POST "http://localhost:${PORT}/mcp" \
 
 if echo "$TOOLS_RESP" | grep -q '"tools"'; then
     pass "HTTP tools/list returned tools"
-    echo "$TOOLS_RESP" | python -c "
+    echo "$TOOLS_RESP" | "$PYTHON" -c "
 import sys, json
 for line in sys.stdin:
     line = line.strip()

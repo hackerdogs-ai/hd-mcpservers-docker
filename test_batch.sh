@@ -36,10 +36,13 @@ for (( i=START_IDX; i<END_IDX; i++ )); do
     cd "$dir" || continue
     chmod +x test.sh
     
-    # AUTOMATIC FIX: Patch python3 to python for Git Bash
+    # AUTOMATIC FIX: Patch python3 to python for Git Bash (GNU sed: sed -i; BSD/macOS: sed -i '')
     if grep -q "python3 " test.sh; then
         echo ">>> 🔧 Auto-patching 'python3' to 'python' in test.sh..."
-        sed -i 's/python3 /python /g' test.sh
+        case "$(uname -s)" in
+            Darwin) sed -i '' 's/python3 /python /g' test.sh ;;
+            *)      sed -i 's/python3 /python /g' test.sh ;;
+        esac
     fi
     
     RESULT_FILE="test-results.txt"
