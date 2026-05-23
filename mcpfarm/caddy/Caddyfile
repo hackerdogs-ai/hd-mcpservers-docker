@@ -1,0 +1,42 @@
+{
+    admin 0.0.0.0:2019
+    auto_https off
+}
+
+:80, :11459 {
+    header Access-Control-Allow-Origin *
+    header Access-Control-Allow-Headers "Authorization, Content-Type, Accept, mcp-session-id, X-Admin-Secret"
+    header Access-Control-Allow-Methods "GET, POST, DELETE, OPTIONS"
+    header Access-Control-Expose-Headers "mcp-session-id"
+
+    @options method OPTIONS
+    handle @options {
+        respond "" 204
+    }
+
+    handle /health {
+        respond "OK" 200
+    }
+
+    handle /admin/* {
+        reverse_proxy auth-gateway:9090
+    }
+
+    handle /services {
+        reverse_proxy auth-gateway:9090
+    }
+
+    handle /ui-config {
+        reverse_proxy auth-gateway:9090
+    }
+
+    handle /verify {
+        reverse_proxy auth-gateway:9090
+    }
+
+    import /etc/caddy/dynamic/routes.conf
+
+    handle {
+        reverse_proxy mcpfarm-ui:3000
+    }
+}

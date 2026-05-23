@@ -1,0 +1,6050 @@
+version: "3.8"
+
+services:
+  # -----------------------------------------------------------------------
+  # Cloudflare Tunnel
+  # -----------------------------------------------------------------------
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: mcpfarm-tunnel
+    command: tunnel --no-autoupdate run --token ${TUNNEL_TOKEN}
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    network_mode: "service:caddy"
+    depends_on:
+      caddy:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # -----------------------------------------------------------------------
+  # Caddy reverse proxy
+  # -----------------------------------------------------------------------
+  caddy:
+    image: caddy:2-alpine
+    container_name: mcpfarm-caddy
+    ports:
+      - "80:80"
+      - "11459:11459"
+      - "2019:2019"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_routes:/etc/caddy/dynamic
+    networks:
+      - mcpfarm
+    depends_on:
+      auth-gateway:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 6
+    restart: unless-stopped
+
+  # -----------------------------------------------------------------------
+  # Farm UI
+  # -----------------------------------------------------------------------
+  mcpfarm-ui:
+    build:
+      context: ../mcpfarm-ui
+      dockerfile: Dockerfile
+    image: hackerdogs/mcpfarm-ui:latest
+    container_name: mcpfarm-ui
+    networks:
+      - mcpfarm
+    restart: unless-stopped
+
+  # -----------------------------------------------------------------------
+  # Auth Gateway
+  # -----------------------------------------------------------------------
+  auth-gateway:
+    build: ./auth-gateway
+    image: hackerdogs/auth-gateway:latest
+    container_name: mcpfarm-auth
+    user: root
+    environment:
+      - ADMIN_SECRET=${ADMIN_SECRET}
+      - AUTH_DB_PATH=/data/auth.db
+    volumes:
+      - auth_data:/data
+      - caddy_routes:/etc/caddy/dynamic
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./port-map.json:/app/port-map.json:ro
+    networks:
+      - mcpfarm
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9090/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    stop_grace_period: 30s
+    restart: unless-stopped
+
+  # -----------------------------------------------------------------------
+  # MCP Servers (auto-generated from port-map.json)
+  # -----------------------------------------------------------------------
+
+  a2a-scanner-mcp:
+    image: hackerdogs/a2a-scanner-mcp:latest
+    container_name: a2a-scanner-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8341
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  abstract-mcp:
+    image: hackerdogs/abstract-mcp:latest
+    container_name: abstract-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8501
+      - ABSTRACT_PHONE_API_KEY=${ABSTRACT_PHONE_API_KEY}
+      - ABSTRACT_EMAIL_API_KEY=${ABSTRACT_EMAIL_API_KEY}
+      - ABSTRACT_IBAN_API_KEY=${ABSTRACT_IBAN_API_KEY}
+      - ABSTRACT_VAT_API_KEY=${ABSTRACT_VAT_API_KEY}
+      - ABSTRACT_IP_API_KEY=${ABSTRACT_IP_API_KEY}
+      - ABSTRACT_HOLIDAYS_API_KEY=${ABSTRACT_HOLIDAYS_API_KEY}
+      - ABSTRACT_EXCHANGE_API_KEY=${ABSTRACT_EXCHANGE_API_KEY}
+      - ABSTRACT_COMPANY_API_KEY=${ABSTRACT_COMPANY_API_KEY}
+      - ABSTRACT_TIMEZONE_API_KEY=${ABSTRACT_TIMEZONE_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  abusech-mcp:
+    image: hackerdogs/abusech-mcp:latest
+    container_name: abusech-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8373
+      - ABUSECH_API_KEY=${ABUSECH_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  abuseipdb-mcp:
+    image: hackerdogs/abuseipdb-mcp:latest
+    container_name: abuseipdb-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8374
+      - ABUSEIPDB_API_KEY=${ABUSEIPDB_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-atlas-docs-mcp:
+    image: hackerdogs/acuvity-mcp-server-atlas-docs-mcp:latest
+    container_name: acuvity-mcp-server-atlas-docs-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8403
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-atlassian-mcp:
+    image: hackerdogs/acuvity-mcp-server-atlassian-mcp:latest
+    container_name: acuvity-mcp-server-atlassian-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8404
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-azure-mcp:
+    image: hackerdogs/acuvity-mcp-server-azure-mcp:latest
+    container_name: acuvity-mcp-server-azure-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8432
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-bing-search-mcp:
+    image: hackerdogs/acuvity-mcp-server-bing-search-mcp:latest
+    container_name: acuvity-mcp-server-bing-search-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8405
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-brave-search-mcp:
+    image: hackerdogs/acuvity-mcp-server-brave-search-mcp:latest
+    container_name: acuvity-mcp-server-brave-search-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8406
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-calculator-mcp:
+    image: hackerdogs/acuvity-mcp-server-calculator-mcp:latest
+    container_name: acuvity-mcp-server-calculator-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8407
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-chroma-mcp:
+    image: hackerdogs/acuvity-mcp-server-chroma-mcp:latest
+    container_name: acuvity-mcp-server-chroma-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8408
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-docker-mcp:
+    image: hackerdogs/acuvity-mcp-server-docker-mcp:latest
+    container_name: acuvity-mcp-server-docker-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8412
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-duckduckgo-mcp:
+    image: hackerdogs/acuvity-mcp-server-duckduckgo-mcp:latest
+    container_name: acuvity-mcp-server-duckduckgo-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8414
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-elevenlabs-mcp:
+    image: hackerdogs/acuvity-mcp-server-elevenlabs-mcp:latest
+    container_name: acuvity-mcp-server-elevenlabs-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8417
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-everything-mcp:
+    image: hackerdogs/acuvity-mcp-server-everything-mcp:latest
+    container_name: acuvity-mcp-server-everything-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8431
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-everything-wrong-mcp:
+    image: hackerdogs/acuvity-mcp-server-everything-wrong-mcp:latest
+    container_name: acuvity-mcp-server-everything-wrong-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8418
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-fetch-mcp:
+    image: hackerdogs/acuvity-mcp-server-fetch-mcp:latest
+    container_name: acuvity-mcp-server-fetch-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8419
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-firecrawl-mcp:
+    image: hackerdogs/acuvity-mcp-server-firecrawl-mcp:latest
+    container_name: acuvity-mcp-server-firecrawl-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8421
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-google-maps-mcp:
+    image: hackerdogs/acuvity-mcp-server-google-maps-mcp:latest
+    container_name: acuvity-mcp-server-google-maps-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8424
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-grafana-mcp:
+    image: hackerdogs/acuvity-mcp-server-grafana-mcp:latest
+    container_name: acuvity-mcp-server-grafana-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8425
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-harness-mcp:
+    image: hackerdogs/acuvity-mcp-server-harness-mcp:latest
+    container_name: acuvity-mcp-server-harness-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8426
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-hyperbrowser-mcp:
+    image: hackerdogs/acuvity-mcp-server-hyperbrowser-mcp:latest
+    container_name: acuvity-mcp-server-hyperbrowser-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8427
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-kagisearch-mcp:
+    image: hackerdogs/acuvity-mcp-server-kagisearch-mcp:latest
+    container_name: acuvity-mcp-server-kagisearch-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8428
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-microsoft-graph-mcp:
+    image: hackerdogs/acuvity-mcp-server-microsoft-graph-mcp:latest
+    container_name: acuvity-mcp-server-microsoft-graph-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8433
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-notion-mcp:
+    image: hackerdogs/acuvity-mcp-server-notion-mcp:latest
+    container_name: acuvity-mcp-server-notion-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8437
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-oshp-mcp:
+    image: hackerdogs/acuvity-mcp-server-oshp-mcp:latest
+    container_name: acuvity-mcp-server-oshp-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8441
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-playwright-mcp:
+    image: hackerdogs/acuvity-mcp-server-playwright-mcp:latest
+    container_name: acuvity-mcp-server-playwright-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8444
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-scrapezy-mcp:
+    image: hackerdogs/acuvity-mcp-server-scrapezy-mcp:latest
+    container_name: acuvity-mcp-server-scrapezy-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8450
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-sentry-mcp:
+    image: hackerdogs/acuvity-mcp-server-sentry-mcp:latest
+    container_name: acuvity-mcp-server-sentry-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8452
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-slack-mcp:
+    image: hackerdogs/acuvity-mcp-server-slack-mcp:latest
+    container_name: acuvity-mcp-server-slack-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8455
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  adblock-mcp:
+    image: hackerdogs/adblock-mcp:latest
+    container_name: adblock-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8508
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  adguard-dns-mcp:
+    image: hackerdogs/adguard-dns-mcp:latest
+    container_name: adguard-dns-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8509
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  ahmia-mcp:
+    image: hackerdogs/ahmia-mcp:latest
+    container_name: ahmia-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8510
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  ai-humanizer-mcp:
+    image: hackerdogs/ai-humanizer-mcp:latest
+    container_name: ai-humanizer-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8601
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  ai-infra-guard-mcp:
+    image: hackerdogs/ai-infra-guard-mcp:latest
+    container_name: ai-infra-guard-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8294
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aibom-mcp:
+    image: hackerdogs/aibom-mcp:latest
+    container_name: aibom-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8343
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aircrack-ng-mcp:
+    image: hackerdogs/aircrack-ng-mcp:latest
+    container_name: aircrack-ng-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8321
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aistor-mcp:
+    image: hackerdogs/aistor-mcp:latest
+    container_name: aistor-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8434
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  alphavantage-mcp:
+    image: hackerdogs/alphavantage-mcp:latest
+    container_name: alphavantage-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8402
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  alterx-mcp:
+    image: hackerdogs/alterx-mcp:latest
+    container_name: alterx-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8681
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  amass-mcp:
+    image: hackerdogs/amass-mcp:latest
+    container_name: amass-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8682
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  anew-mcp:
+    image: hackerdogs/anew-mcp:latest
+    container_name: anew-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8229
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  angr-mcp:
+    image: hackerdogs/angr-mcp:latest
+    container_name: angr-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8246
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  apple-itunes-mcp:
+    image: hackerdogs/apple-itunes-mcp:latest
+    container_name: apple-itunes-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8511
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aquatone-mcp:
+    image: hackerdogs/aquatone-mcp:latest
+    container_name: aquatone-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8259
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  archiveorg-mcp:
+    image: hackerdogs/archiveorg-mcp:latest
+    container_name: archiveorg-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8512
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  arin-mcp:
+    image: hackerdogs/arin-mcp:latest
+    container_name: arin-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8513
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  arjun-mcp:
+    image: hackerdogs/arjun-mcp:latest
+    container_name: arjun-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8683
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  arp-scan-mcp:
+    image: hackerdogs/arp-scan-mcp:latest
+    container_name: arp-scan-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8205
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  asnmap-mcp:
+    image: hackerdogs/asnmap-mcp:latest
+    container_name: asnmap-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8110
+      - PDCP_API_KEY=${PDCP_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  assetfinder-mcp:
+    image: hackerdogs/assetfinder-mcp:latest
+    container_name: assetfinder-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8684
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  augustus-mcp:
+    image: hackerdogs/augustus-mcp:latest
+    container_name: augustus-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8101
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - COHERE_API_KEY=${COHERE_API_KEY}
+      - AZURE_OPENAI_API_KEY=${AZURE_OPENAI_API_KEY}
+      - AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT}
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - MISTRAL_API_KEY=${MISTRAL_API_KEY}
+      - TOGETHER_API_KEY=${TOGETHER_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  autorecon-mcp:
+    image: hackerdogs/autorecon-mcp:latest
+    container_name: autorecon-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8201
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aws-api-mcp:
+    image: hackerdogs/aws-api-mcp:latest
+    container_name: aws-api-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8602
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aws-aurora-dsql-mcp:
+    image: hackerdogs/aws-aurora-dsql-mcp:latest
+    container_name: aws-aurora-dsql-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8603
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aws-bedrock-agentcore-mcp:
+    image: hackerdogs/aws-bedrock-agentcore-mcp:latest
+    container_name: aws-bedrock-agentcore-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8604
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aws-bedrock-custom-model-mcp:
+    image: hackerdogs/aws-bedrock-custom-model-mcp:latest
+    container_name: aws-bedrock-custom-model-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8605
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aws-cloudtrail-mcp:
+    image: hackerdogs/aws-cloudtrail-mcp:latest
+    container_name: aws-cloudtrail-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8606
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aws-cloudwatch-appsignals-mcp:
+    image: hackerdogs/aws-cloudwatch-appsignals-mcp:latest
+    container_name: aws-cloudwatch-appsignals-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8607
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aws-cloudwatch-mcp:
+    image: hackerdogs/aws-cloudwatch-mcp:latest
+    container_name: aws-cloudwatch-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8608
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aws-core-mcp:
+    image: hackerdogs/aws-core-mcp:latest
+    container_name: aws-core-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8609
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aws-documentation-mcp:
+    image: hackerdogs/aws-documentation-mcp:latest
+    container_name: aws-documentation-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8610
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aws-documentdb-mcp:
+    image: hackerdogs/aws-documentdb-mcp:latest
+    container_name: aws-documentdb-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8611
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aws-dynamodb-mcp:
+    image: hackerdogs/aws-dynamodb-mcp:latest
+    container_name: aws-dynamodb-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8612
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aws-ecs-mcp:
+    image: hackerdogs/aws-ecs-mcp:latest
+    container_name: aws-ecs-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8613
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aws-eks-mcp:
+    image: hackerdogs/aws-eks-mcp:latest
+    container_name: aws-eks-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8614
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aws-iam-mcp:
+    image: hackerdogs/aws-iam-mcp:latest
+    container_name: aws-iam-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8615
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aws-mq-mcp:
+    image: hackerdogs/aws-mq-mcp:latest
+    container_name: aws-mq-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8616
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aws-neptune-mcp:
+    image: hackerdogs/aws-neptune-mcp:latest
+    container_name: aws-neptune-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8617
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aws-network-mcp:
+    image: hackerdogs/aws-network-mcp:latest
+    container_name: aws-network-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8618
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aws-postgres-mcp:
+    image: hackerdogs/aws-postgres-mcp:latest
+    container_name: aws-postgres-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8619
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aws-prometheus-mcp:
+    image: hackerdogs/aws-prometheus-mcp:latest
+    container_name: aws-prometheus-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8620
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aws-redshift-mcp:
+    image: hackerdogs/aws-redshift-mcp:latest
+    container_name: aws-redshift-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8621
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aws-s3-mcp:
+    image: hackerdogs/aws-s3-mcp:latest
+    container_name: aws-s3-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8346
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aws-s3-tables-mcp:
+    image: hackerdogs/aws-s3-tables-mcp:latest
+    container_name: aws-s3-tables-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8622
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aws-serverless-mcp:
+    image: hackerdogs/aws-serverless-mcp:latest
+    container_name: aws-serverless-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8623
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aws-sns-sqs-mcp:
+    image: hackerdogs/aws-sns-sqs-mcp:latest
+    container_name: aws-sns-sqs-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8624
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aws-stepfunctions-mcp:
+    image: hackerdogs/aws-stepfunctions-mcp:latest
+    container_name: aws-stepfunctions-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8625
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  aws-well-architected-security-mcp:
+    image: hackerdogs/aws-well-architected-security-mcp:latest
+    container_name: aws-well-architected-security-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8626
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  azure-mcp:
+    image: hackerdogs/azure-mcp:latest
+    container_name: azure-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8627
+      - AZURE_CLIENT_ID=${AZURE_CLIENT_ID}
+      - AZURE_CLIENT_SECRET=${AZURE_CLIENT_SECRET}
+      - AZURE_TENANT_ID=${AZURE_TENANT_ID}
+      - AZURE_SUBSCRIPTION_ID=${AZURE_SUBSCRIPTION_ID}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  baidu-search-mcp-server-mcp:
+    image: hackerdogs/baidu-search-mcp-server-mcp:latest
+    container_name: baidu-search-mcp-server-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8628
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  baidusearch-mcp:
+    image: hackerdogs/baidusearch-mcp:latest
+    container_name: baidusearch-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8514
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  bearer-mcp:
+    image: hackerdogs/bearer-mcp:latest
+    container_name: bearer-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8360
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  bettercap-mcp:
+    image: hackerdogs/bettercap-mcp:latest
+    container_name: bettercap-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8318
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  bevigil-mcp:
+    image: hackerdogs/bevigil-mcp:latest
+    container_name: bevigil-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8515
+      - BEVIGIL_API_KEY=${BEVIGIL_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  binwalk-mcp:
+    image: hackerdogs/binwalk-mcp:latest
+    container_name: binwalk-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8241
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  bitbucket-mcp:
+    image: hackerdogs/bitbucket-mcp:latest
+    container_name: bitbucket-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8516
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  blackbird-mcp:
+    image: hackerdogs/blackbird-mcp:latest
+    container_name: blackbird-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8220
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  bloodhound-mcp:
+    image: hackerdogs/bloodhound-mcp:latest
+    container_name: bloodhound-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8286
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  bloodhound-mcp-ai-mcp:
+    image: hackerdogs/bloodhound-mcp-ai-mcp:latest
+    container_name: bloodhound-mcp-ai-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8338
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  boofuzz-mcp:
+    image: hackerdogs/boofuzz-mcp:latest
+    container_name: boofuzz-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8333
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  brave-search-mcp:
+    image: hackerdogs/brave-search-mcp:latest
+    container_name: brave-search-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8629
+      - BRAVE_API_KEY=${BRAVE_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  bravesearch-mcp:
+    image: hackerdogs/bravesearch-mcp:latest
+    container_name: bravesearch-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8517
+      - BRAVE_API_KEY=${BRAVE_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  brightdata-mcp-server-mcp:
+    image: hackerdogs/brightdata-mcp-server-mcp:latest
+    container_name: brightdata-mcp-server-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8630
+      - BRIGHTDATA_API_KEY=${BRIGHTDATA_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  browserless-mcp:
+    image: hackerdogs/browserless-mcp:latest
+    container_name: browserless-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8518
+      - BROWSERLESS_URL=${BROWSERLESS_URL}
+      - BROWSERLESS_API_KEY=${BROWSERLESS_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  brutespray-mcp:
+    image: hackerdogs/brutespray-mcp:latest
+    container_name: brutespray-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8308
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  brutus-mcp:
+    image: hackerdogs/brutus-mcp:latest
+    container_name: brutus-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8102
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  builtwith-mcp:
+    image: hackerdogs/builtwith-mcp:latest
+    container_name: builtwith-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8375
+      - BUILTWITH_API_KEY=${BUILTWITH_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  bully-mcp:
+    image: hackerdogs/bully-mcp:latest
+    container_name: bully-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8310
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  capa-mcp:
+    image: hackerdogs/capa-mcp:latest
+    container_name: capa-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8329
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  cero-mcp:
+    image: hackerdogs/cero-mcp:latest
+    container_name: cero-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8685
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  certgraph-mcp:
+    image: hackerdogs/certgraph-mcp:latest
+    container_name: certgraph-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8519
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  certipy-mcp:
+    image: hackerdogs/certipy-mcp:latest
+    container_name: certipy-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8285
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  checkov-mcp:
+    image: hackerdogs/checkov-mcp:latest
+    container_name: checkov-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8272
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  checksec-mcp:
+    image: hackerdogs/checksec-mcp:latest
+    container_name: checksec-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8244
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  chrome-devtools-mcp:
+    image: hackerdogs/chrome-devtools-mcp:latest
+    container_name: chrome-devtools-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8631
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  cisco-mcp-scanner-mcp:
+    image: hackerdogs/cisco-mcp-scanner-mcp:latest
+    container_name: cisco-mcp-scanner-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8342
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  clair-mcp:
+    image: hackerdogs/clair-mcp:latest
+    container_name: clair-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8270
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  clinicaltrialsgov-mcp-server-mcp:
+    image: hackerdogs/clinicaltrialsgov-mcp-server-mcp:latest
+    container_name: clinicaltrialsgov-mcp-server-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8632
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  cloud-datacenter-mcp:
+    image: hackerdogs/cloud-datacenter-mcp:latest
+    container_name: cloud-datacenter-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8520
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  cloudflare-mcp:
+    image: hackerdogs/cloudflare-mcp:latest
+    container_name: cloudflare-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8633
+      - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  cloudlist-mcp:
+    image: hackerdogs/cloudlist-mcp:latest
+    container_name: cloudlist-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8111
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  cloudmapper-mcp:
+    image: hackerdogs/cloudmapper-mcp:latest
+    container_name: cloudmapper-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8268
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  code-execution-mcp:
+    image: hackerdogs/code-execution-mcp:latest
+    container_name: code-execution-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8376
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  commix-mcp:
+    image: hackerdogs/commix-mcp:latest
+    container_name: commix-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8225
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  context7-mcp:
+    image: hackerdogs/context7-mcp:latest
+    container_name: context7-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8634
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  corscanner-mcp:
+    image: hackerdogs/corscanner-mcp:latest
+    container_name: corscanner-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8292
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  cortex-mcp:
+    image: hackerdogs/cortex-mcp:latest
+    container_name: cortex-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8410
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  crackmapexec-mcp:
+    image: hackerdogs/crackmapexec-mcp:latest
+    container_name: crackmapexec-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8208
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  crawl4ai-mcp:
+    image: hackerdogs/crawl4ai-mcp:latest
+    container_name: crawl4ai-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8521
+      - CRAWL4AI_URL=${CRAWL4AI_URL}
+      - CRAWL4AI_API_TOKEN=${CRAWL4AI_API_TOKEN}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  crlfuzz-mcp:
+    image: hackerdogs/crlfuzz-mcp:latest
+    container_name: crlfuzz-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8290
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  crowbar-mcp:
+    image: hackerdogs/crowbar-mcp:latest
+    container_name: crowbar-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8307
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  crtsh-mcp:
+    image: hackerdogs/crtsh-mcp:latest
+    container_name: crtsh-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8686
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  crunch-mcp:
+    image: hackerdogs/crunch-mcp:latest
+    container_name: crunch-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8324
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  crunchbase-mcp:
+    image: hackerdogs/crunchbase-mcp:latest
+    container_name: crunchbase-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8411
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  ctgov-mcp-docker-mcp:
+    image: hackerdogs/ctgov-mcp-docker-mcp:latest
+    container_name: ctgov-mcp-docker-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8401
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  cutter-mcp:
+    image: hackerdogs/cutter-mcp:latest
+    container_name: cutter-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8320
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  cvemap-mcp:
+    image: hackerdogs/cvemap-mcp:latest
+    container_name: cvemap-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8106
+      - PDCP_API_KEY=${PDCP_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  dalfox-mcp:
+    image: hackerdogs/dalfox-mcp:latest
+    container_name: dalfox-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8221
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  deepwebresearch-mcp:
+    image: hackerdogs/deepwebresearch-mcp:latest
+    container_name: deepwebresearch-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8377
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  dependency-check-mcp:
+    image: hackerdogs/dependency-check-mcp:latest
+    container_name: dependency-check-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8361
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  dharma-mcp:
+    image: hackerdogs/dharma-mcp:latest
+    container_name: dharma-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8334
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  dirb-mcp:
+    image: hackerdogs/dirb-mcp:latest
+    container_name: dirb-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8214
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  dirsearch-mcp:
+    image: hackerdogs/dirsearch-mcp:latest
+    container_name: dirsearch-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8215
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  dns-mcp-server-mcp:
+    image: hackerdogs/dns-mcp-server-mcp:latest
+    container_name: dns-mcp-server-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8635
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  dnsdumpster-mcp:
+    image: hackerdogs/dnsdumpster-mcp:latest
+    container_name: dnsdumpster-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8216
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  dnsenum-mcp:
+    image: hackerdogs/dnsenum-mcp:latest
+    container_name: dnsenum-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8304
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  dnsreaper-mcp:
+    image: hackerdogs/dnsreaper-mcp:latest
+    container_name: dnsreaper-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8293
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  dnsrecon-mcp:
+    image: hackerdogs/dnsrecon-mcp:latest
+    container_name: dnsrecon-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8203
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  dnstwist-mcp:
+    image: hackerdogs/dnstwist-mcp:latest
+    container_name: dnstwist-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8636
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  dnsx-mcp:
+    image: hackerdogs/dnsx-mcp:latest
+    container_name: dnsx-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8108
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  docker-bench-security-mcp:
+    image: hackerdogs/docker-bench-security-mcp:latest
+    container_name: docker-bench-security-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8254
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  dotdotpwn-mcp:
+    image: hackerdogs/dotdotpwn-mcp:latest
+    container_name: dotdotpwn-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8223
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  duckduckgo-mcp:
+    image: hackerdogs/duckduckgo-mcp:latest
+    container_name: duckduckgo-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8413
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  earthquake-mcp:
+    image: hackerdogs/earthquake-mcp:latest
+    container_name: earthquake-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8457
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  edgartools-mcp-server-mcp:
+    image: hackerdogs/edgartools-mcp-server-mcp:latest
+    container_name: edgartools-mcp-server-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8415
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  edu-data-mcp:
+    image: hackerdogs/edu-data-mcp:latest
+    container_name: edu-data-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8416
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  enum4linux-mcp:
+    image: hackerdogs/enum4linux-mcp:latest
+    container_name: enum4linux-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8209
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  enum4linux-ng-mcp:
+    image: hackerdogs/enum4linux-ng-mcp:latest
+    container_name: enum4linux-ng-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8210
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  ettercap-mcp:
+    image: hackerdogs/ettercap-mcp:latest
+    container_name: ettercap-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8313
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  evil-winrm-mcp:
+    image: hackerdogs/evil-winrm-mcp:latest
+    container_name: evil-winrm-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8263
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  exa-mcp:
+    image: hackerdogs/exa-mcp:latest
+    container_name: exa-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8637
+      - EXA_API_KEY=${EXA_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  excel-tools-mcp:
+    image: hackerdogs/excel-tools-mcp:latest
+    container_name: excel-tools-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8505
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  exiftool-agent-mcp:
+    image: hackerdogs/exiftool-agent-mcp:latest
+    container_name: exiftool-agent-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8638
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  exiftool-mcp:
+    image: hackerdogs/exiftool-mcp:latest
+    container_name: exiftool-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8502
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  exploitdb-mcp:
+    image: hackerdogs/exploitdb-mcp:latest
+    container_name: exploitdb-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8302
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  falco-mcp:
+    image: hackerdogs/falco-mcp:latest
+    container_name: falco-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8271
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  feroxbuster-mcp:
+    image: hackerdogs/feroxbuster-mcp:latest
+    container_name: feroxbuster-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8676
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  fetch-mcp:
+    image: hackerdogs/fetch-mcp:latest
+    container_name: fetch-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8639
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  ffuf-mcp:
+    image: hackerdogs/ffuf-mcp:latest
+    container_name: ffuf-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8687
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  fierce-mcp:
+    image: hackerdogs/fierce-mcp:latest
+    container_name: fierce-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8202
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  file-operations-mcp:
+    image: hackerdogs/file-operations-mcp:latest
+    container_name: file-operations-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8522
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  financial-datasets-mcp:
+    image: hackerdogs/financial-datasets-mcp:latest
+    container_name: financial-datasets-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8420
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  firecrawl-mcp:
+    image: hackerdogs/firecrawl-mcp:latest
+    container_name: firecrawl-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8640
+      - FIRECRAWL_API_KEY=${FIRECRAWL_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  flights-mcp:
+    image: hackerdogs/flights-mcp:latest
+    container_name: flights-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8422
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  foremost-mcp:
+    image: hackerdogs/foremost-mcp:latest
+    container_name: foremost-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8249
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  fping-mcp:
+    image: hackerdogs/fping-mcp:latest
+    container_name: fping-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8309
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  fred-mcp:
+    image: hackerdogs/fred-mcp:latest
+    container_name: fred-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8423
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  garak-mcp:
+    image: hackerdogs/garak-mcp:latest
+    container_name: garak-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8352
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  gau-mcp:
+    image: hackerdogs/gau-mcp:latest
+    container_name: gau-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8218
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  gef-mcp:
+    image: hackerdogs/gef-mcp:latest
+    container_name: gef-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8238
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  geocoding-mcp:
+    image: hackerdogs/geocoding-mcp:latest
+    container_name: geocoding-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8641
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  ggshield-mcp:
+    image: hackerdogs/ggshield-mcp:latest
+    container_name: ggshield-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8363
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  ghidra-mcp:
+    image: hackerdogs/ghidra-mcp:latest
+    container_name: ghidra-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8240
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  ghunt-mcp:
+    image: hackerdogs/ghunt-mcp:latest
+    container_name: ghunt-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8677
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  gitlab-mcp:
+    image: hackerdogs/gitlab-mcp:latest
+    container_name: gitlab-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8642
+      - GITLAB_TOKEN=${GITLAB_TOKEN}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  gitleaks-mcp:
+    image: hackerdogs/gitleaks-mcp:latest
+    container_name: gitleaks-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8332
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  globalping-mcp:
+    image: hackerdogs/globalping-mcp:latest
+    container_name: globalping-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8643
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  gobuster-mcp:
+    image: hackerdogs/gobuster-mcp:latest
+    container_name: gobuster-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8213
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  google-threat-intelligence-mcp:
+    image: hackerdogs/google-threat-intelligence-mcp:latest
+    container_name: google-threat-intelligence-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8644
+      - GOOGLE_TI_API_KEY=${GOOGLE_TI_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  gospider-mcp:
+    image: hackerdogs/gospider-mcp:latest
+    container_name: gospider-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8350
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  gowitness-mcp:
+    image: hackerdogs/gowitness-mcp:latest
+    container_name: gowitness-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8688
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  graphql-voyager-mcp:
+    image: hackerdogs/graphql-voyager-mcp:latest
+    container_name: graphql-voyager-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8282
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  graphviz-dot-mcp:
+    image: hackerdogs/graphviz-dot-mcp:latest
+    container_name: graphviz-dot-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8523
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  greynoise-mcp:
+    image: hackerdogs/greynoise-mcp:latest
+    container_name: greynoise-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8645
+      - GREYNOISE_API_KEY=${GREYNOISE_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  grype-mcp:
+    image: hackerdogs/grype-mcp:latest
+    container_name: grype-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8357
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  hakrawler-mcp:
+    image: hackerdogs/hakrawler-mcp:latest
+    container_name: hakrawler-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8217
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  hashcat-mcp:
+    image: hackerdogs/hashcat-mcp:latest
+    container_name: hashcat-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8235
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  hashid-mcp:
+    image: hackerdogs/hashid-mcp:latest
+    container_name: hashid-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8264
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  hashpump-mcp:
+    image: hackerdogs/hashpump-mcp:latest
+    container_name: hashpump-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8274
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  hibp-mcp:
+    image: hackerdogs/hibp-mcp:latest
+    container_name: hibp-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8646
+      - HIBP_API_KEY=${HIBP_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  holehe-mcp:
+    image: hackerdogs/holehe-mcp:latest
+    container_name: holehe-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8219
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  horusec-mcp:
+    image: hackerdogs/horusec-mcp:latest
+    container_name: horusec-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8359
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  http-headers-security-mcp:
+    image: hackerdogs/http-headers-security-mcp:latest
+    container_name: http-headers-security-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8689
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  httpx-mcp:
+    image: hackerdogs/httpx-mcp:latest
+    container_name: httpx-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8690
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  hydra-mcp:
+    image: hackerdogs/hydra-mcp:latest
+    container_name: hydra-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8233
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  imf-data-mcp:
+    image: hackerdogs/imf-data-mcp:latest
+    container_name: imf-data-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8647
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  ipinfo-mcp:
+    image: hackerdogs/ipinfo-mcp:latest
+    container_name: ipinfo-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8351
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  iplocate-mcp:
+    image: hackerdogs/iplocate-mcp:latest
+    container_name: iplocate-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8648
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  ivre-mcp:
+    image: hackerdogs/ivre-mcp:latest
+    container_name: ivre-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8366
+      - IVRE_WEB_URL=${IVRE_WEB_URL}
+      - IVRE_VERIFY_SSL=${IVRE_VERIFY_SSL}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  jaeles-mcp:
+    image: hackerdogs/jaeles-mcp:latest
+    container_name: jaeles-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8232
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  jira-mcp:
+    image: hackerdogs/jira-mcp:latest
+    container_name: jira-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8649
+      - JIRA_URL=${JIRA_URL}
+      - JIRA_EMAIL=${JIRA_EMAIL}
+      - JIRA_API_TOKEN=${JIRA_API_TOKEN}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  john-mcp:
+    image: hackerdogs/john-mcp:latest
+    container_name: john-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8234
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  joomscan-mcp:
+    image: hackerdogs/joomscan-mcp:latest
+    container_name: joomscan-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8305
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  julius-mcp:
+    image: hackerdogs/julius-mcp:latest
+    container_name: julius-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8100
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  jwt-tool-mcp:
+    image: hackerdogs/jwt-tool-mcp:latest
+    container_name: jwt-tool-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8265
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  katana-mcp:
+    image: hackerdogs/katana-mcp:latest
+    container_name: katana-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8691
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  knostic-mcp-scanner-mcp:
+    image: hackerdogs/knostic-mcp-scanner-mcp:latest
+    container_name: knostic-mcp-scanner-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8344
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  kube-bench-mcp:
+    image: hackerdogs/kube-bench-mcp:latest
+    container_name: kube-bench-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8253
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  kube-hunter-mcp:
+    image: hackerdogs/kube-hunter-mcp:latest
+    container_name: kube-hunter-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8252
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  kubescape-mcp:
+    image: hackerdogs/kubescape-mcp:latest
+    container_name: kubescape-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8362
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  libc-database-mcp:
+    image: hackerdogs/libc-database-mcp:latest
+    container_name: libc-database-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8277
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  lynis-mcp:
+    image: hackerdogs/lynis-mcp:latest
+    container_name: lynis-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8326
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  maigret-mcp:
+    image: hackerdogs/maigret-mcp:latest
+    container_name: maigret-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8678
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  mapboxserver-mcp:
+    image: hackerdogs/mapboxserver-mcp:latest
+    container_name: mapboxserver-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8429
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  marinetraffic-mcp:
+    image: hackerdogs/marinetraffic-mcp:latest
+    container_name: marinetraffic-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8430
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  masscan-mcp:
+    image: hackerdogs/masscan-mcp:latest
+    container_name: masscan-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8692
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  mcp-server-code-runner-mcp:
+    image: hackerdogs/mcp-server-code-runner-mcp:latest
+    container_name: mcp-server-code-runner-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8409
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  mcpscan-mcp:
+    image: hackerdogs/mcpscan-mcp:latest
+    container_name: mcpscan-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8296
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  mcpserver-audit-mcp:
+    image: hackerdogs/mcpserver-audit-mcp:latest
+    container_name: mcpserver-audit-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8340
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  medusa-mcp:
+    image: hackerdogs/medusa-mcp:latest
+    container_name: medusa-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8261
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  mermaid-mcp:
+    image: hackerdogs/mermaid-mcp:latest
+    container_name: mermaid-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8524
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  metasploit-mcp:
+    image: hackerdogs/metasploit-mcp:latest
+    container_name: metasploit-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8236
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  misp-mcp:
+    image: hackerdogs/misp-mcp:latest
+    container_name: misp-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8371
+      - MISP_API_KEY=${MISP_API_KEY}
+      - MISP_URL=${MISP_URL}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  mobsf-mcp:
+    image: hackerdogs/mobsf-mcp:latest
+    container_name: mobsf-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8693
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  ms-fabric-rti-mcp:
+    image: hackerdogs/ms-fabric-rti-mcp:latest
+    container_name: ms-fabric-rti-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8650
+      - FABRIC_API_KEY=${FABRIC_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  n2yo-mcp:
+    image: hackerdogs/n2yo-mcp:latest
+    container_name: n2yo-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8435
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  naabu-mcp:
+    image: hackerdogs/naabu-mcp:latest
+    container_name: naabu-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8105
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  name-server-mcp:
+    image: hackerdogs/name-server-mcp:latest
+    container_name: name-server-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8525
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  nasa-mcp:
+    image: hackerdogs/nasa-mcp:latest
+    container_name: nasa-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8651
+      - NASA_API_KEY=${NASA_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  nbtscan-mcp:
+    image: hackerdogs/nbtscan-mcp:latest
+    container_name: nbtscan-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8206
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  ncrack-mcp:
+    image: hackerdogs/ncrack-mcp:latest
+    container_name: ncrack-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8306
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  nerva-mcp:
+    image: hackerdogs/nerva-mcp:latest
+    container_name: nerva-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8104
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  netcat-mcp:
+    image: hackerdogs/netcat-mcp:latest
+    container_name: netcat-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8327
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  netdiscover-mcp:
+    image: hackerdogs/netdiscover-mcp:latest
+    container_name: netdiscover-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8322
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  netexec-mcp:
+    image: hackerdogs/netexec-mcp:latest
+    container_name: netexec-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8212
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  netutils-mcp:
+    image: hackerdogs/netutils-mcp:latest
+    container_name: netutils-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8436
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  ngrep-mcp:
+    image: hackerdogs/ngrep-mcp:latest
+    container_name: ngrep-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8314
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  nikto-mcp:
+    image: hackerdogs/nikto-mcp:latest
+    container_name: nikto-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8679
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  nmap-mcp:
+    image: hackerdogs/nmap-mcp:latest
+    container_name: nmap-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8694
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  nosqlmap-mcp:
+    image: hackerdogs/nosqlmap-mcp:latest
+    container_name: nosqlmap-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8266
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  notion-mcp:
+    image: hackerdogs/notion-mcp:latest
+    container_name: notion-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8652
+      - NOTION_API_KEY=${NOTION_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  nova-framework-mcp:
+    image: hackerdogs/nova-framework-mcp:latest
+    container_name: nova-framework-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8299
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  nova-proximity-mcp:
+    image: hackerdogs/nova-proximity-mcp:latest
+    container_name: nova-proximity-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8298
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  nuclei-mcp:
+    image: hackerdogs/nuclei-mcp:latest
+    container_name: nuclei-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8695
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  ocr-mcp:
+    image: hackerdogs/ocr-mcp:latest
+    container_name: ocr-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8438
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  octagon-mcp-server-mcp:
+    image: hackerdogs/octagon-mcp-server-mcp:latest
+    container_name: octagon-mcp-server-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8653
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  octocode-mcp:
+    image: hackerdogs/octocode-mcp:latest
+    container_name: octocode-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8654
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  one-gadget-mcp:
+    image: hackerdogs/one-gadget-mcp:latest
+    container_name: one-gadget-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8276
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  onionsearch-mcp:
+    image: hackerdogs/onionsearch-mcp:latest
+    container_name: onionsearch-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8372
+      - TOR_PROXY=${TOR_PROXY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  open-legal-mcp:
+    image: hackerdogs/open-legal-mcp:latest
+    container_name: open-legal-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8439
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  opencti-mcp:
+    image: hackerdogs/opencti-mcp:latest
+    container_name: opencti-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8370
+      - OPENCTI_API_KEY=${OPENCTI_API_KEY}
+      - OPENCTI_URL=${OPENCTI_URL}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  opencv-mcp-server-mcp:
+    image: hackerdogs/opencv-mcp-server-mcp:latest
+    container_name: opencv-mcp-server-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8440
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  openfda-mcp:
+    image: hackerdogs/openfda-mcp:latest
+    container_name: openfda-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8655
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  openrisk-mcp:
+    image: hackerdogs/openrisk-mcp:latest
+    container_name: openrisk-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8115
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  openvas-mcp:
+    image: hackerdogs/openvas-mcp:latest
+    container_name: openvas-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8300
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  osm-mcp-server-mcp:
+    image: hackerdogs/osm-mcp-server-mcp:latest
+    container_name: osm-mcp-server-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8656
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  osv-mcp:
+    image: hackerdogs/osv-mcp:latest
+    container_name: osv-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8347
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  otx-mcp:
+    image: hackerdogs/otx-mcp:latest
+    container_name: otx-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8368
+      - OTX_API_KEY=${OTX_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  pacu-mcp:
+    image: hackerdogs/pacu-mcp:latest
+    container_name: pacu-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8269
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  pagespeed-mcp:
+    image: hackerdogs/pagespeed-mcp:latest
+    container_name: pagespeed-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8378
+      - PAGESPEED_API_KEY=${PAGESPEED_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  paramspider-mcp:
+    image: hackerdogs/paramspider-mcp:latest
+    container_name: paramspider-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8226
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  patator-mcp:
+    image: hackerdogs/patator-mcp:latest
+    container_name: patator-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8262
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  pdf-reader-mcp:
+    image: hackerdogs/pdf-reader-mcp:latest
+    container_name: pdf-reader-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8442
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  peda-mcp:
+    image: hackerdogs/peda-mcp:latest
+    container_name: peda-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8237
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  pentest-agent-mcp:
+    image: hackerdogs/pentest-agent-mcp:latest
+    container_name: pentest-agent-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8443
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  phoneinfoga-mcp:
+    image: hackerdogs/phoneinfoga-mcp:latest
+    container_name: phoneinfoga-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8503
+      - NUMVERIFY_API_KEY=${NUMVERIFY_API_KEY}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - GOOGLECSE_CX=${GOOGLECSE_CX}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  pinecone-mcp:
+    image: hackerdogs/pinecone-mcp:latest
+    container_name: pinecone-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8657
+      - PINECONE_API_KEY=${PINECONE_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  pixiewps-mcp:
+    image: hackerdogs/pixiewps-mcp:latest
+    container_name: pixiewps-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8311
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  polygon-mcp:
+    image: hackerdogs/polygon-mcp:latest
+    container_name: polygon-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8445
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  port-scanner-mcp:
+    image: hackerdogs/port-scanner-mcp:latest
+    container_name: port-scanner-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8354
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  postman-mcp:
+    image: hackerdogs/postman-mcp:latest
+    container_name: postman-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8658
+      - POSTMAN_API_KEY=${POSTMAN_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  powerpoint-tools-mcp:
+    image: hackerdogs/powerpoint-tools-mcp:latest
+    container_name: powerpoint-tools-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8507
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  psudohash-mcp:
+    image: hackerdogs/psudohash-mcp:latest
+    container_name: psudohash-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8287
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  pubmed-mcp:
+    image: hackerdogs/pubmed-mcp:latest
+    container_name: pubmed-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8446
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  puppeteer-mcp:
+    image: hackerdogs/puppeteer-mcp:latest
+    container_name: puppeteer-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8659
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  pwninit-mcp:
+    image: hackerdogs/pwninit-mcp:latest
+    container_name: pwninit-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8278
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  pwntools-mcp:
+    image: hackerdogs/pwntools-mcp:latest
+    container_name: pwntools-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8245
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  qsreplace-mcp:
+    image: hackerdogs/qsreplace-mcp:latest
+    container_name: qsreplace-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8227
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  radare2-mcp:
+    image: hackerdogs/radare2-mcp:latest
+    container_name: radare2-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8239
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  ramparts-mcp:
+    image: hackerdogs/ramparts-mcp:latest
+    container_name: ramparts-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8295
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  rapidapi-hub-reverse-image-search-by-copyseeker-mcp:
+    image: hackerdogs/rapidapi-hub-reverse-image-search-by-copyseeker-mcp:latest
+    container_name: rapidapi-hub-reverse-image-search-by-copyseeker-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8660
+      - RAPIDAPI_KEY=${RAPIDAPI_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  rasn-mcp:
+    image: hackerdogs/rasn-mcp:latest
+    container_name: rasn-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8353
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  recon-ng-mcp:
+    image: hackerdogs/recon-ng-mcp:latest
+    container_name: recon-ng-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8256
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  reddit-mcp:
+    image: hackerdogs/reddit-mcp:latest
+    container_name: reddit-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8661
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  reddit-mcp-server-mcp:
+    image: hackerdogs/reddit-mcp-server-mcp:latest
+    container_name: reddit-mcp-server-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8447
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  responder-mcp:
+    image: hackerdogs/responder-mcp:latest
+    container_name: responder-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8207
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  retire-js-mcp:
+    image: hackerdogs/retire-js-mcp:latest
+    container_name: retire-js-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8364
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  roadtools-mcp:
+    image: hackerdogs/roadtools-mcp:latest
+    container_name: roadtools-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8331
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  ropgadget-mcp:
+    image: hackerdogs/ropgadget-mcp:latest
+    container_name: ropgadget-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8242
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  ropper-mcp:
+    image: hackerdogs/ropper-mcp:latest
+    container_name: ropper-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8243
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  rss-mcp:
+    image: hackerdogs/rss-mcp:latest
+    container_name: rss-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8448
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  rustscan-mcp:
+    image: hackerdogs/rustscan-mcp:latest
+    container_name: rustscan-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8200
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  s3-mcp-server-mcp:
+    image: hackerdogs/s3-mcp-server-mcp:latest
+    container_name: s3-mcp-server-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8662
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  scan-url-mcp:
+    image: hackerdogs/scan-url-mcp:latest
+    container_name: scan-url-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8449
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  scc-mcp:
+    image: hackerdogs/scc-mcp:latest
+    container_name: scc-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8663
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  scoutsuite-mcp:
+    image: hackerdogs/scoutsuite-mcp:latest
+    container_name: scoutsuite-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8251
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  scrapy-mcp:
+    image: hackerdogs/scrapy-mcp:latest
+    container_name: scrapy-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8526
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  search1api-mcp:
+    image: hackerdogs/search1api-mcp:latest
+    container_name: search1api-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8664
+      - SEARCH1API_KEY=${SEARCH1API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  sec-edgar-mcp:
+    image: hackerdogs/sec-edgar-mcp:latest
+    container_name: sec-edgar-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8451
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  secops-mcp:
+    image: hackerdogs/secops-mcp:latest
+    container_name: secops-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8379
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  securemcp-mcp:
+    image: hackerdogs/securemcp-mcp:latest
+    container_name: securemcp-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8297
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  semgrep-mcp:
+    image: hackerdogs/semgrep-mcp:latest
+    container_name: semgrep-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8335
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  sentry-mcp:
+    image: hackerdogs/sentry-mcp:latest
+    container_name: sentry-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8665
+      - SENTRY_AUTH_TOKEN=${SENTRY_AUTH_TOKEN}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  serper-search-mcp:
+    image: hackerdogs/serper-search-mcp:latest
+    container_name: serper-search-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8666
+      - SERPER_API_KEY=${SERPER_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  sherlock-mcp:
+    image: hackerdogs/sherlock-mcp:latest
+    container_name: sherlock-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8317
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  shodan-mcp:
+    image: hackerdogs/shodan-mcp:latest
+    container_name: shodan-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8453
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  shuffledns-mcp:
+    image: hackerdogs/shuffledns-mcp:latest
+    container_name: shuffledns-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8696
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  slack-mcp:
+    image: hackerdogs/slack-mcp:latest
+    container_name: slack-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8454
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  slowhttptest-mcp:
+    image: hackerdogs/slowhttptest-mcp:latest
+    container_name: slowhttptest-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8316
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  smbmap-mcp:
+    image: hackerdogs/smbmap-mcp:latest
+    container_name: smbmap-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8211
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  smtp-user-enum-mcp:
+    image: hackerdogs/smtp-user-enum-mcp:latest
+    container_name: smtp-user-enum-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8325
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  smuggler-mcp:
+    image: hackerdogs/smuggler-mcp:latest
+    container_name: smuggler-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8291
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  social-analyzer-mcp:
+    image: hackerdogs/social-analyzer-mcp:latest
+    container_name: social-analyzer-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8255
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  spiderfoot-mcp:
+    image: hackerdogs/spiderfoot-mcp:latest
+    container_name: spiderfoot-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8257
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  splunk-mcp:
+    image: hackerdogs/splunk-mcp:latest
+    container_name: splunk-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8667
+      - SPLUNK_URL=${SPLUNK_URL}
+      - SPLUNK_TOKEN=${SPLUNK_TOKEN}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  sqlmap-mcp:
+    image: hackerdogs/sqlmap-mcp:latest
+    container_name: sqlmap-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8697
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  sslscan-mcp:
+    image: hackerdogs/sslscan-mcp:latest
+    container_name: sslscan-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8323
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  sslyze-mcp:
+    image: hackerdogs/sslyze-mcp:latest
+    container_name: sslyze-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8280
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  sstimap-mcp:
+    image: hackerdogs/sstimap-mcp:latest
+    container_name: sstimap-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8289
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  steampipe-mcp:
+    image: hackerdogs/steampipe-mcp:latest
+    container_name: steampipe-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8668
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  steghide-mcp:
+    image: hackerdogs/steghide-mcp:latest
+    container_name: steghide-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8250
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  stripe-mcp:
+    image: hackerdogs/stripe-mcp:latest
+    container_name: stripe-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8669
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  subfinder-mcp:
+    image: hackerdogs/subfinder-mcp:latest
+    container_name: subfinder-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8367
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  subjack-mcp:
+    image: hackerdogs/subjack-mcp:latest
+    container_name: subjack-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8260
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  sublist3r-mcp:
+    image: hackerdogs/sublist3r-mcp:latest
+    container_name: sublist3r-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8301
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  suricata-mcp:
+    image: hackerdogs/suricata-mcp:latest
+    container_name: suricata-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8365
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  syft-mcp:
+    image: hackerdogs/syft-mcp:latest
+    container_name: syft-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8358
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  terraform-mcp:
+    image: hackerdogs/terraform-mcp:latest
+    container_name: terraform-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8670
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  terrascan-mcp:
+    image: hackerdogs/terrascan-mcp:latest
+    container_name: terrascan-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8273
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  testdisk-mcp:
+    image: hackerdogs/testdisk-mcp:latest
+    container_name: testdisk-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8283
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  testssl-mcp:
+    image: hackerdogs/testssl-mcp:latest
+    container_name: testssl-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8279
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  theharvester-mcp:
+    image: hackerdogs/theharvester-mcp:latest
+    container_name: theharvester-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8204
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  threat-hunting-mcp:
+    image: hackerdogs/threat-hunting-mcp:latest
+    container_name: threat-hunting-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8345
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  titus-mcp:
+    image: hackerdogs/titus-mcp:latest
+    container_name: titus-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8103
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  tldfinder-mcp:
+    image: hackerdogs/tldfinder-mcp:latest
+    container_name: tldfinder-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8113
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  tlsx-mcp:
+    image: hackerdogs/tlsx-mcp:latest
+    container_name: tlsx-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8109
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  tomtom-mcp:
+    image: hackerdogs/tomtom-mcp:latest
+    container_name: tomtom-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8671
+      - TOMTOM_API_KEY=${TOMTOM_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  tplmap-mcp:
+    image: hackerdogs/tplmap-mcp:latest
+    container_name: tplmap-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8267
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  trivy-mcp:
+    image: hackerdogs/trivy-mcp:latest
+    container_name: trivy-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8330
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  trivy-neutr0n-mcp:
+    image: hackerdogs/trivy-neutr0n-mcp:latest
+    container_name: trivy-neutr0n-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8356
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  trivy-security-mcp:
+    image: hackerdogs/trivy-security-mcp:latest
+    container_name: trivy-security-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8456
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  trufflehog-mcp:
+    image: hackerdogs/trufflehog-mcp:latest
+    container_name: trufflehog-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8258
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  uncover-mcp:
+    image: hackerdogs/uncover-mcp:latest
+    container_name: uncover-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8107
+      - SHODAN_API_KEY=${SHODAN_API_KEY}
+      - CENSYS_API_TOKEN=${CENSYS_API_TOKEN}
+      - CENSYS_ORGANIZATION_ID=${CENSYS_ORGANIZATION_ID}
+      - FOFA_EMAIL=${FOFA_EMAIL}
+      - FOFA_KEY=${FOFA_KEY}
+      - HUNTER_API_KEY=${HUNTER_API_KEY}
+      - ZOOMEYE_API_KEY=${ZOOMEYE_API_KEY}
+      - NETLAS_API_KEY=${NETLAS_API_KEY}
+      - CRIMINALIP_API_KEY=${CRIMINALIP_API_KEY}
+      - ONYPHE_API_KEY=${ONYPHE_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  upx-mcp:
+    image: hackerdogs/upx-mcp:latest
+    container_name: upx-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8284
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  urlfinder-mcp:
+    image: hackerdogs/urlfinder-mcp:latest
+    container_name: urlfinder-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8112
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  uro-mcp:
+    image: hackerdogs/uro-mcp:latest
+    container_name: uro-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8228
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  vanta-mcp:
+    image: hackerdogs/vanta-mcp:latest
+    container_name: vanta-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8348
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  variflight-mcp:
+    image: hackerdogs/variflight-mcp:latest
+    container_name: variflight-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8672
+      - VARIFLIGHT_API_KEY=${VARIFLIGHT_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  victorialogs-mcp:
+    image: hackerdogs/victorialogs-mcp:latest
+    container_name: victorialogs-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8527
+      - VICTORIALOGS_URL=${VICTORIALOGS_URL}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  virustotal-mcp:
+    image: hackerdogs/virustotal-mcp:latest
+    container_name: virustotal-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8369
+      - VT_API_KEY=${VT_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  visualization-tools-mcp:
+    image: hackerdogs/visualization-tools-mcp:latest
+    container_name: visualization-tools-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8506
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  volatility-mcp:
+    image: hackerdogs/volatility-mcp:latest
+    container_name: volatility-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8248
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  volatility3-mcp:
+    image: hackerdogs/volatility3-mcp:latest
+    container_name: volatility3-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8247
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  vulnerability-scanner-mcp:
+    image: hackerdogs/vulnerability-scanner-mcp:latest
+    container_name: vulnerability-scanner-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8339
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  vulnx-mcp:
+    image: hackerdogs/vulnx-mcp:latest
+    container_name: vulnx-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8116
+      - PDCP_API_KEY=${PDCP_API_KEY}
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  wafw00f-mcp:
+    image: hackerdogs/wafw00f-mcp:latest
+    container_name: wafw00f-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8230
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  wapiti-mcp:
+    image: hackerdogs/wapiti-mcp:latest
+    container_name: wapiti-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8288
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  wappalyzergo-mcp:
+    image: hackerdogs/wappalyzergo-mcp:latest
+    container_name: wappalyzergo-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8114
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  waybackurls-mcp:
+    image: hackerdogs/waybackurls-mcp:latest
+    container_name: waybackurls-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8698
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  webc-mcp:
+    image: hackerdogs/webc-mcp:latest
+    container_name: webc-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8504
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  wfuzz-mcp:
+    image: hackerdogs/wfuzz-mcp:latest
+    container_name: wfuzz-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8224
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  whatsmyname-mcp:
+    image: hackerdogs/whatsmyname-mcp:latest
+    container_name: whatsmyname-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8528
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  whatweb-mcp:
+    image: hackerdogs/whatweb-mcp:latest
+    container_name: whatweb-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8281
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  whois-mcp:
+    image: hackerdogs/whois-mcp:latest
+    container_name: whois-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8673
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  wifiphisher-mcp:
+    image: hackerdogs/wifiphisher-mcp:latest
+    container_name: wifiphisher-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8312
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  winston-ai-mcp:
+    image: hackerdogs/winston-ai-mcp:latest
+    container_name: winston-ai-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8674
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  wiremcp-mcp:
+    image: hackerdogs/wiremcp-mcp:latest
+    container_name: wiremcp-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8458
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  wireshark-mcp:
+    image: hackerdogs/wireshark-mcp:latest
+    container_name: wireshark-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8315
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  world-bank-mcp:
+    image: hackerdogs/world-bank-mcp:latest
+    container_name: world-bank-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8459
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  wpscan-mcp:
+    image: hackerdogs/wpscan-mcp:latest
+    container_name: wpscan-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8680
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  x8-mcp:
+    image: hackerdogs/x8-mcp:latest
+    container_name: x8-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8275
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  xsser-mcp:
+    image: hackerdogs/xsser-mcp:latest
+    container_name: xsser-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8222
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  xsstrike-mcp:
+    image: hackerdogs/xsstrike-mcp:latest
+    container_name: xsstrike-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8349
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  yara-mcp:
+    image: hackerdogs/yara-mcp:latest
+    container_name: yara-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8328
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  yaraflux-mcp:
+    image: hackerdogs/yaraflux-mcp:latest
+    container_name: yaraflux-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8336
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  yaraflux-mcp-server-mcp:
+    image: hackerdogs/yaraflux-mcp-server-mcp:latest
+    container_name: yaraflux-mcp-server-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8461
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  yersinia-mcp:
+    image: hackerdogs/yersinia-mcp:latest
+    container_name: yersinia-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8319
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  yeti-mcp:
+    image: hackerdogs/yeti-mcp:latest
+    container_name: yeti-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8337
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  yfmcp-mcp:
+    image: hackerdogs/yfmcp-mcp:latest
+    container_name: yfmcp-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8460
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  youtube-mcp:
+    image: hackerdogs/youtube-mcp:latest
+    container_name: youtube-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8462
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  youtube-transcript-mcp:
+    image: hackerdogs/youtube-transcript-mcp:latest
+    container_name: youtube-transcript-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8675
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  zap-lis-mcp:
+    image: hackerdogs/zap-lis-mcp:latest
+    container_name: zap-lis-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8355
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  zap-mcp:
+    image: hackerdogs/zap-mcp:latest
+    container_name: zap-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8231
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  zmap-mcp:
+    image: hackerdogs/zmap-mcp:latest
+    container_name: zmap-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8303
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  zscaler-mcp-server-mcp:
+    image: hackerdogs/zscaler-mcp-server-mcp:latest
+    container_name: zscaler-mcp-server-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8463
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+
+networks:
+  mcpfarm:
+    name: mcpfarm_internal
+    driver: bridge
+
+volumes:
+  auth_data:
+    name: mcpfarm_auth_data
+  caddy_routes:
+    name: mcpfarm_caddy_routes

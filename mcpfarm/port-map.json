@@ -1,0 +1,2553 @@
+{
+  "a2a-scanner-mcp": {
+    "port": 8341,
+    "image": "hackerdogs/a2a-scanner-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "abstract-mcp": {
+    "port": 8501,
+    "image": "hackerdogs/abstract-mcp:latest",
+    "category": "osint",
+    "env": [
+      "ABSTRACT_PHONE_API_KEY",
+      "ABSTRACT_EMAIL_API_KEY",
+      "ABSTRACT_IBAN_API_KEY",
+      "ABSTRACT_VAT_API_KEY",
+      "ABSTRACT_IP_API_KEY",
+      "ABSTRACT_HOLIDAYS_API_KEY",
+      "ABSTRACT_EXCHANGE_API_KEY",
+      "ABSTRACT_COMPANY_API_KEY",
+      "ABSTRACT_TIMEZONE_API_KEY"
+    ]
+  },
+  "abusech-mcp": {
+    "port": 8373,
+    "image": "hackerdogs/abusech-mcp:latest",
+    "category": "misc",
+    "env": [
+      "ABUSECH_API_KEY"
+    ]
+  },
+  "abuseipdb-mcp": {
+    "port": 8374,
+    "image": "hackerdogs/abuseipdb-mcp:latest",
+    "category": "misc",
+    "env": [
+      "ABUSEIPDB_API_KEY"
+    ]
+  },
+  "acuvity-mcp-server-atlas-docs-mcp": {
+    "port": 8403,
+    "image": "hackerdogs/acuvity-mcp-server-atlas-docs-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "acuvity-mcp-server-atlassian-mcp": {
+    "port": 8404,
+    "image": "hackerdogs/acuvity-mcp-server-atlassian-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "acuvity-mcp-server-azure-mcp": {
+    "port": 8432,
+    "image": "hackerdogs/acuvity-mcp-server-azure-mcp:latest",
+    "category": "cloud-container",
+    "env": []
+  },
+  "acuvity-mcp-server-bing-search-mcp": {
+    "port": 8405,
+    "image": "hackerdogs/acuvity-mcp-server-bing-search-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "acuvity-mcp-server-brave-search-mcp": {
+    "port": 8406,
+    "image": "hackerdogs/acuvity-mcp-server-brave-search-mcp:latest",
+    "category": "osint",
+    "env": []
+  },
+  "acuvity-mcp-server-calculator-mcp": {
+    "port": 8407,
+    "image": "hackerdogs/acuvity-mcp-server-calculator-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "acuvity-mcp-server-chroma-mcp": {
+    "port": 8408,
+    "image": "hackerdogs/acuvity-mcp-server-chroma-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "acuvity-mcp-server-docker-mcp": {
+    "port": 8412,
+    "image": "hackerdogs/acuvity-mcp-server-docker-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "acuvity-mcp-server-duckduckgo-mcp": {
+    "port": 8414,
+    "image": "hackerdogs/acuvity-mcp-server-duckduckgo-mcp:latest",
+    "category": "osint",
+    "env": []
+  },
+  "acuvity-mcp-server-elevenlabs-mcp": {
+    "port": 8417,
+    "image": "hackerdogs/acuvity-mcp-server-elevenlabs-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "acuvity-mcp-server-everything-mcp": {
+    "port": 8431,
+    "image": "hackerdogs/acuvity-mcp-server-everything-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "acuvity-mcp-server-everything-wrong-mcp": {
+    "port": 8418,
+    "image": "hackerdogs/acuvity-mcp-server-everything-wrong-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "acuvity-mcp-server-fetch-mcp": {
+    "port": 8419,
+    "image": "hackerdogs/acuvity-mcp-server-fetch-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "acuvity-mcp-server-firecrawl-mcp": {
+    "port": 8421,
+    "image": "hackerdogs/acuvity-mcp-server-firecrawl-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "acuvity-mcp-server-google-maps-mcp": {
+    "port": 8424,
+    "image": "hackerdogs/acuvity-mcp-server-google-maps-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "acuvity-mcp-server-grafana-mcp": {
+    "port": 8425,
+    "image": "hackerdogs/acuvity-mcp-server-grafana-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "acuvity-mcp-server-harness-mcp": {
+    "port": 8426,
+    "image": "hackerdogs/acuvity-mcp-server-harness-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "acuvity-mcp-server-hyperbrowser-mcp": {
+    "port": 8427,
+    "image": "hackerdogs/acuvity-mcp-server-hyperbrowser-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "acuvity-mcp-server-kagisearch-mcp": {
+    "port": 8428,
+    "image": "hackerdogs/acuvity-mcp-server-kagisearch-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "acuvity-mcp-server-microsoft-graph-mcp": {
+    "port": 8433,
+    "image": "hackerdogs/acuvity-mcp-server-microsoft-graph-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "acuvity-mcp-server-notion-mcp": {
+    "port": 8437,
+    "image": "hackerdogs/acuvity-mcp-server-notion-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "acuvity-mcp-server-oshp-mcp": {
+    "port": 8441,
+    "image": "hackerdogs/acuvity-mcp-server-oshp-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "acuvity-mcp-server-playwright-mcp": {
+    "port": 8444,
+    "image": "hackerdogs/acuvity-mcp-server-playwright-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "acuvity-mcp-server-scrapezy-mcp": {
+    "port": 8450,
+    "image": "hackerdogs/acuvity-mcp-server-scrapezy-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "acuvity-mcp-server-sentry-mcp": {
+    "port": 8452,
+    "image": "hackerdogs/acuvity-mcp-server-sentry-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "acuvity-mcp-server-slack-mcp": {
+    "port": 8455,
+    "image": "hackerdogs/acuvity-mcp-server-slack-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "adblock-mcp": {
+    "port": 8508,
+    "image": "hackerdogs/adblock-mcp:latest",
+    "category": "osint",
+    "env": []
+  },
+  "adguard-dns-mcp": {
+    "port": 8509,
+    "image": "hackerdogs/adguard-dns-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "ahmia-mcp": {
+    "port": 8510,
+    "image": "hackerdogs/ahmia-mcp:latest",
+    "category": "osint",
+    "env": []
+  },
+  "ai-humanizer-mcp": {
+    "port": 8601,
+    "image": "hackerdogs/ai-humanizer-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "ai-infra-guard-mcp": {
+    "port": 8294,
+    "image": "hackerdogs/ai-infra-guard-mcp:latest",
+    "category": "cloud-container",
+    "env": []
+  },
+  "aibom-mcp": {
+    "port": 8343,
+    "image": "hackerdogs/aibom-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "aircrack-ng-mcp": {
+    "port": 8321,
+    "image": "hackerdogs/aircrack-ng-mcp:latest",
+    "category": "network-attacks",
+    "env": []
+  },
+  "aistor-mcp": {
+    "port": 8434,
+    "image": "hackerdogs/aistor-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "alphavantage-mcp": {
+    "port": 8402,
+    "image": "hackerdogs/alphavantage-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "alterx-mcp": {
+    "port": 8681,
+    "image": "hackerdogs/alterx-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "amass-mcp": {
+    "port": 8682,
+    "image": "hackerdogs/amass-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "anew-mcp": {
+    "port": 8229,
+    "image": "hackerdogs/anew-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "angr-mcp": {
+    "port": 8246,
+    "image": "hackerdogs/angr-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "apple-itunes-mcp": {
+    "port": 8511,
+    "image": "hackerdogs/apple-itunes-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "aquatone-mcp": {
+    "port": 8259,
+    "image": "hackerdogs/aquatone-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "archiveorg-mcp": {
+    "port": 8512,
+    "image": "hackerdogs/archiveorg-mcp:latest",
+    "category": "osint",
+    "env": []
+  },
+  "arin-mcp": {
+    "port": 8513,
+    "image": "hackerdogs/arin-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "arjun-mcp": {
+    "port": 8683,
+    "image": "hackerdogs/arjun-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "arp-scan-mcp": {
+    "port": 8205,
+    "image": "hackerdogs/arp-scan-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "asnmap-mcp": {
+    "port": 8110,
+    "image": "hackerdogs/asnmap-mcp:latest",
+    "category": "network-recon",
+    "env": [
+      "PDCP_API_KEY"
+    ]
+  },
+  "assetfinder-mcp": {
+    "port": 8684,
+    "image": "hackerdogs/assetfinder-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "augustus-mcp": {
+    "port": 8101,
+    "image": "hackerdogs/augustus-mcp:latest",
+    "category": "core",
+    "env": [
+      "OPENAI_API_KEY",
+      "ANTHROPIC_API_KEY",
+      "COHERE_API_KEY",
+      "AZURE_OPENAI_API_KEY",
+      "AZURE_OPENAI_ENDPOINT",
+      "GROQ_API_KEY",
+      "MISTRAL_API_KEY",
+      "TOGETHER_API_KEY"
+    ]
+  },
+  "autorecon-mcp": {
+    "port": 8201,
+    "image": "hackerdogs/autorecon-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "aws-api-mcp": {
+    "port": 8602,
+    "image": "hackerdogs/aws-api-mcp:latest",
+    "category": "cloud-container",
+    "env": [
+      "AWS_REGION",
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY"
+    ]
+  },
+  "aws-aurora-dsql-mcp": {
+    "port": 8603,
+    "image": "hackerdogs/aws-aurora-dsql-mcp:latest",
+    "category": "cloud-container",
+    "env": [
+      "AWS_REGION",
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY"
+    ]
+  },
+  "aws-bedrock-agentcore-mcp": {
+    "port": 8604,
+    "image": "hackerdogs/aws-bedrock-agentcore-mcp:latest",
+    "category": "cloud-container",
+    "env": [
+      "AWS_REGION",
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY"
+    ]
+  },
+  "aws-bedrock-custom-model-mcp": {
+    "port": 8605,
+    "image": "hackerdogs/aws-bedrock-custom-model-mcp:latest",
+    "category": "cloud-container",
+    "env": [
+      "AWS_REGION",
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY"
+    ]
+  },
+  "aws-cloudtrail-mcp": {
+    "port": 8606,
+    "image": "hackerdogs/aws-cloudtrail-mcp:latest",
+    "category": "cloud-container",
+    "env": [
+      "AWS_REGION",
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY"
+    ]
+  },
+  "aws-cloudwatch-appsignals-mcp": {
+    "port": 8607,
+    "image": "hackerdogs/aws-cloudwatch-appsignals-mcp:latest",
+    "category": "cloud-container",
+    "env": [
+      "AWS_REGION",
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY"
+    ]
+  },
+  "aws-cloudwatch-mcp": {
+    "port": 8608,
+    "image": "hackerdogs/aws-cloudwatch-mcp:latest",
+    "category": "cloud-container",
+    "env": [
+      "AWS_REGION",
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY"
+    ]
+  },
+  "aws-core-mcp": {
+    "port": 8609,
+    "image": "hackerdogs/aws-core-mcp:latest",
+    "category": "cloud-container",
+    "env": [
+      "AWS_REGION",
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY"
+    ]
+  },
+  "aws-documentation-mcp": {
+    "port": 8610,
+    "image": "hackerdogs/aws-documentation-mcp:latest",
+    "category": "cloud-container",
+    "env": []
+  },
+  "aws-documentdb-mcp": {
+    "port": 8611,
+    "image": "hackerdogs/aws-documentdb-mcp:latest",
+    "category": "cloud-container",
+    "env": [
+      "AWS_REGION",
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY"
+    ]
+  },
+  "aws-dynamodb-mcp": {
+    "port": 8612,
+    "image": "hackerdogs/aws-dynamodb-mcp:latest",
+    "category": "cloud-container",
+    "env": [
+      "AWS_REGION",
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY"
+    ]
+  },
+  "aws-ecs-mcp": {
+    "port": 8613,
+    "image": "hackerdogs/aws-ecs-mcp:latest",
+    "category": "cloud-container",
+    "env": [
+      "AWS_REGION",
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY"
+    ]
+  },
+  "aws-eks-mcp": {
+    "port": 8614,
+    "image": "hackerdogs/aws-eks-mcp:latest",
+    "category": "cloud-container",
+    "env": [
+      "AWS_REGION",
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY"
+    ]
+  },
+  "aws-iam-mcp": {
+    "port": 8615,
+    "image": "hackerdogs/aws-iam-mcp:latest",
+    "category": "cloud-container",
+    "env": [
+      "AWS_REGION",
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY"
+    ]
+  },
+  "aws-mq-mcp": {
+    "port": 8616,
+    "image": "hackerdogs/aws-mq-mcp:latest",
+    "category": "cloud-container",
+    "env": [
+      "AWS_REGION",
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY"
+    ]
+  },
+  "aws-neptune-mcp": {
+    "port": 8617,
+    "image": "hackerdogs/aws-neptune-mcp:latest",
+    "category": "cloud-container",
+    "env": [
+      "AWS_REGION",
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY"
+    ]
+  },
+  "aws-network-mcp": {
+    "port": 8618,
+    "image": "hackerdogs/aws-network-mcp:latest",
+    "category": "cloud-container",
+    "env": [
+      "AWS_REGION",
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY"
+    ]
+  },
+  "aws-postgres-mcp": {
+    "port": 8619,
+    "image": "hackerdogs/aws-postgres-mcp:latest",
+    "category": "cloud-container",
+    "env": [
+      "AWS_REGION",
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY"
+    ]
+  },
+  "aws-prometheus-mcp": {
+    "port": 8620,
+    "image": "hackerdogs/aws-prometheus-mcp:latest",
+    "category": "cloud-container",
+    "env": [
+      "AWS_REGION",
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY"
+    ]
+  },
+  "aws-redshift-mcp": {
+    "port": 8621,
+    "image": "hackerdogs/aws-redshift-mcp:latest",
+    "category": "cloud-container",
+    "env": [
+      "AWS_REGION",
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY"
+    ]
+  },
+  "aws-s3-mcp": {
+    "port": 8346,
+    "image": "hackerdogs/aws-s3-mcp:latest",
+    "category": "cloud-container",
+    "env": []
+  },
+  "aws-s3-tables-mcp": {
+    "port": 8622,
+    "image": "hackerdogs/aws-s3-tables-mcp:latest",
+    "category": "cloud-container",
+    "env": [
+      "AWS_REGION",
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY"
+    ]
+  },
+  "aws-serverless-mcp": {
+    "port": 8623,
+    "image": "hackerdogs/aws-serverless-mcp:latest",
+    "category": "cloud-container",
+    "env": [
+      "AWS_REGION",
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY"
+    ]
+  },
+  "aws-sns-sqs-mcp": {
+    "port": 8624,
+    "image": "hackerdogs/aws-sns-sqs-mcp:latest",
+    "category": "cloud-container",
+    "env": [
+      "AWS_REGION",
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY"
+    ]
+  },
+  "aws-stepfunctions-mcp": {
+    "port": 8625,
+    "image": "hackerdogs/aws-stepfunctions-mcp:latest",
+    "category": "cloud-container",
+    "env": [
+      "AWS_REGION",
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY"
+    ]
+  },
+  "aws-well-architected-security-mcp": {
+    "port": 8626,
+    "image": "hackerdogs/aws-well-architected-security-mcp:latest",
+    "category": "cloud-container",
+    "env": [
+      "AWS_REGION",
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY"
+    ]
+  },
+  "azure-mcp": {
+    "port": 8627,
+    "image": "hackerdogs/azure-mcp:latest",
+    "category": "cloud-container",
+    "env": [
+      "AZURE_CLIENT_ID",
+      "AZURE_CLIENT_SECRET",
+      "AZURE_TENANT_ID",
+      "AZURE_SUBSCRIPTION_ID"
+    ]
+  },
+  "baidu-search-mcp-server-mcp": {
+    "port": 8628,
+    "image": "hackerdogs/baidu-search-mcp-server-mcp:latest",
+    "category": "osint",
+    "env": []
+  },
+  "baidusearch-mcp": {
+    "port": 8514,
+    "image": "hackerdogs/baidusearch-mcp:latest",
+    "category": "osint",
+    "env": []
+  },
+  "bearer-mcp": {
+    "port": 8360,
+    "image": "hackerdogs/bearer-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "bettercap-mcp": {
+    "port": 8318,
+    "image": "hackerdogs/bettercap-mcp:latest",
+    "category": "network-attacks",
+    "env": []
+  },
+  "bevigil-mcp": {
+    "port": 8515,
+    "image": "hackerdogs/bevigil-mcp:latest",
+    "category": "osint",
+    "env": [
+      "BEVIGIL_API_KEY"
+    ]
+  },
+  "binwalk-mcp": {
+    "port": 8241,
+    "image": "hackerdogs/binwalk-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "bitbucket-mcp": {
+    "port": 8516,
+    "image": "hackerdogs/bitbucket-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "blackbird-mcp": {
+    "port": 8220,
+    "image": "hackerdogs/blackbird-mcp:latest",
+    "category": "osint",
+    "env": []
+  },
+  "bloodhound-mcp": {
+    "port": 8286,
+    "image": "hackerdogs/bloodhound-mcp:latest",
+    "category": "exploitation",
+    "env": []
+  },
+  "bloodhound-mcp-ai-mcp": {
+    "port": 8338,
+    "image": "hackerdogs/bloodhound-mcp-ai-mcp:latest",
+    "category": "exploitation",
+    "env": []
+  },
+  "boofuzz-mcp": {
+    "port": 8333,
+    "image": "hackerdogs/boofuzz-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "brave-search-mcp": {
+    "port": 8629,
+    "image": "hackerdogs/brave-search-mcp:latest",
+    "category": "osint",
+    "env": [
+      "BRAVE_API_KEY"
+    ]
+  },
+  "bravesearch-mcp": {
+    "port": 8517,
+    "image": "hackerdogs/bravesearch-mcp:latest",
+    "category": "osint",
+    "env": [
+      "BRAVE_API_KEY"
+    ]
+  },
+  "brightdata-mcp-server-mcp": {
+    "port": 8630,
+    "image": "hackerdogs/brightdata-mcp-server-mcp:latest",
+    "category": "misc",
+    "env": [
+      "BRIGHTDATA_API_KEY"
+    ]
+  },
+  "browserless-mcp": {
+    "port": 8518,
+    "image": "hackerdogs/browserless-mcp:latest",
+    "category": "misc",
+    "env": [
+      "BROWSERLESS_URL",
+      "BROWSERLESS_API_KEY"
+    ]
+  },
+  "brutespray-mcp": {
+    "port": 8308,
+    "image": "hackerdogs/brutespray-mcp:latest",
+    "category": "exploitation",
+    "env": []
+  },
+  "brutus-mcp": {
+    "port": 8102,
+    "image": "hackerdogs/brutus-mcp:latest",
+    "category": "exploitation",
+    "env": []
+  },
+  "builtwith-mcp": {
+    "port": 8375,
+    "image": "hackerdogs/builtwith-mcp:latest",
+    "category": "osint",
+    "env": [
+      "BUILTWITH_API_KEY"
+    ]
+  },
+  "bully-mcp": {
+    "port": 8310,
+    "image": "hackerdogs/bully-mcp:latest",
+    "category": "network-attacks",
+    "env": []
+  },
+  "capa-mcp": {
+    "port": 8329,
+    "image": "hackerdogs/capa-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "cero-mcp": {
+    "port": 8685,
+    "image": "hackerdogs/cero-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "certgraph-mcp": {
+    "port": 8519,
+    "image": "hackerdogs/certgraph-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "certipy-mcp": {
+    "port": 8285,
+    "image": "hackerdogs/certipy-mcp:latest",
+    "category": "exploitation",
+    "env": []
+  },
+  "checkov-mcp": {
+    "port": 8272,
+    "image": "hackerdogs/checkov-mcp:latest",
+    "category": "cloud-container",
+    "env": []
+  },
+  "checksec-mcp": {
+    "port": 8244,
+    "image": "hackerdogs/checksec-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "chrome-devtools-mcp": {
+    "port": 8631,
+    "image": "hackerdogs/chrome-devtools-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "cisco-mcp-scanner-mcp": {
+    "port": 8342,
+    "image": "hackerdogs/cisco-mcp-scanner-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "clair-mcp": {
+    "port": 8270,
+    "image": "hackerdogs/clair-mcp:latest",
+    "category": "cloud-container",
+    "env": []
+  },
+  "clinicaltrialsgov-mcp-server-mcp": {
+    "port": 8632,
+    "image": "hackerdogs/clinicaltrialsgov-mcp-server-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "cloud-datacenter-mcp": {
+    "port": 8520,
+    "image": "hackerdogs/cloud-datacenter-mcp:latest",
+    "category": "cloud-container",
+    "env": []
+  },
+  "cloudflare-mcp": {
+    "port": 8633,
+    "image": "hackerdogs/cloudflare-mcp:latest",
+    "category": "cloud-container",
+    "env": [
+      "CLOUDFLARE_API_TOKEN"
+    ]
+  },
+  "cloudlist-mcp": {
+    "port": 8111,
+    "image": "hackerdogs/cloudlist-mcp:latest",
+    "category": "cloud-container",
+    "env": []
+  },
+  "cloudmapper-mcp": {
+    "port": 8268,
+    "image": "hackerdogs/cloudmapper-mcp:latest",
+    "category": "cloud-container",
+    "env": [
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY",
+      "AWS_SESSION_TOKEN",
+      "AWS_DEFAULT_REGION"
+    ]
+  },
+  "code-execution-mcp": {
+    "port": 8376,
+    "image": "hackerdogs/code-execution-mcp:latest",
+    "category": "core",
+    "env": []
+  },
+  "commix-mcp": {
+    "port": 8225,
+    "image": "hackerdogs/commix-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "context7-mcp": {
+    "port": 8634,
+    "image": "hackerdogs/context7-mcp:latest",
+    "category": "core",
+    "env": []
+  },
+  "corscanner-mcp": {
+    "port": 8292,
+    "image": "hackerdogs/corscanner-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "cortex-mcp": {
+    "port": 8410,
+    "image": "hackerdogs/cortex-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "crackmapexec-mcp": {
+    "port": 8208,
+    "image": "hackerdogs/crackmapexec-mcp:latest",
+    "category": "exploitation",
+    "env": []
+  },
+  "crawl4ai-mcp": {
+    "port": 8521,
+    "image": "hackerdogs/crawl4ai-mcp:latest",
+    "category": "core",
+    "env": [
+      "CRAWL4AI_URL",
+      "CRAWL4AI_API_TOKEN"
+    ]
+  },
+  "crlfuzz-mcp": {
+    "port": 8290,
+    "image": "hackerdogs/crlfuzz-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "crowbar-mcp": {
+    "port": 8307,
+    "image": "hackerdogs/crowbar-mcp:latest",
+    "category": "exploitation",
+    "env": []
+  },
+  "crtsh-mcp": {
+    "port": 8686,
+    "image": "hackerdogs/crtsh-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "crunch-mcp": {
+    "port": 8324,
+    "image": "hackerdogs/crunch-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "crunchbase-mcp": {
+    "port": 8411,
+    "image": "hackerdogs/crunchbase-mcp:latest",
+    "category": "osint",
+    "env": []
+  },
+  "ctgov-mcp-docker-mcp": {
+    "port": 8401,
+    "image": "hackerdogs/ctgov-mcp-docker-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "cutter-mcp": {
+    "port": 8320,
+    "image": "hackerdogs/cutter-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "cvemap-mcp": {
+    "port": 8106,
+    "image": "hackerdogs/cvemap-mcp:latest",
+    "category": "vuln-scanning",
+    "env": [
+      "PDCP_API_KEY"
+    ]
+  },
+  "dalfox-mcp": {
+    "port": 8221,
+    "image": "hackerdogs/dalfox-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "deepwebresearch-mcp": {
+    "port": 8377,
+    "image": "hackerdogs/deepwebresearch-mcp:latest",
+    "category": "osint",
+    "env": []
+  },
+  "dependency-check-mcp": {
+    "port": 8361,
+    "image": "hackerdogs/dependency-check-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "dharma-mcp": {
+    "port": 8334,
+    "image": "hackerdogs/dharma-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "dirb-mcp": {
+    "port": 8214,
+    "image": "hackerdogs/dirb-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "dirsearch-mcp": {
+    "port": 8215,
+    "image": "hackerdogs/dirsearch-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "dns-mcp-server-mcp": {
+    "port": 8635,
+    "image": "hackerdogs/dns-mcp-server-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "dnsdumpster-mcp": {
+    "port": 8216,
+    "image": "hackerdogs/dnsdumpster-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "dnsenum-mcp": {
+    "port": 8304,
+    "image": "hackerdogs/dnsenum-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "dnsreaper-mcp": {
+    "port": 8293,
+    "image": "hackerdogs/dnsreaper-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "dnsrecon-mcp": {
+    "port": 8203,
+    "image": "hackerdogs/dnsrecon-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "dnstwist-mcp": {
+    "port": 8636,
+    "image": "hackerdogs/dnstwist-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "dnsx-mcp": {
+    "port": 8108,
+    "image": "hackerdogs/dnsx-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "docker-bench-security-mcp": {
+    "port": 8254,
+    "image": "hackerdogs/docker-bench-security-mcp:latest",
+    "category": "cloud-container",
+    "env": []
+  },
+  "dotdotpwn-mcp": {
+    "port": 8223,
+    "image": "hackerdogs/dotdotpwn-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "duckduckgo-mcp": {
+    "port": 8413,
+    "image": "hackerdogs/duckduckgo-mcp:latest",
+    "category": "osint",
+    "env": []
+  },
+  "earthquake-mcp": {
+    "port": 8457,
+    "image": "hackerdogs/earthquake-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "edgartools-mcp-server-mcp": {
+    "port": 8415,
+    "image": "hackerdogs/edgartools-mcp-server-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "edu-data-mcp": {
+    "port": 8416,
+    "image": "hackerdogs/edu-data-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "enum4linux-mcp": {
+    "port": 8209,
+    "image": "hackerdogs/enum4linux-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "enum4linux-ng-mcp": {
+    "port": 8210,
+    "image": "hackerdogs/enum4linux-ng-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "ettercap-mcp": {
+    "port": 8313,
+    "image": "hackerdogs/ettercap-mcp:latest",
+    "category": "network-attacks",
+    "env": []
+  },
+  "evil-winrm-mcp": {
+    "port": 8263,
+    "image": "hackerdogs/evil-winrm-mcp:latest",
+    "category": "exploitation",
+    "env": []
+  },
+  "exa-mcp": {
+    "port": 8637,
+    "image": "hackerdogs/exa-mcp:latest",
+    "category": "osint",
+    "env": [
+      "EXA_API_KEY"
+    ]
+  },
+  "excel-tools-mcp": {
+    "port": 8505,
+    "image": "hackerdogs/excel-tools-mcp:latest",
+    "category": "core",
+    "env": []
+  },
+  "exiftool-agent-mcp": {
+    "port": 8638,
+    "image": "hackerdogs/exiftool-agent-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "exiftool-mcp": {
+    "port": 8502,
+    "image": "hackerdogs/exiftool-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "exploitdb-mcp": {
+    "port": 8302,
+    "image": "hackerdogs/exploitdb-mcp:latest",
+    "category": "exploitation",
+    "env": []
+  },
+  "falco-mcp": {
+    "port": 8271,
+    "image": "hackerdogs/falco-mcp:latest",
+    "category": "cloud-container",
+    "env": []
+  },
+  "feroxbuster-mcp": {
+    "port": 8676,
+    "image": "hackerdogs/feroxbuster-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "fetch-mcp": {
+    "port": 8639,
+    "image": "hackerdogs/fetch-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "ffuf-mcp": {
+    "port": 8687,
+    "image": "hackerdogs/ffuf-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "fierce-mcp": {
+    "port": 8202,
+    "image": "hackerdogs/fierce-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "file-operations-mcp": {
+    "port": 8522,
+    "image": "hackerdogs/file-operations-mcp:latest",
+    "category": "core",
+    "env": []
+  },
+  "financial-datasets-mcp": {
+    "port": 8420,
+    "image": "hackerdogs/financial-datasets-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "firecrawl-mcp": {
+    "port": 8640,
+    "image": "hackerdogs/firecrawl-mcp:latest",
+    "category": "core",
+    "env": [
+      "FIRECRAWL_API_KEY"
+    ]
+  },
+  "flights-mcp": {
+    "port": 8422,
+    "image": "hackerdogs/flights-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "foremost-mcp": {
+    "port": 8249,
+    "image": "hackerdogs/foremost-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "fping-mcp": {
+    "port": 8309,
+    "image": "hackerdogs/fping-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "fred-mcp": {
+    "port": 8423,
+    "image": "hackerdogs/fred-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "garak-mcp": {
+    "port": 8352,
+    "image": "hackerdogs/garak-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "gau-mcp": {
+    "port": 8218,
+    "image": "hackerdogs/gau-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "gef-mcp": {
+    "port": 8238,
+    "image": "hackerdogs/gef-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "geocoding-mcp": {
+    "port": 8641,
+    "image": "hackerdogs/geocoding-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "ggshield-mcp": {
+    "port": 8363,
+    "image": "hackerdogs/ggshield-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "ghidra-mcp": {
+    "port": 8240,
+    "image": "hackerdogs/ghidra-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "ghunt-mcp": {
+    "port": 8677,
+    "image": "hackerdogs/ghunt-mcp:latest",
+    "category": "osint",
+    "env": []
+  },
+  "gitlab-mcp": {
+    "port": 8642,
+    "image": "hackerdogs/gitlab-mcp:latest",
+    "category": "misc",
+    "env": [
+      "GITLAB_TOKEN"
+    ]
+  },
+  "gitleaks-mcp": {
+    "port": 8332,
+    "image": "hackerdogs/gitleaks-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "globalping-mcp": {
+    "port": 8643,
+    "image": "hackerdogs/globalping-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "gobuster-mcp": {
+    "port": 8213,
+    "image": "hackerdogs/gobuster-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "google-threat-intelligence-mcp": {
+    "port": 8644,
+    "image": "hackerdogs/google-threat-intelligence-mcp:latest",
+    "category": "vuln-scanning",
+    "env": [
+      "GOOGLE_TI_API_KEY"
+    ]
+  },
+  "gospider-mcp": {
+    "port": 8350,
+    "image": "hackerdogs/gospider-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "gowitness-mcp": {
+    "port": 8688,
+    "image": "hackerdogs/gowitness-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "graphql-voyager-mcp": {
+    "port": 8282,
+    "image": "hackerdogs/graphql-voyager-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "graphviz-dot-mcp": {
+    "port": 8523,
+    "image": "hackerdogs/graphviz-dot-mcp:latest",
+    "category": "core",
+    "env": []
+  },
+  "greynoise-mcp": {
+    "port": 8645,
+    "image": "hackerdogs/greynoise-mcp:latest",
+    "category": "vuln-scanning",
+    "env": [
+      "GREYNOISE_API_KEY"
+    ]
+  },
+  "grype-mcp": {
+    "port": 8357,
+    "image": "hackerdogs/grype-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "hakrawler-mcp": {
+    "port": 8217,
+    "image": "hackerdogs/hakrawler-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "hashcat-mcp": {
+    "port": 8235,
+    "image": "hackerdogs/hashcat-mcp:latest",
+    "category": "exploitation",
+    "env": []
+  },
+  "hashid-mcp": {
+    "port": 8264,
+    "image": "hackerdogs/hashid-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "hashpump-mcp": {
+    "port": 8274,
+    "image": "hackerdogs/hashpump-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "hibp-mcp": {
+    "port": 8646,
+    "image": "hackerdogs/hibp-mcp:latest",
+    "category": "osint",
+    "env": [
+      "HIBP_API_KEY"
+    ]
+  },
+  "holehe-mcp": {
+    "port": 8219,
+    "image": "hackerdogs/holehe-mcp:latest",
+    "category": "osint",
+    "env": []
+  },
+  "horusec-mcp": {
+    "port": 8359,
+    "image": "hackerdogs/horusec-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "http-headers-security-mcp": {
+    "port": 8689,
+    "image": "hackerdogs/http-headers-security-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "httpx-mcp": {
+    "port": 8690,
+    "image": "hackerdogs/httpx-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "hydra-mcp": {
+    "port": 8233,
+    "image": "hackerdogs/hydra-mcp:latest",
+    "category": "exploitation",
+    "env": []
+  },
+  "imf-data-mcp": {
+    "port": 8647,
+    "image": "hackerdogs/imf-data-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "ipinfo-mcp": {
+    "port": 8351,
+    "image": "hackerdogs/ipinfo-mcp:latest",
+    "category": "osint",
+    "env": []
+  },
+  "iplocate-mcp": {
+    "port": 8648,
+    "image": "hackerdogs/iplocate-mcp:latest",
+    "category": "osint",
+    "env": []
+  },
+  "ivre-mcp": {
+    "port": 8366,
+    "image": "hackerdogs/ivre-mcp:latest",
+    "category": "network-recon",
+    "env": [
+      "IVRE_WEB_URL",
+      "IVRE_VERIFY_SSL"
+    ]
+  },
+  "jaeles-mcp": {
+    "port": 8232,
+    "image": "hackerdogs/jaeles-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "jira-mcp": {
+    "port": 8649,
+    "image": "hackerdogs/jira-mcp:latest",
+    "category": "misc",
+    "env": [
+      "JIRA_URL",
+      "JIRA_EMAIL",
+      "JIRA_API_TOKEN"
+    ]
+  },
+  "john-mcp": {
+    "port": 8234,
+    "image": "hackerdogs/john-mcp:latest",
+    "category": "exploitation",
+    "env": []
+  },
+  "joomscan-mcp": {
+    "port": 8305,
+    "image": "hackerdogs/joomscan-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "julius-mcp": {
+    "port": 8100,
+    "image": "hackerdogs/julius-mcp:latest",
+    "category": "core",
+    "env": []
+  },
+  "jwt-tool-mcp": {
+    "port": 8265,
+    "image": "hackerdogs/jwt-tool-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "katana-mcp": {
+    "port": 8691,
+    "image": "hackerdogs/katana-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "knostic-mcp-scanner-mcp": {
+    "port": 8344,
+    "image": "hackerdogs/knostic-mcp-scanner-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "kube-bench-mcp": {
+    "port": 8253,
+    "image": "hackerdogs/kube-bench-mcp:latest",
+    "category": "cloud-container",
+    "env": []
+  },
+  "kube-hunter-mcp": {
+    "port": 8252,
+    "image": "hackerdogs/kube-hunter-mcp:latest",
+    "category": "cloud-container",
+    "env": []
+  },
+  "kubescape-mcp": {
+    "port": 8362,
+    "image": "hackerdogs/kubescape-mcp:latest",
+    "category": "cloud-container",
+    "env": []
+  },
+  "libc-database-mcp": {
+    "port": 8277,
+    "image": "hackerdogs/libc-database-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "lynis-mcp": {
+    "port": 8326,
+    "image": "hackerdogs/lynis-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "maigret-mcp": {
+    "port": 8678,
+    "image": "hackerdogs/maigret-mcp:latest",
+    "category": "osint",
+    "env": []
+  },
+  "mapboxserver-mcp": {
+    "port": 8429,
+    "image": "hackerdogs/mapboxserver-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "marinetraffic-mcp": {
+    "port": 8430,
+    "image": "hackerdogs/marinetraffic-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "masscan-mcp": {
+    "port": 8692,
+    "image": "hackerdogs/masscan-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "mcp-server-code-runner-mcp": {
+    "port": 8409,
+    "image": "hackerdogs/mcp-server-code-runner-mcp:latest",
+    "category": "core",
+    "env": []
+  },
+  "mcpscan-mcp": {
+    "port": 8296,
+    "image": "hackerdogs/mcpscan-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "mcpserver-audit-mcp": {
+    "port": 8340,
+    "image": "hackerdogs/mcpserver-audit-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "medusa-mcp": {
+    "port": 8261,
+    "image": "hackerdogs/medusa-mcp:latest",
+    "category": "exploitation",
+    "env": []
+  },
+  "mermaid-mcp": {
+    "port": 8524,
+    "image": "hackerdogs/mermaid-mcp:latest",
+    "category": "core",
+    "env": []
+  },
+  "metasploit-mcp": {
+    "port": 8236,
+    "image": "hackerdogs/metasploit-mcp:latest",
+    "category": "exploitation",
+    "env": []
+  },
+  "misp-mcp": {
+    "port": 8371,
+    "image": "hackerdogs/misp-mcp:latest",
+    "category": "vuln-scanning",
+    "env": [
+      "MISP_API_KEY",
+      "MISP_URL"
+    ]
+  },
+  "mobsf-mcp": {
+    "port": 8693,
+    "image": "hackerdogs/mobsf-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "ms-fabric-rti-mcp": {
+    "port": 8650,
+    "image": "hackerdogs/ms-fabric-rti-mcp:latest",
+    "category": "misc",
+    "env": [
+      "FABRIC_API_KEY"
+    ]
+  },
+  "n2yo-mcp": {
+    "port": 8435,
+    "image": "hackerdogs/n2yo-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "naabu-mcp": {
+    "port": 8105,
+    "image": "hackerdogs/naabu-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "name-server-mcp": {
+    "port": 8525,
+    "image": "hackerdogs/name-server-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "nasa-mcp": {
+    "port": 8651,
+    "image": "hackerdogs/nasa-mcp:latest",
+    "category": "misc",
+    "env": [
+      "NASA_API_KEY"
+    ]
+  },
+  "nbtscan-mcp": {
+    "port": 8206,
+    "image": "hackerdogs/nbtscan-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "ncrack-mcp": {
+    "port": 8306,
+    "image": "hackerdogs/ncrack-mcp:latest",
+    "category": "exploitation",
+    "env": []
+  },
+  "nerva-mcp": {
+    "port": 8104,
+    "image": "hackerdogs/nerva-mcp:latest",
+    "category": "core",
+    "env": []
+  },
+  "netcat-mcp": {
+    "port": 8327,
+    "image": "hackerdogs/netcat-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "netdiscover-mcp": {
+    "port": 8322,
+    "image": "hackerdogs/netdiscover-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "netexec-mcp": {
+    "port": 8212,
+    "image": "hackerdogs/netexec-mcp:latest",
+    "category": "exploitation",
+    "env": []
+  },
+  "netutils-mcp": {
+    "port": 8436,
+    "image": "hackerdogs/netutils-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "ngrep-mcp": {
+    "port": 8314,
+    "image": "hackerdogs/ngrep-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "nikto-mcp": {
+    "port": 8679,
+    "image": "hackerdogs/nikto-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "nmap-mcp": {
+    "port": 8694,
+    "image": "hackerdogs/nmap-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "nosqlmap-mcp": {
+    "port": 8266,
+    "image": "hackerdogs/nosqlmap-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "notion-mcp": {
+    "port": 8652,
+    "image": "hackerdogs/notion-mcp:latest",
+    "category": "misc",
+    "env": [
+      "NOTION_API_KEY"
+    ]
+  },
+  "nova-framework-mcp": {
+    "port": 8299,
+    "image": "hackerdogs/nova-framework-mcp:latest",
+    "category": "core",
+    "env": []
+  },
+  "nova-proximity-mcp": {
+    "port": 8298,
+    "image": "hackerdogs/nova-proximity-mcp:latest",
+    "category": "core",
+    "env": []
+  },
+  "nuclei-mcp": {
+    "port": 8695,
+    "image": "hackerdogs/nuclei-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "ocr-mcp": {
+    "port": 8438,
+    "image": "hackerdogs/ocr-mcp:latest",
+    "category": "core",
+    "env": []
+  },
+  "octagon-mcp-server-mcp": {
+    "port": 8653,
+    "image": "hackerdogs/octagon-mcp-server-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "octocode-mcp": {
+    "port": 8654,
+    "image": "hackerdogs/octocode-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "one-gadget-mcp": {
+    "port": 8276,
+    "image": "hackerdogs/one-gadget-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "onionsearch-mcp": {
+    "port": 8372,
+    "image": "hackerdogs/onionsearch-mcp:latest",
+    "category": "osint",
+    "env": [
+      "TOR_PROXY"
+    ]
+  },
+  "open-legal-mcp": {
+    "port": 8439,
+    "image": "hackerdogs/open-legal-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "opencti-mcp": {
+    "port": 8370,
+    "image": "hackerdogs/opencti-mcp:latest",
+    "category": "vuln-scanning",
+    "env": [
+      "OPENCTI_API_KEY",
+      "OPENCTI_URL"
+    ]
+  },
+  "opencv-mcp-server-mcp": {
+    "port": 8440,
+    "image": "hackerdogs/opencv-mcp-server-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "openfda-mcp": {
+    "port": 8655,
+    "image": "hackerdogs/openfda-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "openrisk-mcp": {
+    "port": 8115,
+    "image": "hackerdogs/openrisk-mcp:latest",
+    "category": "core",
+    "env": [
+      "OPENAI_API_KEY"
+    ]
+  },
+  "openvas-mcp": {
+    "port": 8300,
+    "image": "hackerdogs/openvas-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "osm-mcp-server-mcp": {
+    "port": 8656,
+    "image": "hackerdogs/osm-mcp-server-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "osv-mcp": {
+    "port": 8347,
+    "image": "hackerdogs/osv-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "otx-mcp": {
+    "port": 8368,
+    "image": "hackerdogs/otx-mcp:latest",
+    "category": "osint",
+    "env": [
+      "OTX_API_KEY"
+    ]
+  },
+  "pacu-mcp": {
+    "port": 8269,
+    "image": "hackerdogs/pacu-mcp:latest",
+    "category": "cloud-container",
+    "env": []
+  },
+  "pagespeed-mcp": {
+    "port": 8378,
+    "image": "hackerdogs/pagespeed-mcp:latest",
+    "category": "misc",
+    "env": [
+      "PAGESPEED_API_KEY"
+    ]
+  },
+  "paramspider-mcp": {
+    "port": 8226,
+    "image": "hackerdogs/paramspider-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "patator-mcp": {
+    "port": 8262,
+    "image": "hackerdogs/patator-mcp:latest",
+    "category": "exploitation",
+    "env": []
+  },
+  "pdf-reader-mcp": {
+    "port": 8442,
+    "image": "hackerdogs/pdf-reader-mcp:latest",
+    "category": "core",
+    "env": []
+  },
+  "peda-mcp": {
+    "port": 8237,
+    "image": "hackerdogs/peda-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "pentest-agent-mcp": {
+    "port": 8443,
+    "image": "hackerdogs/pentest-agent-mcp:latest",
+    "category": "core",
+    "env": []
+  },
+  "phoneinfoga-mcp": {
+    "port": 8503,
+    "image": "hackerdogs/phoneinfoga-mcp:latest",
+    "category": "osint",
+    "env": [
+      "NUMVERIFY_API_KEY",
+      "GOOGLE_API_KEY",
+      "GOOGLECSE_CX"
+    ]
+  },
+  "pinecone-mcp": {
+    "port": 8657,
+    "image": "hackerdogs/pinecone-mcp:latest",
+    "category": "misc",
+    "env": [
+      "PINECONE_API_KEY"
+    ]
+  },
+  "pixiewps-mcp": {
+    "port": 8311,
+    "image": "hackerdogs/pixiewps-mcp:latest",
+    "category": "network-attacks",
+    "env": []
+  },
+  "polygon-mcp": {
+    "port": 8445,
+    "image": "hackerdogs/polygon-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "port-scanner-mcp": {
+    "port": 8354,
+    "image": "hackerdogs/port-scanner-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "postman-mcp": {
+    "port": 8658,
+    "image": "hackerdogs/postman-mcp:latest",
+    "category": "misc",
+    "env": [
+      "POSTMAN_API_KEY"
+    ]
+  },
+  "powerpoint-tools-mcp": {
+    "port": 8507,
+    "image": "hackerdogs/powerpoint-tools-mcp:latest",
+    "category": "core",
+    "env": []
+  },
+  "psudohash-mcp": {
+    "port": 8287,
+    "image": "hackerdogs/psudohash-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "pubmed-mcp": {
+    "port": 8446,
+    "image": "hackerdogs/pubmed-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "puppeteer-mcp": {
+    "port": 8659,
+    "image": "hackerdogs/puppeteer-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "pwninit-mcp": {
+    "port": 8278,
+    "image": "hackerdogs/pwninit-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "pwntools-mcp": {
+    "port": 8245,
+    "image": "hackerdogs/pwntools-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "qsreplace-mcp": {
+    "port": 8227,
+    "image": "hackerdogs/qsreplace-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "radare2-mcp": {
+    "port": 8239,
+    "image": "hackerdogs/radare2-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "ramparts-mcp": {
+    "port": 8295,
+    "image": "hackerdogs/ramparts-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "rapidapi-hub-reverse-image-search-by-copyseeker-mcp": {
+    "port": 8660,
+    "image": "hackerdogs/rapidapi-hub-reverse-image-search-by-copyseeker-mcp:latest",
+    "category": "misc",
+    "env": [
+      "RAPIDAPI_KEY"
+    ]
+  },
+  "rasn-mcp": {
+    "port": 8353,
+    "image": "hackerdogs/rasn-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "recon-ng-mcp": {
+    "port": 8256,
+    "image": "hackerdogs/recon-ng-mcp:latest",
+    "category": "osint",
+    "env": []
+  },
+  "reddit-mcp": {
+    "port": 8661,
+    "image": "hackerdogs/reddit-mcp:latest",
+    "category": "osint",
+    "env": []
+  },
+  "reddit-mcp-server-mcp": {
+    "port": 8447,
+    "image": "hackerdogs/reddit-mcp-server-mcp:latest",
+    "category": "osint",
+    "env": []
+  },
+  "responder-mcp": {
+    "port": 8207,
+    "image": "hackerdogs/responder-mcp:latest",
+    "category": "exploitation",
+    "env": []
+  },
+  "retire-js-mcp": {
+    "port": 8364,
+    "image": "hackerdogs/retire-js-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "roadtools-mcp": {
+    "port": 8331,
+    "image": "hackerdogs/roadtools-mcp:latest",
+    "category": "cloud-container",
+    "env": []
+  },
+  "ropgadget-mcp": {
+    "port": 8242,
+    "image": "hackerdogs/ropgadget-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "ropper-mcp": {
+    "port": 8243,
+    "image": "hackerdogs/ropper-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "rss-mcp": {
+    "port": 8448,
+    "image": "hackerdogs/rss-mcp:latest",
+    "category": "osint",
+    "env": []
+  },
+  "rustscan-mcp": {
+    "port": 8200,
+    "image": "hackerdogs/rustscan-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "s3-mcp-server-mcp": {
+    "port": 8662,
+    "image": "hackerdogs/s3-mcp-server-mcp:latest",
+    "category": "misc",
+    "env": [
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY"
+    ]
+  },
+  "scan-url-mcp": {
+    "port": 8449,
+    "image": "hackerdogs/scan-url-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "scc-mcp": {
+    "port": 8663,
+    "image": "hackerdogs/scc-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "scoutsuite-mcp": {
+    "port": 8251,
+    "image": "hackerdogs/scoutsuite-mcp:latest",
+    "category": "cloud-container",
+    "env": []
+  },
+  "scrapy-mcp": {
+    "port": 8526,
+    "image": "hackerdogs/scrapy-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "search1api-mcp": {
+    "port": 8664,
+    "image": "hackerdogs/search1api-mcp:latest",
+    "category": "osint",
+    "env": [
+      "SEARCH1API_KEY"
+    ]
+  },
+  "sec-edgar-mcp": {
+    "port": 8451,
+    "image": "hackerdogs/sec-edgar-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "secops-mcp": {
+    "port": 8379,
+    "image": "hackerdogs/secops-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "securemcp-mcp": {
+    "port": 8297,
+    "image": "hackerdogs/securemcp-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "semgrep-mcp": {
+    "port": 8335,
+    "image": "hackerdogs/semgrep-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "sentry-mcp": {
+    "port": 8665,
+    "image": "hackerdogs/sentry-mcp:latest",
+    "category": "misc",
+    "env": [
+      "SENTRY_AUTH_TOKEN"
+    ]
+  },
+  "serper-search-mcp": {
+    "port": 8666,
+    "image": "hackerdogs/serper-search-mcp:latest",
+    "category": "osint",
+    "env": [
+      "SERPER_API_KEY"
+    ]
+  },
+  "sherlock-mcp": {
+    "port": 8317,
+    "image": "hackerdogs/sherlock-mcp:latest",
+    "category": "osint",
+    "env": []
+  },
+  "shodan-mcp": {
+    "port": 8453,
+    "image": "hackerdogs/shodan-mcp:latest",
+    "category": "osint",
+    "env": []
+  },
+  "shuffledns-mcp": {
+    "port": 8696,
+    "image": "hackerdogs/shuffledns-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "slack-mcp": {
+    "port": 8454,
+    "image": "hackerdogs/slack-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "slowhttptest-mcp": {
+    "port": 8316,
+    "image": "hackerdogs/slowhttptest-mcp:latest",
+    "category": "network-attacks",
+    "env": []
+  },
+  "smbmap-mcp": {
+    "port": 8211,
+    "image": "hackerdogs/smbmap-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "smtp-user-enum-mcp": {
+    "port": 8325,
+    "image": "hackerdogs/smtp-user-enum-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "smuggler-mcp": {
+    "port": 8291,
+    "image": "hackerdogs/smuggler-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "social-analyzer-mcp": {
+    "port": 8255,
+    "image": "hackerdogs/social-analyzer-mcp:latest",
+    "category": "osint",
+    "env": []
+  },
+  "spiderfoot-mcp": {
+    "port": 8257,
+    "image": "hackerdogs/spiderfoot-mcp:latest",
+    "category": "osint",
+    "env": []
+  },
+  "splunk-mcp": {
+    "port": 8667,
+    "image": "hackerdogs/splunk-mcp:latest",
+    "category": "vuln-scanning",
+    "env": [
+      "SPLUNK_URL",
+      "SPLUNK_TOKEN"
+    ]
+  },
+  "sqlmap-mcp": {
+    "port": 8697,
+    "image": "hackerdogs/sqlmap-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "sslscan-mcp": {
+    "port": 8323,
+    "image": "hackerdogs/sslscan-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "sslyze-mcp": {
+    "port": 8280,
+    "image": "hackerdogs/sslyze-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "sstimap-mcp": {
+    "port": 8289,
+    "image": "hackerdogs/sstimap-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "steampipe-mcp": {
+    "port": 8668,
+    "image": "hackerdogs/steampipe-mcp:latest",
+    "category": "cloud-container",
+    "env": []
+  },
+  "steghide-mcp": {
+    "port": 8250,
+    "image": "hackerdogs/steghide-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "stripe-mcp": {
+    "port": 8669,
+    "image": "hackerdogs/stripe-mcp:latest",
+    "category": "misc",
+    "env": [
+      "STRIPE_SECRET_KEY"
+    ]
+  },
+  "subfinder-mcp": {
+    "port": 8367,
+    "image": "hackerdogs/subfinder-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "subjack-mcp": {
+    "port": 8260,
+    "image": "hackerdogs/subjack-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "sublist3r-mcp": {
+    "port": 8301,
+    "image": "hackerdogs/sublist3r-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "suricata-mcp": {
+    "port": 8365,
+    "image": "hackerdogs/suricata-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "syft-mcp": {
+    "port": 8358,
+    "image": "hackerdogs/syft-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "terraform-mcp": {
+    "port": 8670,
+    "image": "hackerdogs/terraform-mcp:latest",
+    "category": "cloud-container",
+    "env": []
+  },
+  "terrascan-mcp": {
+    "port": 8273,
+    "image": "hackerdogs/terrascan-mcp:latest",
+    "category": "cloud-container",
+    "env": []
+  },
+  "testdisk-mcp": {
+    "port": 8283,
+    "image": "hackerdogs/testdisk-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "testssl-mcp": {
+    "port": 8279,
+    "image": "hackerdogs/testssl-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "theharvester-mcp": {
+    "port": 8204,
+    "image": "hackerdogs/theharvester-mcp:latest",
+    "category": "osint",
+    "env": []
+  },
+  "threat-hunting-mcp": {
+    "port": 8345,
+    "image": "hackerdogs/threat-hunting-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "titus-mcp": {
+    "port": 8103,
+    "image": "hackerdogs/titus-mcp:latest",
+    "category": "core",
+    "env": []
+  },
+  "tldfinder-mcp": {
+    "port": 8113,
+    "image": "hackerdogs/tldfinder-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "tlsx-mcp": {
+    "port": 8109,
+    "image": "hackerdogs/tlsx-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "tomtom-mcp": {
+    "port": 8671,
+    "image": "hackerdogs/tomtom-mcp:latest",
+    "category": "misc",
+    "env": [
+      "TOMTOM_API_KEY"
+    ]
+  },
+  "tplmap-mcp": {
+    "port": 8267,
+    "image": "hackerdogs/tplmap-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "trivy-mcp": {
+    "port": 8330,
+    "image": "hackerdogs/trivy-mcp:latest",
+    "category": "cloud-container",
+    "env": []
+  },
+  "trivy-neutr0n-mcp": {
+    "port": 8356,
+    "image": "hackerdogs/trivy-neutr0n-mcp:latest",
+    "category": "cloud-container",
+    "env": []
+  },
+  "trivy-security-mcp": {
+    "port": 8456,
+    "image": "hackerdogs/trivy-security-mcp:latest",
+    "category": "cloud-container",
+    "env": []
+  },
+  "trufflehog-mcp": {
+    "port": 8258,
+    "image": "hackerdogs/trufflehog-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "uncover-mcp": {
+    "port": 8107,
+    "image": "hackerdogs/uncover-mcp:latest",
+    "category": "osint",
+    "env": [
+      "SHODAN_API_KEY",
+      "CENSYS_API_TOKEN",
+      "CENSYS_ORGANIZATION_ID",
+      "FOFA_EMAIL",
+      "FOFA_KEY",
+      "HUNTER_API_KEY",
+      "ZOOMEYE_API_KEY",
+      "NETLAS_API_KEY",
+      "CRIMINALIP_API_KEY",
+      "ONYPHE_API_KEY"
+    ]
+  },
+  "upx-mcp": {
+    "port": 8284,
+    "image": "hackerdogs/upx-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "urlfinder-mcp": {
+    "port": 8112,
+    "image": "hackerdogs/urlfinder-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "uro-mcp": {
+    "port": 8228,
+    "image": "hackerdogs/uro-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "vanta-mcp": {
+    "port": 8348,
+    "image": "hackerdogs/vanta-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "variflight-mcp": {
+    "port": 8672,
+    "image": "hackerdogs/variflight-mcp:latest",
+    "category": "misc",
+    "env": [
+      "VARIFLIGHT_API_KEY"
+    ]
+  },
+  "victorialogs-mcp": {
+    "port": 8527,
+    "image": "hackerdogs/victorialogs-mcp:latest",
+    "category": "misc",
+    "env": [
+      "VICTORIALOGS_URL"
+    ]
+  },
+  "virustotal-mcp": {
+    "port": 8369,
+    "image": "hackerdogs/virustotal-mcp:latest",
+    "category": "vuln-scanning",
+    "env": [
+      "VT_API_KEY"
+    ]
+  },
+  "visualization-tools-mcp": {
+    "port": 8506,
+    "image": "hackerdogs/visualization-tools-mcp:latest",
+    "category": "core",
+    "env": []
+  },
+  "volatility-mcp": {
+    "port": 8248,
+    "image": "hackerdogs/volatility-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "volatility3-mcp": {
+    "port": 8247,
+    "image": "hackerdogs/volatility3-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "vulnerability-scanner-mcp": {
+    "port": 8339,
+    "image": "hackerdogs/vulnerability-scanner-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "vulnx-mcp": {
+    "port": 8116,
+    "image": "hackerdogs/vulnx-mcp:latest",
+    "category": "vuln-scanning",
+    "env": [
+      "PDCP_API_KEY"
+    ]
+  },
+  "wafw00f-mcp": {
+    "port": 8230,
+    "image": "hackerdogs/wafw00f-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "wapiti-mcp": {
+    "port": 8288,
+    "image": "hackerdogs/wapiti-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "wappalyzergo-mcp": {
+    "port": 8114,
+    "image": "hackerdogs/wappalyzergo-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "waybackurls-mcp": {
+    "port": 8698,
+    "image": "hackerdogs/waybackurls-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "webc-mcp": {
+    "port": 8504,
+    "image": "hackerdogs/webc-mcp:latest",
+    "category": "core",
+    "env": []
+  },
+  "wfuzz-mcp": {
+    "port": 8224,
+    "image": "hackerdogs/wfuzz-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "whatsmyname-mcp": {
+    "port": 8528,
+    "image": "hackerdogs/whatsmyname-mcp:latest",
+    "category": "osint",
+    "env": []
+  },
+  "whatweb-mcp": {
+    "port": 8281,
+    "image": "hackerdogs/whatweb-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "whois-mcp": {
+    "port": 8673,
+    "image": "hackerdogs/whois-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "wifiphisher-mcp": {
+    "port": 8312,
+    "image": "hackerdogs/wifiphisher-mcp:latest",
+    "category": "network-attacks",
+    "env": []
+  },
+  "winston-ai-mcp": {
+    "port": 8674,
+    "image": "hackerdogs/winston-ai-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "wiremcp-mcp": {
+    "port": 8458,
+    "image": "hackerdogs/wiremcp-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "wireshark-mcp": {
+    "port": 8315,
+    "image": "hackerdogs/wireshark-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "world-bank-mcp": {
+    "port": 8459,
+    "image": "hackerdogs/world-bank-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "wpscan-mcp": {
+    "port": 8680,
+    "image": "hackerdogs/wpscan-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "x8-mcp": {
+    "port": 8275,
+    "image": "hackerdogs/x8-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "xsser-mcp": {
+    "port": 8222,
+    "image": "hackerdogs/xsser-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "xsstrike-mcp": {
+    "port": 8349,
+    "image": "hackerdogs/xsstrike-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "yara-mcp": {
+    "port": 8328,
+    "image": "hackerdogs/yara-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "yaraflux-mcp": {
+    "port": 8336,
+    "image": "hackerdogs/yaraflux-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "yaraflux-mcp-server-mcp": {
+    "port": 8461,
+    "image": "hackerdogs/yaraflux-mcp-server-mcp:latest",
+    "category": "binary-re",
+    "env": []
+  },
+  "yersinia-mcp": {
+    "port": 8319,
+    "image": "hackerdogs/yersinia-mcp:latest",
+    "category": "network-attacks",
+    "env": []
+  },
+  "yeti-mcp": {
+    "port": 8337,
+    "image": "hackerdogs/yeti-mcp:latest",
+    "category": "vuln-scanning",
+    "env": []
+  },
+  "yfmcp-mcp": {
+    "port": 8460,
+    "image": "hackerdogs/yfmcp-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "youtube-mcp": {
+    "port": 8462,
+    "image": "hackerdogs/youtube-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "youtube-transcript-mcp": {
+    "port": 8675,
+    "image": "hackerdogs/youtube-transcript-mcp:latest",
+    "category": "misc",
+    "env": []
+  },
+  "zap-lis-mcp": {
+    "port": 8355,
+    "image": "hackerdogs/zap-lis-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "zap-mcp": {
+    "port": 8231,
+    "image": "hackerdogs/zap-mcp:latest",
+    "category": "web-app",
+    "env": []
+  },
+  "zmap-mcp": {
+    "port": 8303,
+    "image": "hackerdogs/zmap-mcp:latest",
+    "category": "network-recon",
+    "env": []
+  },
+  "zscaler-mcp-server-mcp": {
+    "port": 8463,
+    "image": "hackerdogs/zscaler-mcp-server-mcp:latest",
+    "category": "cloud-container",
+    "env": []
+  }
+}

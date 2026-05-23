@@ -1,0 +1,4 @@
+.env
+auth-gateway/__pycache__/
+*.pyc
+*.pyo

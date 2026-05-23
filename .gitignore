@@ -7,3 +7,12 @@ webservice/catalog.json
 /tools-to-migrate-to-mcp/acuvity
 /tools-to-migrate-to-mcp/modules
 /tools-to-migrate-to-mcp/mcpserverconfigs
+mcpfarm/.env
+mcpfarm/build-logs/
+mcpfarm/caddy/routes.conf
+mcpfarm/auth-gateway/__pycache__/
+mcpfarm/*.pyc
+mcpfarm-ui/node_modules/
+mcpfarm-ui/dist/
+mcpfarm.zip
+scripts/*.log
