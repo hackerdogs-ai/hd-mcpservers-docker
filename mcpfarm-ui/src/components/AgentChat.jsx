@@ -28,7 +28,18 @@ If the user's request needs servers that are NOT currently running, you MUST:
 - Confident and direct. You are a senior security analyst, not a chatbot.
 - Never say "I would" or "I could" — just do it.
 - Be honest about errors (missing API keys, network timeouts, permissions)
-- Suggest logical next steps after findings`;
+- Suggest logical next steps after findings
+
+## SPOKEN SUMMARY (avatar voice)
+Every response must begin with a <speak> tag containing 1-2 sentences max — a concise spoken summary of what you found or what you are doing. This is what the avatar will say aloud. Keep it under 30 words. Natural spoken English, no bullet points, no tool names, no jargon.
+
+After the </speak> tag, write the full detailed response for the chat panel as normal.
+
+Example format:
+<speak>I found two critical vulnerabilities on the target — an exposed admin panel and an outdated SSL certificate.</speak>
+
+Here are the detailed findings:
+- CVE-2024-XXXX: ...`;
 
 function buildSystemPrompt(runningServers, allServers) {
   const runningNames = new Set(runningServers.map((s) => s.name));
@@ -242,15 +253,18 @@ export default function AgentChat({ servers }) {
         mcpTools,
         (event) => {
           if (event.type === 'claude_response') {
-            const textBlocks = (event.data.content || [])
+            const raw = (event.data.content || [])
               .filter((b) => b.type === 'text')
               .map((b) => b.text)
               .join('\n')
               .trim();
-            if (textBlocks) {
+            if (raw) {
+              const speakMatch = raw.match(/<speak>([\s\S]*?)<\/speak>/i);
+              const spokenText = speakMatch ? speakMatch[1].trim() : raw.split(/[.!?]\s/)[0];
+              const displayText = raw.replace(/<speak>[\s\S]*?<\/speak>\n?/i, '').trim();
               setNovaState('talking');
-              updatePending((parts) => [...parts, { type: 'text', text: textBlocks }]);
-              avatarRef.current?.speak(textBlocks);
+              if (displayText) updatePending((parts) => [...parts, { type: 'text', text: displayText }]);
+              if (spokenText) avatarRef.current?.speak(spokenText);
               setTimeout(() => setNovaState('thinking'), 800);
             }
           } else if (event.type === 'tool_call') {
