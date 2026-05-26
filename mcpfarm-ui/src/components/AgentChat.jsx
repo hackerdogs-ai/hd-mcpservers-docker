@@ -30,16 +30,7 @@ If the user's request needs servers that are NOT currently running, you MUST:
 - Be honest about errors (missing API keys, network timeouts, permissions)
 - Suggest logical next steps after findings
 
-## SPOKEN SUMMARY (avatar voice)
-Every response must begin with a <speak> tag. This is ALL the avatar will say — keep it to one short phrase, 8 words maximum. It is just a signpost; the details are in the chat. Do not summarise findings in speech.
-
-Good examples:
-<speak>Here are the results.</speak>
-<speak>Done, take a look.</speak>
-<speak>Starting the scan now.</speak>
-<speak>I need a couple more servers for that.</speak>
-
-After the </speak> tag, write the full detailed response for the chat panel as normal.`;
+`;
 
 function buildSystemPrompt(runningServers, allServers) {
   const runningNames = new Set(runningServers.map((s) => s.name));
@@ -259,14 +250,13 @@ export default function AgentChat({ servers }) {
               .join('\n')
               .trim();
             if (raw) {
-              const speakMatch = raw.match(/<speak>([\s\S]*?)<\/speak>/i);
-              const spokenText = speakMatch ? speakMatch[1].trim() : raw.split(/[.!?]\s/)[0];
               const displayText = raw.replace(/<speak>[\s\S]*?<\/speak>\n?/i, '').trim();
-              setNovaState('talking');
               if (displayText) updatePending((parts) => [...parts, { type: 'text', text: displayText }]);
-              if (spokenText) avatarRef.current?.speak(spokenText);
-              setTimeout(() => setNovaState('thinking'), 800);
             }
+          } else if (event.type === 'done') {
+            setNovaState('talking');
+            avatarRef.current?.speak('Here are the results.');
+            setTimeout(() => setNovaState('idle'), 3000);
           } else if (event.type === 'tool_call') {
             const { id, serverName, toolName, args } = event.data;
             setNovaState('thinking');
