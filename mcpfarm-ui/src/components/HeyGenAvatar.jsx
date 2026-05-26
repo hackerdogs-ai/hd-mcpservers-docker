@@ -7,8 +7,9 @@ const HeyGenAvatar = forwardRef(function HeyGenAvatar({ apiKey, avatarId, width 
   const videoRef = useRef(null);
   const sessionRef = useRef(null);
   const readyRef = useRef(false);
-  const [phase, setPhase] = useState('idle'); // idle | connecting | ready | error
+  const [phase, setPhase] = useState('idle'); // idle | connecting | reconnecting | ready | error
   const [errMsg, setErrMsg] = useState('');
+  const [sessionKey, setSessionKey] = useState(0); // increment to trigger reconnect
 
   useImperativeHandle(ref, () => ({
     speak(text) {
@@ -30,7 +31,7 @@ const HeyGenAvatar = forwardRef(function HeyGenAvatar({ apiKey, avatarId, width 
     readyRef.current = false;
 
     (async () => {
-      setPhase('connecting');
+      setPhase(sessionKey > 0 ? 'reconnecting' : 'connecting');
       setErrMsg('');
       try {
         const res = await fetch(TOKEN_URL, {
@@ -60,17 +61,19 @@ const HeyGenAvatar = forwardRef(function HeyGenAvatar({ apiKey, avatarId, width 
         session.on(SessionEvent.SESSION_DISCONNECTED, () => {
           if (!alive) return;
           readyRef.current = false;
-          setPhase('idle');
+          // Auto-reconnect after 2s
+          setTimeout(() => {
+            if (alive) setSessionKey((k) => k + 1);
+          }, 2000);
         });
 
         await session.start();
 
-        // Keep session alive every 30s
+        // Keep session alive every 15s
         const keepAliveInterval = setInterval(async () => {
           if (!alive || !readyRef.current) return;
           try { await session.keepAlive(); } catch {}
-        }, 30000);
-        // Store interval for cleanup
+        }, 15000);
         session._keepAliveInterval = keepAliveInterval;
       } catch (err) {
         if (alive) { setPhase('error'); setErrMsg(err.message); }
@@ -86,7 +89,7 @@ const HeyGenAvatar = forwardRef(function HeyGenAvatar({ apiKey, avatarId, width 
       sessionRef.current?.stop().catch(() => {});
       sessionRef.current = null;
     };
-  }, [apiKey, avatarId]);
+  }, [apiKey, avatarId, sessionKey]);
 
   const height = Math.round(width * 1.35);
 
@@ -126,7 +129,7 @@ const HeyGenAvatar = forwardRef(function HeyGenAvatar({ apiKey, avatarId, width 
         }}
       />
       {phase !== 'ready' && placeholder(
-        phase === 'connecting' ? (
+        (phase === 'connecting' || phase === 'reconnecting') ? (
           <>
             <style>{`@keyframes la-spin { to { transform: rotate(360deg); } }`}</style>
             <div style={{
@@ -134,7 +137,9 @@ const HeyGenAvatar = forwardRef(function HeyGenAvatar({ apiKey, avatarId, width 
               border: '2.5px solid #3fb95033', borderTopColor: '#3fb950',
               animation: 'la-spin 0.75s linear infinite',
             }} />
-            <span style={{ fontSize: 12, color: '#8b949e' }}>Connecting to avatar…</span>
+            <span style={{ fontSize: 12, color: '#8b949e' }}>
+              {phase === 'reconnecting' ? 'Reconnecting…' : 'Connecting to avatar…'}
+            </span>
           </>
         ) : phase === 'error' ? (
           <>
