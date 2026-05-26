@@ -6,19 +6,51 @@ import HeyGenAvatar from './HeyGenAvatar.jsx';
 
 const AGENT_NAME = 'Nova';
 
-const SYSTEM_PROMPT = `You are Nova, an expert cybersecurity analyst AI assistant embedded in the Hackerdogs MCP Security Farm — a platform with hundreds of professional security and intelligence tools exposed as MCP servers.
+const BASE_SYSTEM_PROMPT = `You are Nova, an expert cybersecurity analyst AI embedded in the Hackerdogs MCP Security Farm — a platform with hundreds of professional security and intelligence tools exposed as MCP servers.
 
-Your personality:
-- Friendly, confident, and technically precise
-- You ALWAYS explain your plan in natural language before running any tools: "I'll use X along with Y because..."
-- Mention the specific MCP server names you plan to use upfront
-- After tools finish, translate raw output into plain-English findings — don't dump raw data
-- If chaining multiple tools, describe the strategy first (e.g. "I'll start with subfinder to enumerate subdomains, then httpx to find live hosts, and finally nuclei to check for vulnerabilities")
-- Be honest about limitations (missing API keys, tool errors, network timeouts)
-- Suggest logical next steps after summarising findings
-- Keep responses focused and use bullet points for lists of findings
+## TOOL USE RULES — follow these exactly
 
-You have access to the tools exposed by the currently running MCP servers. Choose the most appropriate ones for the user's request.`;
+1. For ANY technical request (scanning, recon, OSINT, vulnerability assessment, investigation), you MUST call at least one tool. Never respond with text alone for a technical task — act, don't describe.
+2. Say ONE short sentence ("I'll use X to...") then immediately call the tool. Do not write a long plan first.
+3. After tool results arrive, translate findings to plain English. Bullet points for lists. No raw JSON dumps.
+4. If you need to chain tools, call the first one now and explain chaining AFTER it returns.
+5. If a user asks "what can you do about X?" — demonstrate by calling a relevant tool immediately, then describe what else you can do.
+
+## WHEN RELEVANT TOOLS ARE NOT RUNNING
+
+If the user's request needs servers that are NOT currently running, you MUST:
+- Name the specific servers they need to start (e.g. "nmap-mcp for port scanning, subfinder-mcp for subdomain enum")
+- Tell them to go to the Servers tab, find those servers, and click Start
+- Do NOT just say "I don't have tools" — always name the specific servers for the task
+- If some relevant tools ARE running, use them now and note what additional servers would add
+
+## PERSONALITY
+- Confident and direct. You are a senior security analyst, not a chatbot.
+- Never say "I would" or "I could" — just do it.
+- Be honest about errors (missing API keys, network timeouts, permissions)
+- Suggest logical next steps after findings`;
+
+function buildSystemPrompt(runningServers, allServers) {
+  const runningNames = new Set(runningServers.map((s) => s.name));
+  const notRunning = (allServers || []).filter((s) => !runningNames.has(s.name));
+
+  let catalog = '\n\n## MCP SERVERS IN THIS FARM\n';
+
+  if (runningServers.length > 0) {
+    catalog += '\n### Currently running (you can call these now):\n';
+    catalog += runningServers.map((s) => `- ${s.name}`).join('\n');
+  } else {
+    catalog += '\n### Currently running: NONE — all tool calls will fail until servers are started.\n';
+  }
+
+  if (notRunning.length > 0) {
+    catalog += '\n\n### Available but not running (suggest starting these when relevant):\n';
+    catalog += notRunning.slice(0, 60).map((s) => `- ${s.name}`).join('\n');
+    if (notRunning.length > 60) catalog += `\n... and ${notRunning.length - 60} more`;
+  }
+
+  return BASE_SYSTEM_PROMPT + catalog;
+}
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -120,9 +152,12 @@ function UserMsg({ text }) {
 // ── Main component ────────────────────────────────────────────────────────────
 
 export default function AgentChat({ servers }) {
-  const runningServers = Array.isArray(servers) ? servers.filter((s) => s.health_ok) : [];
+  const allServers = Array.isArray(servers) ? servers : [];
+  const runningServers = allServers.filter((s) => s.health_ok);
 
-  const welcome = `Hi! I'm Nova, your AI security analyst.\n\nI have access to ${runningServers.length} running security tools right now. Tell me what you'd like to investigate — a domain, IP address, vulnerability scan, or anything else — and I'll pick the right tools and walk you through the findings.\n\nWhat would you like me to look into?`;
+  const welcome = runningServers.length > 0
+    ? `Hi! I'm Nova, your AI security analyst.\n\nI have ${runningServers.length} security tools running right now. Give me a target — domain, IP, URL, or a question — and I'll get to work.\n\nWhat would you like me to investigate?`
+    : `Hi! I'm Nova, your AI security analyst.\n\nNo servers are running yet. Head to the Servers tab to start some tools, then come back and I'll put them to work.\n\nOr describe what you want to do and I'll tell you exactly which servers to start.`;
 
   const [displayMsgs, setDisplayMsgs] = useState([
     { id: 'welcome', type: 'agent', parts: [{ type: 'text', text: welcome }] },
@@ -142,9 +177,11 @@ export default function AgentChat({ servers }) {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [displayMsgs, busy]);
 
-  // Update welcome tool count when servers change
+  // Update welcome message when server state changes
   useEffect(() => {
-    const txt = `Hi! I'm Nova, your AI security analyst.\n\nI have access to ${runningServers.length} running security tools right now. Tell me what you'd like to investigate — a domain, IP address, vulnerability scan, or anything else — and I'll pick the right tools and walk you through the findings.\n\nWhat would you like me to look into?`;
+    const txt = runningServers.length > 0
+      ? `Hi! I'm Nova, your AI security analyst.\n\nI have ${runningServers.length} security tools running right now. Give me a target — domain, IP, URL, or a question — and I'll get to work.\n\nWhat would you like me to investigate?`
+      : `Hi! I'm Nova, your AI security analyst.\n\nNo servers are running yet. Head to the Servers tab to start some tools, then come back and I'll put them to work.\n\nOr describe what you want to do and I'll tell you exactly which servers to start.`;
     setDisplayMsgs((prev) =>
       prev.map((m) => m.id === 'welcome' ? { ...m, parts: [{ type: 'text', text: txt }] } : m)
     );
@@ -179,29 +216,23 @@ export default function AgentChat({ servers }) {
     pendingIdRef.current = agentId;
     setDisplayMsgs((prev) => [...prev, { id: agentId, type: 'agent', parts: [] }]);
 
-    // Load tools
-    setStatusText(`Connecting to ${runningServers.length} servers...`);
+    // Load tools from running servers
+    setStatusText(runningServers.length > 0 ? `Connecting to ${runningServers.length} servers...` : 'Asking Nova...');
     const mcpTools = [];
-    await Promise.allSettled(
-      runningServers.map(async (srv) => {
-        try {
-          const tools = await mcpClient.listTools(srv.name);
-          tools.forEach((tool) => mcpTools.push({ serverName: srv.name, tool }));
-        } catch { /* skip unreachable */ }
-      })
-    );
-
-    if (mcpTools.length === 0) {
-      updatePending(() => [{ type: 'text', text: "I couldn't connect to any running servers. Please make sure at least one server is running and healthy, then try again." }]);
-      setBusy(false);
-      setNovaState('idle');
-      setStatusText('');
-      pendingIdRef.current = null;
-      return;
+    if (runningServers.length > 0) {
+      await Promise.allSettled(
+        runningServers.map(async (srv) => {
+          try {
+            const tools = await mcpClient.listTools(srv.name);
+            tools.forEach((tool) => mcpTools.push({ serverName: srv.name, tool }));
+          } catch { /* skip unreachable */ }
+        })
+      );
     }
 
-    setStatusText(`Thinking with ${mcpTools.length} tools...`);
+    setStatusText(mcpTools.length > 0 ? `Thinking with ${mcpTools.length} tools...` : 'Thinking...');
 
+    const systemPrompt = buildSystemPrompt(runningServers, allServers);
     const toolIndexMap = {};
 
     try {
@@ -241,7 +272,7 @@ export default function AgentChat({ servers }) {
           }
         },
         key,
-        SYSTEM_PROMPT
+        systemPrompt
       );
       setClaudeHistory(newHistory);
     } catch (err) {
@@ -261,7 +292,9 @@ export default function AgentChat({ servers }) {
 
   function handleClear() {
     setClaudeHistory([]);
-    const txt = `Conversation cleared. I have access to ${runningServers.length} running tools. What would you like me to investigate?`;
+    const txt = runningServers.length > 0
+      ? `Conversation cleared. ${runningServers.length} tools ready. What would you like me to investigate?`
+      : `Conversation cleared. No servers running — go to the Servers tab to start some, or tell me your goal and I'll suggest which ones to start.`;
     setDisplayMsgs([{ id: Date.now(), type: 'agent', parts: [{ type: 'text', text: txt }] }]);
   }
 
