@@ -1,11 +1,14 @@
 // claude.js — Claude API integration for Prompt mode (agentic loop)
 
-import { getClaudeKey } from './api.js';
+import { getClaudeKey, getBaseUrl } from './api.js';
 import { mcpClient } from './mcp.js';
 
-const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
 const ANTHROPIC_VERSION = '2023-06-01';
-const DEFAULT_MODEL = 'claude-opus-4-5';
+
+function claudeApiUrl() {
+  return `${getBaseUrl()}/claude`;
+}
+const DEFAULT_MODEL = 'claude-sonnet-4-6';
 
 /**
  * Convert MCP tool schema to Anthropic tool format
@@ -24,7 +27,7 @@ function mcpToolToAnthropic(tool, serverName) {
 /**
  * Call Claude API with messages and tools
  */
-async function callClaude(messages, tools, claudeKey) {
+async function callClaude(messages, tools, claudeKey, options = {}) {
   const key = claudeKey || getClaudeKey();
   if (!key) throw new Error('Claude API key is required. Set it in Settings.');
 
@@ -36,15 +39,15 @@ async function callClaude(messages, tools, claudeKey) {
     max_tokens: 8192,
     messages,
     tools: apiTools,
+    ...(options?.system ? { system: options.system } : {}),
   };
 
-  const res = await fetch(CLAUDE_API_URL, {
+  const res = await fetch(claudeApiUrl(), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-api-key': key,
+      'x-claude-key': key,
       'anthropic-version': ANTHROPIC_VERSION,
-      'anthropic-dangerous-direct-browser-calls': 'true',
     },
     body: JSON.stringify(body),
   });
@@ -216,6 +219,95 @@ export async function runAgenticLoop(prompt, mcpTools, onEvent, claudeKey) {
 
   if (iterations >= MAX_ITERATIONS) {
     onEvent?.({ type: 'warning', data: 'Maximum iteration limit reached.' });
+  }
+
+  return { messages, toolCalls: allToolCalls };
+}
+
+/**
+ * Multi-turn chat with a persistent message history and system prompt.
+ * Call once per user message; pass the returned `messages` back on the next call.
+ *
+ * @param {Array}    history      - Claude message history from previous turns (start with [])
+ * @param {string}   userText     - The new user message
+ * @param {Array}    mcpTools     - Array of { serverName, tool }
+ * @param {Function} onEvent      - Event callback (same shape as runAgenticLoop)
+ * @param {string}   [claudeKey]
+ * @param {string}   [systemPrompt]
+ * @returns {Promise<{ messages: Array, toolCalls: Array }>}
+ */
+export async function runChatTurn(history, userText, mcpTools, onEvent, claudeKey, systemPrompt) {
+  const tools = mcpTools.map(({ serverName, tool }) =>
+    mcpToolToAnthropic(tool, serverName)
+  );
+
+  const toolRoutes = {};
+  mcpTools.forEach(({ serverName, tool }) => {
+    const name = `${serverName}__${tool.name}`.replace(/-/g, '_');
+    toolRoutes[name] = { serverName, toolName: tool.name };
+  });
+
+  const messages = [...history, { role: 'user', content: userText }];
+  const allToolCalls = [];
+  let iterations = 0;
+
+  while (iterations < 10) {
+    iterations++;
+
+    let response;
+    try {
+      response = await callClaude(messages, tools, claudeKey, { system: systemPrompt });
+    } catch (err) {
+      onEvent?.({ type: 'error', data: err.message });
+      throw err;
+    }
+
+    onEvent?.({ type: 'claude_response', data: response });
+    messages.push({ role: 'assistant', content: response.content });
+
+    if (response.stop_reason === 'end_turn') {
+      onEvent?.({ type: 'done' });
+      break;
+    }
+
+    if (response.stop_reason === 'tool_use') {
+      const toolBlocks = response.content.filter((b) => b.type === 'tool_use');
+      if (!toolBlocks.length) break;
+
+      const toolResults = [];
+      for (const block of toolBlocks) {
+        const route = toolRoutes[block.name];
+        if (!route) {
+          toolResults.push({ type: 'tool_result', tool_use_id: block.id, content: `Unknown tool: ${block.name}`, is_error: true });
+          continue;
+        }
+        const { serverName, toolName } = route;
+        onEvent?.({ type: 'tool_call', data: { id: block.id, serverName, toolName, args: block.input } });
+
+        try {
+          const result = await mcpClient.callTool(serverName, toolName, block.input);
+          onEvent?.({ type: 'tool_result', data: { id: block.id, serverName, toolName, result } });
+          allToolCalls.push({ id: block.id, serverName, toolName, args: block.input, result });
+
+          let resultContent;
+          if (result?.content && Array.isArray(result.content)) {
+            resultContent = result.content.map((c) => (c.type === 'text' ? c.text : JSON.stringify(c))).join('\n');
+          } else if (typeof result === 'string') {
+            resultContent = result;
+          } else {
+            resultContent = JSON.stringify(result, null, 2);
+          }
+          toolResults.push({ type: 'tool_result', tool_use_id: block.id, content: resultContent });
+        } catch (err) {
+          onEvent?.({ type: 'tool_error', data: { id: block.id, serverName, toolName, error: err.message } });
+          allToolCalls.push({ id: block.id, serverName, toolName, args: block.input, error: err.message });
+          toolResults.push({ type: 'tool_result', tool_use_id: block.id, content: `Error: ${err.message}`, is_error: true });
+        }
+      }
+      messages.push({ role: 'user', content: toolResults });
+      continue;
+    }
+    break;
   }
 
   return { messages, toolCalls: allToolCalls };

@@ -48,6 +48,10 @@ CADDYFILE_TEMPLATE = """{
         reverse_proxy auth-gateway:9090
     }
 
+    handle /claude {
+        reverse_proxy auth-gateway:9090
+    }
+
     import /etc/caddy/dynamic/routes.conf
 
     handle {

@@ -18,11 +18,21 @@ export function getClaudeKey() {
   return localStorage.getItem('hd_claude_key') || '';
 }
 
-export function saveSettings({ baseUrl, apiKey, adminSecret, claudeKey }) {
+export function getHeygenKey() {
+  return localStorage.getItem('hd_heygen_key') || '';
+}
+
+export function getHeygenAvatarId() {
+  return localStorage.getItem('hd_heygen_avatar_id') || '';
+}
+
+export function saveSettings({ baseUrl, apiKey, adminSecret, claudeKey, heygenKey, heygenAvatarId }) {
   if (baseUrl !== undefined) localStorage.setItem('hd_base_url', baseUrl);
   if (apiKey !== undefined) localStorage.setItem('hd_api_key', apiKey);
   if (adminSecret !== undefined) localStorage.setItem('hd_admin_secret', adminSecret);
   if (claudeKey !== undefined) localStorage.setItem('hd_claude_key', claudeKey);
+  if (heygenKey !== undefined) localStorage.setItem('hd_heygen_key', heygenKey);
+  if (heygenAvatarId !== undefined) localStorage.setItem('hd_heygen_avatar_id', heygenAvatarId);
 }
 
 function authHeaders(extra = {}) {

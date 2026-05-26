@@ -4,12 +4,14 @@ import ServerList from './components/ServerList.jsx';
 import ManualMode from './components/ManualMode.jsx';
 import MultiMode from './components/MultiMode.jsx';
 import PromptMode from './components/PromptMode.jsx';
+import AgentChat from './components/AgentChat.jsx';
 import Settings from './components/Settings.jsx';
 
 const MODES = [
   { id: 'manual', label: 'Manual' },
   { id: 'multi', label: 'Multi-select' },
   { id: 'prompt', label: 'Prompt' },
+  { id: 'agent', label: '✦ Nova' },
 ];
 
 export default function App() {
@@ -170,19 +172,21 @@ export default function App() {
 
       {/* ── Main layout ── */}
       <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar */}
-        <div className="w-56 flex-shrink-0 flex flex-col overflow-hidden">
-          <ServerList
-            servers={servers}
-            loading={serversLoading}
-            selectedServer={mode === 'manual' ? selectedServer : null}
-            onSelectServer={handleSelectServer}
-            multiSelected={mode === 'multi' ? multiSelected : new Set()}
-            onToggleMulti={handleToggleMulti}
-            mode={mode}
-            onRefresh={loadServers}
-          />
-        </div>
+        {/* Sidebar — hidden in Nova/agent mode */}
+        {mode !== 'agent' && (
+          <div className="w-56 flex-shrink-0 flex flex-col overflow-hidden">
+            <ServerList
+              servers={servers}
+              loading={serversLoading}
+              selectedServer={mode === 'manual' ? selectedServer : null}
+              onSelectServer={handleSelectServer}
+              multiSelected={mode === 'multi' ? multiSelected : new Set()}
+              onToggleMulti={handleToggleMulti}
+              mode={mode}
+              onRefresh={loadServers}
+            />
+          </div>
+        )}
 
         {/* Main panel */}
         <main className="flex flex-1 overflow-hidden">
@@ -202,6 +206,9 @@ export default function App() {
           )}
           {mode === 'prompt' && (
             <PromptMode servers={servers} />
+          )}
+          {mode === 'agent' && (
+            <AgentChat servers={servers} />
           )}
         </main>
       </div>

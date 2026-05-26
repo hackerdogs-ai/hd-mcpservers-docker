@@ -237,6 +237,15 @@ async def startup_event() -> None:
             loop.run_in_executor(None, docker_manager.recover_dynamic_servers, dynamic_servers)
         )
 
+    # Push Caddy config — retry until Caddy admin API is ready
+    async def _reload_caddy_with_retry():
+        for attempt in range(15):
+            await asyncio.sleep(3)
+            if await caddy_reload.reload_caddy():
+                return
+        logger.warning("Caddy reload failed after all retries")
+    asyncio.create_task(_reload_caddy_with_retry())
+
     # Start background health check
     asyncio.create_task(health_check_loop())
     logger.info("Auth-gateway started. DB: %s", DB_PATH)
@@ -801,6 +810,38 @@ async def export_farm():
     # Strip key_hash from export
     keys = [_to_key_response(k) for k in keys_raw]
     return {"servers": servers, "keys": keys}
+
+
+# ---------------------------------------------------------------------------
+# Claude API proxy — avoids browser CORS restrictions
+# ---------------------------------------------------------------------------
+
+@app.post("/claude")
+async def claude_proxy(request: Request):
+    """Proxy Claude API calls from the UI to avoid CORS issues."""
+    body = await request.body()
+    claude_key = request.headers.get("x-claude-key", "")
+    anthropic_version = request.headers.get("anthropic-version", "2023-06-01")
+
+    if not claude_key:
+        return JSONResponse({"error": "x-claude-key header required"}, status_code=400)
+
+    async with httpx.AsyncClient(timeout=120.0) as client:
+        resp = await client.post(
+            "https://api.anthropic.com/v1/messages",
+            content=body,
+            headers={
+                "Content-Type": "application/json",
+                "x-api-key": claude_key,
+                "anthropic-version": anthropic_version,
+            },
+        )
+
+    return Response(
+        content=resp.content,
+        status_code=resp.status_code,
+        media_type="application/json",
+    )
 
 
 # ---------------------------------------------------------------------------

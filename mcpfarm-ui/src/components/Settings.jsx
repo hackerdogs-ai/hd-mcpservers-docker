@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { getBaseUrl, getApiKey, getAdminSecret, getClaudeKey, saveSettings, rotateSecret } from '../lib/api.js';
+import { getBaseUrl, getApiKey, getAdminSecret, getClaudeKey, getHeygenKey, getHeygenAvatarId, saveSettings, rotateSecret } from '../lib/api.js';
 
 export default function Settings({ onClose }) {
   const [baseUrl, setBaseUrl] = useState('');
   const [apiKey, setApiKey] = useState('');
   const [adminSecret, setAdminSecret] = useState('');
   const [claudeKey, setClaudeKey] = useState('');
+  const [heygenKey, setHeygenKey] = useState('');
+  const [heygenAvatarId, setHeygenAvatarId] = useState('');
   const [saved, setSaved] = useState(false);
   const [rotating, setRotating] = useState(false);
   const [rotateMsg, setRotateMsg] = useState(null);
@@ -15,10 +17,12 @@ export default function Settings({ onClose }) {
     setApiKey(getApiKey());
     setAdminSecret(getAdminSecret());
     setClaudeKey(getClaudeKey());
+    setHeygenKey(getHeygenKey());
+    setHeygenAvatarId(getHeygenAvatarId());
   }, []);
 
   function handleSave() {
-    saveSettings({ baseUrl, apiKey, adminSecret, claudeKey });
+    saveSettings({ baseUrl, apiKey, adminSecret, claudeKey, heygenKey, heygenAvatarId });
     setSaved(true);
     setTimeout(() => {
       setSaved(false);
@@ -125,11 +129,27 @@ export default function Settings({ onClose }) {
           </div>
           <Field
             label="Claude API Key"
-            hint="Required for Prompt mode"
+            hint="Required for Prompt mode and Nova"
             value={claudeKey}
             onChange={setClaudeKey}
             placeholder="sk-ant-..."
             type="password"
+          />
+          <Field
+            label="HeyGen API Key"
+            hint="Enables live avatar in Nova tab"
+            value={heygenKey}
+            onChange={setHeygenKey}
+            placeholder="paste your HeyGen key..."
+            type="password"
+          />
+          <Field
+            label="HeyGen Avatar ID"
+            hint="liveavatar.com → Avatars → copy ID"
+            value={heygenAvatarId}
+            onChange={setHeygenAvatarId}
+            placeholder="e.g. Avatar_v3_public_..."
+            type="text"
           />
         </div>
 
