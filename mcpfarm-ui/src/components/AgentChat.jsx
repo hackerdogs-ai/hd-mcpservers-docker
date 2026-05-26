@@ -33,8 +33,7 @@ If the user's request needs servers that are NOT currently running, you MUST:
 `;
 
 function buildSystemPrompt(runningServers, allServers) {
-  const runningNames = new Set(runningServers.map((s) => s.name));
-  const notRunning = (allServers || []).filter((s) => !runningNames.has(s.name));
+  const notRunningCount = (allServers || []).length - runningServers.length;
 
   let catalog = '\n\n## MCP SERVERS IN THIS FARM\n';
 
@@ -45,10 +44,8 @@ function buildSystemPrompt(runningServers, allServers) {
     catalog += '\n### Currently running: NONE — all tool calls will fail until servers are started.\n';
   }
 
-  if (notRunning.length > 0) {
-    catalog += '\n\n### Available but not running (suggest starting these when relevant):\n';
-    catalog += notRunning.slice(0, 60).map((s) => `- ${s.name}`).join('\n');
-    if (notRunning.length > 60) catalog += `\n... and ${notRunning.length - 60} more`;
+  if (notRunningCount > 0) {
+    catalog += `\n\n${notRunningCount} additional servers are available but not running. Tell the user which ones to start by name based on their task.`;
   }
 
   return BASE_SYSTEM_PROMPT + catalog;
@@ -238,8 +235,11 @@ export default function AgentChat({ servers }) {
     const toolIndexMap = {};
 
     try {
+      // Keep only last 6 messages (3 turns) to avoid token limit
+      const trimmedHistory = claudeHistory.slice(-6);
+
       const { messages: newHistory } = await runChatTurn(
-        claudeHistory,
+        trimmedHistory,
         text,
         mcpTools,
         (event) => {
