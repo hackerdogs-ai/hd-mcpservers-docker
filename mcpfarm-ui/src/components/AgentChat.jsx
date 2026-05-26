@@ -252,6 +252,11 @@ export default function AgentChat({ servers }) {
             if (raw) {
               const displayText = raw.replace(/<speak>[\s\S]*?<\/speak>\n?/i, '').trim();
               if (displayText) updatePending((parts) => [...parts, { type: 'text', text: displayText }]);
+              // Speak the planning sentence when Nova is about to call tools
+              if (event.data.stop_reason === 'tool_use') {
+                const sentence = displayText.split(/(?<=[.!?])\s/)[0]?.trim();
+                if (sentence) { setNovaState('talking'); avatarRef.current?.speak(sentence); }
+              }
             }
           } else if (event.type === 'done') {
             setNovaState('talking');
