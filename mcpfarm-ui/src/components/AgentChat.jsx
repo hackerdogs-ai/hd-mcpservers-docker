@@ -31,15 +31,15 @@ If the user's request needs servers that are NOT currently running, you MUST:
 - Suggest logical next steps after findings
 
 ## SPOKEN SUMMARY (avatar voice)
-Every response must begin with a <speak> tag containing 1-2 sentences max — a concise spoken summary of what you found or what you are doing. This is what the avatar will say aloud. Keep it under 30 words. Natural spoken English, no bullet points, no tool names, no jargon.
+Every response must begin with a <speak> tag. This is ALL the avatar will say — keep it to one short phrase, 8 words maximum. It is just a signpost; the details are in the chat. Do not summarise findings in speech.
 
-After the </speak> tag, write the full detailed response for the chat panel as normal.
+Good examples:
+<speak>Here are the results.</speak>
+<speak>Done, take a look.</speak>
+<speak>Starting the scan now.</speak>
+<speak>I need a couple more servers for that.</speak>
 
-Example format:
-<speak>I found two critical vulnerabilities on the target — an exposed admin panel and an outdated SSL certificate.</speak>
-
-Here are the detailed findings:
-- CVE-2024-XXXX: ...`;
+After the </speak> tag, write the full detailed response for the chat panel as normal.`;
 
 function buildSystemPrompt(runningServers, allServers) {
   const runningNames = new Set(runningServers.map((s) => s.name));
