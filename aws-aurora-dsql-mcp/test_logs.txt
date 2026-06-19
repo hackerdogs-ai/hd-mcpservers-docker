@@ -1,0 +1,2 @@
+--- Container Logs ---
+Error response from daemon: No such container: aws-aurora-dsql-mcp-test

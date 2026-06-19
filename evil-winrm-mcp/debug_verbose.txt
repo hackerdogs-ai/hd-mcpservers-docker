@@ -1,0 +1,203 @@
+========== VERBOSE DEBUG: evil-winrm-mcp ==========
+Timestamp: Sun, Mar 29, 2026 11:35:39 PM
+
+--- [CHECK 1] Building Docker image ---
+>>> docker build -t evil-winrm-mcp -t hackerdogs/evil-winrm-mcp:latest evil-winrm-mcp
+
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.82kB 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#2 ...
+
+#3 [auth] library/python:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#2 DONE 2.1s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/8] FROM docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0
+#5 resolve docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0 0.0s done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 70B done
+#6 DONE 0.0s
+
+#7 [2/8] RUN groupadd -g 1000 mcpuser &&     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
+#7 CACHED
+
+#8 [3/8] RUN apt-get update && apt-get install -y --no-install-recommends     tini     ca-certificates     ruby     ruby-dev     build-essential     && gem install evil-winrm     && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [4/8] WORKDIR /app
+#9 CACHED
+
+#10 [5/8] COPY requirements.txt ./
+#10 CACHED
+
+#11 [6/8] RUN pip install --no-cache-dir -r requirements.txt
+#11 CACHED
+
+#12 [7/8] COPY mcp_server.py ./
+#12 CACHED
+
+#13 [8/8] RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+#13 CACHED
+
+#14 exporting to image
+#14 exporting layers done
+#14 exporting manifest sha256:c957c7b615337affa1ca9e2d39a4cd82beb870ad5c24bab9c8e55a9bd9825cd0 0.0s done
+#14 exporting config sha256:6370a462587ee1774749c5e170b8a584f986b7b220024d3a5d0f872b92277b53 0.0s done
+#14 exporting attestation manifest sha256:df26435d7fdb51faeeb5a9ee53a5bc637d4ed030a3c8304f8050d8119c619a50 0.1s done
+#14 exporting manifest list sha256:68e316c28f1ebc9d6ea257a05a67a818d897d71769e1b65abf73a33022326ebc
+#14 exporting manifest list sha256:68e316c28f1ebc9d6ea257a05a67a818d897d71769e1b65abf73a33022326ebc 0.0s done
+#14 naming to docker.io/library/evil-winrm-mcp:latest done
+#14 unpacking to docker.io/library/evil-winrm-mcp:latest 0.0s done
+#14 naming to docker.io/hackerdogs/evil-winrm-mcp:latest done
+#14 unpacking to docker.io/hackerdogs/evil-winrm-mcp:latest 0.0s done
+#14 DONE 0.3s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/ztfjel5a79nfnunbioc1f5eje
+
+✅ Build succeeded.
+
+--- [CHECK 2] Stdio tools/list (raw output) ---
+>>> Sending to container via stdio:
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"debug","version":"0.0.1"}}}
+{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}
+
+>>> Raw container response:
+2026-03-29 18:05:46,140 [evil-winrm-mcp] INFO: Starting evil-winrm-mcp server (transport=stdio, port=8263)
+[03/29/26 18:05:46] INFO     Starting MCP server 'Evil-WinRM    transport.py:183
+                             MCP Server' with transport 'stdio'                 
+2026-03-29 18:05:46,157 [mcp.server.lowlevel.server] INFO: Processing request of type ListToolsRequest
+{"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"prompts":{"listChanged":false},"resources":{"subscribe":false,"listChanged":false},"tools":{"listChanged":true},"extensions":{"io.modelcontextprotocol/ui":{}}},"serverInfo":{"name":"Evil-WinRM MCP Server","version":"3.1.1"},"instructions":"Windows Remote Management shell."}}
+{"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"run_evil_winrm","description":"Run evil-winrm with the given arguments.\n\nPass arguments as you would on the command line.\n\nArgs:\n    arguments: Command-line arguments string.\n    timeout_seconds: Maximum execution time in seconds (default 600).","inputSchema":{"additionalProperties":false,"properties":{"arguments":{"type":"string"},"timeout_seconds":{"default":600,"type":"integer"}},"required":["arguments"],"type":"object"},"outputSchema":{"properties":{"result":{"type":"string"}},"required":["result"],"type":"object","x-fastmcp-wrap-result":true},"_meta":{"fastmcp":{"tags":[]}}}]}}
+
+✅ Stdio tools/list: tools key found in response.
+
+--- [CHECK 3] HTTP streamable tools/list (raw output) ---
+>>> Starting container in HTTP mode on port 8614...
+a0dad3c5e542031db8170a24913fb70ee432ccba132df9ef26cdec17539a87be
+>>> Waiting 5s for server to start...
+>>> Container logs so far:
+2026-03-29 18:05:49,427 [evil-winrm-mcp] INFO: Starting evil-winrm-mcp server (transport=http, port=8263)
+2026-03-29 18:05:49,646 [httpx] INFO: HTTP Request: GET https://pypi.org/pypi/fastmcp/json "HTTP/1.1 200 OK"
+
+
+╭──────────────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│                                                                              │
+│                         ▄▀▀ ▄▀█ █▀▀ ▀█▀ █▀▄▀█ █▀▀ █▀█                        │
+│                         █▀  █▀█ ▄▄█  █  █ ▀ █ █▄▄ █▀▀                        │
+│                                                                              │
+│                                                                              │
+│                                FastMCP 3.1.1                                 │
+│                            https://gofastmcp.com                             │
+│                                                                              │
+│                 🖥  Server:      Evil-WinRM MCP Server, 3.1.1                 │
+│                 🚀 Deploy free: https://fastmcp.cloud                        │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+[03/29/26 18:05:49] INFO     Starting MCP server 'Evil-WinRM    transport.py:273
+                             MCP Server' with transport                         
+                             'streamable-http' on                               
+                             http://0.0.0.0:8263/mcp                            
+INFO:     Started server process [7]
+INFO:     Waiting for application startup.
+2026-03-29 18:05:49,700 [mcp.server.streamable_http_manager] INFO: StreamableHTTP session manager started
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8263 (Press CTRL+C to quit)
+
+>>> Sending HTTP initialize request to get session ID...
+event: message
+data: {"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"prompts":{"listChanged":true},"resources":{"subscribe":false,"listChanged":true},"tools":{"listChanged":true},"extensions":{"io.modelcontextprotocol/ui":{}}},"serverInfo":{"name":"Evil-WinRM MCP Server","version":"3.1.1"},"instructions":"Windows Remote Management shell."}}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> Content-Length: 154
+> 
+} [154 bytes data]
+< HTTP/1.1 200 OK
+< date: Sun, 29 Mar 2026 18:05:52 GMT
+< server: uvicorn
+< cache-control: no-cache, no-transform
+< connection: keep-alive
+< content-type: text/event-stream
+< mcp-session-id: 0693ff0234ad4221b2a4ff4a8031d165
+< x-accel-buffering: no
+< Transfer-Encoding: chunked
+< 
+{ [406 bytes data]
+* Connection #0 to host localhost left intact
+✅ Got session ID: 0693ff0234ad4221b2a4ff4a8031d165
+>>> Sending HTTP notifications/initialized...
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 0693ff0234ad4221b2a4ff4a8031d165
+> Content-Length: 54
+> 
+} [54 bytes data]
+< HTTP/1.1 202 Accepted
+< date: Sun, 29 Mar 2026 18:05:52 GMT
+< server: uvicorn
+< content-type: application/json
+< mcp-session-id: 0693ff0234ad4221b2a4ff4a8031d165
+< content-length: 0
+< 
+* Connection #0 to host localhost left intact
+>>> Sending HTTP tools/list request:
+>>> Raw HTTP response:
+event: message
+data: {"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"run_evil_winrm","description":"Run evil-winrm with the given arguments.\n\nPass arguments as you would on the command line.\n\nArgs:\n    arguments: Command-line arguments string.\n    timeout_seconds: Maximum execution time in seconds (default 600).","inputSchema":{"additionalProperties":false,"properties":{"arguments":{"type":"string"},"timeout_seconds":{"default":600,"type":"integer"}},"required":["arguments"],"type":"object"},"outputSchema":{"properties":{"result":{"type":"string"}},"required":["result"],"type":"object","x-fastmcp-wrap-result":true},"_meta":{"fastmcp":{"tags":[]}}}]}}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 0693ff0234ad4221b2a4ff4a8031d165
+> Content-Length: 58
+> 
+} [58 bytes data]
+< HTTP/1.1 200 OK
+< date: Sun, 29 Mar 2026 18:05:53 GMT
+< server: uvicorn
+< cache-control: no-cache, no-transform
+< connection: keep-alive
+< content-type: text/event-stream
+< mcp-session-id: 0693ff0234ad4221b2a4ff4a8031d165
+< x-accel-buffering: no
+< Transfer-Encoding: chunked
+< 
+{ [680 bytes data]
+* Connection #0 to host localhost left intact
+
+✅ HTTP tools/list: tools key found in response.
+
+>>> Stopping HTTP container...
+evil-winrm-mcp-debug-http
+
+========== End of Debug: Sun, Mar 29, 2026 11:35:55 PM ==========

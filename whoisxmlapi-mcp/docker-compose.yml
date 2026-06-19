@@ -1,0 +1,13 @@
+services:
+  whoisxmlapi-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hackerdogs/whoisxmlapi-mcp:latest
+    container_name: whoisxmlapi-mcp
+    ports:
+      - "8511:8511"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8511
+    restart: unless-stopped

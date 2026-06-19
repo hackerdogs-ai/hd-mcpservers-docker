@@ -4,8 +4,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -
 RUN npm install -g @zereight/mcp-gitlab supergateway 2>/dev/null || npm install -g supergateway
 COPY mcp_http_proxy.py /mcp_http_proxy.py
 COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-ENV GITLAB_TOKEN=glpat-dummy-gitlab-token-for-mcp-list-tools-only
+RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
+ENV GITLAB_PERSONAL_ACCESS_TOKEN=glpat-dummy-gitlab-token-for-mcp-list-tools-only
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8642
 EXPOSE 8642

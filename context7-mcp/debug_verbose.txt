@@ -1,0 +1,158 @@
+========== VERBOSE DEBUG: context7-mcp ==========
+Timestamp: Sun, Mar 29, 2026  8:56:13 PM
+
+--- [CHECK 1] Building Docker image ---
+>>> docker build -t context7-mcp -t hackerdogs/context7-mcp:latest context7-mcp
+
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 505B 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 1.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3
+#4 resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#6 CACHED
+
+#7 [2/7] WORKDIR /app
+#7 CACHED
+
+#8 [4/7] RUN npm install -g @upstash/context7-mcp supergateway 2>/dev/null || npm install -g supergateway
+#8 CACHED
+
+#9 [6/7] COPY entrypoint.sh /entrypoint.sh
+#9 CACHED
+
+#10 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [7/7] RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:6fa3366e4a50cf71659d24dfbc1af5dfe7f5ee88ffe44138be5ae8f5def4edc1 done
+#12 exporting config sha256:6e2bd3a2ac3d684013f7a733abaa49f91bab75e5431e8427225c13100763b339 done
+#12 exporting attestation manifest sha256:d89f8aade973b8c66b9bf8443dd33b22809de05ca58a3d2ec254949080109998 0.0s done
+#12 exporting manifest list sha256:657f0ed1e8ecaee5bb66d5a5c205e02d097f3d1f154b6b2df6a962656b41325f 0.0s done
+#12 naming to docker.io/library/context7-mcp:latest done
+#12 unpacking to docker.io/library/context7-mcp:latest 0.0s done
+#12 naming to docker.io/hackerdogs/context7-mcp:latest done
+#12 unpacking to docker.io/hackerdogs/context7-mcp:latest done
+#12 DONE 0.4s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/5s8dhkri5uh0fask6avnwqhax
+
+✅ Build succeeded.
+
+--- [CHECK 2] Stdio tools/list (raw output) ---
+>>> Sending to container via stdio:
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"debug","version":"0.0.1"}}}
+{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}
+
+>>> Raw container response:
+Context7 Documentation MCP Server v2.1.6 running on stdio
+{"result":{"protocolVersion":"2024-11-05","capabilities":{"tools":{"listChanged":true}},"serverInfo":{"name":"Context7","version":"2.1.6","websiteUrl":"https://context7.com","description":"Context7 provides up-to-date documentation and code examples for libraries and frameworks.","icons":[{"src":"https://context7.com/context7-icon-green.png","mimeType":"image/png"}]},"instructions":"Use this server to fetch current documentation whenever the user asks about a library, framework, SDK, API, CLI tool, or cloud service -- even well-known ones like React, Next.js, Prisma, Express, Tailwind, Django, or Spring Boot. This includes API syntax, configuration, version migration, library-specific debugging, setup instructions, and CLI tool usage. Use even when you think you know the answer -- your training data may not reflect recent changes. Prefer this over web search for library docs.\n\nDo not use for: refactoring, writing scripts from scratch, debugging business logic, code review, or general programming concepts."},"jsonrpc":"2.0","id":1}
+{"result":{"tools":[{"name":"resolve-library-id","title":"Resolve Context7 Library ID","description":"Resolves a package/product name to a Context7-compatible library ID and returns matching libraries.\n\nYou MUST call this function before 'Query Documentation' tool to obtain a valid Context7-compatible library ID UNLESS the user explicitly provides a library ID in the format '/org/project' or '/org/project/version' in their query.\n\nEach result includes:\n- Library ID: Context7-compatible identifier (format: /org/project)\n- Name: Library or package name\n- Description: Short summary\n- Code Snippets: Number of available code examples\n- Source Reputation: Authority indicator (High, Medium, Low, or Unknown)\n- Benchmark Score: Quality indicator (100 is the highest score)\n- Versions: List of versions if available. Use one of those versions if the user provides a version in their query. The format of the version is /org/project/version.\n\nFor best results, select libraries based on name match, source reputation, snippet coverage, benchmark score, and relevance to your use case.\n\nSelection Process:\n1. Analyze the query to understand what library/package the user is looking for\n2. Return the most relevant match based on:\n- Name similarity to the query (exact matches prioritized)\n- Description relevance to the query's intent\n- Documentation coverage (prioritize libraries with higher Code Snippet counts)\n- Source reputation (consider libraries with High or Medium reputation more authoritative)\n- Benchmark Score: Quality indicator (100 is the highest score)\n\nResponse Format:\n- Return the selected library ID in a clearly marked section\n- Provide a brief explanation for why this library was chosen\n- If multiple good matches exist, acknowledge this but proceed with the most relevant one\n- If no good matches exist, clearly state this and suggest query refinements\n\nFor ambiguous queries, request clarification before proceeding with a best-guess match.\n\nIMPORTANT: Do not call this tool more than 3 times per question. If you cannot find what you need after 3 calls, use the best result you have.","inputSchema":{"$schema":"http://json-schema.org/draft-07/schema#","type":"object","properties":{"query":{"type":"string","description":"The question or task you need help with. This is used to rank library results by relevance to what the user is trying to accomplish. The query is sent to the Context7 API for processing. Do not include any sensitive or confidential information such as API keys, passwords, credentials, personal data, or proprietary code in your query."},"libraryName":{"type":"string","description":"Library name to search for and retrieve a Context7-compatible library ID."}},"required":["query","libraryName"]},"annotations":{"readOnlyHint":true},"execution":{"taskSupport":"forbidden"}},{"name":"query-docs","title":"Query Documentation","description":"Retrieves and queries up-to-date documentation and code examples from Context7 for any programming library or framework.\n\nYou must call 'Resolve Context7 Library ID' tool first to obtain the exact Context7-compatible library ID required to use this tool, UNLESS the user explicitly provides a library ID in the format '/org/project' or '/org/project/version' in their query.\n\nIMPORTANT: Do not call this tool more than 3 times per question. If you cannot find what you need after 3 calls, use the best information you have.","inputSchema":{"$schema":"http://json-schema.org/draft-07/schema#","type":"object","properties":{"libraryId":{"type":"string","description":"Exact Context7-compatible library ID (e.g., '/mongodb/docs', '/vercel/next.js', '/supabase/supabase', '/vercel/next.js/v14.3.0-canary.87') retrieved from 'resolve-library-id' or directly from user query in the format '/org/project' or '/org/project/version'."},"query":{"type":"string","description":"The question or task you need help with. Be specific and include relevant details. Good: 'How to set up authentication with JWT in Express.js' or 'React useEffect cleanup function examples'. Bad: 'auth' or 'hooks'. The query is sent to the Context7 API for processing. Do not include any sensitive or confidential information such as API keys, passwords, credentials, personal data, or proprietary code in your query."}},"required":["libraryId","query"]},"annotations":{"readOnlyHint":true},"execution":{"taskSupport":"forbidden"}}]},"jsonrpc":"2.0","id":2}
+
+✅ Stdio tools/list: tools key found in response.
+
+--- [CHECK 3] HTTP streamable tools/list (raw output) ---
+>>> Starting container in HTTP mode on port 8614...
+dc01672bda5693a90f93398c9a6db7101f8c1a2536c4252e58178bebd6c702ba
+>>> Waiting 5s for server to start...
+>>> Container logs so far:
+[mcp-proxy] Listening on 0.0.0.0:8634/mcp
+[mcp-proxy] Wrapping: npx -y @upstash/context7-mcp
+
+>>> Sending HTTP initialize request to get session ID...
+event: message
+data: {"result":{"protocolVersion":"2024-11-05","capabilities":{"tools":{"listChanged":true}},"serverInfo":{"name":"Context7","version":"2.1.6","websiteUrl":"https://context7.com","description":"Context7 provides up-to-date documentation and code examples for libraries and frameworks.","icons":[{"src":"https://context7.com/context7-icon-green.png","mimeType":"image/png"}]},"instructions":"Use this server to fetch current documentation whenever the user asks about a library, framework, SDK, API, CLI tool, or cloud service -- even well-known ones like React, Next.js, Prisma, Express, Tailwind, Django, or Spring Boot. This includes API syntax, configuration, version migration, library-specific debugging, setup instructions, and CLI tool usage. Use even when you think you know the answer -- your training data may not reflect recent changes. Prefer this over web search for library docs.\n\nDo not use for: refactoring, writing scripts from scratch, debugging business logic, code review, or general programming concepts."},"jsonrpc":"2.0","id":1}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> Content-Length: 154
+> 
+} [154 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.2
+< Date: Sun, 29 Mar 2026 15:26:25 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: 11e420955f964e12b2efbfb482605575
+< 
+{ [1071 bytes data]
+* Closing connection 0
+✅ Got session ID: 11e420955f964e12b2efbfb482605575
+>>> Sending HTTP notifications/initialized...
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 11e420955f964e12b2efbfb482605575
+> Content-Length: 54
+> 
+} [54 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 202 Accepted
+< Server: BaseHTTP/0.6 Python/3.11.2
+< Date: Sun, 29 Mar 2026 15:26:26 GMT
+< 
+{ [0 bytes data]
+* Closing connection 0
+>>> Sending HTTP tools/list request:
+>>> Raw HTTP response:
+event: message
+data: {"result":{"tools":[{"name":"resolve-library-id","title":"Resolve Context7 Library ID","description":"Resolves a package/product name to a Context7-compatible library ID and returns matching libraries.\n\nYou MUST call this function before 'Query Documentation' tool to obtain a valid Context7-compatible library ID UNLESS the user explicitly provides a library ID in the format '/org/project' or '/org/project/version' in their query.\n\nEach result includes:\n- Library ID: Context7-compatible identifier (format: /org/project)\n- Name: Library or package name\n- Description: Short summary\n- Code Snippets: Number of available code examples\n- Source Reputation: Authority indicator (High, Medium, Low, or Unknown)\n- Benchmark Score: Quality indicator (100 is the highest score)\n- Versions: List of versions if available. Use one of those versions if the user provides a version in their query. The format of the version is /org/project/version.\n\nFor best results, select libraries based on name match, source reputation, snippet coverage, benchmark score, and relevance to your use case.\n\nSelection Process:\n1. Analyze the query to understand what library/package the user is looking for\n2. Return the most relevant match based on:\n- Name similarity to the query (exact matches prioritized)\n- Description relevance to the query's intent\n- Documentation coverage (prioritize libraries with higher Code Snippet counts)\n- Source reputation (consider libraries with High or Medium reputation more authoritative)\n- Benchmark Score: Quality indicator (100 is the highest score)\n\nResponse Format:\n- Return the selected library ID in a clearly marked section\n- Provide a brief explanation for why this library was chosen\n- If multiple good matches exist, acknowledge this but proceed with the most relevant one\n- If no good matches exist, clearly state this and suggest query refinements\n\nFor ambiguous queries, request clarification before proceeding with a best-guess match.\n\nIMPORTANT: Do not call this tool more than 3 times per question. If you cannot find what you need after 3 calls, use the best result you have.","inputSchema":{"$schema":"http://json-schema.org/draft-07/schema#","type":"object","properties":{"query":{"type":"string","description":"The question or task you need help with. This is used to rank library results by relevance to what the user is trying to accomplish. The query is sent to the Context7 API for processing. Do not include any sensitive or confidential information such as API keys, passwords, credentials, personal data, or proprietary code in your query."},"libraryName":{"type":"string","description":"Library name to search for and retrieve a Context7-compatible library ID."}},"required":["query","libraryName"]},"annotations":{"readOnlyHint":true},"execution":{"taskSupport":"forbidden"}},{"name":"query-docs","title":"Query Documentation","description":"Retrieves and queries up-to-date documentation and code examples from Context7 for any programming library or framework.\n\nYou must call 'Resolve Context7 Library ID' tool first to obtain the exact Context7-compatible library ID required to use this tool, UNLESS the user explicitly provides a library ID in the format '/org/project' or '/org/project/version' in their query.\n\nIMPORTANT: Do not call this tool more than 3 times per question. If you cannot find what you need after 3 calls, use the best information you have.","inputSchema":{"$schema":"http://json-schema.org/draft-07/schema#","type":"object","properties":{"libraryId":{"type":"string","description":"Exact Context7-compatible library ID (e.g., '/mongodb/docs', '/vercel/next.js', '/supabase/supabase', '/vercel/next.js/v14.3.0-canary.87') retrieved from 'resolve-library-id' or directly from user query in the format '/org/project' or '/org/project/version'."},"query":{"type":"string","description":"The question or task you need help with. Be specific and include relevant details. Good: 'How to set up authentication with JWT in Express.js' or 'React useEffect cleanup function examples'. Bad: 'auth' or 'hooks'. The query is sent to the Context7 API for processing. Do not include any sensitive or confidential information such as API keys, passwords, credentials, personal data, or proprietary code in your query."}},"required":["libraryId","query"]},"annotations":{"readOnlyHint":true},"execution":{"taskSupport":"forbidden"}}]},"jsonrpc":"2.0","id":2}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 11e420955f964e12b2efbfb482605575
+> Content-Length: 58
+> 
+} [58 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.2
+< Date: Sun, 29 Mar 2026 15:26:27 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: 11e420955f964e12b2efbfb482605575
+< 
+{ [4470 bytes data]
+* Closing connection 0
+
+✅ HTTP tools/list: tools key found in response.
+
+>>> Stopping HTTP container...
+context7-mcp-debug-http
+
+========== End of Debug: Sun, Mar 29, 2026  8:56:28 PM ==========

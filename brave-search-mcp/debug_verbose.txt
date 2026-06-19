@@ -1,0 +1,169 @@
+========== VERBOSE DEBUG: brave-search-mcp ==========
+Timestamp: Sun, Mar 29, 2026  8:43:58 PM
+
+--- [CHECK 1] Building Docker image ---
+>>> docker build -t brave-search-mcp -t hackerdogs/brave-search-mcp:latest brave-search-mcp
+
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 598B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 0.4s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3
+#4 resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3 0.0s done
+#4 DONE 0.0s
+
+#5 [2/7] WORKDIR /app
+#5 CACHED
+
+#6 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [internal] load build context
+#7 transferring context: 11.11kB 0.1s done
+#7 DONE 0.2s
+
+#8 [4/7] RUN npm install -g @modelcontextprotocol/server-brave-search supergateway 2>/dev/null || npm install -g supergateway
+#8 9.568 
+#8 9.568 added 155 packages in 9s
+#8 9.568 
+#8 9.568 34 packages are looking for funding
+#8 9.568   run `npm fund` for details
+#8 DONE 9.7s
+
+#9 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#9 DONE 0.1s
+
+#10 [6/7] COPY entrypoint.sh /entrypoint.sh
+#10 DONE 0.1s
+
+#11 [7/7] RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
+#11 DONE 0.3s
+
+#12 exporting to image
+#12 exporting layers
+#12 exporting layers 1.4s done
+#12 exporting manifest sha256:f78db2b996e191056cf5c77308bfa5f32546b76271dc9a2def14662342039ea4 0.0s done
+#12 exporting config sha256:5868f0e2ebdd4e50bf7f0fffe571cf5cf06e60d8ae38dade55df683829b4491b 0.0s done
+#12 exporting attestation manifest sha256:7fa73efc74913d7fb1e09956bf6ace347bb32c6463666aa5a3bc81cbba4189d5 0.0s done
+#12 exporting manifest list sha256:1080136a9b6866745edb5f9c18e70027f5700b4e1b31e4eea97581865aafd0ac 0.0s done
+#12 naming to docker.io/library/brave-search-mcp:latest
+#12 naming to docker.io/library/brave-search-mcp:latest done
+#12 unpacking to docker.io/library/brave-search-mcp:latest
+#12 unpacking to docker.io/library/brave-search-mcp:latest 0.9s done
+#12 naming to docker.io/hackerdogs/brave-search-mcp:latest done
+#12 unpacking to docker.io/hackerdogs/brave-search-mcp:latest 0.0s done
+#12 DONE 2.5s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/vx64cq62ydt8zqkit21y5fv5q
+
+ [33m1 warning found (use docker --debug to expand):
+[0m - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "BRAVE_API_KEY") (line 8)
+
+✅ Build succeeded.
+
+--- [CHECK 2] Stdio tools/list (raw output) ---
+>>> Sending to container via stdio:
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"debug","version":"0.0.1"}}}
+{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}
+
+>>> Raw container response:
+Brave Search MCP Server running on stdio
+{"result":{"protocolVersion":"2024-11-05","capabilities":{"tools":{}},"serverInfo":{"name":"example-servers/brave-search","version":"0.1.0"}},"jsonrpc":"2.0","id":1}
+{"result":{"tools":[{"name":"brave_web_search","description":"Performs a web search using the Brave Search API, ideal for general queries, news, articles, and online content. Use this for broad information gathering, recent events, or when you need diverse web sources. Supports pagination, content filtering, and freshness controls. Maximum 20 results per request, with offset for pagination. ","inputSchema":{"type":"object","properties":{"query":{"type":"string","description":"Search query (max 400 chars, 50 words)"},"count":{"type":"number","description":"Number of results (1-20, default 10)","default":10},"offset":{"type":"number","description":"Pagination offset (max 9, default 0)","default":0}},"required":["query"]}},{"name":"brave_local_search","description":"Searches for local businesses and places using Brave's Local Search API. Best for queries related to physical locations, businesses, restaurants, services, etc. Returns detailed information including:\n- Business names and addresses\n- Ratings and review counts\n- Phone numbers and opening hours\nUse this when the query implies 'near me' or mentions specific locations. Automatically falls back to web search if no local results are found.","inputSchema":{"type":"object","properties":{"query":{"type":"string","description":"Local search query (e.g. 'pizza near Central Park')"},"count":{"type":"number","description":"Number of results (1-20, default 5)","default":5}},"required":["query"]}}]},"jsonrpc":"2.0","id":2}
+
+✅ Stdio tools/list: tools key found in response.
+
+--- [CHECK 3] HTTP streamable tools/list (raw output) ---
+>>> Starting container in HTTP mode on port 8614...
+3682f25b9813cc5c2ee290d56c4dda62b7fcd1ff6de6549d011057b9f6e10ae3
+>>> Waiting 5s for server to start...
+>>> Container logs so far:
+[mcp-proxy] Listening on 0.0.0.0:8629/mcp
+[mcp-proxy] Wrapping: mcp-server-brave-search
+
+>>> Sending HTTP initialize request to get session ID...
+event: message
+data: {"result":{"protocolVersion":"2024-11-05","capabilities":{"tools":{}},"serverInfo":{"name":"example-servers/brave-search","version":"0.1.0"}},"jsonrpc":"2.0","id":1}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> Content-Length: 154
+> 
+} [154 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.2
+< Date: Sun, 29 Mar 2026 15:14:20 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: 3472782c46184c2b9688b4396175a798
+< 
+{ [188 bytes data]
+* Closing connection 0
+✅ Got session ID: 3472782c46184c2b9688b4396175a798
+>>> Sending HTTP notifications/initialized...
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 3472782c46184c2b9688b4396175a798
+> Content-Length: 54
+> 
+} [54 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 202 Accepted
+< Server: BaseHTTP/0.6 Python/3.11.2
+< Date: Sun, 29 Mar 2026 15:14:20 GMT
+< 
+{ [0 bytes data]
+* Closing connection 0
+>>> Sending HTTP tools/list request:
+>>> Raw HTTP response:
+event: message
+data: {"result":{"tools":[{"name":"brave_web_search","description":"Performs a web search using the Brave Search API, ideal for general queries, news, articles, and online content. Use this for broad information gathering, recent events, or when you need diverse web sources. Supports pagination, content filtering, and freshness controls. Maximum 20 results per request, with offset for pagination. ","inputSchema":{"type":"object","properties":{"query":{"type":"string","description":"Search query (max 400 chars, 50 words)"},"count":{"type":"number","description":"Number of results (1-20, default 10)","default":10},"offset":{"type":"number","description":"Pagination offset (max 9, default 0)","default":0}},"required":["query"]}},{"name":"brave_local_search","description":"Searches for local businesses and places using Brave's Local Search API. Best for queries related to physical locations, businesses, restaurants, services, etc. Returns detailed information including:\n- Business names and addresses\n- Ratings and review counts\n- Phone numbers and opening hours\nUse this when the query implies 'near me' or mentions specific locations. Automatically falls back to web search if no local results are found.","inputSchema":{"type":"object","properties":{"query":{"type":"string","description":"Local search query (e.g. 'pizza near Central Park')"},"count":{"type":"number","description":"Number of results (1-20, default 5)","default":5}},"required":["query"]}}]},"jsonrpc":"2.0","id":2}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 3472782c46184c2b9688b4396175a798
+> Content-Length: 58
+> 
+} [58 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.2
+< Date: Sun, 29 Mar 2026 15:14:20 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: 3472782c46184c2b9688b4396175a798
+< 
+{ [1518 bytes data]
+* Closing connection 0
+
+✅ HTTP tools/list: tools key found in response.
+
+>>> Stopping HTTP container...
+brave-search-mcp-debug-http
+
+========== End of Debug: Sun, Mar 29, 2026  8:44:21 PM ==========

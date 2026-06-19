@@ -1,0 +1,182 @@
+========== VERBOSE DEBUG: baidu-search-mcp-server-mcp ==========
+Timestamp: Sun, Mar 29, 2026  8:43:31 PM
+
+--- [CHECK 1] Building Docker image ---
+>>> docker build -t baidu-search-mcp-server-mcp -t hackerdogs/baidu-search-mcp-server-mcp:latest baidu-search-mcp-server-mcp
+
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 811B done
+#1 DONE 0.0s
+
+#2 [auth] library/python:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 ...
+
+#4 [internal] load metadata for docker.io/library/node:20-slim
+#4 DONE 1.1s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 1.4s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3
+#6 resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3 0.0s done
+#6 DONE 0.0s
+
+#7 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+#7 resolve docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634 0.0s done
+#7 DONE 0.0s
+
+#8 [internal] load build context
+#8 transferring context: 10.94kB done
+#8 DONE 0.0s
+
+#9 [stage-1 4/9] RUN pip install --no-cache-dir baidu-mcp-server
+#9 CACHED
+
+#10 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#10 CACHED
+
+#11 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#11 CACHED
+
+#12 [stage-1 3/9] WORKDIR /app
+#12 CACHED
+
+#13 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#13 CACHED
+
+#14 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#14 CACHED
+
+#15 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#15 DONE 0.0s
+
+#16 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#16 DONE 0.1s
+
+#17 [stage-1 9/9] RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
+#17 DONE 0.3s
+
+#18 exporting to image
+#18 exporting layers
+#18 exporting layers 0.2s done
+#18 exporting manifest sha256:76ec33744dc177a7f6466332bf52da1fb755b0ba53039a8b576fb666d5e2003a 0.0s done
+#18 exporting config sha256:06a93b684aa85739836baa9aff1e987005786af8de9a400ebfe13ff08cae0b39 0.0s done
+#18 exporting attestation manifest sha256:94ae9073955a4cdd3c9b5eaaeed36d42811f6712a3e09727048d08d84d94798b 0.0s done
+#18 exporting manifest list sha256:f42f5e4df25e1116d34646b74354a4f9840d5b4fa58c50f7f00ff90e6bc3d762 0.0s done
+#18 naming to docker.io/library/baidu-search-mcp-server-mcp:latest done
+#18 unpacking to docker.io/library/baidu-search-mcp-server-mcp:latest 0.1s done
+#18 naming to docker.io/hackerdogs/baidu-search-mcp-server-mcp:latest done
+#18 unpacking to docker.io/hackerdogs/baidu-search-mcp-server-mcp:latest 0.0s done
+#18 DONE 0.7s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/zjqug6b4onhtt74aic16kgiv5
+
+✅ Build succeeded.
+
+--- [CHECK 2] Stdio tools/list (raw output) ---
+>>> Sending to container via stdio:
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"debug","version":"0.0.1"}}}
+{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}
+
+>>> Raw container response:
+{"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"prompts":{"listChanged":false},"resources":{"subscribe":false,"listChanged":false},"tools":{"listChanged":false}},"serverInfo":{"name":"baidu-search","version":"1.26.0"}}}
+[03/29/26 15:13:37] INFO     Processing request of type            server.py:720
+                             ListToolsRequest                                   
+{"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"search","description":"\n    Search Baidu and return formatted results.\n\n    Args:\n        query: The search query string\n        max_results: Maximum number of results to return (default: 6)\n        deep_mode: Deep search the web content (default: False)\n        ctx: MCP context for logging\n    ","inputSchema":{"properties":{"query":{"title":"Query","type":"string"},"max_results":{"default":6,"title":"Max Results","type":"integer"},"deep_mode":{"default":false,"title":"Deep Mode","type":"boolean"}},"required":["query"],"title":"searchArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"searchOutput","type":"object"}}]}}
+
+✅ Stdio tools/list: tools key found in response.
+
+--- [CHECK 3] HTTP streamable tools/list (raw output) ---
+>>> Starting container in HTTP mode on port 8614...
+23160eaed370b1e0a95a3e608d12cfd40e20e4b4c9e30ce288d1d7e87449c078
+>>> Waiting 5s for server to start...
+>>> Container logs so far:
+[mcp-proxy] Listening on 0.0.0.0:8628/mcp
+[mcp-proxy] Wrapping: baidu-mcp-server
+
+>>> Sending HTTP initialize request to get session ID...
+event: message
+data: {"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"prompts":{"listChanged":false},"resources":{"subscribe":false,"listChanged":false},"tools":{"listChanged":false}},"serverInfo":{"name":"baidu-search","version":"1.26.0"}}}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> Content-Length: 154
+> 
+} [154 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.15
+< Date: Sun, 29 Mar 2026 15:13:44 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: 9559eb6676494408a13791926229b5a1
+< 
+{ [294 bytes data]
+* Closing connection 0
+✅ Got session ID: 9559eb6676494408a13791926229b5a1
+>>> Sending HTTP notifications/initialized...
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 9559eb6676494408a13791926229b5a1
+> Content-Length: 54
+> 
+} [54 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 202 Accepted
+< Server: BaseHTTP/0.6 Python/3.11.15
+< Date: Sun, 29 Mar 2026 15:13:44 GMT
+< 
+{ [0 bytes data]
+* Closing connection 0
+>>> Sending HTTP tools/list request:
+>>> Raw HTTP response:
+event: message
+data: {"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"search","description":"\n    Search Baidu and return formatted results.\n\n    Args:\n        query: The search query string\n        max_results: Maximum number of results to return (default: 6)\n        deep_mode: Deep search the web content (default: False)\n        ctx: MCP context for logging\n    ","inputSchema":{"properties":{"query":{"title":"Query","type":"string"},"max_results":{"default":6,"title":"Max Results","type":"integer"},"deep_mode":{"default":false,"title":"Deep Mode","type":"boolean"}},"required":["query"],"title":"searchArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"searchOutput","type":"object"}}]}}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 9559eb6676494408a13791926229b5a1
+> Content-Length: 58
+> 
+} [58 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.15
+< Date: Sun, 29 Mar 2026 15:13:45 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: 9559eb6676494408a13791926229b5a1
+< 
+{ [791 bytes data]
+* Closing connection 0
+
+✅ HTTP tools/list: tools key found in response.
+
+>>> Stopping HTTP container...
+baidu-search-mcp-server-mcp-debug-http
+
+========== End of Debug: Sun, Mar 29, 2026  8:43:46 PM ==========

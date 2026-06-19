@@ -1,8 +1,73 @@
-MCP test run - cloudflare-mcp
-Generated (UTC): 2026-03-20T18:20:05Z
-Exit code: 1
-Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
----------------------------------------------------------------------------------
+========== Testing cloudflare-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 611B 0.0s done
+#1 DONE 0.0s
+
+#2 [auth] library/node:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 1.6s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 DONE 0.0s
+
+#6 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.1s done
+#6 DONE 0.2s
+
+#7 [2/7] WORKDIR /app
+#7 CACHED
+
+#8 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#5 [internal] load build context
+#5 transferring context: 72B 0.0s done
+#5 DONE 0.2s
+
+#9 [4/7] RUN npm install -g @cloudflare/mcp-server-cloudflare supergateway 2>/dev/null || npm install -g supergateway
+#9 13.75 
+#9 13.75 added 165 packages in 13s
+#9 13.75 
+#9 13.75 36 packages are looking for funding
+#9 13.75   run `npm fund` for details
+#9 DONE 13.9s
+
+#10 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#10 DONE 0.1s
+
+#11 [6/7] COPY entrypoint.sh /entrypoint.sh
+#11 DONE 0.1s
+
+#12 [7/7] RUN chmod +x /entrypoint.sh
+#12 DONE 0.3s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 1.6s done
+#13 exporting manifest sha256:b5deb9837c435eddb97cc638cbc5ea5f160f2c421169bb4412884b917d7dcc43 0.0s done
+#13 exporting config sha256:20c8a50828c3baada9003a542e89ec440492236de54fd4a24d9eb83acc578b51 0.0s done
+#13 exporting attestation manifest sha256:bf6ce733bdaa83cea567ab9cf7ff6934bf42d836bac48d8102e11c670585cb34 0.0s done
+#13 exporting manifest list sha256:9cbbc3423116e2fa0741a7c6bf8f22223507bf9bafd47418a52853c10fb4b5bb 0.0s done
+#13 naming to docker.io/library/cloudflare-mcp:latest
+#13 naming to docker.io/library/cloudflare-mcp:latest done
+#13 unpacking to docker.io/library/cloudflare-mcp:latest
+#13 unpacking to docker.io/library/cloudflare-mcp:latest 1.0s done
+#13 naming to docker.io/hackerdogs/cloudflare-mcp:latest done
+#13 unpacking to docker.io/hackerdogs/cloudflare-mcp:latest 0.0s done
+#13 DONE 2.8s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/kpt1oobx8l4cqjiuctrysxyvo
+
+ [33m1 warning found (use docker --debug to expand):
+[0m - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "CLOUDFLARE_API_TOKEN") (line 8)
 ========== cloudflare-mcp test (compliance) ==========
 [0;34m[1] Install[0m
   [0;32mPASS: image exists[0m
@@ -18,3 +83,5 @@ Note: Full stdout/stderr capture (this test.sh does not use the structured test-
 Total: 3 passed, 2 failed
 cloudflare-mcp-test
 cloudflare-mcp-test
+
+❌ FAIL (Test): cloudflare-mcp

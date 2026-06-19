@@ -1,0 +1,13 @@
+services:
+  github-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hackerdogs/github-mcp:latest
+    container_name: github-mcp
+    ports:
+      - "8521:8521"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8521
+    restart: unless-stopped

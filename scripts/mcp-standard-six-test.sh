@@ -51,7 +51,7 @@ append_section() {
     if [ "${MCP_TEST_RESULT_MAX_CHARS}" = "0" ] || [ -z "${MCP_TEST_RESULT_MAX_CHARS}" ]; then
       printf '%s\n' "$body"
     else
-      python3 -c "
+      python -c "
 import sys
 maxc = int(sys.argv[1])
 raw = sys.stdin.read()
@@ -72,7 +72,7 @@ INIT_NOTIF='{"jsonrpc":"2.0","method":"notifications/initialized"}'
 LIST_REQ='{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}'
 
 export MCP_TOOL_NAME MCP_TOOL_ARGUMENTS
-CALL_REQ=$(python3 -c "import json,os; n=os.environ['MCP_TOOL_NAME']; a=json.loads(os.environ['MCP_TOOL_ARGUMENTS']); print(json.dumps({'jsonrpc':'2.0','id':3,'method':'tools/call','params':{'name':n,'arguments':a}}))")
+CALL_REQ=$(python -c "import json,os; n=os.environ['MCP_TOOL_NAME']; a=json.loads(os.environ['MCP_TOOL_ARGUMENTS']); print(json.dumps({'jsonrpc':'2.0','id':3,'method':'tools/call','params':{'name':n,'arguments':a}}))")
 
 http_cleanup() {
   docker stop "$MCP_CONTAINER" 2>/dev/null || true

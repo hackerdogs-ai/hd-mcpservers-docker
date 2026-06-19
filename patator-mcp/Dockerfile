@@ -16,12 +16,27 @@ LABEL org.opencontainers.image.author="hackerdogs"
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
 
-# Install system dependencies, including the patator package and its required C-libraries
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    tini \
-    ca-certificates \
-    patator \
-    && rm -rf /var/lib/apt/lists/*
+# Patator pulls python3-impacket from Debian; apt CDN often flakes on that single .deb — prefetch with curl, then apt.
+RUN printf 'Acquire::Retries "8";\nAcquire::http::Timeout "120";\nAcquire::https::Timeout "120";\n' > /etc/apt/apt.conf.d/99retries
+RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends ca-certificates curl; \
+    for i in 1 2 3 4 5 6 7 8 9 10; do \
+      if curl -fsSL --retry 25 --retry-delay 5 --retry-all-errors \
+        -o /tmp/python3-impacket.deb \
+        "https://deb.debian.org/debian/pool/main/i/impacket/python3-impacket_0.10.0-4_all.deb"; then \
+        break; \
+      fi; \
+      echo "curl impacket attempt $i failed"; sleep 20; \
+    done; \
+    test -s /tmp/python3-impacket.deb; \
+    dpkg -i /tmp/python3-impacket.deb || true; \
+    apt-get install -y --no-install-recommends -f; \
+    apt-get install -y --no-install-recommends tini patator; \
+    apt-get purge -y curl; \
+    apt-get autoremove -y; \
+    rm -f /tmp/python3-impacket.deb; \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 

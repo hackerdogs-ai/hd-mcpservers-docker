@@ -1,20 +1,657 @@
-MCP test run - aws-dynamodb-mcp
-Generated (UTC): 2026-03-20T17:50:42Z
-Exit code: 0
-Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
----------------------------------------------------------------------------------
+========== Retesting aws-dynamodb-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 787B 0.0s done
+#1 DONE 0.0s
+
+#2 [auth] library/python:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [auth] library/node:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#4 [internal] load metadata for docker.io/library/node:20-slim
+#4 DONE 4.9s
+
+#5 [internal] load metadata for docker.io/library/python:3.11-slim
+#5 DONE 4.9s
+
+#6 [internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.1s
+
+#7 [internal] load build context
+#7 DONE 0.0s
+
+#8 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#8 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#8 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.3s done
+#8 DONE 0.4s
+
+#9 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+#9 resolve docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634 0.3s done
+#9 DONE 0.3s
+
+#10 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [stage-1 3/9] WORKDIR /app
+#11 CACHED
+
+#12 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#12 CACHED
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.2s
+
+#13 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.dynamodb-mcp-server
+#13 3.125 Collecting awslabs.dynamodb-mcp-server
+#13 4.960   Downloading awslabs_dynamodb_mcp_server-2.0.21-py3-none-any.whl.metadata (22 kB)
+#13 5.729 Collecting awslabs-aws-api-mcp-server>=1.3.19 (from awslabs.dynamodb-mcp-server)
+#13 6.016   Downloading awslabs_aws_api_mcp_server-1.3.21-py3-none-any.whl.metadata (42 kB)
+#13 6.338      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 42.1/42.1 kB 3.0 MB/s eta 0:00:00
+#13 6.692 Collecting awslabs-mysql-mcp-server==1.0.9 (from awslabs.dynamodb-mcp-server)
+#13 7.050   Downloading awslabs_mysql_mcp_server-1.0.9-py3-none-any.whl.metadata (8.1 kB)
+#13 9.062 Collecting boto3>=1.40.5 (from awslabs.dynamodb-mcp-server)
+#13 9.352   Downloading boto3-1.42.74-py3-none-any.whl.metadata (6.7 kB)
+#13 9.697 Collecting dspy-ai>=2.6.27 (from awslabs.dynamodb-mcp-server)
+#13 9.983   Downloading dspy_ai-3.1.3-py3-none-any.whl.metadata (285 bytes)
+#13 10.92 Collecting jinja2>=3.1.0 (from awslabs.dynamodb-mcp-server)
+#13 11.21   Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+#13 12.08 Collecting loguru==0.7.3 (from awslabs.dynamodb-mcp-server)
+#13 12.37   Downloading loguru-0.7.3-py3-none-any.whl.metadata (22 kB)
+#13 13.24 Collecting mcp>=1.23.0 (from mcp[cli]>=1.23.0->awslabs.dynamodb-mcp-server)
+#13 13.54   Downloading mcp-1.26.0-py3-none-any.whl.metadata (89 kB)
+#13 14.15      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 89.5/89.5 kB 137.6 kB/s eta 0:00:00
+#13 15.70 Collecting psutil==7.1.1 (from awslabs.dynamodb-mcp-server)
+#13 15.99   Downloading psutil-7.1.1-cp36-abi3-manylinux_2_12_x86_64.manylinux2010_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (23 kB)
+#13 17.67 Collecting pydantic==2.11.7 (from awslabs.dynamodb-mcp-server)
+#13 17.96   Downloading pydantic-2.11.7-py3-none-any.whl.metadata (67 kB)
+#13 18.24      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 68.0/68.0 kB 222.8 kB/s eta 0:00:00
+#13 18.87 Collecting strands-agents>=1.5.0 (from awslabs.dynamodb-mcp-server)
+#13 19.16   Downloading strands_agents-1.33.0-py3-none-any.whl.metadata (18 kB)
+#13 20.03 Collecting typing-extensions>=4.14.1 (from awslabs.dynamodb-mcp-server)
+#13 20.32   Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+#13 20.94 Collecting asyncmy>=0.2.10 (from awslabs-mysql-mcp-server==1.0.9->awslabs.dynamodb-mcp-server)
+#13 21.23   Downloading asyncmy-0.2.11-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.2 kB)
+#13 27.16 Collecting botocore>=1.38.14 (from awslabs-mysql-mcp-server==1.0.9->awslabs.dynamodb-mcp-server)
+#13 27.45   Downloading botocore-1.42.74-py3-none-any.whl.metadata (5.9 kB)
+#13 28.40 Collecting annotated-types>=0.6.0 (from pydantic==2.11.7->awslabs.dynamodb-mcp-server)
+#13 28.69   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+#13 39.57 Collecting pydantic-core==2.33.2 (from pydantic==2.11.7->awslabs.dynamodb-mcp-server)
+#13 39.86   Downloading pydantic_core-2.33.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.8 kB)
+#13 40.75 Collecting typing-inspection>=0.4.0 (from pydantic==2.11.7->awslabs.dynamodb-mcp-server)
+#13 41.14   Downloading typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+#13 42.26 Collecting awscli==1.44.55 (from awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 42.55   Downloading awscli-1.44.55-py3-none-any.whl.metadata (11 kB)
+#13 43.90 Collecting fastmcp>=3.0.1 (from awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 44.19   Downloading fastmcp-3.1.1-py3-none-any.whl.metadata (8.1 kB)
+#13 45.17 Collecting importlib-resources>=6.0.0 (from awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 45.45   Downloading importlib_resources-6.5.2-py3-none-any.whl.metadata (3.9 kB)
+#13 48.82 Collecting lxml>=5.1.0 (from awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 49.11   Downloading lxml-6.0.2-cp311-cp311-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl.metadata (3.6 kB)
+#13 50.00 Collecting python-frontmatter>=1.1.0 (from awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 50.28   Downloading python_frontmatter-1.1.0-py3-none-any.whl.metadata (4.1 kB)
+#13 50.90 Collecting python-json-logger>=2.0.7 (from awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 51.19   Downloading python_json_logger-4.0.0-py3-none-any.whl.metadata (4.0 kB)
+#13 52.09 Collecting requests>=2.32.4 (from awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 52.39   Downloading requests-2.32.5-py3-none-any.whl.metadata (4.9 kB)
+#13 52.70 Requirement already satisfied: setuptools>=69.0.0 in /usr/local/lib/python3.11/site-packages (from awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server) (79.0.1)
+#13 52.82 Collecting botocore>=1.38.14 (from awslabs-mysql-mcp-server==1.0.9->awslabs.dynamodb-mcp-server)
+#13 53.18   Downloading botocore-1.42.65-py3-none-any.whl.metadata (5.9 kB)
+#13 54.29 Collecting docutils<=0.19,>=0.18.1 (from awscli==1.44.55->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 54.59   Downloading docutils-0.19-py3-none-any.whl.metadata (2.7 kB)
+#13 55.62 Collecting s3transfer<0.17.0,>=0.16.0 (from awscli==1.44.55->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 56.10   Downloading s3transfer-0.16.0-py3-none-any.whl.metadata (1.7 kB)
+#13 57.47 Collecting PyYAML<6.1,>=3.10 (from awscli==1.44.55->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 57.76   Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+#13 58.51 Collecting colorama<0.4.7,>=0.2.5 (from awscli==1.44.55->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 58.80   Downloading colorama-0.4.6-py2.py3-none-any.whl.metadata (17 kB)
+#13 60.34 Collecting rsa<4.8,>=3.1.2 (from awscli==1.44.55->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 60.84   Downloading rsa-4.7.2-py3-none-any.whl.metadata (3.6 kB)
+#13 61.21 Collecting jmespath<2.0.0,>=0.7.1 (from botocore>=1.38.14->awslabs-mysql-mcp-server==1.0.9->awslabs.dynamodb-mcp-server)
+#13 61.50   Downloading jmespath-1.1.0-py3-none-any.whl.metadata (7.6 kB)
+#13 62.34 Collecting python-dateutil<3.0.0,>=2.1 (from botocore>=1.38.14->awslabs-mysql-mcp-server==1.0.9->awslabs.dynamodb-mcp-server)
+#13 63.15   Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+#13 63.76 Collecting urllib3!=2.2.0,<3,>=1.25.4 (from botocore>=1.38.14->awslabs-mysql-mcp-server==1.0.9->awslabs.dynamodb-mcp-server)
+#13 64.05   Downloading urllib3-2.6.3-py3-none-any.whl.metadata (6.9 kB)
+#13 64.63 INFO: pip is looking at multiple versions of boto3 to determine which version is compatible with other requirements. This could take a while.
+#13 64.63 Collecting boto3>=1.40.5 (from awslabs.dynamodb-mcp-server)
+#13 64.92   Downloading boto3-1.42.73-py3-none-any.whl.metadata (6.7 kB)
+#13 65.73   Downloading boto3-1.42.72-py3-none-any.whl.metadata (6.7 kB)
+#13 66.91   Downloading boto3-1.42.71-py3-none-any.whl.metadata (6.7 kB)
+#13 67.66   Downloading boto3-1.42.70-py3-none-any.whl.metadata (6.7 kB)
+#13 68.42   Downloading boto3-1.42.69-py3-none-any.whl.metadata (6.7 kB)
+#13 68.83   Downloading boto3-1.42.68-py3-none-any.whl.metadata (6.7 kB)
+#13 69.67   Downloading boto3-1.42.67-py3-none-any.whl.metadata (6.7 kB)
+#13 70.21 INFO: pip is still looking at multiple versions of boto3 to determine which version is compatible with other requirements. This could take a while.
+#13 70.50   Downloading boto3-1.42.66-py3-none-any.whl.metadata (6.7 kB)
+#13 71.45   Downloading boto3-1.42.65-py3-none-any.whl.metadata (6.7 kB)
+#13 72.72 Collecting dspy>=3.1.3 (from dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 73.01   Downloading dspy-3.1.3-py3-none-any.whl.metadata (8.4 kB)
+#13 75.77 Collecting MarkupSafe>=2.0 (from jinja2>=3.1.0->awslabs.dynamodb-mcp-server)
+#13 76.07   Downloading markupsafe-3.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.7 kB)
+#13 77.37 Collecting anyio>=4.5 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.dynamodb-mcp-server)
+#13 77.66   Downloading anyio-4.13.0-py3-none-any.whl.metadata (4.5 kB)
+#13 78.32 Collecting httpx-sse>=0.4 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.dynamodb-mcp-server)
+#13 78.60   Downloading httpx_sse-0.4.3-py3-none-any.whl.metadata (9.7 kB)
+#13 80.22 Collecting httpx>=0.27.1 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.dynamodb-mcp-server)
+#13 81.13   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#13 82.44 Collecting jsonschema>=4.20.0 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.dynamodb-mcp-server)
+#13 82.73   Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+#13 83.85 Collecting pydantic-settings>=2.5.2 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.dynamodb-mcp-server)
+#13 84.14   Downloading pydantic_settings-2.13.1-py3-none-any.whl.metadata (3.4 kB)
+#13 84.97 Collecting pyjwt>=2.10.1 (from pyjwt[crypto]>=2.10.1->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.dynamodb-mcp-server)
+#13 85.26   Downloading pyjwt-2.12.1-py3-none-any.whl.metadata (4.1 kB)
+#13 85.94 Collecting python-multipart>=0.0.9 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.dynamodb-mcp-server)
+#13 86.22   Downloading python_multipart-0.0.22-py3-none-any.whl.metadata (1.8 kB)
+#13 87.02 Collecting sse-starlette>=1.6.1 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.dynamodb-mcp-server)
+#13 87.31   Downloading sse_starlette-3.3.3-py3-none-any.whl.metadata (14 kB)
+#13 88.69 Collecting starlette>=0.27 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.dynamodb-mcp-server)
+#13 88.98   Downloading starlette-1.0.0-py3-none-any.whl.metadata (6.3 kB)
+#13 89.92 Collecting uvicorn>=0.31.1 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.dynamodb-mcp-server)
+#13 90.22   Downloading uvicorn-0.42.0-py3-none-any.whl.metadata (6.7 kB)
+#13 91.02 Collecting python-dotenv>=1.0.0 (from mcp[cli]>=1.23.0->awslabs.dynamodb-mcp-server)
+#13 91.31   Downloading python_dotenv-1.2.2-py3-none-any.whl.metadata (27 kB)
+#13 92.89 Collecting typer>=0.16.0 (from mcp[cli]>=1.23.0->awslabs.dynamodb-mcp-server)
+#13 93.29   Downloading typer-0.24.1-py3-none-any.whl.metadata (16 kB)
+#13 94.38 Collecting docstring-parser<1.0,>=0.15 (from strands-agents>=1.5.0->awslabs.dynamodb-mcp-server)
+#13 94.68   Downloading docstring_parser-0.17.0-py3-none-any.whl.metadata (3.5 kB)
+#13 95.52 Collecting opentelemetry-api<2.0.0,>=1.30.0 (from strands-agents>=1.5.0->awslabs.dynamodb-mcp-server)
+#13 95.81   Downloading opentelemetry_api-1.40.0-py3-none-any.whl.metadata (1.5 kB)
+#13 96.49 Collecting opentelemetry-instrumentation-threading<1.00b0,>=0.51b0 (from strands-agents>=1.5.0->awslabs.dynamodb-mcp-server)
+#13 96.78   Downloading opentelemetry_instrumentation_threading-0.61b0-py3-none-any.whl.metadata (2.2 kB)
+#13 97.60 Collecting opentelemetry-sdk<2.0.0,>=1.30.0 (from strands-agents>=1.5.0->awslabs.dynamodb-mcp-server)
+#13 97.89   Downloading opentelemetry_sdk-1.40.0-py3-none-any.whl.metadata (1.6 kB)
+#13 99.19 Collecting watchdog<7.0.0,>=6.0.0 (from strands-agents>=1.5.0->awslabs.dynamodb-mcp-server)
+#13 99.48   Downloading watchdog-6.0.0-py3-none-manylinux2014_x86_64.whl.metadata (44 kB)
+#13 100.9      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 44.3/44.3 kB 63.4 kB/s eta 0:00:00
+#13 101.5 Collecting idna>=2.8 (from anyio>=4.5->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.dynamodb-mcp-server)
+#13 102.0   Downloading idna-3.11-py3-none-any.whl.metadata (8.4 kB)
+#13 102.1 INFO: pip is looking at multiple versions of botocore[crt] to determine which version is compatible with other requirements. This could take a while.
+#13 102.1 Collecting botocore[crt]>=1.41.0 (from awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 102.5   Downloading botocore-1.42.73-py3-none-any.whl.metadata (5.9 kB)
+#13 102.8   Downloading botocore-1.42.72-py3-none-any.whl.metadata (5.9 kB)
+#13 103.6   Downloading botocore-1.42.71-py3-none-any.whl.metadata (5.9 kB)
+#13 103.9   Downloading botocore-1.42.70-py3-none-any.whl.metadata (5.9 kB)
+#13 104.5   Downloading botocore-1.42.69-py3-none-any.whl.metadata (5.9 kB)
+#13 105.3   Downloading botocore-1.42.68-py3-none-any.whl.metadata (5.9 kB)
+#13 105.6   Downloading botocore-1.42.67-py3-none-any.whl.metadata (5.9 kB)
+#13 105.9 INFO: pip is still looking at multiple versions of botocore[crt] to determine which version is compatible with other requirements. This could take a while.
+#13 106.2   Downloading botocore-1.42.66-py3-none-any.whl.metadata (5.9 kB)
+#13 111.8 Collecting awscrt==0.31.2 (from botocore[crt]>=1.41.0->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 112.1   Downloading awscrt-0.31.2-cp311-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (8.5 kB)
+#13 113.4 Collecting openai>=0.28.1 (from dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 115.0   Downloading openai-2.29.0-py3-none-any.whl.metadata (29 kB)
+#13 126.6 Collecting regex>=2023.10.3 (from dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 126.9   Downloading regex-2026.2.28-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (40 kB)
+#13 128.9      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 40.4/40.4 kB 11.9 MB/s eta 0:00:00
+#13 132.4 Collecting orjson>=3.9.0 (from dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 132.7   Downloading orjson-3.11.7-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (41 kB)
+#13 133.8      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 42.0/42.0 kB 166.2 kB/s eta 0:00:00
+#13 135.6 Collecting tqdm>=4.66.1 (from dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 136.1   Downloading tqdm-4.67.3-py3-none-any.whl.metadata (57 kB)
+#13 137.4      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 57.7/57.7 kB 48.6 kB/s eta 0:00:00
+#13 138.0 Collecting optuna>=3.4.0 (from dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 138.3   Downloading optuna-4.8.0-py3-none-any.whl.metadata (17 kB)
+#13 142.8 Collecting litellm>=1.64.0 (from dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 143.1   Downloading litellm-1.82.6-py3-none-any.whl.metadata (30 kB)
+#13 144.1 Collecting diskcache>=5.6.0 (from dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 144.4   Downloading diskcache-5.6.3-py3-none-any.whl.metadata (20 kB)
+#13 145.3 Collecting json-repair>=0.54.2 (from dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 145.7   Downloading json_repair-0.58.6-py3-none-any.whl.metadata (16 kB)
+#13 146.3 Collecting tenacity>=8.2.3 (from dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 146.6   Downloading tenacity-9.1.4-py3-none-any.whl.metadata (1.2 kB)
+#13 147.2 Collecting asyncer==0.0.8 (from dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 147.5   Downloading asyncer-0.0.8-py3-none-any.whl.metadata (6.7 kB)
+#13 149.4 Collecting cachetools>=5.5.0 (from dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 149.7   Downloading cachetools-7.0.5-py3-none-any.whl.metadata (5.6 kB)
+#13 151.4 Collecting cloudpickle>=3.0.0 (from dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 151.7   Downloading cloudpickle-3.1.2-py3-none-any.whl.metadata (7.1 kB)
+#13 163.1 Collecting numpy>=1.26.0 (from dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 163.4   Downloading numpy-2.4.3-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (6.6 kB)
+#13 168.5 Collecting xxhash>=3.5.0 (from dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 168.8   Downloading xxhash-3.6.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (13 kB)
+#13 169.7 Collecting gepa==0.0.26 (from gepa[dspy]==0.0.26->dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 169.9   Downloading gepa-0.0.26-py3-none-any.whl.metadata (29 kB)
+#13 171.3 Collecting authlib>=1.6.5 (from fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 171.6   Downloading authlib-1.6.9-py2.py3-none-any.whl.metadata (9.8 kB)
+#13 172.5 Collecting cyclopts>=4.0.0 (from fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 172.8   Downloading cyclopts-4.10.1-py3-none-any.whl.metadata (12 kB)
+#13 173.5 Collecting exceptiongroup>=1.2.2 (from fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 173.8   Downloading exceptiongroup-1.3.1-py3-none-any.whl.metadata (6.7 kB)
+#13 174.4 Collecting jsonref>=1.1.0 (from fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 174.7   Downloading jsonref-1.1.0-py3-none-any.whl.metadata (2.7 kB)
+#13 175.5 Collecting jsonschema-path>=0.3.4 (from fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 175.8   Downloading jsonschema_path-0.4.5-py3-none-any.whl.metadata (5.9 kB)
+#13 176.5 Collecting openapi-pydantic>=0.5.1 (from fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 176.8   Downloading openapi_pydantic-0.5.1-py3-none-any.whl.metadata (10 kB)
+#13 177.6 Collecting packaging>=24.0 (from fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 177.9   Downloading packaging-26.0-py3-none-any.whl.metadata (3.3 kB)
+#13 178.6 Collecting platformdirs>=4.0.0 (from fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 178.9   Downloading platformdirs-4.9.4-py3-none-any.whl.metadata (4.7 kB)
+#13 179.6 Collecting py-key-value-aio<0.5.0,>=0.4.4 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 180.1   Downloading py_key_value_aio-0.4.4-py3-none-any.whl.metadata (15 kB)
+#13 181.0 Collecting pyperclip>=1.9.0 (from fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 181.3   Downloading pyperclip-1.11.0-py3-none-any.whl.metadata (2.4 kB)
+#13 183.7 Collecting rich>=13.9.4 (from fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 184.0   Downloading rich-14.3.3-py3-none-any.whl.metadata (18 kB)
+#13 185.4 Collecting uncalled-for>=0.2.0 (from fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 185.7   Downloading uncalled_for-0.2.0-py3-none-any.whl.metadata (2.9 kB)
+#13 187.6 Collecting watchfiles>=1.0.0 (from fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 188.1   Downloading watchfiles-1.1.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.9 kB)
+#13 189.3 Collecting websockets>=15.0.1 (from fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 189.6   Downloading websockets-16.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (6.8 kB)
+#13 190.5 Collecting certifi (from httpx>=0.27.1->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.dynamodb-mcp-server)
+#13 190.8   Downloading certifi-2026.2.25-py3-none-any.whl.metadata (2.5 kB)
+#13 191.5 Collecting httpcore==1.* (from httpx>=0.27.1->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.dynamodb-mcp-server)
+#13 191.8   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#13 193.1 Collecting h11>=0.16 (from httpcore==1.*->httpx>=0.27.1->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.dynamodb-mcp-server)
+#13 193.4   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#13 194.4 Collecting attrs>=22.2.0 (from jsonschema>=4.20.0->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.dynamodb-mcp-server)
+#13 194.7   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+#13 195.6 Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.20.0->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.dynamodb-mcp-server)
+#13 195.9   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+#13 197.8 Collecting referencing>=0.28.4 (from jsonschema>=4.20.0->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.dynamodb-mcp-server)
+#13 198.1   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+#13 204.9 Collecting rpds-py>=0.25.0 (from jsonschema>=4.20.0->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.dynamodb-mcp-server)
+#13 205.2   Downloading rpds_py-0.30.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)
+#13 206.5 Collecting importlib-metadata<8.8.0,>=6.0 (from opentelemetry-api<2.0.0,>=1.30.0->strands-agents>=1.5.0->awslabs.dynamodb-mcp-server)
+#13 206.8   Downloading importlib_metadata-8.7.1-py3-none-any.whl.metadata (4.7 kB)
+#13 207.8 Collecting opentelemetry-instrumentation==0.61b0 (from opentelemetry-instrumentation-threading<1.00b0,>=0.51b0->strands-agents>=1.5.0->awslabs.dynamodb-mcp-server)
+#13 208.1   Downloading opentelemetry_instrumentation-0.61b0-py3-none-any.whl.metadata (7.2 kB)
+#13 216.3 Collecting wrapt<2.0.0,>=1.0.0 (from opentelemetry-instrumentation-threading<1.00b0,>=0.51b0->strands-agents>=1.5.0->awslabs.dynamodb-mcp-server)
+#13 216.6   Downloading wrapt-1.17.3-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (6.4 kB)
+#13 217.5 Collecting opentelemetry-semantic-conventions==0.61b0 (from opentelemetry-instrumentation==0.61b0->opentelemetry-instrumentation-threading<1.00b0,>=0.51b0->strands-agents>=1.5.0->awslabs.dynamodb-mcp-server)
+#13 217.8   Downloading opentelemetry_semantic_conventions-0.61b0-py3-none-any.whl.metadata (2.5 kB)
+#13 221.9 Collecting cryptography>=3.4.0 (from pyjwt[crypto]>=2.10.1->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.dynamodb-mcp-server)
+#13 222.2   Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (5.7 kB)
+#13 225.5 Collecting charset_normalizer<4,>=2 (from requests>=2.32.4->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 225.8   Downloading charset_normalizer-3.4.6-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (40 kB)
+#13 227.5      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 40.6/40.6 kB 117.8 kB/s eta 0:00:00
+#13 229.4 Collecting click>=8.2.1 (from typer>=0.16.0->mcp[cli]>=1.23.0->awslabs.dynamodb-mcp-server)
+#13 229.7   Downloading click-8.3.1-py3-none-any.whl.metadata (2.6 kB)
+#13 230.5 Collecting shellingham>=1.3.0 (from typer>=0.16.0->mcp[cli]>=1.23.0->awslabs.dynamodb-mcp-server)
+#13 230.8   Downloading shellingham-1.5.4-py2.py3-none-any.whl.metadata (3.5 kB)
+#13 231.7 Collecting annotated-doc>=0.0.2 (from typer>=0.16.0->mcp[cli]>=1.23.0->awslabs.dynamodb-mcp-server)
+#13 232.2   Downloading annotated_doc-0.0.4-py3-none-any.whl.metadata (6.6 kB)
+#13 241.5 Collecting cffi>=2.0.0 (from cryptography>=3.4.0->pyjwt[crypto]>=2.10.1->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.dynamodb-mcp-server)
+#13 241.8   Downloading cffi-2.0.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.6 kB)
+#13 242.3 Collecting rich-rst<2.0.0,>=1.3.1 (from cyclopts>=4.0.0->fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 242.6   Downloading rich_rst-1.3.2-py3-none-any.whl.metadata (6.1 kB)
+#13 243.8 Collecting zipp>=3.20 (from importlib-metadata<8.8.0,>=6.0->opentelemetry-api<2.0.0,>=1.30.0->strands-agents>=1.5.0->awslabs.dynamodb-mcp-server)
+#13 244.1   Downloading zipp-3.23.0-py3-none-any.whl.metadata (3.6 kB)
+#13 244.9 Collecting pathable<0.6.0,>=0.5.0 (from jsonschema-path>=0.3.4->fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 245.2   Downloading pathable-0.5.0-py3-none-any.whl.metadata (5.9 kB)
+#13 253.0 Collecting aiohttp>=3.10 (from litellm>=1.64.0->dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 253.3   Downloading aiohttp-3.13.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (8.1 kB)
+#13 255.2 Collecting fastuuid>=0.13.0 (from litellm>=1.64.0->dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 255.5   Downloading fastuuid-0.14.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (1.1 kB)
+#13 256.5 Collecting tiktoken>=0.7.0 (from litellm>=1.64.0->dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 256.8   Downloading tiktoken-0.12.0-cp311-cp311-manylinux_2_28_x86_64.whl.metadata (6.7 kB)
+#13 264.3 Collecting tokenizers (from litellm>=1.64.0->dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 264.6   Downloading tokenizers-0.22.2-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (7.3 kB)
+#13 265.6 Collecting distro<2,>=1.7.0 (from openai>=0.28.1->dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 265.9   Downloading distro-1.9.0-py3-none-any.whl.metadata (6.8 kB)
+#13 267.0 Collecting jiter<1,>=0.10.0 (from openai>=0.28.1->dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 267.3   Downloading jiter-0.13.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (5.2 kB)
+#13 268.2 Collecting sniffio (from openai>=0.28.1->dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 268.9   Downloading sniffio-1.3.1-py3-none-any.whl.metadata (3.9 kB)
+#13 270.0 Collecting alembic>=1.5.0 (from optuna>=3.4.0->dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 270.3   Downloading alembic-1.18.4-py3-none-any.whl.metadata (7.2 kB)
+#13 271.3 Collecting colorlog (from optuna>=3.4.0->dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 271.6   Downloading colorlog-6.10.1-py3-none-any.whl.metadata (11 kB)
+#13 285.2 Collecting sqlalchemy>=1.4.2 (from optuna>=3.4.0->dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 285.5   Downloading sqlalchemy-2.0.48-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (9.5 kB)
+#13 287.0 Collecting beartype>=0.20.0 (from py-key-value-aio<0.5.0,>=0.4.4->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 287.3   Downloading beartype-0.22.9-py3-none-any.whl.metadata (37 kB)
+#13 289.6 Collecting aiofile>=3.5.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 289.9   Downloading aiofile-3.9.0-py3-none-any.whl.metadata (14 kB)
+#13 291.6 Collecting keyring>=25.6.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 291.8   Downloading keyring-25.7.0-py3-none-any.whl.metadata (21 kB)
+#13 293.5 Collecting email-validator>=2.0.0 (from pydantic[email]>=2.11.7->fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 293.8   Downloading email_validator-2.3.0-py3-none-any.whl.metadata (26 kB)
+#13 295.0 Collecting six>=1.5 (from python-dateutil<3.0.0,>=2.1->botocore>=1.38.14->awslabs-mysql-mcp-server==1.0.9->awslabs.dynamodb-mcp-server)
+#13 295.4   Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+#13 296.1 Collecting markdown-it-py>=2.2.0 (from rich>=13.9.4->fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 296.4   Downloading markdown_it_py-4.0.0-py3-none-any.whl.metadata (7.3 kB)
+#13 297.5 Collecting pygments<3.0.0,>=2.13.0 (from rich>=13.9.4->fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 297.9   Downloading pygments-2.19.2-py3-none-any.whl.metadata (2.5 kB)
+#13 299.3 Collecting pyasn1>=0.1.3 (from rsa<4.8,>=3.1.2->awscli==1.44.55->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 299.6   Downloading pyasn1-0.6.3-py3-none-any.whl.metadata (8.4 kB)
+#13 301.3 Collecting caio<0.10.0,>=0.9.0 (from aiofile>=3.5.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 301.6   Downloading caio-0.9.25-cp311-cp311-manylinux_2_34_x86_64.whl.metadata (3.3 kB)
+#13 302.7 Collecting aiohappyeyeballs>=2.5.0 (from aiohttp>=3.10->litellm>=1.64.0->dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 303.1   Downloading aiohappyeyeballs-2.6.1-py3-none-any.whl.metadata (5.9 kB)
+#13 304.3 Collecting aiosignal>=1.4.0 (from aiohttp>=3.10->litellm>=1.64.0->dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 304.7   Downloading aiosignal-1.4.0-py3-none-any.whl.metadata (3.7 kB)
+#13 308.6 Collecting frozenlist>=1.1.1 (from aiohttp>=3.10->litellm>=1.64.0->dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 308.9   Downloading frozenlist-1.8.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (20 kB)
+#13 316.9 Collecting multidict<7.0,>=4.5 (from aiohttp>=3.10->litellm>=1.64.0->dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 317.2   Downloading multidict-6.7.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (5.3 kB)
+#13 318.2 Collecting propcache>=0.2.0 (from aiohttp>=3.10->litellm>=1.64.0->dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 318.5   Downloading propcache-0.4.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (13 kB)
+#13 325.7 Collecting yarl<2.0,>=1.17.0 (from aiohttp>=3.10->litellm>=1.64.0->dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 326.0   Downloading yarl-1.23.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (79 kB)
+#13 328.3      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 79.6/79.6 kB 59.2 kB/s eta 0:00:00
+#13 328.9 Collecting Mako (from alembic>=1.5.0->optuna>=3.4.0->dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 329.2   Downloading mako-1.3.10-py3-none-any.whl.metadata (2.9 kB)
+#13 330.2 Collecting pycparser (from cffi>=2.0.0->cryptography>=3.4.0->pyjwt[crypto]>=2.10.1->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.dynamodb-mcp-server)
+#13 330.6   Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+#13 331.0 Collecting dnspython>=2.0.0 (from email-validator>=2.0.0->pydantic[email]>=2.11.7->fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 331.3   Downloading dnspython-2.8.0-py3-none-any.whl.metadata (5.7 kB)
+#13 331.9 Collecting SecretStorage>=3.2 (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 332.2   Downloading secretstorage-3.5.0-py3-none-any.whl.metadata (4.0 kB)
+#13 332.8 Collecting jeepney>=0.4.2 (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 333.1   Downloading jeepney-0.9.0-py3-none-any.whl.metadata (1.2 kB)
+#13 333.8 Collecting jaraco.classes (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 334.1   Downloading jaraco.classes-3.4.0-py3-none-any.whl.metadata (2.6 kB)
+#13 334.7 Collecting jaraco.functools (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 335.1   Downloading jaraco_functools-4.4.0-py3-none-any.whl.metadata (3.0 kB)
+#13 335.7 Collecting jaraco.context (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 336.0   Downloading jaraco_context-6.1.2-py3-none-any.whl.metadata (4.2 kB)
+#13 336.9 Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich>=13.9.4->fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 337.2   Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+#13 338.9 Collecting greenlet>=1 (from sqlalchemy>=1.4.2->optuna>=3.4.0->dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 339.4   Downloading greenlet-3.3.2-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (3.7 kB)
+#13 340.8 Collecting huggingface-hub<2.0,>=0.16.4 (from tokenizers->litellm>=1.64.0->dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 341.1   Downloading huggingface_hub-1.7.2-py3-none-any.whl.metadata (13 kB)
+#13 342.7 Collecting filelock>=3.10.0 (from huggingface-hub<2.0,>=0.16.4->tokenizers->litellm>=1.64.0->dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 343.0   Downloading filelock-3.25.2-py3-none-any.whl.metadata (2.0 kB)
+#13 344.0 Collecting fsspec>=2023.5.0 (from huggingface-hub<2.0,>=0.16.4->tokenizers->litellm>=1.64.0->dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 344.4   Downloading fsspec-2026.2.0-py3-none-any.whl.metadata (10 kB)
+#13 345.4 Collecting hf-xet<2.0.0,>=1.4.2 (from huggingface-hub<2.0,>=0.16.4->tokenizers->litellm>=1.64.0->dspy>=3.1.3->dspy-ai>=2.6.27->awslabs.dynamodb-mcp-server)
+#13 345.7   Downloading hf_xet-1.4.2-cp37-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (4.9 kB)
+#13 346.9 Collecting more-itertools (from jaraco.classes->keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 348.3   Downloading more_itertools-10.8.0-py3-none-any.whl.metadata (39 kB)
+#13 349.1 Collecting backports.tarfile (from jaraco.context->keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=3.0.1->awslabs-aws-api-mcp-server>=1.3.19->awslabs.dynamodb-mcp-server)
+#13 349.4   Downloading backports.tarfile-1.2.0-py3-none-any.whl.metadata (2.0 kB)
+#13 350.0 Downloading awslabs_dynamodb_mcp_server-2.0.21-py3-none-any.whl (309 kB)
+#13 353.6    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 309.9/309.9 kB 109.2 kB/s eta 0:00:00
+#13 354.1 Downloading awslabs_mysql_mcp_server-1.0.9-py3-none-any.whl (23 kB)
+#13 354.6 Downloading loguru-0.7.3-py3-none-any.whl (61 kB)
+#13 355.1    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 61.6/61.6 kB 221.2 kB/s eta 0:00:00
+#13 355.4 Downloading psutil-7.1.1-cp36-abi3-manylinux_2_12_x86_64.manylinux2010_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (290 kB)
+#13 356.9    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 290.1/290.1 kB 208.3 kB/s eta 0:00:00
+#13 357.2 Downloading pydantic-2.11.7-py3-none-any.whl (444 kB)
+#13 358.7    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 444.8/444.8 kB 289.8 kB/s eta 0:00:00
+#13 359.0 Downloading pydantic_core-2.33.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.0 MB)
+#13 367.9    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.0/2.0 MB 224.9 kB/s eta 0:00:00
+#13 368.2 Downloading awslabs_aws_api_mcp_server-1.3.21-py3-none-any.whl (209 kB)
+#13 369.1    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 209.3/209.3 kB 222.2 kB/s eta 0:00:00
+#13 369.4 Downloading awscli-1.44.55-py3-none-any.whl (4.6 MB)
+#13 405.9    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.6/4.6 MB 104.2 kB/s eta 0:00:00
+#13 406.2 Downloading botocore-1.42.65-py3-none-any.whl (14.6 MB)
+#13 525.8    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 14.6/14.6 MB 59.9 kB/s eta 0:00:00
+#13 526.1 Downloading boto3-1.42.65-py3-none-any.whl (140 kB)
+#13 530.7    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 140.6/140.6 kB 49.6 kB/s eta 0:00:00
+#13 531.0 Downloading dspy_ai-3.1.3-py3-none-any.whl (1.1 kB)
+#13 532.0 Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+#13 533.1    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 134.9/134.9 kB 119.1 kB/s eta 0:00:00
+#13 533.7 Downloading mcp-1.26.0-py3-none-any.whl (233 kB)
+#13 534.8    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 233.6/233.6 kB 194.4 kB/s eta 0:00:00
+#13 535.1 Downloading strands_agents-1.33.0-py3-none-any.whl (387 kB)
+#13 537.4    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 387.1/387.1 kB 171.1 kB/s eta 0:00:00
+#13 537.7 Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+#13 537.8    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 44.6/44.6 kB 293.3 kB/s eta 0:00:00
+#13 538.1 Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+#13 538.7 Downloading anyio-4.13.0-py3-none-any.whl (114 kB)
+#13 539.7    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 114.4/114.4 kB 117.2 kB/s eta 0:00:00
+#13 540.0 Downloading asyncmy-0.2.11-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (5.3 MB)
+#13 587.0    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.3/5.3 MB 117.1 kB/s eta 0:00:00
+#13 587.3 Downloading awscrt-0.31.2-cp311-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (4.2 MB)
+#13 620.4    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.2/4.2 MB 68.6 kB/s eta 0:00:00
+#13 620.7 Downloading docstring_parser-0.17.0-py3-none-any.whl (36 kB)
+#13 621.2 Downloading dspy-3.1.3-py3-none-any.whl (312 kB)
+#13 624.0    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 312.4/312.4 kB 122.4 kB/s eta 0:00:00
+#13 624.2 Downloading asyncer-0.0.8-py3-none-any.whl (9.2 kB)
+#13 625.8 Downloading gepa-0.0.26-py3-none-any.whl (139 kB)
+#13 629.7    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 139.7/139.7 kB 37.5 kB/s eta 0:00:00
+#13 630.0 Downloading fastmcp-3.1.1-py3-none-any.whl (633 kB)
+#13 642.0    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 633.8/633.8 kB 53.2 kB/s eta 0:00:00
+#13 642.3 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#13 643.6    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.5/73.5 kB 60.4 kB/s eta 0:00:00
+#13 643.9 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#13 646.4    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.8/78.8 kB 35.8 kB/s eta 0:00:00
+#13 646.7 Downloading httpx_sse-0.4.3-py3-none-any.whl (9.0 kB)
+#13 647.2 Downloading importlib_resources-6.5.2-py3-none-any.whl (37 kB)
+#13 649.1 Downloading jmespath-1.1.0-py3-none-any.whl (20 kB)
+#13 649.4 Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+#13 650.8    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 90.6/90.6 kB 97.8 kB/s eta 0:00:00
+#13 651.1 Downloading lxml-6.0.2-cp311-cp311-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl (5.2 MB)
+#13 701.6    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.2/5.2 MB 107.9 kB/s eta 0:00:00
+#13 701.9 Downloading markupsafe-3.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (22 kB)
+#13 703.1 Downloading opentelemetry_api-1.40.0-py3-none-any.whl (68 kB)
+#13 703.9    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 68.7/68.7 kB 87.0 kB/s eta 0:00:00
+#13 704.2 Downloading opentelemetry_instrumentation_threading-0.61b0-py3-none-any.whl (9.3 kB)
+#13 705.4 Downloading opentelemetry_instrumentation-0.61b0-py3-none-any.whl (33 kB)
+#13 706.6 Downloading opentelemetry_semantic_conventions-0.61b0-py3-none-any.whl (231 kB)
+#13 710.5    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 231.6/231.6 kB 61.6 kB/s eta 0:00:00
+#13 710.8 Downloading opentelemetry_sdk-1.40.0-py3-none-any.whl (141 kB)
+#13 711.1    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 142.0/142.0 kB 503.2 kB/s eta 0:00:00
+#13 711.4 Downloading pydantic_settings-2.13.1-py3-none-any.whl (58 kB)
+#13 711.7    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 58.9/58.9 kB 185.2 kB/s eta 0:00:00
+#13 711.9 Downloading pyjwt-2.12.1-py3-none-any.whl (29 kB)
+#13 712.5 Downloading python_dotenv-1.2.2-py3-none-any.whl (22 kB)
+#13 713.1 Downloading python_frontmatter-1.1.0-py3-none-any.whl (9.8 kB)
+#13 713.4 Downloading python_json_logger-4.0.0-py3-none-any.whl (15 kB)
+#13 715.5 Downloading python_multipart-0.0.22-py3-none-any.whl (24 kB)
+#13 716.4 Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (806 kB)
+#13 727.3    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 806.6/806.6 kB 74.7 kB/s eta 0:00:00
+#13 727.6 Downloading requests-2.32.5-py3-none-any.whl (64 kB)
+#13 729.2    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 64.7/64.7 kB 40.4 kB/s eta 0:00:00
+#13 729.5 Downloading s3transfer-0.16.0-py3-none-any.whl (86 kB)
+#13 735.0    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 86.8/86.8 kB 16.5 kB/s eta 0:00:00
+#13 735.3 Downloading sse_starlette-3.3.3-py3-none-any.whl (14 kB)
+#13 736.1 Downloading starlette-1.0.0-py3-none-any.whl (72 kB)
+#13 738.1    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 72.7/72.7 kB 73.9 kB/s eta 0:00:00
+#13 738.6 Downloading typer-0.24.1-py3-none-any.whl (56 kB)
+#13 740.1    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 56.1/56.1 kB 50.7 kB/s eta 0:00:00
+#13 740.6 Downloading typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+#13 741.2 Downloading uvicorn-0.42.0-py3-none-any.whl (68 kB)
+#13 742.6    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 68.8/68.8 kB 72.1 kB/s eta 0:00:00
+#13 743.1 Downloading watchdog-6.0.0-py3-none-manylinux2014_x86_64.whl (79 kB)
+#13 745.0    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 79.1/79.1 kB 51.5 kB/s eta 0:00:00
+#13 745.4 Downloading annotated_doc-0.0.4-py3-none-any.whl (5.3 kB)
+#13 745.7 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+#13 747.7    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 67.5/67.5 kB 34.1 kB/s eta 0:00:00
+#13 748.0 Downloading authlib-1.6.9-py2.py3-none-any.whl (244 kB)
+#13 755.6    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 244.2/244.2 kB 32.1 kB/s eta 0:00:00
+#13 756.0 Downloading cachetools-7.0.5-py3-none-any.whl (13 kB)
+#13 756.6 Downloading certifi-2026.2.25-py3-none-any.whl (153 kB)
+#13 762.0    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 153.7/153.7 kB 29.9 kB/s eta 0:00:00
+#13 762.3 Downloading charset_normalizer-3.4.6-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (204 kB)
+#13 767.8    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 204.7/204.7 kB 42.6 kB/s eta 0:00:00
+#13 768.1 Downloading click-8.3.1-py3-none-any.whl (108 kB)
+#13 770.9    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 108.3/108.3 kB 40.9 kB/s eta 0:00:00
+#13 771.2 Downloading cloudpickle-3.1.2-py3-none-any.whl (22 kB)
+#13 772.1 Downloading colorama-0.4.6-py2.py3-none-any.whl (25 kB)
+#13 772.9 Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_x86_64.whl (4.5 MB)
+#13 809.4    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.5/4.5 MB 121.8 kB/s eta 0:00:00
+#13 809.7 Downloading cyclopts-4.10.1-py3-none-any.whl (204 kB)
+#13 810.2    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 204.3/204.3 kB 394.6 kB/s eta 0:00:00
+#13 810.5 Downloading diskcache-5.6.3-py3-none-any.whl (45 kB)
+#13 810.8    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 45.5/45.5 kB 134.9 kB/s eta 0:00:00
+#13 811.1 Downloading docutils-0.19-py3-none-any.whl (570 kB)
+#13 812.4    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 570.5/570.5 kB 438.0 kB/s eta 0:00:00
+#13 812.7 Downloading exceptiongroup-1.3.1-py3-none-any.whl (16 kB)
+#13 813.2 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#13 813.7 Downloading idna-3.11-py3-none-any.whl (71 kB)
+#13 814.0    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 71.0/71.0 kB 190.7 kB/s eta 0:00:00
+#13 814.3 Downloading importlib_metadata-8.7.1-py3-none-any.whl (27 kB)
+#13 814.9 Downloading json_repair-0.58.6-py3-none-any.whl (43 kB)
+#13 815.2    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 43.5/43.5 kB 122.9 kB/s eta 0:00:00
+#13 815.5 Downloading jsonref-1.1.0-py3-none-any.whl (9.4 kB)
+#13 815.9 Downloading jsonschema_path-0.4.5-py3-none-any.whl (19 kB)
+#13 816.5 Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+#13 817.0 Downloading litellm-1.82.6-py3-none-any.whl (15.6 MB)
+#13 843.0    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 15.6/15.6 MB 1.4 MB/s eta 0:00:00
+#13 843.3 Downloading numpy-2.4.3-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.9 MB)
+#13 879.6    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.9/16.9 MB 1.5 MB/s eta 0:00:00
+#13 879.9 Downloading openai-2.29.0-py3-none-any.whl (1.1 MB)
+#13 881.7    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.1/1.1 MB 621.4 kB/s eta 0:00:00
+#13 882.0 Downloading openapi_pydantic-0.5.1-py3-none-any.whl (96 kB)
+#13 882.3    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 96.4/96.4 kB 302.3 kB/s eta 0:00:00
+#13 882.7 Downloading optuna-4.8.0-py3-none-any.whl (419 kB)
+#13 883.4    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 419.5/419.5 kB 644.1 kB/s eta 0:00:00
+#13 883.6 Downloading orjson-3.11.7-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (133 kB)
+#13 883.9    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 133.4/133.4 kB 441.9 kB/s eta 0:00:00
+#13 884.2 Downloading packaging-26.0-py3-none-any.whl (74 kB)
+#13 884.5    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 74.4/74.4 kB 259.8 kB/s eta 0:00:00
+#13 884.8 Downloading platformdirs-4.9.4-py3-none-any.whl (21 kB)
+#13 885.4 Downloading py_key_value_aio-0.4.4-py3-none-any.whl (152 kB)
+#13 886.6    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 152.3/152.3 kB 119.4 kB/s eta 0:00:00
+#13 886.9 Downloading pyperclip-1.11.0-py3-none-any.whl (11 kB)
+#13 887.5 Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+#13 887.9    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 229.9/229.9 kB 515.6 kB/s eta 0:00:00
+#13 888.2 Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+#13 888.8 Downloading regex-2026.2.28-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (800 kB)
+#13 894.5    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 800.2/800.2 kB 149.6 kB/s eta 0:00:00
+#13 894.8 Downloading rich-14.3.3-py3-none-any.whl (310 kB)
+#13 900.3    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 310.5/310.5 kB 55.1 kB/s eta 0:00:00
+#13 900.8 Downloading rpds_py-0.30.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (390 kB)
+#13 909.1    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 390.8/390.8 kB 49.5 kB/s eta 0:00:00
+#13 909.4 Downloading rsa-4.7.2-py3-none-any.whl (34 kB)
+#13 910.1 Downloading shellingham-1.5.4-py2.py3-none-any.whl (9.8 kB)
+#13 910.4 Downloading tenacity-9.1.4-py3-none-any.whl (28 kB)
+#13 910.9 Downloading tqdm-4.67.3-py3-none-any.whl (78 kB)
+#13 911.7    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.4/78.4 kB 214.3 kB/s eta 0:00:00
+#13 912.0 Downloading uncalled_for-0.2.0-py3-none-any.whl (11 kB)
+#13 913.6 Downloading urllib3-2.6.3-py3-none-any.whl (131 kB)
+#13 917.3    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 131.6/131.6 kB 39.9 kB/s eta 0:00:00
+#13 917.6 Downloading watchfiles-1.1.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (456 kB)
+#13 923.5    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 456.1/456.1 kB 79.1 kB/s eta 0:00:00
+#13 923.8 Downloading websockets-16.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (184 kB)
+#13 924.7    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 184.6/184.6 kB 258.9 kB/s eta 0:00:00
+#13 925.0 Downloading wrapt-1.17.3-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (82 kB)
+#13 925.6    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 82.4/82.4 kB 379.6 kB/s eta 0:00:00
+#13 926.2 Downloading xxhash-3.6.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (193 kB)
+#13 927.4    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 193.9/193.9 kB 146.8 kB/s eta 0:00:00
+#13 927.7 Downloading aiofile-3.9.0-py3-none-any.whl (19 kB)
+#13 928.3 Downloading aiohttp-3.13.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (1.7 MB)
+#13 961.8    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.7/1.7 MB 57.4 kB/s eta 0:00:00
+#13 962.1 Downloading alembic-1.18.4-py3-none-any.whl (263 kB)
+#13 968.7    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 263.9/263.9 kB 38.6 kB/s eta 0:00:00
+#13 969.0 Downloading beartype-0.22.9-py3-none-any.whl (1.3 MB)
+#13 981.9    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 119.4 kB/s eta 0:00:00
+#13 982.2 Downloading cffi-2.0.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (215 kB)
+#13 983.4    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 215.6/215.6 kB 170.0 kB/s eta 0:00:00
+#13 983.7 Downloading distro-1.9.0-py3-none-any.whl (20 kB)
+#13 986.8 Downloading email_validator-2.3.0-py3-none-any.whl (35 kB)
+#13 988.0 Downloading fastuuid-0.14.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (279 kB)
+#13 993.5    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 279.7/279.7 kB 55.5 kB/s eta 0:00:00
+#13 993.8 Downloading jiter-0.13.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (362 kB)
+#13 995.4    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 362.7/362.7 kB 225.9 kB/s eta 0:00:00
+#13 995.7 Downloading keyring-25.7.0-py3-none-any.whl (39 kB)
+#13 996.5 Downloading markdown_it_py-4.0.0-py3-none-any.whl (87 kB)
+#13 996.8    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 87.3/87.3 kB 300.6 kB/s eta 0:00:00
+#13 997.1 Downloading pathable-0.5.0-py3-none-any.whl (16 kB)
+#13 997.7 Downloading pyasn1-0.6.3-py3-none-any.whl (83 kB)
+#13 998.9    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 84.0/84.0 kB 104.2 kB/s eta 0:00:00
+#13 999.2 Downloading pygments-2.19.2-py3-none-any.whl (1.2 MB)
+#13 1010.7    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 109.7 kB/s eta 0:00:00
+#13 1010.9 Downloading rich_rst-1.3.2-py3-none-any.whl (12 kB)
+#13 1011.5 Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+#13 1012.1 Downloading sqlalchemy-2.0.48-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (3.3 MB)
+#13 1034.8    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.3/3.3 MB 148.2 kB/s eta 0:00:00
+#13 1035.1 Downloading tiktoken-0.12.0-cp311-cp311-manylinux_2_28_x86_64.whl (1.2 MB)
+#13 1040.9    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 196.8 kB/s eta 0:00:00
+#13 1041.2 Downloading zipp-3.23.0-py3-none-any.whl (10 kB)
+#13 1041.8 Downloading colorlog-6.10.1-py3-none-any.whl (11 kB)
+#13 1042.4 Downloading sniffio-1.3.1-py3-none-any.whl (10 kB)
+#13 1043.0 Downloading tokenizers-0.22.2-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (3.3 MB)
+#13 1086.3    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.3/3.3 MB 91.3 kB/s eta 0:00:00
+#13 1087.3 Downloading aiohappyeyeballs-2.6.1-py3-none-any.whl (15 kB)
+#13 1088.5 Downloading aiosignal-1.4.0-py3-none-any.whl (7.5 kB)
+#13 1089.0 Downloading caio-0.9.25-cp311-cp311-manylinux_2_34_x86_64.whl (78 kB)
+#13 1092.2    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.3/78.3 kB 27.3 kB/s eta 0:00:00
+#13 1092.5 Downloading dnspython-2.8.0-py3-none-any.whl (331 kB)
+#13 1094.8    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 331.1/331.1 kB 140.1 kB/s eta 0:00:00
+#13 1095.1 Downloading frozenlist-1.8.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (231 kB)
+#13 1099.1    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 231.1/231.1 kB 63.4 kB/s eta 0:00:00
+#13 1099.4 Downloading greenlet-3.3.2-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (594 kB)
+#13 1103.2    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 594.2/594.2 kB 151.5 kB/s eta 0:00:00
+#13 1103.5 Downloading huggingface_hub-1.7.2-py3-none-any.whl (618 kB)
+#13 1115.2    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 618.0/618.0 kB 53.1 kB/s eta 0:00:00
+#13 1115.5 Downloading jeepney-0.9.0-py3-none-any.whl (49 kB)
+#13 1116.1    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 49.0/49.0 kB 66.0 kB/s eta 0:00:00
+#13 1116.4 Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+#13 1117.0 Downloading multidict-6.7.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (246 kB)
+#13 1119.5    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 246.3/246.3 kB 92.8 kB/s eta 0:00:00
+#13 1119.8 Downloading propcache-0.4.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (210 kB)
+#13 1120.3    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 210.0/210.0 kB 815.0 kB/s eta 0:00:00
+#13 1120.6 Downloading secretstorage-3.5.0-py3-none-any.whl (15 kB)
+#13 1121.2 Downloading yarl-1.23.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (102 kB)
+#13 1122.8    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 102.7/102.7 kB 98.2 kB/s eta 0:00:00
+#13 1123.0 Downloading jaraco.classes-3.4.0-py3-none-any.whl (6.8 kB)
+#13 1123.7 Downloading jaraco_context-6.1.2-py3-none-any.whl (7.9 kB)
+#13 1124.1 Downloading jaraco_functools-4.4.0-py3-none-any.whl (10 kB)
+#13 1124.8 Downloading mako-1.3.10-py3-none-any.whl (78 kB)
+#13 1125.2    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.5/78.5 kB 160.2 kB/s eta 0:00:00
+#13 1125.6 Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+#13 1126.2    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 48.2/48.2 kB 131.7 kB/s eta 0:00:00
+#13 1126.5 Downloading filelock-3.25.2-py3-none-any.whl (26 kB)
+#13 1127.4 Downloading fsspec-2026.2.0-py3-none-any.whl (202 kB)
+#13 1129.5    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 202.5/202.5 kB 88.6 kB/s eta 0:00:00
+#13 1129.8 Downloading hf_xet-1.4.2-cp37-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (4.2 MB)
+#13 1151.4    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.2/4.2 MB 196.1 kB/s eta 0:00:00
+#13 1151.7 Downloading backports.tarfile-1.2.0-py3-none-any.whl (30 kB)
+#13 1155.3 Downloading more_itertools-10.8.0-py3-none-any.whl (69 kB)
+#13 1159.3    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 69.7/69.7 kB 35.4 kB/s eta 0:00:00
+#13 1160.6 Installing collected packages: pyperclip, zipp, xxhash, wrapt, websockets, watchdog, urllib3, uncalled-for, typing-extensions, tqdm, tenacity, sniffio, six, shellingham, rpds-py, regex, PyYAML, python-multipart, python-json-logger, python-dotenv, pyjwt, pygments, pycparser, pyasn1, psutil, propcache, platformdirs, pathable, packaging, orjson, numpy, multidict, more-itertools, mdurl, MarkupSafe, lxml, loguru, jsonref, json-repair, jmespath, jiter, jeepney, importlib-resources, idna, httpx-sse, hf-xet, h11, greenlet, gepa, fsspec, frozenlist, filelock, fastuuid, docutils, docstring-parser, dnspython, distro, diskcache, colorlog, colorama, cloudpickle, click, charset_normalizer, certifi, caio, cachetools, beartype, backports.tarfile, awscrt, attrs, asyncmy, annotated-types, annotated-doc, aiohappyeyeballs, yarl, uvicorn, typing-inspection, sqlalchemy, rsa, requests, referencing, python-frontmatter, python-dateutil, pydantic-core, py-key-value-aio, markdown-it-py, Mako, jinja2, jaraco.functools, jaraco.context, jaraco.classes, importlib-metadata, httpcore, exceptiongroup, email-validator, cffi, anyio, aiosignal, aiofile, watchfiles, tiktoken, starlette, rich, pydantic, opentelemetry-api, jsonschema-specifications, jsonschema-path, httpx, cryptography, botocore, asyncer, alembic, aiohttp, typer, sse-starlette, SecretStorage, s3transfer, rich-rst, pydantic-settings, optuna, opentelemetry-semantic-conventions, openapi-pydantic, openai, jsonschema, authlib, opentelemetry-sdk, opentelemetry-instrumentation, mcp, keyring, huggingface-hub, cyclopts, boto3, awscli, tokenizers, opentelemetry-instrumentation-threading, strands-agents, litellm, fastmcp, awslabs-mysql-mcp-server, dspy, awslabs-aws-api-mcp-server, dspy-ai, awslabs.dynamodb-mcp-server
+#13 1197.4 Successfully installed Mako-1.3.10 MarkupSafe-3.0.3 PyYAML-6.0.3 SecretStorage-3.5.0 aiofile-3.9.0 aiohappyeyeballs-2.6.1 aiohttp-3.13.3 aiosignal-1.4.0 alembic-1.18.4 annotated-doc-0.0.4 annotated-types-0.7.0 anyio-4.13.0 asyncer-0.0.8 asyncmy-0.2.11 attrs-26.1.0 authlib-1.6.9 awscli-1.44.55 awscrt-0.31.2 awslabs-aws-api-mcp-server-1.3.21 awslabs-mysql-mcp-server-1.0.9 awslabs.dynamodb-mcp-server-2.0.21 backports.tarfile-1.2.0 beartype-0.22.9 boto3-1.42.65 botocore-1.42.65 cachetools-7.0.5 caio-0.9.25 certifi-2026.2.25 cffi-2.0.0 charset_normalizer-3.4.6 click-8.3.1 cloudpickle-3.1.2 colorama-0.4.6 colorlog-6.10.1 cryptography-46.0.5 cyclopts-4.10.1 diskcache-5.6.3 distro-1.9.0 dnspython-2.8.0 docstring-parser-0.17.0 docutils-0.19 dspy-3.1.3 dspy-ai-3.1.3 email-validator-2.3.0 exceptiongroup-1.3.1 fastmcp-3.1.1 fastuuid-0.14.0 filelock-3.25.2 frozenlist-1.8.0 fsspec-2026.2.0 gepa-0.0.26 greenlet-3.3.2 h11-0.16.0 hf-xet-1.4.2 httpcore-1.0.9 httpx-0.28.1 httpx-sse-0.4.3 huggingface-hub-1.7.2 idna-3.11 importlib-metadata-8.7.1 importlib-resources-6.5.2 jaraco.classes-3.4.0 jaraco.context-6.1.2 jaraco.functools-4.4.0 jeepney-0.9.0 jinja2-3.1.6 jiter-0.13.0 jmespath-1.1.0 json-repair-0.58.6 jsonref-1.1.0 jsonschema-4.26.0 jsonschema-path-0.4.5 jsonschema-specifications-2025.9.1 keyring-25.7.0 litellm-1.82.6 loguru-0.7.3 lxml-6.0.2 markdown-it-py-4.0.0 mcp-1.26.0 mdurl-0.1.2 more-itertools-10.8.0 multidict-6.7.1 numpy-2.4.3 openai-2.29.0 openapi-pydantic-0.5.1 opentelemetry-api-1.40.0 opentelemetry-instrumentation-0.61b0 opentelemetry-instrumentation-threading-0.61b0 opentelemetry-sdk-1.40.0 opentelemetry-semantic-conventions-0.61b0 optuna-4.8.0 orjson-3.11.7 packaging-26.0 pathable-0.5.0 platformdirs-4.9.4 propcache-0.4.1 psutil-7.1.1 py-key-value-aio-0.4.4 pyasn1-0.6.3 pycparser-3.0 pydantic-2.11.7 pydantic-core-2.33.2 pydantic-settings-2.13.1 pygments-2.19.2 pyjwt-2.12.1 pyperclip-1.11.0 python-dateutil-2.9.0.post0 python-dotenv-1.2.2 python-frontmatter-1.1.0 python-json-logger-4.0.0 python-multipart-0.0.22 referencing-0.37.0 regex-2026.2.28 requests-2.32.5 rich-14.3.3 rich-rst-1.3.2 rpds-py-0.30.0 rsa-4.7.2 s3transfer-0.16.0 shellingham-1.5.4 six-1.17.0 sniffio-1.3.1 sqlalchemy-2.0.48 sse-starlette-3.3.3 starlette-1.0.0 strands-agents-1.33.0 tenacity-9.1.4 tiktoken-0.12.0 tokenizers-0.22.2 tqdm-4.67.3 typer-0.24.1 typing-extensions-4.15.0 typing-inspection-0.4.2 uncalled-for-0.2.0 urllib3-2.6.3 uvicorn-0.42.0 watchdog-6.0.0 watchfiles-1.1.1 websockets-16.0 wrapt-1.17.3 xxhash-3.6.0 yarl-1.23.0 zipp-3.23.0
+#13 1197.4 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+#13 1199.1 
+#13 1199.1 [notice] A new release of pip is available: 24.0 -> 26.0.1
+#13 1199.1 [notice] To update, run: pip install --upgrade pip
+#13 DONE 1202.1s
+
+#14 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#14 DONE 5.0s
+
+#15 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#15 DONE 0.7s
+
+#16 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#16 DONE 0.1s
+
+#17 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#17 DONE 0.1s
+
+#18 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#18 DONE 0.4s
+
+#19 exporting to image
+#19 exporting layers
+#19 exporting layers 17.1s done
+#19 exporting manifest sha256:20280ba3eb09a2cd5594faa6e628c430d6c747a8877a94348c607d84b71fd35e 0.0s done
+#19 exporting config sha256:141d0189bb6463b3a5e24cd2fd51d46510e93669236e1cb69ee8aa66b7fb823e 0.0s done
+#19 exporting attestation manifest sha256:1f508b8cd58d2e927bb5a8a3d3f080af901cf768a48c0e5f66495a0cd75e58de 0.0s done
+#19 exporting manifest list sha256:a6449bf02022091cdc2607ead181d203c6fc66e68ff038f0fe8c3865f048e42f 0.0s done
+#19 naming to docker.io/library/aws-dynamodb-mcp:latest done
+#19 unpacking to docker.io/library/aws-dynamodb-mcp:latest
+#19 unpacking to docker.io/library/aws-dynamodb-mcp:latest 18.4s done
+#19 naming to docker.io/hackerdogs/aws-dynamodb-mcp:latest done
+#19 unpacking to docker.io/hackerdogs/aws-dynamodb-mcp:latest 0.0s done
+#19 DONE 35.8s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/inyks5jot0ceibi37jenf3kz7
 ========== aws-dynamodb-mcp test (compliance) ==========
 [0;34m[1] Install[0m
   [0;32mPASS: image exists[0m
 [0;34m[2] Stdio tools/list[0m
-  [0;32mPASS: stdio tools/list[0m
+  [0;31mFAIL: stdio tools/list[0m
 [0;34m[3] Stdio tools/call (skipped — upstream package)[0m
   [0;32mPASS: stdio tools/call (upstream)[0m
 [0;34m[4] HTTP streamable tools/list[0m
-  [0;32mPASS: HTTP tools/list[0m
+  [0;31mFAIL: HTTP tools/list[0m
 [0;34m[5] HTTP streamable tools/call (skipped — upstream package)[0m
   [0;32mPASS: HTTP tools/call (upstream)[0m
 
-Total: 5 passed, 0 failed
+Total: 3 passed, 2 failed
 aws-dynamodb-mcp-test
 aws-dynamodb-mcp-test
+
+❌ FAIL (Test): aws-dynamodb-mcp

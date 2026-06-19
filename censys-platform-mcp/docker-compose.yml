@@ -1,0 +1,13 @@
+services:
+  censys-platform-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hackerdogs/censys-platform-mcp:latest
+    container_name: censys-platform-mcp
+    ports:
+      - "8520:8520"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8520
+    restart: unless-stopped

@@ -12,7 +12,7 @@ COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/l
 
 COPY mcp_http_proxy.py /mcp_http_proxy.py
 COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
 ENV MCP_TRANSPORT=stdio
 ENV MCP_PORT=8649
 EXPOSE 8649

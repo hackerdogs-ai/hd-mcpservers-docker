@@ -1,0 +1,58 @@
+# Gitleaks configuration for hd-mcpservers-docker
+# Repo contains 100+ security tool MCP servers. Many mcpServer.json
+# files intentionally contain placeholder keys like <your-api-key>
+# for documentation. This config suppresses those false positives.
+
+title = "hackerdogs-mcp-gitleaks"
+
+# ─── Global allowlist ────────────────────────────────────────────────────────
+[allowlist]
+  description = "Global allowlist for MCP server documentation and config placeholders"
+
+  # Placeholder values used in all mcpServer.json files, READMEs, and docs.
+  # These have the literal text <your-...> which is clearly not a real secret.
+  regexes = [
+    # Documentation placeholders: <your-openai-api-key>, <your-shodan-key>, etc.
+    '''<your-[a-z0-9\-]+-(?:api-key|key|token|secret|password)>''',
+    # Docker compose empty-default env refs: ${OPENAI_API_KEY:-}
+    '''\$\{[A-Z_0-9]+:-\}''',
+    # Bare env var name references (JSON arrays listing var names): "OPENAI_API_KEY"
+    '''^[[:space:]]*"[A-Z][A-Z0-9_]+"[[:space:]]*,?$''',
+    # Dummy/example credentials in test or sample files
+    '''(?i)(example|sample|dummy|placeholder|replace.?me|changeme|todo)''',
+  ]
+
+  # File paths to skip entirely
+  paths = [
+    # All mcpServer.json files — config templates with placeholders
+    '''(?i)mcpServer\.json$''',
+    # Markdown documentation
+    '''(?i)\.md$''',
+    # Plain-text notes / phase lists
+    '''(?i)\.(txt|notes)$''',
+    # Sample / example config files
+    '''(?i)(sample|example|template)''',
+    # Claude desktop config examples
+    '''claude_desktop_config.*\.json$''',
+    # Scan report output files (generated, not source)
+    '''security-scan-report\.json$''',
+    '''aggregated-security-report\.json$''',
+  ]
+
+# ─── Extended rules ───────────────────────────────────────────────────────────
+# Override built-in rules where this repo generates structured false positives.
+
+[[rules]]
+  id          = "mcp-docker-env-placeholder"
+  description = "Skip placeholder API key values in docker-compose environment blocks"
+  regex       = '''(?i)(api.?key|api.?token|secret|password)\s*=\s*\$\{[A-Z_]+:-\}'''
+  allowlist.regexes = ['''\$\{[A-Z_]+:-\}''']
+
+[[rules]]
+  id          = "mcp-json-key-list-entry"
+  description = "Skip JSON arrays that list env var names (not values)"
+  regex       = '''"[A-Z][A-Z0-9_]+"'''
+  allowlist.regexes = [
+    # Lines that are only a JSON string with no colon (array entries, not key-value)
+    '''^[[:space:]]*"[A-Z][A-Z0-9_]+"[[:space:]]*,?\s*$''',
+  ]

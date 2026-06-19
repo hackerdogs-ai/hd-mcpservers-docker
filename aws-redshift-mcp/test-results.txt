@@ -1,20 +1,88 @@
-MCP test run - aws-redshift-mcp
-Generated (UTC): 2026-03-20T17:58:30Z
-Exit code: 0
-Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
----------------------------------------------------------------------------------
+========== Retesting aws-redshift-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 787B 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 1.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 1.1s
+
+#4 [internal] load .dockerignore
+#4 transferring context:
+#4 transferring context: 2B done
+#4 DONE 0.4s
+
+#5 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#5 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.1s done
+#5 DONE 0.1s
+
+#6 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+#6 resolve docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634 0.0s done
+#6 DONE 0.1s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#8 CACHED
+
+#9 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.redshift-mcp-server
+#9 CACHED
+
+#10 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#10 CACHED
+
+#11 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#11 CACHED
+
+#12 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#12 CACHED
+
+#13 [stage-1 3/9] WORKDIR /app
+#13 CACHED
+
+#14 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#14 CACHED
+
+#15 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:c12bfb93580b15bdc01da5312f0967d61eebe0774af0158c1a92bc74d52a3e27 done
+#17 exporting config sha256:8d1b6f67f984b4d51c961eb332372447504a1c58bb64c8a0bd2d3c8ce52a6e20 done
+#17 exporting attestation manifest sha256:c74172b0d6966065f513fe2fb1746e53d3c16612d559323145296cb11e74db2c 0.0s done
+#17 exporting manifest list sha256:1a9e91f89c7fb7dec55775685aeab67ad6e87496389fcf7ae27af2515f1113e3 0.0s done
+#17 naming to docker.io/library/aws-redshift-mcp:latest
+#17 naming to docker.io/library/aws-redshift-mcp:latest done
+#17 unpacking to docker.io/library/aws-redshift-mcp:latest 0.0s done
+#17 naming to docker.io/hackerdogs/aws-redshift-mcp:latest done
+#17 unpacking to docker.io/hackerdogs/aws-redshift-mcp:latest 0.0s done
+#17 DONE 0.3s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/08q18vm3iutyw7rnxf1vla6mb
 ========== aws-redshift-mcp test (compliance) ==========
 [0;34m[1] Install[0m
   [0;32mPASS: image exists[0m
 [0;34m[2] Stdio tools/list[0m
-  [0;32mPASS: stdio tools/list[0m
+  [0;31mFAIL: stdio tools/list[0m
 [0;34m[3] Stdio tools/call (skipped — upstream package)[0m
   [0;32mPASS: stdio tools/call (upstream)[0m
 [0;34m[4] HTTP streamable tools/list[0m
-  [0;32mPASS: HTTP tools/list[0m
+  [0;31mFAIL: HTTP tools/list[0m
 [0;34m[5] HTTP streamable tools/call (skipped — upstream package)[0m
   [0;32mPASS: HTTP tools/call (upstream)[0m
 
-Total: 5 passed, 0 failed
+Total: 3 passed, 2 failed
 aws-redshift-mcp-test
 aws-redshift-mcp-test
+
+❌ FAIL (Test): aws-redshift-mcp

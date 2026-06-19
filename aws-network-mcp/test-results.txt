@@ -1,13 +1,382 @@
-MCP test run - aws-network-mcp
-Generated (UTC): 2026-03-20T17:57:56Z
-Exit code: 1
-Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
----------------------------------------------------------------------------------
+========== Retesting aws-network-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 790B 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 2.2s
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 2.2s
+
+#4 [internal] load .dockerignore
+#4 transferring context:
+#4 transferring context: 2B 0.0s done
+#4 DONE 0.7s
+
+#5 [internal] load build context
+#5 DONE 0.0s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.1s done
+#6 DONE 0.1s
+
+#7 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+#7 resolve docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634 0.1s done
+#7 DONE 0.1s
+
+#8 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [stage-1 3/9] WORKDIR /app
+#9 CACHED
+
+#10 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#10 CACHED
+
+#5 [internal] load build context
+#5 transferring context: 10.97kB 0.1s done
+#5 DONE 0.1s
+
+#11 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.aws-network-mcp-server
+#11 3.269 Collecting awslabs.aws-network-mcp-server
+#11 5.073   Downloading awslabs_aws_network_mcp_server-0.0.8-py3-none-any.whl.metadata (10 kB)
+#11 7.670 Collecting boto3>=1.40.74 (from awslabs.aws-network-mcp-server)
+#11 8.011   Downloading boto3-1.42.74-py3-none-any.whl.metadata (6.7 kB)
+#11 8.618 Collecting fastmcp>=2.14.0 (from awslabs.aws-network-mcp-server)
+#11 8.909   Downloading fastmcp-3.1.1-py3-none-any.whl.metadata (8.1 kB)
+#11 9.498 Collecting loguru>=0.7.0 (from awslabs.aws-network-mcp-server)
+#11 9.787   Downloading loguru-0.7.3-py3-none-any.whl.metadata (22 kB)
+#11 10.39 Collecting mcp>=1.23.0 (from mcp[cli]>=1.23.0->awslabs.aws-network-mcp-server)
+#11 10.69   Downloading mcp-1.26.0-py3-none-any.whl.metadata (89 kB)
+#11 11.17      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 89.5/89.5 kB 189.3 kB/s eta 0:00:00
+#11 11.91 Collecting pydantic>=2.10.6 (from awslabs.aws-network-mcp-server)
+#11 12.20   Downloading pydantic-2.12.5-py3-none-any.whl.metadata (90 kB)
+#11 12.48      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 90.6/90.6 kB 317.0 kB/s eta 0:00:00
+#11 13.62 Collecting botocore<1.43.0,>=1.42.74 (from boto3>=1.40.74->awslabs.aws-network-mcp-server)
+#11 13.91   Downloading botocore-1.42.74-py3-none-any.whl.metadata (5.9 kB)
+#11 14.77 Collecting jmespath<2.0.0,>=0.7.1 (from boto3>=1.40.74->awslabs.aws-network-mcp-server)
+#11 15.06   Downloading jmespath-1.1.0-py3-none-any.whl.metadata (7.6 kB)
+#11 15.94 Collecting s3transfer<0.17.0,>=0.16.0 (from boto3>=1.40.74->awslabs.aws-network-mcp-server)
+#11 16.23   Downloading s3transfer-0.16.0-py3-none-any.whl.metadata (1.7 kB)
+#11 16.92 Collecting authlib>=1.6.5 (from fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 17.21   Downloading authlib-1.6.9-py2.py3-none-any.whl.metadata (9.8 kB)
+#11 18.16 Collecting cyclopts>=4.0.0 (from fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 18.45   Downloading cyclopts-4.10.1-py3-none-any.whl.metadata (12 kB)
+#11 19.10 Collecting exceptiongroup>=1.2.2 (from fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 19.39   Downloading exceptiongroup-1.3.1-py3-none-any.whl.metadata (6.7 kB)
+#11 20.27 Collecting httpx<1.0,>=0.28.1 (from fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 20.88   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#11 21.18 Collecting jsonref>=1.1.0 (from fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 21.56   Downloading jsonref-1.1.0-py3-none-any.whl.metadata (2.7 kB)
+#11 21.86 Collecting jsonschema-path>=0.3.4 (from fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 22.15   Downloading jsonschema_path-0.4.5-py3-none-any.whl.metadata (5.9 kB)
+#11 23.06 Collecting openapi-pydantic>=0.5.1 (from fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 23.81   Downloading openapi_pydantic-0.5.1-py3-none-any.whl.metadata (10 kB)
+#11 24.33 Collecting opentelemetry-api>=1.20.0 (from fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 24.70   Downloading opentelemetry_api-1.40.0-py3-none-any.whl.metadata (1.5 kB)
+#11 25.15 Collecting packaging>=24.0 (from fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 25.44   Downloading packaging-26.0-py3-none-any.whl.metadata (3.3 kB)
+#11 26.23 Collecting platformdirs>=4.0.0 (from fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 26.74   Downloading platformdirs-4.9.4-py3-none-any.whl.metadata (4.7 kB)
+#11 27.09 Collecting py-key-value-aio<0.5.0,>=0.4.4 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 28.05   Downloading py_key_value_aio-0.4.4-py3-none-any.whl.metadata (15 kB)
+#11 28.42 Collecting pyperclip>=1.9.0 (from fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 28.72   Downloading pyperclip-1.11.0-py3-none-any.whl.metadata (2.4 kB)
+#11 29.46 Collecting python-dotenv>=1.1.0 (from fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 30.68   Downloading python_dotenv-1.2.2-py3-none-any.whl.metadata (27 kB)
+#11 31.77 Collecting pyyaml<7.0,>=6.0 (from fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 32.13   Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+#11 32.92 Collecting rich>=13.9.4 (from fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 33.21   Downloading rich-14.3.3-py3-none-any.whl.metadata (18 kB)
+#11 34.05 Collecting uncalled-for>=0.2.0 (from fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 34.43   Downloading uncalled_for-0.2.0-py3-none-any.whl.metadata (2.9 kB)
+#11 35.02 Collecting uvicorn>=0.35 (from fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 35.31   Downloading uvicorn-0.42.0-py3-none-any.whl.metadata (6.7 kB)
+#11 37.01 Collecting watchfiles>=1.0.0 (from fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 37.35   Downloading watchfiles-1.1.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.9 kB)
+#11 38.91 Collecting websockets>=15.0.1 (from fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 39.37   Downloading websockets-16.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (6.8 kB)
+#11 40.01 Collecting anyio>=4.5 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.aws-network-mcp-server)
+#11 40.43   Downloading anyio-4.13.0-py3-none-any.whl.metadata (4.5 kB)
+#11 40.77 Collecting httpx-sse>=0.4 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.aws-network-mcp-server)
+#11 41.34   Downloading httpx_sse-0.4.3-py3-none-any.whl.metadata (9.7 kB)
+#11 41.98 Collecting jsonschema>=4.20.0 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.aws-network-mcp-server)
+#11 42.47   Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+#11 43.06 Collecting pydantic-settings>=2.5.2 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.aws-network-mcp-server)
+#11 43.44   Downloading pydantic_settings-2.13.1-py3-none-any.whl.metadata (3.4 kB)
+#11 44.15 Collecting pyjwt>=2.10.1 (from pyjwt[crypto]>=2.10.1->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.aws-network-mcp-server)
+#11 44.44   Downloading pyjwt-2.12.1-py3-none-any.whl.metadata (4.1 kB)
+#11 45.33 Collecting python-multipart>=0.0.9 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.aws-network-mcp-server)
+#11 45.63   Downloading python_multipart-0.0.22-py3-none-any.whl.metadata (1.8 kB)
+#11 46.54 Collecting sse-starlette>=1.6.1 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.aws-network-mcp-server)
+#11 47.85   Downloading sse_starlette-3.3.3-py3-none-any.whl.metadata (14 kB)
+#11 48.55 Collecting starlette>=0.27 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.aws-network-mcp-server)
+#11 49.23   Downloading starlette-1.0.0-py3-none-any.whl.metadata (6.3 kB)
+#11 49.70 Collecting typing-extensions>=4.9.0 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.aws-network-mcp-server)
+#11 49.98   Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+#11 50.64 Collecting typing-inspection>=0.4.1 (from mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.aws-network-mcp-server)
+#11 50.93   Downloading typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+#11 51.81 Collecting typer>=0.16.0 (from mcp[cli]>=1.23.0->awslabs.aws-network-mcp-server)
+#11 52.10   Downloading typer-0.24.1-py3-none-any.whl.metadata (16 kB)
+#11 53.30 Collecting annotated-types>=0.6.0 (from pydantic>=2.10.6->awslabs.aws-network-mcp-server)
+#11 54.30   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+#11 61.88 Collecting pydantic-core==2.41.5 (from pydantic>=2.10.6->awslabs.aws-network-mcp-server)
+#11 62.17   Downloading pydantic_core-2.41.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (7.3 kB)
+#11 62.79 Collecting idna>=2.8 (from anyio>=4.5->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.aws-network-mcp-server)
+#11 63.51   Downloading idna-3.11-py3-none-any.whl.metadata (8.4 kB)
+#11 64.73 Collecting cryptography (from authlib>=1.6.5->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 65.27   Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (5.7 kB)
+#11 65.87 Collecting python-dateutil<3.0.0,>=2.1 (from botocore<1.43.0,>=1.42.74->boto3>=1.40.74->awslabs.aws-network-mcp-server)
+#11 66.17   Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+#11 66.90 Collecting urllib3!=2.2.0,<3,>=1.25.4 (from botocore<1.43.0,>=1.42.74->boto3>=1.40.74->awslabs.aws-network-mcp-server)
+#11 67.49   Downloading urllib3-2.6.3-py3-none-any.whl.metadata (6.9 kB)
+#11 68.10 Collecting attrs>=23.1.0 (from cyclopts>=4.0.0->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 68.75   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+#11 69.34 Collecting docstring-parser<4.0,>=0.15 (from cyclopts>=4.0.0->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 69.76   Downloading docstring_parser-0.17.0-py3-none-any.whl.metadata (3.5 kB)
+#11 70.13 Collecting rich-rst<2.0.0,>=1.3.1 (from cyclopts>=4.0.0->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 70.43   Downloading rich_rst-1.3.2-py3-none-any.whl.metadata (6.1 kB)
+#11 71.17 Collecting certifi (from httpx<1.0,>=0.28.1->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 71.53   Downloading certifi-2026.2.25-py3-none-any.whl.metadata (2.5 kB)
+#11 71.86 Collecting httpcore==1.* (from httpx<1.0,>=0.28.1->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 72.15   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#11 73.51 Collecting h11>=0.16 (from httpcore==1.*->httpx<1.0,>=0.28.1->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 74.08   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#11 74.85 Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.20.0->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.aws-network-mcp-server)
+#11 75.14   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+#11 77.16 Collecting referencing>=0.28.4 (from jsonschema>=4.20.0->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.aws-network-mcp-server)
+#11 77.59   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+#11 84.36 Collecting rpds-py>=0.25.0 (from jsonschema>=4.20.0->mcp>=1.23.0->mcp[cli]>=1.23.0->awslabs.aws-network-mcp-server)
+#11 84.76   Downloading rpds_py-0.30.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)
+#11 85.08 Collecting pathable<0.6.0,>=0.5.0 (from jsonschema-path>=0.3.4->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 85.37   Downloading pathable-0.5.0-py3-none-any.whl.metadata (5.9 kB)
+#11 86.18 Collecting importlib-metadata<8.8.0,>=6.0 (from opentelemetry-api>=1.20.0->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 86.62   Downloading importlib_metadata-8.7.1-py3-none-any.whl.metadata (4.7 kB)
+#11 87.04 Collecting beartype>=0.20.0 (from py-key-value-aio<0.5.0,>=0.4.4->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 88.19   Downloading beartype-0.22.9-py3-none-any.whl.metadata (37 kB)
+#11 88.92 Collecting aiofile>=3.5.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 89.22   Downloading aiofile-3.9.0-py3-none-any.whl.metadata (14 kB)
+#11 90.16 Collecting keyring>=25.6.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 90.47   Downloading keyring-25.7.0-py3-none-any.whl.metadata (21 kB)
+#11 91.59 Collecting cachetools>=5.0.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 92.01   Downloading cachetools-7.0.5-py3-none-any.whl.metadata (5.6 kB)
+#11 92.38 Collecting email-validator>=2.0.0 (from pydantic[email]>=2.11.7->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 93.19   Downloading email_validator-2.3.0-py3-none-any.whl.metadata (26 kB)
+#11 93.84 Collecting markdown-it-py>=2.2.0 (from rich>=13.9.4->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 94.27   Downloading markdown_it_py-4.0.0-py3-none-any.whl.metadata (7.3 kB)
+#11 94.96 Collecting pygments<3.0.0,>=2.13.0 (from rich>=13.9.4->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 95.29   Downloading pygments-2.19.2-py3-none-any.whl.metadata (2.5 kB)
+#11 96.03 Collecting click>=8.2.1 (from typer>=0.16.0->mcp[cli]>=1.23.0->awslabs.aws-network-mcp-server)
+#11 96.32   Downloading click-8.3.1-py3-none-any.whl.metadata (2.6 kB)
+#11 97.05 Collecting shellingham>=1.3.0 (from typer>=0.16.0->mcp[cli]>=1.23.0->awslabs.aws-network-mcp-server)
+#11 97.34   Downloading shellingham-1.5.4-py2.py3-none-any.whl.metadata (3.5 kB)
+#11 97.97 Collecting annotated-doc>=0.0.2 (from typer>=0.16.0->mcp[cli]>=1.23.0->awslabs.aws-network-mcp-server)
+#11 98.38   Downloading annotated_doc-0.0.4-py3-none-any.whl.metadata (6.6 kB)
+#11 99.61 Collecting caio<0.10.0,>=0.9.0 (from aiofile>=3.5.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 99.90   Downloading caio-0.9.25-cp311-cp311-manylinux_2_34_x86_64.whl.metadata (3.3 kB)
+#11 102.6 Collecting cffi>=2.0.0 (from cryptography->authlib>=1.6.5->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 102.8   Downloading cffi-2.0.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.6 kB)
+#11 103.6 Collecting dnspython>=2.0.0 (from email-validator>=2.0.0->pydantic[email]>=2.11.7->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 103.9   Downloading dnspython-2.8.0-py3-none-any.whl.metadata (5.7 kB)
+#11 105.0 Collecting zipp>=3.20 (from importlib-metadata<8.8.0,>=6.0->opentelemetry-api>=1.20.0->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 105.7   Downloading zipp-3.23.0-py3-none-any.whl.metadata (3.6 kB)
+#11 106.3 Collecting SecretStorage>=3.2 (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 106.9   Downloading secretstorage-3.5.0-py3-none-any.whl.metadata (4.0 kB)
+#11 107.5 Collecting jeepney>=0.4.2 (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 107.8   Downloading jeepney-0.9.0-py3-none-any.whl.metadata (1.2 kB)
+#11 108.2 Collecting jaraco.classes (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 108.6   Downloading jaraco.classes-3.4.0-py3-none-any.whl.metadata (2.6 kB)
+#11 109.2 Collecting jaraco.functools (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 109.5   Downloading jaraco_functools-4.4.0-py3-none-any.whl.metadata (3.0 kB)
+#11 110.2 Collecting jaraco.context (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 110.5   Downloading jaraco_context-6.1.2-py3-none-any.whl.metadata (4.2 kB)
+#11 111.5 Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich>=13.9.4->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 111.9   Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+#11 112.5 Collecting six>=1.5 (from python-dateutil<3.0.0,>=2.1->botocore<1.43.0,>=1.42.74->boto3>=1.40.74->awslabs.aws-network-mcp-server)
+#11 113.0   Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+#11 113.7 Collecting docutils (from rich-rst<2.0.0,>=1.3.1->cyclopts>=4.0.0->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 114.0   Downloading docutils-0.22.4-py3-none-any.whl.metadata (15 kB)
+#11 115.6 Collecting pycparser (from cffi>=2.0.0->cryptography->authlib>=1.6.5->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 116.5   Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+#11 117.3 Collecting more-itertools (from jaraco.classes->keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 117.6   Downloading more_itertools-10.8.0-py3-none-any.whl.metadata (39 kB)
+#11 119.9 Collecting backports.tarfile (from jaraco.context->keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=2.14.0->awslabs.aws-network-mcp-server)
+#11 120.3   Downloading backports.tarfile-1.2.0-py3-none-any.whl.metadata (2.0 kB)
+#11 120.7 Downloading awslabs_aws_network_mcp_server-0.0.8-py3-none-any.whl (88 kB)
+#11 122.8    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 88.0/88.0 kB 71.4 kB/s eta 0:00:00
+#11 123.1 Downloading boto3-1.42.74-py3-none-any.whl (140 kB)
+#11 124.8    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 140.6/140.6 kB 114.4 kB/s eta 0:00:00
+#11 125.1 Downloading fastmcp-3.1.1-py3-none-any.whl (633 kB)
+#11 128.2    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 633.8/633.8 kB 219.7 kB/s eta 0:00:00
+#11 128.5 Downloading loguru-0.7.3-py3-none-any.whl (61 kB)
+#11 128.7    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 61.6/61.6 kB 357.2 kB/s eta 0:00:00
+#11 129.0 Downloading mcp-1.26.0-py3-none-any.whl (233 kB)
+#11 129.7    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 233.6/233.6 kB 332.0 kB/s eta 0:00:00
+#11 130.0 Downloading pydantic-2.12.5-py3-none-any.whl (463 kB)
+#11 131.1    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 463.6/463.6 kB 449.5 kB/s eta 0:00:00
+#11 131.3 Downloading pydantic_core-2.41.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.1 MB)
+#11 133.7    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 892.5 kB/s eta 0:00:00
+#11 134.0 Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+#11 134.3 Downloading anyio-4.13.0-py3-none-any.whl (114 kB)
+#11 134.5    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 114.4/114.4 kB 385.5 kB/s eta 0:00:00
+#11 134.8 Downloading authlib-1.6.9-py2.py3-none-any.whl (244 kB)
+#11 135.1    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 244.2/244.2 kB 874.1 kB/s eta 0:00:00
+#11 135.4 Downloading botocore-1.42.74-py3-none-any.whl (14.7 MB)
+#11 141.1    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 14.7/14.7 MB 3.4 MB/s eta 0:00:00
+#11 141.4 Downloading cyclopts-4.10.1-py3-none-any.whl (204 kB)
+#11 141.7    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 204.3/204.3 kB 692.6 kB/s eta 0:00:00
+#11 142.0 Downloading exceptiongroup-1.3.1-py3-none-any.whl (16 kB)
+#11 142.5 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#11 142.8    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.5/73.5 kB 226.3 kB/s eta 0:00:00
+#11 143.1 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#11 143.4    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.8/78.8 kB 246.8 kB/s eta 0:00:00
+#11 143.7 Downloading httpx_sse-0.4.3-py3-none-any.whl (9.0 kB)
+#11 144.3 Downloading jmespath-1.1.0-py3-none-any.whl (20 kB)
+#11 144.9 Downloading jsonref-1.1.0-py3-none-any.whl (9.4 kB)
+#11 145.2 Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+#11 145.5    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 90.6/90.6 kB 300.0 kB/s eta 0:00:00
+#11 145.7 Downloading jsonschema_path-0.4.5-py3-none-any.whl (19 kB)
+#11 146.3 Downloading openapi_pydantic-0.5.1-py3-none-any.whl (96 kB)
+#11 146.6    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 96.4/96.4 kB 338.3 kB/s eta 0:00:00
+#11 146.9 Downloading opentelemetry_api-1.40.0-py3-none-any.whl (68 kB)
+#11 147.2    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 68.7/68.7 kB 247.7 kB/s eta 0:00:00
+#11 147.5 Downloading packaging-26.0-py3-none-any.whl (74 kB)
+#11 148.0    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 74.4/74.4 kB 325.5 kB/s eta 0:00:00
+#11 148.3 Downloading platformdirs-4.9.4-py3-none-any.whl (21 kB)
+#11 148.9 Downloading py_key_value_aio-0.4.4-py3-none-any.whl (152 kB)
+#11 149.3    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 152.3/152.3 kB 346.9 kB/s eta 0:00:00
+#11 149.6 Downloading pydantic_settings-2.13.1-py3-none-any.whl (58 kB)
+#11 149.9    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 58.9/58.9 kB 204.8 kB/s eta 0:00:00
+#11 150.2 Downloading pyjwt-2.12.1-py3-none-any.whl (29 kB)
+#11 150.6 Downloading pyperclip-1.11.0-py3-none-any.whl (11 kB)
+#11 150.9 Downloading python_dotenv-1.2.2-py3-none-any.whl (22 kB)
+#11 151.4 Downloading python_multipart-0.0.22-py3-none-any.whl (24 kB)
+#11 152.0 Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (806 kB)
+#11 153.6    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 806.6/806.6 kB 506.4 kB/s eta 0:00:00
+#11 153.9 Downloading rich-14.3.3-py3-none-any.whl (310 kB)
+#11 154.4    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 310.5/310.5 kB 660.7 kB/s eta 0:00:00
+#11 154.7 Downloading s3transfer-0.16.0-py3-none-any.whl (86 kB)
+#11 154.8    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 86.8/86.8 kB 721.8 kB/s eta 0:00:00
+#11 155.1 Downloading sse_starlette-3.3.3-py3-none-any.whl (14 kB)
+#11 155.4 Downloading starlette-1.0.0-py3-none-any.whl (72 kB)
+#11 155.7    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 72.7/72.7 kB 239.6 kB/s eta 0:00:00
+#11 156.0 Downloading typer-0.24.1-py3-none-any.whl (56 kB)
+#11 156.1    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 56.1/56.1 kB 734.1 kB/s eta 0:00:00
+#11 156.4 Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+#11 156.7    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 44.6/44.6 kB 129.1 kB/s eta 0:00:00
+#11 157.0 Downloading typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+#11 157.5 Downloading uncalled_for-0.2.0-py3-none-any.whl (11 kB)
+#11 157.9 Downloading uvicorn-0.42.0-py3-none-any.whl (68 kB)
+#11 158.2    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 68.8/68.8 kB 264.7 kB/s eta 0:00:00
+#11 158.5 Downloading watchfiles-1.1.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (456 kB)
+#11 159.8    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 456.1/456.1 kB 346.2 kB/s eta 0:00:00
+#11 160.1 Downloading websockets-16.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (184 kB)
+#11 160.8    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 184.6/184.6 kB 267.4 kB/s eta 0:00:00
+#11 161.1 Downloading aiofile-3.9.0-py3-none-any.whl (19 kB)
+#11 161.7 Downloading annotated_doc-0.0.4-py3-none-any.whl (5.3 kB)
+#11 162.2 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+#11 162.5    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 67.5/67.5 kB 224.2 kB/s eta 0:00:00
+#11 162.8 Downloading beartype-0.22.9-py3-none-any.whl (1.3 MB)
+#11 165.5    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 505.2 kB/s eta 0:00:00
+#11 165.7 Downloading cachetools-7.0.5-py3-none-any.whl (13 kB)
+#11 166.1 Downloading click-8.3.1-py3-none-any.whl (108 kB)
+#11 166.2    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 108.3/108.3 kB 666.3 kB/s eta 0:00:00
+#11 166.5 Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_x86_64.whl (4.5 MB)
+#11 170.4    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.5/4.5 MB 1.1 MB/s eta 0:00:00
+#11 170.7 Downloading docstring_parser-0.17.0-py3-none-any.whl (36 kB)
+#11 171.3 Downloading email_validator-2.3.0-py3-none-any.whl (35 kB)
+#11 171.9 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#11 172.5 Downloading idna-3.11-py3-none-any.whl (71 kB)
+#11 172.7    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 71.0/71.0 kB 232.7 kB/s eta 0:00:00
+#11 173.0 Downloading importlib_metadata-8.7.1-py3-none-any.whl (27 kB)
+#11 173.6 Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+#11 174.2 Downloading keyring-25.7.0-py3-none-any.whl (39 kB)
+#11 174.7 Downloading markdown_it_py-4.0.0-py3-none-any.whl (87 kB)
+#11 175.2    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 87.3/87.3 kB 208.4 kB/s eta 0:00:00
+#11 175.5 Downloading pathable-0.5.0-py3-none-any.whl (16 kB)
+#11 175.8 Downloading pygments-2.19.2-py3-none-any.whl (1.2 MB)
+#11 179.5    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 333.9 kB/s eta 0:00:00
+#11 179.8 Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+#11 180.2    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 229.9/229.9 kB 619.7 kB/s eta 0:00:00
+#11 180.5 Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+#11 181.2 Downloading rich_rst-1.3.2-py3-none-any.whl (12 kB)
+#11 181.7 Downloading rpds_py-0.30.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (390 kB)
+#11 182.4    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 390.8/390.8 kB 610.0 kB/s eta 0:00:00
+#11 182.7 Downloading shellingham-1.5.4-py2.py3-none-any.whl (9.8 kB)
+#11 183.0 Downloading urllib3-2.6.3-py3-none-any.whl (131 kB)
+#11 183.3    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 131.6/131.6 kB 453.4 kB/s eta 0:00:00
+#11 183.6 Downloading certifi-2026.2.25-py3-none-any.whl (153 kB)
+#11 183.8    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 153.7/153.7 kB 624.0 kB/s eta 0:00:00
+#11 184.1 Downloading caio-0.9.25-cp311-cp311-manylinux_2_34_x86_64.whl (78 kB)
+#11 184.4    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.3/78.3 kB 265.1 kB/s eta 0:00:00
+#11 184.7 Downloading cffi-2.0.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (215 kB)
+#11 185.0    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 215.6/215.6 kB 643.4 kB/s eta 0:00:00
+#11 185.3 Downloading dnspython-2.8.0-py3-none-any.whl (331 kB)
+#11 185.8    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 331.1/331.1 kB 701.1 kB/s eta 0:00:00
+#11 186.1 Downloading jeepney-0.9.0-py3-none-any.whl (49 kB)
+#11 186.4    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 49.0/49.0 kB 146.6 kB/s eta 0:00:00
+#11 186.7 Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+#11 187.2 Downloading secretstorage-3.5.0-py3-none-any.whl (15 kB)
+#11 187.5 Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+#11 188.1 Downloading zipp-3.23.0-py3-none-any.whl (10 kB)
+#11 188.4 Downloading docutils-0.22.4-py3-none-any.whl (633 kB)
+#11 189.3    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 633.2/633.2 kB 849.3 kB/s eta 0:00:00
+#11 189.6 Downloading jaraco.classes-3.4.0-py3-none-any.whl (6.8 kB)
+#11 190.1 Downloading jaraco_context-6.1.2-py3-none-any.whl (7.9 kB)
+#11 190.4 Downloading jaraco_functools-4.4.0-py3-none-any.whl (10 kB)
+#11 191.0 Downloading backports.tarfile-1.2.0-py3-none-any.whl (30 kB)
+#11 191.3 Downloading more_itertools-10.8.0-py3-none-any.whl (69 kB)
+#11 191.6    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 69.7/69.7 kB 218.4 kB/s eta 0:00:00
+#11 191.9 Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+#11 192.2    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 48.2/48.2 kB 139.0 kB/s eta 0:00:00
+#11 192.8 Installing collected packages: pyperclip, zipp, websockets, urllib3, uncalled-for, typing-extensions, six, shellingham, rpds-py, pyyaml, python-multipart, python-dotenv, pyjwt, pygments, pycparser, platformdirs, pathable, packaging, more-itertools, mdurl, loguru, jsonref, jmespath, jeepney, idna, httpx-sse, h11, docutils, docstring-parser, dnspython, click, certifi, caio, cachetools, beartype, backports.tarfile, attrs, annotated-types, annotated-doc, uvicorn, typing-inspection, referencing, python-dateutil, pydantic-core, py-key-value-aio, markdown-it-py, jaraco.functools, jaraco.context, jaraco.classes, importlib-metadata, httpcore, exceptiongroup, email-validator, cffi, anyio, aiofile, watchfiles, starlette, rich, pydantic, opentelemetry-api, jsonschema-specifications, jsonschema-path, httpx, cryptography, botocore, typer, sse-starlette, SecretStorage, s3transfer, rich-rst, pydantic-settings, openapi-pydantic, jsonschema, authlib, mcp, keyring, cyclopts, boto3, fastmcp, awslabs.aws-network-mcp-server
+#11 206.1 Successfully installed SecretStorage-3.5.0 aiofile-3.9.0 annotated-doc-0.0.4 annotated-types-0.7.0 anyio-4.13.0 attrs-26.1.0 authlib-1.6.9 awslabs.aws-network-mcp-server-0.0.8 backports.tarfile-1.2.0 beartype-0.22.9 boto3-1.42.74 botocore-1.42.74 cachetools-7.0.5 caio-0.9.25 certifi-2026.2.25 cffi-2.0.0 click-8.3.1 cryptography-46.0.5 cyclopts-4.10.1 dnspython-2.8.0 docstring-parser-0.17.0 docutils-0.22.4 email-validator-2.3.0 exceptiongroup-1.3.1 fastmcp-3.1.1 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 httpx-sse-0.4.3 idna-3.11 importlib-metadata-8.7.1 jaraco.classes-3.4.0 jaraco.context-6.1.2 jaraco.functools-4.4.0 jeepney-0.9.0 jmespath-1.1.0 jsonref-1.1.0 jsonschema-4.26.0 jsonschema-path-0.4.5 jsonschema-specifications-2025.9.1 keyring-25.7.0 loguru-0.7.3 markdown-it-py-4.0.0 mcp-1.26.0 mdurl-0.1.2 more-itertools-10.8.0 openapi-pydantic-0.5.1 opentelemetry-api-1.40.0 packaging-26.0 pathable-0.5.0 platformdirs-4.9.4 py-key-value-aio-0.4.4 pycparser-3.0 pydantic-2.12.5 pydantic-core-2.41.5 pydantic-settings-2.13.1 pygments-2.19.2 pyjwt-2.12.1 pyperclip-1.11.0 python-dateutil-2.9.0.post0 python-dotenv-1.2.2 python-multipart-0.0.22 pyyaml-6.0.3 referencing-0.37.0 rich-14.3.3 rich-rst-1.3.2 rpds-py-0.30.0 s3transfer-0.16.0 shellingham-1.5.4 six-1.17.0 sse-starlette-3.3.3 starlette-1.0.0 typer-0.24.1 typing-extensions-4.15.0 typing-inspection-0.4.2 uncalled-for-0.2.0 urllib3-2.6.3 uvicorn-0.42.0 watchfiles-1.1.1 websockets-16.0 zipp-3.23.0
+#11 206.1 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+#11 207.7 
+#11 207.7 [notice] A new release of pip is available: 24.0 -> 26.0.1
+#11 207.7 [notice] To update, run: pip install --upgrade pip
+#11 DONE 208.5s
+
+#12 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#12 DONE 0.5s
+
+#13 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#13 DONE 0.5s
+
+#14 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#14 DONE 0.1s
+
+#15 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#15 DONE 0.1s
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 DONE 0.4s
+
+#17 exporting to image
+#17 exporting layers
+#17 exporting layers 5.9s done
+#17 exporting manifest sha256:464ad4b2c73131f0e32a1bea3c5e77b6cb57b1180ebd8a057881b1508a54311d 0.0s done
+#17 exporting config sha256:a59a6c1a22d5d85e7e4f9e080993893066e091dcce28fa9902ce8b98218dc278 0.0s done
+#17 exporting attestation manifest sha256:f8039e135bb9ecb856d3120508e1334756dfcfe2c2f91e6703eee49918d7de3e 0.0s done
+#17 exporting manifest list sha256:3644d2ad52a39c753dc80fffa86cc753a81a22fa6d02a6729249b11f34002774 0.0s done
+#17 naming to docker.io/library/aws-network-mcp:latest
+#17 naming to docker.io/library/aws-network-mcp:latest done
+#17 unpacking to docker.io/library/aws-network-mcp:latest
+#17 unpacking to docker.io/library/aws-network-mcp:latest 10.0s done
+#17 naming to docker.io/hackerdogs/aws-network-mcp:latest done
+#17 unpacking to docker.io/hackerdogs/aws-network-mcp:latest 0.1s done
+#17 DONE 16.7s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/38vtzcqfc9j7omqp9vzb668kh
 ========== aws-network-mcp test (compliance) ==========
 [0;34m[1] Install[0m
   [0;32mPASS: image exists[0m
 [0;34m[2] Stdio tools/list[0m
-  [0;32mPASS: stdio tools/list[0m
+  [0;31mFAIL: stdio tools/list[0m
 [0;34m[3] Stdio tools/call (skipped — upstream package)[0m
   [0;32mPASS: stdio tools/call (upstream)[0m
 [0;34m[4] HTTP streamable tools/list[0m
@@ -15,6 +384,8 @@ Note: Full stdout/stderr capture (this test.sh does not use the structured test-
 [0;34m[5] HTTP streamable tools/call (skipped — upstream package)[0m
   [0;32mPASS: HTTP tools/call (upstream)[0m
 
-Total: 4 passed, 1 failed
+Total: 3 passed, 2 failed
 aws-network-mcp-test
 aws-network-mcp-test
+
+❌ FAIL (Test): aws-network-mcp

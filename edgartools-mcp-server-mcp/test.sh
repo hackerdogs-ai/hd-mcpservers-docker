@@ -6,6 +6,10 @@ IMAGE="hackerdogs/edgartools-mcp-server-mcp:latest"
 PORT=8415
 CONTAINER_NAME="edgartools-mcp-server-mcp-test"
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if command -v py >/dev/null 2>&1; then PYTHON=(py -3)
+elif command -v python3 >/dev/null 2>&1; then PYTHON=(python3)
+elif command -v python >/dev/null 2>&1; then PYTHON=(python)
+else echo "Need py, python3, or python on PATH for stdio probe" >&2; exit 1; fi
 pass() { echo -e "  ${GREEN}PASS: $1${NC}"; PASS=$((PASS+1)); }
 fail() { echo -e "  ${RED}FAIL: $1${NC}"; FAIL=$((FAIL+1)); }
 info() { echo -e "${BLUE}$1${NC}"; }
@@ -17,6 +21,10 @@ INIT_NOTIF='{"jsonrpc":"2.0","method":"notifications/initialized"}'
 LIST_REQ='{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}'
 CALL_REQ='{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"edgartools_mcp_server_info","arguments":{}}}'
 
+# Docker Desktop / FastMCP: allow extra time; optional stdin EOF flush (see scripts/mcp_stdio_docker_tools_list.py).
+export MCP_STDIO_DOCKER_TIMEOUT="${MCP_STDIO_DOCKER_TIMEOUT:-180}"
+export MCP_STDIO_STDIN_EOF_DELAY_MS="${MCP_STDIO_STDIN_EOF_DELAY_MS:-800}"
+
 echo "========== edgartools-mcp-server-mcp test (compliance) =========="
 
 info "[1] Install"
@@ -27,7 +35,7 @@ fi
 pass "image exists"
 
 info "[2] Stdio tools/list"
-STDIO_OUT=$(python3 "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
+STDIO_OUT=$("${PYTHON[@]}" "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
 echo "$STDIO_OUT" | grep -q '"tools"' && pass "stdio tools/list" || fail "stdio tools/list"
 
 info "[3] Stdio tools/call"

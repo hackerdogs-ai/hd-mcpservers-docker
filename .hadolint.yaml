@@ -1,0 +1,62 @@
+# hadolint configuration for hd-mcpservers-docker
+#
+# All 100+ MCP server Dockerfiles use python:3.12-slim-bookworm as their
+# base image and follow a consistent structure. This config tunes hadolint
+# to match the project's conventions instead of generating hundreds of
+# noisy identical warnings across every MCP server Dockerfile.
+#
+# Rule reference: https://github.com/hadolint/hadolint/wiki/Rules
+
+# ─── Trusted base image registries ───────────────────────────────────────────
+# Only these registries are permitted as base images.
+trustedRegistries:
+  - docker.io
+  - python
+  - ghcr.io
+  - public.ecr.aws
+
+# ─── Ignored rules (project-wide) ─────────────────────────────────────────────
+ignore:
+  # DL3008: Pin versions in apt-get install
+  # Rationale: Security tool images install from Debian Bookworm stable repos.
+  # Pinning every system package is impractical across 100+ Dockerfiles and
+  # would break on apt mirror updates.
+  - DL3008
+
+  # DL3009: Delete the apt-get lists after installing
+  # Rationale: Base image and RUN layers already call
+  #   rm -rf /var/lib/apt/lists/*
+  # hadolint still flags this in multi-line RUN blocks; suppress the noise.
+  - DL3009
+
+  # DL3013: Pin pip package versions
+  # Rationale: The shared requirements.txt files use minimum-version pins
+  #   (fastmcp>=2.0.0) which is correct for library consumers.
+  - DL3013
+
+  # DL3042: Avoid use of cache directory with pip
+  # Rationale: All Dockerfiles already pass --no-cache-dir; hadolint still
+  #   fires on certain one-liner patterns.
+  - DL3042
+
+  # DL3059: Multiple consecutive RUN instructions
+  # Rationale: MCP server Dockerfiles intentionally separate installation
+  #   steps into logical groups (system packages / pip / app copy) for
+  #   better layer caching during development.
+  - DL3059
+
+  # SC2086: Double-quote to prevent globbing — shell lint false positive
+  # in RUN heredoc blocks used for multi-line Python snippets.
+  - SC2086
+
+# ─── Failure threshold ────────────────────────────────────────────────────────
+# error   → fail on errors only
+# warning → fail on warnings and above (CI default)
+# info    → fail on all findings
+# style   → fail on style findings and above
+# ignore  → never fail
+failureThreshold: warning
+
+# ─── Format ──────────────────────────────────────────────────────────────────
+format: tty
+

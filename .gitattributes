@@ -1,0 +1,2 @@
+# Shell scripts must use LF so bash (Git Bash/WSL) does not see stray \r.
+*.sh text eol=lf

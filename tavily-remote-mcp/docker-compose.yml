@@ -1,0 +1,13 @@
+services:
+  tavily-remote-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hackerdogs/tavily-remote-mcp:latest
+    container_name: tavily-remote-mcp
+    ports:
+      - "8513:8513"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8513
+    restart: unless-stopped

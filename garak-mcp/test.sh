@@ -17,6 +17,7 @@ PORT=8352
 BINARY="garak-mcp"
 CONTAINER_NAME="garak-mcp-test"
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+MCP_HDR="${TMPDIR:-/tmp}/mcp_headers_${CONTAINER_NAME}"
 
 pass() { echo -e "  ${GREEN}PASS: $1${NC}"; PASS=$((PASS + 1)); }
 fail() { echo -e "  ${RED}FAIL: $1${NC}"; FAIL=$((FAIL + 1)); }
@@ -64,7 +65,7 @@ INIT_REQ='{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersi
 INIT_NOTIF='{"jsonrpc":"2.0","method":"notifications/initialized"}'
 LIST_REQ='{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}'
 
-STDIO_OUT=$(python3 "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
+STDIO_OUT=$(python "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
 
 if grep -q '"tools"' <<< "$STDIO_OUT"; then
     TOOL_COUNT=$(echo "$STDIO_OUT" | grep -o '"name"' | wc -l)
@@ -82,18 +83,19 @@ docker run -d --name "$CONTAINER_NAME" \
     -e MCP_TRANSPORT=streamable-http -e MCP_PORT=$PORT \
     -p "$PORT:$PORT" "$IMAGE" > /dev/null
 
+sleep "${MCP_HTTP_STARTUP_SLEEP:-12}"
 SESSION_ID=""
-MAX_WAIT=30; WAITED=0
+MAX_WAIT=45; WAITED=0
 while [ $WAITED -lt $MAX_WAIT ]; do
-    INIT_RESP=$(curl -s -D /tmp/mcp_headers -X POST "http://localhost:${PORT}/mcp" \
+    INIT_RESP=$(curl -s --max-time 8 -D "$MCP_HDR" -X POST "http://localhost:${PORT}/mcp" \
         -H "Content-Type: application/json" \
         -H "Accept: application/json, text/event-stream" \
         -d "$INIT_REQ" 2>/dev/null) && break
     sleep 2; WAITED=$((WAITED + 2))
 done
 
-HTTP_CODE=$(head -1 /tmp/mcp_headers 2>/dev/null | grep -o '[0-9]\{3\}' | head -1 || echo "000")
-SESSION_ID=$(grep -i 'mcp-session-id' /tmp/mcp_headers 2>/dev/null | sed 's/.*: //' | tr -d '\r' || true)
+HTTP_CODE=$(head -1 "$MCP_HDR" 2>/dev/null | grep -o '[0-9]\{3\}' | head -1 || echo "000")
+SESSION_ID=$(grep -i 'mcp-session-id' "$MCP_HDR" 2>/dev/null | sed 's/.*: //' | tr -d '\r' || true)
 
 if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "202" ]; then
     pass "HTTP streamable mode responded (status $HTTP_CODE)"
@@ -123,7 +125,7 @@ TOOLS_RESP=$(curl -s -X POST "http://localhost:${PORT}/mcp" \
 
 if echo "$TOOLS_RESP" | grep -q '"tools"'; then
     pass "HTTP tools/list returned tools"
-    echo "$TOOLS_RESP" | python3 -c "
+    echo "$TOOLS_RESP" | python -c "
 import sys, json
 for line in sys.stdin:
     line = line.strip()
@@ -144,7 +146,7 @@ echo ""
 
 # Test 6: MCP HTTP — tools/call
 info "[Test 6] MCP HTTP — tools/call (run_garak_mcp)"
-CALL_REQ='{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"run_garak","arguments":{"arguments":"--help"}}}'
+CALL_REQ='{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"run_garak_mcp","arguments":{"arguments":"--help"}}}'
 CALL_RESP=$(curl -s -X POST "http://localhost:${PORT}/mcp" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json, text/event-stream" \

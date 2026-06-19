@@ -1,0 +1,99 @@
+========== Debug Logs: aws-bedrock-agentcore-mcp ==========
+Timestamp: Sun, Mar 29, 2026  3:45:31 PM
+Working Directory: /c/Users/Utkarsh Singhal/Desktop/hd-mcpservers-docker/aws-bedrock-agentcore-mcp
+Target Directory: aws-bedrock-agentcore-mcp
+
+--- [BUILD] docker build -t aws-bedrock-agentcore-mcp -t hackerdogs/aws-bedrock-agentcore-mcp:latest ---
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 803B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 ...
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 1.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 1.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3
+#5 resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3 0.0s done
+#5 DONE 0.0s
+
+#6 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+#6 resolve docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#8 CACHED
+
+#9 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#9 CACHED
+
+#10 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#10 CACHED
+
+#11 [stage-1 3/9] WORKDIR /app
+#11 CACHED
+
+#12 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#12 CACHED
+
+#13 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#13 CACHED
+
+#14 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#14 CACHED
+
+#15 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.amazon-bedrock-agentcore-mcp-server
+#15 CACHED
+
+#16 [stage-1 9/9] RUN chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:67fcc420b90426a4e8373545c1b9b58b64a67c84a45d0e1177a41e1dbec86871 done
+#17 exporting config sha256:92cb162ffcba8e4be80405305bb12d02d7c663b2d751b656d616be0f5343cb73 done
+#17 exporting attestation manifest sha256:825f9611d527ca51bbeb02cd2f86251189ea0e5a949ea4e7b45b794422c562b0
+#17 exporting attestation manifest sha256:825f9611d527ca51bbeb02cd2f86251189ea0e5a949ea4e7b45b794422c562b0 0.0s done
+#17 exporting manifest list sha256:3764c5d03b630aa35b1215f7e030e5dca51de59e6ceb962f7cde49862ed4746a 0.0s done
+#17 naming to docker.io/library/aws-bedrock-agentcore-mcp:latest done
+#17 unpacking to docker.io/library/aws-bedrock-agentcore-mcp:latest done
+#17 naming to docker.io/hackerdogs/aws-bedrock-agentcore-mcp:latest done
+#17 unpacking to docker.io/hackerdogs/aws-bedrock-agentcore-mcp:latest done
+#17 DONE 0.2s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/twciszv7xs1o5t8pcwz2lzayd
+>>> [BUILD SUCCESS] Image built successfully.
+
+--- [TEST] Running test.sh ---
+========== aws-bedrock-agentcore-mcp test (compliance) ==========
+[0;34m[1] Install[0m
+  [0;32mPASS: image exists[0m
+[0;34m[2] Stdio tools/list[0m
+  [0;31mFAIL: stdio tools/list[0m
+[0;34m[3] Stdio tools/call (skipped — upstream package)[0m
+  [0;32mPASS: stdio tools/call (upstream)[0m
+[0;34m[4] HTTP streamable tools/list[0m
+  [0;31mFAIL: HTTP tools/list[0m
+[0;34m[5] HTTP streamable tools/call (skipped — upstream package)[0m
+  [0;32mPASS: HTTP tools/call (upstream)[0m
+
+Total: 3 passed, 2 failed
+aws-bedrock-agentcore-mcp-test
+aws-bedrock-agentcore-mcp-test
+>>> [TEST FAILED] test.sh exited with non-zero status.
+
+========== End of Logs: Sun, Mar 29, 2026  3:50:19 PM ==========

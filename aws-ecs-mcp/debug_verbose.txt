@@ -1,0 +1,543 @@
+========== VERBOSE DEBUG: aws-ecs-mcp ==========
+Timestamp: Sun, Mar 29, 2026  8:22:39 PM
+
+--- [CHECK 1] Building Docker image ---
+>>> docker build -t aws-ecs-mcp -t hackerdogs/aws-ecs-mcp:latest aws-ecs-mcp
+
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 817B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 ...
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 0.4s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 0.5s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 DONE 0.0s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3
+#6 resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3 0.1s done
+#6 DONE 0.1s
+
+#7 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+#7 resolve docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634 0.0s done
+#7 DONE 0.1s
+
+#8 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [stage-1 3/9] WORKDIR /app
+#9 CACHED
+
+#10 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#10 CACHED
+
+#5 [internal] load build context
+#5 transferring context: 72B 0.0s done
+#5 DONE 0.0s
+
+#11 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.ecs-mcp-server
+#11 1.796 Collecting awslabs.ecs-mcp-server
+#11 2.014   Downloading awslabs_ecs_mcp_server-0.1.28-py3-none-any.whl.metadata (23 kB)
+#11 2.668 Collecting boto3>=1.41.1 (from awslabs.ecs-mcp-server)
+#11 2.714   Downloading boto3-1.42.78-py3-none-any.whl.metadata (6.7 kB)
+#11 2.783 Collecting docker>=6.1.0 (from awslabs.ecs-mcp-server)
+#11 2.827   Downloading docker-7.1.0-py3-none-any.whl.metadata (3.8 kB)
+#11 2.897 Collecting fastmcp>=3.0.0 (from awslabs.ecs-mcp-server)
+#11 2.939   Downloading fastmcp-3.1.1-py3-none-any.whl.metadata (8.1 kB)
+#11 3.156 Collecting gevent>=25.5.1 (from awslabs.ecs-mcp-server)
+#11 3.201   Downloading gevent-25.9.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (14 kB)
+#11 3.263 Collecting jinja2>=3.1.0 (from awslabs.ecs-mcp-server)
+#11 3.306   Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+#11 3.501 Collecting pydantic>=2.0.0 (from awslabs.ecs-mcp-server)
+#11 3.545   Downloading pydantic-2.12.5-py3-none-any.whl.metadata (90 kB)
+#11 3.597      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 90.6/90.6 kB 1.8 MB/s eta 0:00:00
+#11 3.677 Collecting pyyaml>=6.0.0 (from awslabs.ecs-mcp-server)
+#11 3.722   Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+#11 4.389 Collecting botocore<1.43.0,>=1.42.78 (from boto3>=1.41.1->awslabs.ecs-mcp-server)
+#11 4.431   Downloading botocore-1.42.78-py3-none-any.whl.metadata (5.9 kB)
+#11 4.484 Collecting jmespath<2.0.0,>=0.7.1 (from boto3>=1.41.1->awslabs.ecs-mcp-server)
+#11 4.526   Downloading jmespath-1.1.0-py3-none-any.whl.metadata (7.6 kB)
+#11 4.599 Collecting s3transfer<0.17.0,>=0.16.0 (from boto3>=1.41.1->awslabs.ecs-mcp-server)
+#11 4.643   Downloading s3transfer-0.16.0-py3-none-any.whl.metadata (1.7 kB)
+#11 4.720 Collecting requests>=2.26.0 (from docker>=6.1.0->awslabs.ecs-mcp-server)
+#11 4.765   Downloading requests-2.33.0-py3-none-any.whl.metadata (5.1 kB)
+#11 4.842 Collecting urllib3>=1.26.0 (from docker>=6.1.0->awslabs.ecs-mcp-server)
+#11 4.886   Downloading urllib3-2.6.3-py3-none-any.whl.metadata (6.9 kB)
+#11 4.981 Collecting authlib>=1.6.5 (from fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 5.025   Downloading authlib-1.6.9-py2.py3-none-any.whl.metadata (9.8 kB)
+#11 5.107 Collecting cyclopts>=4.0.0 (from fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 5.151   Downloading cyclopts-4.10.1-py3-none-any.whl.metadata (12 kB)
+#11 5.208 Collecting exceptiongroup>=1.2.2 (from fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 5.252   Downloading exceptiongroup-1.3.1-py3-none-any.whl.metadata (6.7 kB)
+#11 5.319 Collecting httpx<1.0,>=0.28.1 (from fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 5.363   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#11 5.418 Collecting jsonref>=1.1.0 (from fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 5.461   Downloading jsonref-1.1.0-py3-none-any.whl.metadata (2.7 kB)
+#11 5.521 Collecting jsonschema-path>=0.3.4 (from fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 5.564   Downloading jsonschema_path-0.4.5-py3-none-any.whl.metadata (5.9 kB)
+#11 5.625 Collecting mcp<2.0,>=1.24.0 (from fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 5.668   Downloading mcp-1.26.0-py3-none-any.whl.metadata (89 kB)
+#11 5.682      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 89.5/89.5 kB 12.9 MB/s eta 0:00:00
+#11 5.740 Collecting openapi-pydantic>=0.5.1 (from fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 5.781   Downloading openapi_pydantic-0.5.1-py3-none-any.whl.metadata (10 kB)
+#11 5.852 Collecting opentelemetry-api>=1.20.0 (from fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 5.896   Downloading opentelemetry_api-1.40.0-py3-none-any.whl.metadata (1.5 kB)
+#11 5.954 Collecting packaging>=24.0 (from fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 5.997   Downloading packaging-26.0-py3-none-any.whl.metadata (3.3 kB)
+#11 6.061 Collecting platformdirs>=4.0.0 (from fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 6.105   Downloading platformdirs-4.9.4-py3-none-any.whl.metadata (4.7 kB)
+#11 6.161 Collecting py-key-value-aio<0.5.0,>=0.4.4 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 6.204   Downloading py_key_value_aio-0.4.4-py3-none-any.whl.metadata (15 kB)
+#11 6.271 Collecting pyperclip>=1.9.0 (from fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 6.314   Downloading pyperclip-1.11.0-py3-none-any.whl.metadata (2.4 kB)
+#11 6.374 Collecting python-dotenv>=1.1.0 (from fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 6.417   Downloading python_dotenv-1.2.2-py3-none-any.whl.metadata (27 kB)
+#11 6.578 Collecting rich>=13.9.4 (from fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 6.622   Downloading rich-14.3.3-py3-none-any.whl.metadata (18 kB)
+#11 6.681 Collecting uncalled-for>=0.2.0 (from fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 6.725   Downloading uncalled_for-0.2.0-py3-none-any.whl.metadata (2.9 kB)
+#11 6.808 Collecting uvicorn>=0.35 (from fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 6.851   Downloading uvicorn-0.42.0-py3-none-any.whl.metadata (6.7 kB)
+#11 6.975 Collecting watchfiles>=1.0.0 (from fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 7.018   Downloading watchfiles-1.1.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.9 kB)
+#11 7.163 Collecting websockets>=15.0.1 (from fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 7.207   Downloading websockets-16.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (6.8 kB)
+#11 7.426 Collecting greenlet>=3.2.2 (from gevent>=25.5.1->awslabs.ecs-mcp-server)
+#11 7.470   Downloading greenlet-3.3.2-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (3.7 kB)
+#11 7.766 Collecting zope.event (from gevent>=25.5.1->awslabs.ecs-mcp-server)
+#11 7.809   Downloading zope_event-6.1-py3-none-any.whl.metadata (5.1 kB)
+#11 8.090 Collecting zope.interface (from gevent>=25.5.1->awslabs.ecs-mcp-server)
+#11 8.134   Downloading zope_interface-8.2-cp311-cp311-manylinux1_x86_64.manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_5_x86_64.whl.metadata (45 kB)
+#11 8.142      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 45.4/45.4 kB 7.9 MB/s eta 0:00:00
+#11 8.265 Collecting MarkupSafe>=2.0 (from jinja2>=3.1.0->awslabs.ecs-mcp-server)
+#11 8.310   Downloading markupsafe-3.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.7 kB)
+#11 8.381 Collecting annotated-types>=0.6.0 (from pydantic>=2.0.0->awslabs.ecs-mcp-server)
+#11 8.425   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+#11 9.622 Collecting pydantic-core==2.41.5 (from pydantic>=2.0.0->awslabs.ecs-mcp-server)
+#11 9.668   Downloading pydantic_core-2.41.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (7.3 kB)
+#11 9.735 Collecting typing-extensions>=4.14.1 (from pydantic>=2.0.0->awslabs.ecs-mcp-server)
+#11 9.782   Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+#11 9.836 Collecting typing-inspection>=0.4.2 (from pydantic>=2.0.0->awslabs.ecs-mcp-server)
+#11 9.879   Downloading typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+#11 10.19 Collecting cryptography (from authlib>=1.6.5->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 10.23   Downloading cryptography-46.0.6-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (5.7 kB)
+#11 10.29 Collecting python-dateutil<3.0.0,>=2.1 (from botocore<1.43.0,>=1.42.78->boto3>=1.41.1->awslabs.ecs-mcp-server)
+#11 10.34   Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+#11 10.42 Collecting attrs>=23.1.0 (from cyclopts>=4.0.0->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 10.47   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+#11 10.53 Collecting docstring-parser<4.0,>=0.15 (from cyclopts>=4.0.0->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 10.57   Downloading docstring_parser-0.17.0-py3-none-any.whl.metadata (3.5 kB)
+#11 10.63 Collecting rich-rst<2.0.0,>=1.3.1 (from cyclopts>=4.0.0->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 10.67   Downloading rich_rst-1.3.2-py3-none-any.whl.metadata (6.1 kB)
+#11 10.77 Collecting anyio (from httpx<1.0,>=0.28.1->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 10.82   Downloading anyio-4.13.0-py3-none-any.whl.metadata (4.5 kB)
+#11 10.88 Collecting certifi (from httpx<1.0,>=0.28.1->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 10.92   Downloading certifi-2026.2.25-py3-none-any.whl.metadata (2.5 kB)
+#11 10.99 Collecting httpcore==1.* (from httpx<1.0,>=0.28.1->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 11.04   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#11 11.09 Collecting idna (from httpx<1.0,>=0.28.1->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 11.14   Downloading idna-3.11-py3-none-any.whl.metadata (8.4 kB)
+#11 11.20 Collecting h11>=0.16 (from httpcore==1.*->httpx<1.0,>=0.28.1->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 11.25   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#11 11.31 Collecting pathable<0.6.0,>=0.5.0 (from jsonschema-path>=0.3.4->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 11.36   Downloading pathable-0.5.0-py3-none-any.whl.metadata (5.9 kB)
+#11 11.43 Collecting referencing<0.38.0 (from jsonschema-path>=0.3.4->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 11.48   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+#11 11.56 Collecting httpx-sse>=0.4 (from mcp<2.0,>=1.24.0->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 11.60   Downloading httpx_sse-0.4.3-py3-none-any.whl.metadata (9.7 kB)
+#11 11.67 Collecting jsonschema>=4.20.0 (from mcp<2.0,>=1.24.0->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 11.72   Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+#11 11.78 Collecting pydantic-settings>=2.5.2 (from mcp<2.0,>=1.24.0->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 11.82   Downloading pydantic_settings-2.13.1-py3-none-any.whl.metadata (3.4 kB)
+#11 11.99 Collecting pyjwt>=2.10.1 (from pyjwt[crypto]>=2.10.1->mcp<2.0,>=1.24.0->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 12.03   Downloading pyjwt-2.12.1-py3-none-any.whl.metadata (4.1 kB)
+#11 12.10 Collecting python-multipart>=0.0.9 (from mcp<2.0,>=1.24.0->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 12.14   Downloading python_multipart-0.0.22-py3-none-any.whl.metadata (1.8 kB)
+#11 12.21 Collecting sse-starlette>=1.6.1 (from mcp<2.0,>=1.24.0->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 12.25   Downloading sse_starlette-3.3.4-py3-none-any.whl.metadata (14 kB)
+#11 12.35 Collecting starlette>=0.27 (from mcp<2.0,>=1.24.0->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 12.39   Downloading starlette-1.0.0-py3-none-any.whl.metadata (6.3 kB)
+#11 12.54 Collecting importlib-metadata<8.8.0,>=6.0 (from opentelemetry-api>=1.20.0->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 12.58   Downloading importlib_metadata-8.7.1-py3-none-any.whl.metadata (4.7 kB)
+#11 12.72 Collecting beartype>=0.20.0 (from py-key-value-aio<0.5.0,>=0.4.4->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 12.76   Downloading beartype-0.22.9-py3-none-any.whl.metadata (37 kB)
+#11 12.86 Collecting aiofile>=3.5.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 12.90   Downloading aiofile-3.9.0-py3-none-any.whl.metadata (14 kB)
+#11 12.99 Collecting keyring>=25.6.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 13.04   Downloading keyring-25.7.0-py3-none-any.whl.metadata (21 kB)
+#11 13.10 Collecting cachetools>=5.0.0 (from py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 13.15   Downloading cachetools-7.0.5-py3-none-any.whl.metadata (5.6 kB)
+#11 13.21 Collecting email-validator>=2.0.0 (from pydantic[email]>=2.11.7->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 13.25   Downloading email_validator-2.3.0-py3-none-any.whl.metadata (26 kB)
+#11 13.43 Collecting charset_normalizer<4,>=2 (from requests>=2.26.0->docker>=6.1.0->awslabs.ecs-mcp-server)
+#11 13.47   Downloading charset_normalizer-3.4.6-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (40 kB)
+#11 13.48      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 40.6/40.6 kB 18.5 MB/s eta 0:00:00
+#11 13.56 Collecting markdown-it-py>=2.2.0 (from rich>=13.9.4->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 13.60   Downloading markdown_it_py-4.0.0-py3-none-any.whl.metadata (7.3 kB)
+#11 13.68 Collecting pygments<3.0.0,>=2.13.0 (from rich>=13.9.4->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 13.72   Downloading pygments-2.20.0-py3-none-any.whl.metadata (2.5 kB)
+#11 14.08 Collecting click>=7.0 (from uvicorn>=0.35->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 14.12   Downloading click-8.3.1-py3-none-any.whl.metadata (2.6 kB)
+#11 14.27 Collecting caio<0.10.0,>=0.9.0 (from aiofile>=3.5.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 14.31   Downloading caio-0.9.25-cp311-cp311-manylinux_2_34_x86_64.whl.metadata (3.3 kB)
+#11 14.55 Collecting dnspython>=2.0.0 (from email-validator>=2.0.0->pydantic[email]>=2.11.7->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 14.60   Downloading dnspython-2.8.0-py3-none-any.whl.metadata (5.7 kB)
+#11 14.72 Collecting zipp>=3.20 (from importlib-metadata<8.8.0,>=6.0->opentelemetry-api>=1.20.0->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 14.76   Downloading zipp-3.23.0-py3-none-any.whl.metadata (3.6 kB)
+#11 14.84 Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.20.0->mcp<2.0,>=1.24.0->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 14.90   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+#11 15.32 Collecting rpds-py>=0.25.0 (from jsonschema>=4.20.0->mcp<2.0,>=1.24.0->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 15.36   Downloading rpds_py-0.30.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)
+#11 15.45 Collecting SecretStorage>=3.2 (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 15.49   Downloading secretstorage-3.5.0-py3-none-any.whl.metadata (4.0 kB)
+#11 15.55 Collecting jeepney>=0.4.2 (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 15.59   Downloading jeepney-0.9.0-py3-none-any.whl.metadata (1.2 kB)
+#11 15.65 Collecting jaraco.classes (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 15.75   Downloading jaraco.classes-3.4.0-py3-none-any.whl.metadata (2.6 kB)
+#11 15.81 Collecting jaraco.functools (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 15.85   Downloading jaraco_functools-4.4.0-py3-none-any.whl.metadata (3.0 kB)
+#11 15.91 Collecting jaraco.context (from keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 15.97   Downloading jaraco_context-6.1.2-py3-none-any.whl.metadata (4.2 kB)
+#11 16.04 Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich>=13.9.4->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 16.09   Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+#11 16.43 Collecting cffi>=2.0.0 (from cryptography->authlib>=1.6.5->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 16.47   Downloading cffi-2.0.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.6 kB)
+#11 16.53 Collecting six>=1.5 (from python-dateutil<3.0.0,>=2.1->botocore<1.43.0,>=1.42.78->boto3>=1.41.1->awslabs.ecs-mcp-server)
+#11 16.58   Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+#11 16.69 Collecting docutils (from rich-rst<2.0.0,>=1.3.1->cyclopts>=4.0.0->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 16.73   Downloading docutils-0.22.4-py3-none-any.whl.metadata (15 kB)
+#11 16.87 Collecting pycparser (from cffi>=2.0.0->cryptography->authlib>=1.6.5->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 16.91   Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+#11 17.15 Collecting more-itertools (from jaraco.classes->keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 17.20   Downloading more_itertools-10.8.0-py3-none-any.whl.metadata (39 kB)
+#11 17.27 Collecting backports.tarfile (from jaraco.context->keyring>=25.6.0->py-key-value-aio[filetree,keyring,memory]<0.5.0,>=0.4.4->fastmcp>=3.0.0->awslabs.ecs-mcp-server)
+#11 17.32   Downloading backports.tarfile-1.2.0-py3-none-any.whl.metadata (2.0 kB)
+#11 17.44 Downloading awslabs_ecs_mcp_server-0.1.28-py3-none-any.whl (110 kB)
+#11 17.45    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 110.5/110.5 kB 10.1 MB/s eta 0:00:00
+#11 17.50 Downloading boto3-1.42.78-py3-none-any.whl (140 kB)
+#11 17.51    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 140.6/140.6 kB 10.2 MB/s eta 0:00:00
+#11 17.56 Downloading docker-7.1.0-py3-none-any.whl (147 kB)
+#11 17.57    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 147.8/147.8 kB 15.8 MB/s eta 0:00:00
+#11 17.62 Downloading fastmcp-3.1.1-py3-none-any.whl (633 kB)
+#11 17.69    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 633.8/633.8 kB 9.1 MB/s eta 0:00:00
+#11 17.74 Downloading gevent-25.9.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (2.1 MB)
+#11 17.91    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 12.6 MB/s eta 0:00:00
+#11 17.95 Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+#11 17.97    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 134.9/134.9 kB 14.9 MB/s eta 0:00:00
+#11 18.01 Downloading pydantic-2.12.5-py3-none-any.whl (463 kB)
+#11 18.06    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 463.6/463.6 kB 11.9 MB/s eta 0:00:00
+#11 18.10 Downloading pydantic_core-2.41.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.1 MB)
+#11 18.25    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 13.6 MB/s eta 0:00:00
+#11 18.30 Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (806 kB)
+#11 18.37    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 806.6/806.6 kB 12.6 MB/s eta 0:00:00
+#11 18.42 Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+#11 18.46 Downloading authlib-1.6.9-py2.py3-none-any.whl (244 kB)
+#11 18.49    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 244.2/244.2 kB 12.3 MB/s eta 0:00:00
+#11 18.54 Downloading botocore-1.42.78-py3-none-any.whl (14.7 MB)
+#11 19.51    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 14.7/14.7 MB 16.3 MB/s eta 0:00:00
+#11 19.55 Downloading cyclopts-4.10.1-py3-none-any.whl (204 kB)
+#11 19.58    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 204.3/204.3 kB 11.1 MB/s eta 0:00:00
+#11 19.62 Downloading exceptiongroup-1.3.1-py3-none-any.whl (16 kB)
+#11 19.66 Downloading greenlet-3.3.2-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (594 kB)
+#11 19.78    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 594.2/594.2 kB 5.3 MB/s eta 0:00:00
+#11 19.83 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#11 19.84    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.5/73.5 kB 9.2 MB/s eta 0:00:00
+#11 19.88 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#11 19.89    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.8/78.8 kB 13.0 MB/s eta 0:00:00
+#11 19.98 Downloading jmespath-1.1.0-py3-none-any.whl (20 kB)
+#11 20.02 Downloading jsonref-1.1.0-py3-none-any.whl (9.4 kB)
+#11 20.07 Downloading jsonschema_path-0.4.5-py3-none-any.whl (19 kB)
+#11 20.12 Downloading markupsafe-3.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (22 kB)
+#11 20.17 Downloading mcp-1.26.0-py3-none-any.whl (233 kB)
+#11 20.19    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 233.6/233.6 kB 13.8 MB/s eta 0:00:00
+#11 20.24 Downloading openapi_pydantic-0.5.1-py3-none-any.whl (96 kB)
+#11 20.24    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 96.4/96.4 kB 19.7 MB/s eta 0:00:00
+#11 20.30 Downloading opentelemetry_api-1.40.0-py3-none-any.whl (68 kB)
+#11 20.30    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 68.7/68.7 kB 36.7 MB/s eta 0:00:00
+#11 20.34 Downloading packaging-26.0-py3-none-any.whl (74 kB)
+#11 20.36    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 74.4/74.4 kB 13.1 MB/s eta 0:00:00
+#11 20.40 Downloading platformdirs-4.9.4-py3-none-any.whl (21 kB)
+#11 20.45 Downloading py_key_value_aio-0.4.4-py3-none-any.whl (152 kB)
+#11 20.46    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 152.3/152.3 kB 16.5 MB/s eta 0:00:00
+#11 20.51 Downloading pyperclip-1.11.0-py3-none-any.whl (11 kB)
+#11 20.56 Downloading python_dotenv-1.2.2-py3-none-any.whl (22 kB)
+#11 20.60 Downloading requests-2.33.0-py3-none-any.whl (65 kB)
+#11 20.61    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 65.0/65.0 kB 14.3 MB/s eta 0:00:00
+#11 20.65 Downloading rich-14.3.3-py3-none-any.whl (310 kB)
+#11 20.69    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 310.5/310.5 kB 9.8 MB/s eta 0:00:00
+#11 20.73 Downloading s3transfer-0.16.0-py3-none-any.whl (86 kB)
+#11 20.74    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 86.8/86.8 kB 18.9 MB/s eta 0:00:00
+#11 20.79 Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+#11 20.79    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 44.6/44.6 kB 152.4 MB/s eta 0:00:00
+#11 20.83 Downloading typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+#11 20.88 Downloading uncalled_for-0.2.0-py3-none-any.whl (11 kB)
+#11 20.93 Downloading urllib3-2.6.3-py3-none-any.whl (131 kB)
+#11 20.94    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 131.6/131.6 kB 15.7 MB/s eta 0:00:00
+#11 20.98 Downloading uvicorn-0.42.0-py3-none-any.whl (68 kB)
+#11 20.99    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 68.8/68.8 kB 15.6 MB/s eta 0:00:00
+#11 21.03 Downloading watchfiles-1.1.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (456 kB)
+#11 21.07    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 456.1/456.1 kB 13.0 MB/s eta 0:00:00
+#11 21.12 Downloading websockets-16.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (184 kB)
+#11 21.14    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 184.6/184.6 kB 13.0 MB/s eta 0:00:00
+#11 21.18 Downloading zope_event-6.1-py3-none-any.whl (6.4 kB)
+#11 21.23 Downloading zope_interface-8.2-cp311-cp311-manylinux1_x86_64.manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_5_x86_64.whl (259 kB)
+#11 21.26    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 260.0/260.0 kB 13.2 MB/s eta 0:00:00
+#11 21.30 Downloading aiofile-3.9.0-py3-none-any.whl (19 kB)
+#11 21.34 Downloading anyio-4.13.0-py3-none-any.whl (114 kB)
+#11 21.35    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 114.4/114.4 kB 13.9 MB/s eta 0:00:00
+#11 21.40 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+#11 21.40    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 67.5/67.5 kB 25.6 MB/s eta 0:00:00
+#11 21.45 Downloading beartype-0.22.9-py3-none-any.whl (1.3 MB)
+#11 21.60    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 9.4 MB/s eta 0:00:00
+#11 21.64 Downloading cachetools-7.0.5-py3-none-any.whl (13 kB)
+#11 21.68 Downloading certifi-2026.2.25-py3-none-any.whl (153 kB)
+#11 21.70    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 153.7/153.7 kB 12.9 MB/s eta 0:00:00
+#11 21.76 Downloading charset_normalizer-3.4.6-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (204 kB)
+#11 21.77    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 204.7/204.7 kB 20.8 MB/s eta 0:00:00
+#11 21.82 Downloading click-8.3.1-py3-none-any.whl (108 kB)
+#11 21.83    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 108.3/108.3 kB 13.3 MB/s eta 0:00:00
+#11 21.88 Downloading docstring_parser-0.17.0-py3-none-any.whl (36 kB)
+#11 21.93 Downloading email_validator-2.3.0-py3-none-any.whl (35 kB)
+#11 21.97 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#11 22.02 Downloading httpx_sse-0.4.3-py3-none-any.whl (9.0 kB)
+#11 22.07 Downloading idna-3.11-py3-none-any.whl (71 kB)
+#11 22.07    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 71.0/71.0 kB 43.6 MB/s eta 0:00:00
+#11 22.12 Downloading importlib_metadata-8.7.1-py3-none-any.whl (27 kB)
+#11 22.16 Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+#11 22.17    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 90.6/90.6 kB 25.6 MB/s eta 0:00:00
+#11 22.21 Downloading keyring-25.7.0-py3-none-any.whl (39 kB)
+#11 22.26 Downloading markdown_it_py-4.0.0-py3-none-any.whl (87 kB)
+#11 22.27    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 87.3/87.3 kB 34.0 MB/s eta 0:00:00
+#11 22.31 Downloading pathable-0.5.0-py3-none-any.whl (16 kB)
+#11 22.36 Downloading pydantic_settings-2.13.1-py3-none-any.whl (58 kB)
+#11 22.37    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 58.9/58.9 kB 13.3 MB/s eta 0:00:00
+#11 22.41 Downloading pygments-2.20.0-py3-none-any.whl (1.2 MB)
+#11 22.56    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 8.3 MB/s eta 0:00:00
+#11 22.61 Downloading pyjwt-2.12.1-py3-none-any.whl (29 kB)
+#11 22.66 Downloading cryptography-46.0.6-cp311-abi3-manylinux_2_34_x86_64.whl (4.5 MB)
+#11 22.98    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.5/4.5 MB 14.1 MB/s eta 0:00:00
+#11 23.02 Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+#11 23.05    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 229.9/229.9 kB 10.2 MB/s eta 0:00:00
+#11 23.10 Downloading python_multipart-0.0.22-py3-none-any.whl (24 kB)
+#11 23.14 Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+#11 23.19 Downloading rich_rst-1.3.2-py3-none-any.whl (12 kB)
+#11 23.23 Downloading sse_starlette-3.3.4-py3-none-any.whl (14 kB)
+#11 23.29 Downloading starlette-1.0.0-py3-none-any.whl (72 kB)
+#11 23.29    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 72.7/72.7 kB 37.2 MB/s eta 0:00:00
+#11 23.34 Downloading caio-0.9.25-cp311-cp311-manylinux_2_34_x86_64.whl (78 kB)
+#11 23.34    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.3/78.3 kB 30.7 MB/s eta 0:00:00
+#11 23.39 Downloading cffi-2.0.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (215 kB)
+#11 23.43    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 215.6/215.6 kB 13.1 MB/s eta 0:00:00
+#11 23.48 Downloading dnspython-2.8.0-py3-none-any.whl (331 kB)
+#11 23.51    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 331.1/331.1 kB 12.6 MB/s eta 0:00:00
+#11 23.55 Downloading jeepney-0.9.0-py3-none-any.whl (49 kB)
+#11 23.56    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 49.0/49.0 kB 14.2 MB/s eta 0:00:00
+#11 23.60 Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+#11 23.65 Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+#11 23.69 Downloading rpds_py-0.30.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (390 kB)
+#11 23.72    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 390.8/390.8 kB 13.0 MB/s eta 0:00:00
+#11 23.77 Downloading secretstorage-3.5.0-py3-none-any.whl (15 kB)
+#11 23.81 Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+#11 23.86 Downloading zipp-3.23.0-py3-none-any.whl (10 kB)
+#11 23.91 Downloading docutils-0.22.4-py3-none-any.whl (633 kB)
+#11 23.96    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 633.2/633.2 kB 11.6 MB/s eta 0:00:00
+#11 24.01 Downloading jaraco.classes-3.4.0-py3-none-any.whl (6.8 kB)
+#11 24.05 Downloading jaraco_context-6.1.2-py3-none-any.whl (7.9 kB)
+#11 24.10 Downloading jaraco_functools-4.4.0-py3-none-any.whl (10 kB)
+#11 24.14 Downloading backports.tarfile-1.2.0-py3-none-any.whl (30 kB)
+#11 24.19 Downloading more_itertools-10.8.0-py3-none-any.whl (69 kB)
+#11 24.20    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 69.7/69.7 kB 33.1 MB/s eta 0:00:00
+#11 24.24 Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+#11 24.25    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 48.2/48.2 kB 89.9 MB/s eta 0:00:00
+#11 24.85 Installing collected packages: pyperclip, zope.interface, zope.event, zipp, websockets, urllib3, uncalled-for, typing-extensions, six, rpds-py, pyyaml, python-multipart, python-dotenv, pyjwt, pygments, pycparser, platformdirs, pathable, packaging, more-itertools, mdurl, MarkupSafe, jsonref, jmespath, jeepney, idna, httpx-sse, h11, greenlet, docutils, docstring-parser, dnspython, click, charset_normalizer, certifi, caio, cachetools, beartype, backports.tarfile, attrs, annotated-types, uvicorn, typing-inspection, requests, referencing, python-dateutil, pydantic-core, py-key-value-aio, markdown-it-py, jinja2, jaraco.functools, jaraco.context, jaraco.classes, importlib-metadata, httpcore, gevent, exceptiongroup, email-validator, cffi, anyio, aiofile, watchfiles, starlette, rich, pydantic, opentelemetry-api, jsonschema-specifications, jsonschema-path, httpx, docker, cryptography, botocore, sse-starlette, SecretStorage, s3transfer, rich-rst, pydantic-settings, openapi-pydantic, jsonschema, authlib, mcp, keyring, cyclopts, boto3, fastmcp, awslabs.ecs-mcp-server
+#11 31.97 Successfully installed MarkupSafe-3.0.3 SecretStorage-3.5.0 aiofile-3.9.0 annotated-types-0.7.0 anyio-4.13.0 attrs-26.1.0 authlib-1.6.9 awslabs.ecs-mcp-server-0.1.28 backports.tarfile-1.2.0 beartype-0.22.9 boto3-1.42.78 botocore-1.42.78 cachetools-7.0.5 caio-0.9.25 certifi-2026.2.25 cffi-2.0.0 charset_normalizer-3.4.6 click-8.3.1 cryptography-46.0.6 cyclopts-4.10.1 dnspython-2.8.0 docker-7.1.0 docstring-parser-0.17.0 docutils-0.22.4 email-validator-2.3.0 exceptiongroup-1.3.1 fastmcp-3.1.1 gevent-25.9.1 greenlet-3.3.2 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 httpx-sse-0.4.3 idna-3.11 importlib-metadata-8.7.1 jaraco.classes-3.4.0 jaraco.context-6.1.2 jaraco.functools-4.4.0 jeepney-0.9.0 jinja2-3.1.6 jmespath-1.1.0 jsonref-1.1.0 jsonschema-4.26.0 jsonschema-path-0.4.5 jsonschema-specifications-2025.9.1 keyring-25.7.0 markdown-it-py-4.0.0 mcp-1.26.0 mdurl-0.1.2 more-itertools-10.8.0 openapi-pydantic-0.5.1 opentelemetry-api-1.40.0 packaging-26.0 pathable-0.5.0 platformdirs-4.9.4 py-key-value-aio-0.4.4 pycparser-3.0 pydantic-2.12.5 pydantic-core-2.41.5 pydantic-settings-2.13.1 pygments-2.20.0 pyjwt-2.12.1 pyperclip-1.11.0 python-dateutil-2.9.0.post0 python-dotenv-1.2.2 python-multipart-0.0.22 pyyaml-6.0.3 referencing-0.37.0 requests-2.33.0 rich-14.3.3 rich-rst-1.3.2 rpds-py-0.30.0 s3transfer-0.16.0 six-1.17.0 sse-starlette-3.3.4 starlette-1.0.0 typing-extensions-4.15.0 typing-inspection-0.4.2 uncalled-for-0.2.0 urllib3-2.6.3 uvicorn-0.42.0 watchfiles-1.1.1 websockets-16.0 zipp-3.23.0 zope.event-6.1 zope.interface-8.2
+#11 31.97 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+#11 32.24 
+#11 32.24 [notice] A new release of pip is available: 24.0 -> 26.0.1
+#11 32.24 [notice] To update, run: pip install --upgrade pip
+#11 DONE 33.3s
+
+#12 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#12 DONE 0.4s
+
+#13 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#13 DONE 1.2s
+
+#14 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#14 DONE 0.1s
+
+#15 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#15 DONE 0.1s
+
+#16 [stage-1 9/9] RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
+#16 DONE 0.3s
+
+#17 exporting to image
+#17 exporting layers
+#17 exporting layers 5.4s done
+#17 exporting manifest sha256:23d4ad1cc42fcb6610a4c5d1143a19c916eae8362ac6ab37601ed898dd22a892 0.0s done
+#17 exporting config sha256:e9a4f9e6a42447f595214e410f51bdd20e360512ab39c90d7b48a2bad10a52ad 0.0s done
+#17 exporting attestation manifest sha256:ad7c04e4bb4df21b792fbc2981698c4e6006ce1cc85628231c39b8cd03fe44fe 0.0s done
+#17 exporting manifest list sha256:10bb813fbec6eea21337e1553899e1050526bdce3b748b48ead431026f50836d
+#17 exporting manifest list sha256:10bb813fbec6eea21337e1553899e1050526bdce3b748b48ead431026f50836d 0.0s done
+#17 naming to docker.io/library/aws-ecs-mcp:latest done
+#17 unpacking to docker.io/library/aws-ecs-mcp:latest
+#17 unpacking to docker.io/library/aws-ecs-mcp:latest 3.0s done
+#17 naming to docker.io/hackerdogs/aws-ecs-mcp:latest done
+#17 unpacking to docker.io/hackerdogs/aws-ecs-mcp:latest 0.0s done
+#17 DONE 8.6s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/n9pvamumtlg33asmbbagupmfy
+
+✅ Build succeeded.
+
+--- [CHECK 2] Stdio tools/list (raw output) ---
+>>> Sending to container via stdio:
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"debug","version":"0.0.1"}}}
+{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}
+
+>>> Raw container response:
+2026-03-29 14:53:27,960 - ecs-mcp-server - INFO - Server started
+2026-03-29 14:53:27,961 - ecs-mcp-server - INFO - Write operations enabled: False
+2026-03-29 14:53:27,961 - ecs-mcp-server - INFO - Sensitive data access enabled: False
+2026-03-29 14:53:28,215 - httpx - INFO - HTTP Request: GET https://pypi.org/pypi/fastmcp/json "HTTP/1.1 200 OK"
+
+
+╭──────────────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│                                                                              │
+│                         ▄▀▀ ▄▀█ █▀▀ ▀█▀ █▀▄▀█ █▀▀ █▀█                        │
+│                         █▀  █▀█ ▄▄█  █  █ ▀ █ █▄▄ █▀▀                        │
+│                                                                              │
+│                                                                              │
+│                                FastMCP 3.1.1                                 │
+│                            https://gofastmcp.com                             │
+│                                                                              │
+│                  🖥  Server:      AWS ECS MCP Server, 3.1.1                   │
+│                  🚀 Deploy free: https://fastmcp.cloud                       │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+2026-03-29 14:53:28,253 - ecs-mcp-server - INFO - Server initializing
+2026-03-29 14:53:28,253 - awslabs.ecs_mcp_server.modules.aws_knowledge_proxy - INFO - Applying tool transformations...
+2026-03-29 14:53:29,302 - httpx - INFO - HTTP Request: POST https://knowledge-mcp.global.api.aws "HTTP/1.1 200 OK"
+2026-03-29 14:53:29,303 - mcp.client.streamable_http - INFO - Negotiated protocol version: 2025-03-26
+2026-03-29 14:53:29,721 - httpx - INFO - HTTP Request: POST https://knowledge-mcp.global.api.aws "HTTP/1.1 202 Accepted"
+2026-03-29 14:53:30,546 - httpx - INFO - HTTP Request: POST https://knowledge-mcp.global.api.aws "HTTP/1.1 200 OK"
+2026-03-29 14:53:31,150 - httpx - INFO - HTTP Request: POST https://knowledge-mcp.global.api.aws "HTTP/1.1 200 OK"
+2026-03-29 14:53:31,151 - mcp.client.streamable_http - INFO - Negotiated protocol version: 2025-03-26
+2026-03-29 14:53:31,593 - httpx - INFO - HTTP Request: POST https://knowledge-mcp.global.api.aws "HTTP/1.1 202 Accepted"
+2026-03-29 14:53:32,174 - httpx - INFO - HTTP Request: POST https://knowledge-mcp.global.api.aws "HTTP/1.1 200 OK"
+/usr/local/lib/python3.11/site-packages/awslabs/ecs_mcp_server/modules/aws_knowledge_proxy.py:126: DeprecationWarning: add_tool_transformation is deprecated. Use server.add_transform(ToolTransform({tool_name: config})) instead.
+  mcp.add_tool_transformation(tool_name, config)
+2026-03-29 14:53:32,182 - ecs-mcp-server - INFO - Server ready
+[03/29/26 14:53:32] INFO     Starting MCP server 'AWS ECS MCP   transport.py:183
+                             Server' with transport 'stdio'                     
+{"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"prompts":{"listChanged":false},"resources":{"subscribe":false,"listChanged":false},"tools":{"listChanged":true},"extensions":{"io.modelcontextprotocol/ui":{}}},"serverInfo":{"name":"AWS ECS MCP Server","version":"3.1.1"},"instructions":"Use this server to containerize and deploy web applications to AWS ECS using Express Mode.\n\n        DEPLOYMENT WORKFLOW with EXPRESS MODE:\n        1. containerize_app(app_path, port)\n        - Creates Dockerfile for your application\n\n        2. build_and_push_image_to_ecr(app_name, app_path)\n        - app_name must be unique for each application\n        - Creates ECR repository via CloudFormation using app_name\n        - Builds Docker image and pushes to ECR\n        - Returns full_image_uri to use in deployment\n\n        3. validate_ecs_express_mode_prerequisites(image_uri)\n        - Validates IAM roles (checks default names if not provided)\n        - Verifies image exists in ECR\n\n        4. Deploy with ecs_resource_management - CreateExpressGatewayService:\n\n        Minimal deployment:\n        ecs_resource_management(\n            api_operation=\"CreateExpressGatewayService\",\n            api_params={\n                \"primaryContainer\": {\"image\": full_image_uri},\n                \"executionRoleArn\": \"arn:aws:iam::ACCOUNT:role/ecsTaskExecutionRole\",\n                \"infrastructureRoleArn\": (\n                    \"arn:aws:iam::ACCOUNT:role/ecsInfrastructureRoleForExpressServices\"\n                )\n            }\n        )\n\n        Or with more configuration options:\n        ecs_resource_management(\n            api_operation=\"CreateExpressGatewayService\",\n            api_params={\n                \"serviceName\": \"my-api\",\n                \"cluster\": \"production\",\n                \"primaryContainer\": {\n                    \"image\": full_image_uri,\n                    \"containerPort\": 8080,\n                    \"environment\": [\n                        {\"name\": \"NODE_ENV\", \"value\": \"production\"}\n                    ]\n                },\n                \"executionRoleArn\": \"arn:aws:iam::ACCOUNT:role/ecsTaskExecutionRole\",\n                \"infrastructureRoleArn\": (\n                    \"arn:aws:iam::ACCOUNT:role/ecsInfrastructureRoleForExpressServices\"\n                ),\n                \"cpu\": \"1024\",\n                \"memory\": \"2048\",\n                \"scalingTarget\": {\n                    \"minTaskCount\": 2,\n                    \"maxTaskCount\": 10,\n                    \"autoScalingMetric\": \"CPUUtilization\",\n                    \"autoScalingTargetValue\": 70\n                },\n                \"healthCheckPath\": \"/health\",\n                \"tags\": [\n                    {\"key\": \"Environment\", \"value\": \"production\"}\n                ]\n            }\n        )\n\n        5. Wait for service to be ready (optional but recommended):\n        wait_for_service_ready(\n            cluster=\"my-cluster\",\n            service_name=\"my-service\"\n        )\n\n        6. Check status and get application URL:\n\n        First, describe the service to get its status and URL:\n        ecs_resource_management(\n            api_operation=\"DescribeExpressGatewayService\",\n            api_params={\"serviceArn\": service_arn}\n        )\n\n        IMPORTANT: After the CreateExpressGatewayService or DescribeExpressGatewayService commands complete:\n        - Present the customer with a summary of the deployed configuration options\n        - Extract the application URL from the response and explicitly inform the user: \"Once the service is up and running, your application will be accessible at: <URL>\"\n\n        EXPRESS MODE FEATURES:\n        - Auto-provisions Application Load Balancer, target groups, security groups\n        - Built-in HTTPS with custom domain (https://service.ecs.region.on.aws)\n        - Configurable CPU/memory (256-4096 vCPU units, 512-8192 MB)\n        - Auto-scaling with min/max task counts and target metrics\n        - Health monitoring with customizable health check paths\n        - No CloudFormation templates needed for ECS resources\n\n        LEARN MORE:\n        Use the integrated AWS Knowledge MCP tools to access up-to-date documentation:\n        - Search: aws_knowledge_aws___search_documentation with \"ECS Express Mode\"\n        - Read docs: aws_knowledge_aws___read_documentation with Express Mode URLs\n        - Get recommendations: aws_knowledge_aws___recommend for related topics\n        For detailed API parameters, search for \"CreateExpressGatewayService API reference\"\n\n        IMPORTANT:\n        - Set ALLOW_WRITE=true to enable infrastructure creation and deletion\n        - Set ALLOW_SENSITIVE_DATA=true to enable access to logs and detailed resource information\n        - AWS credentials must be properly configured\n        - Application should listen on a configurable port\n        - Use the integrated Knowledge MCP Tools to search and read up-to-date AWS documentation including ECS's newest feature launches\n "}}
+2026-03-29 14:53:32,187 - mcp.server.lowlevel.server - INFO - Processing request of type ListToolsRequest
+2026-03-29 14:53:32,775 - httpx - INFO - HTTP Request: POST https://knowledge-mcp.global.api.aws "HTTP/1.1 200 OK"
+2026-03-29 14:53:32,776 - mcp.client.streamable_http - INFO - Negotiated protocol version: 2025-03-26
+2026-03-29 14:53:33,218 - httpx - INFO - HTTP Request: POST https://knowledge-mcp.global.api.aws "HTTP/1.1 202 Accepted"
+2026-03-29 14:53:33,963 - httpx - INFO - HTTP Request: POST https://knowledge-mcp.global.api.aws "HTTP/1.1 200 OK"
+2026-03-29 14:53:33,968 - ecs-mcp-server - ERROR - Error starting server: unhandled errors in a TaskGroup (1 sub-exception)
+
+✅ Stdio tools/list: tools key found in response.
+
+--- [CHECK 3] HTTP streamable tools/list (raw output) ---
+>>> Starting container in HTTP mode on port 8614...
+9968b4822afdbe06176fa43569c7c29aabc9020f2b184118a257454e9f57d347
+>>> Waiting 5s for server to start...
+>>> Container logs so far:
+[mcp-proxy] Listening on 0.0.0.0:8613/mcp
+[mcp-proxy] Wrapping: ecs-mcp-server
+
+>>> Sending HTTP initialize request to get session ID...
+event: message
+data: {"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"prompts":{"listChanged":false},"resources":{"subscribe":false,"listChanged":false},"tools":{"listChanged":true},"extensions":{"io.modelcontextprotocol/ui":{}}},"serverInfo":{"name":"AWS ECS MCP Server","version":"3.1.1"},"instructions":"Use this server to containerize and deploy web applications to AWS ECS using Express Mode.\n\n        DEPLOYMENT WORKFLOW with EXPRESS MODE:\n        1. containerize_app(app_path, port)\n        - Creates Dockerfile for your application\n\n        2. build_and_push_image_to_ecr(app_name, app_path)\n        - app_name must be unique for each application\n        - Creates ECR repository via CloudFormation using app_name\n        - Builds Docker image and pushes to ECR\n        - Returns full_image_uri to use in deployment\n\n        3. validate_ecs_express_mode_prerequisites(image_uri)\n        - Validates IAM roles (checks default names if not provided)\n        - Verifies image exists in ECR\n\n        4. Deploy with ecs_resource_management - CreateExpressGatewayService:\n\n        Minimal deployment:\n        ecs_resource_management(\n            api_operation=\"CreateExpressGatewayService\",\n            api_params={\n                \"primaryContainer\": {\"image\": full_image_uri},\n                \"executionRoleArn\": \"arn:aws:iam::ACCOUNT:role/ecsTaskExecutionRole\",\n                \"infrastructureRoleArn\": (\n                    \"arn:aws:iam::ACCOUNT:role/ecsInfrastructureRoleForExpressServices\"\n                )\n            }\n        )\n\n        Or with more configuration options:\n        ecs_resource_management(\n            api_operation=\"CreateExpressGatewayService\",\n            api_params={\n                \"serviceName\": \"my-api\",\n                \"cluster\": \"production\",\n                \"primaryContainer\": {\n                    \"image\": full_image_uri,\n                    \"containerPort\": 8080,\n                    \"environment\": [\n                        {\"name\": \"NODE_ENV\", \"value\": \"production\"}\n                    ]\n                },\n                \"executionRoleArn\": \"arn:aws:iam::ACCOUNT:role/ecsTaskExecutionRole\",\n                \"infrastructureRoleArn\": (\n                    \"arn:aws:iam::ACCOUNT:role/ecsInfrastructureRoleForExpressServices\"\n                ),\n                \"cpu\": \"1024\",\n                \"memory\": \"2048\",\n                \"scalingTarget\": {\n                    \"minTaskCount\": 2,\n                    \"maxTaskCount\": 10,\n                    \"autoScalingMetric\": \"CPUUtilization\",\n                    \"autoScalingTargetValue\": 70\n                },\n                \"healthCheckPath\": \"/health\",\n                \"tags\": [\n                    {\"key\": \"Environment\", \"value\": \"production\"}\n                ]\n            }\n        )\n\n        5. Wait for service to be ready (optional but recommended):\n        wait_for_service_ready(\n            cluster=\"my-cluster\",\n            service_name=\"my-service\"\n        )\n\n        6. Check status and get application URL:\n\n        First, describe the service to get its status and URL:\n        ecs_resource_management(\n            api_operation=\"DescribeExpressGatewayService\",\n            api_params={\"serviceArn\": service_arn}\n        )\n\n        IMPORTANT: After the CreateExpressGatewayService or DescribeExpressGatewayService commands complete:\n        - Present the customer with a summary of the deployed configuration options\n        - Extract the application URL from the response and explicitly inform the user: \"Once the service is up and running, your application will be accessible at: <URL>\"\n\n        EXPRESS MODE FEATURES:\n        - Auto-provisions Application Load Balancer, target groups, security groups\n        - Built-in HTTPS with custom domain (https://service.ecs.region.on.aws)\n        - Configurable CPU/memory (256-4096 vCPU units, 512-8192 MB)\n        - Auto-scaling with min/max task counts and target metrics\n        - Health monitoring with customizable health check paths\n        - No CloudFormation templates needed for ECS resources\n\n        LEARN MORE:\n        Use the integrated AWS Knowledge MCP tools to access up-to-date documentation:\n        - Search: aws_knowledge_aws___search_documentation with \"ECS Express Mode\"\n        - Read docs: aws_knowledge_aws___read_documentation with Express Mode URLs\n        - Get recommendations: aws_knowledge_aws___recommend for related topics\n        For detailed API parameters, search for \"CreateExpressGatewayService API reference\"\n\n        IMPORTANT:\n        - Set ALLOW_WRITE=true to enable infrastructure creation and deletion\n        - Set ALLOW_SENSITIVE_DATA=true to enable access to logs and detailed resource information\n        - AWS credentials must be properly configured\n        - Application should listen on a configurable port\n        - Use the integrated Knowledge MCP Tools to search and read up-to-date AWS documentation including ECS's newest feature launches\n "}}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> Content-Length: 154
+> 
+} [154 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.15
+< Date: Sun, 29 Mar 2026 14:53:40 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: 7a609312734045e29cf9ea4c4602a665
+< 
+{ [5199 bytes data]
+* Closing connection 0
+✅ Got session ID: 7a609312734045e29cf9ea4c4602a665
+>>> Sending HTTP notifications/initialized...
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 7a609312734045e29cf9ea4c4602a665
+> Content-Length: 54
+> 
+} [54 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 202 Accepted
+< Server: BaseHTTP/0.6 Python/3.11.15
+< Date: Sun, 29 Mar 2026 14:53:46 GMT
+< 
+{ [0 bytes data]
+* Closing connection 0
+>>> Sending HTTP tools/list request:
+>>> Raw HTTP response:
+event: message
+data: {"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"containerize_app","description":"Start here if a user wants to run their application locally or deploy an app to the cloud.\nProvides guidance for containerizing a web application.\n\nThis tool provides guidance on how to build Docker images for web applications,\nincluding recommendations for base images, build tools, and architecture choices.\n\nUSAGE INSTRUCTIONS:\n1. Run this tool to get guidance on how to configure your application for ECS.\n2. Follow the steps generated from the tool.\n3. Proceed to create_ecs_infrastructure tool.\n\nThe guidance includes:\n- Example Dockerfile content\n- Example docker-compose.yml content\n- Build commands for different container tools\n- Architecture recommendations\n- Troubleshooting tips\n\nParameters:\n    app_path: Path to the web application directory\n    port: Port the application listens on\n\nReturns:\n    Dictionary containing containerization guidance","inputSchema":{"additionalProperties":false,"properties":{"app_path":{"description":"Absolute file path to the web application directory","type":"string"},"port":{"description":"Port the application listens on","type":"integer"}},"required":["app_path","port"],"type":"object"},"outputSchema":{"additionalProperties":true,"type":"object"},"_meta":{"fastmcp":{"tags":[]}}},{"name":"build_and_push_image_to_ecr","description":"Creates ECR infrastructure and builds/pushes a Docker image to ECR.\n\nThis tool automates the complete ECR setup and image deployment process:\n1. Creates ECR repository via CloudFormation\n2. Creates IAM role with ECR push/pull permissions\n3. Builds Docker image from your application\n4. Pushes image to ECR\n\n## Parameters:\n- Required: app_name (Application name, 1-20 chars, lowercase letters/digits/hyphens only)\n- Required: app_path (Path to application directory with Dockerfile)\n- Optional: tag (Image tag, defaults to epoch timestamp)\n\n## Prerequisites:\n- Docker installed and running locally\n- Dockerfile exists in the application directory\n- AWS credentials configured with appropriate permissions\n\n## Returns:\nDictionary containing:\n- repository_uri: ECR repository URI\n- image_tag: The tag of the pushed image\n- full_image_uri: Complete image URI with tag (use this for deployment)\n- ecr_push_pull_role_arn: ARN of the IAM role created for ECR access\n- stack_name: Name of the CloudFormation stack created\n\n## Usage Examples:\n```\n# Build and push with auto-generated tag\nbuild_and_push_image_to_ecr(\n    app_name=\"my-app\",\n    app_path=\"/home/user/my-flask-app\"\n)\n\n# Build and push with specific tag\nbuild_and_push_image_to_ecr(\n    app_name=\"my-app\",\n    app_path=\"/home/user/my-flask-app\",\n    tag=\"v1.0.0\"\n)\n```\n\nReturns:\n```\n{\n  \"repository_uri\": \"123456789012.dkr.ecr.us-west-2.amazonaws.com/my-app-repo\",\n  \"image_tag\": \"1700000000\",\n  \"full_image_uri\": \"123456789012.dkr.ecr.us-west-2.amazonaws.com/my-app-repo:1700000000\",\n  \"ecr_push_pull_role_arn\": \"arn:aws:iam::123456789012:role/my-app-ecr-push-pull-role\",\n  \"stack_name\": \"my-app-ecr-infrastructure\"\n}\n```","inputSchema":{"additionalProperties":false,"properties":{"app_name":{"description":"Name of the application (used for ECR repository and stack names)","type":"string"},"app_path":{"description":"Absolute file path to the web application directory containing the Dockerfile","type":"string"},"tag":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"Optional image tag (if None, uses epoch timestamp)"}},"required":["app_name","app_path"],"type":"object"},"outputSchema":{"additionalProperties":true,"type":"object"},"_meta":{"fastmcp":{"tags":[]}}},{"name":"validate_ecs_express_mode_prerequisites","description":"Validates prerequisites for ECS Express Mode deployment.\n\nThis tool checks that all required resources exist and are properly configured\nbefore deploying an ECS Express Gateway Service.\n\n## Validation Checks:\n1. Task Execution Role exists (checks default 'ecsTaskExecutionRole' if not provided)\n2. Infrastructure Role exists (checks default 'ecsInfrastructureRoleForExpressServices'\n   if not provided)\n3. Docker image exists in the specified ECR repository\n\n## Parameters:\n- Required: image_uri (Full ECR image URI including tag)\n- Optional: execution_role_arn (ARN of task execution role,\n  defaults to 'ecsTaskExecutionRole')\n- Optional: infrastructure_role_arn (ARN of infrastructure role,\n  defaults to 'ecsInfrastructureRoleForExpressServices')\n\n## Required IAM Roles:\n\n### Task Execution Role:\n- Allows ECS tasks to pull images and write logs\n- Must have trust policy for ecs-tasks.amazonaws.com\n- Should have AmazonECSTaskExecutionRolePolicy attached\n\n### Infrastructure Role:\n- Allows ECS to provision infrastructure\n- Must have trust policy for ecs.amazonaws.com\n- Should have AmazonECSInfrastructureRoleforExpressGatewayServices attached\n\n## Returns:\nDictionary containing:\n- valid: Boolean indicating if all prerequisites are met\n- errors: List of error messages if validation fails\n- warnings: List of warning messages\n- details: Detailed validation results for each check\n\n## Usage Examples:\n```\n# Validate with default role names\nvalidate_ecs_express_mode_prerequisites(\n    image_uri=\"123456789012.dkr.ecr.us-west-2.amazonaws.com/my-app:1700000000\"\n)\n\n# Validate with custom role ARNs\nvalidate_ecs_express_mode_prerequisites(\n    image_uri=\"123456789012.dkr.ecr.us-west-2.amazonaws.com/my-app:1700000000\",\n    execution_role_arn=\"arn:aws:iam::123456789012:role/custom-execution-role\",\n    infrastructure_role_arn=\"arn:aws:iam::123456789012:role/custom-infra-role\"\n)\n```\n\nReturns when successful:\n```\n{\n  \"valid\": true,\n  \"errors\": [],\n  \"warnings\": [],\n  \"details\": {\n    \"execution_role\": {\n      \"status\": \"valid\",\n      \"arn\": \"arn:aws:iam::123456789012:role/ecsTaskExecutionRole\",\n      \"name\": \"ecsTaskExecutionRole\",\n      \"message\": \"Task Execution Role is valid\"\n    },\n    \"infrastructure_role\": {\n      \"status\": \"valid\",\n      \"arn\": \"arn:aws:iam::123456789012:role/ecsInfrastructureRoleForExpressServices\",\n      \"name\": \"ecsInfrastructureRoleForExpressServices\",\n      \"message\": \"Infrastructure Role is valid\"\n    },\n    \"image\": {\n      \"status\": \"exists\",\n      \"uri\": \"123456789012.dkr.ecr.us-west-2.amazonaws.com/my-app:1700000000\",\n      \"repository\": \"my-app\",\n      \"tag\": \"1700000000\",\n      \"message\": \"Image found in ECR\"\n    }\n  }\n}\n```\n\nReturns when validation fails:\n```\n{\n  \"valid\": false,\n  \"errors\": [\n    \"Infrastructure Role not found: \"\n    \"arn:aws:iam::123456789012:role/ecsInfrastructureRoleForExpressServices\"\n  ],\n  \"warnings\": [],\n  \"details\": {\n    \"execution_role\": {\"status\": \"valid\", ...},\n    \"infrastructure_role\": {\"status\": \"not_found\", ...},\n    \"image\": {\"status\": \"exists\", ...}\n  }\n}\n```","inputSchema":{"additionalProperties":false,"properties":{"image_uri":{"description":"Full ECR image URI with tag (e.g., 123456789012.dkr.ecr.us-west-2.amazonaws.com/my-app:tag)","type":"string"},"execution_role_arn":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"Optional ARN of the ECS task execution role (defaults to ecsTaskExecutionRole)"},"infrastructure_role_arn":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"Optional ARN of the infrastructure role for Express Gateway (defaults to ecsInfrastructureRoleForExpressServices)"}},"required":["image_uri"],"type":"object"},"outputSchema":{"additionalProperties":true,"type":"object"},"_meta":{"fastmcp":{"tags":[]}}},{"name":"delete_app","description":"Deletes a complete Express Mode deployment including service and ECR infrastructure.\n\nThis tool performs complete cleanup of an Express Mode deployment:\n1. Deletes the Express Gateway Service\n2. Deletes the ECR CloudFormation stack (ECR repository + IAM role)\n\n## Parameters:\n- Required: service_arn (ARN of Express Gateway Service)\n- Required: app_name (Application name used during deployment)\n\n## What Gets Deleted:\n- Express Gateway Service and all provisioned infrastructure\n  (ALB, target groups, security groups)\n- CloudFormation stack for ECR resources, including ECR repo and container images\n\n## Returns:\nDictionary containing:\n- service_deletion: Status and details of service deletion\n- ecr_deletion: Status and details of ECR stack deletion\n- summary: Overall deletion summary with list of deleted resources\n- errors: List of any errors encountered\n\n## Usage Examples:\n```\n# Delete complete deployment\ndelete_app(\n    service_arn=\"arn:aws:ecs:us-west-2:123456789012:express-service/my-api\",\n    app_name=\"my-app\"\n)\n```\n\nReturns on success:\n```\n{\n  \"service_deletion\": {\n    \"status\": \"deleted\",\n    \"service_arn\": \"arn:aws:ecs:us-west-2:123456789012:express-service/my-api\",\n    \"message\": \"Express Gateway Service deleted successfully\"\n  },\n  \"ecr_deletion\": {\n    \"status\": \"deleted\",\n    \"stack_name\": \"my-app-ecr-infrastructure\",\n    \"message\": \"ECR stack deleted successfully\",\n    \"deleted_resources\": [\n      \"ECR repository: my-app-repo\",\n      \"IAM role: my-app-ecr-push-pull-role\"\n    ]\n  },\n  \"summary\": {\n    \"status\": \"success\",\n    \"message\": \"Successfully deleted Express Mode deployment for my-app\",\n    \"deleted_resources\": [\n      \"Express Gateway Service: arn:aws:ecs:...\",\n      \"ECR repository: my-app-repo\",\n      \"IAM role: my-app-ecr-push-pull-role\"\n    ]\n  },\n  \"errors\": []\n}\n```\n\n## Important Notes:\n- This operation requires WRITE permission (ALLOW_WRITE=true)\n- Deletion is irreversible - all container images will be deleted\n- Service deletion may take a few minutes as infrastructure is deprovisioned\n- If errors occur, partial deletion is possible (check summary for details)","inputSchema":{"additionalProperties":false,"properties":{"service_arn":{"description":"ARN of the Express Gateway Service to delete","type":"string"},"app_name":{"description":"Name of the application (used to identify ECR stack to delete)","type":"string"}},"required":["service_arn","app_name"],"type":"object"},"outputSchema":{"additionalProperties":true,"type":"object"},"_meta":{"fastmcp":{"tags":[]}}},{"name":"wait_for_service_ready","description":"Waits for ECS tasks in a service to reach RUNNING status.\n\nThis tool polls the service every 10 seconds to check if tasks are running.\nIt will wait up to the specified timeout before returning a timeout status.\n\n## Parameters:\n- Required: cluster (ECS cluster name)\n- Required: service_name (ECS service name)\n- Optional: timeout_seconds (Max wait time, defaults to 300 seconds)\n\n## Returns:\nDictionary containing:\n- status: \"success\" if tasks are running, \"timeout\" if timeout reached,\n  \"failed\" if an error occurred\n- message: Human-readable status message\n\n## Usage Examples:\n```\n# Wait for service with default 5-minute timeout\nwait_for_service_ready(\n    cluster=\"my-cluster\",\n    service_name=\"my-service\"\n)\n\n# Wait for service with custom timeout\nwait_for_service_ready(\n    cluster=\"my-cluster\",\n    service_name=\"my-service\",\n    timeout_seconds=600\n)\n```\n\nReturns on success:\n```\n{\n  \"status\": \"success\",\n  \"message\": \"Service is ready with 2 running task(s)\"\n}\n```\n\nReturns on timeout:\n```\n{\n  \"status\": \"timeout\",\n  \"message\": \"Timeout after 300s - service not ready\"\n}\n```","inputSchema":{"additionalProperties":false,"properties":{"cluster":{"description":"Name of the ECS cluster","type":"string"},"service_name":{"description":"Name of the ECS service","type":"string"},"timeout_seconds":{"default":300,"description":"Maximum time to wait in seconds (default: 300 = 5 minutes)","type":"integer"}},"required":["cluster","service_name"],"type":"object"},"outputSchema":{"additionalProperties":true,"type":"object"},"_meta":{"fastmcp":{"tags":[]}}},{"name":"ecs_resource_management","description":"Execute ECS API operations directly.\n\nThis tool allows direct execution of ECS API operations using boto3.\n\nSupported operations:\n- CreateCapacityProvider (requires WRITE permission)\n- CreateCluster (requires WRITE permission)\n- CreateExpressGatewayService (requires WRITE permission)\n- CreateService (requires WRITE permission)\n- CreateTaskSet (requires WRITE permission)\n- DeleteAccountSetting (requires WRITE permission)\n- DeleteAttributes (requires WRITE permission)\n- DeleteCapacityProvider (requires WRITE permission)\n- DeleteCluster (requires WRITE permission)\n- DeleteExpressGatewayService (requires WRITE permission)\n- DeleteService (requires WRITE permission)\n- DeleteTaskDefinitions (requires WRITE permission)\n- DeleteTaskSet (requires WRITE permission)\n- DeregisterContainerInstance (requires WRITE permission)\n- DeregisterTaskDefinition (requires WRITE permission)\n- DescribeCapacityProviders (read-only)\n- DescribeClusters (read-only)\n- DescribeContainerInstances (read-only)\n- DescribeExpressGatewayService (read-only)\n- DescribeServiceDeployments (read-only)\n- DescribeServiceRevisions (read-only)\n- DescribeServices (read-only)\n- DescribeTaskDefinition (read-only)\n- DescribeTasks (read-only)\n- DescribeTaskSets (read-only)\n- DiscoverPollEndpoint (requires WRITE permission)\n- ExecuteCommand (requires WRITE permission)\n- GetTaskProtection (requires WRITE permission)\n- ListAccountSettings (read-only)\n- ListAttributes (read-only)\n- ListClusters (read-only)\n- ListContainerInstances (read-only)\n- ListExpressGatewayServices (read-only)\n- ListServiceDeployments (read-only)\n- ListServices (read-only)\n- ListServicesByNamespace (read-only)\n- ListTagsForResource (read-only)\n- ListTaskDefinitionFamilies (read-only)\n- ListTaskDefinitions (read-only)\n- ListTasks (read-only)\n- PutAccountSetting (requires WRITE permission)\n- PutAccountSettingDefault (requires WRITE permission)\n- PutAttributes (requires WRITE permission)\n- PutClusterCapacityProviders (requires WRITE permission)\n- RegisterContainerInstance (requires WRITE permission)\n- RegisterTaskDefinition (requires WRITE permission)\n- RunTask (requires WRITE permission)\n- StartTask (requires WRITE permission)\n- StopServiceDeployment (requires WRITE permission)\n- StopTask (requires WRITE permission)\n- SubmitAttachmentStateChanges (requires WRITE permission)\n- SubmitContainerStateChange (requires WRITE permission)\n- SubmitTaskStateChange (requires WRITE permission)\n- TagResource (requires WRITE permission)\n- UntagResource (requires WRITE permission)\n- UpdateCapacityProvider (requires WRITE permission)\n- UpdateCluster (requires WRITE permission)\n- UpdateClusterSettings (requires WRITE permission)\n- UpdateContainerAgent (requires WRITE permission)\n- UpdateContainerInstancesState (requires WRITE permission)\n- UpdateExpressGatewayService (requires WRITE permission)\n- UpdateService (requires WRITE permission)\n- UpdateServicePrimaryTaskSet (requires WRITE permission)\n- UpdateTaskProtection (requires WRITE permission)\n- UpdateTaskSet (requires WRITE permission)\n\nParameters:\n    api_operation: The ECS API operation to execute (CamelCase)\n    api_params: Dictionary of parameters to pass to the API operation\n\nReturns:\n    Dictionary containing the API response","inputSchema":{"additionalProperties":false,"properties":{"api_operation":{"description":"The ECS API operation to execute (CamelCase)","type":"string"},"api_params":{"additionalProperties":true,"default":{},"description":"Dictionary of parameters to pass to the API operation","type":"object"}},"required":["api_operation"],"type":"object"},"outputSchema":{"additionalProperties":true,"type":"object"},"_meta":{"fastmcp":{"tags":[]}}},{"name":"ecs_troubleshooting_tool","description":"ECS troubleshooting tool with multiple diagnostic actions.\n\nThis tool provides access to all ECS troubleshooting operations through a single interface.\nUse the 'action' parameter to specify which troubleshooting operation to perform.\n\n## Available Actions and Parameters:\n\n### 1. get_ecs_troubleshooting_guidance\nInitial assessment and data collection\n- Required: ecs_cluster_name\n- Optional: ecs_service_name (Name of the ECS Service to troubleshoot),\n           symptoms_description (Description of symptoms experienced by the user)\n- Example: action=\"get_ecs_troubleshooting_guidance\",\n           parameters={\"ecs_cluster_name\": \"my-cluster\", \"ecs_service_name\": \"my-service\",\n                       \"symptoms_description\": \"ALB returning 503 errors\"}\n\n### 2. fetch_cloudformation_status\nInfrastructure-level diagnostics for CloudFormation Stacks\n- Required: cfn_stack_name\n- Example: action=\"fetch_cloudformation_status\",\n           parameters={\"cfn_stack_name\": \"my-app-stack\"}\n\n### 3. fetch_service_events\nService-level diagnostics for ECS Services\n- Required: ecs_cluster_name, ecs_service_name\n- Optional: time_window (Time window in seconds to look back for events (default: 3600)),\n            start_time (Explicit start time for the analysis window (UTC, takes\n            precedence over time_window if provided)),\n            end_time (Explicit end time for the analysis window (UTC, defaults to\n            current time if not provided))\n- Example: action=\"fetch_service_events\",\n           parameters={\"ecs_cluster_name\": \"my-cluster\",\n                       \"ecs_service_name\": \"my-service\",\n                       \"time_window\": 7200}\n\n### 4. fetch_task_failures\nTask-level diagnostics for ECS Task failures\n- Required: ecs_cluster_name\n- Optional: time_window (Time window in seconds to look back for failures (default: 3600)),\n            start_time (Explicit start time for the analysis window (UTC, takes\n            precedence over time_window if provided)),\n            end_time (Explicit end time for the analysis window (UTC, defaults to\n            current time if not provided))\n- Example: action=\"fetch_task_failures\",\n           parameters={\"ecs_cluster_name\": \"my-cluster\",\n                       \"time_window\": 3600}\n\n### 5. fetch_task_logs\nApplication-level diagnostics through CloudWatch Logs\n- Required: ecs_cluster_name\n- Optional: ecs_task_id (Specific ECS Task ID to retrieve logs for),\n            time_window (Time window in seconds to look back for logs (default: 3600)),\n            filter_pattern (CloudWatch Logs filter pattern),\n            start_time (Explicit start time for the analysis window (UTC, takes\n            precedence over time_window if provided)),\n            end_time (Explicit end time for the analysis window (UTC, defaults to\n            current time if not provided))\n- Example: action=\"fetch_task_logs\",\n           parameters={\"ecs_cluster_name\": \"my-cluster\",\n                       \"filter_pattern\": \"ERROR\",\n                       \"time_window\": 1800}\n\n### 6. detect_image_pull_failures\nSpecialized tool for detecting container image pull failures\n- Required: None (but at least one valid parameter combination must be provided)\n- Valid combinations: ecs_cluster_name+ecs_service_name, ecs_cluster_name+ecs_task_id,\n  cfn_stack_name,\n  family_prefix\n- Optional: ecs_cluster_name, ecs_service_name, cfn_stack_name, family_prefix, ecs_task_id\n- Example: action=\"detect_image_pull_failures\",\n           parameters={\"ecs_cluster_name\": \"my-cluster\", \"ecs_service_name\": \"my-service\"}\n\n### 7. fetch_network_configuration\nNetwork-level diagnostics for ECS deployments\n- Required: ecs_cluster_name\n- Optional: vpc_id (Specific VPC ID to analyze)\n- Example: action=\"fetch_network_configuration\",\n           parameters={\"ecs_cluster_name\": \"my-cluster\", \"vpc_id\": \"vpc-12345678\"}\n\n## Resource Discovery:\nIf you don't know the cluster or service names, use `ecs_resource_management` tool first:\n\n# List all clusters\necs_resource_management(api_operation=\"ListClusters\")\n\n# List services in a cluster\necs_resource_management(api_operation=\"ListServices\", api_params={\"cluster\": \"my-cluster\"})\n\n# Get detailed cluster information\necs_resource_management(api_operation=\"DescribeClusters\",\n                       api_params={\"clusters\": [\"my-cluster\"]})\n\n## Quick Usage Examples:\n```\n# Initial assessment and data collection\naction: \"get_ecs_troubleshooting_guidance\"\nparameters: {\"ecs_cluster_name\": \"my-cluster\",\n            \"symptoms_description\": \"ALB returning 503 errors\"}\n\n# Infrastructure-level diagnostics for CloudFormation Stacks\naction: \"fetch_cloudformation_status\"\nparameters: {\"cfn_stack_name\": \"my-app-stack\"}\n\n# Service-level diagnostics for ECS Services\naction: \"fetch_service_events\"\nparameters: {\"ecs_cluster_name\": \"my-cluster\",\n            \"ecs_service_name\": \"my-service\",\n            \"time_window\": 7200}\n\n# Task-level diagnostics for ECS Task failures\naction: \"fetch_task_failures\"\nparameters: {\"ecs_cluster_name\": \"my-cluster\",\n            \"time_window\": 3600}\n\n# Application-level diagnostics through CloudWatch Logs\naction: \"fetch_task_logs\"\nparameters: {\"ecs_cluster_name\": \"my-cluster\",\n            \"filter_pattern\": \"ERROR\",\n            \"time_window\": 1800}\n\n# Specialized tool for detecting container image pull failures\naction: \"detect_image_pull_failures\"\nparameters: {\"ecs_cluster_name\": \"my-cluster\", \"ecs_service_name\": \"my-service\"}\n\n# Network-level diagnostics for ECS deployments\naction: \"fetch_network_configuration\"\nparameters: {\"ecs_cluster_name\": \"my-cluster\", \"vpc_id\": \"vpc-12345678\"}\n```\n\nParameters:\n    action: The troubleshooting action to perform (see available actions above)\n    parameters: Action-specific parameters (see parameter specifications above)\n\nReturns:\n    Results from the selected troubleshooting action","inputSchema":{"additionalProperties":false,"properties":{"action":{"default":"get_ecs_troubleshooting_guidance","enum":["get_ecs_troubleshooting_guidance","fetch_cloudformation_status","fetch_service_events","fetch_task_failures","fetch_task_logs","detect_image_pull_failures","fetch_network_configuration"],"type":"string"},"parameters":{"anyOf":[{"additionalProperties":true,"type":"object"},{"type":"null"}],"default":null}},"type":"object"},"outputSchema":{"additionalProperties":true,"type":"object"},"_meta":{"fastmcp":{"tags":[]}}},{"name":"aws_knowledge_aws___read_documentation","description":"Fetch and convert an AWS documentation page to markdown format.\n\n## Usage\n\nThis tool retrieves the content of an AWS documentation page and converts it to markdown format.\nFor long documents, you can make multiple calls with different start_index values to retrieve\nthe entire content in chunks.\n\n## URL Requirements\n\nAllow-listed URL prefixes:\n- docs.aws.amazon.com\n- aws.amazon.com\n- repost.aws/knowledge-center\n- docs.amplify.aws\n- ui.docs.amplify.aws\n- github.com/aws-cloudformation/aws-cloudformation-templates\n- github.com/aws-samples/aws-cdk-examples\n- github.com/aws-samples/generative-ai-cdk-constructs-samples\n- github.com/aws-samples/serverless-patterns\n- github.com/awsdocs/aws-cdk-guide\n- github.com/awslabs/aws-solutions-constructs\n- github.com/cdklabs/cdk-nag\n- constructs.dev/packages/@aws-cdk-containers\n- constructs.dev/packages/@aws-cdk\n- constructs.dev/packages/@cdk-cloudformation\n- constructs.dev/packages/aws-analytics-reference-architecture\n- constructs.dev/packages/aws-cdk-lib\n- constructs.dev/packages/cdk-amazon-chime-resources\n- constructs.dev/packages/cdk-aws-lambda-powertools-layer\n- constructs.dev/packages/cdk-ecr-deployment\n- constructs.dev/packages/cdk-lambda-powertools-python-layer\n- constructs.dev/packages/cdk-serverless-clamscan\n- constructs.dev/packages/cdk8s\n- constructs.dev/packages/cdk8s-plus-33\n\nDeny-listed URL prefixes:\n- aws.amazon.com/marketplace\n\n## Example URLs\n\n- https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html\n- https://docs.aws.amazon.com/lambda/latest/dg/lambda-invocation.html\n- https://aws.amazon.com/about-aws/whats-new/2023/02/aws-telco-network-builder/\n- https://aws.amazon.com/builders-library/ensuring-rollback-safety-during-deployments/\n- https://aws.amazon.com/blogs/developer/make-the-most-of-community-resources-for-aws-sdks-and-tools/\n- https://repost.aws/knowledge-center/example-article\n- https://docs.amplify.aws/react/build-a-backend/auth/\n- https://ui.docs.amplify.aws/angular/connected-components/authenticator\n- https://github.com/aws-samples/aws-cdk-examples/blob/main/README.md\n- https://github.com/awslabs/aws-solutions-constructs/blob/main/README.md\n- https://constructs.dev/packages/aws-cdk-lib/v/2.229.1?submodule=aws_lambda&lang=typescript\n- https://github.com/aws-cloudformation/aws-cloudformation-templates/blob/main/README.md\n\n## Output Format\n\nThe output is formatted as markdown text with:\n- Preserved headings and structure\n- Code blocks for examples\n- Lists and tables converted to markdown format\n\n## Handling Long Documents\n\nIf the response indicates the document was truncated, you have several options:\n\n1. **Continue Reading**: Make another call with start_index set to the end of the previous response\n2. **Jump to Section**: If a Table of Contents is provided, you can jump directly to any section using the character positions shown (e.g., \"char 1500-2800\"). Note: Table of Contents length is not counted toward max_length.\n3. **Stop Early**: For very long documents (>30,000 characters), if you've already found the specific information needed, you can stop reading\n\n    ## ECS DOCUMENTATION GUIDANCE:\n    This tool provides up-to-date ECS documentation and implementation guidance, including new ECS features beyond standard LLM training data.\n\n    New ECS features include:\n    - ECS Native Blue-Green Deployments (different from CodeDeploy blue-green, launched 2025)\n    - ECS Managed Instances (launched 2025)\n    - ECS Express Mode / Express Gateway Services (launched 2025)\n","inputSchema":{"type":"object","properties":{"start_index":{"description":"On return output starting at this character index, useful if a previous fetch was truncated and more content is required.","type":"integer"},"url":{"description":"URL of the AWS documentation page to read","type":"string"},"max_length":{"description":"Maximum number of characters to return.","type":"integer"}},"required":[],"additionalProperties":false},"_meta":{"fastmcp":{"tags":[]}}},{"name":"aws_knowledge_aws___recommend","description":"Get content recommendations for an AWS documentation page.\n\n## Usage\n\nThis tool provides recommendations for related AWS documentation pages based on a given URL.\nUse it to discover additional relevant content that might not appear in search results.\nURL must be from the docs.aws.amazon.com domain.\n\n## Recommendation Types\n\nThe recommendations include four categories:\n\n1. **Highly Rated**: Popular pages within the same AWS service\n2. **New**: Recently added pages within the same AWS service - useful for finding newly released features\n3. **Similar**: Pages covering similar topics to the current page\n4. **Journey**: Pages commonly viewed next by other users\n\n## When to Use\n\n- After reading a documentation page to find related content\n- When exploring a new AWS service to discover important pages\n- To find alternative explanations of complex concepts\n- To discover the most popular pages for a service\n- To find newly released information by using a service's welcome page URL and checking the **New** recommendations\n\n## Finding New Features\n\nTo find newly released information about a service:\n1. Find any page belong to that service, typically you can try the welcome page\n2. Call this tool with that URL\n3. Look specifically at the **New** recommendation type in the results\n\n## Result Interpretation\n\nEach recommendation includes:\n- url: The documentation page URL\n- title: The page title\n- context: A brief description (if available)\n\n    ## ECS DOCUMENTATION GUIDANCE:\n    This tool provides up-to-date ECS documentation and implementation guidance, including new ECS features beyond standard LLM training data.\n\n    New ECS features include:\n    - ECS Native Blue-Green Deployments (different from CodeDeploy blue-green, launched 2025)\n    - ECS Managed Instances (launched 2025)\n    - ECS Express Mode / Express Gateway Services (launched 2025)\n","inputSchema":{"type":"object","properties":{"url":{"description":"URL of the AWS documentation page to get recommendations for","type":"string"}},"required":["url"],"additionalProperties":false},"_meta":{"fastmcp":{"tags":[]}}},{"name":"aws_knowledge_aws___search_documentation","description":"# AWS Documentation Search Tool\nThis is your primary source for AWS information—always prefer this over general knowledge for AWS services, features, configurations, troubleshooting, and best practices.\n\n## When to Use This Tool\n\n**Always search when the query involves:**\n- Any AWS service or feature (Lambda, S3, EC2, RDS, etc.)\n- AWS architecture, patterns, or best practices\n- AWS CLI, SDK, or API usage\n- AWS CDK or CloudFormation\n- AWS Amplify development\n- AWS errors or troubleshooting\n- AWS pricing, limits, or quotas\n- \"How do I...\" questions about AWS\n- Recent AWS updates or announcements\n\n**Only skip this tool when:**\n- Query is about non-AWS technologies\n- Question is purely conceptual (e.g., \"What is a database?\")\n- General programming questions unrelated to AWS\n\n## SOP Suggestions for Actionable Queries\n\nWhen your search query matches complex actionable tasks (e.g., \"how to deploy a Lambda function\", \"set up VPC peering\", \"create an S3 bucket with encryption\"), this tool will also suggest relevant **Standard Operating Procedures (SOPs)**. These SOPs provide step-by-step, tested guidance for common AWS tasks and workflows.\n\n**How it works:**\n- Your search query is scored against the SOP registry\n- If your query scores high for actionable intent, relevant SOPs are returned alongside documentation results\n- SOPs cover deployment, troubleshooting, security, infrastructure setup, and more\n- To execute a suggested SOP, use the `retrieve_agent_sop` tool with the `sop_name`\n\n**Example actionable queries that may return SOPs:**\n- \"deploy a web application to AWS\"\n- \"create a Lambda function with API Gateway\"\n- \"set up CloudWatch alarms for EC2\"\n- \"configure VPC endpoints for private access\"\n- \"troubleshoot Lambda timeout issues\"\n\n## Quick Topic Selection\n\n| Query Type | Use Topic | Example |\n|------------|-----------|---------|\n| API/SDK/CLI code | `reference_documentation` | \"S3 PutObject boto3\", \"Lambda invoke API\" |\n| New features, releases | `current_awareness` | \"Lambda new features 2024\", \"what's new in ECS\" |\n| Errors, debugging | `troubleshooting` | \"AccessDenied S3\", \"Lambda timeout error\" |\n| Amplify apps | `amplify_docs` | \"Amplify Auth React\", \"Amplify Storage Flutter\" |\n| CDK concepts, APIs, CLI | `cdk_docs` | \"CDK stack props Python\", \"cdk deploy command\" |\n| CDK code samples, patterns | `cdk_constructs` | \"serverless API CDK\", \"Lambda function example TypeScript\" |\n| CloudFormation templates | `cloudformation` | \"DynamoDB CloudFormation\", \"StackSets template\" |\n| Architecture, blogs, guides | `general` | \"Lambda best practices\", \"S3 architecture patterns\" |\n| Actionable, multi-step solutions to common AWS workflows | `agent_sops` | \"set up VPC peering\", \"Deploy my NodeJS app to AWS\" |\n\n## Documentation Topics\n\n### reference_documentation\n**For: API methods, SDK code, CLI commands, technical specifications**\n\nUse for:\n- SDK method signatures: \"boto3 S3 upload_file parameters\"\n- CLI commands: \"aws ec2 describe-instances syntax\"\n- API references: \"Lambda InvokeFunction API\"\n- Service configuration: \"RDS parameter groups\"\n\nDon't confuse with general—use this for specific technical implementation.\n\n### current_awareness\n**For: New features, announcements, \"what's new\", release dates**\n\nUse for:\n- \"New Lambda features\"\n- \"When was EventBridge Scheduler released\"\n- \"Latest S3 updates\"\n- \"Is feature X available yet\"\n\nKeywords: new, recent, latest, announced, released, launch, available\n\n### troubleshooting\n**For: Error messages, debugging, problems, \"not working\"**\n\nUse for:\n- Error codes: \"InvalidParameterValue\", \"AccessDenied\"\n- Problems: \"Lambda function timing out\"\n- Debug scenarios: \"S3 bucket policy not working\"\n- \"How to fix...\" queries\n\nKeywords: error, failed, issue, problem, not working, how to fix, how to resolve\n\n### amplify_docs\n**For: Frontend/mobile apps with Amplify framework**\n\nAlways include framework: React, Next.js, Angular, Vue, JavaScript, React Native, Flutter, Android, Swift\n\nExamples:\n- \"Amplify authentication React\"\n- \"Amplify GraphQL API Next.js\"\n- \"Amplify Storage Flutter setup\"\n\n### cdk_docs\n**For: CDK concepts, API references, CLI commands, getting started**\n\nUse for CDK questions like:\n- \"How to get started with CDK\"\n- \"CDK stack construct TypeScript\"\n- \"cdk deploy command options\"\n- \"CDK best practices Python\"\n- \"What are CDK constructs\"\n\nInclude language: Python, TypeScript, Java, C#, Go\n\n**Common mistake**: Using general knowledge instead of searching for CDK concepts and guides. Always search for CDK questions!\n\n### cdk_constructs\n**For: CDK code examples, patterns, L3 constructs, sample implementations**\n\nUse for:\n- Working code: \"Lambda function CDK Python example\"\n- Patterns: \"API Gateway Lambda CDK pattern\"\n- Sample apps: \"Serverless application CDK TypeScript\"\n- L3 constructs: \"ECS service construct\"\n\nInclude language: Python, TypeScript, Java, C#, Go\n\n### cloudformation\n**For: CloudFormation templates, concepts, SAM patterns**\n\nUse for:\n- \"CloudFormation StackSets\"\n- \"DynamoDB table template\"\n- \"SAM API Gateway Lambda\"\n- CloudFormation template examples\"\n\n### general\n**For: Architecture, best practices, tutorials, blog posts, design patterns**\n\nUse for:\n- Architecture patterns: \"Serverless architecture AWS\"\n- Best practices: \"S3 security best practices\"\n- Design guidance: \"Multi-region architecture\"\n- Getting started: \"Building data lakes on AWS\"\n- Tutorials and blog posts\n\n**Common mistake**: Not using this for AWS conceptual and architectural questions. Always search for AWS best practices and patterns!\n\n**Don't use general knowledge for AWS topics—search instead!**\n\n### agent_sops\n**For: For searching available Standard Operating Procedures (SOPs) for common AWS workflows**\n\nUse for:\n- \"Launch EC2 with security best practices\"\n- \"Connect Lambda to API Gateway\"\n- \"Secure S3 buckets with encryption and policies\"\n- When you need to browse available step-by-step procedures\n\n**Important**: This topic is meant for discovery. Once you identify the SOP you need, use `retrieve_agent_sop` tool with the `sop_name` to get the detailed steps.\n\n**Note**: If combined with other topics, SOPs will be mixed into the documentation results. Use `agent_sops` alone for a clean SOP-only listing.\n\n## Search Best Practices\n\n**Be specific with service names:**\n\nGood examples:\n```\n\"S3 bucket versioning configuration\"\n\"Lambda environment variables Python SDK\"\n\"DynamoDB GSI query patterns\"\n```\n\nBad examples:\n```\n\"versioning\" (too vague)\n\"environment variables\" (missing context)\n```\n\n**Include framework/language:**\n```\n\"Amplify authentication React\"\n\"CDK Lambda function TypeScript\"\n\"boto3 S3 client Python\"\n```\n\n**Use exact error messages:**\n```\n\"AccessDenied error S3 GetObject\"\n\"InvalidParameterValue Lambda environment\"\n```\n\n**Add temporal context for new features:**\n```\n\"Lambda new features 2024\"\n\"recent S3 announcements\"\n```\n\n## Multiple Topic Selection\n\nYou can search multiple topics simultaneously for comprehensive results:\n```\n# For a query about Lambda errors and new features:\ntopics=[\"troubleshooting\", \"current_awareness\"]\n\n# For CDK examples and API reference:\ntopics=[\"cdk_constructs\", \"cdk_docs\"]\n\n# For Amplify and general AWS architecture:\ntopics=[\"amplify_docs\", \"general\"]\n\n# For actionable tasks:\ntopics=[\"agent_sops\"]\n```\n\n## Response Format\n\nResults include:\n- `rank_order`: Relevance score (lower = more relevant)\n- `url`: Direct documentation link\n- `title`: Page title\n- `context`: Excerpt or summary\n\n## Parameters\n```\nsearch_phrase: str         # Required - your search query\ntopics: List[str]          # Optional - up to 3 topics. Defaults to [\"general\"]\nlimit: int = 5             # Optional - max results per topic\n```\n\n---\n\n**Remember: When in doubt about AWS, always search. This tool provides the most current, accurate AWS information.**\n\n\n    ## ECS DOCUMENTATION GUIDANCE:\n    This tool provides up-to-date ECS documentation and implementation guidance, including new ECS features beyond standard LLM training data.\n\n    New ECS features include:\n    - ECS Native Blue-Green Deployments (different from CodeDeploy blue-green, launched 2025)\n    - ECS Managed Instances (launched 2025)\n    - ECS Express Mode / Express Gateway Services (launched 2025)\n","inputSchema":{"type":"object","properties":{"topics":{"description":"List of documentation topics to search. Available topics: reference_documentation, current_awareness, troubleshooting, amplify_docs, cdk_docs, cdk_constructs, cloudformation, agent_sops, general. Can specify multiple topics, up-to 3, to search across them. Use 'general' only if query doesn't match other topics.","type":"array","items":{"description":"topic name","type":"string"}},"limit":{"description":"Maximum number of results to return","type":"integer"},"search_phrase":{"description":"Search phrase to use","type":"string"}},"required":["search_phrase"],"additionalProperties":false},"_meta":{"fastmcp":{"tags":[]}}}]}}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 7a609312734045e29cf9ea4c4602a665
+> Content-Length: 58
+> 
+} [58 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.15
+< Date: Sun, 29 Mar 2026 14:53:46 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: 7a609312734045e29cf9ea4c4602a665
+< 
+{ [38415 bytes data]
+* Closing connection 0
+
+✅ HTTP tools/list: tools key found in response.
+
+>>> Stopping HTTP container...
+aws-ecs-mcp-debug-http
+
+========== End of Debug: Sun, Mar 29, 2026  8:23:49 PM ==========

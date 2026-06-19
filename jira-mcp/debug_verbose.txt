@@ -1,0 +1,296 @@
+========== VERBOSE DEBUG: jira-mcp ==========
+Timestamp: Sun, Mar 29, 2026 11:17:51 PM
+
+--- [CHECK 1] Building Docker image ---
+>>> docker build -t jira-mcp -t hackerdogs/jira-mcp:latest jira-mcp
+
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 810B done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 1.1s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 1.2s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 DONE 0.0s
+
+#6 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+#6 resolve docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634 0.0s done
+#6 DONE 0.1s
+
+#7 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [stage-1 3/9] WORKDIR /app
+#8 CACHED
+
+#9 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3
+#9 resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3 0.0s done
+#9 DONE 0.1s
+
+#10 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#10 CACHED
+
+#5 [internal] load build context
+#5 transferring context: 11.22kB 0.0s done
+#5 DONE 0.1s
+
+#11 [stage-1 4/9] RUN pip install --no-cache-dir mcp-server-jira
+#11 2.274 Collecting mcp-server-jira
+#11 2.478   Downloading mcp_server_jira-0.1.1-py3-none-any.whl.metadata (8.6 kB)
+#11 2.573 Collecting httpx>=0.25.0 (from mcp-server-jira)
+#11 2.614   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#11 2.696 Collecting mcp>=1.0.0 (from mcp-server-jira)
+#11 2.871   Downloading mcp-1.26.0-py3-none-any.whl.metadata (89 kB)
+#11 3.015      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 89.5/89.5 kB 584.4 kB/s eta 0:00:00
+#11 3.689 Collecting pydantic>=2.0.0 (from mcp-server-jira)
+#11 3.871   Downloading pydantic-2.12.5-py3-none-any.whl.metadata (90 kB)
+#11 4.021      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 90.6/90.6 kB 549.2 kB/s eta 0:00:00
+#11 4.253 Collecting anyio (from httpx>=0.25.0->mcp-server-jira)
+#11 4.375   Downloading anyio-4.13.0-py3-none-any.whl.metadata (4.5 kB)
+#11 4.501 Collecting certifi (from httpx>=0.25.0->mcp-server-jira)
+#11 4.543   Downloading certifi-2026.2.25-py3-none-any.whl.metadata (2.5 kB)
+#11 4.706 Collecting httpcore==1.* (from httpx>=0.25.0->mcp-server-jira)
+#11 4.864   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#11 5.020 Collecting idna (from httpx>=0.25.0->mcp-server-jira)
+#11 5.151   Downloading idna-3.11-py3-none-any.whl.metadata (8.4 kB)
+#11 5.304 Collecting h11>=0.16 (from httpcore==1.*->httpx>=0.25.0->mcp-server-jira)
+#11 5.408   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#11 5.575 Collecting httpx-sse>=0.4 (from mcp>=1.0.0->mcp-server-jira)
+#11 5.624   Downloading httpx_sse-0.4.3-py3-none-any.whl.metadata (9.7 kB)
+#11 5.745 Collecting jsonschema>=4.20.0 (from mcp>=1.0.0->mcp-server-jira)
+#11 5.787   Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+#11 5.868 Collecting pydantic-settings>=2.5.2 (from mcp>=1.0.0->mcp-server-jira)
+#11 5.910   Downloading pydantic_settings-2.13.1-py3-none-any.whl.metadata (3.4 kB)
+#11 6.009 Collecting pyjwt>=2.10.1 (from pyjwt[crypto]>=2.10.1->mcp>=1.0.0->mcp-server-jira)
+#11 6.053   Downloading pyjwt-2.12.1-py3-none-any.whl.metadata (4.1 kB)
+#11 6.137 Collecting python-multipart>=0.0.9 (from mcp>=1.0.0->mcp-server-jira)
+#11 6.178   Downloading python_multipart-0.0.22-py3-none-any.whl.metadata (1.8 kB)
+#11 6.263 Collecting sse-starlette>=1.6.1 (from mcp>=1.0.0->mcp-server-jira)
+#11 6.304   Downloading sse_starlette-3.3.4-py3-none-any.whl.metadata (14 kB)
+#11 6.431 Collecting starlette>=0.27 (from mcp>=1.0.0->mcp-server-jira)
+#11 6.473   Downloading starlette-1.0.0-py3-none-any.whl.metadata (6.3 kB)
+#11 6.578 Collecting typing-extensions>=4.9.0 (from mcp>=1.0.0->mcp-server-jira)
+#11 6.622   Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+#11 6.686 Collecting typing-inspection>=0.4.1 (from mcp>=1.0.0->mcp-server-jira)
+#11 6.731   Downloading typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+#11 6.829 Collecting uvicorn>=0.31.1 (from mcp>=1.0.0->mcp-server-jira)
+#11 6.874   Downloading uvicorn-0.42.0-py3-none-any.whl.metadata (6.7 kB)
+#11 6.946 Collecting annotated-types>=0.6.0 (from pydantic>=2.0.0->mcp-server-jira)
+#11 6.990   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+#11 8.397 Collecting pydantic-core==2.41.5 (from pydantic>=2.0.0->mcp-server-jira)
+#11 8.445   Downloading pydantic_core-2.41.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (7.3 kB)
+#11 8.573 Collecting attrs>=22.2.0 (from jsonschema>=4.20.0->mcp>=1.0.0->mcp-server-jira)
+#11 8.616   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+#11 8.695 Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.20.0->mcp>=1.0.0->mcp-server-jira)
+#11 8.736   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+#11 8.833 Collecting referencing>=0.28.4 (from jsonschema>=4.20.0->mcp>=1.0.0->mcp-server-jira)
+#11 8.874   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+#11 9.398 Collecting rpds-py>=0.25.0 (from jsonschema>=4.20.0->mcp>=1.0.0->mcp-server-jira)
+#11 9.447   Downloading rpds_py-0.30.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)
+#11 9.554 Collecting python-dotenv>=0.21.0 (from pydantic-settings>=2.5.2->mcp>=1.0.0->mcp-server-jira)
+#11 9.599   Downloading python_dotenv-1.2.2-py3-none-any.whl.metadata (27 kB)
+#11 10.08 Collecting cryptography>=3.4.0 (from pyjwt[crypto]>=2.10.1->mcp>=1.0.0->mcp-server-jira)
+#11 10.13   Downloading cryptography-46.0.6-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (5.7 kB)
+#11 10.29 Collecting click>=7.0 (from uvicorn>=0.31.1->mcp>=1.0.0->mcp-server-jira)
+#11 10.33   Downloading click-8.3.1-py3-none-any.whl.metadata (2.6 kB)
+#11 10.59 Collecting cffi>=2.0.0 (from cryptography>=3.4.0->pyjwt[crypto]>=2.10.1->mcp>=1.0.0->mcp-server-jira)
+#11 10.64   Downloading cffi-2.0.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.6 kB)
+#11 10.76 Collecting pycparser (from cffi>=2.0.0->cryptography>=3.4.0->pyjwt[crypto]>=2.10.1->mcp>=1.0.0->mcp-server-jira)
+#11 10.80   Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+#11 10.86 Downloading mcp_server_jira-0.1.1-py3-none-any.whl (9.7 kB)
+#11 10.91 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#11 11.00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.5/73.5 kB 709.9 kB/s eta 0:00:00
+#11 11.05 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#11 11.12    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.8/78.8 kB 1.3 MB/s eta 0:00:00
+#11 11.16 Downloading mcp-1.26.0-py3-none-any.whl (233 kB)
+#11 11.29    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 233.6/233.6 kB 1.9 MB/s eta 0:00:00
+#11 11.34 Downloading pydantic-2.12.5-py3-none-any.whl (463 kB)
+#11 11.58    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 463.6/463.6 kB 1.9 MB/s eta 0:00:00
+#11 11.62 Downloading pydantic_core-2.41.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.1 MB)
+#11 12.40    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 2.7 MB/s eta 0:00:00
+#11 12.45 Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+#11 12.49 Downloading anyio-4.13.0-py3-none-any.whl (114 kB)
+#11 12.53    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 114.4/114.4 kB 3.2 MB/s eta 0:00:00
+#11 12.57 Downloading httpx_sse-0.4.3-py3-none-any.whl (9.0 kB)
+#11 12.61 Downloading idna-3.11-py3-none-any.whl (71 kB)
+#11 12.63    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 71.0/71.0 kB 4.3 MB/s eta 0:00:00
+#11 12.67 Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+#11 12.70    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 90.6/90.6 kB 3.7 MB/s eta 0:00:00
+#11 12.74 Downloading pydantic_settings-2.13.1-py3-none-any.whl (58 kB)
+#11 12.76    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 58.9/58.9 kB 4.0 MB/s eta 0:00:00
+#11 12.80 Downloading pyjwt-2.12.1-py3-none-any.whl (29 kB)
+#11 12.85 Downloading python_multipart-0.0.22-py3-none-any.whl (24 kB)
+#11 12.90 Downloading sse_starlette-3.3.4-py3-none-any.whl (14 kB)
+#11 12.94 Downloading starlette-1.0.0-py3-none-any.whl (72 kB)
+#11 12.97    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 72.7/72.7 kB 5.0 MB/s eta 0:00:00
+#11 13.01 Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+#11 13.02    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 44.6/44.6 kB 4.7 MB/s eta 0:00:00
+#11 13.06 Downloading typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+#11 13.11 Downloading uvicorn-0.42.0-py3-none-any.whl (68 kB)
+#11 13.13    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 68.8/68.8 kB 3.6 MB/s eta 0:00:00
+#11 13.17 Downloading certifi-2026.2.25-py3-none-any.whl (153 kB)
+#11 13.25    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 153.7/153.7 kB 1.9 MB/s eta 0:00:00
+#11 13.30 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+#11 13.32    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 67.5/67.5 kB 3.2 MB/s eta 0:00:00
+#11 13.36 Downloading click-8.3.1-py3-none-any.whl (108 kB)
+#11 13.41    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 108.3/108.3 kB 2.5 MB/s eta 0:00:00
+#11 13.45 Downloading cryptography-46.0.6-cp311-abi3-manylinux_2_34_x86_64.whl (4.5 MB)
+#11 15.20    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.5/4.5 MB 2.5 MB/s eta 0:00:00
+#11 15.25 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#11 15.30 Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+#11 15.35 Downloading python_dotenv-1.2.2-py3-none-any.whl (22 kB)
+#11 15.40 Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+#11 15.45 Downloading rpds_py-0.30.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (390 kB)
+#11 15.59    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 390.8/390.8 kB 2.8 MB/s eta 0:00:00
+#11 15.63 Downloading cffi-2.0.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (215 kB)
+#11 15.70    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 215.6/215.6 kB 3.2 MB/s eta 0:00:00
+#11 15.75 Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+#11 15.76    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 48.2/48.2 kB 6.4 MB/s eta 0:00:00
+#11 15.97 Installing collected packages: typing-extensions, rpds-py, python-multipart, python-dotenv, pyjwt, pycparser, idna, httpx-sse, h11, click, certifi, attrs, annotated-types, uvicorn, typing-inspection, referencing, pydantic-core, httpcore, cffi, anyio, starlette, pydantic, jsonschema-specifications, httpx, cryptography, sse-starlette, pydantic-settings, jsonschema, mcp, mcp-server-jira
+#11 17.85 Successfully installed annotated-types-0.7.0 anyio-4.13.0 attrs-26.1.0 certifi-2026.2.25 cffi-2.0.0 click-8.3.1 cryptography-46.0.6 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 httpx-sse-0.4.3 idna-3.11 jsonschema-4.26.0 jsonschema-specifications-2025.9.1 mcp-1.26.0 mcp-server-jira-0.1.1 pycparser-3.0 pydantic-2.12.5 pydantic-core-2.41.5 pydantic-settings-2.13.1 pyjwt-2.12.1 python-dotenv-1.2.2 python-multipart-0.0.22 referencing-0.37.0 rpds-py-0.30.0 sse-starlette-3.3.4 starlette-1.0.0 typing-extensions-4.15.0 typing-inspection-0.4.2 uvicorn-0.42.0
+#11 17.85 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+#11 18.10 
+#11 18.10 [notice] A new release of pip is available: 24.0 -> 26.0.1
+#11 18.10 [notice] To update, run: pip install --upgrade pip
+#11 DONE 18.6s
+
+#12 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#12 DONE 0.2s
+
+#13 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#13 DONE 0.5s
+
+#14 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#14 DONE 0.1s
+
+#15 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#15 DONE 0.1s
+
+#16 [stage-1 9/9] RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
+#16 DONE 0.3s
+
+#17 exporting to image
+#17 exporting layers
+#17 exporting layers 4.5s done
+#17 exporting manifest sha256:e0be72460e10108527fb3ab823c65e75e2f7e8c43d68ca3357ee82476295348e 0.0s done
+#17 exporting config sha256:a5f5ba75b4db194b40943ab60424a9f5df35bd1c13ecba5972bff87656242f4c 0.0s done
+#17 exporting attestation manifest sha256:38b91fc02219c377a818da666f66276d42eac021bbb2699b540757f98c4fc1cf 0.1s done
+#17 exporting manifest list sha256:60f0d93004b76cba38f47a86c77a96f407903b63d990511f6a233d862f49de7e
+#17 exporting manifest list sha256:60f0d93004b76cba38f47a86c77a96f407903b63d990511f6a233d862f49de7e 0.0s done
+#17 naming to docker.io/library/jira-mcp:latest done
+#17 unpacking to docker.io/library/jira-mcp:latest
+#17 unpacking to docker.io/library/jira-mcp:latest 1.8s done
+#17 naming to docker.io/hackerdogs/jira-mcp:latest done
+#17 unpacking to docker.io/hackerdogs/jira-mcp:latest 0.0s done
+#17 DONE 6.6s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/ssrt2rnq10zd0t5eqzmqo5xqj
+
+✅ Build succeeded.
+
+--- [CHECK 2] Stdio tools/list (raw output) ---
+>>> Sending to container via stdio:
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"debug","version":"0.0.1"}}}
+{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}
+
+>>> Raw container response:
+{"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"tools":{"listChanged":false}},"serverInfo":{"name":"mcp-jira","version":"1.26.0"}}}
+{"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"get_issue","description":"Get detailed information about a Jira issue","inputSchema":{"type":"object","properties":{"token":{"type":"string","description":"Jira Bearer token for authentication (optional - uses configured default if not provided)"},"issue_key":{"type":"string","description":"Jira issue key (e.g., 'LTC-4261', 'PROJ-123')"}},"required":["issue_key"]}},{"name":"get_transitions","description":"Get available transitions for a Jira issue","inputSchema":{"type":"object","properties":{"token":{"type":"string","description":"Jira Bearer token for authentication (optional - uses configured default if not provided)"},"issue_key":{"type":"string","description":"Jira issue key (e.g., 'LTC-4261', 'PROJ-123')"}},"required":["issue_key"]}},{"name":"transition_issue","description":"Execute a transition on a Jira issue","inputSchema":{"type":"object","properties":{"token":{"type":"string","description":"Jira Bearer token for authentication (optional - uses configured default if not provided)"},"issue_key":{"type":"string","description":"Jira issue key (e.g., 'LTC-4261', 'PROJ-123')"},"transition_id":{"type":"string","description":"ID of the transition to execute"}},"required":["issue_key","transition_id"]}},{"name":"add_worklog","description":"Add worklog to a Jira issue","inputSchema":{"type":"object","properties":{"token":{"type":"string","description":"Jira Bearer token for authentication (optional - uses configured default if not provided)"},"issue_key":{"type":"string","description":"Jira issue key (e.g., 'LTC-4261', 'PROJ-123')"},"time_spent":{"type":"string","description":"Time spent (e.g., '1h', '30m', '2h 30m')"},"comment":{"type":"string","description":"Work description/comment (optional)"}},"required":["issue_key","time_spent"]}},{"name":"search_issues","description":"Search Jira issues using JQL (Jira Query Language)","inputSchema":{"type":"object","properties":{"token":{"type":"string","description":"Jira Bearer token for authentication (optional - uses configured default if not provided)"},"jql":{"type":"string","description":"JQL query (e.g., 'assignee = currentUser() AND status = \"In Progress\"')"},"max_results":{"type":"integer","description":"Maximum number of results to return (default: 50)","minimum":1,"maximum":100}},"required":["jql"]}}]}}
+
+✅ Stdio tools/list: tools key found in response.
+
+--- [CHECK 3] HTTP streamable tools/list (raw output) ---
+>>> Starting container in HTTP mode on port 8614...
+94a7ecafa61b64846218dbe83768e922edabde946e335fdd2bdb034156d55bda
+>>> Waiting 5s for server to start...
+>>> Container logs so far:
+[mcp-proxy] Listening on 0.0.0.0:8649/mcp
+[mcp-proxy] Wrapping: mcp-server-jira --jira-base-url https://example.atlassian.net --jira-token ci-placeholder-jira-token-not-for-production
+
+>>> Sending HTTP initialize request to get session ID...
+event: message
+data: {"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"tools":{"listChanged":false}},"serverInfo":{"name":"mcp-jira","version":"1.26.0"}}}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> Content-Length: 154
+> 
+} [154 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.15
+< Date: Sun, 29 Mar 2026 17:48:32 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: 860b53a9eb34497098739733443156b5
+< 
+{ [206 bytes data]
+* Closing connection 0
+✅ Got session ID: 860b53a9eb34497098739733443156b5
+>>> Sending HTTP notifications/initialized...
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 860b53a9eb34497098739733443156b5
+> Content-Length: 54
+> 
+} [54 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 202 Accepted
+< Server: BaseHTTP/0.6 Python/3.11.15
+< Date: Sun, 29 Mar 2026 17:48:33 GMT
+< 
+{ [0 bytes data]
+* Closing connection 0
+>>> Sending HTTP tools/list request:
+>>> Raw HTTP response:
+event: message
+data: {"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"get_issue","description":"Get detailed information about a Jira issue","inputSchema":{"type":"object","properties":{"token":{"type":"string","description":"Jira Bearer token for authentication (optional - uses configured default if not provided)"},"issue_key":{"type":"string","description":"Jira issue key (e.g., 'LTC-4261', 'PROJ-123')"}},"required":["issue_key"]}},{"name":"get_transitions","description":"Get available transitions for a Jira issue","inputSchema":{"type":"object","properties":{"token":{"type":"string","description":"Jira Bearer token for authentication (optional - uses configured default if not provided)"},"issue_key":{"type":"string","description":"Jira issue key (e.g., 'LTC-4261', 'PROJ-123')"}},"required":["issue_key"]}},{"name":"transition_issue","description":"Execute a transition on a Jira issue","inputSchema":{"type":"object","properties":{"token":{"type":"string","description":"Jira Bearer token for authentication (optional - uses configured default if not provided)"},"issue_key":{"type":"string","description":"Jira issue key (e.g., 'LTC-4261', 'PROJ-123')"},"transition_id":{"type":"string","description":"ID of the transition to execute"}},"required":["issue_key","transition_id"]}},{"name":"add_worklog","description":"Add worklog to a Jira issue","inputSchema":{"type":"object","properties":{"token":{"type":"string","description":"Jira Bearer token for authentication (optional - uses configured default if not provided)"},"issue_key":{"type":"string","description":"Jira issue key (e.g., 'LTC-4261', 'PROJ-123')"},"time_spent":{"type":"string","description":"Time spent (e.g., '1h', '30m', '2h 30m')"},"comment":{"type":"string","description":"Work description/comment (optional)"}},"required":["issue_key","time_spent"]}},{"name":"search_issues","description":"Search Jira issues using JQL (Jira Query Language)","inputSchema":{"type":"object","properties":{"token":{"type":"string","description":"Jira Bearer token for authentication (optional - uses configured default if not provided)"},"jql":{"type":"string","description":"JQL query (e.g., 'assignee = currentUser() AND status = \"In Progress\"')"},"max_results":{"type":"integer","description":"Maximum number of results to return (default: 50)","minimum":1,"maximum":100}},"required":["jql"]}}]}}
+
+*   Trying 127.0.0.1:8614...
+* Connected to localhost (127.0.0.1) port 8614 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8614
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 860b53a9eb34497098739733443156b5
+> Content-Length: 58
+> 
+} [58 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.15
+< Date: Sun, 29 Mar 2026 17:48:33 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: 860b53a9eb34497098739733443156b5
+< 
+{ [2375 bytes data]
+* Closing connection 0
+
+✅ HTTP tools/list: tools key found in response.
+
+>>> Stopping HTTP container...
+jira-mcp-debug-http
+
+========== End of Debug: Sun, Mar 29, 2026 11:18:34 PM ==========

@@ -16,3 +16,15 @@ mcpfarm-ui/node_modules/
 mcpfarm-ui/dist/
 mcpfarm.zip
 scripts/*.log
+/tools-to-migrate-to-mcp
+
+# Local-only MCP test helpers (not part of upstream scripts/)
+scripts/_*.py
+scripts/finish_index_*.sh
+scripts/mcp_compliance_python.sh
+scripts/mcp_test_bootstrap.sh
+scripts/run_exploitdb_*.sh
+scripts/run_garak*.sh
+scripts/run_gau_*.sh
+scripts/run_index_*.sh
+

@@ -1,20 +1,87 @@
-MCP test run - exa-mcp
-Generated (UTC): 2026-03-20T18:29:35Z
-Exit code: 0
-Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
----------------------------------------------------------------------------------
+========== Testing exa-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 463B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 ...
+
+#3 [auth] library/node:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-slim
+#2 DONE 1.9s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 DONE 0.0s
+
+#6 [1/7] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd 0.0s done
+#6 DONE 0.0s
+
+#7 [2/7] WORKDIR /app
+#7 CACHED
+
+#8 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#5 [internal] load build context
+#5 transferring context: 10.82kB 0.0s done
+#5 DONE 0.1s
+
+#9 [4/7] RUN npm install -g exa-mcp-server supergateway 2>/dev/null || npm install -g supergateway
+#9 18.27 
+#9 18.27 added 261 packages in 18s
+#9 18.27 
+#9 18.27 40 packages are looking for funding
+#9 18.27   run `npm fund` for details
+#9 DONE 19.5s
+
+#10 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#10 DONE 0.8s
+
+#11 [6/7] COPY entrypoint.sh /entrypoint.sh
+#11 DONE 0.4s
+
+#12 [7/7] RUN chmod +x /entrypoint.sh
+#12 DONE 0.9s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 3.5s done
+#13 exporting manifest sha256:6571c0e6520531febf7dc7196f9c48eddab313ef4c4b7a06b1ea525b4721b500 0.0s done
+#13 exporting config sha256:8f6c95fccf7b9728753ce222d123cc29cabf1987d2e1d996442e3bbf82d14c90 0.0s done
+#13 exporting attestation manifest sha256:670ea141809c8f404ab84ea764291ae5a331dfc8f0ece9741095fbc3b37deead 0.0s done
+#13 exporting manifest list sha256:06641e8622c937a3852fcd63fa64c501b3a6babf7e8663abd32e830094a1bfec 0.0s done
+#13 naming to docker.io/library/exa-mcp:latest
+#13 naming to docker.io/library/exa-mcp:latest done
+#13 unpacking to docker.io/library/exa-mcp:latest
+#13 unpacking to docker.io/library/exa-mcp:latest 1.9s done
+#13 naming to docker.io/hackerdogs/exa-mcp:latest done
+#13 unpacking to docker.io/hackerdogs/exa-mcp:latest 0.0s done
+#13 DONE 5.6s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/iaqb17q0p8lgma0dlb62200sm
 ========== exa-mcp test (compliance) ==========
 [0;34m[1] Install[0m
   [0;32mPASS: image exists[0m
 [0;34m[2] Stdio tools/list[0m
-  [0;32mPASS: stdio tools/list[0m
+  [0;31mFAIL: stdio tools/list[0m
 [0;34m[3] Stdio tools/call (skipped — upstream package)[0m
   [0;32mPASS: stdio tools/call (upstream)[0m
 [0;34m[4] HTTP streamable tools/list[0m
-  [0;32mPASS: HTTP tools/list[0m
+  [0;31mFAIL: HTTP tools/list[0m
 [0;34m[5] HTTP streamable tools/call (skipped — upstream package)[0m
   [0;32mPASS: HTTP tools/call (upstream)[0m
 
-Total: 5 passed, 0 failed
+Total: 3 passed, 2 failed
 exa-mcp-test
 exa-mcp-test
+
+❌ FAIL (Test): exa-mcp

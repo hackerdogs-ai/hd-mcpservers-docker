@@ -1,8 +1,53 @@
-MCP test run - ahmia-mcp
-Generated (UTC): 2026-03-20T17:44:32Z
-Exit code: 0
-Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
----------------------------------------------------------------------------------
+========== Retesting ahmia-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 263B done
+#1 DONE 0.1s
+
+#2 [auth] library/python:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 2.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.1s
+
+#5 [internal] load build context
+#5 transferring context: 18.75kB 0.0s done
+#5 DONE 0.1s
+
+#6 [1/5] FROM docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+#6 resolve docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634 0.0s done
+#6 DONE 0.1s
+
+#7 [2/5] WORKDIR /app
+#7 CACHED
+
+#8 [3/5] COPY requirements.txt .
+#8 CACHED
+
+#9 [4/5] RUN pip install --no-cache-dir -r requirements.txt
+#9 CACHED
+
+#10 [5/5] COPY . .
+#10 DONE 0.0s
+
+#11 exporting to image
+#11 exporting layers 0.1s done
+#11 exporting manifest sha256:e787dbb49316f63aecf17295a26d410eeed9fc9810ce3fe621af97e6b0c88e74 0.0s done
+#11 exporting config sha256:a15eb99872ddebb895f5e665783cddee48340d70ed9f15a22fac1d463b23d52f 0.0s done
+#11 exporting attestation manifest sha256:4062c00f92c123dcc93023b803b541f1aeac21fb7470757fa3c8d3b9946970e6 0.1s done
+#11 exporting manifest list sha256:fc4c3a429d1a8efaa0c595e2fc41cd5f26117a7ee9113abf9fde2613e65273a0 0.0s done
+#11 naming to docker.io/library/ahmia-mcp:latest done
+#11 unpacking to docker.io/library/ahmia-mcp:latest 0.0s done
+#11 naming to docker.io/hackerdogs/ahmia-mcp:latest done
+#11 unpacking to docker.io/hackerdogs/ahmia-mcp:latest 0.0s done
+#11 DONE 0.4s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/b5o15lbk6mlrhmlfcdp8qn4vg
 ========== ahmia-mcp test (compliance) ==========
 [0;34m[1] Install[0m
   [0;32mPASS: image exists[0m
@@ -18,3 +63,5 @@ Note: Full stdout/stderr capture (this test.sh does not use the structured test-
 Total: 5 passed, 0 failed
 ahmia-mcp-test
 ahmia-mcp-test
+
+✅ PASS: ahmia-mcp

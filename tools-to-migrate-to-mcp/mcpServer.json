@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "tools-to-migrate-to-mcp": {
+      "url": "http://localhost:8512/mcp"
+    }
+  }
+}

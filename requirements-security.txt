@@ -1,0 +1,33 @@
+# Security scanning tool dependencies for hd-mcpservers-docker
+#
+# Install all Python-based security tools in one command:
+#   pip install -r requirements-security.txt
+#
+# Non-pip tools (install separately):
+#   gitleaks  → https://github.com/gitleaks/gitleaks/releases
+#   hadolint  → https://github.com/hadolint/hadolint/releases
+#   trivy     → curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
+#   grype     → curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh
+#   syft      → curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh
+
+# ── Pre-commit framework ──────────────────────────────────────────────────────
+pre-commit>=3.7.0
+
+# ── Secret & Credential Scanning ─────────────────────────────────────────────
+truffleHog3>=3.0.0          # TruffleHog v3: secrets in filesystems and git
+
+# ── Python SAST ───────────────────────────────────────────────────────────────
+bandit>=1.7.10               # Python SAST — finds common security issues
+semgrep>=1.70.0              # Multi-language SAST with community rule packs
+
+# ── IaC / Dockerfile Security ────────────────────────────────────────────────
+checkov>=3.2.0               # Dockerfile, docker-compose, Terraform, K8s scanning
+
+# ── Dependency Auditing ───────────────────────────────────────────────────────
+pip-audit>=2.7.0             # Audits Python packages against OSV/PyPI advisory DB
+
+# ── YAML / Config Linting ────────────────────────────────────────────────────
+yamllint>=1.35.0             # YAML linter used by pre-commit hook
+
+# ── Cloud Security ───────────────────────────────────────────────────────────
+prowler>=4.0.0               # AWS/GCP/Azure cloud security posture scanner

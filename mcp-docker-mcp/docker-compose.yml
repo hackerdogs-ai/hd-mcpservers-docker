@@ -1,0 +1,13 @@
+services:
+  mcp-docker-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hackerdogs/mcp-docker-mcp:latest
+    container_name: mcp-docker-mcp
+    ports:
+      - "8517:8517"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8517
+    restart: unless-stopped

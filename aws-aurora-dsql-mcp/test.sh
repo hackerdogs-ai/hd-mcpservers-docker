@@ -10,6 +10,7 @@ pass() { echo -e "  ${GREEN}PASS: $1${NC}"; PASS=$((PASS+1)); }
 fail() { echo -e "  ${RED}FAIL: $1${NC}"; FAIL=$((FAIL+1)); }
 info() { echo -e "${BLUE}$1${NC}"; }
 cleanup() { docker stop "$CONTAINER_NAME" 2>/dev/null || true; docker rm -f "$CONTAINER_NAME" 2>/dev/null || true; }
+  echo "--- Container Logs ---" > test_logs.txt && docker logs "$CONTAINER_NAME" >> test_logs.txt 2>&1
 trap cleanup EXIT
 INIT_REQ='{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}'
 INIT_NOTIF='{"jsonrpc":"2.0","method":"notifications/initialized"}'
@@ -19,7 +20,7 @@ info "[1] Install"
 if ! docker image inspect "$IMAGE" >/dev/null 2>&1; then echo "Build first: docker build -t $IMAGE $PROJECT_DIR" >&2; exit 1; fi
 pass "image exists"
 info "[2] Stdio tools/list"
-STDIO_OUT=$(python3 "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
+STDIO_OUT=$(python "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
 if grep -q '"tools"' <<< "$STDIO_OUT"; then pass "stdio tools/list"; else fail "stdio tools/list"; fi
 info "[3] Stdio tools/call (skipped — upstream package)"
 pass "stdio tools/call (upstream)"

@@ -60,7 +60,7 @@ INIT_REQ='{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersi
 INIT_NOTIF='{"jsonrpc":"2.0","method":"notifications/initialized"}'
 LIST_REQ='{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}'
 
-STDIO_OUT=$(python3 "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
+STDIO_OUT=$(python "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
 
 if grep -q '"tools"' <<< "$STDIO_OUT"; then
     TOOL_COUNT=$(echo "$STDIO_OUT" | grep -o '"name"' | wc -l | tr -d ' ')
@@ -119,7 +119,7 @@ TOOLS_RESP=$(curl -s -X POST "http://localhost:${PORT}/mcp" \
 
 if echo "$TOOLS_RESP" | grep -q '"tools"'; then
     pass "HTTP tools/list returned tools"
-    echo "$TOOLS_RESP" | python3 -c "
+    echo "$TOOLS_RESP" | python -c "
 import sys, json
 for line in sys.stdin:
     line = line.strip()

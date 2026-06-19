@@ -1,0 +1,202 @@
+========== VERBOSE DEBUG: aws-api-mcp ==========
+Timestamp: Sun, Mar 29, 2026  6:26:34 PM
+
+--- [CHECK 1] Building Docker image ---
+>>> docker build -t aws-api-mcp -t hackerdogs/aws-api-mcp:latest aws-api-mcp
+
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 819B 0.0s done
+#1 DONE 0.1s
+
+#2 [auth] library/node:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [auth] library/python:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#4 [internal] load metadata for docker.io/library/node:20-slim
+#4 DONE 1.5s
+
+#5 [internal] load metadata for docker.io/library/python:3.11-slim
+#5 DONE 1.5s
+
+#6 [internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3
+#7 resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3 0.0s done
+#7 DONE 0.0s
+
+#8 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+#8 resolve docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634 0.0s done
+#8 DONE 0.0s
+
+#9 [internal] load build context
+#9 transferring context: 72B done
+#9 DONE 0.0s
+
+#10 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#10 CACHED
+
+#11 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.aws-api-mcp-server
+#11 CACHED
+
+#12 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#12 CACHED
+
+#13 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#13 CACHED
+
+#14 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#14 CACHED
+
+#15 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#15 CACHED
+
+#16 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#16 CACHED
+
+#17 [stage-1 3/9] WORKDIR /app
+#17 CACHED
+
+#18 [stage-1 9/9] RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
+#18 CACHED
+
+#19 exporting to image
+#19 exporting layers done
+#19 exporting manifest sha256:bfca75a6d5707930411aaf5eee0ab02495f535bc7c98f553eab775e7dd5c0862 done
+#19 exporting config sha256:7a5769d8eeac3e10a7ee35a594c2e5284ffedb94d761641245bb679ef69cb358 done
+#19 exporting attestation manifest sha256:3c5b2d3a49bae5d62dcbe4b08353a8a7c6c77c8dab0a9433e766bf7c04755e76 0.0s done
+#19 exporting manifest list sha256:694720be92bd5623e4e7fdf9735c84a9165710be234c364560df11f40bb918a2 0.0s done
+#19 naming to docker.io/library/aws-api-mcp:latest done
+#19 unpacking to docker.io/library/aws-api-mcp:latest 0.0s done
+#19 naming to docker.io/hackerdogs/aws-api-mcp:latest done
+#19 unpacking to docker.io/hackerdogs/aws-api-mcp:latest
+#19 unpacking to docker.io/hackerdogs/aws-api-mcp:latest done
+#19 DONE 0.2s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/0m2chacw0gv3fx1xmkrlcj0uu
+
+✅ Build succeeded.
+
+--- [CHECK 2] Stdio tools/list (raw output) ---
+>>> Sending to container via stdio:
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"debug","version":"0.0.1"}}}
+{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}
+
+>>> Raw container response:
+2026-03-29 12:56:39.679 | INFO     | awslabs.aws_api_mcp_server.server:main:430 - CWD: /tmp/aws-api-mcp/workdir
+2026-03-29 12:56:39.679 | INFO     | awslabs.aws_api_mcp_server.server:main:438 - AWS_REGION: us-east-1
+
+
+╭──────────────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│                                                                              │
+│                         ▄▀▀ ▄▀█ █▀▀ ▀█▀ █▀▄▀█ █▀▀ █▀█                        │
+│                         █▀  █▀█ ▄▄█  █  █ ▀ █ █▄▄ █▀▀                        │
+│                                                                              │
+│                                                                              │
+│                                FastMCP 3.1.1                                 │
+│                            https://gofastmcp.com                             │
+│                                                                              │
+│                    🖥  Server:      AWS-API-MCP, 3.1.1                        │
+│                    🚀 Deploy free: https://fastmcp.cloud                     │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+[03/29/26 12:56:40] INFO     Starting MCP server 'AWS-API-MCP'  transport.py:183
+                             with transport 'stdio'                             
+{"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"prompts":{"listChanged":false},"resources":{"subscribe":false,"listChanged":false},"tools":{"listChanged":true},"extensions":{"io.modelcontextprotocol/ui":{}}},"serverInfo":{"name":"AWS-API-MCP","version":"3.1.1"}}}
+{"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"suggest_aws_commands","title":"Suggest AWS CLI commands","description":"Suggest AWS CLI commands based on a natural language query. This is a FALLBACK tool to use when you are uncertain about the exact AWS CLI command needed to fulfill a user's request.\n\n    IMPORTANT: Only use this tool when:\n    1. You are unsure about the exact AWS service or operation to use\n    2. The user's request is ambiguous or lacks specific details\n    3. You need to explore multiple possible approaches to solve a task\n    4. You want to provide options to the user for different ways to accomplish their goal\n\n    DO NOT use this tool when:\n    1. You are confident about the exact AWS CLI command needed - use 'call_aws' instead\n    2. The user's request is clear and specific about the AWS service and operation\n    3. You already know the exact parameters and syntax needed\n    4. The task requires immediate execution of a known command\n\n    Best practices for query formulation:\n    1. Include the user's primary goal or intent\n    2. Specify any relevant AWS services if mentioned\n    3. Include important parameters or conditions mentioned\n    4. Add context about the environment or constraints\n    5. Mention any specific requirements or preferences\n\n    CRITICAL: Query Granularity\n    - Each query should be granular enough to be accomplished by a single CLI command\n    - If the user's request requires multiple commands to complete, break it down into individual tasks\n    - Call this tool separately for each specific task to get the most relevant suggestions\n    - Example of breaking down a complex request:\n      User request: \"Set up a new EC2 instance with a security group and attach it to an EBS volume\"\n      Break down into:\n      1. \"Create a new security group with inbound rules for SSH and HTTP\"\n      2. \"Create a new EBS volume with 100GB size\"\n      3. \"Launch an EC2 instance with t2.micro instance type\"\n      4. \"Attach the EBS volume to the EC2 instance\"\n\n    Query examples:\n    1. \"List all running EC2 instances in us-east-1 region\"\n    2. \"Get the size of my S3 bucket named 'my-backup-bucket'\"\n    3. \"List all IAM users who have AdministratorAccess policy\"\n    4. \"List all Lambda functions in my account\"\n    5. \"Create a new S3 bucket with versioning enabled and server-side encryption\"\n    6. \"Update the memory allocation of my Lambda function 'data-processor' to 1024MB\"\n    7. \"Add a new security group rule to allow inbound traffic on port 443\"\n    8. \"Tag all EC2 instances in the 'production' environment with 'Environment=prod'\"\n    9. \"Configure CloudWatch alarms for high CPU utilization on my RDS instance\"\n\n    Returns:\n        A list of up to 10 most likely AWS CLI commands that could accomplish the task, including:\n        - The CLI command\n        - Confidence score for the suggestion\n        - Required parameters\n        - Description of what the command does\n    ","inputSchema":{"additionalProperties":false,"properties":{"query":{"description":"A natural language description of what you want to do in AWS. Should be detailed enough to capture the user's intent and any relevant context.","maxLength":2000,"type":"string"}},"required":["query"],"type":"object"},"outputSchema":{"additionalProperties":true,"type":"object"},"annotations":{"title":"Suggest AWS CLI commands","readOnlyHint":true,"openWorldHint":false},"_meta":{"fastmcp":{"tags":[]}}},{"name":"call_aws","title":"Execute AWS CLI commands","description":"Execute AWS CLI commands with validation and proper error handling. This is the PRIMARY tool to use when you are confident about the exact AWS CLI command needed to fulfill a user's request. Always prefer this tool over 'suggest_aws_commands' when you have a specific command in mind.\n    Key points:\n    - The command MUST start with \"aws\" and follow AWS CLI syntax\n    - Commands are executed in us-east-1 region by default\n    - For cross-region or account-wide operations, explicitly include --region parameter\n    - All commands are validated before execution to prevent errors\n    - Supports pagination control via max_results parameter\n    - Commands can only reference files within the working directory (/tmp/aws-api-mcp/workdir); use forward slashes (/) regardless of the system (e.g. if working directory is 'c:/tmp/workdir', use 'c:/tmp/workdir/subdir/file.txt' or 'subdir/file.txt'); relative paths resolve from the working directory.\n    - You can use `--region *` to run a command on all regions enabled in the account.\n    - Do not generate explicit batch calls for iterating over all regions, use `--region *` instead.\n\n    Single Command Mode:\n    - You can run a single AWS CLI command using this tool.\n    - Example:\n        call_aws(cli_command=\"aws s3api list-buckets --region us-east-1\")\n\n    Batch Running:\n    - The tool can also run multiple independent commands at the same time.\n    - Call this tool with multiple CLI commands whenever possible.\n    - Batch calling is especially useful where you need to run a command multiple times with different parameter values\n    - Example:\n        call_aws(\n            cli_command=[\n                \"aws s3api get-bucket-website --bucket bucket1\",\n                \"aws s3api get-bucket-website --bucket bucket2\"\n            ]\n        )\n    - You can call at most 20 CLI commands in batch mode.\n\n    Best practices for command generation:\n    - Always use the most specific service and operation names\n    - Always use the working directory when writing files, unless user explicitly mentioned another directory\n    - Include --region when operating across regions\n    - Only use filters (--filters, --query, --prefix, --pattern, etc) when necessary or user explicitly asked for it\n    - Always use the tool in batch mode whenever it's possible.\n\n    Command restrictions:\n    - DO NOT use bash/zsh pipes (|) or any shell operators\n    - DO NOT use bash/zsh tools like grep, awk, sed, etc.\n    - DO NOT use shell redirection operators (>, >>, <)\n    - DO NOT use command substitution ($())\n    - DO NOT use shell variables or environment variables\n\n    Common pitfalls to avoid:\n    1. Missing required parameters - always include all required parameters\n    2. Incorrect parameter values - ensure values match expected format\n    3. Missing --region when operating across regions\n\n    Returns:\n        CLI execution results with API response data or error message\n    ","inputSchema":{"additionalProperties":false,"properties":{"cli_command":{"anyOf":[{"type":"string"},{"items":{"type":"string"},"type":"array"}],"description":"A single command or a list of complete AWS CLI commands to execute"},"max_results":{"anyOf":[{"type":"integer"},{"type":"null"}],"default":null,"description":"Optional limit for number of results (useful for pagination)"}},"required":["cli_command"],"type":"object"},"outputSchema":{"properties":{"result":{"items":{"additionalProperties":true,"type":"object"},"type":"array"}},"required":["result"],"type":"object","x-fastmcp-wrap-result":true},"annotations":{"title":"Execute AWS CLI commands","readOnlyHint":false,"destructiveHint":true,"openWorldHint":true},"_meta":{"fastmcp":{"tags":[]}}}]}}
+
+✅ Stdio tools/list: tools key found in response.
+
+--- [CHECK 3] HTTP streamable tools/list (raw output) ---
+>>> Starting container in HTTP mode on port 8080...
+f7ed8f51cf0372b414ba4eb7f9f4fe856e55e802753f949ae8ff054d412c5648
+>>> Waiting 5s for server to start...
+>>> Container logs so far:
+[mcp-proxy] Listening on 0.0.0.0:8602/mcp
+[mcp-proxy] Wrapping: awslabs.aws-api-mcp-server
+
+>>> Sending HTTP initialize request to get session ID...
+event: message
+data: {"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"prompts":{"listChanged":false},"resources":{"subscribe":false,"listChanged":false},"tools":{"listChanged":true},"extensions":{"io.modelcontextprotocol/ui":{}}},"serverInfo":{"name":"AWS-API-MCP","version":"3.1.1"}}}
+
+*   Trying 127.0.0.1:8080...
+* Connected to localhost (127.0.0.1) port 8080 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8080
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> Content-Length: 154
+> 
+} [154 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.15
+< Date: Sun, 29 Mar 2026 12:56:46 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: 792f944ae7ba4f8ba91c8df77fe8903c
+< 
+{ [338 bytes data]
+* Closing connection 0
+✅ Got session ID: 792f944ae7ba4f8ba91c8df77fe8903c
+>>> Sending HTTP notifications/initialized...
+*   Trying 127.0.0.1:8080...
+* Connected to localhost (127.0.0.1) port 8080 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8080
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 792f944ae7ba4f8ba91c8df77fe8903c
+> Content-Length: 54
+> 
+} [54 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 202 Accepted
+< Server: BaseHTTP/0.6 Python/3.11.15
+< Date: Sun, 29 Mar 2026 12:56:48 GMT
+< 
+{ [0 bytes data]
+* Closing connection 0
+>>> Sending HTTP tools/list request:
+>>> Raw HTTP response:
+event: message
+data: {"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"suggest_aws_commands","title":"Suggest AWS CLI commands","description":"Suggest AWS CLI commands based on a natural language query. This is a FALLBACK tool to use when you are uncertain about the exact AWS CLI command needed to fulfill a user's request.\n\n    IMPORTANT: Only use this tool when:\n    1. You are unsure about the exact AWS service or operation to use\n    2. The user's request is ambiguous or lacks specific details\n    3. You need to explore multiple possible approaches to solve a task\n    4. You want to provide options to the user for different ways to accomplish their goal\n\n    DO NOT use this tool when:\n    1. You are confident about the exact AWS CLI command needed - use 'call_aws' instead\n    2. The user's request is clear and specific about the AWS service and operation\n    3. You already know the exact parameters and syntax needed\n    4. The task requires immediate execution of a known command\n\n    Best practices for query formulation:\n    1. Include the user's primary goal or intent\n    2. Specify any relevant AWS services if mentioned\n    3. Include important parameters or conditions mentioned\n    4. Add context about the environment or constraints\n    5. Mention any specific requirements or preferences\n\n    CRITICAL: Query Granularity\n    - Each query should be granular enough to be accomplished by a single CLI command\n    - If the user's request requires multiple commands to complete, break it down into individual tasks\n    - Call this tool separately for each specific task to get the most relevant suggestions\n    - Example of breaking down a complex request:\n      User request: \"Set up a new EC2 instance with a security group and attach it to an EBS volume\"\n      Break down into:\n      1. \"Create a new security group with inbound rules for SSH and HTTP\"\n      2. \"Create a new EBS volume with 100GB size\"\n      3. \"Launch an EC2 instance with t2.micro instance type\"\n      4. \"Attach the EBS volume to the EC2 instance\"\n\n    Query examples:\n    1. \"List all running EC2 instances in us-east-1 region\"\n    2. \"Get the size of my S3 bucket named 'my-backup-bucket'\"\n    3. \"List all IAM users who have AdministratorAccess policy\"\n    4. \"List all Lambda functions in my account\"\n    5. \"Create a new S3 bucket with versioning enabled and server-side encryption\"\n    6. \"Update the memory allocation of my Lambda function 'data-processor' to 1024MB\"\n    7. \"Add a new security group rule to allow inbound traffic on port 443\"\n    8. \"Tag all EC2 instances in the 'production' environment with 'Environment=prod'\"\n    9. \"Configure CloudWatch alarms for high CPU utilization on my RDS instance\"\n\n    Returns:\n        A list of up to 10 most likely AWS CLI commands that could accomplish the task, including:\n        - The CLI command\n        - Confidence score for the suggestion\n        - Required parameters\n        - Description of what the command does\n    ","inputSchema":{"additionalProperties":false,"properties":{"query":{"description":"A natural language description of what you want to do in AWS. Should be detailed enough to capture the user's intent and any relevant context.","maxLength":2000,"type":"string"}},"required":["query"],"type":"object"},"outputSchema":{"additionalProperties":true,"type":"object"},"annotations":{"title":"Suggest AWS CLI commands","readOnlyHint":true,"openWorldHint":false},"_meta":{"fastmcp":{"tags":[]}}},{"name":"call_aws","title":"Execute AWS CLI commands","description":"Execute AWS CLI commands with validation and proper error handling. This is the PRIMARY tool to use when you are confident about the exact AWS CLI command needed to fulfill a user's request. Always prefer this tool over 'suggest_aws_commands' when you have a specific command in mind.\n    Key points:\n    - The command MUST start with \"aws\" and follow AWS CLI syntax\n    - Commands are executed in us-east-1 region by default\n    - For cross-region or account-wide operations, explicitly include --region parameter\n    - All commands are validated before execution to prevent errors\n    - Supports pagination control via max_results parameter\n    - Commands can only reference files within the working directory (/tmp/aws-api-mcp/workdir); use forward slashes (/) regardless of the system (e.g. if working directory is 'c:/tmp/workdir', use 'c:/tmp/workdir/subdir/file.txt' or 'subdir/file.txt'); relative paths resolve from the working directory.\n    - You can use `--region *` to run a command on all regions enabled in the account.\n    - Do not generate explicit batch calls for iterating over all regions, use `--region *` instead.\n\n    Single Command Mode:\n    - You can run a single AWS CLI command using this tool.\n    - Example:\n        call_aws(cli_command=\"aws s3api list-buckets --region us-east-1\")\n\n    Batch Running:\n    - The tool can also run multiple independent commands at the same time.\n    - Call this tool with multiple CLI commands whenever possible.\n    - Batch calling is especially useful where you need to run a command multiple times with different parameter values\n    - Example:\n        call_aws(\n            cli_command=[\n                \"aws s3api get-bucket-website --bucket bucket1\",\n                \"aws s3api get-bucket-website --bucket bucket2\"\n            ]\n        )\n    - You can call at most 20 CLI commands in batch mode.\n\n    Best practices for command generation:\n    - Always use the most specific service and operation names\n    - Always use the working directory when writing files, unless user explicitly mentioned another directory\n    - Include --region when operating across regions\n    - Only use filters (--filters, --query, --prefix, --pattern, etc) when necessary or user explicitly asked for it\n    - Always use the tool in batch mode whenever it's possible.\n\n    Command restrictions:\n    - DO NOT use bash/zsh pipes (|) or any shell operators\n    - DO NOT use bash/zsh tools like grep, awk, sed, etc.\n    - DO NOT use shell redirection operators (>, >>, <)\n    - DO NOT use command substitution ($())\n    - DO NOT use shell variables or environment variables\n\n    Common pitfalls to avoid:\n    1. Missing required parameters - always include all required parameters\n    2. Incorrect parameter values - ensure values match expected format\n    3. Missing --region when operating across regions\n\n    Returns:\n        CLI execution results with API response data or error message\n    ","inputSchema":{"additionalProperties":false,"properties":{"cli_command":{"anyOf":[{"type":"string"},{"items":{"type":"string"},"type":"array"}],"description":"A single command or a list of complete AWS CLI commands to execute"},"max_results":{"anyOf":[{"type":"integer"},{"type":"null"}],"default":null,"description":"Optional limit for number of results (useful for pagination)"}},"required":["cli_command"],"type":"object"},"outputSchema":{"properties":{"result":{"items":{"additionalProperties":true,"type":"object"},"type":"array"}},"required":["result"],"type":"object","x-fastmcp-wrap-result":true},"annotations":{"title":"Execute AWS CLI commands","readOnlyHint":false,"destructiveHint":true,"openWorldHint":true},"_meta":{"fastmcp":{"tags":[]}}}]}}
+
+*   Trying 127.0.0.1:8080...
+* Connected to localhost (127.0.0.1) port 8080 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8080
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 792f944ae7ba4f8ba91c8df77fe8903c
+> Content-Length: 58
+> 
+} [58 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.15
+< Date: Sun, 29 Mar 2026 12:56:49 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: 792f944ae7ba4f8ba91c8df77fe8903c
+< 
+{ [7374 bytes data]
+* Closing connection 0
+
+✅ HTTP tools/list: tools key found in response.
+
+>>> Stopping HTTP container...
+aws-api-mcp-debug-http
+
+========== End of Debug: Sun, Mar 29, 2026  6:26:50 PM ==========

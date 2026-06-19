@@ -1,0 +1,13 @@
+services:
+  tools-to-migrate-to-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hackerdogs/tools-to-migrate-to-mcp:latest
+    container_name: tools-to-migrate-to-mcp
+    ports:
+      - "8512:8512"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8512
+    restart: unless-stopped

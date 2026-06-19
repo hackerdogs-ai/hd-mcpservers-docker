@@ -17,7 +17,13 @@ logger = logging.getLogger("n2yo-mcp")
 MCP_TRANSPORT = os.environ.get("MCP_TRANSPORT", "stdio")
 MCP_PORT = int(os.environ.get("MCP_PORT", "8435"))
 
-mcp = FastMCP("N2YO MCP", instructions="A Model Context Protocol (MCP) server that connects AI assistants to the N2YO.com API for real-time satellite tracking. It enables users to ")
+mcp = FastMCP(
+    "N2YO MCP",
+    instructions=(
+        "A Model Context Protocol (MCP) server that connects AI assistants to the "
+        "N2YO.com API for real-time satellite tracking and satellite pass predictions."
+    ),
+)
 
 
 @mcp.tool()

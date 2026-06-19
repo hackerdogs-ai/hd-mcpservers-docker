@@ -1,7 +1,11 @@
-{
+﻿{
   "mcpServers": {
     "censys-platform": {
-      "url": "https://mcp.censys.io/mcp"
+      "url": "https://mcp.platform.censys.io/platform/mcp/",
+      "headers": {
+        "Authorization": "Bearer your-censys-personal-access-token",
+        "X-Organization-ID": "your-organization-id"
+      }
     }
   }
 }

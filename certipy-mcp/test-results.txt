@@ -1,8 +1,60 @@
-MCP test run - certipy-mcp
-Generated (UTC): 2026-03-20T18:12:57Z
-Exit code: 0
-Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
----------------------------------------------------------------------------------
+========== Retesting certipy-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.84kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#2 DONE 0.4s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B 0.0s done
+#3 DONE 0.0s
+
+#4 [1/8] FROM docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0
+#4 resolve docker.io/library/python:3.12-slim-bookworm@sha256:31c0807da611e2e377a2e9b566ad4eb038ac5a5838cbbbe6f2262259b5dc77a0 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 70B done
+#5 DONE 0.0s
+
+#6 [6/8] RUN pip install --no-cache-dir -r requirements.txt &&     pip install --no-cache-dir certipy-ad
+#6 CACHED
+
+#7 [5/8] COPY requirements.txt ./
+#7 CACHED
+
+#8 [4/8] WORKDIR /app
+#8 CACHED
+
+#9 [3/8] RUN apt-get update && apt-get install -y --no-install-recommends     tini     ca-certificates     krb5-user     && rm -rf /var/lib/apt/lists/*
+#9 CACHED
+
+#10 [7/8] COPY mcp_server.py ./
+#10 CACHED
+
+#11 [2/8] RUN groupadd -g 1000 mcpuser &&     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
+#11 CACHED
+
+#12 [8/8] RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app
+#12 CACHED
+
+#13 exporting to image
+#13 exporting layers 0.0s done
+#13 exporting manifest sha256:8989487eb9f3458aded42812726431631980c2afeec9de52c5efab1f2c7afc9a done
+#13 exporting config sha256:0bc29a40118d3d59b9c3c170774438358b7567b5c6e7ded65f8532d5157d462f done
+#13 exporting attestation manifest sha256:43fe5a020aa2a1605fa7e1a8224cf388b158aca972a9021370bc552a892c0b72 0.0s done
+#13 exporting manifest list sha256:1c297afb3af5b56195703acbc9d0f1796e1364bc8add0e7b66dabc1f8a644a5b 0.0s done
+#13 naming to docker.io/library/certipy-mcp:latest done
+#13 unpacking to docker.io/library/certipy-mcp:latest 0.0s done
+#13 naming to docker.io/hackerdogs/certipy-mcp:latest done
+#13 unpacking to docker.io/hackerdogs/certipy-mcp:latest
+#13 unpacking to docker.io/hackerdogs/certipy-mcp:latest 0.0s done
+#13 DONE 0.3s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/nkpg6swk4ycpuksyovcq6arln
 =================================================================================
 [0;34mCertipy MCP Server — Test Suite[0m
 =================================================================================
@@ -15,11 +67,11 @@ Note: Full stdout/stderr capture (this test.sh does not use the structured test-
        Certipy v5.0.4 - by Oliver Lyak (ly4k)
 
 [0;34m[Test 3] MCP stdio mode — initialize + tools/list[0m
-  [0;32mPASS: stdio mode returned tools/list response (       2 tool names found)[0m
+  [0;32mPASS: stdio mode returned tools/list response (1 tool names found)[0m
 
 [0;34m[Test 4] MCP HTTP streamable mode — initialize[0m
   [0;32mPASS: HTTP streamable mode responded (status 200)[0m
-       Session ID: 5b320476c5c54069...
+       Session ID: ac3ae72483074b4d...
 
 [0;34m[Test 5] MCP HTTP — tools/list[0m
   [0;32mPASS: HTTP tools/list returned tools[0m
@@ -32,3 +84,5 @@ Note: Full stdout/stderr capture (this test.sh does not use the structured test-
 =================================================================================
 certipy-mcp-test
 certipy-mcp-test
+
+✅ PASS: certipy-mcp

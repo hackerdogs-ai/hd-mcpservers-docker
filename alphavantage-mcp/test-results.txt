@@ -1,8 +1,58 @@
-MCP test run - alphavantage-mcp
-Generated (UTC): 2026-03-20T17:45:43Z
-Exit code: 0
-Note: Full stdout/stderr capture (this test.sh does not use the structured test-results writer).
----------------------------------------------------------------------------------
+========== Testing alphavantage-mcp ==========
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 916B 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim-bookworm
+#2 DONE 0.4s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/8] FROM docker.io/library/python:3.11-slim-bookworm@sha256:420310dd2ff7895895f0f1f9d15cae5a95dabceb8f1d6b9a23ef33c2c1c542c3
+#4 resolve docker.io/library/python:3.11-slim-bookworm@sha256:420310dd2ff7895895f0f1f9d15cae5a95dabceb8f1d6b9a23ef33c2c1c542c3 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 1.29kB 0.0s done
+#5 DONE 0.1s
+
+#6 [3/8] RUN apt-get update && apt-get install -y --no-install-recommends tini ca-certificates && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [4/8] WORKDIR /app
+#7 CACHED
+
+#8 [5/8] COPY requirements.txt ./
+#8 CACHED
+
+#9 [2/8] RUN groupadd -g 1000 mcpuser && useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser
+#9 CACHED
+
+#10 [6/8] RUN pip install --no-cache-dir -r requirements.txt
+#10 CACHED
+
+#11 [7/8] COPY mcp_server.py ./
+#11 DONE 0.0s
+
+#12 [8/8] RUN chown -R mcpuser:mcpuser /app
+#12 DONE 0.3s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 0.2s done
+#13 exporting manifest sha256:f28d303338dea672f0d3dbf4f898098b063bf7b72a961f21b415a7be3fb34da7 0.0s done
+#13 exporting config sha256:4bafd9c0da5c3a3f1863836d4b4b0a413cc6768db2e6a280a16c45a7fd253269 0.0s done
+#13 exporting attestation manifest sha256:b839bf4483ab754781f760241fa7752c4a64f8828302f35e62b0a7eaa0a1df32 0.0s done
+#13 exporting manifest list sha256:f674e7594cb2dd7ea595af2a183ec5ba2181ad877d9674e7df4e9a23244a0cb2 0.0s done
+#13 naming to docker.io/hackerdogs/alphavantage-mcp:latest done
+#13 unpacking to docker.io/hackerdogs/alphavantage-mcp:latest 0.0s done
+#13 DONE 0.4s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/weah4oj49d5mkgr7phaq2st0z
 ========== alphavantage-mcp test (compliance) ==========
 [0;34m[1] Install[0m
   [0;32mPASS: image exists[0m
@@ -18,3 +68,5 @@ Note: Full stdout/stderr capture (this test.sh does not use the structured test-
 Total: 5 passed, 0 failed
 alphavantage-mcp-test
 alphavantage-mcp-test
+
+✅ PASS: alphavantage-mcp

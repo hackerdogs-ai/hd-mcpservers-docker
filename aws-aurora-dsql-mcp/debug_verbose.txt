@@ -1,0 +1,177 @@
+========== VERBOSE DEBUG: aws-aurora-dsql-mcp ==========
+Timestamp: Sun, Mar 29, 2026  6:28:54 PM
+
+--- [CHECK 1] Building Docker image ---
+>>> docker build -t aws-aurora-dsql-mcp -t hackerdogs/aws-aurora-dsql-mcp:latest aws-aurora-dsql-mcp
+
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 825B 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 1.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 1.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [stage-1 1/9] FROM docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+#5 resolve docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634 0.0s done
+#5 DONE 0.1s
+
+#6 [supergateway-builder 1/2] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3
+#6 resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec30f3 0.0s done
+#6 DONE 0.1s
+
+#7 [internal] load build context
+#7 transferring context: 72B done
+#7 DONE 0.0s
+
+#8 [stage-1 8/9] COPY entrypoint.sh /entrypoint.sh
+#8 CACHED
+
+#9 [stage-1 4/9] RUN pip install --no-cache-dir awslabs.aurora-dsql-mcp-server
+#9 CACHED
+
+#10 [stage-1 5/9] COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node
+#10 CACHED
+
+#11 [stage-1 3/9] WORKDIR /app
+#11 CACHED
+
+#12 [supergateway-builder 2/2] RUN npm install -g supergateway && npm cache clean --force
+#12 CACHED
+
+#13 [stage-1 6/9] COPY --from=supergateway-builder /usr/local/lib/node_modules/supergateway /usr/local/lib/node_modules/supergateway
+#13 CACHED
+
+#14 [stage-1 7/9] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#14 CACHED
+
+#15 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+#15 CACHED
+
+#16 [stage-1 9/9] RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:22774e751490197b7cf6ff794f0518e04db7864f3c6eef51aee44fb1dd931d79 done
+#17 exporting config sha256:873025d8db210ed39c728fcadcf73480bb1200192ce07538283deb964c58cb94 0.0s done
+#17 exporting attestation manifest sha256:59c241c34c7a507848034789916be92fec7f4079d94eae4ab0c392a105a9f969 0.0s done
+#17 exporting manifest list sha256:15934608077d77e08c3b9f867a2cb0fa1d96c9642f23d564cf26aa81f48239d7 0.0s done
+#17 naming to docker.io/library/aws-aurora-dsql-mcp:latest done
+#17 unpacking to docker.io/library/aws-aurora-dsql-mcp:latest 0.0s done
+#17 naming to docker.io/hackerdogs/aws-aurora-dsql-mcp:latest done
+#17 unpacking to docker.io/hackerdogs/aws-aurora-dsql-mcp:latest done
+#17 DONE 0.2s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/usdmufh6ih2bej8tjps5ahi06
+
+✅ Build succeeded.
+
+--- [CHECK 2] Stdio tools/list (raw output) ---
+>>> Sending to container via stdio:
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"debug","version":"0.0.1"}}}
+{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}
+
+>>> Raw container response:
+2026-03-29 12:58:58.374 | WARNING  | awslabs.aurora_dsql_mcp_server.server:main:715 - Aurora DSQL MCP server starting without cluster configuration. Database tools will not be available. Please configure --cluster_endpoint, --database_user, and --region to enable database operations.
+2026-03-29 12:58:58.374 | INFO     | awslabs.aurora_dsql_mcp_server.server:main:720 - Starting Aurora DSQL MCP server (documentation tools only)
+[03/29/26 12:58:58] INFO     Processing request of type            server.py:720
+                             ListToolsRequest                                   
+{"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"prompts":{"listChanged":false},"resources":{"subscribe":false,"listChanged":false},"tools":{"listChanged":false}},"serverInfo":{"name":"awslabs-aurora-dsql-mcp-server","version":"1.26.0"},"instructions":"\n    # Aurora DSQL MCP server.\n    Provides tools to execute SQL queries on Aurora DSQL cluster.\n\n    ## Available Tools\n\n    ### readonly_query\n    Runs a read-only SQL query.\n\n    ### transact\n    Executes one or more SQL commands in a transaction.\n    - In READ-ONLY mode: Use for consistent multi-query reads. Statements are best-effort read-only validated.\n    - In READ-WRITE mode: Use for any transactions including mutation. Supports all DDL and DML statements.\n\n    ### get_schema\n    Returns the schema of a table.\n\n    ### dsql_search_documentation\n    Search Aurora DSQL documentation.\n\n    ### dsql_read_documentation\n    Read specific DSQL documentation pages.\n\n    ### dsql_recommend\n    Get recommendations for DSQL best practices.\n    "}}
+{"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"readonly_query","description":"Run a read-only SQL query against the configured Aurora DSQL cluster.\n\nAurora DSQL is distributed SQL database with Postgres compatibility. The following table\nsummarizes `SELECT` functionality that is expected to work. Items not in this table may\nalso be supported, as this is a point in time snapshot.\n| Primary clause                  | Supported clauses     |\n|---------------------------------|-----------------------|\n| FROM                            |                       |\n| GROUP BY                        | ALL, DISTINCT         |\n| ORDER BY                        | ASC, DESC, NULLS      |\n| LIMIT                           |                       |\n| DISTINCT                        |                       |\n| HAVING                          |                       |\n| USING                           |                       |\n| WITH (common table expressions) |                       |\n| INNER JOIN                      | ON                    |\n| OUTER JOIN                      | LEFT, RIGHT, FULL, ON |\n| CROSS JOIN                      | ON                    |\n| UNION                           | ALL                   |\n| INTERSECT                       | ALL                   |\n| EXCEPT                          | ALL                   |\n| OVER                            | RANK (), PARTITION BY |\n| FOR UPDATE                      |                       |\n","inputSchema":{"properties":{"sql":{"description":"The SQL query to run","title":"Sql","type":"string"}},"required":["sql"],"title":"readonly_queryArguments","type":"object"},"outputSchema":{"properties":{"result":{"items":{"additionalProperties":true,"type":"object"},"title":"Result","type":"array"}},"required":["result"],"title":"readonly_queryOutput","type":"object"}},{"name":"transact","description":"Execute SQL statements in a transaction against the configured Aurora DSQL cluster.\n\nAurora DSQL is a distributed SQL database with Postgres compatibility. This tool will automatically\ninsert `BEGIN` and `COMMIT` statements; you only need to provide the statements to run\nwithin the transaction scope.\n\n## Behavior by Mode\n\n**READ-ONLY MODE:**\n- Use this tool for read operations that require transactional consistency (point-in-time snapshots)\n- Multiple SELECT queries will see data as it existed at transaction start time\n- All statements are validated before execution - NO write operations allowed\n- Prohibited operations: mutating queries ie. INSERT, UPDATE, DELETE, CREATE, DROP etc.\n- Allowed operations: SELECT, SHOW, EXPLAIN (read-only queries only)\n\n**READ-WRITE MODE:**\n- Use this tool for any write or modify operations\n- Supports all DDL statements (CREATE TABLE, CREATE INDEX, etc.)\n- Supports all DML statements (INSERT, UPDATE, DELETE)\n- Best practice: Use UUIDs for new tables to spread workload across nodes\n- Async DDL commands (like CREATE INDEX ASYNC) return a job id\n- View jobs with: SELECT * FROM sys.jobs\n\n## When to Use Transact vs readonly_query\n\n- Use `transact` when you need multiple queries to see consistent data (same point in time)\n- Use `readonly_query` for single read queries that don't need transactional isolation\n- In read-only mode, both tools validate against write operations\n\n## Examples\n\nRead-only mode - consistent multi-query read:\n```\ntransact([\"SELECT COUNT(*) FROM orders\", \"SELECT SUM(total) FROM orders\"])\n```\n\nRead-write mode - create and populate table:\n```\ntransact([\n  \"CREATE TABLE users (id UUID PRIMARY KEY, name TEXT)\",\n  \"INSERT INTO users VALUES (gen_random_uuid(), 'Alice')\"\n])\n```\n","inputSchema":{"properties":{"sql_list":{"description":"List of one or more SQL statements to execute in a transaction","items":{"type":"string"},"title":"Sql List","type":"array"}},"required":["sql_list"],"title":"transactArguments","type":"object"},"outputSchema":{"properties":{"result":{"items":{"additionalProperties":true,"type":"object"},"title":"Result","type":"array"}},"required":["result"],"title":"transactOutput","type":"object"}},{"name":"get_schema","description":"Get the schema of the given table","inputSchema":{"properties":{"table_name":{"description":"name of the table","title":"Table Name","type":"string"}},"required":["table_name"],"title":"get_schemaArguments","type":"object"},"outputSchema":{"properties":{"result":{"items":{"additionalProperties":true,"type":"object"},"title":"Result","type":"array"}},"required":["result"],"title":"get_schemaOutput","type":"object"}},{"name":"dsql_search_documentation","description":"Search Aurora DSQL documentation","inputSchema":{"properties":{"search_phrase":{"description":"Search phrase to use","title":"Search Phrase","type":"string"},"limit":{"anyOf":[{"type":"integer"},{"type":"null"}],"default":null,"description":"Maximum number of results to return","title":"Limit"}},"required":["search_phrase"],"title":"dsql_search_documentationArguments","type":"object"}},{"name":"dsql_read_documentation","description":"Read specific DSQL documentation pages","inputSchema":{"properties":{"url":{"description":"Specific url to read","title":"Url","type":"string"},"start_index":{"anyOf":[{"type":"integer"},{"type":"null"}],"default":null,"description":"Starting character index","title":"Start Index"},"max_length":{"anyOf":[{"type":"integer"},{"type":"null"}],"default":null,"description":"Maximum number of characters to return","title":"Max Length"}},"required":["url"],"title":"dsql_read_documentationArguments","type":"object"}},{"name":"dsql_recommend","description":"Get recommendations for DSQL best practices","inputSchema":{"properties":{"url":{"description":"URL of the documentation page to get recommendations for","title":"Url","type":"string"}},"required":["url"],"title":"dsql_recommendArguments","type":"object"}}]}}
+
+✅ Stdio tools/list: tools key found in response.
+
+--- [CHECK 3] HTTP streamable tools/list (raw output) ---
+>>> Starting container in HTTP mode on port 8080...
+c08941e78fd283b206a53a66673d4b290cf65d4a4783068a91e1d8452b5e605f
+>>> Waiting 5s for server to start...
+>>> Container logs so far:
+[mcp-proxy] Listening on 0.0.0.0:8603/mcp
+[mcp-proxy] Wrapping: awslabs.aurora-dsql-mcp-server
+
+>>> Sending HTTP initialize request to get session ID...
+event: message
+data: {"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"prompts":{"listChanged":false},"resources":{"subscribe":false,"listChanged":false},"tools":{"listChanged":false}},"serverInfo":{"name":"awslabs-aurora-dsql-mcp-server","version":"1.26.0"},"instructions":"\n    # Aurora DSQL MCP server.\n    Provides tools to execute SQL queries on Aurora DSQL cluster.\n\n    ## Available Tools\n\n    ### readonly_query\n    Runs a read-only SQL query.\n\n    ### transact\n    Executes one or more SQL commands in a transaction.\n    - In READ-ONLY mode: Use for consistent multi-query reads. Statements are best-effort read-only validated.\n    - In READ-WRITE mode: Use for any transactions including mutation. Supports all DDL and DML statements.\n\n    ### get_schema\n    Returns the schema of a table.\n\n    ### dsql_search_documentation\n    Search Aurora DSQL documentation.\n\n    ### dsql_read_documentation\n    Read specific DSQL documentation pages.\n\n    ### dsql_recommend\n    Get recommendations for DSQL best practices.\n    "}}
+
+*   Trying 127.0.0.1:8080...
+* Connected to localhost (127.0.0.1) port 8080 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8080
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> Content-Length: 154
+> 
+} [154 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.15
+< Date: Sun, 29 Mar 2026 12:59:05 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: 37ecb6d554f941078af3cdb825415d6e
+< 
+{ [1107 bytes data]
+* Closing connection 0
+✅ Got session ID: 37ecb6d554f941078af3cdb825415d6e
+>>> Sending HTTP notifications/initialized...
+*   Trying 127.0.0.1:8080...
+* Connected to localhost (127.0.0.1) port 8080 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8080
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 37ecb6d554f941078af3cdb825415d6e
+> Content-Length: 54
+> 
+} [54 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 202 Accepted
+< Server: BaseHTTP/0.6 Python/3.11.15
+< Date: Sun, 29 Mar 2026 12:59:05 GMT
+< 
+{ [0 bytes data]
+* Closing connection 0
+>>> Sending HTTP tools/list request:
+>>> Raw HTTP response:
+event: message
+data: {"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"readonly_query","description":"Run a read-only SQL query against the configured Aurora DSQL cluster.\n\nAurora DSQL is distributed SQL database with Postgres compatibility. The following table\nsummarizes `SELECT` functionality that is expected to work. Items not in this table may\nalso be supported, as this is a point in time snapshot.\n| Primary clause                  | Supported clauses     |\n|---------------------------------|-----------------------|\n| FROM                            |                       |\n| GROUP BY                        | ALL, DISTINCT         |\n| ORDER BY                        | ASC, DESC, NULLS      |\n| LIMIT                           |                       |\n| DISTINCT                        |                       |\n| HAVING                          |                       |\n| USING                           |                       |\n| WITH (common table expressions) |                       |\n| INNER JOIN                      | ON                    |\n| OUTER JOIN                      | LEFT, RIGHT, FULL, ON |\n| CROSS JOIN                      | ON                    |\n| UNION                           | ALL                   |\n| INTERSECT                       | ALL                   |\n| EXCEPT                          | ALL                   |\n| OVER                            | RANK (), PARTITION BY |\n| FOR UPDATE                      |                       |\n","inputSchema":{"properties":{"sql":{"description":"The SQL query to run","title":"Sql","type":"string"}},"required":["sql"],"title":"readonly_queryArguments","type":"object"},"outputSchema":{"properties":{"result":{"items":{"additionalProperties":true,"type":"object"},"title":"Result","type":"array"}},"required":["result"],"title":"readonly_queryOutput","type":"object"}},{"name":"transact","description":"Execute SQL statements in a transaction against the configured Aurora DSQL cluster.\n\nAurora DSQL is a distributed SQL database with Postgres compatibility. This tool will automatically\ninsert `BEGIN` and `COMMIT` statements; you only need to provide the statements to run\nwithin the transaction scope.\n\n## Behavior by Mode\n\n**READ-ONLY MODE:**\n- Use this tool for read operations that require transactional consistency (point-in-time snapshots)\n- Multiple SELECT queries will see data as it existed at transaction start time\n- All statements are validated before execution - NO write operations allowed\n- Prohibited operations: mutating queries ie. INSERT, UPDATE, DELETE, CREATE, DROP etc.\n- Allowed operations: SELECT, SHOW, EXPLAIN (read-only queries only)\n\n**READ-WRITE MODE:**\n- Use this tool for any write or modify operations\n- Supports all DDL statements (CREATE TABLE, CREATE INDEX, etc.)\n- Supports all DML statements (INSERT, UPDATE, DELETE)\n- Best practice: Use UUIDs for new tables to spread workload across nodes\n- Async DDL commands (like CREATE INDEX ASYNC) return a job id\n- View jobs with: SELECT * FROM sys.jobs\n\n## When to Use Transact vs readonly_query\n\n- Use `transact` when you need multiple queries to see consistent data (same point in time)\n- Use `readonly_query` for single read queries that don't need transactional isolation\n- In read-only mode, both tools validate against write operations\n\n## Examples\n\nRead-only mode - consistent multi-query read:\n```\ntransact([\"SELECT COUNT(*) FROM orders\", \"SELECT SUM(total) FROM orders\"])\n```\n\nRead-write mode - create and populate table:\n```\ntransact([\n  \"CREATE TABLE users (id UUID PRIMARY KEY, name TEXT)\",\n  \"INSERT INTO users VALUES (gen_random_uuid(), 'Alice')\"\n])\n```\n","inputSchema":{"properties":{"sql_list":{"description":"List of one or more SQL statements to execute in a transaction","items":{"type":"string"},"title":"Sql List","type":"array"}},"required":["sql_list"],"title":"transactArguments","type":"object"},"outputSchema":{"properties":{"result":{"items":{"additionalProperties":true,"type":"object"},"title":"Result","type":"array"}},"required":["result"],"title":"transactOutput","type":"object"}},{"name":"get_schema","description":"Get the schema of the given table","inputSchema":{"properties":{"table_name":{"description":"name of the table","title":"Table Name","type":"string"}},"required":["table_name"],"title":"get_schemaArguments","type":"object"},"outputSchema":{"properties":{"result":{"items":{"additionalProperties":true,"type":"object"},"title":"Result","type":"array"}},"required":["result"],"title":"get_schemaOutput","type":"object"}},{"name":"dsql_search_documentation","description":"Search Aurora DSQL documentation","inputSchema":{"properties":{"search_phrase":{"description":"Search phrase to use","title":"Search Phrase","type":"string"},"limit":{"anyOf":[{"type":"integer"},{"type":"null"}],"default":null,"description":"Maximum number of results to return","title":"Limit"}},"required":["search_phrase"],"title":"dsql_search_documentationArguments","type":"object"}},{"name":"dsql_read_documentation","description":"Read specific DSQL documentation pages","inputSchema":{"properties":{"url":{"description":"Specific url to read","title":"Url","type":"string"},"start_index":{"anyOf":[{"type":"integer"},{"type":"null"}],"default":null,"description":"Starting character index","title":"Start Index"},"max_length":{"anyOf":[{"type":"integer"},{"type":"null"}],"default":null,"description":"Maximum number of characters to return","title":"Max Length"}},"required":["url"],"title":"dsql_read_documentationArguments","type":"object"}},{"name":"dsql_recommend","description":"Get recommendations for DSQL best practices","inputSchema":{"properties":{"url":{"description":"URL of the documentation page to get recommendations for","title":"Url","type":"string"}},"required":["url"],"title":"dsql_recommendArguments","type":"object"}}]}}
+
+*   Trying 127.0.0.1:8080...
+* Connected to localhost (127.0.0.1) port 8080 (#0)
+> POST /mcp HTTP/1.1
+> Host: localhost:8080
+> User-Agent: curl/7.88.1
+> Content-Type: application/json
+> Accept: application/json, text/event-stream
+> mcp-session-id: 37ecb6d554f941078af3cdb825415d6e
+> Content-Length: 58
+> 
+} [58 bytes data]
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: BaseHTTP/0.6 Python/3.11.15
+< Date: Sun, 29 Mar 2026 12:59:06 GMT
+< Content-Type: text/event-stream
+< Cache-Control: no-cache
+< mcp-session-id: 37ecb6d554f941078af3cdb825415d6e
+< 
+{ [5924 bytes data]
+* Closing connection 0
+
+✅ HTTP tools/list: tools key found in response.
+
+>>> Stopping HTTP container...
+aws-aurora-dsql-mcp-debug-http
+
+========== End of Debug: Sun, Mar 29, 2026  6:29:07 PM ==========

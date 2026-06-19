@@ -1,0 +1,13 @@
+services:
+  xpoz-mcp-server-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hackerdogs/xpoz-mcp-server-mcp:latest
+    container_name: xpoz-mcp-server-mcp
+    ports:
+      - "8510:8510"
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8510
+    restart: unless-stopped

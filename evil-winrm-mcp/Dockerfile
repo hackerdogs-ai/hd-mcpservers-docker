@@ -55,4 +55,4 @@ EXPOSE 8263
 ENTRYPOINT ["/usr/bin/tini", "--"]
 
 # Start MCP server
-CMD ["python", "mcp_server.py"]w
+CMD ["python", "mcp_server.py"]

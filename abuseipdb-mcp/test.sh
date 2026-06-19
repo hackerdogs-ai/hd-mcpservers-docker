@@ -8,6 +8,11 @@ IMAGE="hackerdogs/abuseipdb-mcp:latest"
 PORT=8374
 CONTAINER_NAME="abuseipdb-mcp-test"
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PYTHON="$(command -v python3 2>/dev/null || command -v python 2>/dev/null || true)"
+if [ -z "$PYTHON" ]; then
+  echo "python3 or python is required on PATH" >&2
+  exit 1
+fi
 pass() { echo -e "  ${GREEN}PASS: $1${NC}"; PASS=$((PASS+1)); }
 fail() { echo -e "  ${RED}FAIL: $1${NC}"; FAIL=$((FAIL+1)); }
 info() { echo -e "${BLUE}$1${NC}"; }
@@ -29,7 +34,7 @@ fi
 pass "image exists"
 
 info "[2] Stdio tools/list"
-STDIO_OUT=$(python3 "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
+STDIO_OUT=$("$PYTHON" "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
 echo "$STDIO_OUT" | grep -q '"tools"' && pass "stdio tools/list" || fail "stdio tools/list"
 
 info "[3] Stdio tools/call check_ip"

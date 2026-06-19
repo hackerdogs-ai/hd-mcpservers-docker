@@ -6,11 +6,12 @@ PASS=0; FAIL=0
 IMAGE="hackerdogs/ffuf-mcp:latest"
 PORT=8385
 CONTAINER_NAME="ffuf-mcp-test"
+MCP_HDR_FILE="${TMPDIR:-/tmp}/mcp_hdr_${CONTAINER_NAME}_$$"
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 pass() { echo -e "  ${GREEN}PASS: $1${NC}"; PASS=$((PASS+1)); }
 fail() { echo -e "  ${RED}FAIL: $1${NC}"; FAIL=$((FAIL+1)); }
 info() { echo -e "${BLUE}$1${NC}"; }
-cleanup() { docker stop "$CONTAINER_NAME" 2>/dev/null || true; docker rm -f "$CONTAINER_NAME" 2>/dev/null || true; }
+cleanup() { rm -f "$MCP_HDR_FILE" 2>/dev/null || true; docker stop "$CONTAINER_NAME" 2>/dev/null || true; docker rm -f "$CONTAINER_NAME" 2>/dev/null || true; }
 trap cleanup EXIT
 INIT_REQ='{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}'
 INIT_NOTIF='{"jsonrpc":"2.0","method":"notifications/initialized"}'
@@ -25,7 +26,7 @@ if ! docker image inspect "$IMAGE" >/dev/null 2>&1; then
 fi
 pass "image exists"
 info "[2] Stdio tools/list"
-STDIO_OUT=$(python3 "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
+STDIO_OUT=$(python "$PROJECT_DIR/../scripts/mcp_stdio_docker_tools_list.py" "$IMAGE") || true
 echo "$STDIO_OUT" | grep -q '"tools"' && pass "stdio tools/list" || fail "stdio tools/list"
 info "[3] Stdio tools/call run_ffuf"
 CALL_OUT=$( ( printf '%s\n%s\n%s\n' "$INIT_REQ" "$INIT_NOTIF" "$CALL_REQ"; sleep 5 ) | docker run -i --rm -e MCP_TRANSPORT=stdio "$IMAGE" 2>/dev/null) || true
@@ -35,9 +36,10 @@ cleanup
 docker run -d --name "$CONTAINER_NAME" -e MCP_TRANSPORT=streamable-http -e MCP_PORT=$PORT -p "$PORT:$PORT" "$IMAGE" >/dev/null
 sleep 5
 SESSION_ID=""; WAITED=0; TOOLS_RESP=""; SESS_HDR=""
-while [ "$WAITED" -lt "${MCP_HTTP_LIST_MAX_WAIT:-30}" ]; do
-  curl -s -D /tmp/mcp_h -o /dev/null -X POST "http://localhost:${PORT}/mcp" -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" -d "$INIT_REQ" 2>/dev/null || true
-  SESSION_ID=$(grep -i 'mcp-session-id' /tmp/mcp_h 2>/dev/null | sed 's/.*: *//' | tr -d '\r' | head -1)
+while [ "$WAITED" -lt "${MCP_HTTP_LIST_MAX_WAIT:-120}" ]; do
+  : >"$MCP_HDR_FILE"
+  curl -s -D "$MCP_HDR_FILE" -o /dev/null -X POST "http://localhost:${PORT}/mcp" -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" -d "$INIT_REQ" 2>/dev/null || true
+  SESSION_ID=$(grep -i 'mcp-session-id' "$MCP_HDR_FILE" 2>/dev/null | sed 's/.*: *//' | tr -d '\r' | head -1)
   SESS_HDR=""; [ -n "$SESSION_ID" ] && SESS_HDR="-H mcp-session-id:$SESSION_ID"
   curl -s -X POST "http://localhost:${PORT}/mcp" -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" $SESS_HDR -d "$INIT_NOTIF" >/dev/null 2>&1 || true
   TOOLS_RESP=$(curl -s -X POST "http://localhost:${PORT}/mcp" -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" $SESS_HDR -d "$LIST_REQ" 2>/dev/null) || true
