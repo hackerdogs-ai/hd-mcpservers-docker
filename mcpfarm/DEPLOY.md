@@ -265,18 +265,19 @@ All admin endpoints require `X-Admin-Secret: <ADMIN_SECRET>` header.
 
 ## Known Build Failures
 
-Six servers cannot be built due to upstream issues:
+The six previously-failing builds have been fixed and now build and pass `test.sh`:
 
-| Server | Reason |
-|--------|--------|
-| `bettercap-mcp` | `go install bettercap` fails — upstream dependency |
-| `gitleaks-mcp` | Build error in upstream source |
-| `horusec-mcp` | Horusec install script returns exit 127 |
-| `subjack-mcp` | Requires Go ≥ 1.25.1, base image uses 1.24 |
-| `vulnerability-scanner-mcp` | Missing `requirements.txt` in upstream repo |
-| `x8-mcp` | References non-existent base image `x8-builder:latest` |
+| Server | Previous reason | Fix |
+|--------|-----------------|-----|
+| `bettercap-mcp` | `go install bettercap` failed | builder bumped to `golang:1.25` + `GOTOOLCHAIN=auto` |
+| `gitleaks-mcp` | upstream build error | builds cleanly on current source |
+| `horusec-mcp` | install script exit 127 | binary fetched directly by arch |
+| `subjack-mcp` | needed Go ≥ 1.25.1 | `golang:1.25` + corrected `fingerprints.json` path |
+| `vulnerability-scanner-mcp` | missing upstream `requirements.txt` | re-backed with the `grype` scanner binary |
+| `x8-mcp` | referenced non-existent `x8-builder` stage | removed the stray `COPY --from=x8-builder` line |
 
-All other 380 servers build and run successfully.
+All server images currently build and run. If a future change breaks a build,
+add that server to `FAIL_BUILDS` in `deploy.sh` to skip it on `--start-all`.
 
 ---
 

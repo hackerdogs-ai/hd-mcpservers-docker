@@ -34,7 +34,10 @@
         reverse_proxy auth-gateway:9090
     }
 
-    import /etc/caddy/dynamic/routes.conf
+    # Glob import is optional: on a fresh deploy routes.conf does not exist yet
+    # (the auth-gateway writes it on seed/admin reload). A non-glob import of a
+    # missing file makes Caddy fail to load and crash-loop, deadlocking first boot.
+    import /etc/caddy/dynamic/*.conf
 
     handle {
         reverse_proxy mcpfarm-ui:3000

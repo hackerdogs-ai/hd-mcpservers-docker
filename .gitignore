@@ -21,8 +21,9 @@ scripts/*.log
 # Local-only MCP test helpers (not part of upstream scripts/)
 scripts/_*.py
 scripts/finish_index_*.sh
-scripts/mcp_compliance_python.sh
-scripts/mcp_test_bootstrap.sh
+# NOTE: mcp_compliance_python.sh and mcp_test_bootstrap.sh are sourced by ~88
+# per-server test.sh files and MUST be committed (previously gitignored, which
+# broke `test.sh` on fresh clones).
 scripts/run_exploitdb_*.sh
 scripts/run_garak*.sh
 scripts/run_gau_*.sh

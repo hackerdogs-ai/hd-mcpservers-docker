@@ -36,6 +36,30 @@ _REQUEST_TIMEOUT = float(os.environ.get("MCP_PROXY_REQUEST_TIMEOUT", "600"))
 # While waiting for a full stdio line (can be multi-MB for tools/list), emit SSE
 # comments so HTTP clients don't see a long idle period (curl --max-time).
 _KEEPALIVE_INTERVAL = float(os.environ.get("MCP_PROXY_KEEPALIVE_INTERVAL", "10"))
+# Idle sessions are reaped to prevent unbounded subprocess/FD accumulation. Each
+# session is a live child process holding 3 pipes; clients that never send DELETE
+# would otherwise leak them until the process runs out of file descriptors.
+_SESSION_TTL = float(os.environ.get("MCP_PROXY_SESSION_TTL", "900"))
+_REAP_INTERVAL = float(os.environ.get("MCP_PROXY_REAP_INTERVAL", "60"))
+
+
+def _reap_sessions():
+    """Background daemon: close sessions that are idle past TTL or whose child died."""
+    while True:
+        time.sleep(_REAP_INTERVAL)
+        now = time.time()
+        with lock:
+            stale = [
+                sid
+                for sid, s in sessions.items()
+                if (now - s.last_used) > _SESSION_TTL or s.proc.poll() is not None
+            ]
+            for sid in stale:
+                try:
+                    sessions[sid].close()
+                except Exception:
+                    pass
+                sessions.pop(sid, None)
 
 
 def read_jsonrpc_line(proc, timeout, keepalive_wfile=None):
@@ -52,46 +76,57 @@ def read_jsonrpc_line(proc, timeout, keepalive_wfile=None):
     last_keepalive = time.time()
     try:
         out_buf = proc.stdout.buffer
-    except AttributeError:
-        out_buf = None
-    if out_buf is None:
+        fd = out_buf.fileno()
+    except (AttributeError, ValueError):
         return None
 
-    while time.time() < deadline:
-        remaining = max(0.0, deadline - time.time())
-        if remaining <= 0:
-            break
-        sel_t = min(0.5, remaining)
-        r, _, _ = select.select([out_buf], [], [], sel_t)
-        now = time.time()
-        if not r:
-            if (
-                keepalive_wfile is not None
-                and _KEEPALIVE_INTERVAL > 0
-                and (now - last_keepalive) >= _KEEPALIVE_INTERVAL
-            ):
-                keepalive_wfile.write(
-                    b": mcp-proxy waiting for stdio child (large JSON-RPC line)\n\n"
-                )
-                keepalive_wfile.flush()
-                last_keepalive = now
-            continue
+    # Use poll() rather than select(): select() is limited to file descriptors
+    # below FD_SETSIZE (1024) and raises "filedescriptor out of range in select()"
+    # once the process holds many open FDs (e.g. many concurrent sessions). poll()
+    # has no such limit.
+    poller = select.poll()
+    poller.register(fd, select.POLLIN)
+    try:
+        while time.time() < deadline:
+            remaining = max(0.0, deadline - time.time())
+            if remaining <= 0:
+                break
+            sel_t = min(0.5, remaining)
+            events = poller.poll(sel_t * 1000)  # poll() takes milliseconds
+            now = time.time()
+            if not events:
+                if (
+                    keepalive_wfile is not None
+                    and _KEEPALIVE_INTERVAL > 0
+                    and (now - last_keepalive) >= _KEEPALIVE_INTERVAL
+                ):
+                    keepalive_wfile.write(
+                        b": mcp-proxy waiting for stdio child (large JSON-RPC line)\n\n"
+                    )
+                    keepalive_wfile.flush()
+                    last_keepalive = now
+                continue
 
-        chunk = out_buf.read1(65536)
-        if not chunk:
-            break
-        buf += chunk
-        while b"\n" in buf:
-            line_b, _, buf = buf.partition(b"\n")
-            line = line_b.decode("utf-8", errors="replace").strip()
-            if not line:
-                continue
-            try:
-                json.loads(line)
-                return line
-            except (json.JSONDecodeError, ValueError):
-                continue
-    return None
+            chunk = out_buf.read1(65536)
+            if not chunk:
+                break
+            buf += chunk
+            while b"\n" in buf:
+                line_b, _, buf = buf.partition(b"\n")
+                line = line_b.decode("utf-8", errors="replace").strip()
+                if not line:
+                    continue
+                try:
+                    json.loads(line)
+                    return line
+                except (json.JSONDecodeError, ValueError):
+                    continue
+        return None
+    finally:
+        try:
+            poller.unregister(fd)
+        except Exception:
+            pass
 
 
 class StdioSession:
@@ -106,6 +141,7 @@ class StdioSession:
         )
         self.lock = threading.Lock()
         self.id = uuid.uuid4().hex
+        self.last_used = time.time()
         threading.Thread(target=self._drain_stderr, daemon=True).start()
 
     def _drain_stderr(self):
@@ -117,6 +153,7 @@ class StdioSession:
             pass
 
     def send(self, msg):
+        self.last_used = time.time()
         with self.lock:
             try:
                 self.proc.stdin.write(msg + "\n")
@@ -291,6 +328,7 @@ def main():
         daemon_threads = True
 
     MCPHandler.cmd = cmd
+    threading.Thread(target=_reap_sessions, daemon=True).start()
     server = ThreadingHTTPServer((host, port), MCPHandler)
     print(f"[mcp-proxy] Listening on {host}:{port}/mcp", flush=True)
     print(f"[mcp-proxy] Wrapping: {' '.join(cmd)}", flush=True)

@@ -20,11 +20,16 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_DIR="$(dirname "$SCRIPT_DIR")"
 SKIP_BUILD=false
 START_ALL=false
+NO_TUNNEL=false
+# Base URL the script uses to reach Caddy for health/reload/stats. Override when
+# Caddy is mapped to a non-default host port (e.g. local testing): FARM_HTTP=http://localhost:8485
+FARM_HTTP="${FARM_HTTP:-http://localhost}"
 
 for arg in "$@"; do
   case $arg in
     --skip-build) SKIP_BUILD=true ;;
     --start-all)  START_ALL=true ;;
+    --no-tunnel|--local) NO_TUNNEL=true ;;
   esac
 done
 
@@ -46,11 +51,16 @@ success "Prerequisites OK"
 # ---------------------------------------------------------------------------
 # Environment variables
 # ---------------------------------------------------------------------------
-if [[ -z "${TUNNEL_TOKEN:-}" ]]; then
+if [[ "$NO_TUNNEL" == "true" ]]; then
+  # Local/dev mode: no public tunnel. The farm is reachable at http://localhost.
+  TUNNEL_TOKEN="${TUNNEL_TOKEN:-local-no-tunnel}"
+  warn "Running in --no-tunnel mode: cloudflared will NOT start; farm is local-only (http://localhost)."
+elif [[ -z "${TUNNEL_TOKEN:-}" ]]; then
   echo ""
   echo "Enter your Cloudflare Tunnel token (from Zero Trust dashboard):"
+  echo "(or re-run with --no-tunnel for a local-only deployment)"
   read -r -s TUNNEL_TOKEN
-  [[ -z "$TUNNEL_TOKEN" ]] && error "TUNNEL_TOKEN is required."
+  [[ -z "$TUNNEL_TOKEN" ]] && error "TUNNEL_TOKEN is required (or use --no-tunnel)."
 fi
 
 if [[ -z "${ADMIN_SECRET:-}" ]]; then
@@ -147,9 +157,13 @@ docker inspect --format '{{.State.Health.Status}}' mcpfarm-caddy | grep -q "heal
   || error "Caddy failed to become healthy. Check: docker logs mcpfarm-caddy"
 success "caddy healthy"
 
-docker compose up -d --no-deps cloudflared
-sleep 3
-success "cloudflared started"
+if [[ "$NO_TUNNEL" == "true" ]]; then
+  info "Skipping cloudflared (--no-tunnel)"
+else
+  docker compose up -d --no-deps cloudflared
+  sleep 3
+  success "cloudflared started"
+fi
 
 docker compose up -d --no-deps mcpfarm-ui
 success "mcpfarm-ui started"
@@ -178,7 +192,7 @@ fi
 # ---------------------------------------------------------------------------
 info "Loading Caddy routes (386 servers)..."
 sleep 2
-RELOAD=$(curl -s -X POST http://localhost/admin/reload \
+RELOAD=$(curl -s -X POST ${FARM_HTTP}/admin/reload \
   -H "X-Admin-Secret: ${ADMIN_SECRET}" 2>&1)
 echo "$RELOAD" | grep -q "reloaded" && success "Routes loaded" \
   || warn "Route reload returned: $RELOAD (Caddy may need a moment)"
@@ -188,7 +202,10 @@ echo "$RELOAD" | grep -q "reloaded" && success "Routes loaded" \
 # ---------------------------------------------------------------------------
 if [[ "$START_ALL" == "true" ]]; then
   info "Starting all MCP servers in batches (this may take a few minutes)..."
-  FAIL_BUILDS="bettercap-mcp gitleaks-mcp horusec-mcp subjack-mcp vulnerability-scanner-mcp x8-mcp"
+  # Previously-broken builds (bettercap, gitleaks, horusec, subjack,
+  # vulnerability-scanner, x8) have been fixed and now build/test cleanly.
+  # Add any server here that still fails to build to skip it on --start-all.
+  FAIL_BUILDS=""
   BATCH=(); COUNT=0
 
   while IFS= read -r svc; do
@@ -218,15 +235,19 @@ fi
 # Verify
 # ---------------------------------------------------------------------------
 info "Verifying deployment..."
-HEALTH=$(curl -s http://localhost/health 2>&1)
+HEALTH=$(curl -s ${FARM_HTTP}/health 2>&1)
 [[ "$HEALTH" == "OK" ]] && success "http://localhost/health → OK" \
   || warn "Health check returned: $HEALTH"
 
-CF_STATUS=$(docker logs mcpfarm-tunnel 2>&1 | grep "Registered tunnel connection" | wc -l | tr -d ' ')
-[[ "$CF_STATUS" -ge 1 ]] && success "Cloudflare tunnel connected ($CF_STATUS connections)" \
-  || warn "Cloudflare tunnel may not be connected yet. Check: docker logs mcpfarm-tunnel"
+if [[ "$NO_TUNNEL" == "true" ]]; then
+  info "Tunnel check skipped (--no-tunnel). Farm is local-only at http://localhost"
+else
+  CF_STATUS=$(docker logs mcpfarm-tunnel 2>&1 | grep "Registered tunnel connection" | wc -l | tr -d ' ')
+  [[ "$CF_STATUS" -ge 1 ]] && success "Cloudflare tunnel connected ($CF_STATUS connections)" \
+    || warn "Cloudflare tunnel may not be connected yet. Check: docker logs mcpfarm-tunnel"
+fi
 
-STATS=$(curl -s http://localhost/admin/stats -H "X-Admin-Secret: ${ADMIN_SECRET}" 2>&1)
+STATS=$(curl -s ${FARM_HTTP}/admin/stats -H "X-Admin-Secret: ${ADMIN_SECRET}" 2>&1)
 echo ""
 echo "Farm stats:"
 echo "$STATS" | python3 -m json.tool 2>/dev/null || echo "$STATS"

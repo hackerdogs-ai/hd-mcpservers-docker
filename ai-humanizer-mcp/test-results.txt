@@ -1,53 +1,108 @@
+MCP standard 6-step test - evidence
+Generated (UTC): 2026-06-21T00:59:42Z
+Image: ai-humanizer-mcp
+HTTP port: 8601
+Container (HTTP): ai-humanizer-mcp-test
+Tool exercised: detect
+Tool arguments (JSON): {"type":"original_text","text":"Hello world","detectionTypeList":["HEMINGWAY"]}
+
+Below: raw outputs from each step (not only PASS/FAIL).
+
+=================================================================================
 [1/6] Install - docker build
 Status: PASS
 ---------------------------------------------------------------------------------
 #0 building with "desktop-linux" instance using docker driver
 
 #1 [internal] load build definition from Dockerfile
-#1 transferring dockerfile: 561B 0.0s done
-#1 DONE 0.1s
+#1 transferring dockerfile: 584B done
+#1 DONE 0.0s
 
 #2 [internal] load metadata for docker.io/library/node:20-slim
-#2 ...
+#2 DONE 0.3s
 
-
-#3 [auth] library/node:pull token for registry-1.docker.io
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
 #3 DONE 0.0s
 
-#2 [internal] load metadata for docker.io/library/node:20-slim
-#2 DONE 3.8s
-
-#4 [internal] load .dockerignore
-#4 transferring context: 2B done
+#4 [1/7] FROM docker.io/library/node:20-slim@sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0
+#4 resolve docker.io/library/node:20-slim@sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0 0.0s done
 #4 DONE 0.0s
 
-[2/6] List tools (stdio - full docker stdout/stderr)
-Status: FAIL
----------------------------------------------------------------------------------
-(docker run failed)
+#5 [internal] load build context
+#5 transferring context: 72B done
+#5 DONE 0.0s
+
+#6 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [6/7] COPY entrypoint.sh /entrypoint.sh
+#7 CACHED
+
+#8 [2/7] WORKDIR /app
+#8 CACHED
+
+#9 [4/7] RUN npm install -g ai-humanizer-mcp-server supergateway
+#9 CACHED
+
+#10 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#10 CACHED
+
+#11 [7/7] RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:c9fffbf96caa0721b2a49bdd7ca9386c0e33401fcdd4661b2a5f8795885c8f39 done
+#12 exporting config sha256:d1cdf28ff054529a79c66e7ab0acd95c50cebd1c359912c98dcb0de31b51877e done
+#12 exporting attestation manifest sha256:6111405146f222777a277b41fb20a806b5c0a1ba154137e868e0ca538b4ae85e 0.0s done
+#12 exporting manifest list sha256:1ac8723b5944df3487758eca27d1c471d07a3716fff1e46bc52409e47bdb7545 done
+#12 naming to docker.io/library/ai-humanizer-mcp:latest done
+#12 unpacking to docker.io/library/ai-humanizer-mcp:latest 0.0s done
+#12 DONE 0.1s
 ---------------------------------------------------------------------------------
 
+=================================================================================
+[2/6] List tools (stdio - full docker stdout/stderr)
+Status: PASS
+---------------------------------------------------------------------------------
+{"result":{"protocolVersion":"2024-11-05","capabilities":{"tools":{}},"serverInfo":{"name":"ai-humanizer","version":"1.0.0"}},"jsonrpc":"2.0","id":1}
+{"result":{"tools":[{"name":"detect","description":"Detect whether the text is AI-generated.Show to user the task detail url. Extract the taskId field, then concatenate the link in the following format: https://pre-www.text2go.ai/?utm_source=claude_mcp&taskId={taskId}","inputSchema":{"type":"object","properties":{"type":{"type":"string","enum":["original_text"]},"text":{"type":"string"},"detectionTypeList":{"type":"array","items":{"type":"string","enum":["COPYLEAKS","HEMINGWAY"]}}},"required":["type","text","detectionTypeList"]}}]},"jsonrpc":"2.0","id":2}
+---------------------------------------------------------------------------------
+
+=================================================================================
 [3/6] Run tool (stdio) - tools/call full output
 Status: SKIP
 ---------------------------------------------------------------------------------
 (skipped — MCP_SKIP_STRICT_TOOLS_CALL=1)
 ---------------------------------------------------------------------------------
 
+=================================================================================
 [4/6] List tools (HTTP streamable) - init metadata + tools/list body
-Status: FAIL
+Status: PASS
 ---------------------------------------------------------------------------------
 --- Response headers (initialize) ---
+HTTP/1.0 200 OK
+Server: BaseHTTP/0.6 Python/3.11.2
+Date: Sun, 21 Jun 2026 01:01:54 GMT
+Content-Type: text/event-stream
+Cache-Control: no-cache
+mcp-session-id: 6824754364bd49c2a9859a6104c16a87
 
 --- Response body (initialize) ---
-
+event: message
+data: {"result":{"protocolVersion":"2024-11-05","capabilities":{"tools":{}},"serverInfo":{"name":"ai-humanizer","version":"1.0.0"}},"jsonrpc":"2.0","id":1}
 
 --- tools/list response body ---
-
+event: message
+data: {"result":{"tools":[{"name":"detect","description":"Detect whether the text is AI-generated.Show to user the task detail url. Extract the taskId field, then concatenate the link in the following format: https://pre-www.text2go.ai/?utm_source=claude_mcp&taskId={taskId}","inputSchema":{"type":"object","properties":{"type":{"type":"string","enum":["original_text"]},"text":{"type":"string"},"detectionTypeList":{"type":"array","items":{"type":"string","enum":["COPYLEAKS","HEMINGWAY"]}}},"required":["type","text","detectionTypeList"]}}]},"jsonrpc":"2.0","id":2}
 
 --- docker logs (last 80 lines) ---
-exec /entrypoint.sh: no such file or directory
+[mcp-proxy] Listening on 0.0.0.0:8601/mcp
+[mcp-proxy] Wrapping: npx -y ai-humanizer-mcp-server
 ---------------------------------------------------------------------------------
 
+=================================================================================
 [5/6] Run tool (HTTP streamable) - request + full response
 Status: SKIP
 ---------------------------------------------------------------------------------
@@ -57,41 +112,17 @@ Status: SKIP
 --- tools/call response (raw) ---
 (skipped — MCP_SKIP_STRICT_TOOLS_CALL=1)
 ---------------------------------------------------------------------------------
-#5 [internal] load build context
-#5 transferring context: 72B done
-#5 DONE 0.0s
 
-#6 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
-#6 CACHED
+=================================================================================
+[6/6] Tear down
+Status: PASS
+---------------------------------------------------------------------------------
+docker stop / docker rm -f ai-humanizer-mcp-test (executed)
+---------------------------------------------------------------------------------
 
-#7 [4/7] RUN npm install -g ai-humanizer-mcp-server supergateway
-#7 CACHED
-
-#8 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
-#8 CACHED
-
-#9 [2/7] WORKDIR /app
-#9 CACHED
-
-#10 [6/7] COPY entrypoint.sh /entrypoint.sh
-#10 CACHED
-
-#11 [7/7] RUN chmod +x /entrypoint.sh
-#11 CACHED
-
-#12 exporting to image
-#12 exporting layers done
-#12 exporting manifest sha256:9414cb9b845731389fec9828cab1168952bb4c8ae9bde61efe33b8f3d64172cd done
-#12 exporting config sha256:0db7b5e7f12e7cfa47d111fa59b7f20d1a2ce068947d774a7d892f59ce34c7fe done
-#12 exporting attestation manifest sha256:15ccf81fb50c80026535f260a004ca89f59b021760f940065527332e99a92648 0.0s done
-#12 exporting manifest list sha256:ba717572e368596c9c819c3c412a5ba13bf9c5c4286e90f2fd0cf737b4ac386f 0.0s done
-#12 naming to docker.io/library/ai-humanizer-mcp:latest
-#12 naming to docker.io/library/ai-humanizer-mcp:latest done
-#12 unpacking to docker.io/library/ai-humanizer-mcp:latest 0.0s done
-#12 naming to docker.io/hackerdogs/ai-humanizer-mcp:latest done
-#12 unpacking to docker.io/hackerdogs/ai-humanizer-mcp:latest 0.0s done
-#12 DONE 0.2s
-
-View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/5pw1ftnegkhyadaef8vjl9tji
-/c/Users/Utkarsh Singhal/Desktop/hd-mcpservers-docker/scripts/mcp-standard-six-test.sh: line 75: python3: command not found
-
+=================================================================================
+SUMMARY
+=================================================================================
+Steps passed: 6  Steps failed: 0
+Overall: PASS
+=================================================================================
