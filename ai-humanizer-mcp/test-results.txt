@@ -1,5 +1,5 @@
 MCP standard 6-step test - evidence
-Generated (UTC): 2026-06-21T00:59:42Z
+Generated (UTC): 2026-06-22T19:29:01Z
 Image: ai-humanizer-mcp
 HTTP port: 8601
 Container (HTTP): ai-humanizer-mcp-test
@@ -27,25 +27,25 @@ Status: PASS
 
 #4 [1/7] FROM docker.io/library/node:20-slim@sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0
 #4 resolve docker.io/library/node:20-slim@sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0 0.0s done
-#4 DONE 0.0s
+#4 DONE 0.1s
 
 #5 [internal] load build context
 #5 transferring context: 72B done
 #5 DONE 0.0s
 
-#6 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+#6 [2/7] WORKDIR /app
 #6 CACHED
 
-#7 [6/7] COPY entrypoint.sh /entrypoint.sh
+#7 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
 #7 CACHED
 
-#8 [2/7] WORKDIR /app
+#8 [6/7] COPY entrypoint.sh /entrypoint.sh
 #8 CACHED
 
-#9 [4/7] RUN npm install -g ai-humanizer-mcp-server supergateway
+#9 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
 #9 CACHED
 
-#10 [5/7] COPY mcp_http_proxy.py /mcp_http_proxy.py
+#10 [4/7] RUN npm install -g ai-humanizer-mcp-server supergateway
 #10 CACHED
 
 #11 [7/7] RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
@@ -53,10 +53,11 @@ Status: PASS
 
 #12 exporting to image
 #12 exporting layers done
-#12 exporting manifest sha256:c9fffbf96caa0721b2a49bdd7ca9386c0e33401fcdd4661b2a5f8795885c8f39 done
-#12 exporting config sha256:d1cdf28ff054529a79c66e7ab0acd95c50cebd1c359912c98dcb0de31b51877e done
-#12 exporting attestation manifest sha256:6111405146f222777a277b41fb20a806b5c0a1ba154137e868e0ca538b4ae85e 0.0s done
-#12 exporting manifest list sha256:1ac8723b5944df3487758eca27d1c471d07a3716fff1e46bc52409e47bdb7545 done
+#12 exporting manifest sha256:a17ac114311543d380d2f6b6e16efe751c7f7ba442f96e98d7b22c69ca58e2e7 done
+#12 exporting config sha256:5e75d4b20577a0d7a96cd943a5bc6bef7f31f3ba356018a9eb239829b3e4d60a done
+#12 exporting attestation manifest sha256:91b67434a6c50a2925540a55345b8aa86a20e0823a3025da9984db9999334d82 0.0s done
+#12 exporting manifest list sha256:90655a3a0a54f3050e5a2f9c66c17808bac7b2ed027773101d22396049965139
+#12 exporting manifest list sha256:90655a3a0a54f3050e5a2f9c66c17808bac7b2ed027773101d22396049965139 done
 #12 naming to docker.io/library/ai-humanizer-mcp:latest done
 #12 unpacking to docker.io/library/ai-humanizer-mcp:latest 0.0s done
 #12 DONE 0.1s
@@ -84,10 +85,10 @@ Status: PASS
 --- Response headers (initialize) ---
 HTTP/1.0 200 OK
 Server: BaseHTTP/0.6 Python/3.11.2
-Date: Sun, 21 Jun 2026 01:01:54 GMT
+Date: Mon, 22 Jun 2026 19:31:13 GMT
 Content-Type: text/event-stream
 Cache-Control: no-cache
-mcp-session-id: 6824754364bd49c2a9859a6104c16a87
+mcp-session-id: 20b4cb0c031b4fe2af35c905e9293aa6
 
 --- Response body (initialize) ---
 event: message

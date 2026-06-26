@@ -172,3 +172,36 @@ curl -s -X POST http://localhost:8634/mcp \
 ```bash
 docker stop context7-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "context7-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/context7-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8634:8634 -e MCP_TRANSPORT=streamable-http hackerdogs/context7-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "context7-mcp": {
+      "url": "http://localhost:8634/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

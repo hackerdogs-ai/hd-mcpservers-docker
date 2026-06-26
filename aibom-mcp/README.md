@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint aibom hackerdogs/aibom-mcp:latest -h
 ```bash
 docker run -i --rm --entrypoint aibom hackerdogs/aibom-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "aibom-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/aibom-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8343:8343 -e MCP_TRANSPORT=streamable-http hackerdogs/aibom-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "aibom-mcp": {
+      "url": "http://localhost:8343/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

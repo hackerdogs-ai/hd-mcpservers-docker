@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint smuggler hackerdogs/smuggler-mcp:latest -u https
 ```bash
 docker run -i --rm --entrypoint smuggler hackerdogs/smuggler-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "smuggler-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/smuggler-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8291:8291 -e MCP_TRANSPORT=streamable-http hackerdogs/smuggler-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "smuggler-mcp": {
+      "url": "http://localhost:8291/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

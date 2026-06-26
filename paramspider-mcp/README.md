@@ -218,3 +218,36 @@ docker run -i --rm --entrypoint paramspider hackerdogs/paramspider-mcp:latest -d
 ```bash
 docker run -i --rm --entrypoint paramspider hackerdogs/paramspider-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "paramspider-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/paramspider-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8226:8226 -e MCP_TRANSPORT=streamable-http hackerdogs/paramspider-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "paramspider-mcp": {
+      "url": "http://localhost:8226/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

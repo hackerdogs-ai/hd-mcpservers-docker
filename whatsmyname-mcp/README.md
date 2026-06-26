@@ -45,3 +45,36 @@ docker run -d -p 8528:8528 \
 
 - "Check if username 'johndoe' exists on social media sites."
 - "Enumerate username 'hackerdogs' across the top 100 sites."
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "whatsmyname-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/whatsmyname-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8528:8528 -e MCP_TRANSPORT=streamable-http hackerdogs/whatsmyname-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "whatsmyname-mcp": {
+      "url": "http://localhost:8528/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

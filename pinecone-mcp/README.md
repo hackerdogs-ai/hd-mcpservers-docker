@@ -180,3 +180,36 @@ curl -s -X POST http://localhost:8657/mcp \
 ```bash
 docker stop pinecone-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "pinecone-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/pinecone-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8657:8657 -e MCP_TRANSPORT=streamable-http hackerdogs/pinecone-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "pinecone-mcp": {
+      "url": "http://localhost:8657/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

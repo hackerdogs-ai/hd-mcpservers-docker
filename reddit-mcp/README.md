@@ -172,3 +172,36 @@ curl -s -X POST http://localhost:8661/mcp \
 ```bash
 docker stop reddit-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "reddit-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/reddit-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8661:8661 -e MCP_TRANSPORT=streamable-http hackerdogs/reddit-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "reddit-mcp": {
+      "url": "http://localhost:8661/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

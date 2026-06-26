@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint ggshield hackerdogs/ggshield-mcp:latest secret s
 ```bash
 docker run -i --rm --entrypoint ggshield hackerdogs/ggshield-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "ggshield-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/ggshield-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8363:8363 -e MCP_TRANSPORT=streamable-http hackerdogs/ggshield-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "ggshield-mcp": {
+      "url": "http://localhost:8363/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

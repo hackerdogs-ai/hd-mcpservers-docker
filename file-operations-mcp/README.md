@@ -48,3 +48,36 @@ docker run -d -p 8522:8522 \
 - "Convert data.csv to JSON format."
 - "Get file info for /tmp/report.csv."
 - "Convert results.json to a CSV file."
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "file-operations-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/file-operations-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8522:8522 -e MCP_TRANSPORT=streamable-http hackerdogs/file-operations-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "file-operations-mcp": {
+      "url": "http://localhost:8522/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

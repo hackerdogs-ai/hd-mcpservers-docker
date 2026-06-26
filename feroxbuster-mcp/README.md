@@ -254,3 +254,36 @@ docker run -i --rm -v /path/to/wordlist.txt:/wordlist.txt --entrypoint feroxbust
 ```bash
 docker run -i --rm --entrypoint feroxbuster hackerdogs/feroxbuster-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "feroxbuster-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/feroxbuster-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8216:8216 -e MCP_TRANSPORT=streamable-http hackerdogs/feroxbuster-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "feroxbuster-mcp": {
+      "url": "http://localhost:8216/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

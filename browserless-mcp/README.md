@@ -56,3 +56,36 @@ docker run -d -p 8518:8518 \
 - "Take a full-page screenshot of https://news.ycombinator.com."
 - "Generate a PDF of https://example.com."
 - "Scrape the h1 elements from https://example.com."
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "browserless-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/browserless-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8518:8518 -e MCP_TRANSPORT=streamable-http hackerdogs/browserless-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "browserless-mcp": {
+      "url": "http://localhost:8518/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

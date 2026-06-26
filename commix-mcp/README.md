@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint commix hackerdogs/commix-mcp:latest -u "https://
 ```bash
 docker run -i --rm --entrypoint commix hackerdogs/commix-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "commix-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/commix-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8225:8225 -e MCP_TRANSPORT=streamable-http hackerdogs/commix-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "commix-mcp": {
+      "url": "http://localhost:8225/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

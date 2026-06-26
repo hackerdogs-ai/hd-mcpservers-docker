@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint kube-bench hackerdogs/kube-bench-mcp:latest
 ```bash
 docker run -i --rm --entrypoint kube-bench hackerdogs/kube-bench-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "kube-bench-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/kube-bench-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8253:8253 -e MCP_TRANSPORT=streamable-http hackerdogs/kube-bench-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "kube-bench-mcp": {
+      "url": "http://localhost:8253/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

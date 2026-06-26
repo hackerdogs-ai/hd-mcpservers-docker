@@ -180,3 +180,36 @@ curl -s -X POST http://localhost:8672/mcp \
 ```bash
 docker stop variflight-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "variflight-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/variflight-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8672:8672 -e MCP_TRANSPORT=streamable-http hackerdogs/variflight-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "variflight-mcp": {
+      "url": "http://localhost:8672/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

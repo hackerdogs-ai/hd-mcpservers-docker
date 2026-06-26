@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint zmap hackerdogs/zmap-mcp:latest -p 80 10.0.0.0/8
 ```bash
 docker run -i --rm --entrypoint zmap hackerdogs/zmap-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "zmap-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/zmap-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8303:8303 -e MCP_TRANSPORT=streamable-http hackerdogs/zmap-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "zmap-mcp": {
+      "url": "http://localhost:8303/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

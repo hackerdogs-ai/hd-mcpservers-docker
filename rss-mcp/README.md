@@ -55,3 +55,36 @@ docker build -t hackerdogs/rss-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "rss-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/rss-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8448:8448 -e MCP_TRANSPORT=streamable-http hackerdogs/rss-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "rss-mcp": {
+      "url": "http://localhost:8448/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

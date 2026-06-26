@@ -232,3 +232,36 @@ You can run the brutus CLI in the same container by overriding the entrypoint fo
 ```bash
 docker run -i --rm --entrypoint brutus hackerdogs/brutus-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "brutus-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/brutus-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8102:8102 -e MCP_TRANSPORT=streamable-http hackerdogs/brutus-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "brutus-mcp": {
+      "url": "http://localhost:8102/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

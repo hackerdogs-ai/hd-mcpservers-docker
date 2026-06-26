@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint sstimap hackerdogs/sstimap-mcp:latest -u https:/
 ```bash
 docker run -i --rm --entrypoint sstimap hackerdogs/sstimap-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "sstimap-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/sstimap-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8289:8289 -e MCP_TRANSPORT=streamable-http hackerdogs/sstimap-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "sstimap-mcp": {
+      "url": "http://localhost:8289/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

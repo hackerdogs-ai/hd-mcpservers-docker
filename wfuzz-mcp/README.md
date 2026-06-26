@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint wfuzz hackerdogs/wfuzz-mcp:latest -u https://exa
 ```bash
 docker run -i --rm --entrypoint wfuzz hackerdogs/wfuzz-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "wfuzz-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/wfuzz-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8224:8224 -e MCP_TRANSPORT=streamable-http hackerdogs/wfuzz-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "wfuzz-mcp": {
+      "url": "http://localhost:8224/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

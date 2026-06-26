@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint recon-ng hackerdogs/recon-ng-mcp:latest
 ```bash
 docker run -i --rm --entrypoint recon-ng hackerdogs/recon-ng-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "recon-ng-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/recon-ng-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8256:8256 -e MCP_TRANSPORT=streamable-http hackerdogs/recon-ng-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "recon-ng-mcp": {
+      "url": "http://localhost:8256/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

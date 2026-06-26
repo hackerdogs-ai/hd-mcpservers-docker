@@ -181,3 +181,36 @@ curl -s -X POST http://localhost:8642/mcp \
 ```bash
 docker stop gitlab-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "gitlab-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/gitlab-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8642:8642 -e MCP_TRANSPORT=streamable-http hackerdogs/gitlab-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "gitlab-mcp": {
+      "url": "http://localhost:8642/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

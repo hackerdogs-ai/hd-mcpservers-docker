@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint tshark hackerdogs/wireshark-mcp:latest -r /path/
 ```bash
 docker run -i --rm --entrypoint tshark hackerdogs/wireshark-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "wireshark-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/wireshark-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8315:8315 -e MCP_TRANSPORT=streamable-http hackerdogs/wireshark-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "wireshark-mcp": {
+      "url": "http://localhost:8315/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -55,3 +55,36 @@ docker build -t hackerdogs/netutils-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "netutils-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/netutils-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8436:8436 -e MCP_TRANSPORT=streamable-http hackerdogs/netutils-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "netutils-mcp": {
+      "url": "http://localhost:8436/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

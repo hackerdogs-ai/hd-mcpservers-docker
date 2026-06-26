@@ -172,3 +172,36 @@ curl -s -X POST http://localhost:8632/mcp \
 ```bash
 docker stop clinicaltrialsgov-mcp-server-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "clinicaltrialsgov-mcp-server-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/clinicaltrialsgov-mcp-server-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8632:8632 -e MCP_TRANSPORT=streamable-http hackerdogs/clinicaltrialsgov-mcp-server-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "clinicaltrialsgov-mcp-server-mcp": {
+      "url": "http://localhost:8632/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

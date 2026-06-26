@@ -278,3 +278,36 @@ docker run -i --rm --entrypoint cloudlist hackerdogs/cloudlist-mcp:latest -h
 ```bash
 docker run -i --rm --entrypoint cloudlist hackerdogs/cloudlist-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "cloudlist-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/cloudlist-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8111:8111 -e MCP_TRANSPORT=streamable-http hackerdogs/cloudlist-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "cloudlist-mcp": {
+      "url": "http://localhost:8111/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

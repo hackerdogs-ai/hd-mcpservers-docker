@@ -221,3 +221,36 @@ You can run the tldfinder CLI in the same container by overriding the entrypoint
 ```bash
 docker run -i --rm --entrypoint tldfinder hackerdogs/tldfinder-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "tldfinder-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/tldfinder-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8113:8113 -e MCP_TRANSPORT=streamable-http hackerdogs/tldfinder-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "tldfinder-mcp": {
+      "url": "http://localhost:8113/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

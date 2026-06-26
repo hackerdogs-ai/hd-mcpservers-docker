@@ -55,3 +55,36 @@ docker build -t hackerdogs/youtube-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "youtube-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/youtube-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8462:8462 -e MCP_TRANSPORT=streamable-http hackerdogs/youtube-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "youtube-mcp": {
+      "url": "http://localhost:8462/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

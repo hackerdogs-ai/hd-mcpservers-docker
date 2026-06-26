@@ -55,3 +55,36 @@ docker build -t hackerdogs/slack-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "slack-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/slack-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8454:8454 -e MCP_TRANSPORT=streamable-http hackerdogs/slack-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "slack-mcp": {
+      "url": "http://localhost:8454/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

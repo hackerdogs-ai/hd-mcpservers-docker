@@ -282,3 +282,36 @@ docker run -i --rm --entrypoint augustus hackerdogs/augustus-mcp:latest -h
 ```bash
 docker run -i --rm --entrypoint augustus hackerdogs/augustus-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "augustus-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/augustus-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8101:8101 -e MCP_TRANSPORT=streamable-http hackerdogs/augustus-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "augustus-mcp": {
+      "url": "http://localhost:8101/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -47,3 +47,36 @@ docker run -d -p 8514:8514 \
 
 - "Search Baidu for emails and hostnames related to example.com."
 - "Extract contact info from Baidu search results for this query."
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "baidusearch-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/baidusearch-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8514:8514 -e MCP_TRANSPORT=streamable-http hackerdogs/baidusearch-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "baidusearch-mcp": {
+      "url": "http://localhost:8514/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

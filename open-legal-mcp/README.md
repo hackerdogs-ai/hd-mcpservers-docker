@@ -55,3 +55,36 @@ docker build -t hackerdogs/open-legal-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "open-legal-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/open-legal-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8439:8439 -e MCP_TRANSPORT=streamable-http hackerdogs/open-legal-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "open-legal-mcp": {
+      "url": "http://localhost:8439/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

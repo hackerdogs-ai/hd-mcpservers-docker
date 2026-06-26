@@ -194,3 +194,36 @@ curl -s -X POST http://localhost:8604/mcp \
 ```bash
 docker stop aws-bedrock-agentcore-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "aws-bedrock-agentcore-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/aws-bedrock-agentcore-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8604:8604 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-bedrock-agentcore-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "aws-bedrock-agentcore-mcp": {
+      "url": "http://localhost:8604/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

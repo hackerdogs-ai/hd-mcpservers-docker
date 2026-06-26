@@ -250,3 +250,36 @@ docker run -i --rm -v "$(pwd)":/scan --entrypoint trivy hackerdogs/trivy-mcp:lat
 ```bash
 docker run -i --rm --entrypoint trivy hackerdogs/trivy-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "trivy-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/trivy-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8330:8330 -e MCP_TRANSPORT=streamable-http hackerdogs/trivy-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "trivy-mcp": {
+      "url": "http://localhost:8330/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

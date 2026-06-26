@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint lynis hackerdogs/lynis-mcp:latest audit system
 ```bash
 docker run -i --rm --entrypoint lynis hackerdogs/lynis-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "lynis-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/lynis-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8326:8326 -e MCP_TRANSPORT=streamable-http hackerdogs/lynis-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "lynis-mcp": {
+      "url": "http://localhost:8326/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

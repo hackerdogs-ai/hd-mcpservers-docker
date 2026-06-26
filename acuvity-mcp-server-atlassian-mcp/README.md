@@ -55,3 +55,36 @@ docker build -t hackerdogs/acuvity-mcp-server-atlassian-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-atlassian-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/acuvity-mcp-server-atlassian-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8404:8404 -e MCP_TRANSPORT=streamable-http hackerdogs/acuvity-mcp-server-atlassian-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-atlassian-mcp": {
+      "url": "http://localhost:8404/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

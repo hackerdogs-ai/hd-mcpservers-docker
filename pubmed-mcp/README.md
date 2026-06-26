@@ -55,3 +55,36 @@ docker build -t hackerdogs/pubmed-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "pubmed-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/pubmed-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8446:8446 -e MCP_TRANSPORT=streamable-http hackerdogs/pubmed-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "pubmed-mcp": {
+      "url": "http://localhost:8446/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

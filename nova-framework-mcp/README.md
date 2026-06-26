@@ -212,3 +212,36 @@ You can run the nova-framework CLI in the same container by overriding the entry
 ```bash
 docker run -i --rm --entrypoint nova-framework hackerdogs/nova-framework-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "nova-framework-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/nova-framework-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8299:8299 -e MCP_TRANSPORT=streamable-http hackerdogs/nova-framework-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "nova-framework-mcp": {
+      "url": "http://localhost:8299/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

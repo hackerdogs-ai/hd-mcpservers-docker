@@ -13,13 +13,32 @@ Hackerdogs MCP wrapper for Ffuf — fuzz HTTP endpoints. No Minibridge; stdio + 
 
 ## mcpServer.json
 
+### Stdio (local / Cursor / Claude Desktop)
+
 ```json
 {
   "mcpServers": {
     "ffuf-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "-e", "MCP_PORT", "hackerdogs/ffuf-mcpatest"],
-      "env": { "MCP_TRANSPORT": "stdio", "MCP_PORT": "8385" }
+      "args": ["run", "-i", "--rm", "hackerdogs/ffuf-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8385:8385 -e MCP_TRANSPORT=streamable-http hackerdogs/ffuf-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "ffuf-mcp": {
+      "url": "http://localhost:8385/mcp/",
+      "transport": "streamable-http"
     }
   }
 }

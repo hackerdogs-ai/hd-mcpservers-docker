@@ -13,13 +13,32 @@ Hackerdogs MCP wrapper for Gowitness — take screenshots of web targets. No Min
 
 ## mcpServer.json
 
+### Stdio (local / Cursor / Claude Desktop)
+
 ```json
 {
   "mcpServers": {
     "gowitness-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "-e", "MCP_PORT", "hackerdogs/gowitness-mcpatest"],
-      "env": { "MCP_TRANSPORT": "stdio", "MCP_PORT": "8397" }
+      "args": ["run", "-i", "--rm", "hackerdogs/gowitness-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8397:8397 -e MCP_TRANSPORT=streamable-http hackerdogs/gowitness-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "gowitness-mcp": {
+      "url": "http://localhost:8397/mcp/",
+      "transport": "streamable-http"
     }
   }
 }

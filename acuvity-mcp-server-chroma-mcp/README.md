@@ -55,3 +55,36 @@ docker build -t hackerdogs/acuvity-mcp-server-chroma-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-chroma-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/acuvity-mcp-server-chroma-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8408:8408 -e MCP_TRANSPORT=streamable-http hackerdogs/acuvity-mcp-server-chroma-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-chroma-mcp": {
+      "url": "http://localhost:8408/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint xsser hackerdogs/xsser-mcp:latest -u https://exa
 ```bash
 docker run -i --rm --entrypoint xsser hackerdogs/xsser-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "xsser-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/xsser-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8222:8222 -e MCP_TRANSPORT=streamable-http hackerdogs/xsser-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "xsser-mcp": {
+      "url": "http://localhost:8222/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

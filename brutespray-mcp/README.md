@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint brutespray hackerdogs/brutespray-mcp:latest -f /
 ```bash
 docker run -i --rm --entrypoint brutespray hackerdogs/brutespray-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "brutespray-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/brutespray-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8308:8308 -e MCP_TRANSPORT=streamable-http hackerdogs/brutespray-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "brutespray-mcp": {
+      "url": "http://localhost:8308/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

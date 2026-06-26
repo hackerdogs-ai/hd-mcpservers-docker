@@ -180,3 +180,36 @@ curl -s -X POST http://localhost:8660/mcp \
 ```bash
 docker stop rapidapi-hub-reverse-image-search-by-copyseeker-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "rapidapi-hub-reverse-image-search-by-copyseeker-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/rapidapi-hub-reverse-image-search-by-copyseeker-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8660:8660 -e MCP_TRANSPORT=streamable-http hackerdogs/rapidapi-hub-reverse-image-search-by-copyseeker-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "rapidapi-hub-reverse-image-search-by-copyseeker-mcp": {
+      "url": "http://localhost:8660/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

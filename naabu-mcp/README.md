@@ -237,3 +237,36 @@ docker run -i --rm --cap-add=NET_RAW --entrypoint naabu hackerdogs/naabu-mcp:lat
 ```bash
 docker run -i --rm --entrypoint naabu hackerdogs/naabu-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "naabu-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/naabu-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8105:8105 -e MCP_TRANSPORT=streamable-http hackerdogs/naabu-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "naabu-mcp": {
+      "url": "http://localhost:8105/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

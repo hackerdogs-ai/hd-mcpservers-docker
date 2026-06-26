@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint uro hackerdogs/uro-mcp:latest
 ```bash
 docker run -i --rm --entrypoint uro hackerdogs/uro-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "uro-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/uro-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8228:8228 -e MCP_TRANSPORT=streamable-http hackerdogs/uro-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "uro-mcp": {
+      "url": "http://localhost:8228/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

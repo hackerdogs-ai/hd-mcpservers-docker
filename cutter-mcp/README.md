@@ -238,3 +238,36 @@ You can run the cutter CLI in the same container by overriding the entrypoint fo
 ```bash
 docker run -i --rm --entrypoint cutter hackerdogs/cutter-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "cutter-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/cutter-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8320:8320 -e MCP_TRANSPORT=streamable-http hackerdogs/cutter-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "cutter-mcp": {
+      "url": "http://localhost:8320/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -194,3 +194,36 @@ curl -s -X POST http://localhost:8620/mcp \
 ```bash
 docker stop aws-prometheus-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "aws-prometheus-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/aws-prometheus-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8620:8620 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-prometheus-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "aws-prometheus-mcp": {
+      "url": "http://localhost:8620/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

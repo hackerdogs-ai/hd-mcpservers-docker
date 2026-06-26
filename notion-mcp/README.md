@@ -187,3 +187,36 @@ curl -s -X POST http://localhost:8652/mcp \
 ```bash
 docker stop notion-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "notion-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/notion-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8652:8652 -e MCP_TRANSPORT=streamable-http hackerdogs/notion-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "notion-mcp": {
+      "url": "http://localhost:8652/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

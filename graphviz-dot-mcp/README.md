@@ -45,3 +45,36 @@ docker run -d -p 8523:8523 \
 
 - "Render this DOT diagram: digraph { A -> B -> C }"
 - "Create an SVG from this Graphviz DOT source."
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "graphviz-dot-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/graphviz-dot-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8523:8523 -e MCP_TRANSPORT=streamable-http hackerdogs/graphviz-dot-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "graphviz-dot-mcp": {
+      "url": "http://localhost:8523/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

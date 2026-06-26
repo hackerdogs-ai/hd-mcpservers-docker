@@ -194,3 +194,36 @@ curl -s -X POST http://localhost:8625/mcp \
 ```bash
 docker stop aws-stepfunctions-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "aws-stepfunctions-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/aws-stepfunctions-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8625:8625 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-stepfunctions-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "aws-stepfunctions-mcp": {
+      "url": "http://localhost:8625/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

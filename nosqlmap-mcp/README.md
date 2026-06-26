@@ -208,3 +208,36 @@ You can run the nosqlmap CLI in the same container by overriding the entrypoint 
 ```bash
 docker run -i --rm --entrypoint nosqlmap hackerdogs/nosqlmap-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "nosqlmap-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/nosqlmap-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8266:8266 -e MCP_TRANSPORT=streamable-http hackerdogs/nosqlmap-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "nosqlmap-mcp": {
+      "url": "http://localhost:8266/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

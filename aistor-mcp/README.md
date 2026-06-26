@@ -55,3 +55,36 @@ docker build -t hackerdogs/aistor-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "aistor-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/aistor-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8434:8434 -e MCP_TRANSPORT=streamable-http hackerdogs/aistor-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "aistor-mcp": {
+      "url": "http://localhost:8434/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

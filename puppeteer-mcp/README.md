@@ -172,3 +172,36 @@ curl -s -X POST http://localhost:8659/mcp \
 ```bash
 docker stop puppeteer-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "puppeteer-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/puppeteer-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8659:8659 -e MCP_TRANSPORT=streamable-http hackerdogs/puppeteer-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "puppeteer-mcp": {
+      "url": "http://localhost:8659/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

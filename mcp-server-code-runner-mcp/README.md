@@ -55,3 +55,36 @@ docker build -t hackerdogs/mcp-server-code-runner-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "mcp-server-code-runner-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/mcp-server-code-runner-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8409:8409 -e MCP_TRANSPORT=streamable-http hackerdogs/mcp-server-code-runner-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "mcp-server-code-runner-mcp": {
+      "url": "http://localhost:8409/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

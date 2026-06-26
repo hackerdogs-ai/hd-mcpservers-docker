@@ -47,3 +47,36 @@ docker run -d -p 8513:8513 \
 
 - "Look up ARIN whois for 8.8.8.8."
 - "Get ARIN organization info for GOOGL."
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "arin-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/arin-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8513:8513 -e MCP_TRANSPORT=streamable-http hackerdogs/arin-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "arin-mcp": {
+      "url": "http://localhost:8513/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

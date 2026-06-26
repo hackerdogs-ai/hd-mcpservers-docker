@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint terrascan hackerdogs/terrascan-mcp:latest scan -
 ```bash
 docker run -i --rm --entrypoint terrascan hackerdogs/terrascan-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "terrascan-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/terrascan-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8273:8273 -e MCP_TRANSPORT=streamable-http hackerdogs/terrascan-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "terrascan-mcp": {
+      "url": "http://localhost:8273/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

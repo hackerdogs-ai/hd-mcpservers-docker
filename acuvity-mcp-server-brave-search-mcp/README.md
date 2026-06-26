@@ -55,3 +55,36 @@ docker build -t hackerdogs/acuvity-mcp-server-brave-search-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-brave-search-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/acuvity-mcp-server-brave-search-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8406:8406 -e MCP_TRANSPORT=streamable-http hackerdogs/acuvity-mcp-server-brave-search-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-brave-search-mcp": {
+      "url": "http://localhost:8406/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

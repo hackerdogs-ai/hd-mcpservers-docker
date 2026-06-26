@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint retire hackerdogs/retire-js-mcp:latest /path/to/
 ```bash
 docker run -i --rm --entrypoint retire hackerdogs/retire-js-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "retire-js-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/retire-js-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8364:8364 -e MCP_TRANSPORT=streamable-http hackerdogs/retire-js-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "retire-js-mcp": {
+      "url": "http://localhost:8364/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

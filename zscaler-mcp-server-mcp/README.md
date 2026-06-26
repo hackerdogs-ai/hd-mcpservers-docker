@@ -55,3 +55,36 @@ docker build -t hackerdogs/zscaler-mcp-server-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "zscaler-mcp-server-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/zscaler-mcp-server-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8463:8463 -e MCP_TRANSPORT=streamable-http hackerdogs/zscaler-mcp-server-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "zscaler-mcp-server-mcp": {
+      "url": "http://localhost:8463/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

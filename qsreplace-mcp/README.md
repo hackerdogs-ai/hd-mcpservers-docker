@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint qsreplace hackerdogs/qsreplace-mcp:latest -a
 ```bash
 docker run -i --rm --entrypoint qsreplace hackerdogs/qsreplace-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "qsreplace-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/qsreplace-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8227:8227 -e MCP_TRANSPORT=streamable-http hackerdogs/qsreplace-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "qsreplace-mcp": {
+      "url": "http://localhost:8227/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

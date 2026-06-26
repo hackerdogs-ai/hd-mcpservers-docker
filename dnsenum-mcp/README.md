@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint dnsenum hackerdogs/dnsenum-mcp:latest example.co
 ```bash
 docker run -i --rm --entrypoint dnsenum hackerdogs/dnsenum-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "dnsenum-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/dnsenum-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8304:8304 -e MCP_TRANSPORT=streamable-http hackerdogs/dnsenum-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "dnsenum-mcp": {
+      "url": "http://localhost:8304/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

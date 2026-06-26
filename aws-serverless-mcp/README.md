@@ -194,3 +194,36 @@ curl -s -X POST http://localhost:8623/mcp \
 ```bash
 docker stop aws-serverless-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "aws-serverless-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/aws-serverless-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8623:8623 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-serverless-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "aws-serverless-mcp": {
+      "url": "http://localhost:8623/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

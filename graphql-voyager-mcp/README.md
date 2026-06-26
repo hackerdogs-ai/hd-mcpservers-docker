@@ -212,3 +212,36 @@ You can run the graphql-voyager CLI in the same container by overriding the entr
 ```bash
 docker run -i --rm --entrypoint graphql-voyager hackerdogs/graphql-voyager-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "graphql-voyager-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/graphql-voyager-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8282:8282 -e MCP_TRANSPORT=streamable-http hackerdogs/graphql-voyager-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "graphql-voyager-mcp": {
+      "url": "http://localhost:8282/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

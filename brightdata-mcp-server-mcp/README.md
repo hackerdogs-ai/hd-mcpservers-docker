@@ -180,3 +180,36 @@ curl -s -X POST http://localhost:8630/mcp \
 ```bash
 docker stop brightdata-mcp-server-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "brightdata-mcp-server-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/brightdata-mcp-server-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8630:8630 -e MCP_TRANSPORT=streamable-http hackerdogs/brightdata-mcp-server-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "brightdata-mcp-server-mcp": {
+      "url": "http://localhost:8630/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

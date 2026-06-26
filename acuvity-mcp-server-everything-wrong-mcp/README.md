@@ -55,3 +55,36 @@ docker build -t hackerdogs/acuvity-mcp-server-everything-wrong-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-everything-wrong-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/acuvity-mcp-server-everything-wrong-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8418:8418 -e MCP_TRANSPORT=streamable-http hackerdogs/acuvity-mcp-server-everything-wrong-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-everything-wrong-mcp": {
+      "url": "http://localhost:8418/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

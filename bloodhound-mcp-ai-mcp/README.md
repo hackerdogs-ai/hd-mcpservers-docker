@@ -212,3 +212,36 @@ You can run the bloodhound-mcp CLI in the same container by overriding the entry
 ```bash
 docker run -i --rm --entrypoint bloodhound-mcp hackerdogs/bloodhound-mcp-ai-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "bloodhound-mcp-ai-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/bloodhound-mcp-ai-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8338:8338 -e MCP_TRANSPORT=streamable-http hackerdogs/bloodhound-mcp-ai-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "bloodhound-mcp-ai-mcp": {
+      "url": "http://localhost:8338/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

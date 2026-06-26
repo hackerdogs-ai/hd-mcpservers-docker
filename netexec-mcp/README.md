@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint netexec hackerdogs/netexec-mcp:latest -u user -p
 ```bash
 docker run -i --rm --entrypoint netexec hackerdogs/netexec-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "netexec-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/netexec-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8212:8212 -e MCP_TRANSPORT=streamable-http hackerdogs/netexec-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "netexec-mcp": {
+      "url": "http://localhost:8212/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

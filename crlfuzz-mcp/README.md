@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint crlfuzz hackerdogs/crlfuzz-mcp:latest -u https:/
 ```bash
 docker run -i --rm --entrypoint crlfuzz hackerdogs/crlfuzz-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "crlfuzz-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/crlfuzz-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8290:8290 -e MCP_TRANSPORT=streamable-http hackerdogs/crlfuzz-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "crlfuzz-mcp": {
+      "url": "http://localhost:8290/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

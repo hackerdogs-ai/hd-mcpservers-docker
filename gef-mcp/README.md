@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint gdb hackerdogs/gef-mcp:latest /path/to/binary
 ```bash
 docker run -i --rm --entrypoint gdb hackerdogs/gef-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "gef-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/gef-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8238:8238 -e MCP_TRANSPORT=streamable-http hackerdogs/gef-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "gef-mcp": {
+      "url": "http://localhost:8238/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

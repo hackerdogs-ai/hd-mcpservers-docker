@@ -26,3 +26,36 @@ This is a **remote-only** MCP server. No Docker image or local build is required
 ## License
 
 Proprietary — see [WhoisXML API](https://whoisxmlapi.com) for terms.
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "whoisxmlapi-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/whoisxmlapi-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8511:8511 -e MCP_TRANSPORT=streamable-http hackerdogs/whoisxmlapi-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "whoisxmlapi-mcp": {
+      "url": "http://localhost:8511/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

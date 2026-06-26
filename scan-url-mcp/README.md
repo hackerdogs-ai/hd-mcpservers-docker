@@ -55,3 +55,36 @@ docker build -t hackerdogs/scan-url-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "scan-url-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/scan-url-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8449:8449 -e MCP_TRANSPORT=streamable-http hackerdogs/scan-url-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "scan-url-mcp": {
+      "url": "http://localhost:8449/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

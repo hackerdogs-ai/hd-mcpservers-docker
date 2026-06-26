@@ -23,13 +23,32 @@ MCP server for subdomain discovery from SSL certificate logs via [crt.sh](https:
 
 ## mcpServer.json
 
+### Stdio (local / Cursor / Claude Desktop)
+
 ```json
 {
   "mcpServers": {
     "crtsh-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "hackerdogs/crtsh-mcp:latest"],
-      "env": { "MCP_TRANSPORT": "stdio" }
+      "args": ["run", "-i", "--rm", "hackerdogs/crtsh-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8381:8381 -e MCP_TRANSPORT=streamable-http hackerdogs/crtsh-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "crtsh-mcp": {
+      "url": "http://localhost:8381/mcp/",
+      "transport": "streamable-http"
     }
   }
 }

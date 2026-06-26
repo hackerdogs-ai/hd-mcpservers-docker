@@ -271,3 +271,36 @@ docker run -i --rm --entrypoint libc-dump hackerdogs/libc-database-mcp:latest li
 ```bash
 docker run -i --rm --entrypoint libc-identify hackerdogs/libc-database-mcp:latest /path/to/libc.so.6
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "libc-database-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/libc-database-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8277:8277 -e MCP_TRANSPORT=streamable-http hackerdogs/libc-database-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "libc-database-mcp": {
+      "url": "http://localhost:8277/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

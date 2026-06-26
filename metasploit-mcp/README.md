@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint msfconsole hackerdogs/metasploit-mcp:latest -q
 ```bash
 docker run -i --rm --entrypoint msfconsole hackerdogs/metasploit-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "metasploit-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/metasploit-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8236:8236 -e MCP_TRANSPORT=streamable-http hackerdogs/metasploit-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "metasploit-mcp": {
+      "url": "http://localhost:8236/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

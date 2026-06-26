@@ -26,3 +26,36 @@ This is a **remote-only** MCP server. No Docker image or local build is required
 ## License
 
 Proprietary — see [SerpApi](https://serpapi.com) for terms.
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "serpapi-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/serpapi-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8514:8514 -e MCP_TRANSPORT=streamable-http hackerdogs/serpapi-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "serpapi-mcp": {
+      "url": "http://localhost:8514/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

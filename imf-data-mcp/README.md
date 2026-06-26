@@ -172,3 +172,36 @@ curl -s -X POST http://localhost:8647/mcp \
 ```bash
 docker stop imf-data-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "imf-data-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/imf-data-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8647:8647 -e MCP_TRANSPORT=streamable-http hackerdogs/imf-data-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "imf-data-mcp": {
+      "url": "http://localhost:8647/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

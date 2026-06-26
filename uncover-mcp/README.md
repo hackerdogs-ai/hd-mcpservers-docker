@@ -261,3 +261,36 @@ docker run -i --rm --entrypoint uncover hackerdogs/uncover-mcp:latest -q example
 ```bash
 docker run -i --rm --entrypoint uncover hackerdogs/uncover-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "uncover-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/uncover-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8107:8107 -e MCP_TRANSPORT=streamable-http hackerdogs/uncover-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "uncover-mcp": {
+      "url": "http://localhost:8107/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

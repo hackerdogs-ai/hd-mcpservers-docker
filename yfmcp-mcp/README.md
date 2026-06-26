@@ -55,3 +55,36 @@ docker build -t hackerdogs/yfmcp-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "yfmcp-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/yfmcp-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8460:8460 -e MCP_TRANSPORT=streamable-http hackerdogs/yfmcp-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "yfmcp-mcp": {
+      "url": "http://localhost:8460/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

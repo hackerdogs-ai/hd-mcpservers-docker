@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint gitleaks hackerdogs/gitleaks-mcp:latest detect -
 ```bash
 docker run -i --rm --entrypoint gitleaks hackerdogs/gitleaks-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "gitleaks-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/gitleaks-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8332:8332 -e MCP_TRANSPORT=streamable-http hackerdogs/gitleaks-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "gitleaks-mcp": {
+      "url": "http://localhost:8332/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

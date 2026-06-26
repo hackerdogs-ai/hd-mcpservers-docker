@@ -180,3 +180,36 @@ curl -s -X POST http://localhost:8655/mcp \
 ```bash
 docker stop openfda-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "openfda-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/openfda-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8655:8655 -e MCP_TRANSPORT=streamable-http hackerdogs/openfda-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "openfda-mcp": {
+      "url": "http://localhost:8655/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

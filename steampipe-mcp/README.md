@@ -172,3 +172,36 @@ curl -s -X POST http://localhost:8668/mcp \
 ```bash
 docker stop steampipe-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "steampipe-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/steampipe-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8668:8668 -e MCP_TRANSPORT=streamable-http hackerdogs/steampipe-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "steampipe-mcp": {
+      "url": "http://localhost:8668/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

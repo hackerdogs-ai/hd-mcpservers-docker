@@ -19,9 +19,10 @@ RUN groupadd -g 1000 mcpuser && \
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git tini ca-certificates \
     && rm -rf /var/lib/apt/lists/* \
-    && git clone --depth 1 https://github.com/copyleftdev/rasn.git /opt/rasn-src \
-    && cd /opt/rasn-src && (pip install --no-cache-dir -r requirements.txt 2>/dev/null || true) \
-    && (pip install --no-cache-dir . 2>/dev/null || true)
+    && (git clone --depth 1 https://github.com/copyleftdev/rasn.git /opt/rasn-src \
+        && cd /opt/rasn-src && (pip install --no-cache-dir -r requirements.txt 2>/dev/null || true) \
+        && (pip install --no-cache-dir . 2>/dev/null || true) \
+       ) || echo "WARN: upstream rasn repo unavailable, CLI tools will be non-functional"
 
 WORKDIR /app
 

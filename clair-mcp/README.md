@@ -238,3 +238,36 @@ You can run the clair CLI in the same container by overriding the entrypoint to 
 ```bash
 docker run -i --rm --entrypoint clair hackerdogs/clair-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "clair-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/clair-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8270:8270 -e MCP_TRANSPORT=streamable-http hackerdogs/clair-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "clair-mcp": {
+      "url": "http://localhost:8270/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

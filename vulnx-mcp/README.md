@@ -257,3 +257,36 @@ docker run -i --rm --entrypoint vulnx hackerdogs/vulnx-mcp:latest -u https://exa
 ```bash
 docker run -i --rm --entrypoint vulnx hackerdogs/vulnx-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "vulnx-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/vulnx-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8116:8116 -e MCP_TRANSPORT=streamable-http hackerdogs/vulnx-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "vulnx-mcp": {
+      "url": "http://localhost:8116/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

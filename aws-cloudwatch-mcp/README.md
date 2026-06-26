@@ -194,3 +194,36 @@ curl -s -X POST http://localhost:8608/mcp \
 ```bash
 docker stop aws-cloudwatch-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "aws-cloudwatch-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/aws-cloudwatch-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8608:8608 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-cloudwatch-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "aws-cloudwatch-mcp": {
+      "url": "http://localhost:8608/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

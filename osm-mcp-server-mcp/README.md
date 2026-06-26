@@ -172,3 +172,36 @@ curl -s -X POST http://localhost:8656/mcp \
 ```bash
 docker stop osm-mcp-server-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "osm-mcp-server-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/osm-mcp-server-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8656:8656 -e MCP_TRANSPORT=streamable-http hackerdogs/osm-mcp-server-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "osm-mcp-server-mcp": {
+      "url": "http://localhost:8656/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

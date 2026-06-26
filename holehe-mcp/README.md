@@ -218,3 +218,36 @@ docker run --rm --entrypoint holehe hackerdogs/holehe-mcp:latest user@example.co
 ```bash
 docker run --rm --entrypoint holehe hackerdogs/holehe-mcp:latest user@example.com --only-used
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "holehe-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/holehe-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8219:8219 -e MCP_TRANSPORT=streamable-http hackerdogs/holehe-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "holehe-mcp": {
+      "url": "http://localhost:8219/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

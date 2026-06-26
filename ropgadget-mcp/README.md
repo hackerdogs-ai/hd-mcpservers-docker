@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint ROPgadget hackerdogs/ropgadget-mcp:latest /path/
 ```bash
 docker run -i --rm --entrypoint ROPgadget hackerdogs/ropgadget-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "ropgadget-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/ropgadget-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8242:8242 -e MCP_TRANSPORT=streamable-http hackerdogs/ropgadget-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "ropgadget-mcp": {
+      "url": "http://localhost:8242/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

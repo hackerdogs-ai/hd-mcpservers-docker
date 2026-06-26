@@ -194,3 +194,36 @@ curl -s -X POST http://localhost:8626/mcp \
 ```bash
 docker stop aws-well-architected-security-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "aws-well-architected-security-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/aws-well-architected-security-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8626:8626 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-well-architected-security-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "aws-well-architected-security-mcp": {
+      "url": "http://localhost:8626/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

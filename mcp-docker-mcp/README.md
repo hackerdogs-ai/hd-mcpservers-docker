@@ -26,3 +26,36 @@ This is a **remote-only** MCP server. No Docker image or local build is required
 ## License
 
 Open source — see Docker for terms.
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "mcp-docker-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/mcp-docker-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8517:8517 -e MCP_TRANSPORT=streamable-http hackerdogs/mcp-docker-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "mcp-docker-mcp": {
+      "url": "http://localhost:8517/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

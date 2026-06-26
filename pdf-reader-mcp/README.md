@@ -55,3 +55,36 @@ docker build -t hackerdogs/pdf-reader-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "pdf-reader-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/pdf-reader-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8442:8442 -e MCP_TRANSPORT=streamable-http hackerdogs/pdf-reader-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "pdf-reader-mcp": {
+      "url": "http://localhost:8442/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

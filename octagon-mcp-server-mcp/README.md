@@ -180,3 +180,36 @@ curl -s -X POST http://localhost:8653/mcp \
 ```bash
 docker stop octagon-mcp-server-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "octagon-mcp-server-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/octagon-mcp-server-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8653:8653 -e MCP_TRANSPORT=streamable-http hackerdogs/octagon-mcp-server-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "octagon-mcp-server-mcp": {
+      "url": "http://localhost:8653/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

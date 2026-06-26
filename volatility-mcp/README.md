@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint vol.py hackerdogs/volatility-mcp:latest -h
 ```bash
 docker run -i --rm --entrypoint vol.py hackerdogs/volatility-mcp:latest -f /path/to/dump imageinfo
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "volatility-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/volatility-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8248:8248 -e MCP_TRANSPORT=streamable-http hackerdogs/volatility-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "volatility-mcp": {
+      "url": "http://localhost:8248/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

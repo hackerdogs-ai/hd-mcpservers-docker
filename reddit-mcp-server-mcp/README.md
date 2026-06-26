@@ -55,3 +55,36 @@ docker build -t hackerdogs/reddit-mcp-server-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "reddit-mcp-server-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/reddit-mcp-server-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8447:8447 -e MCP_TRANSPORT=streamable-http hackerdogs/reddit-mcp-server-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "reddit-mcp-server-mcp": {
+      "url": "http://localhost:8447/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

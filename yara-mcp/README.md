@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint yara hackerdogs/yara-mcp:latest -r /rules /path/
 ```bash
 docker run -i --rm --entrypoint yara hackerdogs/yara-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "yara-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/yara-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8328:8328 -e MCP_TRANSPORT=streamable-http hackerdogs/yara-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "yara-mcp": {
+      "url": "http://localhost:8328/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

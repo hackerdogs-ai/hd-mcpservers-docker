@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint crunch hackerdogs/crunch-mcp:latest 8 8 01234567
 ```bash
 docker run -i --rm --entrypoint crunch hackerdogs/crunch-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "crunch-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/crunch-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8324:8324 -e MCP_TRANSPORT=streamable-http hackerdogs/crunch-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "crunch-mcp": {
+      "url": "http://localhost:8324/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

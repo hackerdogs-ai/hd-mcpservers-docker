@@ -180,3 +180,36 @@ curl -s -X POST http://localhost:8666/mcp \
 ```bash
 docker stop serper-search-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "serper-search-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/serper-search-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8666:8666 -e MCP_TRANSPORT=streamable-http hackerdogs/serper-search-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "serper-search-mcp": {
+      "url": "http://localhost:8666/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

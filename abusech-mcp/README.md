@@ -54,3 +54,36 @@ docker run -d -p 8373:8373 \
 - "Check URLhaus for host example.com."
 - "Get MalwareBazaar info for hash abc123..."
 - "List recent ThreatFox IOCs for the last 7 days."
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "abusech-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/abusech-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8373:8373 -e MCP_TRANSPORT=streamable-http hackerdogs/abusech-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "abusech-mcp": {
+      "url": "http://localhost:8373/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -208,3 +208,36 @@ You can run the x8 CLI in the same container by overriding the entrypoint to fin
 ```bash
 docker run -i --rm --entrypoint x8 hackerdogs/x8-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "x8-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/x8-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8275:8275 -e MCP_TRANSPORT=streamable-http hackerdogs/x8-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "x8-mcp": {
+      "url": "http://localhost:8275/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -172,3 +172,36 @@ curl -s -X POST http://localhost:8654/mcp \
 ```bash
 docker stop octocode-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "octocode-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/octocode-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8654:8654 -e MCP_TRANSPORT=streamable-http hackerdogs/octocode-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "octocode-mcp": {
+      "url": "http://localhost:8654/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

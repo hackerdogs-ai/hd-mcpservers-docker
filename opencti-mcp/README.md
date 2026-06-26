@@ -363,3 +363,36 @@ docker run --rm \
   --entrypoint python hackerdogs/opencti-mcp:latest \
   -c "from pycti import OpenCTIApiClient; import json; c = OpenCTIApiClient('$OPENCTI_URL', '$OPENCTI_API_KEY'); print(json.dumps(c.indicator.list(first=5), indent=2, default=str))"
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "opencti-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/opencti-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8370:8370 -e MCP_TRANSPORT=streamable-http hackerdogs/opencti-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "opencti-mcp": {
+      "url": "http://localhost:8370/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

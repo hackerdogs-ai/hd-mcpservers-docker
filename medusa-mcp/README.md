@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint medusa hackerdogs/medusa-mcp:latest -h 192.168.1
 ```bash
 docker run -i --rm --entrypoint medusa hackerdogs/medusa-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "medusa-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/medusa-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8261:8261 -e MCP_TRANSPORT=streamable-http hackerdogs/medusa-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "medusa-mcp": {
+      "url": "http://localhost:8261/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -218,3 +218,36 @@ docker run --rm hackerdogs/dnsdumpster-mcp:latest dnsdumpster --help
 # DNS reconnaissance on a domain
 docker run --rm hackerdogs/dnsdumpster-mcp:latest dnsdumpster -d example.com
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "dnsdumpster-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/dnsdumpster-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8216:8216 -e MCP_TRANSPORT=streamable-http hackerdogs/dnsdumpster-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "dnsdumpster-mcp": {
+      "url": "http://localhost:8216/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

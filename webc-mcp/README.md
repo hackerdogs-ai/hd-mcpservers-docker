@@ -41,3 +41,36 @@ The original `webc_langchain.py` had **30 tools**. After audit:
 docker build -t webc-mcp .
 docker run -p 8504:8504 -e MCP_TRANSPORT=streamable-http webc-mcp
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "webc-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/webc-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8504:8504 -e MCP_TRANSPORT=streamable-http hackerdogs/webc-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "webc-mcp": {
+      "url": "http://localhost:8504/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

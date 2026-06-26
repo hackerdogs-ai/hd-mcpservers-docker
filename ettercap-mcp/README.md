@@ -208,3 +208,36 @@ You can run the ettercap CLI in the same container by overriding the entrypoint 
 ```bash
 docker run -i --rm --entrypoint ettercap hackerdogs/ettercap-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "ettercap-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/ettercap-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8313:8313 -e MCP_TRANSPORT=streamable-http hackerdogs/ettercap-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "ettercap-mcp": {
+      "url": "http://localhost:8313/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

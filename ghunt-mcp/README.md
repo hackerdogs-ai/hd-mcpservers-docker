@@ -214,3 +214,36 @@ docker run --rm --entrypoint ghunt hackerdogs/ghunt-mcp:latest --help
 ```bash
 docker run --rm --entrypoint ghunt hackerdogs/ghunt-mcp:latest email user@gmail.com
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "ghunt-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/ghunt-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8218:8218 -e MCP_TRANSPORT=streamable-http hackerdogs/ghunt-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "ghunt-mcp": {
+      "url": "http://localhost:8218/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

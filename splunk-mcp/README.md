@@ -187,3 +187,36 @@ curl -s -X POST http://localhost:8667/mcp \
 ```bash
 docker stop splunk-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "splunk-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/splunk-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8667:8667 -e MCP_TRANSPORT=streamable-http hackerdogs/splunk-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "splunk-mcp": {
+      "url": "http://localhost:8667/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

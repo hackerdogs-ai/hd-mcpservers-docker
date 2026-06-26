@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint gdb hackerdogs/peda-mcp:latest /path/to/binary
 ```bash
 docker run -i --rm --entrypoint gdb hackerdogs/peda-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "peda-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/peda-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8237:8237 -e MCP_TRANSPORT=streamable-http hackerdogs/peda-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "peda-mcp": {
+      "url": "http://localhost:8237/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

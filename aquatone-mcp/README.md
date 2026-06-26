@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint aquatone hackerdogs/aquatone-mcp:latest -scan
 ```bash
 docker run -i --rm --entrypoint aquatone hackerdogs/aquatone-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "aquatone-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/aquatone-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8259:8259 -e MCP_TRANSPORT=streamable-http hackerdogs/aquatone-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "aquatone-mcp": {
+      "url": "http://localhost:8259/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

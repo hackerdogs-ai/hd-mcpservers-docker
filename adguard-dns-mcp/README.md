@@ -47,3 +47,36 @@ docker run -d -p 8509:8509 \
 
 - "Is example.com blocked by AdGuard DNS?"
 - "Check if this host is filtered by AdGuard family protection."
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "adguard-dns-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/adguard-dns-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8509:8509 -e MCP_TRANSPORT=streamable-http hackerdogs/adguard-dns-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "adguard-dns-mcp": {
+      "url": "http://localhost:8509/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint sslscan hackerdogs/sslscan-mcp:latest example.co
 ```bash
 docker run -i --rm --entrypoint sslscan hackerdogs/sslscan-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "sslscan-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/sslscan-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8323:8323 -e MCP_TRANSPORT=streamable-http hackerdogs/sslscan-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "sslscan-mcp": {
+      "url": "http://localhost:8323/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

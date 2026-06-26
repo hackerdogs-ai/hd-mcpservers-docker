@@ -26,3 +26,36 @@ This is a **remote-only** MCP server. No Docker image or local build is required
 ## License
 
 Proprietary — see [XPoz](https://xpoz.io) for terms.
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "xpoz-mcp-server-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/xpoz-mcp-server-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8510:8510 -e MCP_TRANSPORT=streamable-http hackerdogs/xpoz-mcp-server-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "xpoz-mcp-server-mcp": {
+      "url": "http://localhost:8510/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

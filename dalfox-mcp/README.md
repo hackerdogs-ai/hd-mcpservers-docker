@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint dalfox hackerdogs/dalfox-mcp:latest url https://
 ```bash
 docker run -i --rm --entrypoint dalfox hackerdogs/dalfox-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "dalfox-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/dalfox-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8221:8221 -e MCP_TRANSPORT=streamable-http hackerdogs/dalfox-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "dalfox-mcp": {
+      "url": "http://localhost:8221/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

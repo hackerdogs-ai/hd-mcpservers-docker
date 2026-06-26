@@ -55,3 +55,36 @@ docker build -t hackerdogs/duckduckgo-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "duckduckgo-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/duckduckgo-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8413:8413 -e MCP_TRANSPORT=streamable-http hackerdogs/duckduckgo-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "duckduckgo-mcp": {
+      "url": "http://localhost:8413/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

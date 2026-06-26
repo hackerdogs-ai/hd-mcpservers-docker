@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint hashcat hackerdogs/hashcat-mcp:latest --help
 ```bash
 docker run -i --rm --entrypoint hashcat hackerdogs/hashcat-mcp:latest -m 0 -a 0 hashes.txt wordlist.txt
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "hashcat-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/hashcat-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8235:8235 -e MCP_TRANSPORT=streamable-http hackerdogs/hashcat-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "hashcat-mcp": {
+      "url": "http://localhost:8235/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

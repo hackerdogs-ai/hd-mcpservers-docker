@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint wafw00f hackerdogs/wafw00f-mcp:latest https://ex
 ```bash
 docker run -i --rm --entrypoint wafw00f hackerdogs/wafw00f-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "wafw00f-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/wafw00f-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8230:8230 -e MCP_TRANSPORT=streamable-http hackerdogs/wafw00f-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "wafw00f-mcp": {
+      "url": "http://localhost:8230/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

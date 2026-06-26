@@ -208,3 +208,36 @@ You can run the Responder CLI in the same container by overriding the entrypoint
 ```bash
 docker run -i --rm --entrypoint Responder hackerdogs/responder-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "responder-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/responder-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8207:8207 -e MCP_TRANSPORT=streamable-http hackerdogs/responder-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "responder-mcp": {
+      "url": "http://localhost:8207/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

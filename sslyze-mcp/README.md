@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint sslyze hackerdogs/sslyze-mcp:latest --certinfo e
 ```bash
 docker run -i --rm --entrypoint sslyze hackerdogs/sslyze-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "sslyze-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/sslyze-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8280:8280 -e MCP_TRANSPORT=streamable-http hackerdogs/sslyze-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "sslyze-mcp": {
+      "url": "http://localhost:8280/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

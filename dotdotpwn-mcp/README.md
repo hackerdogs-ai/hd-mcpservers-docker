@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint dotdotpwn hackerdogs/dotdotpwn-mcp:latest -u htt
 ```bash
 docker run -i --rm --entrypoint dotdotpwn hackerdogs/dotdotpwn-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "dotdotpwn-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/dotdotpwn-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8223:8223 -e MCP_TRANSPORT=streamable-http hackerdogs/dotdotpwn-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "dotdotpwn-mcp": {
+      "url": "http://localhost:8223/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

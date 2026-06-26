@@ -208,3 +208,36 @@ You can run the roadrecon CLI in the same container by overriding the entrypoint
 ```bash
 docker run -i --rm --entrypoint roadrecon hackerdogs/roadtools-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "roadtools-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/roadtools-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8331:8331 -e MCP_TRANSPORT=streamable-http hackerdogs/roadtools-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "roadtools-mcp": {
+      "url": "http://localhost:8331/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

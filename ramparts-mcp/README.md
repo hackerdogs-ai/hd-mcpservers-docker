@@ -208,3 +208,36 @@ You can run the ramparts CLI in the same container by overriding the entrypoint 
 ```bash
 docker run -i --rm --entrypoint ramparts hackerdogs/ramparts-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "ramparts-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/ramparts-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8295:8295 -e MCP_TRANSPORT=streamable-http hackerdogs/ramparts-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "ramparts-mcp": {
+      "url": "http://localhost:8295/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

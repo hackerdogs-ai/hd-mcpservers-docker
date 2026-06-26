@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint bettercap hackerdogs/bettercap-mcp:latest -eval 
 ```bash
 docker run -i --rm --entrypoint bettercap hackerdogs/bettercap-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "bettercap-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/bettercap-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8318:8318 -e MCP_TRANSPORT=streamable-http hackerdogs/bettercap-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "bettercap-mcp": {
+      "url": "http://localhost:8318/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

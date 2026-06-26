@@ -208,3 +208,36 @@ You can run the psudohash CLI in the same container by overriding the entrypoint
 ```bash
 docker run -i --rm --entrypoint psudohash hackerdogs/psudohash-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "psudohash-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/psudohash-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8287:8287 -e MCP_TRANSPORT=streamable-http hackerdogs/psudohash-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "psudohash-mcp": {
+      "url": "http://localhost:8287/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

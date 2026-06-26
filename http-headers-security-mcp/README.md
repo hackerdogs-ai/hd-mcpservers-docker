@@ -13,13 +13,32 @@ Hackerdogs MCP wrapper for HTTP Headers Security — check HTTP security headers
 
 ## mcpServer.json
 
+### Stdio (local / Cursor / Claude Desktop)
+
 ```json
 {
   "mcpServers": {
     "http-headers-security-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "-e", "MCP_PORT", "hackerdogs/http-headers-security-mcpatest"],
-      "env": { "MCP_TRANSPORT": "stdio", "MCP_PORT": "8392" }
+      "args": ["run", "-i", "--rm", "hackerdogs/http-headers-security-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8392:8392 -e MCP_TRANSPORT=streamable-http hackerdogs/http-headers-security-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "http-headers-security-mcp": {
+      "url": "http://localhost:8392/mcp/",
+      "transport": "streamable-http"
     }
   }
 }

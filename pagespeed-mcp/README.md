@@ -30,3 +30,36 @@ docker run -d -p 8378:8378 -e MCP_TRANSPORT=streamable-http -e MCP_PORT=8378 -e 
 ```
 
 API key: [Google Cloud Console](https://console.cloud.google.com/) → enable PageSpeed Insights API.
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "pagespeed-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/pagespeed-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8378:8378 -e MCP_TRANSPORT=streamable-http hackerdogs/pagespeed-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "pagespeed-mcp": {
+      "url": "http://localhost:8378/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

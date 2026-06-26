@@ -55,3 +55,36 @@ docker build -t hackerdogs/marinetraffic-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "marinetraffic-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/marinetraffic-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8430:8430 -e MCP_TRANSPORT=streamable-http hackerdogs/marinetraffic-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "marinetraffic-mcp": {
+      "url": "http://localhost:8430/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

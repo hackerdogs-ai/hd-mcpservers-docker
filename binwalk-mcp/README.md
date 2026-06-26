@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint binwalk hackerdogs/binwalk-mcp:latest -B /path/t
 ```bash
 docker run -i --rm --entrypoint binwalk hackerdogs/binwalk-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "binwalk-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/binwalk-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8241:8241 -e MCP_TRANSPORT=streamable-http hackerdogs/binwalk-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "binwalk-mcp": {
+      "url": "http://localhost:8241/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

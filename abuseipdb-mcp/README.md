@@ -38,3 +38,36 @@ docker run -d -p 8374:8374 \
 
 - "Check IP 8.8.8.8 on AbuseIPDB."
 - "What is the abuse score for 1.2.3.4?"
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "abuseipdb-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/abuseipdb-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8374:8374 -e MCP_TRANSPORT=streamable-http hackerdogs/abuseipdb-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "abuseipdb-mcp": {
+      "url": "http://localhost:8374/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

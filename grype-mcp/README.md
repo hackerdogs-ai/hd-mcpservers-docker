@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint grype hackerdogs/grype-mcp:latest image alpine:l
 ```bash
 docker run -i --rm --entrypoint grype hackerdogs/grype-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "grype-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/grype-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8357:8357 -e MCP_TRANSPORT=streamable-http hackerdogs/grype-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "grype-mcp": {
+      "url": "http://localhost:8357/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

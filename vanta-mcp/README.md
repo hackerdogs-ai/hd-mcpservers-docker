@@ -209,3 +209,36 @@ You can run the vanta-mcp CLI in the same container by overriding the entrypoint
 ```bash
 docker run -i --rm --entrypoint vanta-mcp hackerdogs/vanta-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "vanta-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/vanta-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8348:8348 -e MCP_TRANSPORT=streamable-http hackerdogs/vanta-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "vanta-mcp": {
+      "url": "http://localhost:8348/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

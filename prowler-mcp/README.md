@@ -26,3 +26,36 @@ This is a **remote-only** MCP server. No Docker image or local build is required
 ## License
 
 Open source — see [Prowler](https://prowler.com) for terms.
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "prowler-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/prowler-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8515:8515 -e MCP_TRANSPORT=streamable-http hackerdogs/prowler-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "prowler-mcp": {
+      "url": "http://localhost:8515/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

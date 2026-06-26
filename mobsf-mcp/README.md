@@ -13,13 +13,32 @@ Hackerdogs MCP wrapper for MobSF — analyze mobile apps (tool install TBD). No 
 
 ## mcpServer.json
 
+### Stdio (local / Cursor / Claude Desktop)
+
 ```json
 {
   "mcpServers": {
     "mobsf-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "-e", "MCP_PORT", "hackerdogs/mobsf-mcpatest"],
-      "env": { "MCP_TRANSPORT": "stdio", "MCP_PORT": "8389" }
+      "args": ["run", "-i", "--rm", "hackerdogs/mobsf-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8389:8389 -e MCP_TRANSPORT=streamable-http hackerdogs/mobsf-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "mobsf-mcp": {
+      "url": "http://localhost:8389/mcp/",
+      "transport": "streamable-http"
     }
   }
 }

@@ -274,3 +274,36 @@ docker run -i --rm --entrypoint subfinder hackerdogs/subfinder-mcp:latest -h
 ```bash
 docker run -i --rm --entrypoint subfinder hackerdogs/subfinder-mcp:latest -d example.com -silent
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "subfinder-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/subfinder-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8367:8367 -e MCP_TRANSPORT=streamable-http hackerdogs/subfinder-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "subfinder-mcp": {
+      "url": "http://localhost:8367/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

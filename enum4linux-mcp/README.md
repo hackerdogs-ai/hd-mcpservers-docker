@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint enum4linux hackerdogs/enum4linux-mcp:latest 192.
 ```bash
 docker run -i --rm --entrypoint enum4linux hackerdogs/enum4linux-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "enum4linux-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/enum4linux-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8209:8209 -e MCP_TRANSPORT=streamable-http hackerdogs/enum4linux-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "enum4linux-mcp": {
+      "url": "http://localhost:8209/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

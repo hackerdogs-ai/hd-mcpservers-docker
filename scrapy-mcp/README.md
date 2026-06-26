@@ -45,3 +45,36 @@ docker run -d -p 8526:8526 \
 
 - "Scrape https://example.com using Scrapy."
 - "Crawl https://news.ycombinator.com with max 5 pages."
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "scrapy-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/scrapy-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8526:8526 -e MCP_TRANSPORT=streamable-http hackerdogs/scrapy-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "scrapy-mcp": {
+      "url": "http://localhost:8526/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

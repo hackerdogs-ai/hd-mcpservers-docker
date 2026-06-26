@@ -13,13 +13,32 @@ Hackerdogs MCP wrapper for Katana — crawl and discover URLs. No Minibridge; st
 
 ## mcpServer.json
 
+### Stdio (local / Cursor / Claude Desktop)
+
 ```json
 {
   "mcpServers": {
     "katana-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "-e", "MCP_PORT", "hackerdogs/katana-mcpatest"],
-      "env": { "MCP_TRANSPORT": "stdio", "MCP_PORT": "8387" }
+      "args": ["run", "-i", "--rm", "hackerdogs/katana-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8387:8387 -e MCP_TRANSPORT=streamable-http hackerdogs/katana-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "katana-mcp": {
+      "url": "http://localhost:8387/mcp/",
+      "transport": "streamable-http"
     }
   }
 }

@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint fierce hackerdogs/fierce-mcp:latest example.com
 ```bash
 docker run -i --rm --entrypoint fierce hackerdogs/fierce-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "fierce-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/fierce-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8202:8202 -e MCP_TRANSPORT=streamable-http hackerdogs/fierce-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "fierce-mcp": {
+      "url": "http://localhost:8202/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

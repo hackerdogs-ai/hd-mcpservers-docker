@@ -47,3 +47,36 @@ docker run -d -p 8512:8512 \
 
 - "Check if https://example.com has Wayback Machine snapshots."
 - "Look up archive.org history for this URL."
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "archiveorg-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/archiveorg-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8512:8512 -e MCP_TRANSPORT=streamable-http hackerdogs/archiveorg-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "archiveorg-mcp": {
+      "url": "http://localhost:8512/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

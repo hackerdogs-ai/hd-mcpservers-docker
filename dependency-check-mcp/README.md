@@ -248,3 +248,36 @@ docker run -i --rm --entrypoint dependency-check hackerdogs/dependency-check-mcp
 ```bash
 docker run -i --rm --entrypoint dependency-check hackerdogs/dependency-check-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "dependency-check-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/dependency-check-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8361:8361 -e MCP_TRANSPORT=streamable-http hackerdogs/dependency-check-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "dependency-check-mcp": {
+      "url": "http://localhost:8361/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint trufflehog hackerdogs/trufflehog-mcp:latest file
 ```bash
 docker run -i --rm --entrypoint trufflehog hackerdogs/trufflehog-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "trufflehog-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/trufflehog-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8258:8258 -e MCP_TRANSPORT=streamable-http hackerdogs/trufflehog-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "trufflehog-mcp": {
+      "url": "http://localhost:8258/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

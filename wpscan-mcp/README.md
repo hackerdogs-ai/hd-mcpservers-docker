@@ -220,3 +220,36 @@ docker run -i --rm --entrypoint wpscan hackerdogs/wpscan-mcp:latest --url https:
 ```bash
 docker run -i --rm --entrypoint wpscan hackerdogs/wpscan-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "wpscan-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/wpscan-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8220:8220 -e MCP_TRANSPORT=streamable-http hackerdogs/wpscan-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "wpscan-mcp": {
+      "url": "http://localhost:8220/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint testssl.sh hackerdogs/testssl-mcp:latest https:/
 ```bash
 docker run -i --rm --entrypoint testssl.sh hackerdogs/testssl-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "testssl-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/testssl-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8279:8279 -e MCP_TRANSPORT=streamable-http hackerdogs/testssl-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "testssl-mcp": {
+      "url": "http://localhost:8279/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -212,3 +212,36 @@ You can run the port-scanner CLI in the same container by overriding the entrypo
 ```bash
 docker run -i --rm --entrypoint port-scanner hackerdogs/port-scanner-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "port-scanner-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/port-scanner-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8354:8354 -e MCP_TRANSPORT=streamable-http hackerdogs/port-scanner-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "port-scanner-mcp": {
+      "url": "http://localhost:8354/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

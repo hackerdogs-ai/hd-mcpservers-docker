@@ -180,3 +180,36 @@ curl -s -X POST http://localhost:8665/mcp \
 ```bash
 docker stop sentry-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "sentry-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/sentry-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8665:8665 -e MCP_TRANSPORT=streamable-http hackerdogs/sentry-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "sentry-mcp": {
+      "url": "http://localhost:8665/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

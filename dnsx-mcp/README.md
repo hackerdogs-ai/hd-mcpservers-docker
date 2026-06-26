@@ -230,3 +230,36 @@ docker run -i --rm --entrypoint dnsx hackerdogs/dnsx-mcp:latest -silent
 ```bash
 docker run -i --rm --entrypoint dnsx hackerdogs/dnsx-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "dnsx-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/dnsx-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8108:8108 -e MCP_TRANSPORT=streamable-http hackerdogs/dnsx-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "dnsx-mcp": {
+      "url": "http://localhost:8108/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

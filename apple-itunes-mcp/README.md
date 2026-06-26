@@ -47,3 +47,36 @@ docker run -d -p 8511:8511 \
 
 - "Find iOS apps associated with google.com."
 - "Search iTunes for apps by example.com."
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "apple-itunes-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/apple-itunes-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8511:8511 -e MCP_TRANSPORT=streamable-http hackerdogs/apple-itunes-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "apple-itunes-mcp": {
+      "url": "http://localhost:8511/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

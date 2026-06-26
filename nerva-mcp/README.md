@@ -226,3 +226,36 @@ You can run the nerva CLI in the same container by overriding the entrypoint for
 ```bash
 docker run -i --rm --entrypoint nerva hackerdogs/nerva-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "nerva-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/nerva-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8104:8104 -e MCP_TRANSPORT=streamable-http hackerdogs/nerva-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "nerva-mcp": {
+      "url": "http://localhost:8104/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

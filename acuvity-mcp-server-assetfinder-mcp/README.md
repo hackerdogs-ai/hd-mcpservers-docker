@@ -23,3 +23,36 @@ docker run -i --rm acuvity/mcp-server-assetfinder:latest
 ## Tools
 
 Exposes Assetfinder passive subdomain discovery.
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-assetfinder-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/acuvity-mcp-server-assetfinder-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8383:8383 -e MCP_TRANSPORT=streamable-http hackerdogs/acuvity-mcp-server-assetfinder-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-assetfinder-mcp": {
+      "url": "http://localhost:8383/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -225,3 +225,36 @@ You can run the openrisk CLI in the same container by overriding the entrypoint 
 ```bash
 docker run -i --rm --entrypoint openrisk hackerdogs/openrisk-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "openrisk-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/openrisk-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8115:8115 -e MCP_TRANSPORT=streamable-http hackerdogs/openrisk-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "openrisk-mcp": {
+      "url": "http://localhost:8115/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

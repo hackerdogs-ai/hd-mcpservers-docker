@@ -218,3 +218,36 @@ docker run -i --rm --entrypoint smtp-user-enum hackerdogs/smtp-user-enum-mcp:lat
 ```bash
 docker run -i --rm --entrypoint smtp-user-enum hackerdogs/smtp-user-enum-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "smtp-user-enum-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/smtp-user-enum-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8325:8325 -e MCP_TRANSPORT=streamable-http hackerdogs/smtp-user-enum-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "smtp-user-enum-mcp": {
+      "url": "http://localhost:8325/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

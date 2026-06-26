@@ -26,3 +26,36 @@ Production uses the **hosted** Censys Platform MCP URL (see `mcpServer.json`). T
 ## License
 
 Proprietary — see [Censys](https://censys.io) for terms.
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "censys-platform-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/censys-platform-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8520:8520 -e MCP_TRANSPORT=streamable-http hackerdogs/censys-platform-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "censys-platform-mcp": {
+      "url": "http://localhost:8520/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

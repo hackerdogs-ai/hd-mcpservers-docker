@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint foremost hackerdogs/foremost-mcp:latest -i /path
 ```bash
 docker run -i --rm --entrypoint foremost hackerdogs/foremost-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "foremost-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/foremost-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8249:8249 -e MCP_TRANSPORT=streamable-http hackerdogs/foremost-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "foremost-mcp": {
+      "url": "http://localhost:8249/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

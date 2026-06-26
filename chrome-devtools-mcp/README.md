@@ -172,3 +172,36 @@ curl -s -X POST http://localhost:8631/mcp \
 ```bash
 docker stop chrome-devtools-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "chrome-devtools-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/chrome-devtools-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8631:8631 -e MCP_TRANSPORT=streamable-http hackerdogs/chrome-devtools-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "chrome-devtools-mcp": {
+      "url": "http://localhost:8631/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

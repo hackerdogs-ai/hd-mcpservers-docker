@@ -13,13 +13,32 @@ Hackerdogs MCP wrapper for Masscan — scan ports at scale. No Minibridge; stdio
 
 ## mcpServer.json
 
+### Stdio (local / Cursor / Claude Desktop)
+
 ```json
 {
   "mcpServers": {
     "masscan-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "-e", "MCP_PORT", "hackerdogs/masscan-mcpatest"],
-      "env": { "MCP_TRANSPORT": "stdio", "MCP_PORT": "8388" }
+      "args": ["run", "-i", "--rm", "hackerdogs/masscan-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8388:8388 -e MCP_TRANSPORT=streamable-http hackerdogs/masscan-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "masscan-mcp": {
+      "url": "http://localhost:8388/mcp/",
+      "transport": "streamable-http"
     }
   }
 }

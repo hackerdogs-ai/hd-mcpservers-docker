@@ -55,3 +55,36 @@ docker build -t hackerdogs/wiremcp-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "wiremcp-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/wiremcp-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8458:8458 -e MCP_TRANSPORT=streamable-http hackerdogs/wiremcp-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "wiremcp-mcp": {
+      "url": "http://localhost:8458/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

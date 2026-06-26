@@ -212,3 +212,36 @@ You can run the wifiphisher CLI in the same container by overriding the entrypoi
 ```bash
 docker run -i --rm --entrypoint wifiphisher hackerdogs/wifiphisher-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "wifiphisher-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/wifiphisher-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8312:8312 -e MCP_TRANSPORT=streamable-http hackerdogs/wifiphisher-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "wifiphisher-mcp": {
+      "url": "http://localhost:8312/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

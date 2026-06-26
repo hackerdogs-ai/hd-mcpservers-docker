@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint checkov hackerdogs/checkov-mcp:latest scan -d /p
 ```bash
 docker run -i --rm --entrypoint checkov hackerdogs/checkov-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "checkov-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/checkov-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8272:8272 -e MCP_TRANSPORT=streamable-http hackerdogs/checkov-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "checkov-mcp": {
+      "url": "http://localhost:8272/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

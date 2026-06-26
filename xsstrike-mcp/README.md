@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint xsstrike hackerdogs/xsstrike-mcp:latest -u https
 ```bash
 docker run -i --rm --entrypoint xsstrike hackerdogs/xsstrike-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "xsstrike-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/xsstrike-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8349:8349 -e MCP_TRANSPORT=streamable-http hackerdogs/xsstrike-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "xsstrike-mcp": {
+      "url": "http://localhost:8349/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

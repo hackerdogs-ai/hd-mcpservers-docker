@@ -208,3 +208,36 @@ You can run the dnsreaper CLI in the same container by overriding the entrypoint
 ```bash
 docker run -i --rm --entrypoint dnsreaper hackerdogs/dnsreaper-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "dnsreaper-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/dnsreaper-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8293:8293 -e MCP_TRANSPORT=streamable-http hackerdogs/dnsreaper-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "dnsreaper-mcp": {
+      "url": "http://localhost:8293/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

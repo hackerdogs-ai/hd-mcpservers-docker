@@ -51,3 +51,36 @@ docker run -d -p 8521:8521 \
 
 - "Crawl https://example.com and extract the content."
 - "Scrape the main article from https://news.ycombinator.com using CSS selector .titleline."
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "crawl4ai-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/crawl4ai-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8521:8521 -e MCP_TRANSPORT=streamable-http hackerdogs/crawl4ai-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "crawl4ai-mcp": {
+      "url": "http://localhost:8521/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

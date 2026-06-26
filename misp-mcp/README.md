@@ -323,3 +323,36 @@ docker run --rm \
   hackerdogs/misp-mcp:latest \
   python -c "import requests; r = requests.get('https://your-misp-instance/servers/getVersion', headers={'Authorization': 'your-key', 'Accept': 'application/json'}, verify=False); print(r.json())"
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "misp-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/misp-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8371:8371 -e MCP_TRANSPORT=streamable-http hackerdogs/misp-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "misp-mcp": {
+      "url": "http://localhost:8371/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

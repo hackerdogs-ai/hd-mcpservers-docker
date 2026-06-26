@@ -188,3 +188,36 @@ curl -s -X POST http://localhost:8633/mcp \
 ```bash
 docker stop cloudflare-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "cloudflare-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/cloudflare-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8633:8633 -e MCP_TRANSPORT=streamable-http hackerdogs/cloudflare-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "cloudflare-mcp": {
+      "url": "http://localhost:8633/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint gau hackerdogs/gau-mcp:latest example.com
 ```bash
 docker run -i --rm --entrypoint gau hackerdogs/gau-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "gau-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/gau-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8218:8218 -e MCP_TRANSPORT=streamable-http hackerdogs/gau-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "gau-mcp": {
+      "url": "http://localhost:8218/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

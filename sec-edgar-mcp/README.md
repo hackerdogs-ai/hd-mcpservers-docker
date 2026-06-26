@@ -55,3 +55,36 @@ docker build -t hackerdogs/sec-edgar-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "sec-edgar-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/sec-edgar-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8451:8451 -e MCP_TRANSPORT=streamable-http hackerdogs/sec-edgar-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "sec-edgar-mcp": {
+      "url": "http://localhost:8451/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

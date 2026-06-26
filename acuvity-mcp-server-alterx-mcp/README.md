@@ -23,3 +23,36 @@ docker run -i --rm acuvity/mcp-server-alterx:latest
 ## Tools
 
 Exposes Alterx domain wordlist generation for subdomain enumeration and discovery workflows.
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-alterx-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/acuvity-mcp-server-alterx-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8380:8380 -e MCP_TRANSPORT=streamable-http hackerdogs/acuvity-mcp-server-alterx-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-alterx-mcp": {
+      "url": "http://localhost:8380/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

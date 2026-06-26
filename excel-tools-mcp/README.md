@@ -18,3 +18,36 @@ MCP server for reading, writing, and analyzing Excel/CSV spreadsheets.
 docker build -t excel-tools-mcp .
 docker run -p 8505:8505 -e MCP_TRANSPORT=streamable-http excel-tools-mcp
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "excel-tools-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/excel-tools-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8505:8505 -e MCP_TRANSPORT=streamable-http hackerdogs/excel-tools-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "excel-tools-mcp": {
+      "url": "http://localhost:8505/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

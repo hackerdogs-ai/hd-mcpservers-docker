@@ -194,3 +194,36 @@ curl -s -X POST http://localhost:8606/mcp \
 ```bash
 docker stop aws-cloudtrail-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "aws-cloudtrail-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/aws-cloudtrail-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8606:8606 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-cloudtrail-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "aws-cloudtrail-mcp": {
+      "url": "http://localhost:8606/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

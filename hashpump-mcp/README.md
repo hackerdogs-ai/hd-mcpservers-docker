@@ -238,3 +238,36 @@ You can run the HashPump CLI in the same container by overriding the entrypoint 
 ```bash
 docker run -i --rm --entrypoint HashPump hackerdogs/hashpump-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "hashpump-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/hashpump-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8274:8274 -e MCP_TRANSPORT=streamable-http hackerdogs/hashpump-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "hashpump-mcp": {
+      "url": "http://localhost:8274/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

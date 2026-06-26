@@ -218,3 +218,36 @@ docker run -i --rm --entrypoint netdiscover hackerdogs/netdiscover-mcp:latest -r
 ```bash
 docker run -i --rm --entrypoint netdiscover hackerdogs/netdiscover-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "netdiscover-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/netdiscover-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8322:8322 -e MCP_TRANSPORT=streamable-http hackerdogs/netdiscover-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "netdiscover-mcp": {
+      "url": "http://localhost:8322/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

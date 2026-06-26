@@ -180,3 +180,36 @@ curl -s -X POST http://localhost:8646/mcp \
 ```bash
 docker stop hibp-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "hibp-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/hibp-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8646:8646 -e MCP_TRANSPORT=streamable-http hackerdogs/hibp-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "hibp-mcp": {
+      "url": "http://localhost:8646/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

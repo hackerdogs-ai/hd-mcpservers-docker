@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint wapiti hackerdogs/wapiti-mcp:latest -u https://e
 ```bash
 docker run -i --rm --entrypoint wapiti hackerdogs/wapiti-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "wapiti-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/wapiti-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8288:8288 -e MCP_TRANSPORT=streamable-http hackerdogs/wapiti-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "wapiti-mcp": {
+      "url": "http://localhost:8288/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

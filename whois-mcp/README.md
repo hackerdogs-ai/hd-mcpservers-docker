@@ -172,3 +172,36 @@ curl -s -X POST http://localhost:8673/mcp \
 ```bash
 docker stop whois-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "whois-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/whois-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8673:8673 -e MCP_TRANSPORT=streamable-http hackerdogs/whois-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "whois-mcp": {
+      "url": "http://localhost:8673/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

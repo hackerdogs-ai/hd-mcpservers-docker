@@ -208,3 +208,36 @@ You can run the bully CLI in the same container by overriding the entrypoint to 
 ```bash
 docker run -i --rm --entrypoint bully hackerdogs/bully-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "bully-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/bully-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8310:8310 -e MCP_TRANSPORT=streamable-http hackerdogs/bully-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "bully-mcp": {
+      "url": "http://localhost:8310/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

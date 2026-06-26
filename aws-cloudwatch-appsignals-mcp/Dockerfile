@@ -4,7 +4,7 @@ RUN npm install -g supergateway && npm cache clean --force
 FROM python:3.11-slim
 RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
-RUN pip install --no-cache-dir awslabs.cloudwatch-appsignals-mcp-server
+RUN pip install --no-cache-dir awslabs.cloudwatch-appsignals-mcp-server==0.1.20
 
 # Add Node.js + supergateway for HTTP mode
 COPY --from=supergateway-builder /usr/local/bin/node /usr/local/bin/node

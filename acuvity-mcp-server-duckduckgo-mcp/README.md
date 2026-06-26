@@ -55,3 +55,36 @@ docker build -t hackerdogs/acuvity-mcp-server-duckduckgo-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-duckduckgo-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/acuvity-mcp-server-duckduckgo-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8414:8414 -e MCP_TRANSPORT=streamable-http hackerdogs/acuvity-mcp-server-duckduckgo-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-duckduckgo-mcp": {
+      "url": "http://localhost:8414/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

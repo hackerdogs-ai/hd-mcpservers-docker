@@ -55,3 +55,36 @@ docker build -t hackerdogs/opencv-mcp-server-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "opencv-mcp-server-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/opencv-mcp-server-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8440:8440 -e MCP_TRANSPORT=streamable-http hackerdogs/opencv-mcp-server-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "opencv-mcp-server-mcp": {
+      "url": "http://localhost:8440/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

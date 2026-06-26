@@ -55,3 +55,36 @@ docker build -t hackerdogs/acuvity-mcp-server-slack-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-slack-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/acuvity-mcp-server-slack-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8455:8455 -e MCP_TRANSPORT=streamable-http hackerdogs/acuvity-mcp-server-slack-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-slack-mcp": {
+      "url": "http://localhost:8455/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

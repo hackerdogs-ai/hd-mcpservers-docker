@@ -208,3 +208,36 @@ You can run the gvm-cli (OpenVAS) in the same container by overriding the entryp
 ```bash
 docker run -i --rm --entrypoint gvm-cli hackerdogs/openvas-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "openvas-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/openvas-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8300:8300 -e MCP_TRANSPORT=streamable-http hackerdogs/openvas-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "openvas-mcp": {
+      "url": "http://localhost:8300/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

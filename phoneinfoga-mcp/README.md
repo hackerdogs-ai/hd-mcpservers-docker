@@ -23,3 +23,36 @@ MCP server for phone number OSINT using PhoneInfoga.
 docker build -t phoneinfoga-mcp .
 docker run -p 8503:8503 -e MCP_TRANSPORT=streamable-http phoneinfoga-mcp
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "phoneinfoga-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/phoneinfoga-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8503:8503 -e MCP_TRANSPORT=streamable-http hackerdogs/phoneinfoga-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "phoneinfoga-mcp": {
+      "url": "http://localhost:8503/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

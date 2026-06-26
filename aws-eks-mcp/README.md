@@ -194,3 +194,36 @@ curl -s -X POST http://localhost:8614/mcp \
 ```bash
 docker stop aws-eks-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "aws-eks-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/aws-eks-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8614:8614 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-eks-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "aws-eks-mcp": {
+      "url": "http://localhost:8614/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -208,3 +208,36 @@ You can run the crowbar CLI in the same container by overriding the entrypoint f
 ```bash
 docker run -i --rm --entrypoint crowbar hackerdogs/crowbar-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "crowbar-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/crowbar-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8307:8307 -e MCP_TRANSPORT=streamable-http hackerdogs/crowbar-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "crowbar-mcp": {
+      "url": "http://localhost:8307/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

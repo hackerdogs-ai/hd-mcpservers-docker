@@ -22,3 +22,36 @@ docker run -i --rm -e MCP_TRANSPORT=stdio hackerdogs/code-execution-mcp:latest
 ```bash
 docker run -d -p 8376:8376 -e MCP_TRANSPORT=streamable-http -e MCP_PORT=8376 hackerdogs/code-execution-mcp:latest
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "code-execution-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/code-execution-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8376:8376 -e MCP_TRANSPORT=streamable-http hackerdogs/code-execution-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "code-execution-mcp": {
+      "url": "http://localhost:8376/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

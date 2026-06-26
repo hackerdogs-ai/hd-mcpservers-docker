@@ -172,3 +172,36 @@ curl -s -X POST http://localhost:8638/mcp \
 ```bash
 docker stop exiftool-agent-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "exiftool-agent-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/exiftool-agent-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8638:8638 -e MCP_TRANSPORT=streamable-http hackerdogs/exiftool-agent-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "exiftool-agent-mcp": {
+      "url": "http://localhost:8638/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

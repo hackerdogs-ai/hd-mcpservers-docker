@@ -236,3 +236,36 @@ docker run -i --rm --entrypoint tlsx hackerdogs/tlsx-mcp:latest -u example.com
 ```bash
 docker run -i --rm --entrypoint tlsx hackerdogs/tlsx-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "tlsx-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/tlsx-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8109:8109 -e MCP_TRANSPORT=streamable-http hackerdogs/tlsx-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "tlsx-mcp": {
+      "url": "http://localhost:8109/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

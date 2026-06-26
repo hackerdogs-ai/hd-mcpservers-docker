@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint analyzeHeadless hackerdogs/ghidra-mcp:latest /pa
 ```bash
 docker run -i --rm --entrypoint analyzeHeadless hackerdogs/ghidra-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "ghidra-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/ghidra-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8240:8240 -e MCP_TRANSPORT=streamable-http hackerdogs/ghidra-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "ghidra-mcp": {
+      "url": "http://localhost:8240/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

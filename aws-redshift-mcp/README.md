@@ -194,3 +194,36 @@ curl -s -X POST http://localhost:8621/mcp \
 ```bash
 docker stop aws-redshift-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "aws-redshift-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/aws-redshift-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8621:8621 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-redshift-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "aws-redshift-mcp": {
+      "url": "http://localhost:8621/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

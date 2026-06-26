@@ -218,3 +218,36 @@ You can run the urlfinder CLI in the same container by overriding the entrypoint
 ```bash
 docker run -i --rm --entrypoint urlfinder hackerdogs/urlfinder-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "urlfinder-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/urlfinder-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8112:8112 -e MCP_TRANSPORT=streamable-http hackerdogs/urlfinder-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "urlfinder-mcp": {
+      "url": "http://localhost:8112/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

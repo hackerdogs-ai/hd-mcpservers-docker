@@ -194,3 +194,36 @@ curl -s -X POST http://localhost:8662/mcp \
 ```bash
 docker stop s3-mcp-server-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "s3-mcp-server-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/s3-mcp-server-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8662:8662 -e MCP_TRANSPORT=streamable-http hackerdogs/s3-mcp-server-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "s3-mcp-server-mcp": {
+      "url": "http://localhost:8662/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

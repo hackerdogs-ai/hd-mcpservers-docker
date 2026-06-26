@@ -47,3 +47,36 @@ docker run -d -p 8510:8510 \
 
 - "Search Ahmia for hidden services related to security forums."
 - "Find .onion links for open-source projects."
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "ahmia-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/ahmia-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8510:8510 -e MCP_TRANSPORT=streamable-http hackerdogs/ahmia-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "ahmia-mcp": {
+      "url": "http://localhost:8510/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -208,3 +208,36 @@ You can run the zap-mcp CLI in the same container by overriding the entrypoint t
 ```bash
 docker run -i --rm --entrypoint zap-mcp hackerdogs/zap-lis-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "zap-lis-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/zap-lis-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8355:8355 -e MCP_TRANSPORT=streamable-http hackerdogs/zap-lis-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "zap-lis-mcp": {
+      "url": "http://localhost:8355/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

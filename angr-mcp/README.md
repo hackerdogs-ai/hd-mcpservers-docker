@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint python3 hackerdogs/angr-mcp:latest -c "import an
 ```bash
 docker run -i --rm --entrypoint python3 hackerdogs/angr-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "angr-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/angr-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8246:8246 -e MCP_TRANSPORT=streamable-http hackerdogs/angr-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "angr-mcp": {
+      "url": "http://localhost:8246/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

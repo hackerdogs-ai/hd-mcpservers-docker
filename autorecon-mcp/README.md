@@ -221,3 +221,36 @@ docker run -i --rm --entrypoint autorecon hackerdogs/autorecon-mcp:latest exampl
 ```bash
 docker run -i --rm --entrypoint autorecon hackerdogs/autorecon-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "autorecon-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/autorecon-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8201:8201 -e MCP_TRANSPORT=streamable-http hackerdogs/autorecon-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "autorecon-mcp": {
+      "url": "http://localhost:8201/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

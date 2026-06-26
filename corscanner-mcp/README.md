@@ -208,3 +208,36 @@ You can run the cors_scan CLI in the same container by overriding the entrypoint
 ```bash
 docker run -i --rm --entrypoint cors_scan hackerdogs/corscanner-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "corscanner-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/corscanner-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8292:8292 -e MCP_TRANSPORT=streamable-http hackerdogs/corscanner-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "corscanner-mcp": {
+      "url": "http://localhost:8292/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

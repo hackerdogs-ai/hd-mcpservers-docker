@@ -46,3 +46,36 @@ docker run -d -p 8525:8525 \
 - "Is 8.8.8.8 a public DNS resolver?"
 - "Check if 1.1.1.1 is a known nameserver."
 - "What provider runs the DNS resolver at 9.9.9.9?"
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "name-server-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/name-server-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8525:8525 -e MCP_TRANSPORT=streamable-http hackerdogs/name-server-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "name-server-mcp": {
+      "url": "http://localhost:8525/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

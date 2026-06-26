@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint syft hackerdogs/syft-mcp:latest alpine:latest
 ```bash
 docker run -i --rm --entrypoint syft hackerdogs/syft-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "syft-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/syft-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8358:8358 -e MCP_TRANSPORT=streamable-http hackerdogs/syft-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "syft-mcp": {
+      "url": "http://localhost:8358/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint kubescape hackerdogs/kubescape-mcp:latest scan
 ```bash
 docker run -i --rm --entrypoint kubescape hackerdogs/kubescape-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "kubescape-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/kubescape-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8362:8362 -e MCP_TRANSPORT=streamable-http hackerdogs/kubescape-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "kubescape-mcp": {
+      "url": "http://localhost:8362/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -181,3 +181,36 @@ curl -s -X POST http://localhost:8644/mcp \
 ```bash
 docker stop google-threat-intelligence-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "google-threat-intelligence-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/google-threat-intelligence-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8644:8644 -e MCP_TRANSPORT=streamable-http hackerdogs/google-threat-intelligence-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "google-threat-intelligence-mcp": {
+      "url": "http://localhost:8644/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

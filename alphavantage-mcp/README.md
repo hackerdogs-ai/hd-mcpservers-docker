@@ -55,3 +55,36 @@ docker build -t hackerdogs/alphavantage-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "alphavantage-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/alphavantage-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8402:8402 -e MCP_TRANSPORT=streamable-http hackerdogs/alphavantage-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "alphavantage-mcp": {
+      "url": "http://localhost:8402/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

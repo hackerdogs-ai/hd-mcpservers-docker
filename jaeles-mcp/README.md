@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint jaeles hackerdogs/jaeles-mcp:latest -u https://e
 ```bash
 docker run -i --rm --entrypoint jaeles hackerdogs/jaeles-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "jaeles-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/jaeles-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8232:8232 -e MCP_TRANSPORT=streamable-http hackerdogs/jaeles-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "jaeles-mcp": {
+      "url": "http://localhost:8232/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

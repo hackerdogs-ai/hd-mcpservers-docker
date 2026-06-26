@@ -45,3 +45,36 @@ docker run -d -p 8516:8516 \
 
 - "Search Bitbucket code for example.com."
 - "Find emails in public Bitbucket repos mentioning hackerdogs."
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "bitbucket-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/bitbucket-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8516:8516 -e MCP_TRANSPORT=streamable-http hackerdogs/bitbucket-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "bitbucket-mcp": {
+      "url": "http://localhost:8516/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

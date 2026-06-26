@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint jwt_tool.py hackerdogs/jwt-tool-mcp:latest eyJhb
 ```bash
 docker run -i --rm --entrypoint jwt_tool.py hackerdogs/jwt-tool-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "jwt-tool-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/jwt-tool-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8265:8265 -e MCP_TRANSPORT=streamable-http hackerdogs/jwt-tool-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "jwt-tool-mcp": {
+      "url": "http://localhost:8265/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -55,3 +55,36 @@ docker build -t hackerdogs/fred-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "fred-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/fred-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8423:8423 -e MCP_TRANSPORT=streamable-http hackerdogs/fred-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "fred-mcp": {
+      "url": "http://localhost:8423/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

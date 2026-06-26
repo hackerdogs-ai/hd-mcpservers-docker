@@ -55,3 +55,36 @@ docker build -t hackerdogs/yaraflux-mcp-server-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "yaraflux-mcp-server-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/yaraflux-mcp-server-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8461:8461 -e MCP_TRANSPORT=streamable-http hackerdogs/yaraflux-mcp-server-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "yaraflux-mcp-server-mcp": {
+      "url": "http://localhost:8461/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

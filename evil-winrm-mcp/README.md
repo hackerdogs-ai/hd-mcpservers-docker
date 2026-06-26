@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint evil-winrm hackerdogs/evil-winrm-mcp:latest -i 1
 ```bash
 docker run -i --rm --entrypoint evil-winrm hackerdogs/evil-winrm-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "evil-winrm-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/evil-winrm-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8263:8263 -e MCP_TRANSPORT=streamable-http hackerdogs/evil-winrm-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "evil-winrm-mcp": {
+      "url": "http://localhost:8263/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

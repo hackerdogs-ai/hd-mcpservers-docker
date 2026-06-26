@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint ipinfo hackerdogs/ipinfo-mcp:latest 8.8.8.8
 ```bash
 docker run -i --rm --entrypoint ipinfo hackerdogs/ipinfo-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "ipinfo-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/ipinfo-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8351:8351 -e MCP_TRANSPORT=streamable-http hackerdogs/ipinfo-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "ipinfo-mcp": {
+      "url": "http://localhost:8351/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

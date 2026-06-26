@@ -13,13 +13,32 @@ Hackerdogs MCP wrapper for [OWASP Amass](https://github.com/owasp-amass/amass) â
 
 ## mcpServer.json
 
+### Stdio (local / Cursor / Claude Desktop)
+
 ```json
 {
   "mcpServers": {
     "amass-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "hackerdogs/amass-mcp:latest"],
-      "env": { "MCP_TRANSPORT": "stdio" }
+      "args": ["run", "-i", "--rm", "hackerdogs/amass-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8382:8382 -e MCP_TRANSPORT=streamable-http hackerdogs/amass-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "amass-mcp": {
+      "url": "http://localhost:8382/mcp/",
+      "transport": "streamable-http"
     }
   }
 }

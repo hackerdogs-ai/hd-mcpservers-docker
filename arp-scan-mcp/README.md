@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint arp-scan hackerdogs/arp-scan-mcp:latest --localn
 ```bash
 docker run -i --rm --entrypoint arp-scan hackerdogs/arp-scan-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "arp-scan-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/arp-scan-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8205:8205 -e MCP_TRANSPORT=streamable-http hackerdogs/arp-scan-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "arp-scan-mcp": {
+      "url": "http://localhost:8205/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

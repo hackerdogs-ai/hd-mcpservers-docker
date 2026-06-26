@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint one_gadget hackerdogs/one-gadget-mcp:latest /pat
 ```bash
 docker run -i --rm --entrypoint one_gadget hackerdogs/one-gadget-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "one-gadget-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/one-gadget-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8276:8276 -e MCP_TRANSPORT=streamable-http hackerdogs/one-gadget-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "one-gadget-mcp": {
+      "url": "http://localhost:8276/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

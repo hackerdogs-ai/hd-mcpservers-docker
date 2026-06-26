@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint boofuzz hackerdogs/boofuzz-mcp:latest -h
 ```bash
 docker run -i --rm --entrypoint boofuzz hackerdogs/boofuzz-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "boofuzz-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/boofuzz-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8333:8333 -e MCP_TRANSPORT=streamable-http hackerdogs/boofuzz-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "boofuzz-mcp": {
+      "url": "http://localhost:8333/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

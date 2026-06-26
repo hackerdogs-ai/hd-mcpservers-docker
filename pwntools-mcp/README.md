@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint python3 hackerdogs/pwntools-mcp:latest -c "from 
 ```bash
 docker run -i --rm --entrypoint python3 hackerdogs/pwntools-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "pwntools-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/pwntools-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8245:8245 -e MCP_TRANSPORT=streamable-http hackerdogs/pwntools-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "pwntools-mcp": {
+      "url": "http://localhost:8245/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

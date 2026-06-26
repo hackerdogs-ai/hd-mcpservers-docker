@@ -55,3 +55,36 @@ docker build -t hackerdogs/mapboxserver-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "mapboxserver-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/mapboxserver-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8429:8429 -e MCP_TRANSPORT=streamable-http hackerdogs/mapboxserver-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "mapboxserver-mcp": {
+      "url": "http://localhost:8429/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

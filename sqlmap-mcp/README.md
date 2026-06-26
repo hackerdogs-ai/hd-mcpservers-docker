@@ -13,13 +13,32 @@ Hackerdogs MCP wrapper for Sqlmap — detect and exploit SQL injection. No Minib
 
 ## mcpServer.json
 
+### Stdio (local / Cursor / Claude Desktop)
+
 ```json
 {
   "mcpServers": {
     "sqlmap-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "-e", "MCP_PORT", "hackerdogs/sqlmap-mcpatest"],
-      "env": { "MCP_TRANSPORT": "stdio", "MCP_PORT": "8394" }
+      "args": ["run", "-i", "--rm", "hackerdogs/sqlmap-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8394:8394 -e MCP_TRANSPORT=streamable-http hackerdogs/sqlmap-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "sqlmap-mcp": {
+      "url": "http://localhost:8394/mcp/",
+      "transport": "streamable-http"
     }
   }
 }

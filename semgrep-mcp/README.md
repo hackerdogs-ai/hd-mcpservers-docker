@@ -245,3 +245,36 @@ docker run -i --rm --entrypoint semgrep hackerdogs/semgrep-mcp:latest scan --con
 ```bash
 docker run -i --rm --entrypoint semgrep hackerdogs/semgrep-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "semgrep-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/semgrep-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8335:8335 -e MCP_TRANSPORT=streamable-http hackerdogs/semgrep-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "semgrep-mcp": {
+      "url": "http://localhost:8335/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint sublist3r hackerdogs/sublist3r-mcp:latest -d exa
 ```bash
 docker run -i --rm --entrypoint sublist3r hackerdogs/sublist3r-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "sublist3r-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/sublist3r-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8301:8301 -e MCP_TRANSPORT=streamable-http hackerdogs/sublist3r-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "sublist3r-mcp": {
+      "url": "http://localhost:8301/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

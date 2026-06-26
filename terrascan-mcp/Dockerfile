@@ -2,7 +2,8 @@
 # Multi-arch build for linux/amd64 and linux/arm64
 
 # Stage 1: Builder for the Go binary
-FROM golang:1.24-bookworm AS builder
+FROM golang:1.26-bookworm AS builder
+ENV GOTOOLCHAIN=auto
 ENV CGO_ENABLED=0
 # Clone the repository and build manually to respect go.mod replace directives
 RUN git clone --depth 1 https://github.com/tenable/terrascan.git /go/src/terrascan

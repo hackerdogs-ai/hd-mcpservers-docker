@@ -180,3 +180,36 @@ curl -s -X POST http://localhost:8650/mcp \
 ```bash
 docker stop ms-fabric-rti-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "ms-fabric-rti-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/ms-fabric-rti-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8650:8650 -e MCP_TRANSPORT=streamable-http hackerdogs/ms-fabric-rti-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "ms-fabric-rti-mcp": {
+      "url": "http://localhost:8650/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

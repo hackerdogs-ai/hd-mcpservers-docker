@@ -194,3 +194,36 @@ curl -s -X POST http://localhost:8605/mcp \
 ```bash
 docker stop aws-bedrock-custom-model-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "aws-bedrock-custom-model-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/aws-bedrock-custom-model-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8605:8605 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-bedrock-custom-model-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "aws-bedrock-custom-model-mcp": {
+      "url": "http://localhost:8605/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

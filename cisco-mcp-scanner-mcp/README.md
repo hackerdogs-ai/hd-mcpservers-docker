@@ -212,3 +212,36 @@ You can run the mcp-scanner CLI in the same container by overriding the entrypoi
 ```bash
 docker run -i --rm --entrypoint mcp-scanner hackerdogs/cisco-mcp-scanner-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "cisco-mcp-scanner-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/cisco-mcp-scanner-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8342:8342 -e MCP_TRANSPORT=streamable-http hackerdogs/cisco-mcp-scanner-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "cisco-mcp-scanner-mcp": {
+      "url": "http://localhost:8342/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

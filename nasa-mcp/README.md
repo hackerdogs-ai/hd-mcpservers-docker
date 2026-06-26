@@ -180,3 +180,36 @@ curl -s -X POST http://localhost:8651/mcp \
 ```bash
 docker stop nasa-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "nasa-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/nasa-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8651:8651 -e MCP_TRANSPORT=streamable-http hackerdogs/nasa-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "nasa-mcp": {
+      "url": "http://localhost:8651/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

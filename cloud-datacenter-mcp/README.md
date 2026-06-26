@@ -46,3 +46,36 @@ docker run -d -p 8520:8520 \
 - "Is 52.94.76.1 an AWS IP?"
 - "Check if 1.1.1.1 belongs to a cloud provider."
 - "What cloud provider owns 35.190.247.1?"
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "cloud-datacenter-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/cloud-datacenter-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8520:8520 -e MCP_TRANSPORT=streamable-http hackerdogs/cloud-datacenter-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "cloud-datacenter-mcp": {
+      "url": "http://localhost:8520/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -212,3 +212,36 @@ You can run the social-analyzer CLI in the same container by overriding the entr
 ```bash
 docker run -i --rm --entrypoint social-analyzer hackerdogs/social-analyzer-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "social-analyzer-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/social-analyzer-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8255:8255 -e MCP_TRANSPORT=streamable-http hackerdogs/social-analyzer-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "social-analyzer-mcp": {
+      "url": "http://localhost:8255/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

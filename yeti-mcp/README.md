@@ -208,3 +208,36 @@ You can run the yeti-mcp CLI in the same container by overriding the entrypoint 
 ```bash
 docker run -i --rm --entrypoint yeti-mcp hackerdogs/yeti-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "yeti-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/yeti-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8337:8337 -e MCP_TRANSPORT=streamable-http hackerdogs/yeti-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "yeti-mcp": {
+      "url": "http://localhost:8337/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -32,18 +32,35 @@ docker run -d -p 8380:8380 -e MCP_TRANSPORT=streamable-http hackerdogs/alterx-mc
 # Endpoint: http://localhost:8380/mcp/
 ```
 
-## mcpServer.json (Cursor / Claude)
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
 
 ```json
 {
   "mcpServers": {
     "alterx-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "hackerdogs/alterx-mcp:latest"],
-      "env": { "MCP_TRANSPORT": "stdio" }
+      "args": ["run", "-i", "--rm", "hackerdogs/alterx-mcp:latest"],
+      "env": {}
     }
   }
 }
 ```
 
-For HTTP: use `url` with `https://.../alterx-mcp/mcp/` and `transport: "streamable-http"` (e.g. in farm).
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8380:8380 -e MCP_TRANSPORT=streamable-http hackerdogs/alterx-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "alterx-mcp": {
+      "url": "http://localhost:8380/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

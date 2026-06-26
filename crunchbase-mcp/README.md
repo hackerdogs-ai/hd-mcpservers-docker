@@ -55,3 +55,36 @@ docker build -t hackerdogs/crunchbase-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "crunchbase-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/crunchbase-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8411:8411 -e MCP_TRANSPORT=streamable-http hackerdogs/crunchbase-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "crunchbase-mcp": {
+      "url": "http://localhost:8411/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

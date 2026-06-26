@@ -220,3 +220,36 @@ docker run -i --rm -v /path/to/passwords.txt:/passwords.txt --entrypoint hydra h
 ```bash
 docker run -i --rm --entrypoint hydra hackerdogs/hydra-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "hydra-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/hydra-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8233:8233 -e MCP_TRANSPORT=streamable-http hackerdogs/hydra-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "hydra-mcp": {
+      "url": "http://localhost:8233/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

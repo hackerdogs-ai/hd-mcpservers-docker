@@ -218,3 +218,36 @@ docker run -i --rm --entrypoint a2a-scanner hackerdogs/a2a-scanner-mcp:latest -h
 ```bash
 docker run -i --rm --entrypoint a2a-scanner hackerdogs/a2a-scanner-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "a2a-scanner-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/a2a-scanner-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8341:8341 -e MCP_TRANSPORT=streamable-http hackerdogs/a2a-scanner-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "a2a-scanner-mcp": {
+      "url": "http://localhost:8341/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

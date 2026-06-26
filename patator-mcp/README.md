@@ -208,3 +208,36 @@ You can run the patator CLI in the same container by overriding the entrypoint f
 ```bash
 docker run -i --rm --entrypoint patator hackerdogs/patator-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "patator-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/patator-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8262:8262 -e MCP_TRANSPORT=streamable-http hackerdogs/patator-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "patator-mcp": {
+      "url": "http://localhost:8262/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

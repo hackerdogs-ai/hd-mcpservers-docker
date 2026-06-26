@@ -50,3 +50,36 @@ docker run -d -p 8517:8517 \
 
 - "Search the web for 'latest cybersecurity vulnerabilities 2025'."
 - "Find information about OSINT tools using Brave Search."
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "bravesearch-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/bravesearch-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8517:8517 -e MCP_TRANSPORT=streamable-http hackerdogs/bravesearch-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "bravesearch-mcp": {
+      "url": "http://localhost:8517/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

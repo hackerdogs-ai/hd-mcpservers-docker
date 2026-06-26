@@ -27,3 +27,36 @@ docker run -d -p 8379:8379 -e MCP_TRANSPORT=streamable-http -e MCP_PORT=8379 hac
 ```
 
 Example: run subfinder for a domain: `run_secops_tool(tool_name="subfinder", args="-d example.com")`.
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "secops-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/secops-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8379:8379 -e MCP_TRANSPORT=streamable-http hackerdogs/secops-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "secops-mcp": {
+      "url": "http://localhost:8379/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -172,3 +172,36 @@ curl -s -X POST http://localhost:8675/mcp \
 ```bash
 docker stop youtube-transcript-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "youtube-transcript-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/youtube-transcript-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8675:8675 -e MCP_TRANSPORT=streamable-http hackerdogs/youtube-transcript-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "youtube-transcript-mcp": {
+      "url": "http://localhost:8675/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

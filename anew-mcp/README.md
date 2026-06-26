@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint anew hackerdogs/anew-mcp:latest
 ```bash
 docker run -i --rm --entrypoint anew hackerdogs/anew-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "anew-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/anew-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8229:8229 -e MCP_TRANSPORT=streamable-http hackerdogs/anew-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "anew-mcp": {
+      "url": "http://localhost:8229/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

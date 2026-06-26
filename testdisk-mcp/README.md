@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint testdisk hackerdogs/testdisk-mcp:latest /path/to
 ```bash
 docker run -i --rm --entrypoint testdisk hackerdogs/testdisk-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "testdisk-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/testdisk-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8283:8283 -e MCP_TRANSPORT=streamable-http hackerdogs/testdisk-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "testdisk-mcp": {
+      "url": "http://localhost:8283/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -218,3 +218,36 @@ docker run --rm --entrypoint maigret hackerdogs/maigret-mcp:latest johndoe
 ```bash
 docker run --rm --entrypoint maigret hackerdogs/maigret-mcp:latest johndoe --timeout 30
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "maigret-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/maigret-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8221:8221 -e MCP_TRANSPORT=streamable-http hackerdogs/maigret-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "maigret-mcp": {
+      "url": "http://localhost:8221/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

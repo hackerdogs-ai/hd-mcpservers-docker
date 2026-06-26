@@ -172,3 +172,36 @@ curl -s -X POST http://localhost:8643/mcp \
 ```bash
 docker stop globalping-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "globalping-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/globalping-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8643:8643 -e MCP_TRANSPORT=streamable-http hackerdogs/globalping-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "globalping-mcp": {
+      "url": "http://localhost:8643/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

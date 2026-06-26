@@ -172,3 +172,36 @@ curl -s -X POST http://localhost:8635/mcp \
 ```bash
 docker stop dns-mcp-server-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "dns-mcp-server-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/dns-mcp-server-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8635:8635 -e MCP_TRANSPORT=streamable-http hackerdogs/dns-mcp-server-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "dns-mcp-server-mcp": {
+      "url": "http://localhost:8635/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

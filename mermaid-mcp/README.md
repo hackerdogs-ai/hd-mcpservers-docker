@@ -45,3 +45,36 @@ docker run -d -p 8524:8524 \
 
 - "Render this Mermaid diagram: graph TD; A-->B-->C"
 - "Create an SVG flowchart from Mermaid syntax."
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "mermaid-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/mermaid-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8524:8524 -e MCP_TRANSPORT=streamable-http hackerdogs/mermaid-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "mermaid-mcp": {
+      "url": "http://localhost:8524/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

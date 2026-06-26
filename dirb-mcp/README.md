@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint dirb hackerdogs/dirb-mcp:latest https://example.
 ```bash
 docker run -i --rm --entrypoint dirb hackerdogs/dirb-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "dirb-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/dirb-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8214:8214 -e MCP_TRANSPORT=streamable-http hackerdogs/dirb-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "dirb-mcp": {
+      "url": "http://localhost:8214/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

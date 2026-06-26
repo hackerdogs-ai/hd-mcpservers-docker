@@ -13,13 +13,32 @@ Hackerdogs MCP wrapper for Waybackurls — fetch historical URLs from Wayback Ma
 
 ## mcpServer.json
 
+### Stdio (local / Cursor / Claude Desktop)
+
 ```json
 {
   "mcpServers": {
     "waybackurls-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "-e", "MCP_PORT", "hackerdogs/waybackurls-mcpatest"],
-      "env": { "MCP_TRANSPORT": "stdio", "MCP_PORT": "8395" }
+      "args": ["run", "-i", "--rm", "hackerdogs/waybackurls-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8395:8395 -e MCP_TRANSPORT=streamable-http hackerdogs/waybackurls-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "waybackurls-mcp": {
+      "url": "http://localhost:8395/mcp/",
+      "transport": "streamable-http"
     }
   }
 }

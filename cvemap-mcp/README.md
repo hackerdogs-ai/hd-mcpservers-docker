@@ -257,3 +257,36 @@ docker run -i --rm --entrypoint cvemap hackerdogs/cvemap-mcp:latest -cve CVE-202
 ```bash
 docker run -i --rm --entrypoint cvemap hackerdogs/cvemap-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "cvemap-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/cvemap-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8106:8106 -e MCP_TRANSPORT=streamable-http hackerdogs/cvemap-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "cvemap-mcp": {
+      "url": "http://localhost:8106/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

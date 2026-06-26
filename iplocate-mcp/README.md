@@ -172,3 +172,36 @@ curl -s -X POST http://localhost:8648/mcp \
 ```bash
 docker stop iplocate-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "iplocate-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/iplocate-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8648:8648 -e MCP_TRANSPORT=streamable-http hackerdogs/iplocate-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "iplocate-mcp": {
+      "url": "http://localhost:8648/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -265,3 +265,36 @@ docker run -i --rm \
   --entrypoint docker-bench-security.sh \
   hackerdogs/docker-bench-security-mcp:latest -c check_2
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "docker-bench-security-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/docker-bench-security-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8254:8254 -e MCP_TRANSPORT=streamable-http hackerdogs/docker-bench-security-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "docker-bench-security-mcp": {
+      "url": "http://localhost:8254/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

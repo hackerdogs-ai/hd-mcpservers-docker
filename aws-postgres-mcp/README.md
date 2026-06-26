@@ -194,3 +194,36 @@ curl -s -X POST http://localhost:8619/mcp \
 ```bash
 docker stop aws-postgres-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "aws-postgres-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/aws-postgres-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8619:8619 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-postgres-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "aws-postgres-mcp": {
+      "url": "http://localhost:8619/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

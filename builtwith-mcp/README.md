@@ -24,3 +24,36 @@ docker run -d -p 8375:8375 -e MCP_TRANSPORT=streamable-http -e MCP_PORT=8375 -e 
 ```
 
 Get an API key at [BuiltWith](https://builtwith.com/).
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "builtwith-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/builtwith-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8375:8375 -e MCP_TRANSPORT=streamable-http hackerdogs/builtwith-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "builtwith-mcp": {
+      "url": "http://localhost:8375/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

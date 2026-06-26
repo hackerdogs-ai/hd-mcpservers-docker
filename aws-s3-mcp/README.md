@@ -208,3 +208,36 @@ You can run the aws-s3-mcp CLI in the same container by overriding the entrypoin
 ```bash
 docker run -i --rm --entrypoint aws-s3-mcp hackerdogs/aws-s3-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "aws-s3-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/aws-s3-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8346:8346 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-s3-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "aws-s3-mcp": {
+      "url": "http://localhost:8346/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

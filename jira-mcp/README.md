@@ -195,3 +195,36 @@ curl -s -X POST http://localhost:8649/mcp \
 ```bash
 docker stop jira-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "jira-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/jira-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8649:8649 -e MCP_TRANSPORT=streamable-http hackerdogs/jira-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "jira-mcp": {
+      "url": "http://localhost:8649/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

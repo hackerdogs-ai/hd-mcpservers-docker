@@ -180,3 +180,36 @@ curl -s -X POST http://localhost:8640/mcp \
 ```bash
 docker stop firecrawl-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "firecrawl-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/firecrawl-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8640:8640 -e MCP_TRANSPORT=streamable-http hackerdogs/firecrawl-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "firecrawl-mcp": {
+      "url": "http://localhost:8640/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

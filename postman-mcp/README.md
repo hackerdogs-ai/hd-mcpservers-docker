@@ -180,3 +180,36 @@ curl -s -X POST http://localhost:8658/mcp \
 ```bash
 docker stop postman-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "postman-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/postman-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8658:8658 -e MCP_TRANSPORT=streamable-http hackerdogs/postman-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "postman-mcp": {
+      "url": "http://localhost:8658/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

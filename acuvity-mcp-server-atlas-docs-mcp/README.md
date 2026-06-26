@@ -55,3 +55,36 @@ docker build -t hackerdogs/acuvity-mcp-server-atlas-docs-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-atlas-docs-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/acuvity-mcp-server-atlas-docs-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8403:8403 -e MCP_TRANSPORT=streamable-http hackerdogs/acuvity-mcp-server-atlas-docs-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-atlas-docs-mcp": {
+      "url": "http://localhost:8403/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -13,13 +13,32 @@ Hackerdogs MCP wrapper for Assetfinder — find related domains. No Minibridge; 
 
 ## mcpServer.json
 
+### Stdio (local / Cursor / Claude Desktop)
+
 ```json
 {
   "mcpServers": {
     "assetfinder-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "-e", "MCP_PORT", "hackerdogs/assetfinder-mcpatest"],
-      "env": { "MCP_TRANSPORT": "stdio", "MCP_PORT": "8384" }
+      "args": ["run", "-i", "--rm", "hackerdogs/assetfinder-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8384:8384 -e MCP_TRANSPORT=streamable-http hackerdogs/assetfinder-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "assetfinder-mcp": {
+      "url": "http://localhost:8384/mcp/",
+      "transport": "streamable-http"
     }
   }
 }

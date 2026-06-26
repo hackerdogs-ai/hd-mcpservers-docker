@@ -180,3 +180,36 @@ curl -s -X POST http://localhost:8637/mcp \
 ```bash
 docker stop exa-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "exa-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/exa-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8637:8637 -e MCP_TRANSPORT=streamable-http hackerdogs/exa-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "exa-mcp": {
+      "url": "http://localhost:8637/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

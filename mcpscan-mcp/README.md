@@ -208,3 +208,36 @@ You can run the mcpscan CLI in the same container by overriding the entrypoint t
 ```bash
 docker run -i --rm --entrypoint mcpscan hackerdogs/mcpscan-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "mcpscan-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/mcpscan-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8296:8296 -e MCP_TRANSPORT=streamable-http hackerdogs/mcpscan-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "mcpscan-mcp": {
+      "url": "http://localhost:8296/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

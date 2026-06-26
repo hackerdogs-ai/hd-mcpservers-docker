@@ -212,3 +212,36 @@ You can run the mcp-scanner CLI in the same container by overriding the entrypoi
 ```bash
 docker run -i --rm --entrypoint mcp-scanner hackerdogs/knostic-mcp-scanner-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "knostic-mcp-scanner-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/knostic-mcp-scanner-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8344:8344 -e MCP_TRANSPORT=streamable-http hackerdogs/knostic-mcp-scanner-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "knostic-mcp-scanner-mcp": {
+      "url": "http://localhost:8344/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint bloodhound-python hackerdogs/bloodhound-mcp:late
 ```bash
 docker run -i --rm --entrypoint bloodhound-python hackerdogs/bloodhound-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "bloodhound-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/bloodhound-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8286:8286 -e MCP_TRANSPORT=streamable-http hackerdogs/bloodhound-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "bloodhound-mcp": {
+      "url": "http://localhost:8286/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

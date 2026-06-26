@@ -250,3 +250,36 @@ docker run -i --rm --entrypoint gobuster hackerdogs/gobuster-mcp:latest dns -d e
 ```bash
 docker run -i --rm --entrypoint gobuster hackerdogs/gobuster-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "gobuster-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/gobuster-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8213:8213 -e MCP_TRANSPORT=streamable-http hackerdogs/gobuster-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "gobuster-mcp": {
+      "url": "http://localhost:8213/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -26,3 +26,36 @@ This is a **remote-only** MCP server. No Docker image or local build is required
 ## License
 
 Proprietary — see [Tavily](https://tavily.com) for terms.
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "tavily-remote-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/tavily-remote-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8513:8513 -e MCP_TRANSPORT=streamable-http hackerdogs/tavily-remote-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "tavily-remote-mcp": {
+      "url": "http://localhost:8513/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

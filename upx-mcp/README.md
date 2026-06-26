@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint upx hackerdogs/upx-mcp:latest /path/to/binary
 ```bash
 docker run -i --rm --entrypoint upx hackerdogs/upx-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "upx-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/upx-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8284:8284 -e MCP_TRANSPORT=streamable-http hackerdogs/upx-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "upx-mcp": {
+      "url": "http://localhost:8284/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

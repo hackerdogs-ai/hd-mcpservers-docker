@@ -55,3 +55,36 @@ docker build -t hackerdogs/acuvity-mcp-server-microsoft-graph-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-microsoft-graph-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/acuvity-mcp-server-microsoft-graph-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8433:8433 -e MCP_TRANSPORT=streamable-http hackerdogs/acuvity-mcp-server-microsoft-graph-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-microsoft-graph-mcp": {
+      "url": "http://localhost:8433/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -219,3 +219,36 @@ docker run -i --rm --entrypoint nikto hackerdogs/nikto-mcp:latest -h https://exa
 ```bash
 docker run -i --rm --entrypoint nikto hackerdogs/nikto-mcp:latest -h https://example.com -V
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "nikto-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/nikto-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8219:8219 -e MCP_TRANSPORT=streamable-http hackerdogs/nikto-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "nikto-mcp": {
+      "url": "http://localhost:8219/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

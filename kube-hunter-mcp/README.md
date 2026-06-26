@@ -218,3 +218,36 @@ docker run -i --rm --entrypoint kube-hunter hackerdogs/kube-hunter-mcp:latest --
 ```bash
 docker run -i --rm --entrypoint kube-hunter hackerdogs/kube-hunter-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "kube-hunter-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/kube-hunter-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8252:8252 -e MCP_TRANSPORT=streamable-http hackerdogs/kube-hunter-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "kube-hunter-mcp": {
+      "url": "http://localhost:8252/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

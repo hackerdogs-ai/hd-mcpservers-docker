@@ -208,3 +208,36 @@ You can run the rasn CLI in the same container by overriding the entrypoint for 
 ```bash
 docker run -i --rm --entrypoint rasn hackerdogs/rasn-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "rasn-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/rasn-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8353:8353 -e MCP_TRANSPORT=streamable-http hackerdogs/rasn-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "rasn-mcp": {
+      "url": "http://localhost:8353/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

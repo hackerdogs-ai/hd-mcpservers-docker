@@ -180,3 +180,36 @@ curl -s -X POST http://localhost:8664/mcp \
 ```bash
 docker stop search1api-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "search1api-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/search1api-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8664:8664 -e MCP_TRANSPORT=streamable-http hackerdogs/search1api-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "search1api-mcp": {
+      "url": "http://localhost:8664/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

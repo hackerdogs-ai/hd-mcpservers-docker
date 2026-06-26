@@ -22,3 +22,36 @@ MCP server wrapping 9 AbstractAPI endpoints for intelligence lookups.
 docker build -t abstract-mcp .
 docker run -p 8501:8501 -e MCP_TRANSPORT=streamable-http abstract-mcp
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "abstract-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/abstract-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8501:8501 -e MCP_TRANSPORT=streamable-http hackerdogs/abstract-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "abstract-mcp": {
+      "url": "http://localhost:8501/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -211,3 +211,36 @@ docker run -i --rm \
 ## Running the tool directly (bypassing MCP)
 
 This MCP server does not wrap a single CLI binary; it talks to an **IVRE web API** (see `IVRE_WEB_URL`). To run IVRE CLI tools (e.g. `ivre run`, `ivre ipinfo`) directly, use the [official IVRE Docker images](https://hub.docker.com/u/ivre/) instead of this image.
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "ivre-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/ivre-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8366:8366 -e MCP_TRANSPORT=streamable-http hackerdogs/ivre-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "ivre-mcp": {
+      "url": "http://localhost:8366/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

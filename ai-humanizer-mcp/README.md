@@ -174,3 +174,36 @@ curl -s -X POST http://localhost:8601/mcp \
 ```bash
 docker stop ai-humanizer-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "ai-humanizer-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/ai-humanizer-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8601:8601 -e MCP_TRANSPORT=streamable-http hackerdogs/ai-humanizer-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "ai-humanizer-mcp": {
+      "url": "http://localhost:8601/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

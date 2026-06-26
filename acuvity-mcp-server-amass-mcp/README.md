@@ -23,3 +23,36 @@ docker run -i --rm acuvity/mcp-server-amass:latest
 ## Tools
 
 Exposes Amass subdomain enumeration and reconnaissance capabilities.
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-amass-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/acuvity-mcp-server-amass-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8381:8381 -e MCP_TRANSPORT=streamable-http hackerdogs/acuvity-mcp-server-amass-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-amass-mcp": {
+      "url": "http://localhost:8381/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

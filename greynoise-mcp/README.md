@@ -181,3 +181,36 @@ curl -s -X POST http://localhost:8645/mcp \
 ```bash
 docker stop greynoise-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "greynoise-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/greynoise-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8645:8645 -e MCP_TRANSPORT=streamable-http hackerdogs/greynoise-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "greynoise-mcp": {
+      "url": "http://localhost:8645/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

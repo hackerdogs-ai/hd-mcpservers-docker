@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint r2 hackerdogs/radare2-mcp:latest -q -c 'aaa' /pa
 ```bash
 docker run -i --rm --entrypoint r2 hackerdogs/radare2-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "radare2-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/radare2-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8239:8239 -e MCP_TRANSPORT=streamable-http hackerdogs/radare2-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "radare2-mcp": {
+      "url": "http://localhost:8239/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -13,13 +13,32 @@ Hackerdogs MCP wrapper for Cero — find forgotten secrets in Git repos. No Mini
 
 ## mcpServer.json
 
+### Stdio (local / Cursor / Claude Desktop)
+
 ```json
 {
   "mcpServers": {
     "cero-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "-e", "MCP_PORT", "hackerdogs/cero-mcp:latest"],
-      "env": { "MCP_TRANSPORT": "stdio", "MCP_PORT": "8396" }
+      "args": ["run", "-i", "--rm", "hackerdogs/cero-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8396:8396 -e MCP_TRANSPORT=streamable-http hackerdogs/cero-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "cero-mcp": {
+      "url": "http://localhost:8396/mcp/",
+      "transport": "streamable-http"
     }
   }
 }

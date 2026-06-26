@@ -208,3 +208,36 @@ You can run the certipy CLI in the same container by overriding the entrypoint t
 ```bash
 docker run -i --rm --entrypoint certipy hackerdogs/certipy-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "certipy-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/certipy-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8285:8285 -e MCP_TRANSPORT=streamable-http hackerdogs/certipy-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "certipy-mcp": {
+      "url": "http://localhost:8285/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

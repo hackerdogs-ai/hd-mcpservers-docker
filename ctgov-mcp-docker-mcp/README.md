@@ -55,3 +55,36 @@ docker build -t hackerdogs/ctgov-mcp-docker-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "ctgov-mcp-docker-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/ctgov-mcp-docker-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8401:8401 -e MCP_TRANSPORT=streamable-http hackerdogs/ctgov-mcp-docker-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "ctgov-mcp-docker-mcp": {
+      "url": "http://localhost:8401/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

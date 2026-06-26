@@ -172,3 +172,36 @@ curl -s -X POST http://localhost:8639/mcp \
 ```bash
 docker stop fetch-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "fetch-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/fetch-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8639:8639 -e MCP_TRANSPORT=streamable-http hackerdogs/fetch-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "fetch-mcp": {
+      "url": "http://localhost:8639/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

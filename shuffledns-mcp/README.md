@@ -13,13 +13,32 @@ Hackerdogs MCP wrapper for Shuffledns — resolve and enumerate subdomains via D
 
 ## mcpServer.json
 
+### Stdio (local / Cursor / Claude Desktop)
+
 ```json
 {
   "mcpServers": {
     "shuffledns-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "-e", "MCP_PORT", "hackerdogs/shuffledns-mcpatest"],
-      "env": { "MCP_TRANSPORT": "stdio", "MCP_PORT": "8393" }
+      "args": ["run", "-i", "--rm", "hackerdogs/shuffledns-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8393:8393 -e MCP_TRANSPORT=streamable-http hackerdogs/shuffledns-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "shuffledns-mcp": {
+      "url": "http://localhost:8393/mcp/",
+      "transport": "streamable-http"
     }
   }
 }

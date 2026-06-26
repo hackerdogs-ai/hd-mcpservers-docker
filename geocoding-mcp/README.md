@@ -172,3 +172,36 @@ curl -s -X POST http://localhost:8641/mcp \
 ```bash
 docker stop geocoding-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "geocoding-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/geocoding-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8641:8641 -e MCP_TRANSPORT=streamable-http hackerdogs/geocoding-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "geocoding-mcp": {
+      "url": "http://localhost:8641/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -208,3 +208,36 @@ You can run the zap.sh (OWASP ZAP) CLI in the same container by overriding the e
 ```bash
 docker run -i --rm --entrypoint zap.sh hackerdogs/zap-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "zap-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/zap-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8231:8231 -e MCP_TRANSPORT=streamable-http hackerdogs/zap-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "zap-mcp": {
+      "url": "http://localhost:8231/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

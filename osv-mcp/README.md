@@ -208,3 +208,36 @@ You can run the osv-mcp CLI in the same container by overriding the entrypoint t
 ```bash
 docker run -i --rm --entrypoint osv-mcp hackerdogs/osv-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "osv-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/osv-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8347:8347 -e MCP_TRANSPORT=streamable-http hackerdogs/osv-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "osv-mcp": {
+      "url": "http://localhost:8347/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

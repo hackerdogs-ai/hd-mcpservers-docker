@@ -55,3 +55,36 @@ docker build -t hackerdogs/financial-datasets-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "financial-datasets-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/financial-datasets-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8420:8420 -e MCP_TRANSPORT=streamable-http hackerdogs/financial-datasets-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "financial-datasets-mcp": {
+      "url": "http://localhost:8420/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

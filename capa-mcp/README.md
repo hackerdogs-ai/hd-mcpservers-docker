@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint capa hackerdogs/capa-mcp:latest /path/to/binary
 ```bash
 docker run -i --rm --entrypoint capa hackerdogs/capa-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "capa-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/capa-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8329:8329 -e MCP_TRANSPORT=streamable-http hackerdogs/capa-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "capa-mcp": {
+      "url": "http://localhost:8329/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

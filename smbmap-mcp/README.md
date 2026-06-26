@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint smbmap hackerdogs/smbmap-mcp:latest -H 192.168.1
 ```bash
 docker run -i --rm --entrypoint smbmap hackerdogs/smbmap-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "smbmap-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/smbmap-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8211:8211 -e MCP_TRANSPORT=streamable-http hackerdogs/smbmap-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "smbmap-mcp": {
+      "url": "http://localhost:8211/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -265,3 +265,36 @@ You can run the julius CLI in the same container by overriding the entrypoint to
 ```bash
 docker run -i --rm --entrypoint julius hackerdogs/julius-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "julius-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/julius-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8100:8100 -e MCP_TRANSPORT=streamable-http hackerdogs/julius-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "julius-mcp": {
+      "url": "http://localhost:8100/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

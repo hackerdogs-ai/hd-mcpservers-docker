@@ -181,3 +181,36 @@ curl -s -X POST http://localhost:8629/mcp \
 ```bash
 docker stop brave-search-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "brave-search-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/brave-search-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8629:8629 -e MCP_TRANSPORT=streamable-http hackerdogs/brave-search-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "brave-search-mcp": {
+      "url": "http://localhost:8629/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

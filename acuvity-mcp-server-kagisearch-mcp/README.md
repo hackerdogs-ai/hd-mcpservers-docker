@@ -55,3 +55,36 @@ docker build -t hackerdogs/acuvity-mcp-server-kagisearch-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-kagisearch-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/acuvity-mcp-server-kagisearch-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8428:8428 -e MCP_TRANSPORT=streamable-http hackerdogs/acuvity-mcp-server-kagisearch-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-kagisearch-mcp": {
+      "url": "http://localhost:8428/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

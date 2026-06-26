@@ -208,3 +208,36 @@ You can run the yersinia CLI in the same container by overriding the entrypoint 
 ```bash
 docker run -i --rm --entrypoint yersinia hackerdogs/yersinia-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "yersinia-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/yersinia-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8319:8319 -e MCP_TRANSPORT=streamable-http hackerdogs/yersinia-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "yersinia-mcp": {
+      "url": "http://localhost:8319/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

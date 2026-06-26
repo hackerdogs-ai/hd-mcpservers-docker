@@ -264,3 +264,36 @@ docker run --rm --entrypoint suricata hackerdogs/suricata-mcp:latest --build-inf
 ```bash
 docker run --rm -v /path/to/captures:/data --entrypoint suricata hackerdogs/suricata-mcp:latest -r /data/capture.pcap -l /data/output
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "suricata-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/suricata-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8365:8365 -e MCP_TRANSPORT=streamable-http hackerdogs/suricata-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "suricata-mcp": {
+      "url": "http://localhost:8365/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

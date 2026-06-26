@@ -11,20 +11,6 @@ Hackerdogs MCP wrapper for Httpx — probe and analyze HTTP servers. No Minibrid
 - **Stdio:** `docker run -i --rm hackerdogs/httpx-mcpatest`
 - **HTTP:** `docker run -d -p 8386:8386 -e MCP_TRANSPORT=streamable-http hackerdogs/httpx-mcpatest` → `http://localhost:8386/mcp/`
 
-## mcpServer.json
-
-```json
-{
-  "mcpServers": {
-    "httpx-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "-e", "MCP_PORT", "hackerdogs/httpx-mcpatest"],
-      "env": { "MCP_TRANSPORT": "stdio", "MCP_PORT": "8386" }
-    }
-  }
-}
-```
-
 ## Contributing
 
 1. **Fork the repository** (if you don't have write access).
@@ -51,3 +37,36 @@ Hackerdogs MCP wrapper for Httpx — probe and analyze HTTP servers. No Minibrid
    git push origin feature/your-feature-name
    ```
 7. **Open a Pull Request** on GitHub from your branch into `main` (or the default branch), with a clear title and description of your feature.
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "httpx-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/httpx-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8386:8386 -e MCP_TRANSPORT=streamable-http hackerdogs/httpx-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "httpx-mcp": {
+      "url": "http://localhost:8386/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

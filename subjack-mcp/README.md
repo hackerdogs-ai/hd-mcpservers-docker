@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint subjack hackerdogs/subjack-mcp:latest -w /path/t
 ```bash
 docker run -i --rm --entrypoint subjack hackerdogs/subjack-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "subjack-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/subjack-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8260:8260 -e MCP_TRANSPORT=streamable-http hackerdogs/subjack-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "subjack-mcp": {
+      "url": "http://localhost:8260/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

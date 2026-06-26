@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint rustscan hackerdogs/rustscan-mcp:latest -a 192.1
 ```bash
 docker run -i --rm --entrypoint rustscan hackerdogs/rustscan-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "rustscan-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/rustscan-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8200:8200 -e MCP_TRANSPORT=streamable-http hackerdogs/rustscan-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "rustscan-mcp": {
+      "url": "http://localhost:8200/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

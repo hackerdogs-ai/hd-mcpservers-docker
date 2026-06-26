@@ -238,3 +238,36 @@ You can run the yaraflux CLI in the same container by overriding the entrypoint 
 ```bash
 docker run -i --rm --entrypoint yaraflux hackerdogs/yaraflux-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "yaraflux-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/yaraflux-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8336:8336 -e MCP_TRANSPORT=streamable-http hackerdogs/yaraflux-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "yaraflux-mcp": {
+      "url": "http://localhost:8336/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

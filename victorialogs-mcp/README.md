@@ -54,3 +54,36 @@ docker run -d -p 8527:8527 \
 - "Query VictoriaLogs for all error logs in the last hour."
 - "Get hit counts for 'status:500' over 15-minute buckets."
 - "Show field names for logs matching 'service:nginx'."
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "victorialogs-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/victorialogs-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8527:8527 -e MCP_TRANSPORT=streamable-http hackerdogs/victorialogs-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "victorialogs-mcp": {
+      "url": "http://localhost:8527/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

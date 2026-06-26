@@ -208,3 +208,36 @@ You can run the garak-mcp CLI in the same container by overriding the entrypoint
 ```bash
 docker run -i --rm --entrypoint garak-mcp hackerdogs/garak-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "garak-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/garak-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8352:8352 -e MCP_TRANSPORT=streamable-http hackerdogs/garak-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "garak-mcp": {
+      "url": "http://localhost:8352/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

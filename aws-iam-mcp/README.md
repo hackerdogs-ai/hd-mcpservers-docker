@@ -194,3 +194,36 @@ curl -s -X POST http://localhost:8615/mcp \
 ```bash
 docker stop aws-iam-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "aws-iam-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/aws-iam-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8615:8615 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-iam-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "aws-iam-mcp": {
+      "url": "http://localhost:8615/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

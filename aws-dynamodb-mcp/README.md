@@ -194,3 +194,36 @@ curl -s -X POST http://localhost:8612/mcp \
 ```bash
 docker stop aws-dynamodb-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "aws-dynamodb-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/aws-dynamodb-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8612:8612 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-dynamodb-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "aws-dynamodb-mcp": {
+      "url": "http://localhost:8612/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

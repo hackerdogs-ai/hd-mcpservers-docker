@@ -208,3 +208,36 @@ You can run the pacu CLI in the same container by overriding the entrypoint to e
 ```bash
 docker run -i --rm --entrypoint pacu hackerdogs/pacu-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "pacu-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/pacu-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8269:8269 -e MCP_TRANSPORT=streamable-http hackerdogs/pacu-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "pacu-mcp": {
+      "url": "http://localhost:8269/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

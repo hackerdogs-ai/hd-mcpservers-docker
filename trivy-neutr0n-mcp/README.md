@@ -242,3 +242,36 @@ You can run the trivy-mcp CLI in the same container by overriding the entrypoint
 ```bash
 docker run -i --rm --entrypoint trivy-mcp hackerdogs/trivy-neutr0n-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "trivy-neutr0n-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/trivy-neutr0n-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8356:8356 -e MCP_TRANSPORT=streamable-http hackerdogs/trivy-neutr0n-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "trivy-neutr0n-mcp": {
+      "url": "http://localhost:8356/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

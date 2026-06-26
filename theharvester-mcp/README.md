@@ -219,3 +219,36 @@ docker run -i --rm --entrypoint theHarvester hackerdogs/theharvester-mcp:latest 
 ```bash
 docker run -i --rm --entrypoint theHarvester hackerdogs/theharvester-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "theharvester-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/theharvester-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8204:8204 -e MCP_TRANSPORT=streamable-http hackerdogs/theharvester-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "theharvester-mcp": {
+      "url": "http://localhost:8204/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

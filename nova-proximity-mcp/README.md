@@ -212,3 +212,36 @@ You can run the nova-proximity CLI in the same container by overriding the entry
 ```bash
 docker run -i --rm --entrypoint nova-proximity hackerdogs/nova-proximity-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "nova-proximity-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/nova-proximity-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8298:8298 -e MCP_TRANSPORT=streamable-http hackerdogs/nova-proximity-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "nova-proximity-mcp": {
+      "url": "http://localhost:8298/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

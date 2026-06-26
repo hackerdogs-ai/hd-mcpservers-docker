@@ -45,3 +45,36 @@ docker run -d -p 8519:8519 \
 
 - "Build a certificate graph for example.com."
 - "Map the certificate relationships for hackerdogs.ai with depth 2."
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "certgraph-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/certgraph-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8519:8519 -e MCP_TRANSPORT=streamable-http hackerdogs/certgraph-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "certgraph-mcp": {
+      "url": "http://localhost:8519/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

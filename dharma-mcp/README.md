@@ -208,3 +208,36 @@ You can run the dharma CLI in the same container by overriding the entrypoint to
 ```bash
 docker run -i --rm --entrypoint dharma hackerdogs/dharma-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "dharma-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/dharma-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8334:8334 -e MCP_TRANSPORT=streamable-http hackerdogs/dharma-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "dharma-mcp": {
+      "url": "http://localhost:8334/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

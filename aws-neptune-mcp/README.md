@@ -194,3 +194,36 @@ curl -s -X POST http://localhost:8617/mcp \
 ```bash
 docker stop aws-neptune-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "aws-neptune-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/aws-neptune-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8617:8617 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-neptune-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "aws-neptune-mcp": {
+      "url": "http://localhost:8617/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

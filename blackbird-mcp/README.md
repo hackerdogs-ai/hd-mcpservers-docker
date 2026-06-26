@@ -212,3 +212,36 @@ docker run --rm --entrypoint blackbird hackerdogs/blackbird-mcp:latest --help
 ```bash
 docker run --rm --entrypoint blackbird hackerdogs/blackbird-mcp:latest -u johndoe
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "blackbird-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/blackbird-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8220:8220 -e MCP_TRANSPORT=streamable-http hackerdogs/blackbird-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "blackbird-mcp": {
+      "url": "http://localhost:8220/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

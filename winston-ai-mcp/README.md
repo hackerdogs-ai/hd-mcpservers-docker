@@ -180,3 +180,36 @@ curl -s -X POST http://localhost:8674/mcp \
 ```bash
 docker stop winston-ai-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "winston-ai-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/winston-ai-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8674:8674 -e MCP_TRANSPORT=streamable-http hackerdogs/winston-ai-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "winston-ai-mcp": {
+      "url": "http://localhost:8674/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

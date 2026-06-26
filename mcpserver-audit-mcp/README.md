@@ -212,3 +212,36 @@ You can run the mcpserver-audit CLI in the same container by overriding the entr
 ```bash
 docker run -i --rm --entrypoint mcpserver-audit hackerdogs/mcpserver-audit-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "mcpserver-audit-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/mcpserver-audit-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8340:8340 -e MCP_TRANSPORT=streamable-http hackerdogs/mcpserver-audit-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "mcpserver-audit-mcp": {
+      "url": "http://localhost:8340/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

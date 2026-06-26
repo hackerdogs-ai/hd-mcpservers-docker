@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint gospider hackerdogs/gospider-mcp:latest -s https
 ```bash
 docker run -i --rm --entrypoint gospider hackerdogs/gospider-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "gospider-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/gospider-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8350:8350 -e MCP_TRANSPORT=streamable-http hackerdogs/gospider-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "gospider-mcp": {
+      "url": "http://localhost:8350/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

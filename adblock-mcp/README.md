@@ -47,3 +47,36 @@ docker run -d -p 8508:8508 \
 
 - "Check if https://ads.example.com/banner.js is blocked by EasyList."
 - "Is this URL on the adblock blocklist?"
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "adblock-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/adblock-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8508:8508 -e MCP_TRANSPORT=streamable-http hackerdogs/adblock-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "adblock-mcp": {
+      "url": "http://localhost:8508/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

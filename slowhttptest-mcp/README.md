@@ -212,3 +212,36 @@ You can run the slowhttptest CLI in the same container by overriding the entrypo
 ```bash
 docker run -i --rm --entrypoint slowhttptest hackerdogs/slowhttptest-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "slowhttptest-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/slowhttptest-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8316:8316 -e MCP_TRANSPORT=streamable-http hackerdogs/slowhttptest-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "slowhttptest-mcp": {
+      "url": "http://localhost:8316/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

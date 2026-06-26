@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint horusec hackerdogs/horusec-mcp:latest start -p /
 ```bash
 docker run -i --rm --entrypoint horusec hackerdogs/horusec-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "horusec-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/horusec-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8359:8359 -e MCP_TRANSPORT=streamable-http hackerdogs/horusec-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "horusec-mcp": {
+      "url": "http://localhost:8359/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

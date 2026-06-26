@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint ropper hackerdogs/ropper-mcp:latest --file /path
 ```bash
 docker run -i --rm --entrypoint ropper hackerdogs/ropper-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "ropper-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/ropper-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8243:8243 -e MCP_TRANSPORT=streamable-http hackerdogs/ropper-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "ropper-mcp": {
+      "url": "http://localhost:8243/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

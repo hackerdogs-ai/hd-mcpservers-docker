@@ -194,3 +194,36 @@ curl -s -X POST http://localhost:8622/mcp \
 ```bash
 docker stop aws-s3-tables-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "aws-s3-tables-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/aws-s3-tables-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8622:8622 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-s3-tables-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "aws-s3-tables-mcp": {
+      "url": "http://localhost:8622/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

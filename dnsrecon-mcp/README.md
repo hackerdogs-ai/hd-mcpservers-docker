@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint dnsrecon hackerdogs/dnsrecon-mcp:latest -d examp
 ```bash
 docker run -i --rm --entrypoint dnsrecon hackerdogs/dnsrecon-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "dnsrecon-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/dnsrecon-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8203:8203 -e MCP_TRANSPORT=streamable-http hackerdogs/dnsrecon-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "dnsrecon-mcp": {
+      "url": "http://localhost:8203/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

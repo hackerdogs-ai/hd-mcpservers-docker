@@ -244,3 +244,36 @@ docker run -i --rm --entrypoint john hackerdogs/john-mcp:latest /path/to/passwd
 ```bash
 docker run -i --rm --entrypoint john hackerdogs/john-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "john-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/john-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8234:8234 -e MCP_TRANSPORT=streamable-http hackerdogs/john-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "john-mcp": {
+      "url": "http://localhost:8234/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

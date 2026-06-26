@@ -214,3 +214,36 @@ docker run -i --rm --entrypoint whatweb hackerdogs/whatweb-mcp:latest https://ex
 ```bash
 docker run -i --rm --entrypoint whatweb hackerdogs/whatweb-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "whatweb-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/whatweb-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8281:8281 -e MCP_TRANSPORT=streamable-http hackerdogs/whatweb-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "whatweb-mcp": {
+      "url": "http://localhost:8281/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

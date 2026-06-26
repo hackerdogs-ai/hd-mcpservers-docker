@@ -201,3 +201,36 @@ curl -s -X POST http://localhost:8627/mcp \
 ```bash
 docker stop azure-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "azure-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/azure-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8627:8627 -e MCP_TRANSPORT=streamable-http hackerdogs/azure-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "azure-mcp": {
+      "url": "http://localhost:8627/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

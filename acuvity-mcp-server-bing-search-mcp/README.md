@@ -55,3 +55,36 @@ docker build -t hackerdogs/acuvity-mcp-server-bing-search-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-bing-search-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/acuvity-mcp-server-bing-search-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8405:8405 -e MCP_TRANSPORT=streamable-http hackerdogs/acuvity-mcp-server-bing-search-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-bing-search-mcp": {
+      "url": "http://localhost:8405/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

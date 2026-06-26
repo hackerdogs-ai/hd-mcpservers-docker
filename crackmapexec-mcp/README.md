@@ -218,3 +218,36 @@ docker run -i --rm --entrypoint crackmapexec hackerdogs/crackmapexec-mcp:latest 
 ```bash
 docker run -i --rm --entrypoint crackmapexec hackerdogs/crackmapexec-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "crackmapexec-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/crackmapexec-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8208:8208 -e MCP_TRANSPORT=streamable-http hackerdogs/crackmapexec-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "crackmapexec-mcp": {
+      "url": "http://localhost:8208/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

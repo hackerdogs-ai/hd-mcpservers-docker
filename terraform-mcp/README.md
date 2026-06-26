@@ -172,3 +172,36 @@ curl -s -X POST http://localhost:8670/mcp \
 ```bash
 docker stop terraform-mcp-test
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "terraform-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/terraform-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8670:8670 -e MCP_TRANSPORT=streamable-http hackerdogs/terraform-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "terraform-mcp": {
+      "url": "http://localhost:8670/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

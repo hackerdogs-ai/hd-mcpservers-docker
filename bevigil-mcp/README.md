@@ -50,3 +50,36 @@ docker run -d -p 8515:8515 \
 
 - "Get subdomains for example.com using BeVigil."
 - "Find URLs associated with hackerdogs.ai from mobile apps."
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "bevigil-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/bevigil-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8515:8515 -e MCP_TRANSPORT=streamable-http hackerdogs/bevigil-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "bevigil-mcp": {
+      "url": "http://localhost:8515/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

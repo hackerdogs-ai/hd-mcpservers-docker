@@ -55,3 +55,36 @@ docker build -t hackerdogs/earthquake-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "earthquake-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/earthquake-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8457:8457 -e MCP_TRANSPORT=streamable-http hackerdogs/earthquake-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "earthquake-mcp": {
+      "url": "http://localhost:8457/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -238,3 +238,36 @@ You can run the falco CLI in the same container by overriding the entrypoint to 
 ```bash
 docker run -i --rm --entrypoint falco hackerdogs/falco-mcp:latest --help
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "falco-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/falco-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8271:8271 -e MCP_TRANSPORT=streamable-http hackerdogs/falco-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "falco-mcp": {
+      "url": "http://localhost:8271/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

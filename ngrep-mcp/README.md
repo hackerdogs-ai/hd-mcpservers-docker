@@ -208,3 +208,36 @@ You can run the ngrep CLI in the same container by overriding the entrypoint to 
 ```bash
 docker run -i --rm --entrypoint ngrep hackerdogs/ngrep-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "ngrep-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/ngrep-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8314:8314 -e MCP_TRANSPORT=streamable-http hackerdogs/ngrep-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "ngrep-mcp": {
+      "url": "http://localhost:8314/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

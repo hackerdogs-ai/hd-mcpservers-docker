@@ -55,3 +55,36 @@ docker build -t hackerdogs/cortex-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "cortex-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/cortex-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8410:8410 -e MCP_TRANSPORT=streamable-http hackerdogs/cortex-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "cortex-mcp": {
+      "url": "http://localhost:8410/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

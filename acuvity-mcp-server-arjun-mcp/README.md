@@ -23,3 +23,36 @@ docker run -i --rm acuvity/mcp-server-arjun:latest
 ## Tools
 
 Exposes Arjun hidden parameter discovery for web security testing.
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-arjun-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/acuvity-mcp-server-arjun-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8382:8382 -e MCP_TRANSPORT=streamable-http hackerdogs/acuvity-mcp-server-arjun-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-arjun-mcp": {
+      "url": "http://localhost:8382/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -55,3 +55,36 @@ docker build -t hackerdogs/polygon-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "polygon-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/polygon-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8445:8445 -e MCP_TRANSPORT=streamable-http hackerdogs/polygon-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "polygon-mcp": {
+      "url": "http://localhost:8445/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

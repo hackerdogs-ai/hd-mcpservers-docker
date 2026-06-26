@@ -55,3 +55,36 @@ docker build -t hackerdogs/shodan-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "shodan-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/shodan-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8453:8453 -e MCP_TRANSPORT=streamable-http hackerdogs/shodan-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "shodan-mcp": {
+      "url": "http://localhost:8453/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

@@ -256,3 +256,36 @@ docker run -i --rm --entrypoint asnmap hackerdogs/asnmap-mcp:latest -asn 15169
 ```bash
 docker run -i --rm --entrypoint asnmap hackerdogs/asnmap-mcp:latest -h
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "asnmap-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/asnmap-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8110:8110 -e MCP_TRANSPORT=streamable-http hackerdogs/asnmap-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "asnmap-mcp": {
+      "url": "http://localhost:8110/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

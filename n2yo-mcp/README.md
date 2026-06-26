@@ -55,3 +55,36 @@ docker build -t hackerdogs/n2yo-mcp:latest .
 ```bash
 ./test.sh
 ```
+
+## mcpServer.json
+
+### Stdio (local / Cursor / Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "n2yo-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "hackerdogs/n2yo-mcp:latest"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Streamable HTTP (remote / farm / multi-client)
+
+```bash
+docker run -d -p 8435:8435 -e MCP_TRANSPORT=streamable-http hackerdogs/n2yo-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "n2yo-mcp": {
+      "url": "http://localhost:8435/mcp/",
+      "transport": "streamable-http"
+    }
+  }
+}
+```

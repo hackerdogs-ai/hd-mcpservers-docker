@@ -3,7 +3,8 @@
 # Multi-arch build for linux/amd64 and linux/arm64
 
 # Stage 1: Build nerva from source
-FROM golang:1.24-bookworm AS builder
+FROM golang:1.26-bookworm AS builder
+ENV GOTOOLCHAIN=auto
 RUN go install github.com/praetorian-inc/nerva/cmd/nerva@latest
 
 # Stage 2: Python runtime with nerva binary
