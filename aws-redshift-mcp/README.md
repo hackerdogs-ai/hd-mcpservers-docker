@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS Redshift MCP Server
 
-MCP server wrapper for [Redshift](https://github.com/awslabs/mcp) — upstream package `awslabs.redshift-mcp-server`.
+MCP server wrapper for [Amazon Redshift](https://github.com/awslabs/mcp/tree/main/src/redshift-mcp-server) — discover clusters and serverless workgroups, browse schemas, and run analytical SQL queries against Amazon Redshift through natural language.
 
-## What is Redshift?
+## What is Amazon Redshift?
 
-MCP server for Amazon Redshift. Discover, explore, and query data warehouse tables and views.
+Amazon Redshift is AWS's fully managed petabyte-scale cloud data warehouse, supporting both provisioned clusters and serverless compute. This MCP server, built from `awslabs.redshift-mcp-server`, connects to Redshift clusters or serverless endpoints, introspects schemas and table statistics, and executes SQL queries — letting you explore large datasets and run ad-hoc analytics without writing SQL manually. See [awslabs/mcp](https://github.com/awslabs/mcp) for full documentation.
 
-**AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
-
-**Summary.** AWS Redshift MCP Server — Dockerized from upstream `awslabs.redshift-mcp-server` package.
+**AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`. A Redshift cluster identifier or serverless workgroup name must also be configured.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me Redshift resources in my AWS account."
-- "Describe the current state of my Redshift setup."
+- "List all Redshift clusters and serverless workgroups in my account."
+- "Show me the schemas and tables available in my 'analytics' Redshift database."
+- "How many rows are in the 'fact_sales' table and what is its sort key?"
+- "Query total revenue by region for Q4 2024 from the sales data warehouse."
+- "Show me the 10 longest-running queries currently executing in Redshift."
+- "Describe the distribution style and sort keys for all tables in the 'public' schema."
 
 ## Deploy
 
@@ -193,37 +193,4 @@ curl -s -X POST http://localhost:8621/mcp \
 
 ```bash
 docker stop aws-redshift-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "aws-redshift-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/aws-redshift-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8621:8621 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-redshift-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "aws-redshift-mcp": {
-      "url": "http://localhost:8621/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

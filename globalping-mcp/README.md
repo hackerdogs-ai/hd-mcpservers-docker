@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Globalping MCP Server
 
-MCP server wrapper for [Globalping](https://github.com/jsdelivr/globalping-mcp) — upstream package `globalping-mcp`.
+MCP server wrapper for [Globalping](https://www.jsdelivr.com/globalping) — run ping, traceroute, DNS lookup, MTR, and HTTP measurements from a distributed network of probes around the world. See [jsdelivr/globalping-mcp](https://github.com/jsdelivr/globalping-mcp) for full documentation.
 
 ## What is Globalping?
 
-MCP server for [Globalping](https://www.jsdelivr.com/globalping) — a global network measurement platform. Run ping, traceroute, DNS, MTR, and HTTP measurements from probe nodes distributed worldwide.
+Globalping is a free, open network measurement platform maintained by jsDelivr. It operates hundreds of probe nodes across different continents, ISPs, and cloud regions, letting you measure connectivity and latency from perspectives you cannot replicate locally. The MCP server exposes the Globalping API so AI assistants can diagnose routing issues, compare DNS resolution across regions, verify CDN performance, and detect geographic service outages — all without leaving the chat.
 
-**No API keys required** — this server works out of the box.
-
-**Summary.** Globalping MCP Server — Dockerized from upstream `globalping-mcp` package.
+**No API keys required** — the public Globalping API is free to use with generous rate limits, and an optional token unlocks higher quotas.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Ping example.com from 5 locations worldwide."
-- "Run a traceroute to 8.8.8.8 from Europe."
+- "Ping example.com from 5 random locations worldwide and report the average RTT from each."
+- "Run a traceroute to 8.8.8.8 from a probe in Europe and identify any high-latency hops."
+- "Resolve the DNS A record for github.com from probes in the US, EU, and Asia and compare the results."
+- "Run an MTR test from a probe in Japan to 1.1.1.1 and show packet loss per hop."
+- "Make an HTTP GET request to https://example.com from 3 probes and compare the response times."
+- "Check whether api.example.com is reachable from Australia — ping it and show RTT and packet loss."
 
 ## Deploy
 
@@ -171,37 +171,4 @@ curl -s -X POST http://localhost:8643/mcp \
 
 ```bash
 docker stop globalping-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "globalping-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/globalping-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8643:8643 -e MCP_TRANSPORT=streamable-http hackerdogs/globalping-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "globalping-mcp": {
-      "url": "http://localhost:8643/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

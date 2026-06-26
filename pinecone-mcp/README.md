@@ -1,20 +1,18 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Pinecone MCP Server
 
-MCP server wrapper for [Pinecone](https://github.com/pinecone-io/pinecone-mcp) — upstream package `@pinecone-database/mcp`.
+MCP server wrapper for [Pinecone](https://github.com/pinecone-io/pinecone-mcp) — managed vector database for semantic search, RAG, and AI application development.
 
 ## What is Pinecone?
 
-MCP server for [Pinecone](https://www.pinecone.io/) — a managed vector database. Create and manage indexes, upsert and query vectors, and build semantic search and RAG applications through AI assistants.
+Pinecone is a fully managed vector database optimized for storing and querying high-dimensional embeddings at scale. This MCP server (the official `@pinecone-database/mcp` package) lets AI assistants create and manage indexes, upsert vectors with metadata, run similarity queries, and build Retrieval-Augmented Generation (RAG) pipelines without leaving the conversation. See [pinecone-io/pinecone-mcp](https://github.com/pinecone-io/pinecone-mcp) for full documentation.
 
 **API key required** — find yours at [app.pinecone.io](https://app.pinecone.io/).
 
@@ -24,8 +22,12 @@ MCP server for [Pinecone](https://www.pinecone.io/) — a managed vector databas
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "List my Pinecone indexes."
-- "Query the 'documents' index for vectors similar to this text."
+- "List all my Pinecone indexes and their dimensions and metric types."
+- "Create a new Pinecone index called 'docs' with 1536 dimensions and cosine metric."
+- "Upsert these 5 text embeddings into the 'knowledge-base' index with source metadata."
+- "Query the 'products' index for the 10 most similar vectors to this embedding and return their metadata."
+- "Delete all vectors with the tag 'draft' from the 'articles' Pinecone index."
+- "Describe the stats for my 'support-tickets' index — how many vectors are stored and what namespaces exist?"
 
 ## Deploy
 
@@ -179,37 +181,4 @@ curl -s -X POST http://localhost:8657/mcp \
 
 ```bash
 docker stop pinecone-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "pinecone-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/pinecone-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8657:8657 -e MCP_TRANSPORT=streamable-http hackerdogs/pinecone-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "pinecone-mcp": {
-      "url": "http://localhost:8657/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

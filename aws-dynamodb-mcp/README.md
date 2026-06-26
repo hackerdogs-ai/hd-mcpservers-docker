@@ -1,31 +1,33 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS DynamoDB MCP Server
 
-MCP server wrapper for [DynamoDB](https://github.com/awslabs/mcp) — upstream package `awslabs.dynamodb-mcp-server`.
+MCP server wrapper for [Amazon DynamoDB](https://github.com/awslabs/mcp/tree/main/src/dynamodb-mcp-server) — table management, item queries, data modeling guidance, and capacity planning for DynamoDB from your AI assistant.
 
-## What is DynamoDB?
+## What is Amazon DynamoDB?
 
-MCP server for Amazon DynamoDB. Expert design guidance, data modeling assistance, and table management for DynamoDB.
+Amazon DynamoDB is AWS's fully managed serverless key-value and document database designed for single-digit millisecond performance at any scale. This MCP server exposes DynamoDB operations — including table description, item reads and writes, query and scan execution, and Global Secondary Index management — along with embedded guidance on single-table design patterns and access pattern modeling to help you build efficient DynamoDB schemas. See [awslabs/mcp](https://github.com/awslabs/mcp/tree/main/src/dynamodb-mcp-server) for full documentation.
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
-**Summary.** AWS DynamoDB MCP Server — Dockerized from upstream `awslabs.dynamodb-mcp-server` package.
+**Summary.** MCP server wrapper for [Amazon DynamoDB](https://github.com/awslabs/mcp/tree/main/src/dynamodb-mcp-server) — query tables, manage indexes, and get data modeling guidance for DynamoDB.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me DynamoDB resources in my AWS account."
-- "Describe the current state of my DynamoDB setup."
+- "List all DynamoDB tables in my account and show their billing mode and item count."
+- "Describe the schema and Global Secondary Indexes for my orders table."
+- "Query the orders table for all items with customerId 'C-12345'."
+- "Help me design a DynamoDB single-table schema for a multi-tenant SaaS application."
+- "Scan the products table for items where stock is less than 10 and return the SKU and name."
+- "Show me the read and write capacity consumed by my users table over the last hour."
 
 ## Deploy
 
@@ -193,37 +195,4 @@ curl -s -X POST http://localhost:8612/mcp \
 
 ```bash
 docker stop aws-dynamodb-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "aws-dynamodb-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/aws-dynamodb-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8612:8612 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-dynamodb-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "aws-dynamodb-mcp": {
-      "url": "http://localhost:8612/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

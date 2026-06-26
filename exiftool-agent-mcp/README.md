@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
-# ExifTool MCP Server
+# ExifTool Agent MCP Server
 
-MCP server wrapper for [ExifTool](https://github.com/nicholasgasior/exiftool-mcp-ai-agent) — upstream package `exiftool-mcp-ai-agent`.
+MCP server wrapper for [ExifTool](https://exiftool.org/) — extract and analyze metadata from images, video, audio, and document files via the `exiftool-mcp-ai-agent` npm package. See [nicholasgasior/exiftool-mcp-ai-agent](https://github.com/nicholasgasior/exiftool-mcp-ai-agent) for full documentation.
 
 ## What is ExifTool?
 
-MCP server for [ExifTool](https://exiftool.org/) — read, write, and edit metadata in image, video, audio, and document files. Extract EXIF, IPTC, XMP, and other metadata formats.
+ExifTool is Phil Harvey's industry-standard metadata library and command-line application for reading, writing, and editing metadata in virtually any file format, including JPEG, RAW camera files, PDF, MP4, and MP3. This MCP agent wraps the `exiftool-mcp-ai-agent` npm package, which exposes ExifTool's capabilities to AI assistants so they can inspect camera settings, GPS coordinates, copyright tags, and hundreds of other metadata fields without leaving the chat.
 
-**No API keys required** — this server works out of the box.
-
-**Summary.** ExifTool MCP Server — Dockerized from upstream `exiftool-mcp-ai-agent` package.
+**No API keys required** — runs entirely inside the Docker container using the bundled ExifTool binary.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Read the EXIF metadata from this image."
-- "What camera was used to take this photo?"
+- "Extract all metadata from /photos/DSC_0042.jpg and tell me the camera model and lens used."
+- "What GPS coordinates are embedded in /images/vacation.jpeg?"
+- "Read the author, creator, and copyright tags from /docs/report.pdf."
+- "Show me every XMP tag in /assets/hero.png."
+- "Extract the creation date and duration from /videos/clip.mp4."
+- "List all metadata tags for /audio/track.mp3 and identify the bit rate and sample rate."
 
 ## Deploy
 
@@ -171,37 +171,4 @@ curl -s -X POST http://localhost:8638/mcp \
 
 ```bash
 docker stop exiftool-agent-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "exiftool-agent-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/exiftool-agent-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8638:8638 -e MCP_TRANSPORT=streamable-http hackerdogs/exiftool-agent-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "exiftool-agent-mcp": {
-      "url": "http://localhost:8638/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

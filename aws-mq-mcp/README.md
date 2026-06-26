@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS MQ MCP Server
 
-MCP server wrapper for [Amazon MQ](https://github.com/awslabs/mcp) — upstream package `awslabs.amazon-mq-mcp-server`.
+MCP server wrapper for [Amazon MQ](https://github.com/awslabs/mcp/tree/main/src/amazon-mq-mcp-server) — list, describe, and monitor Amazon MQ message brokers running ActiveMQ or RabbitMQ.
 
 ## What is Amazon MQ?
 
-MCP server for Amazon MQ. Manage RabbitMQ and ActiveMQ message brokers — create brokers, manage queues, and monitor broker health.
+Amazon MQ is a managed message broker service that supports Apache ActiveMQ and RabbitMQ, enabling reliable asynchronous messaging for distributed applications without managing broker infrastructure. This MCP server exposes Amazon MQ broker state, configuration, and queue metrics through natural-language queries via the `awslabs.amazon-mq-mcp-server` package. See [awslabs/mcp](https://github.com/awslabs/mcp) for full documentation.
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
-
-**Summary.** AWS MQ MCP Server — Dockerized from upstream `awslabs.amazon-mq-mcp-server` package.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me Amazon MQ resources in my AWS account."
-- "Describe the current state of my Amazon MQ setup."
+- "List all Amazon MQ brokers in my account and their current status."
+- "Show me the configuration details for the ActiveMQ broker named 'orders-prod'."
+- "Which of my RabbitMQ brokers are in a degraded or maintenance state?"
+- "Describe the storage and instance type for each of my MQ brokers."
+- "Find all MQ brokers that don't have automatic minor version upgrades enabled."
+- "What are the endpoints for the 'payments-broker' RabbitMQ instance?"
 
 ## Deploy
 
@@ -193,37 +193,4 @@ curl -s -X POST http://localhost:8616/mcp \
 
 ```bash
 docker stop aws-mq-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "aws-mq-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/aws-mq-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8616:8616 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-mq-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "aws-mq-mcp": {
-      "url": "http://localhost:8616/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

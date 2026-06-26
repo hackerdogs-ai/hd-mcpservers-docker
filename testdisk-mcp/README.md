@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -69,6 +67,13 @@ Remove downloaded files from the container workspace.
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
 | `job_id` | string | No | `""` | Specific job ID to clean up. If empty, removes all downloads |
+
+
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `analyze_remote_disk` | Download a disk image from a URL and analyze it. |
 
 ## Example Prompts
 
@@ -243,37 +248,4 @@ docker run -i --rm --entrypoint testdisk hackerdogs/testdisk-mcp:latest /path/to
 
 ```bash
 docker run -i --rm --entrypoint testdisk hackerdogs/testdisk-mcp:latest --help
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "testdisk-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/testdisk-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8283:8283 -e MCP_TRANSPORT=streamable-http hackerdogs/testdisk-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "testdisk-mcp": {
-      "url": "http://localhost:8283/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Azure MCP Server
 
-MCP server wrapper for [Azure](https://github.com/Azure/azure-mcp) — upstream package `@azure/mcp`.
+MCP server wrapper for [Azure MCP](https://github.com/Azure/azure-mcp) — explore and manage Microsoft Azure resources including subscriptions, resource groups, storage accounts, Cosmos DB, Key Vault, and more via the `@azure/mcp` package.
 
-## What is Azure?
+## What is Azure MCP?
 
-MCP server for [Microsoft Azure](https://azure.microsoft.com/). Authenticate with Azure and interact with Azure resources through the Azure APIs. Manage subscriptions, resource groups, VMs, storage, and more.
+The Azure MCP server (`@azure/mcp`) is Microsoft's official MCP implementation for the Azure platform, exposing tools to list and inspect Azure subscriptions, resource groups, storage accounts and blobs, Cosmos DB databases and containers, App Services, Key Vault secrets, and CLI extensions. It authenticates using Azure Active Directory service principal credentials and communicates with Azure Resource Manager and service-level APIs. See [Azure/azure-mcp](https://github.com/Azure/azure-mcp) for full documentation.
 
-**Azure credentials required** — register an app in Azure AD and set client ID, secret, tenant, and subscription.
-
-**Summary.** Azure MCP Server — Dockerized from upstream `@azure/mcp` package.
+**Azure credentials required** — register an app in Azure AD and set `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`, `AZURE_TENANT_ID`, and `AZURE_SUBSCRIPTION_ID`.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "List all resource groups in my Azure subscription."
-- "Show me the VMs running in my account."
+- "List all resource groups in my Azure subscription and their locations."
+- "Show me all storage accounts in the 'production-rg' resource group and their replication types."
+- "List the containers and item counts in my Cosmos DB account 'mycosmosdb'."
+- "What secrets are stored in the Key Vault named 'prod-keyvault' and when do they expire?"
+- "Show all App Service plans in my subscription and how many apps are running on each."
+- "List all virtual machines in 'eastus' and their current power state."
 
 ## Deploy
 
@@ -200,37 +200,4 @@ curl -s -X POST http://localhost:8627/mcp \
 
 ```bash
 docker stop azure-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "azure-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/azure-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8627:8627 -e MCP_TRANSPORT=streamable-http hackerdogs/azure-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "azure-mcp": {
-      "url": "http://localhost:8627/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

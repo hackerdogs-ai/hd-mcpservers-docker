@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # IMF Data MCP Server
 
-MCP server wrapper for [IMF Data](https://github.com/nicholasgasior/imf-data-mcp) — upstream package `imf-data-mcp`.
+MCP server wrapper for [IMF Data](https://pypi.org/project/mseep-imf-data-mcp/) — query the International Monetary Fund's public economic data APIs.
 
 ## What is IMF Data?
 
-MCP server for [IMF](https://www.imf.org/) (International Monetary Fund) economic data. Access macroeconomic indicators, World Economic Outlook data, exchange rates, and financial statistics.
+The IMF Data MCP server provides structured access to the International Monetary Fund's public datasets, including the World Economic Outlook (WEO), International Financial Statistics (IFS), Balance of Payments, exchange rate data, and government finance statistics. It queries the IMF's JSON:API data service, making it easy to retrieve country-level macroeconomic indicators for analysis and reporting.
 
-**No API keys required** — this server works out of the box.
-
-**Summary.** IMF Data MCP Server — Dockerized from upstream `imf-data-mcp` package.
+**No API keys required** — the server queries the IMF's public API directly without authentication.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show GDP growth data for the United States."
-- "Get the latest inflation rates from the IMF."
+- "Fetch IMF GDP growth forecasts for the United States, Germany, and Japan for 2024 and 2025."
+- "Get the latest IMF inflation rate data (CPI) for Brazil and compare it to the global average."
+- "Retrieve IMF current account balance data for the G7 countries over the last five years."
+- "Query the IMF for government debt as a percentage of GDP for all Eurozone countries."
+- "Pull the IMF exchange rate series for the EUR/USD and JPY/USD over the past ten years."
+- "Get World Economic Outlook projections for emerging market economies' real GDP growth."
 
 ## Deploy
 
@@ -171,37 +171,4 @@ curl -s -X POST http://localhost:8647/mcp \
 
 ```bash
 docker stop imf-data-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "imf-data-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/imf-data-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8647:8647 -e MCP_TRANSPORT=streamable-http hackerdogs/imf-data-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "imf-data-mcp": {
-      "url": "http://localhost:8647/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

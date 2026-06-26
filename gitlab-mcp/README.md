@@ -1,32 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # GitLab MCP Server
 
-MCP server wrapper for [GitLab](https://github.com/zereight/mcp-gitlab) — upstream package `@zereight/mcp-gitlab`.
+MCP server wrapper for [GitLab](https://gitlab.com/) — manage repositories, issues, merge requests, and CI/CD pipelines via the GitLab API using the `@zereight/mcp-gitlab` npm package. See [zereight/mcp-gitlab](https://github.com/zereight/mcp-gitlab) for full documentation.
 
-## What is GitLab?
+## What is GitLab MCP?
 
-MCP server for [GitLab](https://gitlab.com/). Enables AI clients to make authenticated API calls to GitLab, including managing repositories, issues, merge requests, pipelines, and CI/CD configurations.
+`@zereight/mcp-gitlab` is an MCP server that wraps the GitLab REST API, giving AI assistants the ability to list and create issues, review and merge MRs, inspect pipeline status, browse repository file trees, and read file contents — all authenticated with a GitLab personal access token. It supports both gitlab.com and self-hosted GitLab instances via the `GITLAB_URL` environment variable.
 
-**Personal access token required** — create one at GitLab → Settings → Access Tokens with `api` scope.
-
-**Summary.** GitLab MCP Server — Dockerized from upstream `@zereight/mcp-gitlab` package.
+**Personal access token required** — create one at GitLab Settings → Access Tokens with `api` scope and set `GITLAB_PERSONAL_ACCESS_TOKEN`.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "List open merge requests in my project."
-- "Show the latest pipeline status for my repo."
-- "Create a new issue in project X."
+- "List all open merge requests in my-group/my-project and summarize the changes."
+- "Show the status of the latest CI/CD pipeline for my-group/my-project on the main branch."
+- "Create a new issue in my-group/my-project titled 'Fix authentication timeout' with a description of the problem."
+- "Read the contents of src/main.py from the main branch of my-group/my-project."
+- "List all open issues labeled 'critical' in my-group/my-project."
+- "Show me the failed jobs in pipeline #12345 for my-group/my-project and explain the errors."
 
 ## Deploy
 
@@ -180,37 +179,4 @@ curl -s -X POST http://localhost:8642/mcp \
 
 ```bash
 docker stop gitlab-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "gitlab-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/gitlab-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8642:8642 -e MCP_TRANSPORT=streamable-http hackerdogs/gitlab-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "gitlab-mcp": {
-      "url": "http://localhost:8642/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

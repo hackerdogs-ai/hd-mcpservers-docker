@@ -1,32 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Cloudflare MCP Server
 
-MCP server wrapper for [Cloudflare](https://github.com/cloudflare/mcp-server-cloudflare) — upstream package `@cloudflare/mcp-server-cloudflare`.
+MCP server wrapper for [Cloudflare](https://github.com/cloudflare/mcp-server-cloudflare) — manage Workers, DNS, KV, R2, D1, and Pages through the Cloudflare API.
 
 ## What is Cloudflare?
 
-MCP server for [Cloudflare](https://cloudflare.com/). Manage Workers, KV namespaces, R2 buckets, D1 databases, and other Cloudflare services. Deploy, configure, and monitor your Cloudflare infrastructure through AI assistants.
+The official `@cloudflare/mcp-server-cloudflare` package exposes Cloudflare's management API as MCP tools. You can manage Workers (deploy, list, delete scripts), KV namespaces (read/write keys), R2 buckets (list/upload/delete objects), D1 databases (run SQL queries), DNS zones and records, and Cloudflare Pages projects — all from an AI assistant. See [github.com/cloudflare/mcp-server-cloudflare](https://github.com/cloudflare/mcp-server-cloudflare) for full documentation.
 
-**API token required** — create one at [dash.cloudflare.com/profile/api-tokens](https://dash.cloudflare.com/profile/api-tokens).
-
-**Summary.** Cloudflare MCP Server — Dockerized from upstream `@cloudflare/mcp-server-cloudflare` package.
+**API token required** — create a token at [dash.cloudflare.com/profile/api-tokens](https://dash.cloudflare.com/profile/api-tokens) with the appropriate scopes, and set `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "List all my Cloudflare Workers."
-- "Show DNS records for example.com."
-- "Deploy a new Worker script."
+- "List all Cloudflare Workers in my account and show their route bindings."
+- "Show all DNS records for the zone example.com in Cloudflare."
+- "Deploy a new Cloudflare Worker script that returns 'Hello World' on all requests."
+- "List the contents of my R2 bucket named 'assets-prod'."
+- "Run a SQL query against my D1 database 'app-db' to count all users."
+- "Add an A record pointing www.example.com to 203.0.113.10 in Cloudflare DNS."
 
 ## Deploy
 
@@ -187,37 +186,4 @@ curl -s -X POST http://localhost:8633/mcp \
 
 ```bash
 docker stop cloudflare-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "cloudflare-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/cloudflare-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8633:8633 -e MCP_TRANSPORT=streamable-http hackerdogs/cloudflare-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "cloudflare-mcp": {
-      "url": "http://localhost:8633/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

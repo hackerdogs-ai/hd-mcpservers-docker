@@ -1,32 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Jira MCP Server
 
-MCP server wrapper for [Jira](https://github.com/smithery-ai/mcp-server-jira) — upstream package `mcp-server-jira`.
+MCP server wrapper for [Jira](https://github.com/smithery-ai/mcp-server-jira) — manage Atlassian Jira issues, projects, and workflows via the Jira REST API.
 
 ## What is Jira?
 
-MCP server for [Jira](https://www.atlassian.com/software/jira). Create, search, update, and manage Jira issues, projects, and workflows. Supports JQL queries, issue transitions, and comment management.
+Jira is Atlassian's industry-standard project and issue tracking platform, widely used by software development and security teams to manage sprints, track bugs, coordinate vulnerability remediation, and run IT service management workflows. This MCP server connects to your Jira Cloud or Server instance and supports creating, searching, updating, and transitioning issues using both natural language and JQL (Jira Query Language). See [smithery-ai/mcp-server-jira](https://github.com/smithery-ai/mcp-server-jira) for full documentation.
 
-**API token required** — create one at [Atlassian API tokens](https://id.atlassian.com/manage-profile/security/api-tokens).
-
-**Summary.** Jira MCP Server — Dockerized from upstream `mcp-server-jira` package.
+**API token required** — create one at [id.atlassian.com/manage-profile/security/api-tokens](https://id.atlassian.com/manage-profile/security/api-tokens).
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me all open bugs assigned to me in Jira."
-- "Create a new task in project DEVOPS."
-- "Search for Jira issues with JQL: project = SEC AND status = Open."
+- "Show me all open critical bugs assigned to me in the SEC project using Jira."
+- "Create a new Jira ticket in project VULN titled 'SQL injection on login page' with high priority."
+- "Search Jira with JQL: project = INFRA AND status != Done AND priority = High."
+- "Update the status of Jira issue SEC-1234 to 'In Review' and add a comment with the remediation steps."
+- "List all Jira issues that are unresolved in the PENTEST project and export them as a summary table."
+- "Find all Jira tickets related to CVE-2024-12345 and show their current status and assignees."
 
 ## Deploy
 
@@ -194,37 +193,4 @@ curl -s -X POST http://localhost:8649/mcp \
 
 ```bash
 docker stop jira-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "jira-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/jira-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8649:8649 -e MCP_TRANSPORT=streamable-http hackerdogs/jira-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "jira-mcp": {
-      "url": "http://localhost:8649/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

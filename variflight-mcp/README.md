@@ -1,31 +1,33 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # VariFlight MCP Server
 
-MCP server wrapper for [VariFlight](https://github.com/AirSavvy/variflight-mcp) — upstream package `@variflight-ai/variflight-mcp`.
+MCP server wrapper for [VariFlight](https://github.com/AirSavvy/variflight-mcp) — real-time flight tracking, historical flight data, and airport/airline information via VariFlight's aviation API.
 
 ## What is VariFlight?
 
-MCP server for [VariFlight](https://www.variflight.com/) — flight tracking and aviation data. Real-time flight status, historical flight data, airport information, and airline schedules.
+VariFlight is a Chinese aviation data platform providing comprehensive flight intelligence covering global commercial flights, with strong coverage of Asian routes. This MCP server wraps the VariFlight API, giving AI assistants the ability to track live flight positions, retrieve departure and arrival information for airports, look up historical flight records, and query airline schedules. See [AirSavvy/variflight-mcp](https://github.com/AirSavvy/variflight-mcp) for full documentation.
 
-**API key required** — sign up at [variflight.com](https://www.variflight.com/).
+**API key required** — sign up at [variflight.com](https://www.variflight.com/) and set `VARIFLIGHT_API_KEY`.
 
-**Summary.** VariFlight MCP Server — Dockerized from upstream `@variflight-ai/variflight-mcp` package.
+**Summary.** MCP server wrapper for [VariFlight](https://github.com/AirSavvy/variflight-mcp) — real-time flight tracking, historical flight data, and airport/airline information via VariFlight's aviation API.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Track flight UA123 in real time."
-- "Show arrival flights at SFO today."
+- "Track the real-time status and position of flight CA981."
+- "Show all departure flights from Beijing Capital Airport (PEK) for today."
+- "What is the current arrival status of flight MU5137?"
+- "Retrieve historical flight data for Air China flight CA1234 on 2024-11-15."
+- "List all flights scheduled between Shanghai Pudong (PVG) and Tokyo Narita (NRT) tomorrow."
+- "What is the typical on-time performance rate for flights operated by China Eastern Airlines?"
 
 ## Deploy
 
@@ -179,37 +181,4 @@ curl -s -X POST http://localhost:8672/mcp \
 
 ```bash
 docker stop variflight-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "variflight-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/variflight-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8672:8672 -e MCP_TRANSPORT=streamable-http hackerdogs/variflight-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "variflight-mcp": {
-      "url": "http://localhost:8672/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

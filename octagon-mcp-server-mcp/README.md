@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -14,9 +12,9 @@ MCP server wrapper for [Octagon](https://github.com/octagon-agents/octagon-mcp) 
 
 ## What is Octagon?
 
-MCP server for [Octagon](https://www.octagon.ai/) — financial data and analysis platform. Access company financials, funding rounds, market data, and investment intelligence through AI assistants.
+[Octagon](https://www.octagon.ai/) is a financial intelligence platform providing structured data on private company funding rounds, investor portfolios, market comparables, and M&A activity. This MCP server wraps the official `octagon-mcp` package so AI assistants can answer questions about startup funding, venture capital deal flow, and company financials through natural language. See [octagon-agents/octagon-mcp](https://github.com/octagon-agents/octagon-mcp) for full documentation.
 
-**API key required** — sign up at [octagon.ai](https://www.octagon.ai/).
+**API key required** — sign up at [octagon.ai](https://www.octagon.ai/) to get an `OCTAGON_API_KEY`.
 
 **Summary.** Octagon MCP Server — Dockerized from upstream `octagon-mcp` package.
 
@@ -24,8 +22,12 @@ MCP server for [Octagon](https://www.octagon.ai/) — financial data and analysi
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me the latest funding rounds for AI startups."
-- "Get financial data for company X."
+- "Show me the latest Series B and C funding rounds for AI infrastructure companies."
+- "What is Anthropic's total funding raised and who are its main investors?"
+- "Find all startups in the cybersecurity space that raised a round in the last 90 days."
+- "Compare the funding history of OpenAI and Google DeepMind."
+- "List the top 10 most active venture capital firms by deal count in 2024."
+- "What was the pre-money valuation of the last Stripe funding round?"
 
 ## Deploy
 
@@ -179,37 +181,4 @@ curl -s -X POST http://localhost:8653/mcp \
 
 ```bash
 docker stop octagon-mcp-server-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "octagon-mcp-server-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/octagon-mcp-server-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8653:8653 -e MCP_TRANSPORT=streamable-http hackerdogs/octagon-mcp-server-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "octagon-mcp-server-mcp": {
-      "url": "http://localhost:8653/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

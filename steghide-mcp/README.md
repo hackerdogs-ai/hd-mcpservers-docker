@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -243,37 +241,4 @@ docker run -i --rm --entrypoint steghide hackerdogs/steghide-mcp:latest extract 
 
 ```bash
 docker run -i --rm --entrypoint steghide hackerdogs/steghide-mcp:latest --help
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "steghide-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/steghide-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8250:8250 -e MCP_TRANSPORT=streamable-http hackerdogs/steghide-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "steghide-mcp": {
-      "url": "http://localhost:8250/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

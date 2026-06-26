@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -14,9 +12,9 @@ MCP server wrapper for [OctoCode](https://github.com/nicholasgasior/octocode-mcp
 
 ## What is OctoCode?
 
-MCP server for code analysis. Analyze code repositories for complexity, dependencies, and patterns. Useful for code review and quality assessment.
+OctoCode is an MCP server for intelligent code analysis and search across GitHub repositories. It provides AI assistants with tools to search code, browse repository contents, analyze file structures, and retrieve code snippets without needing a local clone. See [nicholasgasior/octocode-mcp](https://github.com/nicholasgasior/octocode-mcp) for full documentation.
 
-**No API keys required** — this server works out of the box.
+**No API keys required** — this server works out of the box. A GitHub token may be needed for private repositories or higher rate limits.
 
 **Summary.** OctoCode MCP Server — Dockerized from upstream `octocode-mcp` package.
 
@@ -24,8 +22,12 @@ MCP server for code analysis. Analyze code repositories for complexity, dependen
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Analyze this code repository for complexity."
-- "Show me the dependency graph for this project."
+- "Search the kubernetes/kubernetes repository for usages of the `WatchEvent` type."
+- "Show me the directory structure of the top-level folders in torvalds/linux."
+- "Find all Python files in the pallets/flask repository that import `typing`."
+- "Retrieve the contents of `src/main.rs` from the rust-lang/rust repository."
+- "Search for TODO comments across the entire expressjs/express codebase."
+- "List recent commits to the main branch of facebook/react and summarize the changes."
 
 ## Deploy
 
@@ -171,37 +173,4 @@ curl -s -X POST http://localhost:8654/mcp \
 
 ```bash
 docker stop octocode-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "octocode-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/octocode-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8654:8654 -e MCP_TRANSPORT=streamable-http hackerdogs/octocode-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "octocode-mcp": {
-      "url": "http://localhost:8654/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

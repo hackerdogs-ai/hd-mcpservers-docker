@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -14,7 +12,7 @@ MCP server wrapper for [Cloudlist](https://github.com/projectdiscovery/cloudlist
 
 ## What is Cloudlist?
 
-Cloudlist is a cloud asset discovery tool by ProjectDiscovery that lists assets across multiple cloud providers. It supports AWS, GCP, Azure, DigitalOcean, Scaleway, Fastly, Heroku, Linode, Namecheap, Cloudflare, Hetzner, and more, providing a unified view for attack surface management.
+Cloudlist is a multi-cloud asset enumeration tool by ProjectDiscovery that lists hosts and IP addresses across AWS, GCP, Azure, DigitalOcean, Scaleway, Fastly, Heroku, Linode, Namecheap, Cloudflare, Hetzner, and more from a single YAML configuration. It is designed for attack surface management — providing a unified inventory of all externally reachable infrastructure across your cloud accounts. See [github.com/projectdiscovery/cloudlist](https://github.com/projectdiscovery/cloudlist) for full documentation.
 
 ## Prerequisites
 
@@ -277,37 +275,4 @@ docker run -i --rm --entrypoint cloudlist hackerdogs/cloudlist-mcp:latest -h
 
 ```bash
 docker run -i --rm --entrypoint cloudlist hackerdogs/cloudlist-mcp:latest --help
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "cloudlist-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/cloudlist-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8111:8111 -e MCP_TRANSPORT=streamable-http hackerdogs/cloudlist-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "cloudlist-mcp": {
-      "url": "http://localhost:8111/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

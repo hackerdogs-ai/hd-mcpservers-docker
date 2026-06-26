@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -211,37 +209,4 @@ You can run the aircrack-ng suite in the same container by overriding the entryp
 
 ```bash
 docker run -i --rm --entrypoint aircrack-ng hackerdogs/aircrack-ng-mcp:latest --help
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "aircrack-ng-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/aircrack-ng-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8321:8321 -e MCP_TRANSPORT=streamable-http hackerdogs/aircrack-ng-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "aircrack-ng-mcp": {
-      "url": "http://localhost:8321/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

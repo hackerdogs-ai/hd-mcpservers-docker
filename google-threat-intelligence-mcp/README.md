@@ -1,32 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Google Threat Intelligence MCP Server
 
-MCP server wrapper for [Google Threat Intelligence](https://github.com/google/mcp-security) — upstream package `gti-mcp`.
+MCP server wrapper for [Google Threat Intelligence](https://cloud.google.com/threat-intelligence) (GTI) — query file hashes, URLs, domains, and IP addresses for malware verdicts, reputation scores, and Mandiant threat intelligence. See [google/mcp-security](https://github.com/google/mcp-security) for full documentation.
 
 ## What is Google Threat Intelligence?
 
-MCP server for [Google Threat Intelligence](https://cloud.google.com/threat-intelligence) (GTI), including insights from Mandiant and VirusTotal. Query file hashes, URLs, domains, and IP addresses for threat data, malware analysis, and reputation scores.
+Google Threat Intelligence MCP (`gti-mcp`) combines VirusTotal's crowdsourced malware scanning with Mandiant's enterprise threat research to give AI assistants a comprehensive view of any indicator of compromise. You can look up file hashes against 70+ antivirus engines, check whether a domain or IP is associated with known threat actors, retrieve behavioral sandbox reports for suspicious files, and search the GTI knowledge base for CVEs, malware families, and attack campaigns.
 
-**API key required** — get one at [virustotal.com](https://www.virustotal.com/).
-
-**Summary.** Google Threat Intelligence MCP Server — Dockerized from upstream `gti-mcp` package.
+**API key required** — a VirusTotal API key (free or premium) is required; set `VIRUSTOTAL_API_KEY`. Premium GTI features require a Google Threat Intelligence subscription.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Look up the hash abc123... on VirusTotal."
-- "Check the reputation of domain example.com."
-- "Analyze this suspicious URL for threats."
+- "Look up the SHA-256 hash d41d8cd98f00b204e9800998ecf8427e on VirusTotal and tell me how many engines flagged it."
+- "Check the reputation of domain malware-c2.example.com — is it associated with any threat actors?"
+- "Analyze the URL https://suspicious-site.example.com/payload.exe for threats."
+- "Look up IP address 45.33.32.156 and tell me if it is known for malicious activity."
+- "Search GTI for the Lazarus Group threat actor and summarize their TTPs."
+- "Get the sandbox behavior report for file hash abc123... and list any network connections it makes."
 
 ## Deploy
 
@@ -180,37 +179,4 @@ curl -s -X POST http://localhost:8644/mcp \
 
 ```bash
 docker stop google-threat-intelligence-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "google-threat-intelligence-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/google-threat-intelligence-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8644:8644 -e MCP_TRANSPORT=streamable-http hackerdogs/google-threat-intelligence-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "google-threat-intelligence-mcp": {
-      "url": "http://localhost:8644/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

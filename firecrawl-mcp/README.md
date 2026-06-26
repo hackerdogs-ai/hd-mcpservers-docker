@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Firecrawl MCP Server
 
-MCP server wrapper for [Firecrawl](https://github.com/mendableai/firecrawl-mcp) — upstream package `firecrawl-mcp`.
+MCP server wrapper for [Firecrawl](https://firecrawl.dev/) — JavaScript-rendered web scraping and full-site crawling with clean markdown output. See [mendableai/firecrawl](https://github.com/mendableai/firecrawl) for full documentation.
 
 ## What is Firecrawl?
 
-MCP server for [Firecrawl](https://firecrawl.dev/) — a web scraping API that handles JavaScript rendering, anti-bot bypasses, and outputs clean markdown. Crawl entire sites or scrape individual pages with structured data extraction.
+Firecrawl is a managed web scraping API that handles headless browser rendering, anti-bot bypasses, and content extraction so you get clean, LLM-ready markdown instead of raw HTML. The MCP server exposes tools for scraping individual URLs, crawling entire websites, and performing structured data extraction with a JSON schema. It is ideal for turning dynamic web pages — documentation sites, product listings, dashboards — into content an AI can reason about.
 
-**API key required** — sign up at [firecrawl.dev](https://firecrawl.dev/).
-
-**Summary.** Firecrawl MCP Server — Dockerized from upstream `firecrawl-mcp` package.
+**API key required** — sign up at [firecrawl.dev](https://firecrawl.dev/) and set `FIRECRAWL_API_KEY`.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Scrape the content of https://example.com and return it as markdown."
-- "Crawl all pages on docs.example.com."
+- "Scrape https://docs.example.com/getting-started and summarize the installation steps."
+- "Crawl all pages under https://blog.example.com and find posts about security."
+- "Extract the product name, price, and description from https://shop.example.com/item/42 using structured extraction."
+- "Scrape the table of contents at https://docs.example.com and list all section headings."
+- "Crawl https://example.com with a depth of 2 and return all pages that mention 'authentication'."
+- "Fetch https://status.example.com as markdown and tell me if any services are degraded."
 
 ## Deploy
 
@@ -179,37 +179,4 @@ curl -s -X POST http://localhost:8640/mcp \
 
 ```bash
 docker stop firecrawl-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "firecrawl-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/firecrawl-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8640:8640 -e MCP_TRANSPORT=streamable-http hackerdogs/firecrawl-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "firecrawl-mcp": {
-      "url": "http://localhost:8640/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

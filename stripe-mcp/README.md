@@ -1,32 +1,33 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Stripe MCP Server
 
-MCP server wrapper for [Stripe](https://github.com/stripe/agent-toolkit) — upstream package `@stripe/mcp`.
+MCP server wrapper for [Stripe](https://github.com/stripe/agent-toolkit) — manage payments, customers, subscriptions, and invoices via the Stripe API.
 
 ## What is Stripe?
 
-MCP server for [Stripe](https://stripe.com/). Interact with Stripe's payment platform — manage customers, subscriptions, invoices, charges, and payment methods through AI assistants.
+Stripe is a global payments platform that handles online transactions, billing, and financial infrastructure for businesses. This MCP server wraps Stripe's official MCP toolkit, giving AI assistants the ability to look up customers, list charges, manage subscriptions, create and void invoices, retrieve payment intents, and inspect product catalogs. See [stripe/agent-toolkit](https://github.com/stripe/agent-toolkit) for full documentation.
 
-**API key required** — find yours at [dashboard.stripe.com/apikeys](https://dashboard.stripe.com/apikeys).
+**API key required** — find your secret key at [dashboard.stripe.com/apikeys](https://dashboard.stripe.com/apikeys). Use a restricted key with only the permissions your workflow needs.
 
-**Summary.** Stripe MCP Server — Dockerized from upstream `@stripe/mcp` package.
+**Summary.** MCP server wrapper for [Stripe](https://github.com/stripe/agent-toolkit) — manage payments, customers, subscriptions, and invoices via the Stripe API.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "List recent charges on my Stripe account."
-- "Show all active subscriptions."
-- "Look up customer cus_abc123."
+- "List the 10 most recent charges on my Stripe account and their statuses."
+- "Look up customer cus_abc123 and show their subscription and payment history."
+- "Find all active subscriptions that are past due on my Stripe account."
+- "Create a new invoice for customer cus_xyz789 for $150 with a description of 'Consulting services'."
+- "Show all Stripe payment intents from the past 7 days that have a status of 'requires_action'."
+- "Retrieve all products in my Stripe catalog along with their prices."
 
 ## Deploy
 
@@ -180,37 +181,4 @@ curl -s -X POST http://localhost:8669/mcp \
 
 ```bash
 docker stop stripe-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "stripe-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/stripe-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8669:8669 -e MCP_TRANSPORT=streamable-http hackerdogs/stripe-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "stripe-mcp": {
-      "url": "http://localhost:8669/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

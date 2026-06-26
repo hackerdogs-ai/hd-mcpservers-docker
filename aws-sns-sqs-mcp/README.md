@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS SNS/SQS MCP Server
 
-MCP server wrapper for [SNS/SQS](https://github.com/awslabs/mcp) — upstream package `awslabs.amazon-sns-sqs-mcp-server`.
+MCP server wrapper for [Amazon SNS/SQS](https://github.com/awslabs/mcp/tree/main/src/amazon-sns-sqs-mcp-server) — list, inspect, and interact with Amazon Simple Notification Service topics and Simple Queue Service queues for event-driven architectures.
 
-## What is SNS/SQS?
+## What is Amazon SNS/SQS?
 
-MCP server for Amazon SNS and SQS. Manage topics, queues, subscriptions, and messages for event-driven architectures.
+Amazon SNS (Simple Notification Service) is a pub/sub messaging service for fan-out notifications to multiple subscribers, while Amazon SQS (Simple Queue Service) provides managed message queues for decoupling distributed systems. This MCP server, built from `awslabs.amazon-sns-sqs-mcp-server`, lets you list topics and queues, inspect subscriptions and dead-letter queue configurations, send and receive messages, and review queue depth and attributes — all through conversational prompts. See [awslabs/mcp](https://github.com/awslabs/mcp) for full documentation.
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
-
-**Summary.** AWS SNS/SQS MCP Server — Dockerized from upstream `awslabs.amazon-sns-sqs-mcp-server` package.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me SNS/SQS resources in my AWS account."
-- "Describe the current state of my SNS/SQS setup."
+- "List all SNS topics in my account and show their subscriber counts."
+- "What are the current message counts (visible, in-flight, delayed) for all my SQS queues?"
+- "Show me the dead-letter queue configuration for the 'order-events' SQS queue."
+- "List all subscriptions to the SNS topic 'alerts-prod' and their protocols."
+- "Send a test message to the 'dev-notifications' SQS queue."
+- "Which SQS queues have messages in their dead-letter queue right now?"
 
 ## Deploy
 
@@ -193,37 +193,4 @@ curl -s -X POST http://localhost:8624/mcp \
 
 ```bash
 docker stop aws-sns-sqs-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "aws-sns-sqs-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/aws-sns-sqs-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8624:8624 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-sns-sqs-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "aws-sns-sqs-mcp": {
-      "url": "http://localhost:8624/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

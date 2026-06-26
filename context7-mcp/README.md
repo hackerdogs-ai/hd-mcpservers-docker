@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Context7 MCP Server
 
-MCP server wrapper for [Context7](https://github.com/upstash/context7-mcp) — upstream package `@upstash/context7-mcp`.
+MCP server wrapper for [Context7](https://github.com/upstash/context7-mcp) — fetch live library documentation and code examples to eliminate hallucinated API references.
 
 ## What is Context7?
 
-MCP server for [Context7](https://context7.com/) by Upstash. Provides up-to-date library documentation and code examples directly in your AI assistant's context. Avoids hallucinated or outdated API references.
+Context7 is an Upstash service that injects accurate, version-specific library documentation and code examples directly into your AI assistant's context window. It resolves package names to their canonical docs, preventing outdated or fabricated API calls. See [upstash/context7-mcp](https://github.com/upstash/context7-mcp) for full documentation.
 
 **No API keys required** — this server works out of the box.
-
-**Summary.** Context7 MCP Server — Dockerized from upstream `@upstash/context7-mcp` package.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Look up the latest React hooks documentation."
-- "Show me usage examples for the Prisma ORM."
+- "Use Context7 to fetch the latest Next.js App Router documentation."
+- "Look up the Prisma ORM `findMany` API and show me a working code example."
+- "Retrieve the FastAPI dependency injection docs so I can write a correct endpoint."
+- "Show me the current React `useEffect` hook signature and usage examples from the official docs."
+- "Fetch the LangChain Python SDK docs for building a retrieval-augmented generation chain."
+- "Use Context7 to get the Tailwind CSS v4 configuration reference."
 
 ## Deploy
 
@@ -171,37 +171,4 @@ curl -s -X POST http://localhost:8634/mcp \
 
 ```bash
 docker stop context7-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "context7-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/context7-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8634:8634 -e MCP_TRANSPORT=streamable-http hackerdogs/context7-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "context7-mcp": {
-      "url": "http://localhost:8634/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

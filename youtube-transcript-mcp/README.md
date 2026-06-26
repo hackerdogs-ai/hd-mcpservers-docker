@@ -1,31 +1,29 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # YouTube Transcript MCP Server
 
-MCP server wrapper for [YouTube Transcript](https://github.com/kimtaeyoon83/mcp-server-youtube-transcript) — upstream package `@kimtaeyoon83/mcp-server-youtube-transcript`.
+MCP server wrapper for [mcp-server-youtube-transcript](https://github.com/kimtaeyoon83/mcp-server-youtube-transcript) — extract YouTube video transcripts and captions in multiple languages via the `@kimtaeyoon83/mcp-server-youtube-transcript` npm package.
 
 ## What is YouTube Transcript?
 
-MCP server for extracting YouTube video transcripts. Retrieve captions and subtitles from YouTube videos in multiple languages for summarization, analysis, and content processing.
-
-**No API keys required** — this server works out of the box.
-
-**Summary.** YouTube Transcript MCP Server — Dockerized from upstream `@kimtaeyoon83/mcp-server-youtube-transcript` package.
+The YouTube Transcript MCP server fetches auto-generated and manual subtitles/captions from YouTube videos without requiring a YouTube Data API key. Given a video URL or ID, it returns the full transcript text along with timestamp data in the requested language. This is useful for video summarization, meeting notes extraction, content research, and feeding video content into AI analysis pipelines. See [kimtaeyoon83/mcp-server-youtube-transcript](https://github.com/kimtaeyoon83/mcp-server-youtube-transcript) for full documentation. No API keys are required — it uses the public YouTube transcript endpoint.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Get the transcript of this YouTube video."
-- "Extract the English subtitles from this YouTube link."
+- "Get the full transcript for this YouTube video: https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+- "Extract the English captions from this YouTube video and summarize the key points."
+- "Retrieve the Spanish transcript for this YouTube tutorial and translate it to English."
+- "Get the transcript of this YouTube conference talk and identify the main topics discussed."
+- "Fetch the auto-generated subtitles for this YouTube video and extract all action items mentioned."
+- "Pull the transcript from this YouTube video with timestamps so I can find where a specific topic is discussed."
 
 ## Deploy
 
@@ -171,37 +169,4 @@ curl -s -X POST http://localhost:8675/mcp \
 
 ```bash
 docker stop youtube-transcript-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "youtube-transcript-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/youtube-transcript-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8675:8675 -e MCP_TRANSPORT=streamable-http hackerdogs/youtube-transcript-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "youtube-transcript-mcp": {
-      "url": "http://localhost:8675/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

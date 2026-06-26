@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Geocoding MCP Server
 
-MCP server wrapper for [Geocoding](https://github.com/nicholasgasior/geocode-mcp) — upstream package `geocode-mcp`.
+MCP server wrapper for [geocode-mcp](https://pypi.org/project/geocode-mcp/) — convert street addresses to geographic coordinates (forward geocoding) and GPS coordinates to human-readable addresses (reverse geocoding).
 
 ## What is Geocoding?
 
-MCP server for geocoding — convert addresses to coordinates and coordinates to addresses. Uses open geocoding services for forward and reverse geocoding lookups.
+`geocode-mcp` is a Python MCP server that wraps open geocoding services to give AI assistants address lookup and coordinate conversion capabilities. Forward geocoding resolves a street address or place name to latitude/longitude; reverse geocoding turns a coordinate pair into the nearest address. It is useful for location-aware workflows such as distance calculations, map plotting, or enriching datasets with geographic context.
 
-**No API keys required** — this server works out of the box.
-
-**Summary.** Geocoding MCP Server — Dockerized from upstream `geocode-mcp` package.
+**No API keys required** — this server uses open geocoding services and works out of the box.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Geocode the address '1600 Pennsylvania Avenue, Washington DC'."
-- "What is the address at coordinates 37.7749, -122.4194?"
+- "Geocode '1600 Pennsylvania Avenue NW, Washington, DC' and give me the latitude and longitude."
+- "What is the street address at coordinates 48.8584, 2.2945?"
+- "Convert these 10 addresses in my CSV to lat/lon coordinates."
+- "Find the coordinates for the Eiffel Tower, the Colosseum, and Big Ben."
+- "Reverse geocode 37.7749, -122.4194 and tell me the city and neighborhood."
+- "What country and city is located at coordinates -33.8688, 151.2093?"
 
 ## Deploy
 
@@ -171,37 +171,4 @@ curl -s -X POST http://localhost:8641/mcp \
 
 ```bash
 docker stop geocoding-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "geocoding-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/geocoding-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8641:8641 -e MCP_TRANSPORT=streamable-http hackerdogs/geocoding-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "geocoding-mcp": {
-      "url": "http://localhost:8641/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

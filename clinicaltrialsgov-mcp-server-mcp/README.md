@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # ClinicalTrials.gov MCP Server
 
-MCP server wrapper for [ClinicalTrials.gov](https://github.com/pauljunsukhan/clinicaltrialsgov-mcp) — upstream package `clinicaltrialsgov-mcp-server`.
+MCP server wrapper for [ClinicalTrials.gov](https://github.com/pauljunsukhan/clinicaltrialsgov-mcp) — search the NLM's global registry of clinical studies by condition, intervention, location, and status.
 
 ## What is ClinicalTrials.gov?
 
-MCP server for [ClinicalTrials.gov](https://clinicaltrials.gov/). Search clinical trials by condition, intervention, location, and status. Access study details, eligibility criteria, and results.
+ClinicalTrials.gov is the U.S. National Library of Medicine's registry of publicly and privately supported clinical studies conducted around the world. This MCP server wraps the `clinicaltrialsgov-mcp-server` package, enabling structured searches of the ClinicalTrials.gov API by condition, intervention, location, sponsor, phase, and enrollment status — and retrieval of full study details, eligibility criteria, and reported results. See [github.com/pauljunsukhan/clinicaltrialsgov-mcp](https://github.com/pauljunsukhan/clinicaltrialsgov-mcp) for full documentation.
 
-**No API keys required** — this server works out of the box.
-
-**Summary.** ClinicalTrials.gov MCP Server — Dockerized from upstream `clinicaltrialsgov-mcp-server` package.
+**No API keys required** — queries the public ClinicalTrials.gov API directly.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Search for active clinical trials on type 2 diabetes."
-- "Find trials for a specific drug near San Francisco."
+- "Search ClinicalTrials.gov for active Phase 3 trials studying semaglutide for obesity."
+- "Find clinical trials recruiting participants in New York for Alzheimer's disease."
+- "Look up the eligibility criteria and study design for trial NCT04280705."
+- "Search for completed trials that studied the combination of immunotherapy and chemotherapy for lung cancer."
+- "Find all trials sponsored by NIH for Type 1 Diabetes published in the last two years."
+- "What are the reported outcomes of the RECOVERY trial for COVID-19 treatments?"
 
 ## Deploy
 
@@ -171,37 +171,4 @@ curl -s -X POST http://localhost:8632/mcp \
 
 ```bash
 docker stop clinicaltrialsgov-mcp-server-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "clinicaltrialsgov-mcp-server-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/clinicaltrialsgov-mcp-server-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8632:8632 -e MCP_TRANSPORT=streamable-http hackerdogs/clinicaltrialsgov-mcp-server-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "clinicaltrialsgov-mcp-server-mcp": {
-      "url": "http://localhost:8632/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

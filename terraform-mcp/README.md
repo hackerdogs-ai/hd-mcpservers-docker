@@ -1,31 +1,33 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Terraform MCP Server
 
-MCP server wrapper for [Terraform](https://github.com/hashicorp/terraform-mcp-server) — upstream package `terraform-mcp-server`.
+MCP server wrapper for [Terraform](https://github.com/hashicorp/terraform-mcp-server) — access Terraform provider documentation, resource schemas, and module registry data.
 
 ## What is Terraform?
 
-MCP server for [Terraform](https://www.terraform.io/) by HashiCorp. Access Terraform provider documentation, resource schemas, and infrastructure-as-code guidance. Helps write and debug Terraform configurations.
+Terraform by HashiCorp is the industry-standard infrastructure-as-code tool for provisioning and managing cloud and on-premises resources across 3,000+ providers. This MCP server exposes the Terraform provider registry and documentation — letting AI assistants look up resource schemas, find module examples, explore provider argument references, and assist in writing and debugging `.tf` configuration files. See [hashicorp/terraform-mcp-server](https://github.com/hashicorp/terraform-mcp-server) for full documentation.
 
-**No API keys required** — this server works out of the box.
+**No API keys required** — the server queries the public Terraform Registry and runs locally inside the Docker container.
 
-**Summary.** Terraform MCP Server — Dockerized from upstream `terraform-mcp-server` package.
+**Summary.** MCP server wrapper for [Terraform](https://github.com/hashicorp/terraform-mcp-server) — access Terraform provider documentation, resource schemas, and module registry data.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me the Terraform docs for the AWS VPC resource."
-- "Help me write a Terraform config for an S3 bucket."
+- "Show me the Terraform resource schema for aws_vpc including all required and optional arguments."
+- "Help me write a Terraform module to create an S3 bucket with versioning and server-side encryption."
+- "Look up the azurerm_kubernetes_cluster resource documentation and explain the required arguments."
+- "Find Terraform modules on the registry for setting up a VPC with private subnets on AWS."
+- "What are the required provider configurations for the Google Cloud Terraform provider?"
+- "Debug this Terraform config — it's failing on the aws_iam_role resource with a trust policy error."
 
 ## Deploy
 
@@ -171,37 +173,4 @@ curl -s -X POST http://localhost:8670/mcp \
 
 ```bash
 docker stop terraform-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "terraform-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/terraform-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8670:8670 -e MCP_TRANSPORT=streamable-http hackerdogs/terraform-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "terraform-mcp": {
-      "url": "http://localhost:8670/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

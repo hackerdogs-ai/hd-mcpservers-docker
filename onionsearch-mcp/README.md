@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -274,37 +272,4 @@ docker run --rm --entrypoint onionsearch hackerdogs/onionsearch-mcp:latest "sear
 
 ```bash
 docker run --rm --entrypoint onionsearch hackerdogs/onionsearch-mcp:latest "query" --proxy 127.0.0.1:9050 --engines ahmia tor66 phobos
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "onionsearch-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/onionsearch-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8372:8372 -e MCP_TRANSPORT=streamable-http hackerdogs/onionsearch-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "onionsearch-mcp": {
-      "url": "http://localhost:8372/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

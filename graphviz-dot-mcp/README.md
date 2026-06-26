@@ -1,29 +1,74 @@
 <p align="center">
-  <a href="https://hackerdogs.ai"><img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/></a>
-  <br/>
-  <a href="https://hackerdogs.ai"><img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/></a>
+  <a href="https://hackerdogs.ai">
+    <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
+    <br/>
+    <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
+  </a>
 </p>
 
-# Graphviz DOT MCP Server
+# Graphviz Dot MCP Server
 
-MCP server for [Graphviz](https://graphviz.org) — render DOT diagrams to SVG or PNG.
+MCP server wrapper for [Graphviz](https://graphviz.org) — render DOT language diagrams to SVG or PNG.
+
+## What is Graphviz Dot?
+
+Graphviz is an open-source graph visualization toolkit that takes descriptions written in the DOT language and renders them into publication-quality diagrams including directed graphs, undirected graphs, flowcharts, network topologies, and dependency trees. The `dot` layout engine (included in the `graphviz` package) is the most commonly used engine for hierarchical and directed graphs. See [graphviz.org](https://graphviz.org) for full documentation.
+
+**No API keys required** — Graphviz runs locally inside the Docker container.
 
 **Tools:**
-- `render_dot` — Render a Graphviz DOT diagram to SVG or PNG format
+- `render_dot` — Render a Graphviz DOT diagram to SVG or PNG.
+
+## Tools Reference
+
+### `render_dot`
+
+Render a Graphviz DOT diagram to SVG or PNG output.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `content` | str | Yes | — | DOT language source code to render |
+| `output_format` | str | No | `"svg"` | Output format: `"svg"` or `"png"` |
+
+<details>
+<summary>Example response (SVG)</summary>
+
+```json
+{
+  "format": "svg",
+  "svg": "<svg xmlns=..."
+}
+```
+
+</details>
+
+## Example Prompts
+
+Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
+
+- "Render this DOT diagram as SVG: digraph G { A -> B -> C; A -> C; }"
+- "Create a network topology diagram in DOT format showing my three-tier architecture and render it as a PNG."
+- "Convert this dependency graph DOT source into an SVG I can embed in a report."
+- "Draw a flowchart using Graphviz DOT for the following process: user submits form, validate input, save to DB, send email."
+- "Render a directed graph showing the call hierarchy between these five microservices."
+- "Use graphviz to visualize the following attack path as a DOT diagram and export it as SVG."
 
 ## Deploy
 
-### Docker Compose
+### Docker Compose (recommended)
+
 ```bash
 docker-compose up -d
 ```
 
-### Docker Run (stdio)
+### Docker Run (stdio mode)
+
 ```bash
 docker run -i --rm hackerdogs/graphviz-dot-mcp:latest
 ```
 
-### Docker Run (HTTP streamable)
+### Docker Run (HTTP streamable mode)
+
 ```bash
 docker run -d -p 8523:8523 \
   -e MCP_TRANSPORT=streamable-http \
@@ -33,48 +78,132 @@ docker run -d -p 8523:8523 \
 
 ## MCP Client Configuration
 
-**Stdio:** Use `mcpServer.json`.
-**HTTP:** Connect to `http://localhost:8523` with `MCP_TRANSPORT=streamable-http`.
+### Stdio mode (default)
 
-| Env | Description | Default |
-|-----|-------------|---------|
-| `MCP_TRANSPORT` | `stdio` or `streamable-http` | `stdio` |
-| `MCP_PORT` | HTTP port (streamable-http) | `8523` |
-
-## Example prompts
-
-- "Render this DOT diagram: digraph { A -> B -> C }"
-- "Create an SVG from this Graphviz DOT source."
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
+Add to your Claude Desktop or Cursor MCP config:
 
 ```json
 {
   "mcpServers": {
     "graphviz-dot-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/graphviz-dot-mcp:latest"],
-      "env": {}
+      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "hackerdogs/graphviz-dot-mcp:latest"],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
     }
   }
 }
 ```
 
-### Streamable HTTP (remote / farm / multi-client)
+### HTTP mode (streamable-http)
 
-```bash
-docker run -d -p 8523:8523 -e MCP_TRANSPORT=streamable-http hackerdogs/graphviz-dot-mcp:latest
-```
+First, start the server using Docker Compose or `docker run` with HTTP mode (see [Deploy](#deploy) above), then point your MCP client at the running server:
 
 ```json
 {
   "mcpServers": {
     "graphviz-dot-mcp": {
-      "url": "http://localhost:8523/mcp/",
-      "transport": "streamable-http"
+      "url": "http://localhost:8523/mcp"
     }
   }
 }
+```
+
+> **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+## Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
+| `MCP_PORT` | `8523` | HTTP port (only used with `streamable-http`) |
+
+## Installing in Hackerdogs
+
+The fastest way to get started is through [Hackerdogs](https://hackerdogs.ai):
+
+1. **Log in** to your Hackerdogs account.
+2. Go to the **Tools Catalog**.
+3. **Search** for the tool by name (e.g. "nuclei", "naabu", "julius").
+4. Expand the tool card and click **Install** — you're ready to go.
+
+> Give it a couple of minutes to go live. Then start querying by asking Hackerdogs to use the tool explicitly (e.g. *"Use naabu to scan example.com"*). If you don't specify, Hackerdogs will automatically choose the best tool for the job — it may choose this one on its own.
+
+5. **Vendor API key required?** Add your key in the config environment variable field before clicking Install. Your key will be encrypted at rest.
+6. **Enable / Disable** the tool anytime from the **Enabled Tools** page.
+7. **Need to update a key or parameter?** Go to **My Tools** → toggle **Show Decrypted Values** → edit → **Save**.
+
+> **Want to contribute or chat with the team?** Join our [Discord](https://discord.gg/str9FcWuyM).
+
+## Build
+
+```bash
+docker build -t hackerdogs/graphviz-dot-mcp:latest .
+```
+
+## Testing
+
+### Automated tests
+
+```bash
+./test.sh
+```
+
+### Test directly with Docker
+
+**1. Start the server in HTTP mode:**
+
+```bash
+docker run -d --rm --name graphviz-dot-mcp-test -p 8523:8523 \
+  -e MCP_TRANSPORT=streamable-http \
+  hackerdogs/graphviz-dot-mcp:latest
+```
+
+**2. Initialize the MCP session:**
+
+```bash
+SESSION_ID=$(curl -s -D - -X POST http://localhost:8523/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"0.1"}}}' \
+  2>&1 | grep -i mcp-session-id | awk '{print $2}' | tr -d '\r\n')
+
+curl -s -X POST http://localhost:8523/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "mcp-session-id: $SESSION_ID" \
+  -d '{"jsonrpc":"2.0","method":"notifications/initialized"}'
+```
+
+**3. Call a tool:**
+
+```bash
+curl -s -X POST http://localhost:8523/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "mcp-session-id: $SESSION_ID" \
+  -d '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"run_graphviz_dot","arguments":{"arguments":"--help"}}}'
+```
+
+**4. Clean up:**
+
+```bash
+docker stop graphviz-dot-mcp-test
+```
+
+## Running the tool directly (bypassing MCP)
+
+You can run the Graphviz `dot` CLI directly in the same container by overriding the entrypoint.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint dot hackerdogs/graphviz-dot-mcp:latest --help
+```
+
+**Render a DOT diagram to SVG:**
+
+```bash
+echo 'digraph G { A -> B -> C }' | docker run -i --rm --entrypoint dot hackerdogs/graphviz-dot-mcp:latest -Tsvg
 ```

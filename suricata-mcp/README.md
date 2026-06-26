@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -263,37 +261,4 @@ docker run --rm --entrypoint suricata hackerdogs/suricata-mcp:latest --build-inf
 
 ```bash
 docker run --rm -v /path/to/captures:/data --entrypoint suricata hackerdogs/suricata-mcp:latest -r /data/capture.pcap -l /data/output
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "suricata-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/suricata-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8365:8365 -e MCP_TRANSPORT=streamable-http hackerdogs/suricata-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "suricata-mcp": {
-      "url": "http://localhost:8365/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

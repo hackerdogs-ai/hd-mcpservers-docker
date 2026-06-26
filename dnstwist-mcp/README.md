@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -171,37 +169,4 @@ curl -s -X POST http://localhost:8636/mcp \
 
 ```bash
 docker stop dnstwist-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "dnstwist-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/dnstwist-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8636:8636 -e MCP_TRANSPORT=streamable-http hackerdogs/dnstwist-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "dnstwist-mcp": {
-      "url": "http://localhost:8636/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

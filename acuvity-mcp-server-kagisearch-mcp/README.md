@@ -1,48 +1,119 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
+    <br/>
+    <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
-# Kagi Search MCP Server
+# Acuvity Server Kagisearch MCP Server
 
-MCP server for search queries and video summarization using Kagi
+MCP server wrapper for [Kagi Search MCP Server](https://github.com/kagisearch/mcp) — high-quality ad-free web search and YouTube video summarization via the Kagi API.
 
-## Docker Run (stdio)
+## What is Acuvity Server Kagisearch?
+
+Kagi Search MCP Server integrates the Kagi search engine API to deliver ad-free, high-signal search results and supports on-demand video summarization for YouTube URLs. Unlike ad-supported search engines, Kagi ranks results by quality rather than advertising revenue, making it particularly useful for research and technical queries. See [kagisearch/mcp](https://github.com/kagisearch/mcp) for full documentation.
+
+**API key required** — set `KAGI_API_KEY` to your Kagi API key from [kagi.com/settings?p=api](https://kagi.com/settings?p=api).
+
+**Tools:**
+- `acuvity_mcp_server_kagisearch_info` — Return basic info / status for Kagi Search MCP Server.
+
+## Tools Reference
+
+## Example Prompts
+
+Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
+
+- "Search Kagi for 'OWASP Top 10 2024 changes' and summarize the top 5 results."
+- "Use Kagi to find research papers on LLM prompt injection attacks published in 2024."
+- "Search for 'Python asyncio best practices 2024' on Kagi and return the top 3 links."
+- "Use Kagi to summarize this YouTube video: https://www.youtube.com/watch?v=example."
+- "Search Kagi for 'CVE-2024-1234 proof of concept' and list any GitHub repositories found."
+- "Use Kagi Search to find the official documentation for the Rust tokio async runtime."
+
+## Deploy
+
+### Docker Compose (recommended)
+
+```bash
+docker-compose up -d
+```
+
+### Docker Run (stdio mode)
 
 ```bash
 docker run -i --rm hackerdogs/acuvity-mcp-server-kagisearch-mcp:latest
 ```
 
-## Docker Run (HTTP streamable mode)
+### Docker Run (HTTP streamable mode)
 
 ```bash
-docker run -d --name acuvity-mcp-server-kagisearch-mcp \
+docker run -d -p 8428:8428 \
   -e MCP_TRANSPORT=streamable-http \
   -e MCP_PORT=8428 \
-  -p 8428:8428 \
   hackerdogs/acuvity-mcp-server-kagisearch-mcp:latest
 ```
 
-## MCP Client Configuration (stdio)
+## MCP Client Configuration
+
+### Stdio mode (default)
+
+Add to your Claude Desktop or Cursor MCP config:
 
 ```json
 {
   "mcpServers": {
     "acuvity-mcp-server-kagisearch-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/acuvity-mcp-server-kagisearch-mcp:latest"]
+      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "hackerdogs/acuvity-mcp-server-kagisearch-mcp:latest"],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
     }
   }
 }
 ```
 
+### HTTP mode (streamable-http)
+
+First, start the server using Docker Compose or `docker run` with HTTP mode (see [Deploy](#deploy) above), then point your MCP client at the running server:
+
+```json
+{
+  "mcpServers": {
+    "acuvity-mcp-server-kagisearch-mcp": {
+      "url": "http://localhost:8428/mcp"
+    }
+  }
+}
+```
+
+> **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
 ## Environment Variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `MCP_TRANSPORT` | `stdio` | Transport: `stdio` or `streamable-http` |
-| `MCP_PORT` | `8428` | HTTP port (streamable-http mode) |
+| `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
+| `MCP_PORT` | `8428` | HTTP port (only used with `streamable-http`) |
+
+## Installing in Hackerdogs
+
+The fastest way to get started is through [Hackerdogs](https://hackerdogs.ai):
+
+1. **Log in** to your Hackerdogs account.
+2. Go to the **Tools Catalog**.
+3. **Search** for the tool by name (e.g. "nuclei", "naabu", "julius").
+4. Expand the tool card and click **Install** — you're ready to go.
+
+> Give it a couple of minutes to go live. Then start querying by asking Hackerdogs to use the tool explicitly (e.g. *"Use naabu to scan example.com"*). If you don't specify, Hackerdogs will automatically choose the best tool for the job — it may choose this one on its own.
+
+5. **Vendor API key required?** Add your key in the config environment variable field before clicking Install. Your key will be encrypted at rest.
+6. **Enable / Disable** the tool anytime from the **Enabled Tools** page.
+7. **Need to update a key or parameter?** Go to **My Tools** → toggle **Show Decrypted Values** → edit → **Save**.
+
+> **Want to contribute or chat with the team?** Join our [Discord](https://discord.gg/str9FcWuyM).
 
 ## Build
 
@@ -50,41 +121,62 @@ docker run -d --name acuvity-mcp-server-kagisearch-mcp \
 docker build -t hackerdogs/acuvity-mcp-server-kagisearch-mcp:latest .
 ```
 
-## Test
+## Testing
+
+### Automated tests
 
 ```bash
 ./test.sh
 ```
 
-## mcpServer.json
+### Test directly with Docker
 
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "acuvity-mcp-server-kagisearch-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/acuvity-mcp-server-kagisearch-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
+**1. Start the server in HTTP mode:**
 
 ```bash
-docker run -d -p 8428:8428 -e MCP_TRANSPORT=streamable-http hackerdogs/acuvity-mcp-server-kagisearch-mcp:latest
+docker run -d --rm --name acuvity-mcp-server-kagisearch-mcp-test -p 8428:8428 \
+  -e MCP_TRANSPORT=streamable-http \
+  hackerdogs/acuvity-mcp-server-kagisearch-mcp:latest
 ```
 
-```json
-{
-  "mcpServers": {
-    "acuvity-mcp-server-kagisearch-mcp": {
-      "url": "http://localhost:8428/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
+**2. Initialize the MCP session:**
+
+```bash
+SESSION_ID=$(curl -s -D - -X POST http://localhost:8428/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"0.1"}}}' \
+  2>&1 | grep -i mcp-session-id | awk '{print $2}' | tr -d '\r\n')
+
+curl -s -X POST http://localhost:8428/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "mcp-session-id: $SESSION_ID" \
+  -d '{"jsonrpc":"2.0","method":"notifications/initialized"}'
+```
+
+**3. Call a tool:**
+
+```bash
+curl -s -X POST http://localhost:8428/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "mcp-session-id: $SESSION_ID" \
+  -d '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"run_acuvity_server_kagisearch","arguments":{"arguments":"--help"}}}'
+```
+
+**4. Clean up:**
+
+```bash
+docker stop acuvity-mcp-server-kagisearch-mcp-test
+```
+
+## Running the tool directly (bypassing MCP)
+
+You can run the Acuvity Server Kagisearch CLI in the same container by overriding the entrypoint without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint acuvity-server-kagisearch hackerdogs/acuvity-mcp-server-kagisearch-mcp:latest --help
 ```

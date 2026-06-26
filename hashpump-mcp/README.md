@@ -1,26 +1,24 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # HashPump MCP Server
 
-MCP server wrapper for [Hashpump](https://github.com/bwall/HashPump) — Hash length extension attacks.
+MCP server wrapper for [Hashpump](https://github.com/mheistermann/HashPump-partialhash) — Hash length extension attacks.
 
 ## What is Hashpump?
 
 Hashpump (HashPump) is a security tool that provides: **Hash length extension attacks.**
 
-See [bwall/HashPump](https://github.com/bwall/HashPump) for full documentation.
+See [bwall/HashPump](https://github.com/mheistermann/HashPump-partialhash) for full documentation.
 
 **No API keys required** — Hashpump runs locally inside the Docker container.
 
-**Summary.** MCP server wrapper for [Hashpump](https://github.com/bwall/HashPump) — Hash length extension attacks.
+**Summary.** MCP server wrapper for [Hashpump](https://github.com/mheistermann/HashPump-partialhash) — Hash length extension attacks.
 
 **Tools:**
 - `run_hashpump` — Run HashPump with the given arguments. Returns structured JSON output.
@@ -237,37 +235,4 @@ You can run the HashPump CLI in the same container by overriding the entrypoint 
 
 ```bash
 docker run -i --rm --entrypoint HashPump hackerdogs/hashpump-mcp:latest --help
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "hashpump-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/hashpump-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8274:8274 -e MCP_TRANSPORT=streamable-http hackerdogs/hashpump-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "hashpump-mcp": {
-      "url": "http://localhost:8274/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

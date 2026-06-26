@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Puppeteer MCP Server
 
-MCP server wrapper for [Puppeteer](https://github.com/modelcontextprotocol/servers) — upstream package `@modelcontextprotocol/server-puppeteer`.
+MCP server wrapper for [Puppeteer](https://pptr.dev/) — headless Chrome browser automation for navigation, screenshots, PDFs, and form interaction.
 
 ## What is Puppeteer?
 
-MCP server for [Puppeteer](https://pptr.dev/) — headless Chrome browser automation. Navigate pages, take screenshots, generate PDFs, fill forms, and interact with web applications programmatically.
+Puppeteer is Google's official Node.js library for controlling a headless Chrome or Chromium browser, enabling programmatic navigation, screenshot capture, PDF generation, form filling, and interaction with JavaScript-heavy web applications. See [modelcontextprotocol/servers](https://github.com/modelcontextprotocol/servers) for full documentation of the MCP wrapper.
 
-**No API keys required** — this server works out of the box.
-
-**Summary.** Puppeteer MCP Server — Dockerized from upstream `@modelcontextprotocol/server-puppeteer` package.
+**No API keys required** — this server runs locally inside the Docker container using a bundled Chromium instance.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Navigate to example.com and take a screenshot."
-- "Fill in the login form on this page."
+- "Navigate to https://example.com and take a full-page screenshot."
+- "Fill in the username and password fields on the login form at this URL and submit."
+- "Generate a PDF of https://docs.example.com/api-reference and save it."
+- "Click the 'Accept Cookies' button on this page, then scroll to the footer and screenshot it."
+- "Evaluate the JavaScript expression `document.title` on https://news.ycombinator.com and return the result."
+- "Navigate to the GitHub releases page for a repo and extract the latest version number from the DOM."
 
 ## Deploy
 
@@ -171,37 +171,4 @@ curl -s -X POST http://localhost:8659/mcp \
 
 ```bash
 docker stop puppeteer-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "puppeteer-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/puppeteer-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8659:8659 -e MCP_TRANSPORT=streamable-http hackerdogs/puppeteer-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "puppeteer-mcp": {
-      "url": "http://localhost:8659/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS Prometheus MCP Server
 
-MCP server wrapper for [Prometheus](https://github.com/awslabs/mcp) — upstream package `awslabs.prometheus-mcp-server`.
+MCP server wrapper for [AWS Managed Prometheus](https://github.com/awslabs/mcp/tree/main/src/prometheus-mcp-server) — execute PromQL queries and inspect metrics stored in Amazon Managed Service for Prometheus (AMP) workspaces.
 
-## What is Prometheus?
+## What is AWS Managed Prometheus?
 
-MCP server for AWS Managed Prometheus. Execute PromQL queries, inspect metrics, and analyze time-series monitoring data.
+Amazon Managed Service for Prometheus (AMP) is a serverless, Prometheus-compatible monitoring service that automatically scales to ingest millions of time-series metrics from containerized workloads. This MCP server, built from `awslabs.prometheus-mcp-server`, lets you query AMP workspaces using PromQL, list available metrics and labels, and investigate alert rules — all through natural language without needing to write PromQL manually. See [awslabs/mcp](https://github.com/awslabs/mcp) for full documentation.
 
-**AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
-
-**Summary.** AWS Prometheus MCP Server — Dockerized from upstream `awslabs.prometheus-mcp-server` package.
+**AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`. The AMP workspace ID must also be configured.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me Prometheus resources in my AWS account."
-- "Describe the current state of my Prometheus setup."
+- "List all Prometheus workspaces in my AWS account and their aliases."
+- "Query CPU utilization for all pods in the 'production' namespace over the last hour."
+- "Show me the top 5 containers by memory usage right now."
+- "What alert rules are configured in my AMP workspace and which are currently firing?"
+- "Graph the request rate for the 'api-gateway' service over the last 6 hours."
+- "List all metric names available in my Prometheus workspace that start with 'node_'."
 
 ## Deploy
 
@@ -193,37 +193,4 @@ curl -s -X POST http://localhost:8620/mcp \
 
 ```bash
 docker stop aws-prometheus-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "aws-prometheus-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/aws-prometheus-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8620:8620 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-prometheus-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "aws-prometheus-mcp": {
-      "url": "http://localhost:8620/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

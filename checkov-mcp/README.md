@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -69,6 +67,13 @@ Remove downloaded files from the container workspace.
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
 | `job_id` | string | No | `""` | Specific job ID to clean up. If empty, removes all downloads |
+
+
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `scan_remote_repo` | Clone a Git repository, scan it with Checkov, and return the results. |
 
 ## Example Prompts
 
@@ -243,37 +248,4 @@ docker run -i --rm --entrypoint checkov hackerdogs/checkov-mcp:latest scan -d /p
 
 ```bash
 docker run -i --rm --entrypoint checkov hackerdogs/checkov-mcp:latest --help
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "checkov-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/checkov-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8272:8272 -e MCP_TRANSPORT=streamable-http hackerdogs/checkov-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "checkov-mcp": {
-      "url": "http://localhost:8272/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

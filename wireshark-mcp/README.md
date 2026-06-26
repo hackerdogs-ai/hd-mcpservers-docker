@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -243,37 +241,4 @@ docker run -i --rm --entrypoint tshark hackerdogs/wireshark-mcp:latest -r /path/
 
 ```bash
 docker run -i --rm --entrypoint tshark hackerdogs/wireshark-mcp:latest -h
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "wireshark-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/wireshark-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8315:8315 -e MCP_TRANSPORT=streamable-http hackerdogs/wireshark-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "wireshark-mcp": {
-      "url": "http://localhost:8315/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

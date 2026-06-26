@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS Serverless MCP Server
 
-MCP server wrapper for [Serverless](https://github.com/awslabs/mcp) — upstream package `awslabs.aws-serverless-mcp-server`.
+MCP server wrapper for [AWS Serverless](https://github.com/awslabs/mcp/tree/main/src/aws-serverless-mcp-server) — build, deploy, and monitor serverless applications using AWS SAM (Serverless Application Model) and Lambda through natural language.
 
-## What is Serverless?
+## What is AWS Serverless MCP?
 
-MCP server for AWS Serverless. AI-powered serverless development with tools for SAM application lifecycle, deployment, and monitoring.
+The AWS Serverless MCP server (`awslabs.aws-serverless-mcp-server`) provides AI-assisted tooling for the full AWS serverless application lifecycle: scaffolding SAM templates, deploying stacks via `sam deploy`, invoking Lambda functions, tailing CloudWatch Logs, and inspecting deployed serverless resources. It is designed to accelerate serverless development workflows by making SAM commands and Lambda management accessible through conversational prompts. See [awslabs/mcp](https://github.com/awslabs/mcp) for full documentation.
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
-
-**Summary.** AWS Serverless MCP Server — Dockerized from upstream `awslabs.aws-serverless-mcp-server` package.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me Serverless resources in my AWS account."
-- "Describe the current state of my Serverless setup."
+- "List all Lambda functions in my account and their runtimes and memory settings."
+- "Show me the recent CloudWatch Logs for the 'order-processor' Lambda function."
+- "Deploy my SAM application from the current template.yaml to the 'staging' stack."
+- "Invoke the 'send-notification' Lambda function with a test payload and show the response."
+- "Which Lambda functions have not been invoked in the last 30 days?"
+- "Show me all SAM-deployed CloudFormation stacks and their deployment status."
 
 ## Deploy
 
@@ -193,37 +193,4 @@ curl -s -X POST http://localhost:8623/mcp \
 
 ```bash
 docker stop aws-serverless-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "aws-serverless-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/aws-serverless-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8623:8623 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-serverless-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "aws-serverless-mcp": {
-      "url": "http://localhost:8623/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

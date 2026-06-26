@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # S3 MCP Server
 
-MCP server wrapper for [Amazon S3](https://github.com/geunoh/s3-mcp-server) — upstream package `@geunoh/s3-mcp-server`.
+MCP server wrapper for [geunoh/s3-mcp-server](https://github.com/geunoh/s3-mcp-server) — list, read, upload, and delete objects in Amazon S3 buckets from AI assistants.
 
-## What is Amazon S3?
+## What is S3 MCP Server?
 
-MCP server for [Amazon S3](https://aws.amazon.com/s3/). List buckets, browse objects, upload and download files, and manage S3 storage through AI assistants.
+The `@geunoh/s3-mcp-server` package bridges the AWS S3 API and MCP, exposing tools for listing buckets, browsing objects by prefix, uploading and downloading file content, and deleting objects. It authenticates with standard AWS credentials and supports any S3-compatible endpoint. See [geunoh/s3-mcp-server](https://github.com/geunoh/s3-mcp-server) for full documentation.
 
-**AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
-
-**Summary.** S3 MCP Server — Dockerized from upstream `@geunoh/s3-mcp-server` package.
+**AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION` in the environment.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "List all S3 buckets in my account."
-- "Show the contents of the 'my-data' bucket."
+- "List all S3 buckets in my AWS account and their regions."
+- "Show the objects in the 'my-data-bucket' bucket under the 'logs/2025/' prefix."
+- "Download the file 'config/settings.json' from the 'prod-assets' bucket and show me its contents."
+- "Upload the following JSON content as 'reports/summary.json' to the 'analytics-bucket'."
+- "Delete all objects in the 'staging-bucket' under the 'tmp/' prefix."
+- "Check whether a file named 'deployment.zip' exists in the 'ci-artifacts' bucket and report its size and last-modified date."
 
 ## Deploy
 
@@ -193,37 +193,4 @@ curl -s -X POST http://localhost:8662/mcp \
 
 ```bash
 docker stop s3-mcp-server-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "s3-mcp-server-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/s3-mcp-server-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8662:8662 -e MCP_TRANSPORT=streamable-http hackerdogs/s3-mcp-server-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "s3-mcp-server-mcp": {
-      "url": "http://localhost:8662/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

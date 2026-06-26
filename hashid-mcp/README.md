@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -213,37 +211,4 @@ docker run -i --rm --entrypoint hashid hackerdogs/hashid-mcp:latest -j '$2a$10$.
 
 ```bash
 docker run -i --rm --entrypoint hashid hackerdogs/hashid-mcp:latest -h
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "hashid-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/hashid-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8264:8264 -e MCP_TRANSPORT=streamable-http hackerdogs/hashid-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "hashid-mcp": {
-      "url": "http://localhost:8264/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

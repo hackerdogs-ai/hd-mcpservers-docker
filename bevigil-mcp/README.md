@@ -1,85 +1,183 @@
 <p align="center">
-  <a href="https://hackerdogs.ai"><img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/></a>
-  <br/>
-  <a href="https://hackerdogs.ai"><img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/></a>
+  <a href="https://hackerdogs.ai">
+    <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
+    <br/>
+    <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
+  </a>
 </p>
 
-# BeVigil MCP Server
+# Bevigil MCP Server
 
-MCP server for [BeVigil](https://bevigil.com) mobile app OSINT — discover subdomains and URLs from mobile app analysis.
+MCP server wrapper for [BeVigil](https://osint.bevigil.com) — mobile app OSINT for domain subdomains and URLs.
 
-**Requires:** `BEVIGIL_API_KEY` (get a key at [bevigil.com](https://bevigil.com)).
+## What is Bevigil?
+
+BeVigil is an OSINT platform that extracts subdomains and URLs leaked by mobile applications. By indexing data from millions of Android and iOS apps, it surfaces hostnames and endpoints that are invisible to traditional web-crawling recon tools. See [osint.bevigil.com](https://osint.bevigil.com) for full documentation.
+
+**API key required** — register at [osint.bevigil.com](https://osint.bevigil.com) and set `BEVIGIL_API_KEY`.
 
 **Tools:**
-- `bevigil_domain_osint` — Get subdomains and URLs for a domain from BeVigil mobile app OSINT
+- `bevigil_domain_osint` — Retrieve subdomains and URLs for a domain from the BeVigil mobile app OSINT database.
+
+## Tools Reference
+
+## Example Prompts
+
+Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
+
+- "Use BeVigil to find all subdomains of example.com leaked by mobile apps."
+- "What URLs for api.example.com have been found in Android or iOS apps?"
+- "Run BeVigil OSINT on target.com and list any exposed endpoints."
+- "Find hidden subdomains of acme.corp using BeVigil mobile app data."
+- "Enumerate URLs from mobile apps that reference example.com for recon."
+- "Use bevigil_domain_osint to check what backend hosts are leaked for mysite.com."
 
 ## Deploy
 
-### Docker Compose
+### Docker Compose (recommended)
+
 ```bash
 docker-compose up -d
 ```
-Set `BEVIGIL_API_KEY` in the environment or a `.env` file.
 
-### Docker Run (stdio)
+### Docker Run (stdio mode)
+
 ```bash
-docker run -i --rm -e BEVIGIL_API_KEY=your_key hackerdogs/bevigil-mcp:latest
+docker run -i --rm hackerdogs/bevigil-mcp:latest
 ```
 
-### Docker Run (HTTP streamable)
+### Docker Run (HTTP streamable mode)
+
 ```bash
 docker run -d -p 8515:8515 \
   -e MCP_TRANSPORT=streamable-http \
   -e MCP_PORT=8515 \
-  -e BEVIGIL_API_KEY=your_key \
   hackerdogs/bevigil-mcp:latest
 ```
 
 ## MCP Client Configuration
 
-**Stdio:** Use `mcpServer.json`; set `BEVIGIL_API_KEY` in `env`.
-**HTTP:** Connect to `http://localhost:8515` with `MCP_TRANSPORT=streamable-http`.
+### Stdio mode (default)
 
-| Env | Description | Default |
-|-----|-------------|---------|
-| `MCP_TRANSPORT` | `stdio` or `streamable-http` | `stdio` |
-| `MCP_PORT` | HTTP port (streamable-http) | `8515` |
-| `BEVIGIL_API_KEY` | BeVigil API key | required |
-
-## Example prompts
-
-- "Get subdomains for example.com using BeVigil."
-- "Find URLs associated with hackerdogs.ai from mobile apps."
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
+Add to your Claude Desktop or Cursor MCP config:
 
 ```json
 {
   "mcpServers": {
     "bevigil-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/bevigil-mcp:latest"],
-      "env": {}
+      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "hackerdogs/bevigil-mcp:latest"],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
     }
   }
 }
 ```
 
-### Streamable HTTP (remote / farm / multi-client)
+### HTTP mode (streamable-http)
 
-```bash
-docker run -d -p 8515:8515 -e MCP_TRANSPORT=streamable-http hackerdogs/bevigil-mcp:latest
-```
+First, start the server using Docker Compose or `docker run` with HTTP mode (see [Deploy](#deploy) above), then point your MCP client at the running server:
 
 ```json
 {
   "mcpServers": {
     "bevigil-mcp": {
-      "url": "http://localhost:8515/mcp/",
-      "transport": "streamable-http"
+      "url": "http://localhost:8515/mcp"
     }
   }
 }
+```
+
+> **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+## Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
+| `MCP_PORT` | `8515` | HTTP port (only used with `streamable-http`) |
+| `BEVIGIL_API_KEY` | `` | Bevigil api key |
+
+## Installing in Hackerdogs
+
+The fastest way to get started is through [Hackerdogs](https://hackerdogs.ai):
+
+1. **Log in** to your Hackerdogs account.
+2. Go to the **Tools Catalog**.
+3. **Search** for the tool by name (e.g. "nuclei", "naabu", "julius").
+4. Expand the tool card and click **Install** — you're ready to go.
+
+> Give it a couple of minutes to go live. Then start querying by asking Hackerdogs to use the tool explicitly (e.g. *"Use naabu to scan example.com"*). If you don't specify, Hackerdogs will automatically choose the best tool for the job — it may choose this one on its own.
+
+5. **Vendor API key required?** Add your key in the config environment variable field before clicking Install. Your key will be encrypted at rest.
+6. **Enable / Disable** the tool anytime from the **Enabled Tools** page.
+7. **Need to update a key or parameter?** Go to **My Tools** → toggle **Show Decrypted Values** → edit → **Save**.
+
+> **Want to contribute or chat with the team?** Join our [Discord](https://discord.gg/str9FcWuyM).
+
+## Build
+
+```bash
+docker build -t hackerdogs/bevigil-mcp:latest .
+```
+
+## Testing
+
+### Automated tests
+
+```bash
+./test.sh
+```
+
+### Test directly with Docker
+
+**1. Start the server in HTTP mode:**
+
+```bash
+docker run -d --rm --name bevigil-mcp-test -p 8515:8515 \
+  -e MCP_TRANSPORT=streamable-http \
+  hackerdogs/bevigil-mcp:latest
+```
+
+**2. Initialize the MCP session:**
+
+```bash
+SESSION_ID=$(curl -s -D - -X POST http://localhost:8515/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"0.1"}}}' \
+  2>&1 | grep -i mcp-session-id | awk '{print $2}' | tr -d '\r\n')
+
+curl -s -X POST http://localhost:8515/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "mcp-session-id: $SESSION_ID" \
+  -d '{"jsonrpc":"2.0","method":"notifications/initialized"}'
+```
+
+**3. Call a tool:**
+
+```bash
+curl -s -X POST http://localhost:8515/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "mcp-session-id: $SESSION_ID" \
+  -d '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"run_bevigil","arguments":{"arguments":"--help"}}}'
+```
+
+**4. Clean up:**
+
+```bash
+docker stop bevigil-mcp-test
+```
+
+## Running the tool directly (bypassing MCP)
+
+You can run the Bevigil CLI in the same container by overriding the entrypoint without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint bevigil hackerdogs/bevigil-mcp:latest --help
 ```

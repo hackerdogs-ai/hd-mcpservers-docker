@@ -1,31 +1,33 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS Aurora DSQL MCP Server
 
-MCP server wrapper for [Aurora DSQL](https://github.com/awslabs/mcp) — upstream package `awslabs.aurora-dsql-mcp-server`.
+MCP server wrapper for [Aurora DSQL](https://github.com/awslabs/mcp/tree/main/src/aurora-dsql-mcp-server) — interact with Amazon Aurora DSQL serverless distributed SQL clusters via natural language.
 
 ## What is Aurora DSQL?
 
-MCP server for Amazon Aurora DSQL, a distributed SQL database. Provides AI assistants with tools to query, manage, and interact with Aurora DSQL clusters and databases.
+Amazon Aurora DSQL is AWS's serverless distributed SQL database designed for multi-region active-active workloads with PostgreSQL compatibility. This MCP server enables AI assistants to connect to Aurora DSQL clusters, execute SQL queries, inspect schemas, and manage database objects without requiring direct psql access. See [awslabs/mcp](https://github.com/awslabs/mcp/tree/main/src/aurora-dsql-mcp-server) for full documentation.
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
-**Summary.** AWS Aurora DSQL MCP Server — Dockerized from upstream `awslabs.aurora-dsql-mcp-server` package.
+**Summary.** MCP server wrapper for [Aurora DSQL](https://github.com/awslabs/mcp/tree/main/src/aurora-dsql-mcp-server) — query and manage Amazon Aurora DSQL distributed SQL clusters from your AI assistant.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Query my Aurora DSQL cluster for active connections."
-- "Show me the tables in my DSQL database."
+- "List all Aurora DSQL clusters in my account and show their endpoint addresses."
+- "Show me the tables and schemas in my Aurora DSQL cluster."
+- "Run a SELECT query against the orders table in my DSQL cluster."
+- "Check the current connection count and cluster status for my Aurora DSQL endpoint."
+- "Create a new table in my Aurora DSQL cluster with appropriate indexes for a users table."
+- "Show me the row counts for all tables in my Aurora DSQL database."
 
 ## Deploy
 
@@ -193,37 +195,4 @@ curl -s -X POST http://localhost:8603/mcp \
 
 ```bash
 docker stop aws-aurora-dsql-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "aws-aurora-dsql-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/aws-aurora-dsql-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8603:8603 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-aurora-dsql-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "aws-aurora-dsql-mcp": {
-      "url": "http://localhost:8603/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

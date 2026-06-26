@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -389,37 +387,4 @@ r = requests.get('https://www.virustotal.com/api/v3/domains/example.com',
   headers={'x-apikey':'your-key-here', 'Accept':'application/json'})
 print(json.dumps(r.json().get('data',{}).get('attributes',{}).get('last_analysis_stats',{}), indent=2))
 "
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "virustotal-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/virustotal-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8369:8369 -e MCP_TRANSPORT=streamable-http hackerdogs/virustotal-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "virustotal-mcp": {
-      "url": "http://localhost:8369/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

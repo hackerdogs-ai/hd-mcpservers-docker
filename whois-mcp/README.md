@@ -1,31 +1,29 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # WHOIS MCP Server
 
-MCP server wrapper for [WHOIS](https://github.com/nicholasgasior/whois-mcp) — upstream package `whois-mcp`.
+MCP server wrapper for [whois-mcp](https://www.npmjs.com/package/whois-mcp) — domain WHOIS registration lookups via the `whois-mcp` npm package.
 
 ## What is WHOIS?
 
-MCP server for WHOIS domain lookups. Query domain registration data including registrant info, name servers, creation/expiration dates, and registrar details.
-
-**No API keys required** — this server works out of the box.
-
-**Summary.** WHOIS MCP Server — Dockerized from upstream `whois-mcp` package.
+WHOIS is a protocol used to query registration databases for domain names and IP address blocks. This MCP server wraps the `whois-mcp` npm package to expose domain WHOIS queries to AI assistants — returning registrant information, name servers, registrar details, creation and expiration dates, and status flags. No API keys are required — the tool runs locally inside the container using the system `whois` client.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Look up the WHOIS data for example.com."
-- "When does the domain github.com expire?"
+- "Look up the WHOIS registration data for example.com."
+- "When does the domain github.com expire and who is the registrar?"
+- "Check if suspicious-domain.xyz was recently registered — look up its WHOIS record."
+- "Who are the name servers for cloudflare.com according to WHOIS?"
+- "Run a WHOIS lookup on 8.8.8.8 to find out which organization owns this IP block."
+- "Is the domain phishing-site.net still registered? Pull its current WHOIS record."
 
 ## Deploy
 
@@ -171,37 +169,4 @@ curl -s -X POST http://localhost:8673/mcp \
 
 ```bash
 docker stop whois-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "whois-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/whois-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8673:8673 -e MCP_TRANSPORT=streamable-http hackerdogs/whois-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "whois-mcp": {
-      "url": "http://localhost:8673/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

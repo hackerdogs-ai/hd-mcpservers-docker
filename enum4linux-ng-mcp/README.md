@@ -1,26 +1,24 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Enum4linux-ng MCP Server
 
-MCP server wrapper for [Enum4Linux Ng](https://github.com/cddc/enum4linux-ng) — Advanced SMB enumeration with enhanced logging.
+MCP server wrapper for [Enum4Linux Ng](https://github.com/cddmp/enum4linux-ng) — Advanced SMB enumeration with enhanced logging.
 
 ## What is Enum4Linux Ng?
 
 Enum4Linux Ng (enum4linux-ng) is a security tool that provides: **Advanced SMB enumeration with enhanced logging.**
 
-See [cddc/enum4linux-ng](https://github.com/cddc/enum4linux-ng) for full documentation.
+See [cddc/enum4linux-ng](https://github.com/cddmp/enum4linux-ng) for full documentation.
 
 **No API keys required** — Enum4Linux Ng runs locally inside the Docker container.
 
-**Summary.** MCP server wrapper for [Enum4Linux Ng](https://github.com/cddc/enum4linux-ng) — Advanced SMB enumeration with enhanced logging.
+**Summary.** MCP server wrapper for [Enum4Linux Ng](https://github.com/cddmp/enum4linux-ng) — Advanced SMB enumeration with enhanced logging.
 
 **Tools:**
 - `run_enum4linux_ng` — Run enum4linux-ng with the given arguments. Returns structured JSON output.
@@ -217,37 +215,4 @@ docker run -i --rm --entrypoint enum4linux-ng hackerdogs/enum4linux-ng-mcp:lates
 
 ```bash
 docker run -i --rm --entrypoint enum4linux-ng hackerdogs/enum4linux-ng-mcp:latest -h
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "enum4linux-ng-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/enum4linux-ng-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8210:8210 -e MCP_TRANSPORT=streamable-http hackerdogs/enum4linux-ng-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "enum4linux-ng-mcp": {
-      "url": "http://localhost:8210/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -256,37 +254,4 @@ docker run -i --rm --entrypoint cvemap hackerdogs/cvemap-mcp:latest -cve CVE-202
 
 ```bash
 docker run -i --rm --entrypoint cvemap hackerdogs/cvemap-mcp:latest -h
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "cvemap-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/cvemap-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8106:8106 -e MCP_TRANSPORT=streamable-http hackerdogs/cvemap-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "cvemap-mcp": {
-      "url": "http://localhost:8106/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

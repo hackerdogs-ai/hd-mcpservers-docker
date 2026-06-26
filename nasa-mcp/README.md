@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -14,9 +12,9 @@ MCP server wrapper for [NASA](https://github.com/programcomputer/nasa-mcp-server
 
 ## What is NASA?
 
-MCP server for [NASA Open APIs](https://api.nasa.gov/). Access 20+ NASA data sources including Astronomy Picture of the Day (APOD), Mars Rover photos, Near-Earth Object tracking, satellite imagery, and more.
+This MCP server connects AI assistants to 20+ [NASA Open APIs](https://api.nasa.gov/), covering Astronomy Picture of the Day (APOD), Mars Rover photos from Curiosity and Perseverance, Near-Earth Object (NEO) asteroid tracking, satellite imagery via NASA Earth, space weather alerts, and more. See [programcomputer/nasa-mcp-server](https://github.com/programcomputer/nasa-mcp-server) for full documentation.
 
-**API key required** — get a free key at [api.nasa.gov](https://api.nasa.gov/).
+**API key required** — get a free key at [api.nasa.gov](https://api.nasa.gov/). A `DEMO_KEY` with rate limits is used by default.
 
 **Summary.** NASA MCP Server — Dockerized from upstream `@programcomputer/nasa-mcp-server` package.
 
@@ -24,8 +22,12 @@ MCP server for [NASA Open APIs](https://api.nasa.gov/). Access 20+ NASA data sou
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me today's Astronomy Picture of the Day."
-- "Find near-Earth asteroids approaching this week."
+- "Show me today's Astronomy Picture of the Day with its explanation."
+- "List near-Earth asteroids approaching within 0.05 AU this week."
+- "Fetch the latest photos taken by the Curiosity Mars Rover's Navcam."
+- "Show me a satellite image of the Amazon River delta using NASA Earth imagery."
+- "Are there any active geomagnetic storms in today's space weather alerts?"
+- "Get details for asteroid 2024 YR4 including its diameter and close approach distance."
 
 ## Deploy
 
@@ -105,7 +107,7 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 |----------|---------|-------------|
 | `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
 | `MCP_PORT` | `8651` | HTTP port (only used with `streamable-http`) |
-| `NASA_API_KEY` | — | NASA API key — get a free key at [api.nasa.gov](https://api.nasa.gov/) |
+| `NASA_API_KEY` | `DEMO_KEY` | NASA API key — get a free key at [api.nasa.gov](https://api.nasa.gov/) |
 
 ## Installing in Hackerdogs
 
@@ -179,37 +181,4 @@ curl -s -X POST http://localhost:8651/mcp \
 
 ```bash
 docker stop nasa-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "nasa-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/nasa-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8651:8651 -e MCP_TRANSPORT=streamable-http hackerdogs/nasa-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "nasa-mcp": {
-      "url": "http://localhost:8651/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

@@ -1,32 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # GreyNoise MCP Server
 
-MCP server wrapper for [GreyNoise](https://github.com/GreyNoise-Intelligence/greynoise-mcp) — upstream package `@greynoise/greynoise-mcp-server`.
+MCP server wrapper for [GreyNoise](https://github.com/GreyNoise-Intelligence/greynoise-mcp) — internet noise intelligence platform for IP classification and threat context.
 
 ## What is GreyNoise?
 
-MCP server for [GreyNoise](https://greynoise.io/) — internet scanner and noise intelligence platform. Query IP addresses for scan activity, classification (benign/malicious), tags, and metadata. Identify mass-scanning infrastructure vs targeted attacks.
+GreyNoise is an internet intelligence platform that collects, analyzes, and labels internet-wide scan and attack traffic, allowing security teams to distinguish between mass-scanning background noise and targeted attacks. It classifies IP addresses as benign (legitimate scanners such as search engines), malicious, or unknown, and enriches them with tags, CVE associations, geolocation, ASN, and behavioral metadata. See [GreyNoise-Intelligence/greynoise-mcp](https://github.com/GreyNoise-Intelligence/greynoise-mcp) for full documentation.
 
 **API key required** — sign up at [greynoise.io](https://greynoise.io/).
-
-**Summary.** GreyNoise MCP Server — Dockerized from upstream `@greynoise/greynoise-mcp-server` package.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Check if IP 1.2.3.4 is a known scanner."
-- "What is GreyNoise seeing for this IP address?"
-- "Show me the top malicious scanners targeting port 22."
+- "Check if IP 45.33.32.156 is a known malicious scanner according to GreyNoise."
+- "What tags and activity is GreyNoise reporting for IP 198.20.70.114?"
+- "Use GreyNoise to look up whether 1.2.3.4 is background noise or a targeted attacker."
+- "Show me all GreyNoise-classified IPs that are actively scanning for Log4Shell vulnerabilities."
+- "Query GreyNoise for internet-wide scanners targeting port 3389 (RDP) right now."
+- "Tell me the GreyNoise classification and metadata for this suspicious IP from our firewall logs: 89.248.165.24."
 
 ## Deploy
 
@@ -180,37 +179,4 @@ curl -s -X POST http://localhost:8645/mcp \
 
 ```bash
 docker stop greynoise-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "greynoise-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/greynoise-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8645:8645 -e MCP_TRANSPORT=streamable-http hackerdogs/greynoise-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "greynoise-mcp": {
-      "url": "http://localhost:8645/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

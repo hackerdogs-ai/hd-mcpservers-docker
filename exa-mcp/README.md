@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Exa MCP Server
 
-MCP server wrapper for [Exa](https://github.com/exa-labs/exa-mcp-server) — upstream package `exa-mcp-server`.
+MCP server wrapper for [Exa](https://github.com/exa-labs/exa-mcp-server) — neural search engine with semantic similarity ranking for web, research papers, code, and company data.
 
 ## What is Exa?
 
-MCP server for [Exa](https://exa.ai/) — a neural search engine. Provides real-time web search, code search, research paper search, and company research capabilities using Exa's embedding-based search index.
+Exa is a neural search engine that indexes the web using embedding-based similarity rather than keyword matching, delivering semantically relevant results for technical and research queries. This MCP server wraps the official `exa-mcp-server` package by [exa-labs](https://github.com/exa-labs/exa-mcp-server), providing tools for general web search, research paper discovery, code search, and company lookups. See [exa-labs/exa-mcp-server](https://github.com/exa-labs/exa-mcp-server) for full documentation.
 
-**API key required** — sign up at [exa.ai](https://exa.ai/).
-
-**Summary.** Exa MCP Server — Dockerized from upstream `exa-mcp-server` package.
+**API key required** — sign up at [exa.ai](https://exa.ai/) to obtain an `EXA_API_KEY`.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Search for recent papers on LLM security."
-- "Find companies working on MCP protocol tooling."
+- "Use Exa to search for recent academic papers on prompt injection attacks against LLMs."
+- "Find companies building developer tools for AI agent orchestration using Exa's company search."
+- "Search Exa for code examples of implementing MCP servers in Python."
+- "Use Exa to find the most semantically relevant articles about zero-day vulnerability disclosure practices."
+- "Search Exa for research papers on retrieval-augmented generation published after January 2024."
+- "Find competitors to Anthropic Claude in the enterprise AI assistant space using Exa."
 
 ## Deploy
 
@@ -179,37 +179,4 @@ curl -s -X POST http://localhost:8637/mcp \
 
 ```bash
 docker stop exa-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "exa-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/exa-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8637:8637 -e MCP_TRANSPORT=streamable-http hackerdogs/exa-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "exa-mcp": {
-      "url": "http://localhost:8637/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

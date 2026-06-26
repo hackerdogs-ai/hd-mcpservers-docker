@@ -1,31 +1,33 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS DocumentDB MCP Server
 
-MCP server wrapper for [DocumentDB](https://github.com/awslabs/mcp) — upstream package `awslabs.documentdb-mcp-server`.
+MCP server wrapper for [Amazon DocumentDB](https://github.com/awslabs/mcp/tree/main/src/documentdb-mcp-server) — query collections, manage indexes, and inspect cluster health on your MongoDB-compatible Amazon DocumentDB clusters.
 
-## What is DocumentDB?
+## What is Amazon DocumentDB?
 
-MCP server for AWS DocumentDB. Interact with DocumentDB databases — query collections, manage indexes, and inspect cluster health.
+Amazon DocumentDB is AWS's managed MongoDB-compatible document database service. This MCP server lets AI assistants connect to DocumentDB clusters to run aggregation queries, list collections, inspect index definitions, and retrieve cluster and instance metadata — all without requiring direct driver access or a MongoDB client. See [awslabs/mcp](https://github.com/awslabs/mcp/tree/main/src/documentdb-mcp-server) for full documentation.
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
-**Summary.** AWS DocumentDB MCP Server — Dockerized from upstream `awslabs.documentdb-mcp-server` package.
+**Summary.** MCP server wrapper for [Amazon DocumentDB](https://github.com/awslabs/mcp/tree/main/src/documentdb-mcp-server) — query and manage MongoDB-compatible DocumentDB collections, indexes, and cluster resources from your AI assistant.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me DocumentDB resources in my AWS account."
-- "Describe the current state of my DocumentDB setup."
+- "List all DocumentDB clusters in my account and show their current status."
+- "Show me all collections in my DocumentDB database and their document counts."
+- "Run a find query on the customers collection where status is 'active'."
+- "List the indexes defined on the orders collection in my DocumentDB cluster."
+- "Show me the storage and instance metrics for my DocumentDB cluster."
+- "Create a new index on the email field of the users collection in my DocumentDB database."
 
 ## Deploy
 
@@ -193,37 +195,4 @@ curl -s -X POST http://localhost:8611/mcp \
 
 ```bash
 docker stop aws-documentdb-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "aws-documentdb-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/aws-documentdb-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8611:8611 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-documentdb-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "aws-documentdb-mcp": {
-      "url": "http://localhost:8611/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

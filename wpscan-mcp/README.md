@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -219,37 +217,4 @@ docker run -i --rm --entrypoint wpscan hackerdogs/wpscan-mcp:latest --url https:
 
 ```bash
 docker run -i --rm --entrypoint wpscan hackerdogs/wpscan-mcp:latest --help
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "wpscan-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/wpscan-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8220:8220 -e MCP_TRANSPORT=streamable-http hackerdogs/wpscan-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "wpscan-mcp": {
-      "url": "http://localhost:8220/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

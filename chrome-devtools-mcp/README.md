@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Chrome DevTools MCP Server
 
-MCP server wrapper for [Chrome DevTools](https://github.com/anthropics/mcp-server-chrome-devtools) — upstream package `@anthropic/mcp-server-chrome-devtools`.
+MCP server wrapper for [Chrome DevTools Protocol](https://github.com/hangxingliu/mcp-chrome-devtools) — upstream package `@mcp-b/chrome-devtools-mcp`.
 
 ## What is Chrome DevTools?
 
-MCP server for Chrome DevTools Protocol. Control Chrome browser instances — inspect pages, capture screenshots, execute JavaScript, monitor network traffic, and debug web applications.
+The `@mcp-b/chrome-devtools-mcp` package exposes the Chrome DevTools Protocol (CDP) as MCP tools, allowing AI assistants to interact with a running Chrome instance. With it you can navigate pages, execute JavaScript in the browser context, inspect and modify the DOM, intercept and analyze network requests, and capture screenshots — enabling full browser automation and web app debugging workflows. See [github.com/hangxingliu/mcp-chrome-devtools](https://github.com/hangxingliu/mcp-chrome-devtools) for full documentation.
 
-**No API keys required** — this server works out of the box.
-
-**Summary.** Chrome DevTools MCP Server — Dockerized from upstream `@anthropic/mcp-server-chrome-devtools` package.
+**No API keys required** — connects to a Chrome instance with remote debugging enabled (pass the CDP WebSocket URL or use a local Chrome).
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Take a screenshot of the current page."
-- "Execute JavaScript on the active tab."
+- "Navigate to https://example.com and take a screenshot of the full page."
+- "Execute JavaScript on the active tab to extract all anchor tags and their hrefs."
+- "Intercept network requests on the current page and show me any XHR calls to /api/."
+- "Inspect the DOM of the login form at https://staging.myapp.com and return the input field names."
+- "Run a performance audit on https://example.com by checking network timing via Chrome DevTools."
+- "Use Chrome DevTools to set a breakpoint-style event listener and capture all console.log output on the page."
 
 ## Deploy
 
@@ -171,37 +171,4 @@ curl -s -X POST http://localhost:8631/mcp \
 
 ```bash
 docker stop chrome-devtools-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "chrome-devtools-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/chrome-devtools-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8631:8631 -e MCP_TRANSPORT=streamable-http hackerdogs/chrome-devtools-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "chrome-devtools-mcp": {
-      "url": "http://localhost:8631/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

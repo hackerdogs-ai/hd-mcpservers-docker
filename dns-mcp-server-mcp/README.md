@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # DNS MCP Server
 
-MCP server wrapper for [DNS](https://github.com/cenemiljezweb/dns-mcp-server) — upstream package `@cenemiljezweb/dns-mcp-server`.
+MCP server wrapper for [dns-mcp-server](https://github.com/cenemiljezweb/dns-mcp-server) — perform DNS record lookups (A, AAAA, MX, TXT, NS, CNAME, SOA) directly from your AI assistant.
 
-## What is DNS?
+## What is DNS MCP Server?
 
-MCP server for DNS lookups and resolution. Perform A, AAAA, MX, TXT, NS, CNAME, SOA, and other DNS record queries.
+The DNS MCP Server provides structured DNS resolution capabilities to AI assistants, allowing them to query any record type for any domain using the system resolver. It is useful for reconnaissance, verifying mail configuration, debugging DNS propagation, and validating SPF/DKIM/DMARC records. See [cenemiljezweb/dns-mcp-server](https://github.com/cenemiljezweb/dns-mcp-server) for full documentation.
 
-**No API keys required** — this server works out of the box.
-
-**Summary.** DNS MCP Server — Dockerized from upstream `@cenemiljezweb/dns-mcp-server` package.
+**No API keys required** — uses standard DNS resolution.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Look up the MX records for example.com."
-- "Resolve the A records for github.com."
+- "Look up the MX records for gmail.com and list all mail servers in priority order."
+- "Resolve the A and AAAA records for github.com."
+- "Fetch the TXT records for example.com to check SPF and DMARC policy."
+- "Query the NS records for a domain to identify its authoritative name servers."
+- "Resolve the CNAME chain for a subdomain to trace where it ultimately points."
+- "Check the SOA record for a domain to find the primary nameserver and serial number."
 
 ## Deploy
 
@@ -171,37 +171,4 @@ curl -s -X POST http://localhost:8635/mcp \
 
 ```bash
 docker stop dns-mcp-server-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "dns-mcp-server-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/dns-mcp-server-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8635:8635 -e MCP_TRANSPORT=streamable-http hackerdogs/dns-mcp-server-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "dns-mcp-server-mcp": {
-      "url": "http://localhost:8635/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

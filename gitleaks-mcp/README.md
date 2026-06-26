@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -243,37 +241,4 @@ docker run -i --rm --entrypoint gitleaks hackerdogs/gitleaks-mcp:latest detect -
 
 ```bash
 docker run -i --rm --entrypoint gitleaks hackerdogs/gitleaks-mcp:latest --help
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "gitleaks-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/gitleaks-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8332:8332 -e MCP_TRANSPORT=streamable-http hackerdogs/gitleaks-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "gitleaks-mcp": {
-      "url": "http://localhost:8332/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

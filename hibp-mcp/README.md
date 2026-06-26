@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Have I Been Pwned MCP Server
 
-MCP server wrapper for [Have I Been Pwned](https://github.com/darrenjrobinson/hibp-mcp) — upstream package `@darrenjrobinson/hibp-mcp`.
+MCP server wrapper for [Have I Been Pwned](https://github.com/darrenjrobinson/hibp-mcp) — check email addresses, domains, and passwords against the world's largest data breach database.
 
 ## What is Have I Been Pwned?
 
-MCP server for [Have I Been Pwned](https://haveibeenpwned.com/) (HIBP). Check email addresses and domains against known data breaches, search for compromised passwords, and retrieve breach details.
+Have I Been Pwned (HIBP) is Troy Hunt's authoritative data breach notification service that aggregates billions of credentials from thousands of publicly disclosed breaches, allowing anyone to check whether an email address, domain, or password has been exposed. It is widely used by security teams for user account auditing, incident triage, and proactive credential monitoring. See [darrenjrobinson/hibp-mcp](https://github.com/darrenjrobinson/hibp-mcp) for full documentation.
 
 **API key required** — purchase at [haveibeenpwned.com/API/Key](https://haveibeenpwned.com/API/Key).
-
-**Summary.** Have I Been Pwned MCP Server — Dockerized from upstream `@darrenjrobinson/hibp-mcp` package.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Has the email user@example.com been in any data breaches?"
-- "Show me all breaches for the domain example.com."
+- "Has the email address alice@example.com appeared in any known data breaches?"
+- "Show me all breaches associated with the domain example.com and how many accounts were exposed in each."
+- "List every breach that exposed passwords, dates, and breach descriptions for the email bob@acme.org."
+- "Check whether the password 'Summer2024!' has been found in any HIBP breach corpus."
+- "Which data breaches affected our company domain corp.example.com and what data classes were exposed?"
+- "Use HIBP to check a list of employee emails and report which ones have been compromised."
 
 ## Deploy
 
@@ -179,37 +179,4 @@ curl -s -X POST http://localhost:8646/mcp \
 
 ```bash
 docker stop hibp-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "hibp-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/hibp-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8646:8646 -e MCP_TRANSPORT=streamable-http hackerdogs/hibp-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "hibp-mcp": {
-      "url": "http://localhost:8646/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

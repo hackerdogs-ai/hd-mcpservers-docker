@@ -1,20 +1,18 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Postman MCP Server
 
-MCP server wrapper for [Postman](https://github.com/postmanlabs/postman-mcp-server) — upstream package `@postman/postman-mcp-server`.
+MCP server wrapper for [Postman](https://github.com/postmanlabs/postman-mcp-server) — manage Postman workspaces, collections, environments, and APIs from your AI assistant.
 
 ## What is Postman?
 
-MCP server for [Postman](https://www.postman.com/). Access your Postman collections, environments, APIs, and workspaces. Run API requests, inspect responses, and manage your API development workflow through AI assistants.
+Postman MCP Server (the official `@postman/postman-mcp-server` package) gives AI assistants access to your Postman account — browse workspaces and collections, inspect API definitions, retrieve environment variables, list team members, and navigate your entire API development workflow without leaving the chat. It connects to the Postman API using your personal API key. See [postmanlabs/postman-mcp-server](https://github.com/postmanlabs/postman-mcp-server) for full documentation.
 
 **API key required** — generate at [Postman API Keys](https://go.postman.co/settings/me/api-keys).
 
@@ -24,8 +22,12 @@ MCP server for [Postman](https://www.postman.com/). Access your Postman collecti
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "List my Postman collections."
-- "Show the API endpoints in my 'Auth Service' collection."
+- "List all my Postman workspaces and their types (personal, team, public)."
+- "Show me all collections in the 'Backend Services' workspace and their request counts."
+- "Get the environment variables defined in the 'Production' Postman environment."
+- "Find all API endpoints in the 'Auth Service' collection that use POST and return their paths."
+- "List my Postman team members and their roles."
+- "Show the OpenAPI/Swagger definition for the 'Payments API' in my Postman workspace."
 
 ## Deploy
 
@@ -179,37 +181,4 @@ curl -s -X POST http://localhost:8658/mcp \
 
 ```bash
 docker stop postman-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "postman-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/postman-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8658:8658 -e MCP_TRANSPORT=streamable-http hackerdogs/postman-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "postman-mcp": {
-      "url": "http://localhost:8658/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

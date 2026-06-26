@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -207,37 +205,4 @@ You can run the ncrack CLI in the same container by overriding the entrypoint to
 
 ```bash
 docker run -i --rm --entrypoint ncrack hackerdogs/ncrack-mcp:latest -h
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "ncrack-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/ncrack-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8306:8306 -e MCP_TRANSPORT=streamable-http hackerdogs/ncrack-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "ncrack-mcp": {
-      "url": "http://localhost:8306/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS S3 Tables MCP Server
 
-MCP server wrapper for [S3 Tables](https://github.com/awslabs/mcp) — upstream package `awslabs.s3-tables-mcp-server`.
+MCP server wrapper for [AWS S3 Tables](https://github.com/awslabs/mcp/tree/main/src/s3-tables-mcp-server) — create, query, and manage Apache Iceberg tables stored natively in Amazon S3 using the S3 Tables service.
 
-## What is S3 Tables?
+## What is AWS S3 Tables?
 
-MCP server for S3 Tables. Generate and query tables stored in S3, manage table metadata, and run analytics.
+Amazon S3 Tables is a managed table storage service that brings native Apache Iceberg support to S3, offering built-in compaction, snapshot management, and optimized query performance for analytics workloads. This MCP server, built from `awslabs.s3-tables-mcp-server`, lets you list table buckets, browse namespaces and tables, inspect table metadata and schemas, and run queries against Iceberg tables — all through natural language. See [awslabs/mcp](https://github.com/awslabs/mcp) for full documentation.
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
-
-**Summary.** AWS S3 Tables MCP Server — Dockerized from upstream `awslabs.s3-tables-mcp-server` package.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me S3 Tables resources in my AWS account."
-- "Describe the current state of my S3 Tables setup."
+- "List all S3 table buckets in my account and their creation dates."
+- "Show me the namespaces and tables in my 'analytics-bucket' S3 table bucket."
+- "Describe the schema for the 'events' Iceberg table including partition spec."
+- "What are the current snapshots and data files for the 'orders' table?"
+- "Query the 'clickstream' table to count events by type for the last 7 days."
+- "Show the compaction and maintenance settings for all tables in my S3 table bucket."
 
 ## Deploy
 
@@ -193,37 +193,4 @@ curl -s -X POST http://localhost:8622/mcp \
 
 ```bash
 docker stop aws-s3-tables-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "aws-s3-tables-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/aws-s3-tables-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8622:8622 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-s3-tables-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "aws-s3-tables-mcp": {
-      "url": "http://localhost:8622/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

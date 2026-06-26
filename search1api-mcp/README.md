@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Search1API MCP Server
 
-MCP server wrapper for [Search1API](https://github.com/fatwang2/search1api-mcp) — upstream package `search1api-mcp`.
+MCP server wrapper for [Search1API](https://search1api.com/) — unified web search, news search, webpage content extraction, and sitemap retrieval through a single API key.
 
 ## What is Search1API?
 
-MCP server for [Search1API](https://search1api.com/). Web search, news search, web page content extraction, and website sitemap retrieval through a unified API.
+Search1API is a unified search backend that aggregates results from multiple search engines and provides tools for web search, news search, real-time web content extraction, and sitemap fetching — all accessible through a single API key. See [fatwang2/search1api-mcp](https://github.com/fatwang2/search1api-mcp) for full documentation.
 
-**API key required** — sign up at [search1api.com](https://search1api.com/).
-
-**Summary.** Search1API MCP Server — Dockerized from upstream `search1api-mcp` package.
+**API key required** — sign up at [search1api.com](https://search1api.com/) to obtain a `SEARCH1API_KEY`.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Search the web for 'Kubernetes security best practices'."
-- "Extract the content of this URL as text."
+- "Search the web for 'CVE-2024-3400 PAN-OS exploit' and summarize the top results."
+- "Use Search1API to find the latest news about AI regulation in the EU from the past week."
+- "Extract the full text content of https://example.com/blog/post-1 using the content extraction tool."
+- "Fetch the sitemap from https://docs.example.com and list all available documentation pages."
+- "Search for 'open source LLM benchmarks 2025' and return the titles and URLs of the top 10 results."
+- "Get current news about the Anthropic Claude API and summarize the three most recent articles."
 
 ## Deploy
 
@@ -179,37 +179,4 @@ curl -s -X POST http://localhost:8664/mcp \
 
 ```bash
 docker stop search1api-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "search1api-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/search1api-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8664:8664 -e MCP_TRANSPORT=streamable-http hackerdogs/search1api-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "search1api-mcp": {
-      "url": "http://localhost:8664/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

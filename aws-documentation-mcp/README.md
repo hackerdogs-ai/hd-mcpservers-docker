@@ -1,31 +1,33 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS Documentation MCP Server
 
-MCP server wrapper for [AWS Documentation](https://github.com/awslabs/mcp) — upstream package `awslabs.aws-documentation-mcp-server`.
+MCP server wrapper for [AWS Documentation](https://github.com/awslabs/mcp/tree/main/src/aws-documentation-mcp-server) — search and retrieve up-to-date AWS service documentation, API references, and best practice guides.
 
 ## What is AWS Documentation?
 
-MCP server for searching and retrieving AWS documentation. Provides AI assistants with up-to-date AWS service documentation, best practices, and reference guides.
+The AWS Documentation MCP server connects AI assistants to the official AWS documentation corpus, enabling semantic search across service guides, API references, developer guides, and best practices whitepapers. It fetches live content from docs.aws.amazon.com so responses reflect the current state of AWS services rather than training-data cutoffs. Use it when you need accurate API parameter details, service limits, IAM permission requirements, or architectural guidance. See [awslabs/mcp](https://github.com/awslabs/mcp/tree/main/src/aws-documentation-mcp-server) for full documentation.
 
-**No API keys required** — this server works out of the box.
+**No AWS credentials required** — this server queries the public AWS documentation website.
 
-**Summary.** AWS Documentation MCP Server — Dockerized from upstream `awslabs.aws-documentation-mcp-server` package.
+**Summary.** MCP server wrapper for [AWS Documentation](https://github.com/awslabs/mcp/tree/main/src/aws-documentation-mcp-server) — search the live AWS documentation corpus for API references, service guides, and best practices without leaving your AI assistant.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Search AWS docs for S3 bucket policy examples."
-- "Find documentation on Lambda concurrency limits."
+- "Search AWS docs for S3 bucket policy examples that restrict access by IP address."
+- "Find the documentation for Lambda reserved concurrency vs. provisioned concurrency."
+- "What IAM permissions are required to create an EKS cluster?"
+- "Look up the AWS documentation on DynamoDB single-table design patterns."
+- "Find the CloudFormation resource reference for AWS::ECS::TaskDefinition."
+- "Search AWS docs for the VPC endpoint policy format for S3 gateway endpoints."
 
 ## Deploy
 
@@ -171,37 +173,4 @@ curl -s -X POST http://localhost:8610/mcp \
 
 ```bash
 docker stop aws-documentation-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "aws-documentation-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/aws-documentation-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8610:8610 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-documentation-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "aws-documentation-mcp": {
-      "url": "http://localhost:8610/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

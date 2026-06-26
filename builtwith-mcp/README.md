@@ -1,59 +1,183 @@
-# BuiltWith MCP Server
+<p align="center">
+  <a href="https://hackerdogs.ai">
+    <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
+    <br/>
+    <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
+  </a>
+</p>
 
-Domain technology stack lookup via the **BuiltWith Domain API** (v22). Returns technologies, paths, and metadata for a given domain.
+# Builtwith MCP Server
 
-- **Port:** 8375 (streamable-http)
-- **Env:** `MCP_TRANSPORT`, `MCP_PORT`, `BUILTWITH_API_KEY` (required)
+MCP server wrapper for [BuiltWith](https://builtwith.com) — domain technology stack fingerprinting via the BuiltWith API.
 
-## Tools
+## What is Builtwith?
 
-| Tool | Description |
-|------|-------------|
-| `domain_lookup` | Get technology stack for a domain (e.g. `example.com`). Returns BuiltWith JSON. |
+BuiltWith is a technology profiling service that identifies the web technologies powering a domain — including CMS, analytics, CDN, payment processors, JavaScript frameworks, email services, and hundreds of other technology categories. This MCP server calls the BuiltWith Domain API v22 to return a structured breakdown of technologies detected for a given domain, making it useful for competitive intelligence and attack surface reconnaissance. See [builtwith.com](https://builtwith.com) for full documentation.
 
-## Docker Run (stdio)
+**API key required** — get a key at [builtwith.com](https://builtwith.com) and set `BUILTWITH_API_KEY`.
+
+**Tools:**
+- `domain_lookup` — Return the full technology stack for a domain using the BuiltWith API.
+
+## Tools Reference
+
+## Example Prompts
+
+Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
+
+- "Look up the technology stack for example.com using BuiltWith."
+- "What CMS and analytics platforms is competitor.com running? Use BuiltWith to find out."
+- "Check if acme.com is using any known vulnerable JavaScript frameworks via BuiltWith."
+- "Identify the CDN and WAF provider for target.io with BuiltWith."
+- "Use BuiltWith to fingerprint the e-commerce platform powering shop.example.com."
+- "List all third-party tracking and advertising technologies on marketing.example.com."
+
+## Deploy
+
+### Docker Compose (recommended)
 
 ```bash
-docker run -i --rm -e MCP_TRANSPORT=stdio -e BUILTWITH_API_KEY=your_key hackerdogs/builtwith-mcp:latest
+docker-compose up -d
 ```
 
-## Docker Run (HTTP streamable)
+### Docker Run (stdio mode)
 
 ```bash
-docker run -d -p 8375:8375 -e MCP_TRANSPORT=streamable-http -e MCP_PORT=8375 -e BUILTWITH_API_KEY=your_key hackerdogs/builtwith-mcp:latest
+docker run -i --rm hackerdogs/builtwith-mcp:latest
 ```
 
-Get an API key at [BuiltWith](https://builtwith.com/).
+### Docker Run (HTTP streamable mode)
 
-## mcpServer.json
+```bash
+docker run -d -p 8375:8375 \
+  -e MCP_TRANSPORT=streamable-http \
+  -e MCP_PORT=8375 \
+  hackerdogs/builtwith-mcp:latest
+```
 
-### Stdio (local / Cursor / Claude Desktop)
+## MCP Client Configuration
+
+### Stdio mode (default)
+
+Add to your Claude Desktop or Cursor MCP config:
 
 ```json
 {
   "mcpServers": {
     "builtwith-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/builtwith-mcp:latest"],
-      "env": {}
+      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "hackerdogs/builtwith-mcp:latest"],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
     }
   }
 }
 ```
 
-### Streamable HTTP (remote / farm / multi-client)
+### HTTP mode (streamable-http)
 
-```bash
-docker run -d -p 8375:8375 -e MCP_TRANSPORT=streamable-http hackerdogs/builtwith-mcp:latest
-```
+First, start the server using Docker Compose or `docker run` with HTTP mode (see [Deploy](#deploy) above), then point your MCP client at the running server:
 
 ```json
 {
   "mcpServers": {
     "builtwith-mcp": {
-      "url": "http://localhost:8375/mcp/",
-      "transport": "streamable-http"
+      "url": "http://localhost:8375/mcp"
     }
   }
 }
+```
+
+> **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+## Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
+| `MCP_PORT` | `8375` | HTTP port (only used with `streamable-http`) |
+| `BUILTWITH_API_KEY` | `` | Builtwith api key |
+
+## Installing in Hackerdogs
+
+The fastest way to get started is through [Hackerdogs](https://hackerdogs.ai):
+
+1. **Log in** to your Hackerdogs account.
+2. Go to the **Tools Catalog**.
+3. **Search** for the tool by name (e.g. "nuclei", "naabu", "julius").
+4. Expand the tool card and click **Install** — you're ready to go.
+
+> Give it a couple of minutes to go live. Then start querying by asking Hackerdogs to use the tool explicitly (e.g. *"Use naabu to scan example.com"*). If you don't specify, Hackerdogs will automatically choose the best tool for the job — it may choose this one on its own.
+
+5. **Vendor API key required?** Add your key in the config environment variable field before clicking Install. Your key will be encrypted at rest.
+6. **Enable / Disable** the tool anytime from the **Enabled Tools** page.
+7. **Need to update a key or parameter?** Go to **My Tools** → toggle **Show Decrypted Values** → edit → **Save**.
+
+> **Want to contribute or chat with the team?** Join our [Discord](https://discord.gg/str9FcWuyM).
+
+## Build
+
+```bash
+docker build -t hackerdogs/builtwith-mcp:latest .
+```
+
+## Testing
+
+### Automated tests
+
+```bash
+./test.sh
+```
+
+### Test directly with Docker
+
+**1. Start the server in HTTP mode:**
+
+```bash
+docker run -d --rm --name builtwith-mcp-test -p 8375:8375 \
+  -e MCP_TRANSPORT=streamable-http \
+  hackerdogs/builtwith-mcp:latest
+```
+
+**2. Initialize the MCP session:**
+
+```bash
+SESSION_ID=$(curl -s -D - -X POST http://localhost:8375/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"0.1"}}}' \
+  2>&1 | grep -i mcp-session-id | awk '{print $2}' | tr -d '\r\n')
+
+curl -s -X POST http://localhost:8375/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "mcp-session-id: $SESSION_ID" \
+  -d '{"jsonrpc":"2.0","method":"notifications/initialized"}'
+```
+
+**3. Call a tool:**
+
+```bash
+curl -s -X POST http://localhost:8375/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "mcp-session-id: $SESSION_ID" \
+  -d '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"run_builtwith","arguments":{"arguments":"--help"}}}'
+```
+
+**4. Clean up:**
+
+```bash
+docker stop builtwith-mcp-test
+```
+
+## Running the tool directly (bypassing MCP)
+
+You can run the Builtwith CLI in the same container by overriding the entrypoint without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint builtwith hackerdogs/builtwith-mcp:latest --help
 ```

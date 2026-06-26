@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Reddit MCP Server
 
-MCP server wrapper for [Reddit](https://github.com/nicholasgasior/mcp-server-reddit) — upstream package `mcp-server-reddit`.
+MCP server wrapper for [mcp-server-reddit](https://pypi.org/project/mcp-server-reddit/) — read-only Reddit access for browsing subreddits, searching posts, and reading comment threads.
 
-## What is Reddit?
+## What is Reddit MCP Server?
 
-MCP server for [Reddit](https://www.reddit.com/). Browse subreddits, search posts, read comments, and access Reddit content through AI assistants.
+The `mcp-server-reddit` package exposes Reddit's public read API through MCP, letting AI assistants fetch hot/new/top posts from any subreddit, search across Reddit by keyword, and retrieve full comment threads without requiring Reddit API credentials. It uses Reddit's public JSON endpoints.
 
-**No API keys required** — this server works out of the box.
-
-**Summary.** Reddit MCP Server — Dockerized from upstream `mcp-server-reddit` package.
+**No API keys required** — this server works out of the box using Reddit's anonymous public feeds.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me the top posts in r/cybersecurity today."
-- "Search Reddit for discussions about MCP protocol."
+- "Show me the top 10 posts in r/netsec from this week."
+- "Search Reddit for recent discussions about CVE-2024-3400."
+- "Fetch the comments on this Reddit post and summarize the key opinions."
+- "What are the hot posts in r/MachineLearning right now?"
+- "Find Reddit threads discussing the pros and cons of using Rust for systems programming."
+- "Get the top posts from r/AskNetsec and identify the most common security questions being asked."
 
 ## Deploy
 
@@ -171,37 +171,4 @@ curl -s -X POST http://localhost:8661/mcp \
 
 ```bash
 docker stop reddit-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "reddit-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/reddit-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8661:8661 -e MCP_TRANSPORT=streamable-http hackerdogs/reddit-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "reddit-mcp": {
-      "url": "http://localhost:8661/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

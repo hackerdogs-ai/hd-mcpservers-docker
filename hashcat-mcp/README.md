@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -243,37 +241,4 @@ docker run -i --rm --entrypoint hashcat hackerdogs/hashcat-mcp:latest --help
 
 ```bash
 docker run -i --rm --entrypoint hashcat hackerdogs/hashcat-mcp:latest -m 0 -a 0 hashes.txt wordlist.txt
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "hashcat-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/hashcat-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8235:8235 -e MCP_TRANSPORT=streamable-http hackerdogs/hashcat-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "hashcat-mcp": {
-      "url": "http://localhost:8235/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

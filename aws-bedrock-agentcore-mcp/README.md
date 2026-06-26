@@ -1,31 +1,33 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS Bedrock AgentCore MCP Server
 
-MCP server wrapper for [Bedrock AgentCore](https://github.com/awslabs/mcp) — upstream package `awslabs.amazon-bedrock-agentcore-mcp-server`.
+MCP server wrapper for [Bedrock AgentCore](https://github.com/awslabs/mcp/tree/main/src/amazon-bedrock-agentcore-mcp-server) — build, configure, and operate Amazon Bedrock AgentCore resources including Runtime, Memory, Gateway, Code Interpreter, Browser, Observability, and Identity services.
 
 ## What is Bedrock AgentCore?
 
-MCP server for Amazon Bedrock AgentCore services. Provides search and retrieval of AgentCore documentation, browser automation tools, and access to Runtime, Memory, Code Interpreter, Browser, Gateway, Observability, and Identity services.
+Amazon Bedrock AgentCore is AWS's managed platform for deploying production AI agents, providing built-in capabilities for memory management, code execution, browser automation, observability, and secure identity. This MCP server exposes the full AgentCore control plane to AI assistants, enabling them to search AgentCore documentation, configure runtime environments, set up memory stores, and manage gateways and identity resources. See [awslabs/mcp](https://github.com/awslabs/mcp/tree/main/src/amazon-bedrock-agentcore-mcp-server) for full documentation.
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
-**Summary.** AWS Bedrock AgentCore MCP Server — Dockerized from upstream `awslabs.amazon-bedrock-agentcore-mcp-server` package.
+**Summary.** MCP server wrapper for [Bedrock AgentCore](https://github.com/awslabs/mcp/tree/main/src/amazon-bedrock-agentcore-mcp-server) — configure and manage Amazon Bedrock AgentCore agent infrastructure including Runtime, Memory, and Gateway services.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Search for AgentCore documentation on Runtime services."
-- "List available Bedrock agents in my account."
+- "List all AgentCore Runtime environments in my Bedrock account."
+- "Show me the available AgentCore Memory stores and their configurations."
+- "Search the AgentCore documentation for how to set up browser automation."
+- "List all AgentCore Gateways and show me their endpoint URLs."
+- "Show me the AgentCore Observability settings and current tracing configuration."
+- "Help me understand how to configure AgentCore Identity for my agent deployment."
 
 ## Deploy
 
@@ -193,37 +195,4 @@ curl -s -X POST http://localhost:8604/mcp \
 
 ```bash
 docker stop aws-bedrock-agentcore-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "aws-bedrock-agentcore-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/aws-bedrock-agentcore-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8604:8604 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-bedrock-agentcore-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "aws-bedrock-agentcore-mcp": {
-      "url": "http://localhost:8604/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

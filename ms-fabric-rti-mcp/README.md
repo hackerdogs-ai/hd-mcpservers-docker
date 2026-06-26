@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -14,9 +12,9 @@ MCP server wrapper for [Microsoft Fabric RTI](https://github.com/microsoft/fabri
 
 ## What is Microsoft Fabric RTI?
 
-MCP server for [Microsoft Fabric](https://www.microsoft.com/en-us/microsoft-fabric) Real-Time Intelligence. Query and analyze real-time data streams, KQL databases, and eventhouses.
+Microsoft Fabric Real-Time Intelligence (RTI) provides tools for querying and analyzing real-time data streams, KQL (Kusto Query Language) databases, and Fabric eventhouses. This MCP server exposes Fabric RTI capabilities to AI assistants, enabling natural language querying of streaming analytics, time-series data, and live event pipelines. See [microsoft/fabric-rti-mcp](https://github.com/microsoft/fabric-rti-mcp) for full documentation.
 
-**API key required** — configure in your Microsoft Fabric workspace.
+**API key required** — configure your Microsoft Fabric workspace credentials and optionally a `KUSTO_SERVICE_URI` for your eventhouse endpoint.
 
 **Summary.** Microsoft Fabric RTI MCP Server — Dockerized from upstream `microsoft-fabric-rti-mcp` package.
 
@@ -24,8 +22,12 @@ MCP server for [Microsoft Fabric](https://www.microsoft.com/en-us/microsoft-fabr
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Query real-time data from my Fabric eventhouse."
-- "Show recent events in my KQL database."
+- "Query the last 100 events from my Fabric eventhouse using KQL."
+- "Show me the real-time ingestion rate for my streaming pipeline over the past hour."
+- "Run a KQL query against the Samples database to find anomalies in telemetry data."
+- "List all tables in my KQL database and describe their schemas."
+- "Aggregate sensor readings from the last 24 hours and show me the min, max, and average."
+- "Find all error events in my eventhouse from the past 30 minutes grouped by error code."
 
 ## Deploy
 
@@ -106,6 +108,9 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 | `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
 | `MCP_PORT` | `8650` | HTTP port (only used with `streamable-http`) |
 | `FABRIC_API_KEY` | — | Microsoft Fabric API key |
+| `KUSTO_SERVICE_URI` | `https://help.kusto.windows.net/` | Kusto/Eventhouse cluster URI |
+| `KUSTO_SERVICE_DEFAULT_DB` | `Samples` | Default KQL database name |
+| `FABRIC_API_BASE_URL` | `https://api.fabric.microsoft.com/v1` | Fabric REST API base URL |
 
 ## Installing in Hackerdogs
 
@@ -179,37 +184,4 @@ curl -s -X POST http://localhost:8650/mcp \
 
 ```bash
 docker stop ms-fabric-rti-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "ms-fabric-rti-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/ms-fabric-rti-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8650:8650 -e MCP_TRANSPORT=streamable-http hackerdogs/ms-fabric-rti-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "ms-fabric-rti-mcp": {
-      "url": "http://localhost:8650/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

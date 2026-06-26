@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Sentry MCP Server
 
-MCP server wrapper for [Sentry](https://github.com/getsentry/sentry-mcp) — upstream package `@sentry/mcp-server`.
+MCP server wrapper for [Sentry](https://sentry.io/) — query issues, stack traces, release health, and Seer AI analysis from Sentry directly within AI coding assistants.
 
 ## What is Sentry?
 
-MCP server for [Sentry](https://sentry.io/). Access issues, errors, projects, and Seer AI analysis. Investigate error stack traces, triage production incidents, and track error trends directly from your AI coding assistant.
+Sentry is an application monitoring platform that captures errors, performance bottlenecks, and crashes from production software. The official `@sentry/mcp-server` package exposes Sentry's API as MCP tools, enabling AI assistants to list and search issues, fetch full stack traces, review release health, assign and resolve issues, and invoke Sentry's Seer AI for root-cause analysis. See [getsentry/sentry-mcp](https://github.com/getsentry/sentry-mcp) for full documentation.
 
-**Auth token required** — create at Sentry → Settings → Auth Tokens.
-
-**Summary.** Sentry MCP Server — Dockerized from upstream `@sentry/mcp-server` package.
+**Auth token required** — create a user auth token at Sentry under Settings → Account → API → Auth Tokens and set it as `SENTRY_AUTH_TOKEN`.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me the top unresolved issues in my Sentry project."
-- "What caused the latest crash in production?"
+- "Show me all unresolved Sentry issues in the 'backend-api' project with more than 100 occurrences."
+- "Fetch the full stack trace for Sentry issue PROJ-1234 and explain what caused the error."
+- "List the 10 most frequent errors in production this week and group them by type."
+- "Check the release health for version 2.5.0 of my app and report the crash-free session rate."
+- "Use Sentry's Seer AI to analyze issue PROJ-5678 and suggest a fix."
+- "Mark all issues tagged 'low-priority' in the 'frontend' project as resolved."
 
 ## Deploy
 
@@ -179,37 +179,4 @@ curl -s -X POST http://localhost:8665/mcp \
 
 ```bash
 docker stop sentry-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "sentry-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/sentry-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8665:8665 -e MCP_TRANSPORT=streamable-http hackerdogs/sentry-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "sentry-mcp": {
-      "url": "http://localhost:8665/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

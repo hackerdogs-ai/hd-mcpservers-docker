@@ -1,31 +1,33 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS CloudWatch App Signals MCP Server
 
-MCP server wrapper for [CloudWatch Application Signals](https://github.com/awslabs/mcp) — upstream package `awslabs.cloudwatch-appsignals-mcp-server`.
+MCP server wrapper for [CloudWatch Application Signals](https://github.com/awslabs/mcp/tree/main/src/cloudwatch-appsignals-mcp-server) — monitor application health, service-level objectives (SLOs), and dependency topology through CloudWatch Application Signals.
 
 ## What is CloudWatch Application Signals?
 
-MCP server for AWS CloudWatch Application Signals. Monitor and analyze application performance, service health, and operational metrics.
+AWS CloudWatch Application Signals is an application performance monitoring (APM) feature that automatically discovers your services, tracks SLO compliance, and surfaces latency, error rate, and dependency health data from instrumented workloads on EKS, ECS, EC2, and Lambda. This MCP server lets AI assistants query service maps, check SLO status, and retrieve performance metrics to diagnose application degradations and dependency failures. See [awslabs/mcp](https://github.com/awslabs/mcp/tree/main/src/cloudwatch-appsignals-mcp-server) for full documentation.
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
-**Summary.** AWS CloudWatch App Signals MCP Server — Dockerized from upstream `awslabs.cloudwatch-appsignals-mcp-server` package.
+**Summary.** MCP server wrapper for [CloudWatch Application Signals](https://github.com/awslabs/mcp/tree/main/src/cloudwatch-appsignals-mcp-server) — query application performance, SLO compliance, and service dependency health from CloudWatch Application Signals.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me CloudWatch Application Signals resources in my AWS account."
-- "Describe the current state of my CloudWatch Application Signals setup."
+- "List all services discovered by CloudWatch Application Signals and their current health status."
+- "Show me the SLO compliance status for all my services over the past 7 days."
+- "Which SLOs are currently breached or at risk of breaching?"
+- "Show me the latency and error rate metrics for the checkout service in the last hour."
+- "Display the service dependency map for my e-commerce application."
+- "List all Application Signals SLOs defined in my account and their target error budgets."
 
 ## Deploy
 
@@ -193,37 +195,4 @@ curl -s -X POST http://localhost:8607/mcp \
 
 ```bash
 docker stop aws-cloudwatch-appsignals-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "aws-cloudwatch-appsignals-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/aws-cloudwatch-appsignals-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8607:8607 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-cloudwatch-appsignals-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "aws-cloudwatch-appsignals-mcp": {
-      "url": "http://localhost:8607/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

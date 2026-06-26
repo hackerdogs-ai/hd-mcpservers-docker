@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS Network MCP Server
 
-MCP server wrapper for [AWS Networking](https://github.com/awslabs/mcp) — upstream package `awslabs.aws-network-mcp-server`.
+MCP server wrapper for [AWS Network](https://github.com/awslabs/mcp/tree/main/src/aws-network-mcp-server) — read-only inspection and troubleshooting of AWS networking resources including Cloud WAN, Transit Gateway, VPC, Network Firewall, and VPN.
 
-## What is AWS Networking?
+## What is AWS Network MCP?
 
-MCP server for AWS networking services. Troubleshoot and analyze Cloud WAN, Transit Gateway, VPC, Network Firewall, and VPN.
+The AWS Network MCP server provides read-only access to the full range of AWS networking services — VPCs, subnets, route tables, security groups, Transit Gateway attachments, Cloud WAN global networks, Network Firewall policies, and Site-to-Site VPN connections. Built from the `awslabs.aws-network-mcp-server` package (version 0.0.9+), it is purpose-built for troubleshooting connectivity issues and auditing network topology through natural language. See [awslabs/mcp](https://github.com/awslabs/mcp) for full documentation.
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
-
-**Summary.** AWS Network MCP Server — Dockerized from upstream `awslabs.aws-network-mcp-server` package.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me AWS Networking resources in my AWS account."
-- "Describe the current state of my AWS Networking setup."
+- "List all VPCs in us-east-1 and show their CIDR blocks and flow log status."
+- "Show me the Transit Gateway route tables and their associations in my account."
+- "Which security groups allow inbound traffic on port 22 from 0.0.0.0/0?"
+- "Describe the Cloud WAN global network and list its core network segments."
+- "Check the status of all Site-to-Site VPN connections and flag any that are down."
+- "Show the Network Firewall policies applied to each VPC in my account."
 
 ## Deploy
 
@@ -193,37 +193,4 @@ curl -s -X POST http://localhost:8618/mcp \
 
 ```bash
 docker stop aws-network-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "aws-network-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/aws-network-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8618:8618 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-network-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "aws-network-mcp": {
-      "url": "http://localhost:8618/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

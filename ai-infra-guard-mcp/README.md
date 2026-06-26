@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -231,37 +229,4 @@ docker run --rm --network host --entrypoint ai-infra-guard hackerdogs/ai-infra-g
 
 ```bash
 docker run --rm --entrypoint ai-infra-guard hackerdogs/ai-infra-guard-mcp:latest scan --list-vul
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "ai-infra-guard-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/ai-infra-guard-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8294:8294 -e MCP_TRANSPORT=streamable-http hackerdogs/ai-infra-guard-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "ai-infra-guard-mcp": {
-      "url": "http://localhost:8294/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

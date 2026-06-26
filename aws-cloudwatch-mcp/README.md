@@ -1,31 +1,33 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS CloudWatch MCP Server
 
-MCP server wrapper for [CloudWatch](https://github.com/awslabs/mcp) — upstream package `awslabs.cloudwatch-mcp-server`.
+MCP server wrapper for [AWS CloudWatch](https://github.com/awslabs/mcp/tree/main/src/cloudwatch-mcp-server) — query metrics, search logs with Insights, inspect alarms, and retrieve dashboards for AI-powered cloud observability.
 
-## What is CloudWatch?
+## What is AWS CloudWatch?
 
-MCP server for AWS CloudWatch. Query metrics, alarms, logs, and dashboards for AI-powered cloud monitoring and troubleshooting.
+AWS CloudWatch is the primary observability service for AWS, collecting metrics from hundreds of services, storing structured log data queryable with CloudWatch Logs Insights, and evaluating alarm conditions across your infrastructure. This MCP server enables AI assistants to pull metric statistics, run Logs Insights queries, describe alarms and their state history, and read dashboard widgets to diagnose outages and performance anomalies. See [awslabs/mcp](https://github.com/awslabs/mcp/tree/main/src/cloudwatch-mcp-server) for full documentation.
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
-**Summary.** AWS CloudWatch MCP Server — Dockerized from upstream `awslabs.cloudwatch-mcp-server` package.
+**Summary.** MCP server wrapper for [AWS CloudWatch](https://github.com/awslabs/mcp/tree/main/src/cloudwatch-mcp-server) — query CloudWatch metrics, run Logs Insights queries, and inspect alarms and dashboards to troubleshoot AWS infrastructure.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me CloudWatch resources in my AWS account."
-- "Describe the current state of my CloudWatch setup."
+- "Show me the CPUUtilization metric for my EC2 instance i-0abc123 over the last 3 hours."
+- "Search my Lambda function logs for ERROR messages in the past 30 minutes."
+- "List all CloudWatch alarms that are currently in ALARM state."
+- "Run a CloudWatch Logs Insights query to count HTTP 5xx errors by endpoint for the past hour."
+- "Show me the p99 latency metric for my ALB target group over the past 24 hours."
+- "List all metric alarms for my RDS cluster and show which have triggered in the last week."
 
 ## Deploy
 
@@ -193,37 +195,4 @@ curl -s -X POST http://localhost:8608/mcp \
 
 ```bash
 docker stop aws-cloudwatch-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "aws-cloudwatch-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/aws-cloudwatch-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8608:8608 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-cloudwatch-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "aws-cloudwatch-mcp": {
-      "url": "http://localhost:8608/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

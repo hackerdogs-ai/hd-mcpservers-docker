@@ -1,31 +1,33 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS CloudTrail MCP Server
 
-MCP server wrapper for [CloudTrail](https://github.com/awslabs/mcp) — upstream package `awslabs.cloudtrail-mcp-server`.
+MCP server wrapper for [AWS CloudTrail](https://github.com/awslabs/mcp/tree/main/src/cloudtrail-mcp-server) — query and analyze AWS account activity logs for security investigations, compliance auditing, and operational troubleshooting.
 
-## What is CloudTrail?
+## What is AWS CloudTrail?
 
-MCP server for AWS CloudTrail. Query AWS account activity for security investigations, compliance auditing, and operational troubleshooting.
+AWS CloudTrail records every API call made in your AWS account — who made it, what they did, and from where. This MCP server lets AI assistants search CloudTrail event history and data event logs to answer security questions such as "who changed this S3 bucket policy?", "what actions did this IAM role take last night?", or "which resources were accessed from this IP address?". See [awslabs/mcp](https://github.com/awslabs/mcp/tree/main/src/cloudtrail-mcp-server) for full documentation.
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
-**Summary.** AWS CloudTrail MCP Server — Dockerized from upstream `awslabs.cloudtrail-mcp-server` package.
+**Summary.** MCP server wrapper for [AWS CloudTrail](https://github.com/awslabs/mcp/tree/main/src/cloudtrail-mcp-server) — search and analyze API activity logs across your AWS account for security and compliance investigations.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me CloudTrail resources in my AWS account."
-- "Describe the current state of my CloudTrail setup."
+- "Show me all CloudTrail events for the IAM user 'john.doe' in the last 24 hours."
+- "Find all S3 DeleteObject events in us-east-1 from the past week."
+- "Who created or modified security groups in my account yesterday?"
+- "List all CloudTrail trails configured in my account and show which regions they cover."
+- "Show me any root account login events from the past 30 days."
+- "Find all API calls made from IP address 203.0.113.45 in the last 7 days."
 
 ## Deploy
 
@@ -193,37 +195,4 @@ curl -s -X POST http://localhost:8606/mcp \
 
 ```bash
 docker stop aws-cloudtrail-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "aws-cloudtrail-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/aws-cloudtrail-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8606:8606 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-cloudtrail-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "aws-cloudtrail-mcp": {
-      "url": "http://localhost:8606/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

@@ -1,26 +1,24 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Horusec MCP Server
 
-MCP server wrapper for [Horusec](https://github.com/Checkmarx/Horusec) — Static application security testing (SAST) tool.
+MCP server wrapper for [Horusec](https://github.com/ZupIT/horusec) — Static application security testing (SAST) tool.
 
 ## What is Horusec?
 
 Horusec (horusec) is a security tool that provides: **Static application security testing (SAST) tool.**
 
-See [Checkmarx/Horusec](https://github.com/Checkmarx/Horusec) for full documentation.
+See [Checkmarx/Horusec](https://github.com/ZupIT/horusec) for full documentation.
 
 **No API keys required** — Horusec runs locally inside the Docker container.
 
-**Summary.** MCP server wrapper for [Horusec](https://github.com/Checkmarx/Horusec) — Static application security testing (SAST) tool.
+**Summary.** MCP server wrapper for [Horusec](https://github.com/ZupIT/horusec) — Static application security testing (SAST) tool.
 
 **Tools:**
 - `run_horusec` — Run horusec with the given arguments. Returns structured JSON output.
@@ -243,37 +241,4 @@ docker run -i --rm --entrypoint horusec hackerdogs/horusec-mcp:latest start -p /
 
 ```bash
 docker run -i --rm --entrypoint horusec hackerdogs/horusec-mcp:latest --help
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "horusec-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/horusec-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8359:8359 -e MCP_TRANSPORT=streamable-http hackerdogs/horusec-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "horusec-mcp": {
-      "url": "http://localhost:8359/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

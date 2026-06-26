@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS Aurora PostgreSQL MCP Server
 
-MCP server wrapper for [Aurora PostgreSQL](https://github.com/awslabs/mcp) — upstream package `awslabs.postgres-mcp-server`.
+MCP server wrapper for [AWS PostgreSQL MCP](https://github.com/awslabs/mcp/tree/main/src/postgres-mcp-server) — connect to Amazon Aurora PostgreSQL or RDS PostgreSQL databases, inspect schemas, and run read-only SQL queries through natural language.
 
-## What is Aurora PostgreSQL?
+## What is AWS PostgreSQL MCP?
 
-MCP server for Aurora PostgreSQL. Translate human-readable questions into SQL queries, inspect schemas, and manage database operations.
+The AWS PostgreSQL MCP server (`awslabs.postgres-mcp-server`) acts as an intelligent bridge between an LLM and an Amazon Aurora PostgreSQL or RDS PostgreSQL instance. It introspects table schemas, translates natural-language questions into SQL, and returns query results — enabling conversational data exploration without writing SQL manually. See [awslabs/mcp](https://github.com/awslabs/mcp) for full documentation.
 
-**AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
-
-**Summary.** AWS Aurora PostgreSQL MCP Server — Dockerized from upstream `awslabs.postgres-mcp-server` package.
+**AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`. A database connection string or endpoint must also be configured.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me Aurora PostgreSQL resources in my AWS account."
-- "Describe the current state of my Aurora PostgreSQL setup."
+- "List all tables in the 'public' schema and describe their columns."
+- "How many orders were placed in the last 30 days? Query the orders table."
+- "Show me the 10 most recent rows in the 'events' table."
+- "What indexes exist on the 'users' table and are any columns missing indexes?"
+- "Generate a SQL query that finds the top 5 customers by total spend in the last quarter."
+- "Describe the foreign key relationships between the 'orders', 'customers', and 'products' tables."
 
 ## Deploy
 
@@ -193,37 +193,4 @@ curl -s -X POST http://localhost:8619/mcp \
 
 ```bash
 docker stop aws-postgres-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "aws-postgres-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/aws-postgres-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8619:8619 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-postgres-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "aws-postgres-mcp": {
-      "url": "http://localhost:8619/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

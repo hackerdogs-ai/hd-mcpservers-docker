@@ -1,48 +1,128 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
+    <br/>
+    <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Slack MCP Server
 
-A specialized communication server for Slack that operates in a ""Stealth Mode
+MCP server wrapper for [Slack](https://slack.com) — interact with Slack workspaces to read messages, post to channels, and search conversations.
 
-## Docker Run (stdio)
+## What is Slack?
+
+Slack is a business communication platform that organizes team conversations into channels, direct messages, and threads. This MCP server provides AI assistants access to Slack workspaces — enabling them to read channel messages, post updates, search message history, and retrieve user information. See [Slack API documentation](https://api.slack.com/) for full documentation.
+
+**Slack bot token required** — create a Slack app and generate a bot token at [api.slack.com/apps](https://api.slack.com/apps).
+
+**Summary.** MCP server wrapper for [Slack](https://slack.com) — interact with Slack workspaces to read messages, post to channels, and search conversations.
+
+**Tools:**
+- `run_slack` — Run slack with the given arguments.
+
+## Tools Reference
+
+
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `slack_info` | Return basic info / status for Slack MCP Server. |
+
+## Example Prompts
+
+Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
+
+- "Read the last 20 messages in the #general channel."
+- "Post a message to the #alerts channel saying 'Deployment complete'."
+- "Search Slack for messages mentioning 'outage' in the past week."
+- "List all channels in my Slack workspace."
+- "Get the message history from the #security-incidents channel for today."
+- "Send a direct message to @john with a summary of today's findings."
+
+## Deploy
+
+### Docker Compose (recommended)
+
+```bash
+docker-compose up -d
+```
+
+### Docker Run (stdio mode)
 
 ```bash
 docker run -i --rm hackerdogs/slack-mcp:latest
 ```
 
-## Docker Run (HTTP streamable mode)
+### Docker Run (HTTP streamable mode)
 
 ```bash
-docker run -d --name slack-mcp \
+docker run -d -p 8454:8454 \
   -e MCP_TRANSPORT=streamable-http \
   -e MCP_PORT=8454 \
-  -p 8454:8454 \
   hackerdogs/slack-mcp:latest
 ```
 
-## MCP Client Configuration (stdio)
+## MCP Client Configuration
+
+### Stdio mode (default)
+
+Add to your Claude Desktop or Cursor MCP config:
 
 ```json
 {
   "mcpServers": {
     "slack-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/slack-mcp:latest"]
+      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "hackerdogs/slack-mcp:latest"],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
     }
   }
 }
 ```
 
+### HTTP mode (streamable-http)
+
+First, start the server using Docker Compose or `docker run` with HTTP mode (see [Deploy](#deploy) above), then point your MCP client at the running server:
+
+```json
+{
+  "mcpServers": {
+    "slack-mcp": {
+      "url": "http://localhost:8454/mcp"
+    }
+  }
+}
+```
+
+> **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
 ## Environment Variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `MCP_TRANSPORT` | `stdio` | Transport: `stdio` or `streamable-http` |
-| `MCP_PORT` | `8454` | HTTP port (streamable-http mode) |
+| `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
+| `MCP_PORT` | `8454` | HTTP port (only used with `streamable-http`) |
+
+## Installing in Hackerdogs
+
+The fastest way to get started is through [Hackerdogs](https://hackerdogs.ai):
+
+1. **Log in** to your Hackerdogs account.
+2. Go to the **Tools Catalog**.
+3. **Search** for the tool by name (e.g. "nuclei", "naabu", "julius").
+4. Expand the tool card and click **Install** — you're ready to go.
+
+> Give it a couple of minutes to go live. Then start querying by asking Hackerdogs to use the tool explicitly (e.g. *"Use naabu to scan example.com"*). If you don't specify, Hackerdogs will automatically choose the best tool for the job — it may choose this one on its own.
+
+5. **Vendor API key required?** Add your key in the config environment variable field before clicking Install. Your key will be encrypted at rest.
+6. **Enable / Disable** the tool anytime from the **Enabled Tools** page.
+7. **Need to update a key or parameter?** Go to **My Tools** → toggle **Show Decrypted Values** → edit → **Save**.
+
+> **Want to contribute or chat with the team?** Join our [Discord](https://discord.gg/str9FcWuyM).
 
 ## Build
 
@@ -50,41 +130,62 @@ docker run -d --name slack-mcp \
 docker build -t hackerdogs/slack-mcp:latest .
 ```
 
-## Test
+## Testing
+
+### Automated tests
 
 ```bash
 ./test.sh
 ```
 
-## mcpServer.json
+### Test directly with Docker
 
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "slack-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/slack-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
+**1. Start the server in HTTP mode:**
 
 ```bash
-docker run -d -p 8454:8454 -e MCP_TRANSPORT=streamable-http hackerdogs/slack-mcp:latest
+docker run -d --rm --name slack-mcp-test -p 8454:8454 \
+  -e MCP_TRANSPORT=streamable-http \
+  hackerdogs/slack-mcp:latest
 ```
 
-```json
-{
-  "mcpServers": {
-    "slack-mcp": {
-      "url": "http://localhost:8454/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
+**2. Initialize the MCP session:**
+
+```bash
+SESSION_ID=$(curl -s -D - -X POST http://localhost:8454/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"0.1"}}}' \
+  2>&1 | grep -i mcp-session-id | awk '{print $2}' | tr -d '\r\n')
+
+curl -s -X POST http://localhost:8454/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "mcp-session-id: $SESSION_ID" \
+  -d '{"jsonrpc":"2.0","method":"notifications/initialized"}'
+```
+
+**3. Call a tool:**
+
+```bash
+curl -s -X POST http://localhost:8454/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "mcp-session-id: $SESSION_ID" \
+  -d '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"run_slack","arguments":{"arguments":"--help"}}}'
+```
+
+**4. Clean up:**
+
+```bash
+docker stop slack-mcp-test
+```
+
+## Running the tool directly (bypassing MCP)
+
+You can run the Slack CLI in the same container by overriding the entrypoint without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint slack hackerdogs/slack-mcp:latest --help
 ```

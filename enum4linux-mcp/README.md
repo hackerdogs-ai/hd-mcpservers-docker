@@ -1,26 +1,24 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Enum4linux MCP Server
 
-MCP server wrapper for [Enum4Linux](https://github.com/portcullislab/enum4linux) — SMB enumeration (users, groups, shares).
+MCP server wrapper for [Enum4Linux](https://github.com/CiscoCXSecurity/enum4linux) — SMB enumeration (users, groups, shares).
 
 ## What is Enum4Linux?
 
 Enum4Linux (enum4linux) is a security tool that provides: **SMB enumeration (users, groups, shares).**
 
-See [portcullislab/enum4linux](https://github.com/portcullislab/enum4linux) for full documentation.
+See [portcullislab/enum4linux](https://github.com/CiscoCXSecurity/enum4linux) for full documentation.
 
 **No API keys required** — Enum4Linux runs locally inside the Docker container.
 
-**Summary.** MCP server wrapper for [Enum4Linux](https://github.com/portcullislab/enum4linux) — SMB enumeration (users, groups, shares).
+**Summary.** MCP server wrapper for [Enum4Linux](https://github.com/CiscoCXSecurity/enum4linux) — SMB enumeration (users, groups, shares).
 
 **Tools:**
 - `run_enum4linux` — Run enum4linux with the given arguments. Returns structured JSON output.
@@ -213,37 +211,4 @@ docker run -i --rm --entrypoint enum4linux hackerdogs/enum4linux-mcp:latest 192.
 
 ```bash
 docker run -i --rm --entrypoint enum4linux hackerdogs/enum4linux-mcp:latest -h
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "enum4linux-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/enum4linux-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8209:8209 -e MCP_TRANSPORT=streamable-http hackerdogs/enum4linux-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "enum4linux-mcp": {
-      "url": "http://localhost:8209/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

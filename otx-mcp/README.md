@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -366,36 +364,3 @@ docker stop otx-mcp-test
 ## Running the tool directly (bypassing MCP)
 
 This is an API-based MCP server that uses the OTXv2 Python SDK — there is no standalone CLI binary to run. All interaction with AlienVault OTX goes through the MCP tools. To query OTX directly without MCP, use the [OTXv2 Python SDK](https://github.com/AlienVault-OTX/OTX-Python-SDK) or the [OTX API](https://otx.alienvault.com/api) directly.
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "otx-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/otx-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8368:8368 -e MCP_TRANSPORT=streamable-http hackerdogs/otx-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "otx-mcp": {
-      "url": "http://localhost:8368/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
-```

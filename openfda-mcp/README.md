@@ -1,22 +1,20 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # OpenFDA MCP Server
 
-MCP server wrapper for [OpenFDA](https://github.com/ythalorossy/openfda) — upstream package `@ythalorossy/openfda`.
+MCP server wrapper for [OpenFDA](https://github.com/ythalorossy/openfda) — FDA drug, device, and food safety data via the openFDA API.
 
 ## What is OpenFDA?
 
-MCP server for the [OpenFDA API](https://open.fda.gov/). Query FDA drug information, adverse event reports, drug labels, device recalls, and safety data.
+OpenFDA is an MCP server for the [openFDA REST API](https://open.fda.gov/), which provides public access to FDA datasets including drug adverse event reports, drug labeling, device recalls, food enforcement actions, and more. It allows AI assistants to query, filter, and analyze FDA regulatory data directly. See [ythalorossy/openfda](https://github.com/ythalorossy/openfda) for full documentation.
 
-**API key required** — get one at [open.fda.gov](https://open.fda.gov/apis/authentication/).
+**API key optional** — the openFDA API works without a key at reduced rate limits. Get a free key at [open.fda.gov/apis/authentication](https://open.fda.gov/apis/authentication/) for higher quota.
 
 **Summary.** OpenFDA MCP Server — Dockerized from upstream `@ythalorossy/openfda` package.
 
@@ -24,8 +22,12 @@ MCP server for the [OpenFDA API](https://open.fda.gov/). Query FDA drug informat
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Look up drug information for ibuprofen."
-- "Show adverse events for a specific drug."
+- "Search the FDA adverse events database for serious reactions to metformin in 2023."
+- "Look up the current drug label for ibuprofen 400mg, including warnings and contraindications."
+- "Find all FDA device recalls classified as Class I in the last 6 months."
+- "How many adverse event reports mention nausea as a reaction to atorvastatin?"
+- "Search FDA food enforcement actions for peanut butter recalls in the past year."
+- "Get the NDC product code and active ingredients for omeprazole 20mg capsules."
 
 ## Deploy
 
@@ -179,37 +181,4 @@ curl -s -X POST http://localhost:8655/mcp \
 
 ```bash
 docker stop openfda-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "openfda-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/openfda-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8655:8655 -e MCP_TRANSPORT=streamable-http hackerdogs/openfda-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "openfda-mcp": {
-      "url": "http://localhost:8655/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

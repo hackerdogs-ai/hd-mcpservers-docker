@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS Neptune MCP Server
 
-MCP server wrapper for [Neptune](https://github.com/awslabs/mcp) — upstream package `awslabs.amazon-neptune-mcp-server`.
+MCP server wrapper for [Amazon Neptune](https://github.com/awslabs/mcp/tree/main/src/amazon-neptune-mcp-server) — query and explore Amazon Neptune graph databases using openCypher, Gremlin, or SPARQL.
 
-## What is Neptune?
+## What is Amazon Neptune?
 
-MCP server for Amazon Neptune. Query graph databases using openCypher, Gremlin, and SPARQL. Fetch status, schema, and run graph traversals.
+Amazon Neptune is a fully managed graph database service optimized for storing billions of relationships and querying the graph with millisecond latency. It supports the property graph model (via Gremlin and openCypher) as well as RDF graphs (via SPARQL). This MCP server, built from the `awslabs.amazon-neptune-mcp-server` package, lets you run graph traversals, inspect schema, and retrieve cluster status through natural language. See [awslabs/mcp](https://github.com/awslabs/mcp) for full documentation.
 
-**AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
-
-**Summary.** AWS Neptune MCP Server — Dockerized from upstream `awslabs.amazon-neptune-mcp-server` package.
+**AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`. A Neptune cluster endpoint must also be reachable from the container.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me Neptune resources in my AWS account."
-- "Describe the current state of my Neptune setup."
+- "Show me all Neptune clusters in my account and their current status."
+- "Run an openCypher query to find all nodes of type 'Person' connected to 'Alice'."
+- "List the vertex labels and edge labels in my Neptune graph schema."
+- "Execute a Gremlin traversal to count the number of edges in the graph."
+- "What is the instance type and storage capacity of my Neptune cluster?"
+- "Run a SPARQL query to retrieve all RDF triples with predicate rdf:type from my Neptune endpoint."
 
 ## Deploy
 
@@ -193,37 +193,4 @@ curl -s -X POST http://localhost:8617/mcp \
 
 ```bash
 docker stop aws-neptune-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "aws-neptune-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/aws-neptune-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8617:8617 -e MCP_TRANSPORT=streamable-http hackerdogs/aws-neptune-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "aws-neptune-mcp": {
-      "url": "http://localhost:8617/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

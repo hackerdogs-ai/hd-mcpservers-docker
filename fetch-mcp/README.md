@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Fetch MCP Server
 
-MCP server wrapper for [Fetch](https://github.com/modelcontextprotocol/servers) — upstream package `mcp-server-fetch`.
+MCP server wrapper for [mcp-server-fetch](https://github.com/modelcontextprotocol/servers/tree/main/src/fetch) — retrieve web page content as clean markdown or plain text for AI consumption. See [modelcontextprotocol/servers](https://github.com/modelcontextprotocol/servers) for full documentation.
 
 ## What is Fetch?
 
-MCP server for fetching web content. Retrieves web pages and converts them to markdown or plain text for AI consumption. Supports URL fetching with configurable user-agent and content extraction.
+`mcp-server-fetch` is the official Model Context Protocol server for HTTP content retrieval. It fetches any URL, strips HTML to readable markdown using the `readability` library, and returns the result to the AI client — making it straightforward to read documentation pages, news articles, or API responses without a browser. The server supports configurable user-agent strings and respects `robots.txt` by default.
 
-**No API keys required** — this server works out of the box.
-
-**Summary.** Fetch MCP Server — Dockerized from upstream `mcp-server-fetch` package.
+**No API keys required** — works out of the box with any public URL.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Fetch the contents of https://example.com."
-- "Get the text content of this web page."
+- "Fetch https://docs.python.org/3/library/asyncio.html and summarize the key concepts."
+- "Retrieve https://nvd.nist.gov/vuln/detail/CVE-2024-1234 and explain the vulnerability."
+- "Get the content of https://example.com/api/status and tell me what it returns."
+- "Fetch the Hacker News front page at https://news.ycombinator.com and list the top 5 stories."
+- "Read https://raw.githubusercontent.com/owner/repo/main/README.md and give me an overview."
+- "Fetch https://httpbin.org/json and show me the JSON response."
 
 ## Deploy
 
@@ -171,37 +171,4 @@ curl -s -X POST http://localhost:8639/mcp \
 
 ```bash
 docker stop fetch-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "fetch-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/fetch-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8639:8639 -e MCP_TRANSPORT=streamable-http hackerdogs/fetch-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "fetch-mcp": {
-      "url": "http://localhost:8639/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```

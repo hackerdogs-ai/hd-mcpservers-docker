@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -14,9 +12,9 @@ MCP server wrapper for [Notion](https://github.com/notionhq/notion-mcp-server) �
 
 ## What is Notion?
 
-MCP server for [Notion](https://notion.so/). Search, read, create, and update pages, databases, and blocks in your Notion workspace. Manage content, knowledge bases, and project documentation through AI assistants.
+This MCP server connects AI assistants to your [Notion](https://notion.so/) workspace, enabling them to search pages, read and create content, manage databases, and update blocks through the Notion API. It is the official Notion MCP server published by Notionhq. See [notionhq/notion-mcp-server](https://github.com/notionhq/notion-mcp-server) for full documentation.
 
-**Integration token required** — create at [notion.so/my-integrations](https://www.notion.so/my-integrations).
+**Integration token required** — create a Notion integration and get your token at [notion.so/my-integrations](https://www.notion.so/my-integrations). Share the pages or databases you want to access with the integration.
 
 **Summary.** Notion MCP Server — Dockerized from upstream `@notionhq/notion-mcp-server` package.
 
@@ -24,8 +22,12 @@ MCP server for [Notion](https://notion.so/). Search, read, create, and update pa
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Search my Notion workspace for pages about 'security'."
-- "Create a new page in my project database."
+- "Search my Notion workspace for all pages related to 'Q3 roadmap'."
+- "Create a new page in my Engineering database titled 'API Rate Limiting Design'."
+- "Read the contents of my 'Meeting Notes' Notion page from last Monday."
+- "Add a new row to my Notion task tracker database with status 'In Progress'."
+- "List all pages in my 'Projects' database that have the tag 'security'."
+- "Update the 'Status' property of the 'Deploy to Production' task to 'Done'."
 
 ## Deploy
 
@@ -186,37 +188,4 @@ curl -s -X POST http://localhost:8652/mcp \
 
 ```bash
 docker stop notion-mcp-test
-```
-
-## mcpServer.json
-
-### Stdio (local / Cursor / Claude Desktop)
-
-```json
-{
-  "mcpServers": {
-    "notion-mcp": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "hackerdogs/notion-mcp:latest"],
-      "env": {}
-    }
-  }
-}
-```
-
-### Streamable HTTP (remote / farm / multi-client)
-
-```bash
-docker run -d -p 8652:8652 -e MCP_TRANSPORT=streamable-http hackerdogs/notion-mcp:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "notion-mcp": {
-      "url": "http://localhost:8652/mcp/",
-      "transport": "streamable-http"
-    }
-  }
-}
 ```
