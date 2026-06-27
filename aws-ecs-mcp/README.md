@@ -18,6 +18,20 @@ Amazon ECS is AWS's managed container orchestration service for running Docker c
 
 **Summary.** MCP server wrapper for [Amazon ECS](https://github.com/awslabs/mcp/tree/main/src/ecs-mcp-server) — manage ECS clusters, services, and tasks including deployment updates and stopped-task diagnostics.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `containerize_app` | Containerize App |
+| `build_and_push_image_to_ecr` | Build And Push Image To Ecr |
+| `validate_ecs_express_mode_prerequisites` | Validate Ecs Express Mode Prerequisites |
+| `delete_app` | Delete App |
+| `wait_for_service_ready` | Wait For Service Ready |
+| `ecs_resource_management` | Ecs Resource Management |
+| `ecs_troubleshooting_tool` | Ecs Troubleshooting Tool |
+| `aws_knowledge_aws___read_documentation` | Aws Knowledge Aws   Read Documentation |
+| `aws_knowledge_aws___search_documentation` | Aws Knowledge Aws   Search Documentation |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

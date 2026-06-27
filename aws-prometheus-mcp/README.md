@@ -16,6 +16,16 @@ Amazon Managed Service for Prometheus (AMP) is a serverless, Prometheus-compatib
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`. The AMP workspace ID must also be configured.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `ExecuteQuery` | Executequery |
+| `ExecuteRangeQuery` | Executerangequery |
+| `ListMetrics` | Listmetrics |
+| `GetServerInfo` | Getserverinfo |
+| `GetAvailableWorkspaces` | Getavailableworkspaces |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

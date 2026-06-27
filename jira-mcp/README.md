@@ -16,6 +16,16 @@ Jira is Atlassian's industry-standard project and issue tracking platform, widel
 
 **API token required** — create one at [id.atlassian.com/manage-profile/security/api-tokens](https://id.atlassian.com/manage-profile/security/api-tokens).
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `get_issue` | Get Issue |
+| `get_transitions` | Get Transitions |
+| `transition_issue` | Transition Issue |
+| `add_worklog` | Add Worklog |
+| `search_issues` | Search Issues |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

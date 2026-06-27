@@ -16,6 +16,15 @@ Amazon Neptune is a fully managed graph database service optimized for storing b
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`. A Neptune cluster endpoint must also be reachable from the container.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `get_graph_status` | Get Graph Status |
+| `get_graph_schema` | Get Graph Schema |
+| `run_opencypher_query` | Run Opencypher Query |
+| `run_gremlin_query` | Run Gremlin Query |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

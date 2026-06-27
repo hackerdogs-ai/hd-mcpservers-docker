@@ -16,6 +16,15 @@ The DNS MCP Server provides structured DNS resolution capabilities to AI assista
 
 **No API keys required** — uses standard DNS resolution.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `dns_lookup` | Dns Lookup |
+| `reverse_dns` | Reverse Dns |
+| `batch_dns` | Batch Dns |
+| `dns_trace` | Dns Trace |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

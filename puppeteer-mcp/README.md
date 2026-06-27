@@ -16,6 +16,18 @@ Puppeteer is Google's official Node.js library for controlling a headless Chrome
 
 **No API keys required** — this server runs locally inside the Docker container using a bundled Chromium instance.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `puppeteer_navigate` | Puppeteer Navigate |
+| `puppeteer_screenshot` | Puppeteer Screenshot |
+| `puppeteer_click` | Puppeteer Click |
+| `puppeteer_fill` | Puppeteer Fill |
+| `puppeteer_select` | Puppeteer Select |
+| `puppeteer_hover` | Puppeteer Hover |
+| `puppeteer_evaluate` | Puppeteer Evaluate |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

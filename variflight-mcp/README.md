@@ -18,6 +18,20 @@ VariFlight is a Chinese aviation data platform providing comprehensive flight in
 
 **Summary.** MCP server wrapper for [VariFlight](https://github.com/AirSavvy/variflight-mcp) — real-time flight tracking, historical flight data, and airport/airline information via VariFlight's aviation API.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `searchFlightsByDepArr` | Searchflightsbydeparr |
+| `searchFlightsByNumber` | Searchflightsbynumber |
+| `getFlightTransferInfo` | Getflighttransferinfo |
+| `flightHappinessIndex` | Flighthappinessindex |
+| `getRealtimeLocationByAnum` | Getrealtimelocationbyanum |
+| `getTodayDate` | Gettodaydate |
+| `getFutureWeatherByAirport` | Getfutureweatherbyairport |
+| `searchFlightItineraries` | Searchflightitineraries |
+| `getFlightPriceByCities` | Getflightpricebycities |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

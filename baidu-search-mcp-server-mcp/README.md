@@ -16,6 +16,12 @@ Baidu is China's largest search engine and a primary index for Chinese-language 
 
 **No API keys required** — this server queries Baidu's public web interface and runs entirely inside the Docker container.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `search` | Search |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

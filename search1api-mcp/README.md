@@ -16,6 +16,17 @@ Search1API is a unified search backend that aggregates results from multiple sea
 
 **API key required** — sign up at [search1api.com](https://search1api.com/) to obtain a `SEARCH1API_KEY`.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `search` | Search |
+| `news` | News |
+| `crawl` | Crawl |
+| `sitemap` | Sitemap |
+| `reasoning` | Reasoning |
+| `trending` | Trending |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

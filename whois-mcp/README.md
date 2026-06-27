@@ -14,6 +14,14 @@ MCP server wrapper for [whois-mcp](https://www.npmjs.com/package/whois-mcp) — 
 
 WHOIS is a protocol used to query registration databases for domain names and IP address blocks. This MCP server wraps the `whois-mcp` npm package to expose domain WHOIS queries to AI assistants — returning registrant information, name servers, registrar details, creation and expiration dates, and status flags. No API keys are required — the tool runs locally inside the container using the system `whois` client.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `whois_lookup` | Whois Lookup |
+| `refresh_whois_servers` | Refresh Whois Servers |
+| `list_supported_tlds` | List Supported Tlds |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

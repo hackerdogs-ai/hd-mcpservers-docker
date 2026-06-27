@@ -18,6 +18,13 @@ The AWS API MCP Server gives AI assistants the ability to execute AWS CLI comman
 
 **Summary.** MCP server wrapper for [AWS API](https://github.com/awslabs/mcp/tree/main/src/aws-api-mcp-server) — run any AWS CLI command to manage cloud resources across all AWS services.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `suggest_aws_commands` | Suggest Aws Commands |
+| `call_aws` | Call Aws |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

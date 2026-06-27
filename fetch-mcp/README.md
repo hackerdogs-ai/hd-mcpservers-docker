@@ -16,6 +16,12 @@ MCP server wrapper for [mcp-server-fetch](https://github.com/modelcontextprotoco
 
 **No API keys required** — works out of the box with any public URL.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `fetch` | Fetch |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

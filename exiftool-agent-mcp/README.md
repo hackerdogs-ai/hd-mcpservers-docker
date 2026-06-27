@@ -16,6 +16,15 @@ ExifTool is Phil Harvey's industry-standard metadata library and command-line ap
 
 **No API keys required** — runs entirely inside the Docker container using the bundled ExifTool binary.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `EXIF_all_or_some` | Exif All Or Some |
+| `EXIF_location` | Exif Location |
+| `EXIF_timestamp` | Exif Timestamp |
+| `EXIF_location_and_timestamp` | Exif Location And Timestamp |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

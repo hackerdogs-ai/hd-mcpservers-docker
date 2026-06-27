@@ -16,6 +16,13 @@ Context7 is an Upstash service that injects accurate, version-specific library d
 
 **No API keys required** — this server works out of the box.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `resolve-library-id` | Resolve Library Id |
+| `query-docs` | Query Docs |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

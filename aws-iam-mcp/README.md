@@ -16,6 +16,40 @@ AWS Identity and Access Management (IAM) is the access control plane for all AWS
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `list_users` | List Users |
+| `get_user` | Get User |
+| `create_user` | Create User |
+| `delete_user` | Delete User |
+| `list_roles` | List Roles |
+| `create_role` | Create Role |
+| `list_policies` | List Policies |
+| `get_managed_policy_document` | Get Managed Policy Document |
+| `attach_user_policy` | Attach User Policy |
+| `detach_user_policy` | Detach User Policy |
+| `create_access_key` | Create Access Key |
+| `delete_access_key` | Delete Access Key |
+| `simulate_principal_policy` | Simulate Principal Policy |
+| `list_groups` | List Groups |
+| `get_group` | Get Group |
+| `create_group` | Create Group |
+| `delete_group` | Delete Group |
+| `add_user_to_group` | Add User To Group |
+| `remove_user_from_group` | Remove User From Group |
+| `attach_group_policy` | Attach Group Policy |
+| `detach_group_policy` | Detach Group Policy |
+| `put_user_policy` | Put User Policy |
+| `get_user_policy` | Get User Policy |
+| `delete_user_policy` | Delete User Policy |
+| `put_role_policy` | Put Role Policy |
+| `get_role_policy` | Get Role Policy |
+| `delete_role_policy` | Delete Role Policy |
+| `list_user_policies` | List User Policies |
+| `list_role_policies` | List Role Policies |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

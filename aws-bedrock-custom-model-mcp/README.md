@@ -18,6 +18,17 @@ Amazon Bedrock Custom Model Import allows you to bring your own fine-tuned model
 
 **Summary.** MCP server wrapper for [Bedrock Custom Model Import](https://github.com/awslabs/mcp/tree/main/src/aws-bedrock-custom-model-import-mcp-server) — create and manage import jobs to bring fine-tuned models into Amazon Bedrock's managed inference platform.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `create_model_import_job` | Create Model Import Job |
+| `get_model_import_job` | Get Model Import Job |
+| `list_model_import_jobs` | List Model Import Jobs |
+| `get_imported_model` | Get Imported Model |
+| `delete_imported_model` | Delete Imported Model |
+| `list_imported_models` | List Imported Models |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

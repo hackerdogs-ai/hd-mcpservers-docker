@@ -18,6 +18,12 @@ Pinecone is a fully managed vector database optimized for storing and querying h
 
 **Summary.** Pinecone MCP Server — Dockerized from upstream `@pinecone-database/mcp` package.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `search-docs` | Search Docs |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

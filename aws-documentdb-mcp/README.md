@@ -18,6 +18,27 @@ Amazon DocumentDB is AWS's managed MongoDB-compatible document database service.
 
 **Summary.** MCP server wrapper for [Amazon DocumentDB](https://github.com/awslabs/mcp/tree/main/src/documentdb-mcp-server) — query and manage MongoDB-compatible DocumentDB collections, indexes, and cluster resources from your AI assistant.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `connect` | Connect |
+| `disconnect` | Disconnect |
+| `find` | Find |
+| `aggregate` | Aggregate |
+| `insert` | Insert |
+| `update` | Update |
+| `delete` | Delete |
+| `listDatabases` | Listdatabases |
+| `createCollection` | Createcollection |
+| `listCollections` | Listcollections |
+| `dropCollection` | Dropcollection |
+| `countDocuments` | Countdocuments |
+| `getDatabaseStats` | Getdatabasestats |
+| `getCollectionStats` | Getcollectionstats |
+| `analyzeSchema` | Analyzeschema |
+| `explainOperation` | Explainoperation |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

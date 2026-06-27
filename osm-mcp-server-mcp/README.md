@@ -18,6 +18,23 @@ OpenStreetMap MCP Server provides AI assistants with access to [OpenStreetMap](h
 
 **Summary.** OpenStreetMap MCP Server — Dockerized from upstream `osm-mcp-server` package.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `geocode_address` | Geocode Address |
+| `reverse_geocode` | Reverse Geocode |
+| `find_nearby_places` | Find Nearby Places |
+| `get_route_directions` | Get Route Directions |
+| `search_category` | Search Category |
+| `suggest_meeting_point` | Suggest Meeting Point |
+| `explore_area` | Explore Area |
+| `find_schools_nearby` | Find Schools Nearby |
+| `analyze_commute` | Analyze Commute |
+| `find_ev_charging_stations` | Find Ev Charging Stations |
+| `analyze_neighborhood` | Analyze Neighborhood |
+| `find_parking_facilities` | Find Parking Facilities |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

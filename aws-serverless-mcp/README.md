@@ -16,6 +16,36 @@ The AWS Serverless MCP server (`awslabs.aws-serverless-mcp-server`) provides AI-
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `webapp_deployment_help` | Webapp Deployment Help |
+| `deploy_serverless_app_help` | Deploy Serverless App Help |
+| `get_iac_guidance` | Get Iac Guidance |
+| `get_lambda_event_schemas` | Get Lambda Event Schemas |
+| `get_lambda_guidance` | Get Lambda Guidance |
+| `get_serverless_templates` | Get Serverless Templates |
+| `sam_build` | Sam Build |
+| `sam_deploy` | Sam Deploy |
+| `sam_init` | Sam Init |
+| `sam_local_invoke` | Sam Local Invoke |
+| `sam_logs` | Sam Logs |
+| `list_registries` | List Registries |
+| `search_schema` | Search Schema |
+| `describe_schema` | Describe Schema |
+| `get_metrics` | Get Metrics |
+| `configure_domain` | Configure Domain |
+| `deploy_webapp` | Deploy Webapp |
+| `update_webapp_frontend` | Update Webapp Frontend |
+| `esm_guidance` | Esm Guidance |
+| `esm_kafka_troubleshoot` | Esm Kafka Troubleshoot |
+| `esm_optimize` | Esm Optimize |
+| `secure_esm_msk_policy` | Secure Esm Msk Policy |
+| `secure_esm_sqs_policy` | Secure Esm Sqs Policy |
+| `secure_esm_kinesis_policy` | Secure Esm Kinesis Policy |
+| `secure_esm_dynamodb_policy` | Secure Esm Dynamodb Policy |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

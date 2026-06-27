@@ -18,6 +18,12 @@ MCP server for [dnstwist](https://github.com/elceef/dnstwist) — DNS fuzzing an
 
 **Summary.** dnstwist MCP Server — Dockerized from upstream `@burtthecoder/mcp-dnstwist` package.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `fuzz_domain` | Fuzz Domain |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

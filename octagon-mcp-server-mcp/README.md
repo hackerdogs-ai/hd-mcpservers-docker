@@ -18,6 +18,15 @@ MCP server wrapper for [Octagon](https://github.com/octagon-agents/octagon-mcp) 
 
 **Summary.** Octagon MCP Server — Dockerized from upstream `octagon-mcp` package.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `octagon-deep-research-agent` | Octagon Deep Research Agent |
+| `octagon-agent` | Octagon Agent |
+| `octagon-prediction-markets-agent` | Octagon Prediction Markets Agent |
+| `prediction_markets_history` | Prediction Markets History |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

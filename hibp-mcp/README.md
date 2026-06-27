@@ -16,6 +16,14 @@ Have I Been Pwned (HIBP) is Troy Hunt's authoritative data breach notification s
 
 **API key required** — purchase at [haveibeenpwned.com/API/Key](https://haveibeenpwned.com/API/Key).
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `HIBP-Breaches` | Hibp Breaches |
+| `HIBP-Pastes` | Hibp Pastes |
+| `HIBP-PwnedPasswords` | Hibp Pwnedpasswords |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

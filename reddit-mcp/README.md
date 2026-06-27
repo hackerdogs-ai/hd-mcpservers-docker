@@ -16,6 +16,19 @@ The `mcp-server-reddit` package exposes Reddit's public read API through MCP, le
 
 **No API keys required** — this server works out of the box using Reddit's anonymous public feeds.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `get_frontpage_posts` | Get Frontpage Posts |
+| `get_subreddit_info` | Get Subreddit Info |
+| `get_subreddit_hot_posts` | Get Subreddit Hot Posts |
+| `get_subreddit_new_posts` | Get Subreddit New Posts |
+| `get_subreddit_top_posts` | Get Subreddit Top Posts |
+| `get_subreddit_rising_posts` | Get Subreddit Rising Posts |
+| `get_post_content` | Get Post Content |
+| `get_post_comments` | Get Post Comments |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

@@ -16,6 +16,21 @@ The IMF Data MCP server provides structured access to the International Monetary
 
 **No API keys required** — the server queries the IMF's public API directly without authentication.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `fetch_ifs_data` | Fetch Ifs Data |
+| `fetch_dot_data` | Fetch Dot Data |
+| `fetch_bop_data` | Fetch Bop Data |
+| `fetch_cdis_data` | Fetch Cdis Data |
+| `fetch_cpis_data` | Fetch Cpis Data |
+| `fetch_gfsmab_data` | Fetch Gfsmab Data |
+| `fetch_mfs_data` | Fetch Mfs Data |
+| `fetch_fsi_data` | Fetch Fsi Data |
+| `list_indicators` | List Indicators |
+| `list_countries` | List Countries |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

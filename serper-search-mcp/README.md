@@ -16,6 +16,13 @@ Serper is a fast, affordable Google Search API that returns structured JSON resu
 
 **API key required** — sign up at [serper.dev](https://serper.dev/) and set the `SERPER_API_KEY` environment variable.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `google_search` | Google Search |
+| `scrape` | Scrape |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

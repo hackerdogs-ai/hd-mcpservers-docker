@@ -18,6 +18,21 @@ TomTom provides global mapping, navigation, and traffic data APIs used in automo
 
 **Summary.** MCP server wrapper for [TomTom](https://github.com/tomtom-org/tomtom-mcp) — geocoding, routing, traffic, and point-of-interest search via TomTom's mapping APIs.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `tomtom-geocode` | Tomtom Geocode |
+| `tomtom-reverse-geocode` | Tomtom Reverse Geocode |
+| `tomtom-fuzzy-search` | Tomtom Fuzzy Search |
+| `tomtom-poi-search` | Tomtom Poi Search |
+| `tomtom-nearby` | Tomtom Nearby |
+| `tomtom-routing` | Tomtom Routing |
+| `tomtom-waypoint-routing` | Tomtom Waypoint Routing |
+| `tomtom-reachable-range` | Tomtom Reachable Range |
+| `tomtom-traffic` | Tomtom Traffic |
+| `tomtom-static-map` | Tomtom Static Map |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

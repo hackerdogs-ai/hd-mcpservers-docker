@@ -16,6 +16,12 @@ CopySeeker's Reverse Image Search API, accessed via the RapidAPI Hub, lets you s
 
 **API key required** — sign up at [rapidapi.com](https://rapidapi.com/) and subscribe to the CopySeeker Reverse Image Search API to obtain a `RAPIDAPI_KEY`.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `rapidapi-reverse-image-search_health_check` | Rapidapi Reverse Image Search Health Check |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

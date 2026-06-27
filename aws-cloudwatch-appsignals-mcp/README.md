@@ -18,6 +18,24 @@ AWS CloudWatch Application Signals is an application performance monitoring (APM
 
 **Summary.** MCP server wrapper for [CloudWatch Application Signals](https://github.com/awslabs/mcp/tree/main/src/cloudwatch-appsignals-mcp-server) — query application performance, SLO compliance, and service dependency health from CloudWatch Application Signals.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `audit_services` | Audit Services |
+| `audit_slos` | Audit Slos |
+| `audit_service_operations` | Audit Service Operations |
+| `analyze_canary_failures` | Analyze Canary Failures |
+| `list_monitored_services` | List Monitored Services |
+| `get_service_detail` | Get Service Detail |
+| `query_service_metrics` | Query Service Metrics |
+| `list_service_operations` | List Service Operations |
+| `get_slo` | Get Slo |
+| `list_slos` | List Slos |
+| `search_transaction_spans` | Search Transaction Spans |
+| `query_sampled_traces` | Query Sampled Traces |
+| `list_slis` | List Slis |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

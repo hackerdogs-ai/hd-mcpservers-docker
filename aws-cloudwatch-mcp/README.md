@@ -18,6 +18,30 @@ AWS CloudWatch is the primary observability service for AWS, collecting metrics 
 
 **Summary.** MCP server wrapper for [AWS CloudWatch](https://github.com/awslabs/mcp/tree/main/src/cloudwatch-mcp-server) — query CloudWatch metrics, run Logs Insights queries, and inspect alarms and dashboards to troubleshoot AWS infrastructure.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `describe_log_groups` | Describe Log Groups |
+| `analyze_log_group` | Analyze Log Group |
+| `execute_log_insights_query` | Execute Log Insights Query |
+| `get_logs_insight_query_results` | Get Logs Insight Query Results |
+| `cancel_logs_insight_query` | Cancel Logs Insight Query |
+| `execute_cwl_insights_batch` | Execute Cwl Insights Batch |
+| `recommend_indexes_loggroup` | Recommend Indexes Loggroup |
+| `recommend_indexes_account` | Recommend Indexes Account |
+| `get_metric_data` | Get Metric Data |
+| `get_metric_metadata` | Get Metric Metadata |
+| `analyze_metric` | Analyze Metric |
+| `get_recommended_metric_alarms` | Get Recommended Metric Alarms |
+| `execute_promql_query` | Execute Promql Query |
+| `execute_promql_range_query` | Execute Promql Range Query |
+| `get_promql_label_values` | Get Promql Label Values |
+| `get_promql_series` | Get Promql Series |
+| `get_promql_labels` | Get Promql Labels |
+| `get_active_alarms` | Get Active Alarms |
+| `get_alarm_history` | Get Alarm History |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

@@ -18,6 +18,34 @@ This MCP server connects AI assistants to 20+ [NASA Open APIs](https://api.nasa.
 
 **Summary.** NASA MCP Server — Dockerized from upstream `@programcomputer/nasa-mcp-server` package.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `nasa_apod` | Nasa Apod |
+| `nasa_neo` | Nasa Neo |
+| `nasa_epic` | Nasa Epic |
+| `nasa_gibs` | Nasa Gibs |
+| `nasa_cmr` | Nasa Cmr |
+| `nasa_firms` | Nasa Firms |
+| `nasa_images` | Nasa Images |
+| `nasa_exoplanet` | Nasa Exoplanet |
+| `nasa_donki` | Nasa Donki |
+| `nasa_mars_rover` | Nasa Mars Rover |
+| `nasa_eonet` | Nasa Eonet |
+| `nasa_power` | Nasa Power |
+| `jpl_sbdb` | Jpl Sbdb |
+| `jpl_fireball` | Jpl Fireball |
+| `jpl_jd_cal` | Jpl Jd Cal |
+| `jpl_nhats` | Jpl Nhats |
+| `jpl_cad` | Jpl Cad |
+| `jpl_sentry` | Jpl Sentry |
+| `jpl_horizons` | Jpl Horizons |
+| `jpl_horizons_file` | Jpl Horizons File |
+| `jpl_periodic_orbits` | Jpl Periodic Orbits |
+| `nasa_osdr_files` | Nasa Osdr Files |
+| `jpl_scout` | Jpl Scout |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

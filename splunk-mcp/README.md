@@ -18,6 +18,22 @@ Splunk is an industry-leading platform for searching, monitoring, and analyzing 
 
 **Summary.** MCP server wrapper for [Splunk](https://github.com/splunk/splunk-mcp) — run SPL searches, query indexes, and investigate security events in Splunk.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `search_splunk` | Search Splunk |
+| `list_indexes` | List Indexes |
+| `get_index_info` | Get Index Info |
+| `list_saved_searches` | List Saved Searches |
+| `current_user` | Current User |
+| `list_users` | List Users |
+| `list_kvstore_collections` | List Kvstore Collections |
+| `health_check` | Health Check |
+| `get_indexes_and_sourcetypes` | Get Indexes And Sourcetypes |
+| `ping` | Ping |
+| `health` | Health |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

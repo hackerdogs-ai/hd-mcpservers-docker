@@ -18,6 +18,13 @@ MCP server for [scc](https://github.com/boyter/scc) (Sloc, Cloc, and Code) — a
 
 **Summary.** SCC MCP Server — Dockerized from upstream `scc-mcp` package.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `top_vulnerability_findings` | Top Vulnerability Findings |
+| `get_finding_remediation` | Get Finding Remediation |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

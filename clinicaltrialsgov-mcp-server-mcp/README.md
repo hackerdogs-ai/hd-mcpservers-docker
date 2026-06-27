@@ -16,6 +16,16 @@ ClinicalTrials.gov is the U.S. National Library of Medicine's registry of public
 
 **No API keys required** — queries the public ClinicalTrials.gov API directly.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `clinicaltrials_analyze_trends` | Clinicaltrials Analyze Trends |
+| `clinicaltrials_compare_studies` | Clinicaltrials Compare Studies |
+| `clinicaltrials_find_eligible_studies` | Clinicaltrials Find Eligible Studies |
+| `clinicaltrials_get_study` | Clinicaltrials Get Study |
+| `clinicaltrials_search_studies` | Clinicaltrials Search Studies |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

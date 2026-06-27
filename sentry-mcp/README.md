@@ -16,6 +16,33 @@ Sentry is an application monitoring platform that captures errors, performance b
 
 **Auth token required** — create a user auth token at Sentry under Settings → Account → API → Auth Tokens and set it as `SENTRY_AUTH_TOKEN`.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `whoami` | Whoami |
+| `find_organizations` | Find Organizations |
+| `find_teams` | Find Teams |
+| `find_projects` | Find Projects |
+| `find_releases` | Find Releases |
+| `get_issue_tag_values` | Get Issue Tag Values |
+| `get_replay_details` | Get Replay Details |
+| `get_event_attachment` | Get Event Attachment |
+| `update_issue` | Update Issue |
+| `search_events` | Search Events |
+| `create_team` | Create Team |
+| `create_project` | Create Project |
+| `update_project` | Update Project |
+| `create_dsn` | Create Dsn |
+| `find_dsns` | Find Dsns |
+| `analyze_issue_with_seer` | Analyze Issue With Seer |
+| `search_docs` | Search Docs |
+| `get_doc` | Get Doc |
+| `search_issues` | Search Issues |
+| `search_issue_events` | Search Issue Events |
+| `get_profile_details` | Get Profile Details |
+| `get_sentry_resource` | Get Sentry Resource |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

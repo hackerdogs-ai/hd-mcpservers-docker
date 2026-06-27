@@ -16,6 +16,40 @@ The `@mcp-b/chrome-devtools-mcp` package exposes the Chrome DevTools Protocol (C
 
 **No API keys required** — connects to a Chrome instance with remote debugging enabled (pass the CDP WebSocket URL or use a local Chrome).
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `click` | Click |
+| `close_page` | Close Page |
+| `drag` | Drag |
+| `emulate` | Emulate |
+| `evaluate_script` | Evaluate Script |
+| `fill` | Fill |
+| `fill_form` | Fill Form |
+| `get_console_message` | Get Console Message |
+| `get_network_request` | Get Network Request |
+| `handle_dialog` | Handle Dialog |
+| `hover` | Hover |
+| `lighthouse_audit` | Lighthouse Audit |
+| `list_console_messages` | List Console Messages |
+| `list_network_requests` | List Network Requests |
+| `list_pages` | List Pages |
+| `navigate_page` | Navigate Page |
+| `new_page` | New Page |
+| `performance_analyze_insight` | Performance Analyze Insight |
+| `performance_start_trace` | Performance Start Trace |
+| `performance_stop_trace` | Performance Stop Trace |
+| `press_key` | Press Key |
+| `resize_page` | Resize Page |
+| `select_page` | Select Page |
+| `take_heapsnapshot` | Take Heapsnapshot |
+| `take_screenshot` | Take Screenshot |
+| `take_snapshot` | Take Snapshot |
+| `type_text` | Type Text |
+| `upload_file` | Upload File |
+| `wait_for` | Wait For |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

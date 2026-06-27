@@ -18,6 +18,12 @@ Stripe is a global payments platform that handles online transactions, billing, 
 
 **Summary.** MCP server wrapper for [Stripe](https://github.com/stripe/agent-toolkit) — manage payments, customers, subscriptions, and invoices via the Stripe API.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `stripe_health_check` | Stripe Health Check |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
@@ -108,6 +114,7 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 | `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
 | `MCP_PORT` | `8669` | HTTP port (only used with `streamable-http`) |
 | `STRIPE_SECRET_KEY` | — | Stripe secret API key — find at [dashboard.stripe.com/apikeys](https://dashboard.stripe.com/apikeys) |
+| `STRIPE_API_KEY` | — | Stripe API key (required) |
 
 ## Installing in Hackerdogs
 

@@ -16,6 +16,37 @@ Firecrawl is a managed web scraping API that handles headless browser rendering,
 
 **API key required** — sign up at [firecrawl.dev](https://firecrawl.dev/) and set `FIRECRAWL_API_KEY`.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `firecrawl_scrape` | Firecrawl Scrape |
+| `firecrawl_map` | Firecrawl Map |
+| `firecrawl_search` | Firecrawl Search |
+| `firecrawl_search_feedback` | Firecrawl Search Feedback |
+| `firecrawl_feedback` | Firecrawl Feedback |
+| `firecrawl_crawl` | Firecrawl Crawl |
+| `firecrawl_check_crawl_status` | Firecrawl Check Crawl Status |
+| `firecrawl_extract` | Firecrawl Extract |
+| `firecrawl_agent` | Firecrawl Agent |
+| `firecrawl_agent_status` | Firecrawl Agent Status |
+| `firecrawl_interact` | Firecrawl Interact |
+| `firecrawl_interact_stop` | Firecrawl Interact Stop |
+| `firecrawl_parse` | Firecrawl Parse |
+| `firecrawl_monitor_create` | Firecrawl Monitor Create |
+| `firecrawl_monitor_list` | Firecrawl Monitor List |
+| `firecrawl_monitor_get` | Firecrawl Monitor Get |
+| `firecrawl_monitor_update` | Firecrawl Monitor Update |
+| `firecrawl_monitor_delete` | Firecrawl Monitor Delete |
+| `firecrawl_monitor_run` | Firecrawl Monitor Run |
+| `firecrawl_monitor_checks` | Firecrawl Monitor Checks |
+| `firecrawl_monitor_check` | Firecrawl Monitor Check |
+| `firecrawl_research_search_papers` | Firecrawl Research Search Papers |
+| `firecrawl_research_inspect_paper` | Firecrawl Research Inspect Paper |
+| `firecrawl_research_related_papers` | Firecrawl Research Related Papers |
+| `firecrawl_research_read_paper` | Firecrawl Research Read Paper |
+| `firecrawl_research_search_github` | Firecrawl Research Search Github |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

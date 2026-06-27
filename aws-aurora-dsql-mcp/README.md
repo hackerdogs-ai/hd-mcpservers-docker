@@ -18,6 +18,18 @@ Amazon Aurora DSQL is AWS's serverless distributed SQL database designed for mul
 
 **Summary.** MCP server wrapper for [Aurora DSQL](https://github.com/awslabs/mcp/tree/main/src/aurora-dsql-mcp-server) — query and manage Amazon Aurora DSQL distributed SQL clusters from your AI assistant.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `readonly_query` | Readonly Query |
+| `transact` | Transact |
+| `get_schema` | Get Schema |
+| `dsql_search_documentation` | Dsql Search Documentation |
+| `dsql_read_documentation` | Dsql Read Documentation |
+| `dsql_recommend` | Dsql Recommend |
+| `dsql_lint` | Dsql Lint |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

@@ -20,6 +20,12 @@ MCP server for AI text humanization and detection: refine AI-generated content t
 
 **Summary.** Hackerdogs Docker packaging of Text2Go’s **ai-humanizer-mcp-server** + HTTP gateway (see `Dockerfile` / `entrypoint.sh`).
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `detect` | Detect |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

@@ -16,6 +16,54 @@ Amazon SNS (Simple Notification Service) is a pub/sub messaging service for fan-
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `add_sns_permission` | Add Sns Permission |
+| `check_if_phone_number_is_opted_out` | Check If Phone Number Is Opted Out |
+| `confirm_subscription` | Confirm Subscription |
+| `get_data_protection_policy` | Get Data Protection Policy |
+| `get_endpoint_attributes` | Get Endpoint Attributes |
+| `get_platform_application_attributes` | Get Platform Application Attributes |
+| `get_subscription_attributes` | Get Subscription Attributes |
+| `get_topic_attributes` | Get Topic Attributes |
+| `list_endpoints_by_platform_application` | List Endpoints By Platform Application |
+| `list_origination_numbers` | List Origination Numbers |
+| `list_phone_numbers_opted_out` | List Phone Numbers Opted Out |
+| `list_platform_applications` | List Platform Applications |
+| `list_subscriptions` | List Subscriptions |
+| `list_subscriptions_by_topic` | List Subscriptions By Topic |
+| `list_tags_for_resource` | List Tags For Resource |
+| `list_topics` | List Topics |
+| `opt_in_phone_number` | Opt In Phone Number |
+| `publish` | Publish |
+| `publish_batch` | Publish Batch |
+| `put_data_protection_policy` | Put Data Protection Policy |
+| `set_subscription_attributes` | Set Subscription Attributes |
+| `set_topic_attributes` | Set Topic Attributes |
+| `subscribe` | Subscribe |
+| `unsubscribe` | Unsubscribe |
+| `add_sqs_permission` | Add Sqs Permission |
+| `cancel_message_move_task` | Cancel Message Move Task |
+| `change_message_visibility` | Change Message Visibility |
+| `change_message_visibility_batch` | Change Message Visibility Batch |
+| `delete_message` | Delete Message |
+| `delete_message_batch` | Delete Message Batch |
+| `get_queue_attributes` | Get Queue Attributes |
+| `get_queue_url` | Get Queue Url |
+| `list_dead_letter_source_queues` | List Dead Letter Source Queues |
+| `list_message_move_tasks` | List Message Move Tasks |
+| `list_queue_tags` | List Queue Tags |
+| `list_queues` | List Queues |
+| `purge_queue` | Purge Queue |
+| `receive_message` | Receive Message |
+| `remove_sqs_permission` | Remove Sqs Permission |
+| `send_message` | Send Message |
+| `send_message_batch` | Send Message Batch |
+| `set_queue_attributes` | Set Queue Attributes |
+| `start_message_move_task` | Start Message Move Task |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

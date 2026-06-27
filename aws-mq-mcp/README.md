@@ -16,6 +16,46 @@ Amazon MQ is a managed message broker service that supports Apache ActiveMQ and 
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `delete_broker` | Delete Broker |
+| `delete_configuration` | Delete Configuration |
+| `describe_broker` | Describe Broker |
+| `describe_broker_engine_types` | Describe Broker Engine Types |
+| `describe_broker_instance_options` | Describe Broker Instance Options |
+| `describe_configuration` | Describe Configuration |
+| `describe_configuration_revision` | Describe Configuration Revision |
+| `describe_shared_resources` | Describe Shared Resources |
+| `describe_user` | Describe User |
+| `list_brokers` | List Brokers |
+| `list_configuration_revisions` | List Configuration Revisions |
+| `list_configurations` | List Configurations |
+| `list_tags` | List Tags |
+| `list_users` | List Users |
+| `promote` | Promote |
+| `reboot_broker` | Reboot Broker |
+| `update_broker` | Update Broker |
+| `update_configuration` | Update Configuration |
+| `rabbimq_broker_initialize_connection` | Rabbimq Broker Initialize Connection |
+| `rabbimq_broker_initialize_connection_with_oauth` | Rabbimq Broker Initialize Connection With Oauth |
+| `rabbitmq_broker_get_guideline` | Rabbitmq Broker Get Guideline |
+| `rabbitmq_broker_list_queues` | Rabbitmq Broker List Queues |
+| `rabbitmq_broker_list_exchanges` | Rabbitmq Broker List Exchanges |
+| `rabbitmq_broker_list_vhosts` | Rabbitmq Broker List Vhosts |
+| `rabbitmq_broker_get_queue_info` | Rabbitmq Broker Get Queue Info |
+| `rabbitmq_broker_get_exchange_info` | Rabbitmq Broker Get Exchange Info |
+| `rabbitmq_broker_list_shovels` | Rabbitmq Broker List Shovels |
+| `rabbitmq_broker_get_shovel_info` | Rabbitmq Broker Get Shovel Info |
+| `rabbitmq_broker_get_cluster_nodes_info` | Rabbitmq Broker Get Cluster Nodes Info |
+| `rabbitmq_broker_list_connections` | Rabbitmq Broker List Connections |
+| `rabbitmq_broker_list_consumers` | Rabbitmq Broker List Consumers |
+| `rabbitmq_broker_list_users` | Rabbitmq Broker List Users |
+| `rabbitmq_broker_is_in_alarm` | Rabbitmq Broker Is In Alarm |
+| `rabbitmq_broker_is_quorum_critical` | Rabbitmq Broker Is Quorum Critical |
+| `rabbitmq_broker_get_broker_definition` | Rabbitmq Broker Get Broker Definition |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

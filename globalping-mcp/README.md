@@ -16,6 +16,17 @@ Globalping is a free, open network measurement platform maintained by jsDelivr. 
 
 **No API keys required** — the public Globalping API is free to use with generous rate limits, and an optional token unlocks higher quotas.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `globalping-ping` | Globalping Ping |
+| `globalping-traceroute` | Globalping Traceroute |
+| `globalping-dns` | Globalping Dns |
+| `globalping-mtr` | Globalping Mtr |
+| `globalping-http` | Globalping Http |
+| `globalping-limits` | Globalping Limits |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

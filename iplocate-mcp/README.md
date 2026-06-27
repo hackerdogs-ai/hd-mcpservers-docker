@@ -16,6 +16,17 @@ IPLocate is an IP address intelligence service that returns geographic location 
 
 **No API keys required** — the server uses IPLocate's free-tier public API out of the box.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `lookup_ip_address_details` | Lookup Ip Address Details |
+| `lookup_ip_address_location` | Lookup Ip Address Location |
+| `lookup_ip_address_privacy` | Lookup Ip Address Privacy |
+| `lookup_ip_address_network` | Lookup Ip Address Network |
+| `lookup_ip_address_company` | Lookup Ip Address Company |
+| `lookup_ip_address_abuse_contacts` | Lookup Ip Address Abuse Contacts |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

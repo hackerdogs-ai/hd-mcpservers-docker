@@ -18,6 +18,19 @@ Amazon DynamoDB is AWS's fully managed serverless key-value and document databas
 
 **Summary.** MCP server wrapper for [Amazon DynamoDB](https://github.com/awslabs/mcp/tree/main/src/dynamodb-mcp-server) — query tables, manage indexes, and get data modeling guidance for DynamoDB.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `dynamodb_data_modeling` | Dynamodb Data Modeling |
+| `dynamodb_data_model_schema_converter` | Dynamodb Data Model Schema Converter |
+| `dynamodb_data_model_schema_validator` | Dynamodb Data Model Schema Validator |
+| `source_db_analyzer` | Source Db Analyzer |
+| `dynamodb_data_model_validation` | Dynamodb Data Model Validation |
+| `compute_performances_and_costs` | Compute Performances And Costs |
+| `generate_resources` | Generate Resources |
+| `generate_data_access_layer` | Generate Data Access Layer |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

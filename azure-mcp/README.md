@@ -16,6 +16,76 @@ The Azure MCP server (`@azure/mcp`) is Microsoft's official MCP implementation f
 
 **Azure credentials required** — register an app in Azure AD and set `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`, `AZURE_TENANT_ID`, and `AZURE_SUBSCRIPTION_ID`.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `documentation` | Documentation |
+| `azd` | Azd |
+| `foundry` | Foundry |
+| `arm` | Arm |
+| `get_azure_bestpractices` | Get Azure Bestpractices |
+| `aks` | Aks |
+| `appconfig` | Appconfig |
+| `applens` | Applens |
+| `appservice` | Appservice |
+| `role` | Role |
+| `azurebackup` | Azurebackup |
+| `datadog` | Datadog |
+| `managedlustre` | Managedlustre |
+| `azuremigrate` | Azuremigrate |
+| `azureterraform` | Azureterraform |
+| `azureterraformbestpractices` | Azureterraformbestpractices |
+| `deploy` | Deploy |
+| `deviceregistry` | Deviceregistry |
+| `eventgrid` | Eventgrid |
+| `acr` | Acr |
+| `advisor` | Advisor |
+| `bicepschema` | Bicepschema |
+| `cosmos` | Cosmos |
+| `cloudarchitect` | Cloudarchitect |
+| `communication` | Communication |
+| `compute` | Compute |
+| `confidentialledger` | Confidentialledger |
+| `containerapps` | Containerapps |
+| `eventhubs` | Eventhubs |
+| `fileshares` | Fileshares |
+| `foundryextensions` | Foundryextensions |
+| `functionapp` | Functionapp |
+| `functions` | Functions |
+| `grafana` | Grafana |
+| `keyvault` | Keyvault |
+| `kusto` | Kusto |
+| `loadtesting` | Loadtesting |
+| `marketplace` | Marketplace |
+| `quota` | Quota |
+| `monitor` | Monitor |
+| `applicationinsights` | Applicationinsights |
+| `mysql` | Mysql |
+| `policy` | Policy |
+| `postgres` | Postgres |
+| `pricing` | Pricing |
+| `redis` | Redis |
+| `resourcehealth` | Resourcehealth |
+| `search` | Search |
+| `speech` | Speech |
+| `servicebus` | Servicebus |
+| `servicefabric` | Servicefabric |
+| `signalr` | Signalr |
+| `sreagent` | Sreagent |
+| `sql` | Sql |
+| `storage` | Storage |
+| `storagesync` | Storagesync |
+| `virtualdesktop` | Virtualdesktop |
+| `wellarchitectedframework` | Wellarchitectedframework |
+| `workbooks` | Workbooks |
+| `group_list` | Group List |
+| `group_resource_list` | Group Resource List |
+| `subscription_list` | Subscription List |
+| `extension_azqr` | Extension Azqr |
+| `extension_cli_generate` | Extension Cli Generate |
+| `extension_cli_install` | Extension Cli Install |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

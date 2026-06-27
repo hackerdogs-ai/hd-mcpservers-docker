@@ -18,6 +18,24 @@ OctoCode is an MCP server for intelligent code analysis and search across GitHub
 
 **Summary.** OctoCode MCP Server — Dockerized from upstream `octocode-mcp` package.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `githubSearchCode` | Githubsearchcode |
+| `githubGetFileContent` | Githubgetfilecontent |
+| `githubViewRepoStructure` | Githubviewrepostructure |
+| `githubSearchRepositories` | Githubsearchrepositories |
+| `githubSearchPullRequests` | Githubsearchpullrequests |
+| `packageSearch` | Packagesearch |
+| `localSearchCode` | Localsearchcode |
+| `localViewStructure` | Localviewstructure |
+| `localFindFiles` | Localfindfiles |
+| `localGetFileContent` | Localgetfilecontent |
+| `lspGotoDefinition` | Lspgotodefinition |
+| `lspFindReferences` | Lspfindreferences |
+| `lspCallHierarchy` | Lspcallhierarchy |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

@@ -18,6 +18,16 @@ AWS CloudTrail records every API call made in your AWS account — who made it, 
 
 **Summary.** MCP server wrapper for [AWS CloudTrail](https://github.com/awslabs/mcp/tree/main/src/cloudtrail-mcp-server) — search and analyze API activity logs across your AWS account for security and compliance investigations.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `lookup_events` | Lookup Events |
+| `lake_query` | Lake Query |
+| `get_query_status` | Get Query Status |
+| `get_query_results` | Get Query Results |
+| `list_event_data_stores` | List Event Data Stores |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

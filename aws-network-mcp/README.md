@@ -16,6 +16,38 @@ The AWS Network MCP server provides read-only access to the full range of AWS ne
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `get_path_trace_methodology` | Get Path Trace Methodology |
+| `find_ip_address` | Find Ip Address |
+| `get_eni_details` | Get Eni Details |
+| `detect_cwan_inspection` | Detect Cwan Inspection |
+| `get_all_cwan_routes` | Get All Cwan Routes |
+| `get_cwan_routes` | Get Cwan Routes |
+| `get_cwan_attachment` | Get Cwan Attachment |
+| `get_cwan` | Get Cwan |
+| `get_cwan_logs` | Get Cwan Logs |
+| `get_cwan_peering` | Get Cwan Peering |
+| `list_cwan_peerings` | List Cwan Peerings |
+| `list_core_networks` | List Core Networks |
+| `simulate_cwan_route_change` | Simulate Cwan Route Change |
+| `get_firewall_rules` | Get Firewall Rules |
+| `get_firewall_flow_logs` | Get Firewall Flow Logs |
+| `list_firewalls` | List Firewalls |
+| `detect_tgw_inspection` | Detect Tgw Inspection |
+| `get_all_tgw_routes` | Get All Tgw Routes |
+| `get_tgw` | Get Tgw |
+| `get_tgw_routes` | Get Tgw Routes |
+| `get_tgw_flow_logs` | Get Tgw Flow Logs |
+| `list_tgw_peerings` | List Tgw Peerings |
+| `list_transit_gateways` | List Transit Gateways |
+| `get_vpc_flow_logs` | Get Vpc Flow Logs |
+| `get_vpc_network` | Get Vpc Network |
+| `list_vpcs` | List Vpcs |
+| `list_vpn_connections` | List Vpn Connections |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

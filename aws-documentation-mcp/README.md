@@ -18,6 +18,15 @@ The AWS Documentation MCP server connects AI assistants to the official AWS docu
 
 **Summary.** MCP server wrapper for [AWS Documentation](https://github.com/awslabs/mcp/tree/main/src/aws-documentation-mcp-server) — search the live AWS documentation corpus for API references, service guides, and best practices without leaving your AI assistant.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `read_documentation` | Read Documentation |
+| `read_sections` | Read Sections |
+| `search_documentation` | Search Documentation |
+| `recommend` | Recommend |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

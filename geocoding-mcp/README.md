@@ -16,6 +16,12 @@ MCP server wrapper for [geocode-mcp](https://pypi.org/project/geocode-mcp/) — 
 
 **No API keys required** — this server uses open geocoding services and works out of the box.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `get_coordinates` | Get Coordinates |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

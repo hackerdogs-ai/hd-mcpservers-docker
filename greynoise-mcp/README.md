@@ -16,6 +16,29 @@ GreyNoise is an internet intelligence platform that collects, analyzes, and labe
 
 **API key required** — sign up at [greynoise.io](https://greynoise.io/).
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `get-tag-list` | Get Tag List |
+| `search-tags` | Search Tags |
+| `get-tag-details` | Get Tag Details |
+| `get-tag-activity` | Get Tag Activity |
+| `analyze-tags-activity` | Analyze Tags Activity |
+| `get-trending-vulnerabilities` | Get Trending Vulnerabilities |
+| `lookup-ip-context` | Lookup Ip Context |
+| `quick-check-ip` | Quick Check Ip |
+| `multi-ip-check` | Multi Ip Check |
+| `gnql-stats` | Gnql Stats |
+| `gnql-query` | Gnql Query |
+| `gnql-metadata-query` | Gnql Metadata Query |
+| `gnql-timeseries` | Gnql Timeseries |
+| `gnql-timeseries-stats` | Gnql Timeseries Stats |
+| `get-cve-details` | Get Cve Details |
+| `get-session` | Get Session |
+| `get-session-pcap` | Get Session Pcap |
+| `export-sessions-pcap` | Export Sessions Pcap |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

@@ -16,6 +16,16 @@ Bright Data is a web data platform offering managed proxy infrastructure, browse
 
 **API token required** — sign up at [brightdata.com](https://brightdata.com/) and set `API_TOKEN`.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `search_engine` | Search Engine |
+| `scrape_as_markdown` | Scrape As Markdown |
+| `search_engine_batch` | Search Engine Batch |
+| `scrape_batch` | Scrape Batch |
+| `discover` | Discover |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
@@ -106,6 +116,7 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 | `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
 | `MCP_PORT` | `8630` | HTTP port (only used with `streamable-http`) |
 | `API_TOKEN` | — | Bright Data API token |
+| `BRIGHTDATA_API_TOKEN` | — | Bright Data API token (required) |
 
 ## Installing in Hackerdogs
 

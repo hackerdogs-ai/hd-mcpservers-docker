@@ -18,6 +18,21 @@ Terraform by HashiCorp is the industry-standard infrastructure-as-code tool for 
 
 **Summary.** MCP server wrapper for [Terraform](https://github.com/hashicorp/terraform-mcp-server) — access Terraform provider documentation, resource schemas, and module registry data.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `providerDetails` | Providerdetails |
+| `resourceUsage` | Resourceusage |
+| `moduleSearch` | Modulesearch |
+| `listDataSources` | Listdatasources |
+| `resourceArgumentDetails` | Resourceargumentdetails |
+| `moduleDetails` | Moduledetails |
+| `functionDetails` | Functiondetails |
+| `providerGuides` | Providerguides |
+| `policySearch` | Policysearch |
+| `policyDetails` | Policydetails |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

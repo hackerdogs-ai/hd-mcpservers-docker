@@ -16,6 +16,13 @@ Brave Search is an independent search engine backed by its own crawl index, prov
 
 **API key required** — get a free key at [brave.com/search/api](https://brave.com/search/api/) and set `BRAVE_API_KEY`.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `brave_web_search` | Brave Web Search |
+| `brave_local_search` | Brave Local Search |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

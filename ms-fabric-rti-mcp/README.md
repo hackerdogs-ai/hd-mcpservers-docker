@@ -18,6 +18,50 @@ Microsoft Fabric Real-Time Intelligence (RTI) provides tools for querying and an
 
 **Summary.** Microsoft Fabric RTI MCP Server — Dockerized from upstream `microsoft-fabric-rti-mcp` package.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `kusto_known_services` | Kusto Known Services |
+| `kusto_query` | Kusto Query |
+| `kusto_command` | Kusto Command |
+| `kusto_list_entities` | Kusto List Entities |
+| `kusto_describe_database` | Kusto Describe Database |
+| `kusto_describe_database_entity` | Kusto Describe Database Entity |
+| `kusto_graph_query` | Kusto Graph Query |
+| `kusto_sample_entity` | Kusto Sample Entity |
+| `kusto_ingest_inline_into_table` | Kusto Ingest Inline Into Table |
+| `kusto_get_shots` | Kusto Get Shots |
+| `kusto_deeplink_from_query` | Kusto Deeplink From Query |
+| `kusto_show_queryplan` | Kusto Show Queryplan |
+| `kusto_diagnostics` | Kusto Diagnostics |
+| `eventstream_list` | Eventstream List |
+| `eventstream_get` | Eventstream Get |
+| `eventstream_get_definition` | Eventstream Get Definition |
+| `eventstream_create` | Eventstream Create |
+| `eventstream_update` | Eventstream Update |
+| `eventstream_delete` | Eventstream Delete |
+| `eventstream_start_definition` | Eventstream Start Definition |
+| `eventstream_get_current_definition` | Eventstream Get Current Definition |
+| `eventstream_clear_definition` | Eventstream Clear Definition |
+| `eventstream_add_sample_data_source` | Eventstream Add Sample Data Source |
+| `eventstream_add_custom_endpoint_source` | Eventstream Add Custom Endpoint Source |
+| `eventstream_add_derived_stream` | Eventstream Add Derived Stream |
+| `eventstream_add_eventhouse_destination` | Eventstream Add Eventhouse Destination |
+| `eventstream_add_custom_endpoint_destination` | Eventstream Add Custom Endpoint Destination |
+| `eventstream_validate_definition` | Eventstream Validate Definition |
+| `eventstream_create_from_definition` | Eventstream Create From Definition |
+| `eventstream_list_available_components` | Eventstream List Available Components |
+| `activator_list_artifacts` | Activator List Artifacts |
+| `activator_create_trigger` | Activator Create Trigger |
+| `map_list` | Map List |
+| `map_get` | Map Get |
+| `map_get_definition` | Map Get Definition |
+| `map_create` | Map Create |
+| `map_update_definition` | Map Update Definition |
+| `map_update` | Map Update |
+| `map_delete` | Map Delete |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

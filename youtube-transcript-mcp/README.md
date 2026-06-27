@@ -14,6 +14,12 @@ MCP server wrapper for [mcp-server-youtube-transcript](https://github.com/kimtae
 
 The YouTube Transcript MCP server fetches auto-generated and manual subtitles/captions from YouTube videos without requiring a YouTube Data API key. Given a video URL or ID, it returns the full transcript text along with timestamp data in the requested language. This is useful for video summarization, meeting notes extraction, content research, and feeding video content into AI analysis pipelines. See [kimtaeyoon83/mcp-server-youtube-transcript](https://github.com/kimtaeyoon83/mcp-server-youtube-transcript) for full documentation. No API keys are required — it uses the public YouTube transcript endpoint.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `get_transcript` | Get Transcript |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

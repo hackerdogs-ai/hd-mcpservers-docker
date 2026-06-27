@@ -16,6 +16,18 @@ The AWS PostgreSQL MCP server (`awslabs.postgres-mcp-server`) acts as an intelli
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`. A database connection string or endpoint must also be configured.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `run_query` | Run Query |
+| `get_table_schema` | Get Table Schema |
+| `connect_to_database` | Connect To Database |
+| `is_database_connected` | Is Database Connected |
+| `get_database_connection_info` | Get Database Connection Info |
+| `create_cluster` | Create Cluster |
+| `get_job_status` | Get Job Status |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

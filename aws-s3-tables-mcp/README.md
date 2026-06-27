@@ -16,6 +16,27 @@ Amazon S3 Tables is a managed table storage service that brings native Apache Ic
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `list_table_buckets` | List Table Buckets |
+| `list_namespaces` | List Namespaces |
+| `list_tables` | List Tables |
+| `create_table_bucket` | Create Table Bucket |
+| `create_namespace` | Create Namespace |
+| `create_table` | Create Table |
+| `get_table_maintenance_config` | Get Table Maintenance Config |
+| `get_maintenance_job_status` | Get Maintenance Job Status |
+| `get_table_metadata_location` | Get Table Metadata Location |
+| `rename_table` | Rename Table |
+| `update_table_metadata_location` | Update Table Metadata Location |
+| `query_database` | Query Database |
+| `import_csv_to_table` | Import Csv To Table |
+| `import_parquet_to_table` | Import Parquet To Table |
+| `get_bucket_metadata_config` | Get Bucket Metadata Config |
+| `append_rows_to_table` | Append Rows To Table |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

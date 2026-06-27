@@ -18,6 +18,15 @@ Steampipe is an open-source tool that lets you query cloud services (AWS, Azure,
 
 **Summary.** MCP server wrapper for [Steampipe](https://github.com/turbot/steampipe-mcp) — query cloud infrastructure, SaaS APIs, and security data using SQL.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `list_all_tables` | List All Tables |
+| `list_tables_in_schema` | List Tables In Schema |
+| `get_table_schema` | Get Table Schema |
+| `query` | Query |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

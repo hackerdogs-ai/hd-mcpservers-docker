@@ -16,6 +16,17 @@ Amazon Redshift is AWS's fully managed petabyte-scale cloud data warehouse, supp
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`. A Redshift cluster identifier or serverless workgroup name must also be configured.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `list_clusters` | List Clusters |
+| `list_databases` | List Databases |
+| `list_schemas` | List Schemas |
+| `list_tables` | List Tables |
+| `list_columns` | List Columns |
+| `execute_query` | Execute Query |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

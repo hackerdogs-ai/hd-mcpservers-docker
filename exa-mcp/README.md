@@ -16,6 +16,13 @@ Exa is a neural search engine that indexes the web using embedding-based similar
 
 **API key required** — sign up at [exa.ai](https://exa.ai/) to obtain an `EXA_API_KEY`.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `web_search_exa` | Web Search Exa |
+| `web_fetch_exa` | Web Fetch Exa |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

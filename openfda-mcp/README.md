@@ -18,6 +18,19 @@ OpenFDA is an MCP server for the [openFDA REST API](https://open.fda.gov/), whic
 
 **Summary.** OpenFDA MCP Server — Dockerized from upstream `@ythalorossy/openfda` package.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `get-drug-by-name` | Get Drug By Name |
+| `get-drug-by-generic-name` | Get Drug By Generic Name |
+| `get-drug-adverse-events` | Get Drug Adverse Events |
+| `get-drugs-by-manufacturer` | Get Drugs By Manufacturer |
+| `get-drug-safety-info` | Get Drug Safety Info |
+| `get-drug-by-ndc` | Get Drug By Ndc |
+| `get-drug-by-product-ndc` | Get Drug By Product Ndc |
+| `get-drugsfda` | Get Drugsfda |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

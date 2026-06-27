@@ -16,6 +16,14 @@ The `@geunoh/s3-mcp-server` package bridges the AWS S3 API and MCP, exposing too
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION` in the environment.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `get_object` | Get Object |
+| `list_buckets` | List Buckets |
+| `upload_file` | Upload File |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

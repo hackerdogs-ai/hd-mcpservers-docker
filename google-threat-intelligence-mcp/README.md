@@ -16,6 +16,46 @@ Google Threat Intelligence MCP (`gti-mcp`) combines VirusTotal's crowdsourced ma
 
 **API key required** — a VirusTotal API key (free or premium) is required; set `VIRUSTOTAL_API_KEY`. Premium GTI features require a Google Threat Intelligence subscription.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `get_collection_report` | Get Collection Report |
+| `get_entities_related_to_a_collection` | Get Entities Related To A Collection |
+| `search_threats` | Search Threats |
+| `search_campaigns` | Search Campaigns |
+| `search_threat_actors` | Search Threat Actors |
+| `search_malware_families` | Search Malware Families |
+| `search_software_toolkits` | Search Software Toolkits |
+| `search_threat_reports` | Search Threat Reports |
+| `search_vulnerabilities` | Search Vulnerabilities |
+| `get_collection_timeline_events` | Get Collection Timeline Events |
+| `get_collection_mitre_tree` | Get Collection Mitre Tree |
+| `create_collection` | Create Collection |
+| `update_collection_attributes` | Update Collection Attributes |
+| `update_iocs_in_collection` | Update Iocs In Collection |
+| `get_collection_feature_matches` | Get Collection Feature Matches |
+| `get_collections_commonalities` | Get Collections Commonalities |
+| `get_file_report` | Get File Report |
+| `get_entities_related_to_a_file` | Get Entities Related To A File |
+| `get_file_behavior_report` | Get File Behavior Report |
+| `get_file_behavior_summary` | Get File Behavior Summary |
+| `analyse_file` | Analyse File |
+| `search_digital_threat_monitoring` | Search Digital Threat Monitoring |
+| `search_iocs` | Search Iocs |
+| `get_hunting_ruleset` | Get Hunting Ruleset |
+| `get_entities_related_to_a_hunting_ruleset` | Get Entities Related To A Hunting Ruleset |
+| `get_domain_report` | Get Domain Report |
+| `get_entities_related_to_a_domain` | Get Entities Related To A Domain |
+| `get_ip_address_report` | Get Ip Address Report |
+| `get_entities_related_to_an_ip_address` | Get Entities Related To An Ip Address |
+| `list_threat_profiles` | List Threat Profiles |
+| `get_threat_profile` | Get Threat Profile |
+| `get_threat_profile_recommendations` | Get Threat Profile Recommendations |
+| `get_threat_profile_associations_timeline` | Get Threat Profile Associations Timeline |
+| `get_url_report` | Get Url Report |
+| `get_entities_related_to_an_url` | Get Entities Related To An Url |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
@@ -106,6 +146,7 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 | `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
 | `MCP_PORT` | `8644` | HTTP port (only used with `streamable-http`) |
 | `VIRUSTOTAL_API_KEY` | — | VirusTotal / Google TI API key |
+| `GOOGLE_THREAT_INTELLIGENCE_API_KEY` | — | Google Threat Intelligence API key (required) |
 
 ## Installing in Hackerdogs
 

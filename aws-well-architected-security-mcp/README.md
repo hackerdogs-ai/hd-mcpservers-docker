@@ -16,6 +16,17 @@ The AWS Well-Architected Framework Security pillar provides guidance across six 
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `CheckSecurityServices` | Checksecurityservices |
+| `GetSecurityFindings` | Getsecurityfindings |
+| `GetStoredSecurityContext` | Getstoredsecuritycontext |
+| `CheckStorageEncryption` | Checkstorageencryption |
+| `ListServicesInRegion` | Listservicesinregion |
+| `CheckNetworkSecurity` | Checknetworksecurity |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

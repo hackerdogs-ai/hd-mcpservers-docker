@@ -18,6 +18,27 @@ Amazon EKS is AWS's managed Kubernetes service, running upstream Kubernetes cont
 
 **Summary.** MCP server wrapper for [Amazon EKS](https://github.com/awslabs/mcp/tree/main/src/eks-mcp-server) — query EKS cluster resources, node groups, workload state, and Kubernetes events for cluster management and troubleshooting.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `list_k8s_resources` | List K8S Resources |
+| `get_pod_logs` | Get Pod Logs |
+| `get_k8s_events` | Get K8S Events |
+| `list_api_versions` | List Api Versions |
+| `manage_k8s_resource` | Manage K8S Resource |
+| `apply_yaml` | Apply Yaml |
+| `generate_app_manifest` | Generate App Manifest |
+| `search_eks_troubleshoot_guide` | Search Eks Troubleshoot Guide |
+| `get_cloudwatch_logs` | Get Cloudwatch Logs |
+| `get_cloudwatch_metrics` | Get Cloudwatch Metrics |
+| `manage_eks_stacks` | Manage Eks Stacks |
+| `add_inline_policy` | Add Inline Policy |
+| `get_policies_for_role` | Get Policies For Role |
+| `get_eks_metrics_guidance` | Get Eks Metrics Guidance |
+| `get_eks_vpc_config` | Get Eks Vpc Config |
+| `get_eks_insights` | Get Eks Insights |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:

@@ -18,6 +18,53 @@ Postman MCP Server (the official `@postman/postman-mcp-server` package) gives AI
 
 **Summary.** Postman MCP Server — Dockerized from upstream `@postman/postman-mcp-server` package.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `createCollection` | Createcollection |
+| `createCollectionRequest` | Createcollectionrequest |
+| `createCollectionResponse` | Createcollectionresponse |
+| `createEnvironment` | Createenvironment |
+| `createMock` | Createmock |
+| `createSpec` | Createspec |
+| `createSpecFile` | Createspecfile |
+| `createWorkspace` | Createworkspace |
+| `duplicateCollection` | Duplicatecollection |
+| `generateCollection` | Generatecollection |
+| `generateSpecFromCollection` | Generatespecfromcollection |
+| `getAllSpecs` | Getallspecs |
+| `getAuthenticatedUser` | Getauthenticateduser |
+| `getCollection` | Getcollection |
+| `getCollections` | Getcollections |
+| `getDuplicateCollectionTaskStatus` | Getduplicatecollectiontaskstatus |
+| `getEnabledTools` | Getenabledtools |
+| `getEnvironment` | Getenvironment |
+| `getEnvironments` | Getenvironments |
+| `getGeneratedCollectionSpecs` | Getgeneratedcollectionspecs |
+| `getMock` | Getmock |
+| `getMocks` | Getmocks |
+| `getSpec` | Getspec |
+| `getSpecCollections` | Getspeccollections |
+| `getSpecDefinition` | Getspecdefinition |
+| `getSpecFile` | Getspecfile |
+| `getSpecFiles` | Getspecfiles |
+| `getTaggedEntities` | Gettaggedentities |
+| `getWorkspace` | Getworkspace |
+| `getWorkspaces` | Getworkspaces |
+| `publishMock` | Publishmock |
+| `putCollection` | Putcollection |
+| `putEnvironment` | Putenvironment |
+| `runCollection` | Runcollection |
+| `searchPostmanElements` | Searchpostmanelements |
+| `syncCollectionWithSpec` | Synccollectionwithspec |
+| `syncSpecWithCollection` | Syncspecwithcollection |
+| `updateCollectionRequest` | Updatecollectionrequest |
+| `updateMock` | Updatemock |
+| `updateSpecFile` | Updatespecfile |
+| `updateSpecProperties` | Updatespecproperties |
+| `updateWorkspace` | Updateworkspace |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
