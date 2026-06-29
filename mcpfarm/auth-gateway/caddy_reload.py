@@ -4,6 +4,7 @@ Caddy configuration generator and reload helper.
 from __future__ import annotations
 
 import logging
+import os
 from typing import List
 
 import httpx
@@ -11,8 +12,9 @@ import httpx
 logger = logging.getLogger(__name__)
 
 ROUTES_PATH = "/etc/caddy/dynamic/routes.conf"
+UI_UPSTREAM = os.environ.get("UI_UPSTREAM", "mcpfarm-ui:3000")
 
-CADDYFILE_TEMPLATE = """{
+CADDYFILE_HEADER = """{
     admin 0.0.0.0:2019
     auto_https off
 }
@@ -36,7 +38,7 @@ CADDYFILE_TEMPLATE = """{
         reverse_proxy auth-gateway:9090
     }
 
-    handle /services {
+    handle /services* {
         reverse_proxy auth-gateway:9090
     }
 
@@ -52,13 +54,32 @@ CADDYFILE_TEMPLATE = """{
         reverse_proxy auth-gateway:9090
     }
 
-    import /etc/caddy/dynamic/routes.conf
-
-    handle {
-        reverse_proxy mcpfarm-ui:3000
-    }
-}
 """
+
+CADDYFILE_FOOTER = """
+    handle {{
+        reverse_proxy {ui_upstream}
+    }}
+}}
+"""
+
+
+def ui_caddyfile_footer() -> str:
+    return CADDYFILE_FOOTER.format(ui_upstream=UI_UPSTREAM)
+
+
+def generate_route_block(name: str, port: int) -> str:
+    return (
+        f"    @{name} path /{name}/*\n"
+        f"    handle @{name} {{\n"
+        f"        forward_auth auth-gateway:9090 {{\n"
+        f"            uri /verify\n"
+        f"            copy_headers Authorization\n"
+        f"        }}\n"
+        f"        uri strip_prefix /{name}\n"
+        f"        reverse_proxy {name}:{port}\n"
+        f"    }}"
+    )
 
 
 def generate_routes_conf(servers: list) -> str:
@@ -67,30 +88,29 @@ def generate_routes_conf(servers: list) -> str:
     for server in servers:
         name = server.name if hasattr(server, "name") else server["name"]
         port = server.port if hasattr(server, "port") else server["port"]
-        block = (
-            f"@{name} path /{name}/*\n"
-            f"handle @{name} {{\n"
-            f"    forward_auth auth-gateway:9090 {{\n"
-            f"        uri /verify\n"
-            f"        copy_headers Authorization\n"
-            f"    }}\n"
-            f"    uri strip_prefix /{name}\n"
-            f"    reverse_proxy {name}:{port}\n"
-            f"}}"
-        )
-        blocks.append(block)
+        blocks.append(generate_route_block(name, port))
     return "\n\n".join(blocks) + "\n" if blocks else ""
 
 
-async def reload_caddy(routes_path: str = ROUTES_PATH) -> bool:
-    """Write routes.conf and signal Caddy to reload via its admin API."""
+def build_full_caddyfile(servers: list) -> str:
+    """Build a complete Caddyfile with all routes inlined."""
+    route_blocks = []
+    for server in servers:
+        name = server.name if hasattr(server, "name") else server["name"]
+        port = server.port if hasattr(server, "port") else server["port"]
+        route_blocks.append(generate_route_block(name, port))
+    return CADDYFILE_HEADER + "\n".join(route_blocks) + ui_caddyfile_footer()
+
+
+async def reload_caddy(servers: list) -> bool:
+    """Build a full Caddyfile with inlined routes and load it via the admin API."""
     try:
-        # Write the routes file (should already be written by caller, but just in case)
-        logger.info("Reloading Caddy via admin API...")
+        caddyfile = build_full_caddyfile(servers)
+        logger.info("Reloading Caddy via admin API (%d routes)...", len(servers))
         async with httpx.AsyncClient(timeout=10.0) as client:
             resp = await client.post(
                 "http://caddy:2019/load",
-                content=CADDYFILE_TEMPLATE,
+                content=caddyfile,
                 headers={"Content-Type": "text/caddyfile"},
             )
             if resp.status_code in (200, 204):
@@ -108,7 +128,7 @@ async def reload_caddy(routes_path: str = ROUTES_PATH) -> bool:
 
 
 async def write_and_reload(servers: list, routes_path: str = ROUTES_PATH) -> bool:
-    """Write routes.conf to disk then reload Caddy."""
+    """Write routes.conf to disk (for Caddy file-based reload) then reload via API."""
     conf = generate_routes_conf(servers)
     try:
         with open(routes_path, "w") as f:
@@ -117,4 +137,4 @@ async def write_and_reload(servers: list, routes_path: str = ROUTES_PATH) -> boo
     except Exception as exc:
         logger.error("Failed to write routes.conf: %s", exc)
         return False
-    return await reload_caddy(routes_path)
+    return await reload_caddy(servers)

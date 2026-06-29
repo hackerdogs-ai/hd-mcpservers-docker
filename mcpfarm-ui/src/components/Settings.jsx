@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { getBaseUrl, getApiKey, getAdminSecret, getClaudeKey, getHeygenKey, getHeygenAvatarId, saveSettings, rotateSecret } from '../lib/api.js';
+import { getBaseUrl, getApiKey, getAdminSecret, getClaudeKey, getOpenAIKey, getOllamaUrl, getHeygenKey, getHeygenAvatarId, saveSettings, rotateSecret } from '../lib/api.js';
 
 export default function Settings({ onClose }) {
   const [baseUrl, setBaseUrl] = useState('');
   const [apiKey, setApiKey] = useState('');
   const [adminSecret, setAdminSecret] = useState('');
   const [claudeKey, setClaudeKey] = useState('');
+  const [openaiKey, setOpenaiKey] = useState('');
+  const [ollamaUrl, setOllamaUrl] = useState('');
   const [heygenKey, setHeygenKey] = useState('');
   const [heygenAvatarId, setHeygenAvatarId] = useState('');
   const [saved, setSaved] = useState(false);
@@ -17,12 +19,14 @@ export default function Settings({ onClose }) {
     setApiKey(getApiKey());
     setAdminSecret(getAdminSecret());
     setClaudeKey(getClaudeKey());
+    setOpenaiKey(getOpenAIKey());
+    setOllamaUrl(getOllamaUrl());
     setHeygenKey(getHeygenKey());
     setHeygenAvatarId(getHeygenAvatarId());
   }, []);
 
   function handleSave() {
-    saveSettings({ baseUrl, apiKey, adminSecret, claudeKey, heygenKey, heygenAvatarId });
+    saveSettings({ baseUrl, apiKey, adminSecret, claudeKey, openaiKey, ollamaUrl, heygenKey, heygenAvatarId });
     setSaved(true);
     setTimeout(() => {
       setSaved(false);
@@ -49,33 +53,18 @@ export default function Settings({ onClose }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center"
-      style={{ background: 'rgba(0,0,0,0.7)' }}
+      className="hd-modal-overlay"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div
-        className="w-full max-w-lg rounded-lg border shadow-2xl"
-        style={{ background: '#161b22', borderColor: '#30363d' }}
-      >
-        {/* Header */}
-        <div
-          className="flex items-center justify-between px-6 py-4 border-b"
-          style={{ borderColor: '#30363d' }}
-        >
-          <h2 className="text-lg font-semibold" style={{ color: '#e6edf3' }}>
-            Settings
-          </h2>
-          <button
-            onClick={onClose}
-            className="text-2xl leading-none transition-colors hover:text-white"
-            style={{ color: '#8b949e' }}
-          >
+      <div className="hd-modal">
+        <div className="hd-modal__head">
+          <h2 className="hd-modal__title">Settings</h2>
+          <button type="button" onClick={onClose} className="hd-modal__close" aria-label="Close">
             ×
           </button>
         </div>
 
-        {/* Body */}
-        <div className="px-6 py-5 space-y-4">
+        <div className="hd-modal__body space-y-4">
           <Field
             label="Farm Base URL"
             value={baseUrl}
@@ -92,9 +81,9 @@ export default function Settings({ onClose }) {
             type="password"
           />
           <div>
-            <label className="block text-sm font-medium mb-1" style={{ color: '#e6edf3' }}>
+            <label className="hd-label">
               Admin Secret
-              <span className="ml-2 text-xs font-normal" style={{ color: '#8b949e' }}>
+              <span className="hd-label-hint ml-2 text-xs">
                 X-Admin-Secret header for start/stop/reload
               </span>
             </label>
@@ -104,36 +93,44 @@ export default function Settings({ onClose }) {
                 value={adminSecret}
                 onChange={(e) => setAdminSecret(e.target.value)}
                 placeholder="admin-secret"
-                className="flex-1 px-3 py-2 rounded text-sm border transition-colors"
-                style={{ background: '#0d1117', borderColor: '#30363d', color: '#e6edf3', outline: 'none' }}
-                onFocus={(e) => (e.target.style.borderColor = '#3fb950')}
-                onBlur={(e) => (e.target.style.borderColor = '#30363d')}
+                className="hd-input flex-1 text-sm"
               />
               <button
+                type="button"
                 onClick={handleRotate}
                 disabled={rotating}
-                className="px-3 py-2 rounded text-sm font-medium transition-all whitespace-nowrap"
-                style={{
-                  background: rotateMsg?.ok ? '#238636' : '#21262d',
-                  color: rotateMsg?.ok ? '#fff' : '#8b949e',
-                  border: '1px solid #30363d',
-                  opacity: rotating ? 0.6 : 1,
-                }}
+                className={`hd-btn hd-btn--muted whitespace-nowrap${rotateMsg?.ok ? ' hd-text-ok' : ''}`}
               >
                 {rotating ? '…' : rotateMsg?.ok ? '✓ Rotated' : '↺ Generate'}
               </button>
             </div>
             {rotateMsg && !rotateMsg.ok && (
-              <p className="mt-1 text-xs" style={{ color: '#f85149' }}>{rotateMsg.text}</p>
+              <p className="mt-1 text-xs hd-text-err">{rotateMsg.text}</p>
             )}
           </div>
           <Field
             label="Claude API Key"
-            hint="Required for Prompt mode and Nova"
+            hint="Required for Prompt mode, Nova, and Chat (Claude provider)"
             value={claudeKey}
             onChange={setClaudeKey}
             placeholder="sk-ant-..."
             type="password"
+          />
+          <Field
+            label="OpenAI API Key"
+            hint="Required for Chat tab (OpenAI provider)"
+            value={openaiKey}
+            onChange={setOpenaiKey}
+            placeholder="sk-..."
+            type="password"
+          />
+          <Field
+            label="Ollama URL"
+            hint="Local Ollama instance for Chat tab (default: http://localhost:11434)"
+            value={ollamaUrl}
+            onChange={setOllamaUrl}
+            placeholder="http://localhost:11434"
+            type="text"
           />
           <Field
             label="HeyGen API Key"
@@ -153,26 +150,11 @@ export default function Settings({ onClose }) {
           />
         </div>
 
-        {/* Footer */}
-        <div
-          className="flex items-center justify-end gap-3 px-6 py-4 border-t"
-          style={{ borderColor: '#30363d' }}
-        >
-          <button
-            onClick={onClose}
-            className="px-4 py-2 rounded text-sm transition-colors hover:text-white"
-            style={{ color: '#8b949e' }}
-          >
+        <div className="hd-modal__foot">
+          <button type="button" onClick={onClose} className="hd-btn hd-btn--ghost">
             Cancel
           </button>
-          <button
-            onClick={handleSave}
-            className="px-5 py-2 rounded text-sm font-medium transition-all"
-            style={{
-              background: saved ? '#238636' : '#3fb950',
-              color: '#0d1117',
-            }}
-          >
+          <button type="button" onClick={handleSave} className="hd-btn hd-btn--primary">
             {saved ? '✓ Saved' : 'Save'}
           </button>
         </div>
@@ -184,28 +166,16 @@ export default function Settings({ onClose }) {
 function Field({ label, hint, value, onChange, placeholder, type = 'text' }) {
   return (
     <div>
-      <label className="block text-sm font-medium mb-1" style={{ color: '#e6edf3' }}>
+      <label className="hd-label">
         {label}
-        {hint && (
-          <span className="ml-2 text-xs font-normal" style={{ color: '#8b949e' }}>
-            {hint}
-          </span>
-        )}
+        {hint && <span className="hd-label-hint ml-2 text-xs">{hint}</span>}
       </label>
       <input
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full px-3 py-2 rounded text-sm border transition-colors"
-        style={{
-          background: '#0d1117',
-          borderColor: '#30363d',
-          color: '#e6edf3',
-          outline: 'none',
-        }}
-        onFocus={(e) => (e.target.style.borderColor = '#3fb950')}
-        onBlur={(e) => (e.target.style.borderColor = '#30363d')}
+        className="hd-input text-sm"
       />
     </div>
   );

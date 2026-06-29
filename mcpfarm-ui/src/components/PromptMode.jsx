@@ -5,25 +5,20 @@ import { getClaudeKey } from '../lib/api.js';
 
 // ─── Collapsible card ─────────────────────────────────────────────────────────
 
-function CollapsibleCard({ header, children, defaultOpen = false, borderColor = '#30363d', headerColor = '#8b949e' }) {
+function CollapsibleCard({ header, children, defaultOpen = false, variant = 'default' }) {
   const [open, setOpen] = useState(defaultOpen);
+  const headClass = variant === 'error'
+    ? 'hd-collapsible__head hd-collapsible__head--err'
+    : variant === 'ok'
+    ? 'hd-collapsible__head hd-collapsible__head--ok'
+    : 'hd-collapsible__head';
   return (
-    <div className="rounded-lg border overflow-hidden" style={{ borderColor }}>
-      <div
-        className="flex items-center gap-2 px-3 py-2 cursor-pointer select-none"
-        style={{ background: '#161b22' }}
-        onClick={() => setOpen((v) => !v)}
-      >
-        <span className="text-xs" style={{ color: '#8b949e' }}>{open ? '▼' : '▶'}</span>
-        <span className="text-xs font-mono flex-1" style={{ color: headerColor }}>
-          {header}
-        </span>
+    <div className="hd-collapsible">
+      <div className={headClass} onClick={() => setOpen((v) => !v)}>
+        <span className="hd-result__toggle">{open ? '▼' : '▶'}</span>
+        <span className="font-mono flex-1">{header}</span>
       </div>
-      {open && (
-        <div style={{ background: '#0d1117' }}>
-          {children}
-        </div>
-      )}
+      {open && <div className="hd-collapsible__body">{children}</div>}
     </div>
   );
 }
@@ -34,12 +29,7 @@ function MessageBubble({ msg }) {
   if (msg.role === 'user') {
     return (
       <div className="flex justify-end mb-3">
-        <div
-          className="max-w-lg px-3 py-2 rounded-lg text-sm"
-          style={{ background: '#1f6feb', color: '#e6edf3' }}
-        >
-          {msg.text}
-        </div>
+        <div className="max-w-lg hd-chat-bubble-user text-sm">{msg.text}</div>
       </div>
     );
   }
@@ -47,12 +37,9 @@ function MessageBubble({ msg }) {
   if (msg.role === 'assistant') {
     return (
       <div className="flex justify-start mb-3">
-        <div
-          className="max-w-2xl px-3 py-2 rounded-lg text-sm"
-          style={{ background: '#161b22', color: '#e6edf3', border: '1px solid #30363d' }}
-        >
-          <span className="text-xs font-semibold block mb-1" style={{ color: '#8b949e' }}>Claude</span>
-          <div style={{ whiteSpace: 'pre-wrap' }}>{msg.text}</div>
+        <div className="max-w-2xl hd-chat-bubble-agent text-sm">
+          <span className="text-xs font-semibold block mb-1 hd-text-dim">Claude</span>
+          <div className="whitespace-pre-wrap">{msg.text}</div>
         </div>
       </div>
     );
@@ -64,11 +51,10 @@ function MessageBubble({ msg }) {
       <div className="mb-2 ml-2">
         <CollapsibleCard
           header={`🔧 ${serverName} → ${toolName}(${JSON.stringify(args || {}).slice(0, 80)})`}
-          borderColor="#388bfd"
-          headerColor="#58a6ff"
+          variant="ok"
           defaultOpen={false}
         >
-          <pre className="result-pre p-3 text-xs" style={{ color: '#58a6ff' }}>
+          <pre className="result-pre hd-code hd-code--json p-3 text-xs">
             {JSON.stringify(args, null, 2)}
           </pre>
         </CollapsibleCard>
@@ -92,14 +78,10 @@ function MessageBubble({ msg }) {
       <div className="mb-2 ml-2">
         <CollapsibleCard
           header={error ? `✗ ${toolName} error` : `✓ ${toolName} result`}
-          borderColor={error ? '#f85149' : '#238636'}
-          headerColor={error ? '#f85149' : '#3fb950'}
+          variant={error ? 'error' : 'ok'}
           defaultOpen={false}
         >
-          <pre
-            className="result-pre p-3 text-xs overflow-auto"
-            style={{ color: error ? '#f85149' : '#e6edf3', maxHeight: 300 }}
-          >
+          <pre className={`result-pre p-3 text-xs overflow-auto max-h-[300px]${error ? ' hd-result__body--error' : ''}`}>
             {error ? String(error) : formatResult(result)}
           </pre>
         </CollapsibleCard>
@@ -111,7 +93,7 @@ function MessageBubble({ msg }) {
     return (
       <div className="flex items-center gap-2 mb-2 ml-2">
         <span className="spinner" style={{ width: 12, height: 12 }} />
-        <span className="text-xs" style={{ color: '#8b949e' }}>{msg.text}</span>
+        <span className="text-xs hd-text-dim">{msg.text}</span>
       </div>
     );
   }
@@ -278,13 +260,9 @@ export default function PromptMode({ servers }) {
 
   return (
     <div className="flex flex-1 overflow-hidden">
-      {/* Left sidebar: server selection */}
-      <div
-        className="w-56 flex-shrink-0 flex flex-col border-r overflow-hidden"
-        style={{ borderColor: '#30363d' }}
-      >
-        <div className="px-3 py-2 border-b" style={{ borderColor: '#30363d' }}>
-          <span className="text-xs font-semibold uppercase tracking-wider block mb-2" style={{ color: '#8b949e' }}>
+      <div className="w-56 flex-shrink-0 flex flex-col hd-border-r hd-sidebar overflow-hidden">
+        <div className="px-3 py-2 hd-border-b">
+          <span className="text-xs font-semibold uppercase tracking-wider block mb-2 hd-text-dim">
             Servers
           </span>
 
@@ -293,9 +271,8 @@ export default function PromptMode({ servers }) {
               type="checkbox"
               checked={useAllRunning}
               onChange={(e) => setUseAllRunning(e.target.checked)}
-              style={{ accentColor: '#3fb950' }}
             />
-            <span className="text-xs" style={{ color: '#c9d1d9' }}>
+            <span className="text-xs hd-text-secondary">
               Auto (all {runningServers.length} running)
             </span>
           </label>
@@ -306,10 +283,7 @@ export default function PromptMode({ servers }) {
               value={serverSearch}
               onChange={(e) => setServerSearch(e.target.value)}
               placeholder="Search..."
-              className="w-full px-2 py-1 rounded text-xs border"
-              style={{ background: '#0d1117', borderColor: '#30363d', color: '#e6edf3', outline: 'none' }}
-              onFocus={(e) => (e.target.style.borderColor = '#3fb950')}
-              onBlur={(e) => (e.target.style.borderColor = '#30363d')}
+              className="hd-input text-xs"
             />
           )}
         </div>
@@ -319,31 +293,22 @@ export default function PromptMode({ servers }) {
             {filteredRunning.map((s) => {
               const name = s.name || s.id || '';
               return (
-                <label
-                  key={name}
-                  className="flex items-center gap-2 px-3 py-1.5 cursor-pointer border-b"
-                  style={{ borderColor: '#21262d' }}
-                >
+                <label key={name} className="hd-list-item cursor-pointer">
                   <input
                     type="checkbox"
                     checked={selectedServers.has(name)}
                     onChange={() => toggleServer(name)}
-                    style={{ accentColor: '#3fb950' }}
                   />
                   <span
                     className="rounded-full flex-shrink-0"
-                    style={{ width: 6, height: 6, background: '#3fb950' }}
+                    style={{ width: 6, height: 6, background: 'var(--semantic-success)' }}
                   />
-                  <span className="text-xs truncate" style={{ color: '#c9d1d9' }}>
-                    {name}
-                  </span>
+                  <span className="text-xs truncate">{name}</span>
                 </label>
               );
             })}
             {filteredRunning.length === 0 && (
-              <div className="p-3 text-xs text-center" style={{ color: '#8b949e' }}>
-                No running servers
-              </div>
+              <div className="p-3 text-xs text-center hd-text-dim">No running servers</div>
             )}
           </div>
         )}
@@ -352,41 +317,33 @@ export default function PromptMode({ servers }) {
           <div className="flex-1 flex items-center justify-center">
             <div className="text-center px-3">
               <div className="text-2xl mb-2">🤖</div>
-              <p className="text-xs" style={{ color: '#8b949e' }}>
+              <p className="text-xs hd-text-dim">
                 Claude will automatically choose from {runningServers.length} running servers
               </p>
             </div>
           </div>
         )}
 
-        {/* Claude key override */}
-        <div className="px-3 py-2 border-t" style={{ borderColor: '#30363d' }}>
-          <label className="block text-xs mb-1" style={{ color: '#8b949e' }}>
-            Claude API Key
-          </label>
+        <div className="px-3 py-2 hd-border-t">
+          <label className="hd-label">Claude API Key</label>
           <input
             type="password"
             value={claudeKey}
             onChange={(e) => setClaudeKeyState(e.target.value)}
             placeholder="sk-ant-..."
-            className="w-full px-2 py-1 rounded text-xs border"
-            style={{ background: '#0d1117', borderColor: '#30363d', color: '#e6edf3', outline: 'none' }}
-            onFocus={(e) => (e.target.style.borderColor = '#3fb950')}
-            onBlur={(e) => (e.target.style.borderColor = '#30363d')}
+            className="hd-input text-xs"
           />
         </div>
       </div>
 
-      {/* Right: chat panel */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Chat messages */}
         <div className="flex-1 overflow-y-auto p-4 space-y-1">
           {messages.length === 0 && (
             <div className="flex items-center justify-center h-full">
-              <div className="text-center" style={{ color: '#8b949e' }}>
+              <div className="text-center hd-empty-hint">
                 <div className="text-4xl mb-3">💬</div>
                 <p className="text-sm">Ask Claude to use any MCP tool.</p>
-                <p className="text-xs mt-1" style={{ color: '#484f58' }}>
+                <p className="text-xs mt-1 hd-text-muted">
                   Example: "Scan hackerdogs.ai with nmap and check for open ports"
                 </p>
               </div>
@@ -400,11 +357,7 @@ export default function PromptMode({ servers }) {
           <div ref={chatBottomRef} />
         </div>
 
-        {/* Input area */}
-        <div
-          className="border-t p-3"
-          style={{ borderColor: '#30363d', background: '#161b22' }}
-        >
+        <div className="hd-input-bar">
           <div className="flex gap-2">
             <textarea
               value={prompt}
@@ -413,26 +366,14 @@ export default function PromptMode({ servers }) {
               placeholder="Ask Claude to use MCP tools... (Ctrl+Enter to send)"
               disabled={running}
               rows={3}
-              className="flex-1 px-3 py-2 rounded text-sm border resize-none"
-              style={{
-                background: '#0d1117',
-                borderColor: '#30363d',
-                color: '#e6edf3',
-                outline: 'none',
-                opacity: running ? 0.6 : 1,
-              }}
-              onFocus={(e) => (e.target.style.borderColor = '#3fb950')}
-              onBlur={(e) => (e.target.style.borderColor = '#30363d')}
+              className="hd-textarea flex-1 text-sm resize-none"
+              style={{ opacity: running ? 0.6 : 1 }}
             />
             <button
               onClick={handleSend}
               disabled={running || !prompt.trim()}
-              className="px-4 py-2 rounded text-sm font-medium self-end transition-all"
-              style={{
-                background: running || !prompt.trim() ? '#21262d' : '#3fb950',
-                color: running || !prompt.trim() ? '#484f58' : '#0d1117',
-                minWidth: 80,
-              }}
+              className="hd-btn hd-btn--primary self-end"
+              style={{ minWidth: 80 }}
             >
               {running ? (
                 <span className="flex items-center gap-1 justify-center">
@@ -443,8 +384,8 @@ export default function PromptMode({ servers }) {
               )}
             </button>
           </div>
-          <p className="text-xs mt-1" style={{ color: '#484f58' }}>
-            Ctrl+Enter to send • Claude will choose and execute MCP tools automatically
+          <p className="text-xs mt-1 hd-text-muted">
+            Ctrl+Enter to send · Claude will choose and execute MCP tools automatically
           </p>
         </div>
       </div>

@@ -22,7 +22,7 @@
         reverse_proxy auth-gateway:9090
     }
 
-    handle /services {
+    handle /services* {
         reverse_proxy auth-gateway:9090
     }
 
@@ -31,6 +31,10 @@
     }
 
     handle /verify {
+        reverse_proxy auth-gateway:9090
+    }
+
+    handle /claude {
         reverse_proxy auth-gateway:9090
     }
 

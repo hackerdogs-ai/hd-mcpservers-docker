@@ -16,7 +16,7 @@ from typing import List, Optional
 import aiosqlite
 import httpx
 from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request, Response
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, PlainTextResponse
 
 import caddy_reload
 import docker_manager
@@ -37,6 +37,11 @@ from rate_limiter import RateLimiter
 # ---------------------------------------------------------------------------
 
 DB_PATH = os.environ.get("AUTH_DB_PATH", "/data/auth.db")
+READMES_ROOT = os.environ.get("READMES_ROOT", "")
+if not READMES_ROOT:
+    _repo_candidate = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+    if os.path.isfile(os.path.join(_repo_candidate, "nuclei-mcp", "README.md")):
+        READMES_ROOT = _repo_candidate
 _SECRET_FILE = "/data/admin-secret"
 
 def _load_admin_secret() -> str:
@@ -214,6 +219,30 @@ async def health_check_loop() -> None:
 async def startup_event() -> None:
     await init_db()
 
+    # Ensure /data/ui-api-key exists so the UI can authenticate MCP requests
+    if not os.path.exists("/data/ui-api-key"):
+        async with aiosqlite.connect(DB_PATH) as db:
+            db.row_factory = aiosqlite.Row
+            row = await db.execute_fetchall(
+                "SELECT key_hash FROM api_keys WHERE name='seed-admin' AND is_active=1"
+            )
+        if row:
+            raw = "hd_sk_" + secrets.token_hex(32)
+            key_hash = hashlib.sha256(raw.encode()).hexdigest()
+            key_id = secrets.token_hex(16)
+            now_iso = datetime.utcnow().isoformat()
+            async with aiosqlite.connect(DB_PATH) as db:
+                await db.execute(
+                    """INSERT INTO api_keys
+                       (id, key_hash, key_prefix, name, owner, scopes, rate_limit, is_active, created_at)
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                    (key_id, key_hash, raw[:12], "ui-auto", "system", "*", 1000, 1, now_iso),
+                )
+                await db.commit()
+            with open("/data/ui-api-key", "w") as kf:
+                kf.write(raw)
+            logger.info("Created ui-auto API key for UI authentication")
+
     # Recover dynamic servers
     async with aiosqlite.connect(DB_PATH) as db:
         db.row_factory = aiosqlite.Row
@@ -241,8 +270,11 @@ async def startup_event() -> None:
     async def _reload_caddy_with_retry():
         for attempt in range(15):
             await asyncio.sleep(3)
-            if await caddy_reload.reload_caddy():
+            try:
+                await _reload_caddy_from_db()
                 return
+            except Exception:
+                pass
         logger.warning("Caddy reload failed after all retries")
     asyncio.create_task(_reload_caddy_with_retry())
 
@@ -306,6 +338,26 @@ async def list_services():
         async with db.execute("SELECT * FROM servers") as cursor:
             rows = await cursor.fetchall()
     return [_to_server_response(dict(r)) for r in rows]
+
+
+def _readme_path(server_name: str) -> Optional[str]:
+    """Resolve README.md for an MCP server directory."""
+    if not READMES_ROOT:
+        return None
+    name = server_name if server_name.endswith("-mcp") else f"{server_name}-mcp"
+    path = os.path.join(READMES_ROOT, name, "README.md")
+    if os.path.isfile(path):
+        return path
+    return None
+
+
+@app.get("/services/{name}/readme")
+async def get_server_readme(name: str):
+    path = _readme_path(name)
+    if not path:
+        raise HTTPException(status_code=404, detail="README not found")
+    with open(path, encoding="utf-8", errors="replace") as f:
+        return PlainTextResponse(f.read(), media_type="text/markdown; charset=utf-8")
 
 
 @app.get("/verify")
@@ -695,6 +747,42 @@ async def stop_server_endpoint(name: str):
     return {"stopped": name}
 
 
+@app.post("/admin/servers/{name}/enable", dependencies=[Depends(require_admin)])
+async def enable_server_endpoint(name: str):
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute("SELECT * FROM servers WHERE name=?", (name,)) as cursor:
+            row = await cursor.fetchone()
+    if not row:
+        raise HTTPException(status_code=404, detail="Server not found")
+    srv = dict(row)
+    new_status = "running" if srv.get("health_ok") else "stopped"
+    async with aiosqlite.connect(DB_PATH) as db:
+        await db.execute(
+            "UPDATE servers SET status=? WHERE name=?", (new_status, name)
+        )
+        await db.commit()
+    await _reload_caddy_from_db()
+    return {"enabled": name, "status": new_status}
+
+
+@app.post("/admin/servers/{name}/disable", dependencies=[Depends(require_admin)])
+async def disable_server_endpoint(name: str):
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute("SELECT * FROM servers WHERE name=?", (name,)) as cursor:
+            row = await cursor.fetchone()
+    if not row:
+        raise HTTPException(status_code=404, detail="Server not found")
+    async with aiosqlite.connect(DB_PATH) as db:
+        await db.execute(
+            "UPDATE servers SET status='disabled' WHERE name=?", (name,)
+        )
+        await db.commit()
+    await _reload_caddy_from_db()
+    return {"disabled": name}
+
+
 @app.get("/admin/servers/{name}/health", dependencies=[Depends(require_admin)])
 async def server_health(name: str):
     async with aiosqlite.connect(DB_PATH) as db:
@@ -851,7 +939,9 @@ async def claude_proxy(request: Request):
 async def _reload_caddy_from_db() -> None:
     async with aiosqlite.connect(DB_PATH) as db:
         db.row_factory = aiosqlite.Row
-        async with db.execute("SELECT name, port FROM servers") as cursor:
+        async with db.execute(
+            "SELECT name, port FROM servers WHERE status != 'disabled'"
+        ) as cursor:
             rows = await cursor.fetchall()
 
     class _Srv:

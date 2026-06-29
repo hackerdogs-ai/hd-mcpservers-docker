@@ -23,7 +23,8 @@ START_ALL=false
 NO_TUNNEL=false
 # Base URL the script uses to reach Caddy for health/reload/stats. Override when
 # Caddy is mapped to a non-default host port (e.g. local testing): FARM_HTTP=http://localhost:8485
-FARM_HTTP="${FARM_HTTP:-http://localhost}"
+FARM_PORT="${FARM_PORT:-8485}"
+FARM_HTTP="${FARM_HTTP:-http://localhost:${FARM_PORT}}"
 
 for arg in "$@"; do
   case $arg in
@@ -73,6 +74,7 @@ fi
 cat > "$SCRIPT_DIR/.env" <<EOF
 TUNNEL_TOKEN=${TUNNEL_TOKEN}
 ADMIN_SECRET=${ADMIN_SECRET}
+FARM_PORT=${FARM_PORT}
 EOF
 success ".env written"
 
@@ -256,11 +258,11 @@ echo ""
 echo "============================================================"
 echo "  Deployment complete!"
 echo ""
-echo "  Local:    http://localhost/health"
+echo "  Local:    ${FARM_HTTP}/health"
 echo "  Tunnel:   check Cloudflare dashboard for public hostname"
 echo ""
 echo "  Start a server:  docker compose up -d --no-deps <name>-mcp"
-echo "  Admin API:       curl http://localhost/admin/stats \\"
+echo "  Admin API:       curl ${FARM_HTTP}/admin/stats \\"
 echo "                     -H 'X-Admin-Secret: ${ADMIN_SECRET}'"
 echo "============================================================"
 echo ""

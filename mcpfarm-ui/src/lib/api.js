@@ -26,11 +26,21 @@ export function getHeygenAvatarId() {
   return localStorage.getItem('hd_heygen_avatar_id') || '';
 }
 
-export function saveSettings({ baseUrl, apiKey, adminSecret, claudeKey, heygenKey, heygenAvatarId }) {
+export function getOpenAIKey() {
+  return localStorage.getItem('hd_openai_key') || '';
+}
+
+export function getOllamaUrl() {
+  return localStorage.getItem('hd_ollama_url') || '';
+}
+
+export function saveSettings({ baseUrl, apiKey, adminSecret, claudeKey, openaiKey, ollamaUrl, heygenKey, heygenAvatarId }) {
   if (baseUrl !== undefined) localStorage.setItem('hd_base_url', baseUrl);
   if (apiKey !== undefined) localStorage.setItem('hd_api_key', apiKey);
   if (adminSecret !== undefined) localStorage.setItem('hd_admin_secret', adminSecret);
   if (claudeKey !== undefined) localStorage.setItem('hd_claude_key', claudeKey);
+  if (openaiKey !== undefined) localStorage.setItem('hd_openai_key', openaiKey);
+  if (ollamaUrl !== undefined) localStorage.setItem('hd_ollama_url', ollamaUrl);
   if (heygenKey !== undefined) localStorage.setItem('hd_heygen_key', heygenKey);
   if (heygenAvatarId !== undefined) localStorage.setItem('hd_heygen_avatar_id', heygenAvatarId);
 }
@@ -71,6 +81,17 @@ export async function listServices() {
   return apiFetch('/services', { headers: authHeaders() });
 }
 
+/** Fetch README markdown for a server */
+export async function getServerReadme(name) {
+  const url = `${getBaseUrl()}/services/${encodeURIComponent(name)}/readme`;
+  const res = await fetch(url, { headers: authHeaders() });
+  if (!res.ok) {
+    const text = await res.text().catch(() => res.statusText);
+    throw new Error(`HTTP ${res.status}: ${text}`);
+  }
+  return res.text();
+}
+
 /** Get admin stats */
 export async function getAdminStats() {
   return apiFetch('/admin/stats', { headers: adminHeaders() });
@@ -109,6 +130,22 @@ export async function startServer(name) {
 /** Stop a server container */
 export async function stopServer(name) {
   return apiFetch(`/admin/servers/${name}/stop`, {
+    method: 'POST',
+    headers: adminHeaders(),
+  });
+}
+
+/** Enable a server (add to Caddy routing) */
+export async function enableServer(name) {
+  return apiFetch(`/admin/servers/${name}/enable`, {
+    method: 'POST',
+    headers: adminHeaders(),
+  });
+}
+
+/** Disable a server (remove from Caddy routing) */
+export async function disableServer(name) {
+  return apiFetch(`/admin/servers/${name}/disable`, {
     method: 'POST',
     headers: adminHeaders(),
   });

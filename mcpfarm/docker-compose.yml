@@ -23,9 +23,10 @@ services:
     image: caddy:2-alpine
     container_name: mcpfarm-caddy
     ports:
-      - "80:80"
-      - "11459:11459"
+      - "${FARM_PORT:-8485}:80"
       - "2019:2019"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_routes:/etc/caddy/dynamic
@@ -65,11 +66,14 @@ services:
     environment:
       - ADMIN_SECRET=${ADMIN_SECRET}
       - AUTH_DB_PATH=/data/auth.db
+      - READMES_ROOT=/repo
+      - UI_UPSTREAM=${UI_UPSTREAM:-mcpfarm-ui:3000}
     volumes:
       - auth_data:/data
       - caddy_routes:/etc/caddy/dynamic
       - /var/run/docker.sock:/var/run/docker.sock
       - ./port-map.json:/app/port-map.json:ro
+      - ..:/repo:ro
     networks:
       - mcpfarm
     healthcheck:

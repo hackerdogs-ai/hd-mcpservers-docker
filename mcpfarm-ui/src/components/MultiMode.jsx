@@ -39,15 +39,15 @@ function ToolForm({ tool, onSubmit, loading }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
       {propEntries.length === 0 && (
-        <p className="text-xs" style={{ color: '#8b949e' }}>No parameters required.</p>
+        <p className="text-xs hd-text-dim">No parameters required.</p>
       )}
       {propEntries.map(([key, prop]) => {
         const isRequired = required.includes(key);
         const labelEl = (
-          <label className="block text-xs font-medium mb-1" style={{ color: '#c9d1d9' }}>
-            {key}{isRequired && <span style={{ color: '#f85149' }}> *</span>}
+          <label className="hd-label">
+            {key}{isRequired && <span className="hd-text-required"> *</span>}
             {prop.description && (
-              <span className="ml-1 font-normal" style={{ color: '#8b949e' }}> — {prop.description}</span>
+              <span className="hd-label-hint"> — {prop.description}</span>
             )}
           </label>
         );
@@ -58,8 +58,7 @@ function ToolForm({ tool, onSubmit, loading }) {
               <select
                 value={values[key]}
                 onChange={(e) => setValue(key, e.target.value)}
-                className="w-full px-2 py-1.5 rounded text-xs border"
-                style={{ background: '#0d1117', borderColor: '#30363d', color: '#e6edf3', outline: 'none' }}
+                className="hd-select text-xs"
               >
                 <option value="">— select —</option>
                 {prop.enum.map((opt) => <option key={opt} value={opt}>{String(opt)}</option>)}
@@ -71,9 +70,9 @@ function ToolForm({ tool, onSubmit, loading }) {
           return (
             <div key={key} className="flex items-center gap-2">
               <input type="checkbox" id={`mf-${key}`} checked={values[key]}
-                onChange={(e) => setValue(key, e.target.checked)} style={{ accentColor: '#3fb950' }} />
-              <label htmlFor={`mf-${key}`} className="text-xs" style={{ color: '#c9d1d9' }}>
-                {key}{isRequired && <span style={{ color: '#f85149' }}> *</span>}
+                onChange={(e) => setValue(key, e.target.checked)} />
+              <label htmlFor={`mf-${key}`} className="text-xs hd-text-secondary">
+                {key}{isRequired && <span className="hd-text-required"> *</span>}
               </label>
             </div>
           );
@@ -87,20 +86,12 @@ function ToolForm({ tool, onSubmit, loading }) {
               value={values[key]}
               onChange={(e) => setValue(key, e.target.value)}
               placeholder={prop.default !== undefined ? String(prop.default) : ''}
-              className="w-full px-2 py-1.5 rounded text-xs border"
-              style={{ background: '#0d1117', borderColor: '#30363d', color: '#e6edf3', outline: 'none' }}
-              onFocus={(e) => (e.target.style.borderColor = '#3fb950')}
-              onBlur={(e) => (e.target.style.borderColor = '#30363d')}
+              className="hd-input text-xs"
             />
           </div>
         );
       })}
-      <button
-        type="submit"
-        disabled={loading}
-        className="mt-2 px-4 py-2 rounded text-sm font-medium"
-        style={{ background: loading ? '#238636' : '#3fb950', color: '#0d1117', opacity: loading ? 0.7 : 1 }}
-      >
+      <button type="submit" disabled={loading} className="hd-btn hd-btn--primary mt-2">
         {loading ? (
           <span className="flex items-center gap-2">
             <span className="spinner" style={{ width: 14, height: 14 }} /> Running...
@@ -127,19 +118,18 @@ function ResultViewer({ result, error }) {
   }
 
   return (
-    <div className="rounded-lg border mt-4" style={{ borderColor: error ? '#f85149' : '#30363d', background: '#0d1117' }}>
+    <div className={`hd-result${error ? ' hd-result--error' : ''}`}>
       <div
-        className="flex items-center justify-between px-3 py-2 border-b cursor-pointer"
-        style={{ borderColor: error ? '#f85149' : '#30363d' }}
+        className="hd-result__head"
         onClick={() => setCollapsed((c) => !c)}
       >
-        <span className="text-xs font-semibold" style={{ color: error ? '#f85149' : '#3fb950' }}>
+        <span className={error ? 'hd-result__head--err' : 'hd-result__head--ok'}>
           {error ? '✗ Error' : '✓ Result'}
         </span>
-        <span className="text-xs" style={{ color: '#8b949e' }}>{collapsed ? '▶' : '▼'}</span>
+        <span className="hd-result__toggle">{collapsed ? '▶' : '▼'}</span>
       </div>
       {!collapsed && (
-        <pre className="result-pre p-3 overflow-auto" style={{ color: error ? '#f85149' : '#e6edf3', maxHeight: 400 }}>
+        <pre className={`hd-result__body result-pre${error ? ' hd-result__body--error' : ''}`}>
           {error ? String(error) : formatResult(result)}
         </pre>
       )}
@@ -224,21 +214,15 @@ export default function MultiMode({ servers, multiSelected, onToggleMulti }) {
 
   return (
     <div className="flex flex-1 overflow-hidden">
-      {/* Left: server checkboxes + tool list */}
-      <div
-        className="w-72 flex-shrink-0 flex flex-col border-r overflow-hidden"
-        style={{ borderColor: '#30363d' }}
-      >
-        {/* Server selector */}
-        <div className="border-b" style={{ borderColor: '#30363d' }}>
+      <div className="w-72 flex-shrink-0 flex flex-col hd-border-r hd-sidebar overflow-hidden">
+        <div className="hd-border-b">
           <div className="px-3 py-2 flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#8b949e' }}>
+            <span className="text-xs font-semibold uppercase tracking-wider hd-text-dim">
               Servers ({selectedCount} selected)
             </span>
             <button
               onClick={() => setShowAll((v) => !v)}
-              className="text-xs px-2 py-0.5 rounded"
-              style={{ color: '#8b949e', background: '#0d1117', border: '1px solid #30363d' }}
+              className="hd-btn hd-btn--ghost text-xs px-2 py-0.5"
             >
               {showAll ? 'Running only' : 'Show all'}
             </button>
@@ -250,24 +234,21 @@ export default function MultiMode({ servers, multiSelected, onToggleMulti }) {
               const isChecked = multiSelected?.has(name);
               const isRunning = (s.status || '').toLowerCase() === 'running';
               return (
-                <label
-                  key={name}
-                  className="flex items-center gap-2 px-3 py-1.5 cursor-pointer hover:bg-opacity-50 transition-colors border-b"
-                  style={{ borderColor: '#21262d' }}
-                >
+                <label key={name} className="hd-list-item cursor-pointer">
                   <input
                     type="checkbox"
                     checked={isChecked || false}
                     onChange={() => onToggleMulti?.(name)}
-                    style={{ accentColor: '#3fb950' }}
                   />
                   <span
                     className="rounded-full flex-shrink-0"
-                    style={{ width: 6, height: 6, background: isRunning ? '#3fb950' : '#f85149' }}
+                    style={{
+                      width: 6,
+                      height: 6,
+                      background: isRunning ? 'var(--semantic-success)' : 'var(--semantic-error)',
+                    }}
                   />
-                  <span className="text-xs truncate flex-1" style={{ color: '#c9d1d9' }}>
-                    {name}
-                  </span>
+                  <span className="text-xs truncate flex-1">{name}</span>
                 </label>
               );
             })}
@@ -277,11 +258,7 @@ export default function MultiMode({ servers, multiSelected, onToggleMulti }) {
             <button
               onClick={handleLoadTools}
               disabled={selectedCount === 0 || loadingTools}
-              className="w-full py-1.5 rounded text-xs font-medium transition-all"
-              style={{
-                background: selectedCount === 0 ? '#21262d' : '#3fb950',
-                color: selectedCount === 0 ? '#484f58' : '#0d1117',
-              }}
+              className="hd-btn hd-btn--primary w-full text-xs"
             >
               {loadingTools ? (
                 <span className="flex items-center justify-center gap-2">
@@ -294,33 +271,29 @@ export default function MultiMode({ servers, multiSelected, onToggleMulti }) {
           </div>
         </div>
 
-        {/* Tool list */}
         <div className="flex-1 flex flex-col overflow-hidden">
           {aggregatedTools.length > 0 && (
-            <div className="px-3 py-2 border-b" style={{ borderColor: '#30363d' }}>
+            <div className="px-3 py-2 hd-border-b">
               <input
                 type="text"
                 value={toolFilter}
                 onChange={(e) => setToolFilter(e.target.value)}
                 placeholder="Filter tools..."
-                className="w-full px-2 py-1 rounded text-xs border"
-                style={{ background: '#0d1117', borderColor: '#30363d', color: '#e6edf3', outline: 'none' }}
-                onFocus={(e) => (e.target.style.borderColor = '#3fb950')}
-                onBlur={(e) => (e.target.style.borderColor = '#30363d')}
+                className="hd-input text-xs"
               />
             </div>
           )}
 
           {loadError && (
-            <div className="px-3 py-2 text-xs" style={{ color: '#f85149' }}>
+            <div className="px-3 py-2 text-xs hd-text-err">
               Some errors occurred:
-              <pre className="mt-1 text-xs" style={{ color: '#f85149', whiteSpace: 'pre-wrap' }}>{loadError}</pre>
+              <pre className="mt-1 text-xs hd-text-err" style={{ whiteSpace: 'pre-wrap' }}>{loadError}</pre>
             </div>
           )}
 
           <div className="flex-1 overflow-y-auto">
             {aggregatedTools.length === 0 && !loadingTools && (
-              <div className="p-4 text-center text-xs" style={{ color: '#8b949e' }}>
+              <div className="p-4 text-center text-xs hd-text-dim">
                 {selectedCount === 0
                   ? 'Select servers above, then click Load Tools'
                   : 'Click "Load Tools" to aggregate tools'}
@@ -338,33 +311,12 @@ export default function MultiMode({ servers, multiSelected, onToggleMulti }) {
                     setResult(null);
                     setResultError(null);
                   }}
-                  className="px-3 py-2 cursor-pointer border-b transition-colors"
-                  style={{
-                    borderColor: '#21262d',
-                    background: isSelected ? '#1f2937' : 'transparent',
-                  }}
-                  onMouseEnter={(e) => { if (!isSelected) e.currentTarget.style.background = '#1c2128'; }}
-                  onMouseLeave={(e) => { if (!isSelected) e.currentTarget.style.background = 'transparent'; }}
+                  className={`hd-tool-entry ${isSelected ? 'hd-tool-entry--selected' : ''}`}
                 >
-                  <div className="text-xs font-medium truncate" style={{ color: '#58a6ff' }}>
-                    {tool.name}
-                  </div>
-                  <div className="text-xs mt-0.5" style={{ color: '#3fb950' }}>
-                    {serverName}
-                  </div>
+                  <div className="hd-tool-entry__name">{tool.name}</div>
+                  <div className="hd-tool-entry__server">{serverName}</div>
                   {tool.description && (
-                    <div
-                      className="text-xs mt-0.5"
-                      style={{
-                        color: '#8b949e',
-                        overflow: 'hidden',
-                        display: '-webkit-box',
-                        WebkitLineClamp: 1,
-                        WebkitBoxOrient: 'vertical',
-                      }}
-                    >
-                      {tool.description}
-                    </div>
+                    <div className="hd-tool-entry__desc">{tool.description}</div>
                   )}
                 </div>
               );
@@ -373,10 +325,9 @@ export default function MultiMode({ servers, multiSelected, onToggleMulti }) {
         </div>
       </div>
 
-      {/* Right: form + result */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {!selectedEntry ? (
-          <div className="flex-1 flex items-center justify-center" style={{ color: '#8b949e' }}>
+          <div className="flex-1 flex items-center justify-center hd-empty-hint">
             <div className="text-center">
               <div className="text-3xl mb-3">🔧</div>
               <p className="text-sm">
@@ -385,7 +336,7 @@ export default function MultiMode({ servers, multiSelected, onToggleMulti }) {
                   : 'Select a tool from the list'}
               </p>
               {aggregatedTools.length > 0 && (
-                <p className="text-xs mt-1" style={{ color: '#484f58' }}>
+                <p className="text-xs mt-1 hd-text-muted">
                   {aggregatedTools.length} tools loaded across {selectedCount} servers
                 </p>
               )}
@@ -394,14 +345,10 @@ export default function MultiMode({ servers, multiSelected, onToggleMulti }) {
         ) : (
           <div className="flex-1 overflow-y-auto p-4">
             <div className="mb-4">
-              <h2 className="text-base font-semibold" style={{ color: '#58a6ff' }}>
-                {selectedEntry.tool.name}
-              </h2>
-              <p className="text-xs mt-0.5" style={{ color: '#8b949e' }}>
-                {selectedEntry.tool.description}
-              </p>
-              <p className="text-xs mt-1" style={{ color: '#484f58' }}>
-                on <span style={{ color: '#3fb950' }}>{selectedEntry.serverName}</span>
+              <h2 className="text-base font-semibold hd-link">{selectedEntry.tool.name}</h2>
+              <p className="text-xs mt-0.5 hd-text-dim">{selectedEntry.tool.description}</p>
+              <p className="text-xs mt-1 hd-text-muted">
+                on <span className="hd-text-ok">{selectedEntry.serverName}</span>
               </p>
             </div>
 

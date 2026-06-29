@@ -53,7 +53,14 @@ export class McpClient {
 
     if (!res.ok) {
       const text = await res.text().catch(() => res.statusText);
-      throw new Error(`MCP HTTP ${res.status}: ${text}`);
+      const hint = res.status === 502 || res.status === 503
+        ? ' (MCP server unreachable — is the container running?)'
+        : res.status === 401
+          ? ' (check API key in Settings)'
+          : res.status === 400
+            ? ' (session expired — retry or refresh the page)'
+            : '';
+      throw new Error(`MCP HTTP ${res.status}${hint}: ${text}`.trim());
     }
 
     // Capture session ID from response header
