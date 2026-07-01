@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { mcpClient } from '../lib/mcp.js';
 import { startServer, updateServerEnv, startServer as restartServer } from '../lib/api.js';
 import { getToolHints } from '../lib/toolHints.js';
+import { isServerRunning } from '../lib/categories.js';
+import ToolResultContent from './ToolResultContent.jsx';
 
 // ─── Tool Form ────────────────────────────────────────────────────────────────
 
@@ -243,15 +245,6 @@ function ResultViewer({ result, error }) {
 
   if (!result && !error) return null;
 
-  function formatResult(r) {
-    if (!r) return '';
-    if (typeof r === 'string') return r;
-    if (r.content && Array.isArray(r.content)) {
-      return r.content.map((c) => (c.type === 'text' ? c.text : JSON.stringify(c, null, 2))).join('\n');
-    }
-    return JSON.stringify(r, null, 2);
-  }
-
   return (
     <div
       className="rounded-lg border mt-4"
@@ -271,15 +264,15 @@ function ResultViewer({ result, error }) {
       </div>
 
       {!collapsed && (
-        <pre
+        <ToolResultContent
+          result={result}
+          error={error}
           className="result-pre p-3 overflow-auto"
           style={{
-            color: error ? '#f85149' : '#e6edf3',
+            color: error ? '#f85149' : undefined,
             maxHeight: 400,
           }}
-        >
-          {error ? String(error) : formatResult(result)}
-        </pre>
+        />
       )}
     </div>
   );
@@ -422,7 +415,7 @@ export default function ManualMode({ selectedServer, servers, onRefresh }) {
   const [showConfig, setShowConfig] = useState(false);
 
   const serverInfo = servers?.find((s) => (s.name || s.id) === selectedServer);
-  const isRunning = serverInfo?.health_ok === true;
+  const isRunning = isServerRunning(serverInfo);
   const serverEnv = serverInfo?.env ? (typeof serverInfo.env === 'string' ? JSON.parse(serverInfo.env) : serverInfo.env) : {};
   const hasEnvKeys = Object.keys(serverEnv).length > 0;
 

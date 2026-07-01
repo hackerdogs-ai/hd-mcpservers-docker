@@ -28,6 +28,7 @@ from models import (
     RequestLog,
     Server,
     ServerCreate,
+    ServerImport,
     ServerResponse,
 )
 from rate_limiter import RateLimiter
@@ -100,11 +101,17 @@ async def init_db() -> None:
                 status TEXT DEFAULT 'running',
                 source TEXT DEFAULT 'static',
                 category TEXT,
+                url TEXT,
                 created_at TEXT NOT NULL,
                 last_health TEXT,
                 health_ok INTEGER DEFAULT 0
             )
         """)
+        # Migration: add url column if missing (existing DBs)
+        try:
+            await db.execute("ALTER TABLE servers ADD COLUMN url TEXT")
+        except Exception:
+            pass
         await db.execute("""
             CREATE TABLE IF NOT EXISTS request_logs (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -147,30 +154,38 @@ def _to_server_response(row: dict) -> dict:
         "status": row["status"],
         "source": row["source"],
         "category": row.get("category"),
+        "url": row.get("url"),
         "created_at": row["created_at"],
         "last_health": row.get("last_health"),
         "health_ok": bool(row.get("health_ok", False)),
     }
 
 
+async def _next_available_port() -> int:
+    """Find the next available port starting from 9000."""
+    async with aiosqlite.connect(DB_PATH) as db:
+        async with db.execute("SELECT port FROM servers ORDER BY port DESC LIMIT 1") as cur:
+            row = await cur.fetchone()
+            max_port = row[0] if row else 8999
+    return max(9000, max_port + 1)
+
+
 # ---------------------------------------------------------------------------
 # Background health check
 # ---------------------------------------------------------------------------
 
-async def _check_one(name: str, port: int) -> tuple[str, bool]:
-    """Probe a single MCP server; returns (name, ok)."""
+async def _check_one(name: str, port: int, url: str | None = None) -> tuple[str, bool]:
+    """Probe a single MCP server via lightweight GET /health (no session spawn)."""
     try:
         async with httpx.AsyncClient(timeout=5.0) as client:
-            resp = await client.post(
-                f"http://{name}:{port}/mcp",
-                json={"jsonrpc": "2.0", "id": 0, "method": "initialize",
-                      "params": {"protocolVersion": "2024-11-05",
-                                 "capabilities": {},
-                                 "clientInfo": {"name": "health", "version": "1"}}},
-                headers={"Content-Type": "application/json",
-                         "Accept": "application/json, text/event-stream"},
-            )
-            return name, resp.status_code < 500
+            if url:
+                health_url = url.rstrip("/")
+                if not health_url.endswith("/health"):
+                    health_url = health_url.rsplit("/", 1)[0] + "/health" if "/" in health_url.split("//", 1)[-1] else health_url + "/health"
+                resp = await client.get(health_url)
+            else:
+                resp = await client.get(f"http://{name}:{port}/health")
+            return name, resp.status_code == 200
     except Exception:
         return name, False
 
@@ -179,20 +194,20 @@ async def health_check_loop() -> None:
     """Periodically check health of all registered MCP servers (concurrent, max 40 at a time)."""
     sem = asyncio.Semaphore(40)
 
-    async def bounded_check(name: str, port: int) -> tuple[str, bool]:
+    async def bounded_check(name: str, port: int, url: str | None = None) -> tuple[str, bool]:
         async with sem:
-            return await _check_one(name, port)
+            return await _check_one(name, port, url)
 
     while True:
         await asyncio.sleep(30)
         try:
             async with aiosqlite.connect(DB_PATH) as db:
                 db.row_factory = aiosqlite.Row
-                async with db.execute("SELECT name, port FROM servers") as cursor:
+                async with db.execute("SELECT name, port, url FROM servers") as cursor:
                     servers = await cursor.fetchall()
 
             results = await asyncio.gather(
-                *[bounded_check(srv["name"], srv["port"]) for srv in servers],
+                *[bounded_check(srv["name"], srv["port"], srv.get("url")) for srv in servers],
                 return_exceptions=True,
             )
 
@@ -257,6 +272,10 @@ async def startup_event() -> None:
             self.image = row["image"]
             self.port = row["port"]
             self.env = row["env"]
+            try:
+                self.url = row["url"]
+            except (IndexError, KeyError):
+                self.url = None
 
     dynamic_servers = [_Srv(r) for r in dynamic_rows]
     if dynamic_servers:
@@ -554,34 +573,37 @@ async def key_usage(key_id: str):
 async def create_server(payload: ServerCreate):
     now_iso = datetime.utcnow().isoformat()
     env_json = json.dumps(payload.env)
+    is_external = bool(payload.url)
+    port = payload.port if payload.port else await _next_available_port()
+    source = "external" if is_external else "dynamic"
+    status = "running" if is_external else "starting"
 
     async with aiosqlite.connect(DB_PATH) as db:
         await db.execute(
-            """INSERT INTO servers (name, image, port, env, status, source, category, created_at,
-               last_health, health_ok)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-            (payload.name, payload.image, payload.port, env_json,
-             "starting", "dynamic", payload.category, now_iso, None, 0),
+            """INSERT INTO servers (name, image, port, env, status, source, category, url,
+               created_at, last_health, health_ok)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            (payload.name, payload.image or "", port, env_json,
+             status, source, payload.category, payload.url, now_iso, None, 0),
         )
         await db.commit()
 
-    # Start container
-    try:
-        docker_manager.start_server(payload.name, payload.image, payload.port, payload.env)
-        async with aiosqlite.connect(DB_PATH) as db:
-            await db.execute(
-                "UPDATE servers SET status='running' WHERE name=?", (payload.name,)
-            )
-            await db.commit()
-    except Exception as exc:
-        logger.error("Failed to start container %s: %s", payload.name, exc)
-        async with aiosqlite.connect(DB_PATH) as db:
-            await db.execute(
-                "UPDATE servers SET status='error' WHERE name=?", (payload.name,)
-            )
-            await db.commit()
+    if not is_external:
+        try:
+            docker_manager.start_server(payload.name, payload.image, port, payload.env)
+            async with aiosqlite.connect(DB_PATH) as db:
+                await db.execute(
+                    "UPDATE servers SET status='running' WHERE name=?", (payload.name,)
+                )
+                await db.commit()
+        except Exception as exc:
+            logger.error("Failed to start container %s: %s", payload.name, exc)
+            async with aiosqlite.connect(DB_PATH) as db:
+                await db.execute(
+                    "UPDATE servers SET status='error' WHERE name=?", (payload.name,)
+                )
+                await db.commit()
 
-    # Reload Caddy routes
     await _reload_caddy_from_db()
 
     async with aiosqlite.connect(DB_PATH) as db:
@@ -589,6 +611,64 @@ async def create_server(payload: ServerCreate):
         async with db.execute("SELECT * FROM servers WHERE name=?", (payload.name,)) as cursor:
             row = await cursor.fetchone()
     return _to_server_response(dict(row))
+
+
+@app.post("/admin/servers/import", dependencies=[Depends(require_admin)])
+async def import_servers(payload: ServerImport):
+    """Import MCP servers from Claude Desktop or Cursor JSON config format."""
+    results = []
+    for name, config in payload.mcpServers.items():
+        server_name = name if name.endswith("-mcp") else f"{name}-mcp"
+        server_name = server_name.lower().replace(" ", "-").replace("_", "-")
+
+        async with aiosqlite.connect(DB_PATH) as db:
+            async with db.execute("SELECT name FROM servers WHERE name=?", (server_name,)) as cur:
+                if await cur.fetchone():
+                    results.append({"name": server_name, "status": "skipped", "reason": "already exists"})
+                    continue
+
+        url = config.get("url")
+        command = config.get("command", "")
+        args = config.get("args", [])
+        env = config.get("env", {})
+        category = config.get("category")
+
+        if url:
+            sc = ServerCreate(name=server_name, url=url, env=env, category=category)
+        elif command == "docker" and args:
+            image = next((a for a in args if "/" in a and ":" in a or not a.startswith("-")), "")
+            image = image.strip()
+            if not image:
+                image = args[-1] if args else ""
+            sc = ServerCreate(name=server_name, image=image, env=env, category=category)
+        elif command in ("npx", "node", "npm"):
+            pkg = ""
+            skip_next = False
+            for a in args:
+                if skip_next:
+                    skip_next = False
+                    continue
+                if a in ("-y", "--yes", "exec", "run"):
+                    continue
+                if a.startswith("-"):
+                    if a in ("-p", "--package"):
+                        skip_next = True
+                    continue
+                pkg = a
+                break
+            image = f"hackerdogs/{server_name}:latest"
+            sc = ServerCreate(name=server_name, image=image, env=env, category=category)
+        else:
+            results.append({"name": server_name, "status": "skipped", "reason": f"unsupported command: {command}"})
+            continue
+
+        try:
+            resp = await create_server(sc)
+            results.append({"name": server_name, "status": "created", "server": resp})
+        except Exception as exc:
+            results.append({"name": server_name, "status": "error", "reason": str(exc)})
+
+    return {"imported": len([r for r in results if r["status"] == "created"]), "results": results}
 
 
 @app.get("/admin/servers", dependencies=[Depends(require_admin)])
@@ -621,10 +701,11 @@ async def delete_server(name: str):
         raise HTTPException(status_code=404, detail="Server not found")
 
     srv = dict(row)
-    try:
-        docker_manager.stop_server(name)
-    except Exception as exc:
-        logger.warning("Could not stop container %s: %s", name, exc)
+    if srv.get("source") != "external":
+        try:
+            docker_manager.stop_server(name)
+        except Exception as exc:
+            logger.warning("Could not stop container %s: %s", name, exc)
 
     async with aiosqlite.connect(DB_PATH) as db:
         await db.execute("DELETE FROM servers WHERE name=?", (name,))
@@ -739,7 +820,8 @@ async def stop_server_endpoint(name: str):
         docker_manager.stop_server(name)
         async with aiosqlite.connect(DB_PATH) as db:
             await db.execute(
-                "UPDATE servers SET status='stopped' WHERE name=?", (name,)
+                "UPDATE servers SET status='stopped', health_ok=0, last_health=? WHERE name=?",
+                (datetime.utcnow().isoformat(), name),
             )
             await db.commit()
     except Exception as exc:
@@ -948,6 +1030,10 @@ async def _reload_caddy_from_db() -> None:
         def __init__(self, row):
             self.name = row["name"]
             self.port = row["port"]
+            try:
+                self.url = row["url"]
+            except (IndexError, KeyError):
+                self.url = None
 
     servers = [_Srv(r) for r in rows]
     await caddy_reload.write_and_reload(servers)

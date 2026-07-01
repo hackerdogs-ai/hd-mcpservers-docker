@@ -1,12 +1,13 @@
 import React, { useState, useMemo } from 'react';
 import { startServer, stopServer } from '../lib/api.js';
 import { mcpClient } from '../lib/mcp.js';
+import { isServerRunning } from '../lib/categories.js';
 
 const CATEGORIES = ['all', 'recon', 'exploit', 'cloud', 'misc'];
 
 function getStatusColor(server) {
   if (!server) return '#8b949e';
-  if (server.health_ok) return '#3fb950';
+  if (isServerRunning(server)) return '#3fb950';
   const s = (server.status || '').toLowerCase();
   if (s === 'running') return '#d29922'; // registered running but not reachable
   return '#f85149';
@@ -14,7 +15,7 @@ function getStatusColor(server) {
 
 function getStatusTitle(server) {
   if (!server) return 'unknown';
-  if (server.health_ok) return 'running';
+  if (isServerRunning(server)) return 'running';
   const s = (server.status || '').toLowerCase();
   if (s === 'running') return 'not reachable';
   return s || 'stopped';
@@ -55,7 +56,7 @@ export default function ServerList({
   }, [servers, search, category]);
 
   const running = useMemo(
-    () => (Array.isArray(servers) ? servers.filter((s) => s.health_ok).length : 0),
+    () => (Array.isArray(servers) ? servers.filter((s) => isServerRunning(s)).length : 0),
     [servers]
   );
 
@@ -70,7 +71,7 @@ export default function ServerList({
       for (let i = 0; i < 15; i++) {
         await new Promise((r) => setTimeout(r, 3000));
         const list = await onRefresh?.();
-        if (Array.isArray(list) && list.find((s) => s.name === name)?.health_ok) break;
+        if (Array.isArray(list) && isServerRunning(list.find((s) => s.name === name))) break;
       }
     } catch (err) {
       setActionError((p) => ({ ...p, [name]: err.message }));
@@ -84,13 +85,13 @@ export default function ServerList({
     setActionLoading((p) => ({ ...p, [name]: 'stopping' }));
     setActionError((p) => ({ ...p, [name]: null }));
     try {
+      await mcpClient.terminateSession(name);
       await stopServer(name);
-      mcpClient.resetSession(name);
       // Poll every 3s until health_ok=false (max 15s)
       for (let i = 0; i < 5; i++) {
         await new Promise((r) => setTimeout(r, 3000));
         const list = await onRefresh?.();
-        if (Array.isArray(list) && !list.find((s) => s.name === name)?.health_ok) break;
+        if (Array.isArray(list) && !isServerRunning(list.find((s) => s.name === name))) break;
       }
     } catch (err) {
       setActionError((p) => ({ ...p, [name]: err.message }));
@@ -149,7 +150,7 @@ export default function ServerList({
 
         {filtered.map((server) => {
           const name = server.name || server.id || '';
-          const isRunning = !!server.health_ok;
+          const isRunning = isServerRunning(server);
           const isSelected = selectedServer === name;
           const isMultiChecked = multiSelected?.has(name);
           const isActing = !!actionLoading[name];

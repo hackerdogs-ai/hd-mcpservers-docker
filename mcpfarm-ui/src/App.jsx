@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { listServices, getAdminStats } from './lib/api.js';
+import { isServerRunning } from './lib/categories.js';
 import Marketplace from './components/Marketplace.jsx';
 import ServerDetail from './components/ServerDetail.jsx';
 import ServerList from './components/ServerList.jsx';
@@ -19,7 +20,7 @@ const MODES = [
 export default function App() {
   const [mode, setMode] = useState('manual');
   const [servers, setServers] = useState([]);
-  const [serversLoading, setServersLoading] = useState(false);
+  const [serversLoading, setServersLoading] = useState(true);
   const [serversError, setServersError] = useState(null);
   const [stats, setStats] = useState(null);
   const [showSettings, setShowSettings] = useState(false);
@@ -100,7 +101,7 @@ export default function App() {
     setSelectedServer(null);
   }
 
-  const runningCount = servers.filter((s) => s.health_ok).length;
+  const runningCount = servers.filter((s) => isServerRunning(s)).length;
 
   return (
     <div className="app-shell flex flex-col h-screen overflow-hidden">
@@ -122,7 +123,16 @@ export default function App() {
             <div>
               <span className="app-header__title">MCP Farm</span>
               <span className="app-header__stats">
-                <span className="app-header__stats-live">{runningCount}</span>/{servers.length} running
+                {serversLoading && servers.length === 0 ? (
+                  <>
+                    <span className="spinner" style={{ width: 10, height: 10, marginRight: 4, verticalAlign: 'middle' }} />
+                    loading...
+                  </>
+                ) : (
+                  <>
+                    <span className="app-header__stats-live">{runningCount}</span>/{servers.length} running
+                  </>
+                )}
               </span>
             </div>
           </button>
@@ -177,6 +187,7 @@ export default function App() {
           {mode === 'manual' && !selectedServer && (
             <Marketplace
               servers={servers}
+              loading={serversLoading}
               onSelectServer={handleSelectServer}
               onRefresh={loadServers}
             />

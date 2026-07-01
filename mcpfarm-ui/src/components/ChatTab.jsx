@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { mcpClient } from '../lib/mcp.js';
 import { getToolHints } from '../lib/toolHints.js';
-import { getProviders, chatCompletion, fetchOllamaModels } from '../lib/llm.js';
+import { getProviders, chatCompletion, fetchOllamaModels, getProviderToolFormat } from '../lib/llm.js';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import ToolResultContent from './ToolResultContent.jsx';
 
 const MAX_TOOL_ROUNDS = 10;
 
@@ -76,7 +77,7 @@ function ChatMessage({ msg }) {
     return (
       <div className="chat-msg chat-msg--tool">
         <div className="chat-msg-label">Tool Result</div>
-        <pre className="chat-msg-body chat-tool-result">{msg.content}</pre>
+        <ToolResultContent result={msg.content} className="chat-msg-body chat-tool-result" />
       </div>
     );
   }
@@ -237,14 +238,15 @@ export default function ChatTab({ serverName, tools: existingTools, isRunning, o
               toolCalls: response.toolCalls,
             };
 
-            if (provider === 'claude') {
+            const toolFormat = getProviderToolFormat(provider);
+            if (toolFormat === 'claude') {
               llmMessages.push(assistantWithCalls);
               llmMessages.push({
                 role: 'tool',
                 tool_use_id: tc.id || 'call_0',
                 content: toolResult,
               });
-            } else if (provider === 'openai') {
+            } else if (toolFormat === 'openai') {
               if (!llmMessages.find(m => m === assistantWithCalls)) {
                 llmMessages.push(assistantWithCalls);
               }
@@ -329,7 +331,7 @@ export default function ChatTab({ serverName, tools: existingTools, isRunning, o
             disabled={discovering || !isRunning}
             className="sd-btn sd-btn--primary chat-discover-btn"
           >
-            {discovering ? 'Discovering...' : toolsDiscovered ? `⚡ ${tools.length} Tools` : '🔍 Discover Tools'}
+            {discovering ? <><span className="spinner" style={{ width: 11, height: 11, marginRight: 4 }} /> Discovering...</> : toolsDiscovered ? `⚡ ${tools.length} Tools` : '🔍 Discover Tools'}
           </button>
         </div>
       </div>

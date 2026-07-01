@@ -1,4 +1,8 @@
 // mcp.js — MCP session lifecycle management
+//
+// Session recovery follows MCP Streamable HTTP spec (2025-03-26 §Session Management):
+// https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#session-management
+// On HTTP 404 with Mcp-Session-Id, clients MUST re-initialize (see also TS SDK #1708).
 
 import { getBaseUrl, getApiKey } from './api.js';
 
@@ -43,8 +47,12 @@ export class McpClient {
     return h;
   }
 
-  async _post(serverName, body, sessionId) {
-    const url = `${getBaseUrl()}/${serverName}/mcp`;
+  _endpoint(serverName) {
+    return `${getBaseUrl()}/${serverName}/mcp`;
+  }
+
+  async _post(serverName, body, sessionId, { retryOn404 = true } = {}) {
+    const url = this._endpoint(serverName);
     const res = await fetch(url, {
       method: 'POST',
       headers: this._headers(sessionId),
@@ -52,14 +60,28 @@ export class McpClient {
     });
 
     if (!res.ok) {
+      // Spec: 404 + session ID => session terminated; clear and re-init once.
+      if (retryOn404 && res.status === 404 && sessionId) {
+        this.resetSession(serverName);
+        await this.initialize(serverName);
+        return this._post(serverName, body, this.sessions[serverName], { retryOn404: false });
+      }
+
+      // Upstream unreachable — drop cached session so the next start is clean.
+      if (res.status === 502 || res.status === 503) {
+        this.resetSession(serverName);
+      }
+
       const text = await res.text().catch(() => res.statusText);
       const hint = res.status === 502 || res.status === 503
         ? ' (MCP server unreachable — is the container running?)'
         : res.status === 401
           ? ' (check API key in Settings)'
-          : res.status === 400
+          : res.status === 404
             ? ' (session expired — retry or refresh the page)'
-            : '';
+            : res.status === 400
+              ? ' (bad request — session may be stale; retry or refresh)'
+              : '';
       throw new Error(`MCP HTTP ${res.status}${hint}: ${text}`.trim());
     }
 
@@ -86,7 +108,7 @@ export class McpClient {
       },
     };
 
-    const initResult = await this._post(serverName, initBody, null);
+    const initResult = await this._post(serverName, initBody, null, { retryOn404: false });
 
     // Send initialized notification
     const notifyBody = {
@@ -94,15 +116,30 @@ export class McpClient {
       method: 'notifications/initialized',
       params: {},
     };
-    // Notification: no id, response may be empty
     const sessionId = this.sessions[serverName];
-    await fetch(`${getBaseUrl()}/${serverName}/mcp`, {
+    await fetch(this._endpoint(serverName), {
       method: 'POST',
       headers: this._headers(sessionId),
       body: JSON.stringify(notifyBody),
     }).catch(() => {});
 
     return initResult;
+  }
+
+  /** Spec SHOULD: terminate session via DELETE before disconnecting. */
+  async terminateSession(serverName) {
+    const sessionId = this.sessions[serverName];
+    if (!sessionId) return;
+    try {
+      await fetch(this._endpoint(serverName), {
+        method: 'DELETE',
+        headers: this._headers(sessionId),
+      });
+    } catch {
+      // Server may already be stopped (ECONNREFUSED / 502 via proxy).
+    } finally {
+      this.resetSession(serverName);
+    }
   }
 
   /** List tools for a server. Auto-initializes if no session. */
@@ -124,7 +161,6 @@ export class McpClient {
       throw new Error(result.error.message || JSON.stringify(result.error));
     }
 
-    // Handle both JSON-RPC result wrapper and direct tools array
     if (result && result.result) {
       return result.result.tools || [];
     }

@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { startServer, stopServer, enableServer, disableServer, updateServerEnv, getApiKey, getBaseUrl, getServerReadme } from '../lib/api.js';
 import { mcpClient } from '../lib/mcp.js';
-import { getCategoryInfo, getStatusInfo, generateServerIcon, getServerDescription } from '../lib/categories.js';
+import { getCategoryInfo, getStatusInfo, isServerRunning, generateServerIcon, getServerDescription } from '../lib/categories.js';
 import { getToolHints } from '../lib/toolHints.js';
 import MarkdownViewer from './MarkdownViewer.jsx';
 import { getBundledReadme } from '../lib/readmes.js';
 import ChatTab from './ChatTab.jsx';
+import ToolResultContent from './ToolResultContent.jsx';
+import { getToolResultDisplayText } from '../lib/toolResult.js';
 
 function TerminalOutput({ lines }) {
   const ref = useRef(null);
@@ -13,16 +15,18 @@ function TerminalOutput({ lines }) {
     if (ref.current) ref.current.scrollTop = ref.current.scrollHeight;
   }, [lines]);
 
-  if (!lines || lines.length === 0) return null;
-
   return (
     <div className="sd-terminal" ref={ref}>
-      {lines.map((line, i) => (
-        <div key={i} className={`sd-term-line ${line.type === 'error' ? 'sd-term-err' : line.type === 'success' ? 'sd-term-ok' : ''}`}>
-          <span className="sd-term-prompt">{line.type === 'error' ? '✗' : line.type === 'success' ? '✓' : '›'}</span>
-          <span>{line.text}</span>
-        </div>
-      ))}
+      {!lines || lines.length === 0 ? (
+        <div className="sd-term-empty">Server activity and test output appear here.</div>
+      ) : (
+        lines.map((line, i) => (
+          <div key={i} className={`sd-term-line ${line.type === 'error' ? 'sd-term-err' : line.type === 'success' ? 'sd-term-ok' : ''}`}>
+            <span className="sd-term-prompt">{line.type === 'error' ? '✗' : line.type === 'success' ? '✓' : '›'}</span>
+            <span>{line.text}</span>
+          </div>
+        ))
+      )}
     </div>
   );
 }
@@ -68,7 +72,7 @@ function ToolForm({ tool, onSubmit, loading }) {
   return (
     <form onSubmit={handleSubmit} className="sd-tool-form">
       {propEntries.length === 0 && (
-        <p className="text-xs hd-text-dim">No parameters required.</p>
+        <p className="hd-text-dim">No parameters required.</p>
       )}
       {propEntries.map(([key, prop]) => {
         const fieldHints = hints && key === firstStringKey ? hints : null;
@@ -91,7 +95,7 @@ function ToolForm({ tool, onSubmit, loading }) {
                 {prop.enum.map(o => <option key={o} value={o}>{String(o)}</option>)}
               </select>
             ) : prop.type === 'boolean' ? (
-              <label className="flex items-center gap-2 text-xs hd-text-secondary">
+              <label className="flex items-center gap-2 hd-text-secondary">
                 <input
                   type="checkbox"
                   checked={values[key] || false}
@@ -152,21 +156,7 @@ function ResultViewer({ result, error }) {
   const [collapsed, setCollapsed] = useState(false);
   if (!result && !error) return null;
 
-  function fmt(r) {
-    if (!r) return '';
-    if (typeof r === 'string') return r;
-    if (r.content && Array.isArray(r.content)) {
-      return r.content.map(c => {
-        if (c.type === 'text') return c.text;
-        if (c.type === 'image') return `[image: ${c.mimeType || 'binary'}]`;
-        return JSON.stringify(c, null, 2);
-      }).join('\n');
-    }
-    if (r.isError && r.content) return fmt({ content: r.content });
-    return JSON.stringify(r, null, 2);
-  }
-
-  const text = error ? String(error) : fmt(result);
+  const text = error ? String(error) : getToolResultDisplayText(result);
   const isEmpty = !error && (!text || text.trim() === 'Done.' || text.trim() === 'Command completed with no output.');
 
   return (
@@ -184,9 +174,11 @@ function ResultViewer({ result, error }) {
               No output returned. Check argument format in the Docs tab — e.g. nuclei needs flags like <code>-u https://target.com</code>, or enter a bare IP/hostname (auto-prefixed with <code>-u</code> after server update).
             </p>
           ) : (
-            <pre className={`sd-result-body${error ? ' sd-result-body--error' : ''}`}>
-              {text}
-            </pre>
+            <ToolResultContent
+              result={result}
+              error={error}
+              className={`sd-result-body${error ? ' sd-result-body--error' : ''}`}
+            />
           )}
         </>
       )}
@@ -216,8 +208,8 @@ function ReadmePanel({ serverName }) {
     return () => { cancelled = true; };
   }, [serverName]);
 
-  if (loading) return <p className="text-xs hd-text-dim">Loading README...</p>;
-  if (err) return <p className="text-xs" style={{ color: '#f85149' }}>Could not load README: {err}</p>;
+  if (loading) return <p className="hd-text-dim">Loading README...</p>;
+  if (err) return <p style={{ color: '#f85149' }}>Could not load README: {err}</p>;
   return <MarkdownViewer source={readme} />;
 }
 
@@ -241,7 +233,10 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
   const status = getStatusInfo(server || {});
   const desc = getServerDescription(serverName);
   const iconSvg = generateServerIcon(serverName, server?.category, 56);
-  const isRunning = server?.health_ok === true;
+  const isRunning = isServerRunning(server);
+  const wasRunningRef = useRef(false);
+  const toolsLoadedRef = useRef(false);
+  const loadGenRef = useRef(0);
   const isDisabled = (server?.status || '').toLowerCase() === 'disabled';
 
   const envObj = server?.env
@@ -255,19 +250,22 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
 
   const loadTools = useCallback(async () => {
     if (!serverName) return;
+    const gen = ++loadGenRef.current;
     setToolsLoading(true);
     setToolsError(null);
     log(`Loading tools from ${serverName}...`);
     mcpClient.resetSession(serverName);
     try {
       const t = await mcpClient.listTools(serverName);
+      if (gen !== loadGenRef.current) return;
       setTools(t);
       log(`Found ${t.length} tools`, 'success');
     } catch (err) {
+      if (gen !== loadGenRef.current) return;
       setToolsError(err.message);
       log(`Failed: ${err.message}`, 'error');
     } finally {
-      setToolsLoading(false);
+      if (gen === loadGenRef.current) setToolsLoading(false);
     }
   }, [serverName, log]);
 
@@ -279,8 +277,28 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
     setTermLines([]);
     setActiveTab('overview');
     setToolPanelTab('run');
-    if (server && isRunning) loadTools();
+    loadGenRef.current += 1;
+    wasRunningRef.current = false;
+    toolsLoadedRef.current = false;
   }, [serverName]);
+
+  useEffect(() => {
+    if (!serverName) return;
+    if (isRunning && !toolsLoadedRef.current) {
+      toolsLoadedRef.current = true;
+      wasRunningRef.current = true;
+      loadTools();
+    } else if (isRunning) {
+      wasRunningRef.current = true;
+    } else if (wasRunningRef.current) {
+      loadGenRef.current += 1;
+      toolsLoadedRef.current = false;
+      wasRunningRef.current = false;
+      setTools([]);
+      setToolsLoading(false);
+      setToolsError(null);
+    }
+  }, [serverName, isRunning, loadTools]);
 
   async function handleAction(action) {
     setActionLoading(action);
@@ -294,27 +312,41 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
       } else if (action === 'disable') {
         await disableServer(serverName);
         log('Server disabled — route removed from Caddy', 'success');
+        toolsLoadedRef.current = false;
+        wasRunningRef.current = false;
         setTools([]);
         onRefresh?.();
       } else if (action === 'start') {
         await startServer(serverName);
         mcpClient.resetSession(serverName);
+        toolsLoadedRef.current = false;
         for (let i = 0; i < 15; i++) {
           await new Promise(r => setTimeout(r, 3000));
           log(`Waiting for health check... (${i + 1})`);
           const list = await onRefresh?.();
-          if (Array.isArray(list) && list.find(s => s.name === serverName)?.health_ok) {
+          if (Array.isArray(list) && isServerRunning(list.find(s => s.name === serverName))) {
             log('Server is healthy', 'success');
+            toolsLoadedRef.current = true;
+            wasRunningRef.current = true;
             loadTools();
             break;
           }
         }
       } else if (action === 'stop') {
+        loadGenRef.current += 1;
+        await mcpClient.terminateSession(serverName);
         await stopServer(serverName);
-        mcpClient.resetSession(serverName);
-        log('Server stopped', 'success');
+        toolsLoadedRef.current = false;
+        wasRunningRef.current = false;
         setTools([]);
-        onRefresh?.();
+        setToolsLoading(false);
+        setToolsError(null);
+        for (let i = 0; i < 5; i++) {
+          const list = await onRefresh?.();
+          if (Array.isArray(list) && !isServerRunning(list.find(s => s.name === serverName))) break;
+          await new Promise(r => setTimeout(r, 1000));
+        }
+        log('Server stopped', 'success');
       } else if (action === 'test') {
         log('Initializing MCP session...');
         mcpClient.resetSession(serverName);
@@ -323,6 +355,7 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
         const t = await mcpClient.listTools(serverName);
         log(`tools/list returned ${t.length} tools`, 'success');
         setTools(t);
+        toolsLoadedRef.current = true;
         if (t.length > 0) {
           const first = t[0];
           log(`Calling tool: ${first.name}...`);
@@ -385,25 +418,29 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
     <div className="sd-shell">
       {/* Header */}
       <div className="sd-header">
-        <button onClick={onBack} className="sd-back">← Back</button>
-        <div className="sd-header-main">
-          <span className="sd-header-icon" dangerouslySetInnerHTML={{ __html: iconSvg }} />
-          <div className="sd-header-info">
-            <div className="sd-header-name">
-              {serverName.replace(/-mcp$/, '')}
-              <span className="sd-header-suffix">-mcp</span>
+        <div className="sd-header-left">
+          <button type="button" onClick={onBack} className="sd-back" aria-label="Back to catalog">
+            ← Back
+          </button>
+          <div className="sd-header-main">
+            <span className="sd-header-icon" dangerouslySetInnerHTML={{ __html: iconSvg }} />
+            <div className="sd-header-info">
+              <div className="sd-header-name">
+                {serverName.replace(/-mcp$/, '')}
+                <span className="sd-header-suffix">-mcp</span>
+              </div>
+              <div className="sd-header-meta">
+                <span className="mkt-chip" style={{ color: cat.color, background: cat.bg, borderColor: cat.border }}>
+                  {cat.label}
+                </span>
+                <span className="sd-status-badge" style={{ color: status.color }}>
+                  <span className="sd-status-dot" style={{ background: status.dot }} />
+                  {status.label}
+                </span>
+                <span className="hd-text-muted">Port {server?.port}</span>
+              </div>
+              <div className="sd-header-desc">{desc}</div>
             </div>
-            <div className="sd-header-meta">
-              <span className="mkt-chip" style={{ color: cat.color, background: cat.bg, borderColor: cat.border }}>
-                {cat.label}
-              </span>
-              <span className="sd-status-badge" style={{ color: status.color }}>
-                <span className="sd-status-dot" style={{ background: status.dot }} />
-                {status.label}
-              </span>
-              <span className="hd-text-muted">Port {server?.port}</span>
-            </div>
-            <div className="sd-header-desc">{desc}</div>
           </div>
         </div>
 
@@ -442,13 +479,6 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
                 className="sd-btn sd-btn--stop"
               >
                 {actionLoading === 'stop' ? 'Stopping...' : '■ Stop'}
-              </button>
-              <button
-                onClick={() => handleAction('test')}
-                disabled={!!actionLoading}
-                className="sd-btn sd-btn--test"
-              >
-                {actionLoading === 'test' ? <><span className="spinner" style={{ width: 12, height: 12 }} /> Testing...</> : '⚡ Test'}
               </button>
               <button
                 onClick={() => handleAction('disable')}
@@ -499,7 +529,7 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
               </div>
               <div className="sd-info-item">
                 <span className="sd-info-label">Tools</span>
-                <span className="sd-info-value">{tools.length || (isRunning ? 'Loading...' : '—')}</span>
+                <span className="sd-info-value">{tools.length || (toolsLoading ? 'Loading...' : isRunning ? '0' : '—')}</span>
               </div>
               {envKeys.length > 0 && (
                 <div className="sd-info-item">
@@ -509,7 +539,21 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
               )}
             </div>
 
-            <TerminalOutput lines={termLines} />
+            <div className="sd-terminal-panel">
+              <div className="sd-terminal-head">
+                <h3 className="sd-section-title" style={{ marginBottom: 0 }}>Terminal</h3>
+                {isRunning && (
+                  <button
+                    onClick={() => handleAction('test')}
+                    disabled={!!actionLoading}
+                    className="sd-btn sd-btn--test"
+                  >
+                    {actionLoading === 'test' ? <><span className="spinner" style={{ width: 12, height: 12 }} /> Testing...</> : '⚡ Test'}
+                  </button>
+                )}
+              </div>
+              <TerminalOutput lines={termLines} />
+            </div>
           </div>
         )}
 
@@ -522,9 +566,22 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
                   {toolsLoading ? '...' : '↻'}
                 </button>
               </div>
-              {!isRunning && (
+              {toolsLoading && tools.length === 0 && (
+                <div className="sd-tools-notice" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span className="spinner" style={{ width: 14, height: 14 }} />
+                  Loading tools...
+                </div>
+              )}
+              {!isRunning && tools.length === 0 && !toolsLoading && (
                 <div className="sd-tools-notice">
-                  Server is stopped. Start it to load tools.
+                  Server is not running. Start it to load tools.
+                </div>
+              )}
+              {isRunning && tools.length === 0 && !toolsLoading && (
+                <div className="sd-tools-notice">
+                  <button onClick={loadTools} className="sd-btn sd-btn--primary" style={{ marginTop: 4 }}>
+                    Load Tools
+                  </button>
                 </div>
               )}
               {toolsError && (
@@ -553,7 +610,7 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
                     return h?.description ? (
                       <div className="sd-tool-desc-box">{h.description}</div>
                     ) : selectedTool.description ? (
-                      <p className="text-xs mb-3 hd-text-dim">{selectedTool.description}</p>
+                      <p className="mb-3 hd-text-dim">{selectedTool.description}</p>
                     ) : null;
                   })()}
 
@@ -590,7 +647,7 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
                         const h = getToolHints(selectedTool.name);
                         if (!h) {
                           return (
-                            <p className="text-xs hd-text-dim">
+                            <p className="hd-text-dim">
                               No detailed documentation for this tool. See the README tab for server documentation.
                             </p>
                           );
@@ -617,7 +674,7 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
                                 </ul>
                               </div>
                             )}
-                            <p className="text-xs mt-4 hd-text-muted">
+                            <p className="mt-4 hd-text-muted">
                               See the README tab for full server documentation, deploy instructions, and example prompts.
                             </p>
                           </>
@@ -651,18 +708,17 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
           <div className="sd-section">
             <h3 className="sd-section-title">Environment Variables</h3>
             {envKeys.length === 0 ? (
-              <p className="text-xs hd-text-dim">This server has no configurable environment variables.</p>
+              <p className="hd-text-dim">This server has no configurable environment variables.</p>
             ) : (
-              <EnvEditor serverName={serverName} envObj={envObj} onSaved={() => { onRefresh?.(); log('Config saved', 'success'); }} log={log} />
+              <EnvEditor serverName={serverName} envObj={envObj} onSaved={() => onRefresh?.()} />
             )}
-            <TerminalOutput lines={termLines} />
           </div>
         )}
 
         {activeTab === 'connect' && (
           <div className="sd-section">
             <h3 className="sd-section-title">Connect from any LLM</h3>
-            <p className="text-xs mb-3 hd-text-dim">
+            <p className="mb-3 hd-text-dim">
               Add this to your MCP client configuration (Claude Desktop, Cursor, Windsurf, etc.):
             </p>
             <div className="sd-code-block">
@@ -680,9 +736,7 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
 
             <h3 className="sd-section-title" style={{ marginTop: 24 }}>Direct URL</h3>
             <div className="sd-code-block">
-              <pre className="sd-code-body" style={{ padding: '8px 12px' }}>
-                {`${baseUrl}/${serverName}/mcp`}
-              </pre>
+              <pre className="sd-code-body">{`${baseUrl}/${serverName}/mcp`}</pre>
             </div>
 
             <h3 className="sd-section-title" style={{ marginTop: 24 }}>cURL Test</h3>
@@ -699,26 +753,27 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
   );
 }
 
-function EnvEditor({ serverName, envObj, onSaved, log }) {
+function EnvEditor({ serverName, envObj, onSaved }) {
   const keys = Object.keys(envObj);
   const [values, setValues] = useState({ ...envObj });
   const [saving, setSaving] = useState(false);
   const [showValues, setShowValues] = useState({});
+  const [status, setStatus] = useState(null);
 
   async function handleSave(restart = false) {
     setSaving(true);
-    log('Saving environment variables...');
+    setStatus(null);
     try {
       await updateServerEnv(serverName, values);
-      log('Environment variables saved', 'success');
       if (restart) {
-        log('Restarting server...');
         await startServer(serverName);
-        log('Server restarted', 'success');
+        setStatus({ type: 'success', text: 'Saved and server restarted.' });
+      } else {
+        setStatus({ type: 'success', text: 'Environment variables saved.' });
       }
       onSaved?.();
     } catch (err) {
-      log(`Save failed: ${err.message}`, 'error');
+      setStatus({ type: 'error', text: err.message });
     } finally {
       setSaving(false);
     }
@@ -748,6 +803,11 @@ function EnvEditor({ serverName, envObj, onSaved, log }) {
           </div>
         </div>
       ))}
+      {status && (
+        <p className={status.type === 'error' ? 'sd-config-status sd-config-status--error' : 'sd-config-status sd-config-status--ok'}>
+          {status.text}
+        </p>
+      )}
       <div className="flex gap-2 mt-4">
         <button onClick={() => handleSave(false)} disabled={saving} className="sd-btn sd-btn--primary">
           {saving ? 'Saving...' : 'Save'}

@@ -1,5 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { getBaseUrl, getApiKey, getAdminSecret, getClaudeKey, getOpenAIKey, getOllamaUrl, getHeygenKey, getHeygenAvatarId, saveSettings, rotateSecret } from '../lib/api.js';
+import {
+  getBaseUrl,
+  getApiKey,
+  getAdminSecret,
+  getClaudeKey,
+  getOpenAIKey,
+  getOllamaUrl,
+  getHeygenKey,
+  getHeygenAvatarId,
+  getBedrockApiKey,
+  getBedrockRegion,
+  getBedrockModels,
+  getAzureOpenAIKey,
+  getAzureOpenAIEndpoint,
+  getAzureOpenAIModels,
+  getOpenRouterKey,
+  getOpenRouterModels,
+  getGrokKey,
+  getGrokModels,
+  getGeminiKey,
+  getGeminiModels,
+  saveSettings,
+  rotateSecret,
+} from '../lib/api.js';
 
 export default function Settings({ onClose }) {
   const [baseUrl, setBaseUrl] = useState('');
@@ -10,6 +33,18 @@ export default function Settings({ onClose }) {
   const [ollamaUrl, setOllamaUrl] = useState('');
   const [heygenKey, setHeygenKey] = useState('');
   const [heygenAvatarId, setHeygenAvatarId] = useState('');
+  const [bedrockApiKey, setBedrockApiKey] = useState('');
+  const [bedrockRegion, setBedrockRegion] = useState('');
+  const [bedrockModels, setBedrockModels] = useState('');
+  const [azureOpenaiKey, setAzureOpenaiKey] = useState('');
+  const [azureOpenaiEndpoint, setAzureOpenaiEndpoint] = useState('');
+  const [azureOpenaiModels, setAzureOpenaiModels] = useState('');
+  const [openrouterKey, setOpenrouterKey] = useState('');
+  const [openrouterModels, setOpenrouterModels] = useState('');
+  const [grokKey, setGrokKey] = useState('');
+  const [grokModels, setGrokModels] = useState('');
+  const [geminiKey, setGeminiKey] = useState('');
+  const [geminiModels, setGeminiModels] = useState('');
   const [saved, setSaved] = useState(false);
   const [rotating, setRotating] = useState(false);
   const [rotateMsg, setRotateMsg] = useState(null);
@@ -23,10 +58,43 @@ export default function Settings({ onClose }) {
     setOllamaUrl(getOllamaUrl());
     setHeygenKey(getHeygenKey());
     setHeygenAvatarId(getHeygenAvatarId());
+    setBedrockApiKey(getBedrockApiKey());
+    setBedrockRegion(getBedrockRegion());
+    setBedrockModels(getBedrockModels());
+    setAzureOpenaiKey(getAzureOpenAIKey());
+    setAzureOpenaiEndpoint(getAzureOpenAIEndpoint());
+    setAzureOpenaiModels(getAzureOpenAIModels());
+    setOpenrouterKey(getOpenRouterKey());
+    setOpenrouterModels(getOpenRouterModels());
+    setGrokKey(getGrokKey());
+    setGrokModels(getGrokModels());
+    setGeminiKey(getGeminiKey());
+    setGeminiModels(getGeminiModels());
   }, []);
 
   function handleSave() {
-    saveSettings({ baseUrl, apiKey, adminSecret, claudeKey, openaiKey, ollamaUrl, heygenKey, heygenAvatarId });
+    saveSettings({
+      baseUrl,
+      apiKey,
+      adminSecret,
+      claudeKey,
+      openaiKey,
+      ollamaUrl,
+      heygenKey,
+      heygenAvatarId,
+      bedrockApiKey,
+      bedrockRegion,
+      bedrockModels,
+      azureOpenaiKey,
+      azureOpenaiEndpoint,
+      azureOpenaiModels,
+      openrouterKey,
+      openrouterModels,
+      grokKey,
+      grokModels,
+      geminiKey,
+      geminiModels,
+    });
     setSaved(true);
     setTimeout(() => {
       setSaved(false);
@@ -108,9 +176,12 @@ export default function Settings({ onClose }) {
               <p className="mt-1 text-xs hd-text-err">{rotateMsg.text}</p>
             )}
           </div>
+
+          <SectionTitle>Chat LLM Providers</SectionTitle>
+
           <Field
             label="Claude API Key"
-            hint="Required for Prompt mode, Nova, and Chat (Claude provider)"
+            hint="Prompt mode, Nova, and Chat (Claude provider)"
             value={claudeKey}
             onChange={setClaudeKey}
             placeholder="sk-ant-..."
@@ -118,7 +189,7 @@ export default function Settings({ onClose }) {
           />
           <Field
             label="OpenAI API Key"
-            hint="Required for Chat tab (OpenAI provider)"
+            hint="Chat tab (OpenAI provider)"
             value={openaiKey}
             onChange={setOpenaiKey}
             placeholder="sk-..."
@@ -126,12 +197,120 @@ export default function Settings({ onClose }) {
           />
           <Field
             label="Ollama URL"
-            hint="Local Ollama instance for Chat tab (default: http://localhost:11434)"
+            hint="Local Ollama for Chat tab (default: http://localhost:11434)"
             value={ollamaUrl}
             onChange={setOllamaUrl}
             placeholder="http://localhost:11434"
             type="text"
           />
+
+          <SectionTitle>AWS Bedrock</SectionTitle>
+          <Field
+            label="Bedrock API Key"
+            hint="Bedrock API key for Chat tab"
+            value={bedrockApiKey}
+            onChange={setBedrockApiKey}
+            placeholder="bedrock-api-key-..."
+            type="password"
+          />
+          <Field
+            label="Bedrock Region"
+            hint="AWS region (e.g. us-east-1)"
+            value={bedrockRegion}
+            onChange={setBedrockRegion}
+            placeholder="us-east-1"
+            type="text"
+          />
+          <Field
+            label="Bedrock Models"
+            hint="Comma-separated model IDs (overrides defaults)"
+            value={bedrockModels}
+            onChange={setBedrockModels}
+            placeholder="anthropic.claude-3-5-sonnet-20241022-v2:0, amazon.nova-pro-v1:0"
+            type="text"
+          />
+
+          <SectionTitle>Azure OpenAI</SectionTitle>
+          <Field
+            label="Azure OpenAI API Key"
+            hint="Chat tab (Azure provider)"
+            value={azureOpenaiKey}
+            onChange={setAzureOpenaiKey}
+            placeholder="azure-api-key"
+            type="password"
+          />
+          <Field
+            label="Azure OpenAI Endpoint"
+            hint="Resource endpoint URL"
+            value={azureOpenaiEndpoint}
+            onChange={setAzureOpenaiEndpoint}
+            placeholder="https://myresource.openai.azure.com"
+            type="text"
+          />
+          <Field
+            label="Azure Deployments"
+            hint="Comma-separated deployment names (used as models)"
+            value={azureOpenaiModels}
+            onChange={setAzureOpenaiModels}
+            placeholder="gpt-4o, gpt-4o-mini, gpt-4"
+            type="text"
+          />
+
+          <SectionTitle>OpenRouter</SectionTitle>
+          <Field
+            label="OpenRouter API Key"
+            hint="Chat tab (OpenRouter provider)"
+            value={openrouterKey}
+            onChange={setOpenrouterKey}
+            placeholder="sk-or-..."
+            type="password"
+          />
+          <Field
+            label="OpenRouter Models"
+            hint="Comma-separated model slugs (overrides defaults)"
+            value={openrouterModels}
+            onChange={setOpenrouterModels}
+            placeholder="anthropic/claude-sonnet-4, openai/gpt-4o"
+            type="text"
+          />
+
+          <SectionTitle>Grok (xAI)</SectionTitle>
+          <Field
+            label="Grok API Key"
+            hint="Chat tab (Grok provider)"
+            value={grokKey}
+            onChange={setGrokKey}
+            placeholder="xai-..."
+            type="password"
+          />
+          <Field
+            label="Grok Models"
+            hint="Comma-separated model names (overrides defaults)"
+            value={grokModels}
+            onChange={setGrokModels}
+            placeholder="grok-3, grok-3-mini"
+            type="text"
+          />
+
+          <SectionTitle>Google Gemini</SectionTitle>
+          <Field
+            label="Gemini API Key"
+            hint="Chat tab (Gemini provider)"
+            value={geminiKey}
+            onChange={setGeminiKey}
+            placeholder="AIza..."
+            type="password"
+          />
+          <Field
+            label="Gemini Models"
+            hint="Comma-separated model names (overrides defaults)"
+            value={geminiModels}
+            onChange={setGeminiModels}
+            placeholder="gemini-2.5-flash, gemini-2.5-pro"
+            type="text"
+          />
+
+          <SectionTitle>Other</SectionTitle>
           <Field
             label="HeyGen API Key"
             hint="Enables live avatar in Nova tab"
@@ -160,6 +339,12 @@ export default function Settings({ onClose }) {
         </div>
       </div>
     </div>
+  );
+}
+
+function SectionTitle({ children }) {
+  return (
+    <h3 className="hd-settings-section-title">{children}</h3>
   );
 }
 

@@ -1,6 +1,8 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { ALL_CATEGORIES, getCategoryInfo, getStatusInfo, getServerAbbrev, generateServerIcon, getServerDescription } from '../lib/categories.js';
+import { ALL_CATEGORIES, getCategoryInfo, getStatusInfo, isServerRunning, generateServerIcon, getServerDescription, serverRequiresKey, getRequiredEnvKeys } from '../lib/categories.js';
 import { startServer, stopServer, enableServer, disableServer } from '../lib/api.js';
+import { mcpClient } from '../lib/mcp.js';
+import AddServerDialog from './AddServerDialog.jsx';
 
 /* ── Confirmation dialog (hd-dialog pattern) ──────────────────────────── */
 
@@ -27,7 +29,7 @@ function ConfirmDialog({ open, title, message, confirmLabel, confirmClass, onCon
 /* ── Shared inline action buttons ─────────────────────────────────────── */
 
 function ServerActions({ server, onAction, actionLoading, className }) {
-  const isRunning = server.health_ok === true;
+  const isRunning = isServerRunning(server);
   const isDisabled = (server.status || '').toLowerCase() === 'disabled';
   const thisLoading = actionLoading === server.name;
 
@@ -115,13 +117,35 @@ const LIST_SORT_COLUMNS = [
   { id: 'description', label: 'Description' },
   { id: 'category', label: 'Category' },
   { id: 'status', label: 'Status' },
+  { id: 'key', label: 'Key Required' },
   { id: 'port', label: 'Port' },
 ];
+
+function KeyIcon({ size = 14, className }) {
+  return (
+    <svg
+      className={className}
+      width={size}
+      height={size}
+      viewBox="0 0 16 16"
+      fill="none"
+      aria-hidden="true"
+    >
+      <circle cx="5.5" cy="6.5" r="3" stroke="currentColor" strokeWidth="1.5" />
+      <path
+        d="M8 6.5h5.5M11.5 6.5v2M13.5 6.5v2"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
 
 function getStatusRank(server) {
   const s = (server.status || '').toLowerCase();
   if (s === 'disabled') return 0;
-  if (server.health_ok) return 3;
+  if (isServerRunning(server)) return 3;
   if (s === 'running') return 2;
   return 1;
 }
@@ -145,6 +169,9 @@ function compareServers(a, b, sortBy, sortDir) {
     case 'port':
       cmp = (a.port || 0) - (b.port || 0);
       break;
+    case 'key':
+      cmp = Number(serverRequiresKey(a)) - Number(serverRequiresKey(b));
+      break;
     default:
       cmp = a.name.localeCompare(b.name);
   }
@@ -162,11 +189,11 @@ function ListSortHeader({ column, label, sortBy, sortDir, onSort }) {
   return (
     <button
       type="button"
-      className={`mkt-list-col-head ${active ? 'mkt-list-col-head--active' : ''}`}
+      className={`mkt-list-col-head mkt-list-col-head--${column} ${active ? 'mkt-list-col-head--active' : ''}`}
       onClick={() => onSort(column)}
       aria-sort={active ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}
     >
-      <span>{label}</span>
+      <span className="mkt-list-col-head-label">{label}</span>
       <span className="mkt-sort-indicator" aria-hidden="true">
         {active ? (sortDir === 'asc' ? '↑' : '↓') : '↕'}
       </span>
@@ -200,6 +227,10 @@ function ServerListRow({ server, onClick, onAction, actionLoading }) {
   const status = getStatusInfo(server);
   const desc = getServerDescription(server.name);
   const iconSvg = generateServerIcon(server.name, server.category, 28);
+  const needsKey = serverRequiresKey(server);
+  const keyTitle = needsKey
+    ? `Requires key: ${getRequiredEnvKeys(server).join(', ')}`
+    : undefined;
 
   return (
     <button
@@ -223,6 +254,9 @@ function ServerListRow({ server, onClick, onAction, actionLoading }) {
         <span className="mkt-list-status-dot" style={{ background: status.dot }} />
         <span style={{ color: status.color }}>{status.label}</span>
       </span>
+      <span className="mkt-list-col mkt-list-col--key" title={keyTitle}>
+        {needsKey && <KeyIcon size={14} className="mkt-key-icon" />}
+      </span>
       <span className="mkt-list-col mkt-list-col--port">{server.port ?? '—'}</span>
       <ServerActions
         server={server}
@@ -241,6 +275,10 @@ function ServerCard({ server, onClick, onAction, actionLoading }) {
   const status = getStatusInfo(server);
   const desc = getServerDescription(server.name);
   const iconSvg = generateServerIcon(server.name, server.category, 40);
+  const needsKey = serverRequiresKey(server);
+  const keyTitle = needsKey
+    ? `Requires key: ${getRequiredEnvKeys(server).join(', ')}`
+    : undefined;
 
   return (
     <button
@@ -253,11 +291,18 @@ function ServerCard({ server, onClick, onAction, actionLoading }) {
           className="mkt-card-icon"
           dangerouslySetInnerHTML={{ __html: iconSvg }}
         />
-        <span
-          className="mkt-card-dot"
-          title={status.label}
-          style={{ background: status.dot }}
-        />
+        <span className="mkt-card-head-badges">
+          {needsKey && (
+            <span className="mkt-key-badge" title={keyTitle}>
+              <KeyIcon size={13} className="mkt-key-icon" />
+            </span>
+          )}
+          <span
+            className="mkt-card-dot"
+            title={status.label}
+            style={{ background: status.dot }}
+          />
+        </span>
       </div>
       <div className="mkt-card-name">{server.name.replace(/-mcp$/, '')}</div>
       <div className="mkt-card-desc">{desc}</div>
@@ -284,15 +329,17 @@ const STATUS_FILTERS = [
   { id: 'disabled', label: 'Disabled' },
 ];
 
-export default function Marketplace({ servers, onSelectServer, onRefresh }) {
+export default function Marketplace({ servers, loading, onSelectServer, onRefresh }) {
   const [search, setSearch] = useState('');
   const [selectedCats, setSelectedCats] = useState(new Set());
   const [statusFilter, setStatusFilter] = useState('all');
+  const [requiresKeyFilter, setRequiresKeyFilter] = useState(false);
   const [sortBy, setSortBy] = useState('name');
   const [sortDir, setSortDir] = useState('asc');
   const [viewMode, setViewMode] = useState('list');
   const [confirm, setConfirm] = useState(null);
   const [actionLoading, setActionLoading] = useState(null);
+  const [showAddServer, setShowAddServer] = useState(false);
 
   const categoryCounts = useMemo(() => {
     const counts = {};
@@ -304,11 +351,15 @@ export default function Marketplace({ servers, onSelectServer, onRefresh }) {
   }, [servers]);
 
   const runningCount = useMemo(() =>
-    (servers || []).filter(s => s.health_ok).length
+    (servers || []).filter(s => isServerRunning(s)).length
   , [servers]);
 
   const disabledCount = useMemo(() =>
     (servers || []).filter(s => (s.status || '').toLowerCase() === 'disabled').length
+  , [servers]);
+
+  const requiresKeyCount = useMemo(() =>
+    (servers || []).filter(s => serverRequiresKey(s)).length
   , [servers]);
 
   const filtered = useMemo(() => {
@@ -322,13 +373,14 @@ export default function Marketplace({ servers, onSelectServer, onRefresh }) {
         const sStatus = (s.status || '').toLowerCase();
         const matchStatus =
           statusFilter === 'all' ||
-          (statusFilter === 'running' && s.health_ok) ||
-          (statusFilter === 'stopped' && !s.health_ok && sStatus !== 'disabled') ||
+          (statusFilter === 'running' && isServerRunning(s)) ||
+          (statusFilter === 'stopped' && !isServerRunning(s) && sStatus !== 'disabled') ||
           (statusFilter === 'disabled' && sStatus === 'disabled');
-        return matchSearch && matchCat && matchStatus;
+        const matchKey = !requiresKeyFilter || serverRequiresKey(s);
+        return matchSearch && matchCat && matchStatus && matchKey;
       })
       .sort((a, b) => compareServers(a, b, sortBy, sortDir));
-  }, [servers, search, selectedCats, statusFilter, sortBy, sortDir]);
+  }, [servers, search, selectedCats, statusFilter, requiresKeyFilter, sortBy, sortDir]);
 
   function handleListSort(column) {
     if (sortBy === column) {
@@ -367,7 +419,10 @@ export default function Marketplace({ servers, onSelectServer, onRefresh }) {
     setActionLoading(server.name);
     try {
       if (action === 'start') await startServer(server.name);
-      else if (action === 'stop') await stopServer(server.name);
+      else if (action === 'stop') {
+        await mcpClient.terminateSession(server.name);
+        await stopServer(server.name);
+      }
       else if (action === 'enable') await enableServer(server.name);
       else if (action === 'disable') await disableServer(server.name);
       onRefresh?.();
@@ -383,6 +438,12 @@ export default function Marketplace({ servers, onSelectServer, onRefresh }) {
     <div className="mkt-shell">
       {/* Facet sidebar */}
       <aside className="mkt-sidebar">
+        {loading && servers.length === 0 && (
+          <div className="mkt-sidebar-loading">
+            <span className="spinner" style={{ width: 14, height: 14 }} />
+            <span>Loading filters...</span>
+          </div>
+        )}
         <div className="mkt-sidebar-section">
           <div className="mkt-sidebar-title">Status</div>
           {STATUS_FILTERS.map(f => (
@@ -405,6 +466,22 @@ export default function Marketplace({ servers, onSelectServer, onRefresh }) {
               </span>
             </label>
           ))}
+        </div>
+
+        <div className="mkt-sidebar-section">
+          <div className="mkt-sidebar-title">Access</div>
+          <label
+            className={`mkt-facet-btn ${requiresKeyFilter ? 'mkt-facet-btn--active' : ''}`}
+          >
+            <input
+              type="checkbox"
+              className="mkt-facet-checkbox"
+              checked={requiresKeyFilter}
+              onChange={() => setRequiresKeyFilter(v => !v)}
+            />
+            <span className="mkt-facet-label">Requires Key</span>
+            <span className="mkt-facet-count">{requiresKeyCount}</span>
+          </label>
         </div>
 
         <div className="mkt-sidebar-section">
@@ -452,7 +529,7 @@ export default function Marketplace({ servers, onSelectServer, onRefresh }) {
               type="text"
               value={search}
               onChange={e => setSearch(e.target.value)}
-              placeholder="Search 395 MCP servers..."
+              placeholder={loading && servers.length === 0 ? 'Loading servers...' : `Search ${servers.length} MCP servers...`}
               className="mkt-search"
             />
             {search && (
@@ -476,20 +553,43 @@ export default function Marketplace({ servers, onSelectServer, onRefresh }) {
             </select>
           )}
           <div className="mkt-toolbar-info">
-            <span style={{ color: 'var(--hd-primary)' }}>{runningCount}</span>
-            <span style={{ color: 'var(--text-dim)' }}> running</span>
-            <span style={{ color: 'var(--text-muted)' }}> · </span>
-            <span style={{ color: 'var(--text-dim)' }}>{filtered.length} shown</span>
+            {loading && servers.length === 0 ? (
+              <span style={{ color: 'var(--text-dim)' }}>
+                <span className="spinner" style={{ width: 10, height: 10, marginRight: 6, verticalAlign: 'middle' }} />
+                Loading...
+              </span>
+            ) : (
+              <>
+                <span style={{ color: 'var(--hd-primary)' }}>{runningCount}</span>
+                <span style={{ color: 'var(--text-dim)' }}> running</span>
+                <span style={{ color: 'var(--text-muted)' }}> · </span>
+                <span style={{ color: 'var(--text-dim)' }}>{filtered.length} shown</span>
+                {loading && <span className="spinner" style={{ width: 10, height: 10, marginLeft: 8, verticalAlign: 'middle' }} />}
+              </>
+            )}
           </div>
+          <button
+            type="button"
+            className="mkt-add-btn"
+            onClick={() => setShowAddServer(true)}
+            title="Add MCP Server"
+          >
+            + Add Server
+          </button>
           <ViewToggle viewMode={viewMode} onChange={setViewMode} />
         </div>
 
         {/* Active filter chips */}
-        {(selectedCats.size > 0 || statusFilter !== 'all') && (
+        {(selectedCats.size > 0 || statusFilter !== 'all' || requiresKeyFilter) && (
           <div className="mkt-active-filters">
             {statusFilter !== 'all' && (
               <span className="mkt-filter-chip" onClick={() => setStatusFilter('all')}>
                 {statusFilter} ×
+              </span>
+            )}
+            {requiresKeyFilter && (
+              <span className="mkt-filter-chip" onClick={() => setRequiresKeyFilter(false)}>
+                Requires Key ×
               </span>
             )}
             {[...selectedCats].map(cat => (
@@ -504,7 +604,7 @@ export default function Marketplace({ servers, onSelectServer, onRefresh }) {
             ))}
             <button
               className="mkt-filter-clear"
-              onClick={() => { setSelectedCats(new Set()); setStatusFilter('all'); }}
+              onClick={() => { setSelectedCats(new Set()); setStatusFilter('all'); setRequiresKeyFilter(false); }}
             >
               Clear all
             </button>
@@ -541,8 +641,17 @@ export default function Marketplace({ servers, onSelectServer, onRefresh }) {
 
         {filtered.length === 0 && (
           <div className="mkt-empty">
-            <div style={{ fontSize: 32, marginBottom: 8 }}>🔍</div>
-            <div>No servers match your filters</div>
+            {loading && servers.length === 0 ? (
+              <>
+                <span className="spinner" style={{ width: 24, height: 24, marginBottom: 12 }} />
+                <div>Loading MCP servers...</div>
+              </>
+            ) : (
+              <>
+                <div style={{ fontSize: 32, marginBottom: 8 }}>🔍</div>
+                <div>No servers match your filters</div>
+              </>
+            )}
           </div>
         )}
       </div>
@@ -558,6 +667,14 @@ export default function Marketplace({ servers, onSelectServer, onRefresh }) {
         onCancel={() => setConfirm(null)}
         loading={!!actionLoading}
       />
+
+      {/* Add Server dialog */}
+      {showAddServer && (
+        <AddServerDialog
+          onClose={() => setShowAddServer(false)}
+          onRefresh={onRefresh}
+        />
+      )}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { mcpClient } from '../lib/mcp.js';
 import { startServer } from '../lib/api.js';
+import ToolResultContent from './ToolResultContent.jsx';
 
 // ─── ToolForm (simplified version for MultiMode) ──────────────────────────────
 
@@ -108,15 +109,6 @@ function ResultViewer({ result, error }) {
   const [collapsed, setCollapsed] = useState(false);
   if (!result && !error) return null;
 
-  function formatResult(r) {
-    if (!r) return '';
-    if (typeof r === 'string') return r;
-    if (r.content && Array.isArray(r.content)) {
-      return r.content.map((c) => (c.type === 'text' ? c.text : JSON.stringify(c, null, 2))).join('\n');
-    }
-    return JSON.stringify(r, null, 2);
-  }
-
   return (
     <div className={`hd-result${error ? ' hd-result--error' : ''}`}>
       <div
@@ -129,9 +121,11 @@ function ResultViewer({ result, error }) {
         <span className="hd-result__toggle">{collapsed ? '▶' : '▼'}</span>
       </div>
       {!collapsed && (
-        <pre className={`hd-result__body result-pre${error ? ' hd-result__body--error' : ''}`}>
-          {error ? String(error) : formatResult(result)}
-        </pre>
+        <ToolResultContent
+          result={result}
+          error={error}
+          className={`hd-result__body result-pre${error ? ' hd-result__body--error' : ''}`}
+        />
       )}
     </div>
   );

@@ -68,7 +68,21 @@ def ui_caddyfile_footer() -> str:
     return CADDYFILE_FOOTER.format(ui_upstream=UI_UPSTREAM)
 
 
-def generate_route_block(name: str, port: int) -> str:
+def generate_route_block(name: str, port: int, url: str | None = None) -> str:
+    if url:
+        return (
+            f"    @{name} path /{name}/*\n"
+            f"    handle @{name} {{\n"
+            f"        forward_auth auth-gateway:9090 {{\n"
+            f"            uri /verify\n"
+            f"            copy_headers Authorization\n"
+            f"        }}\n"
+            f"        uri strip_prefix /{name}\n"
+            f"        reverse_proxy {url} {{\n"
+            f"            header_up Host {{upstream_hostport}}\n"
+            f"        }}\n"
+            f"    }}"
+        )
     return (
         f"    @{name} path /{name}/*\n"
         f"    handle @{name} {{\n"
@@ -82,13 +96,18 @@ def generate_route_block(name: str, port: int) -> str:
     )
 
 
+def _get_server_attr(server, attr, default=None):
+    return getattr(server, attr, default)
+
+
 def generate_routes_conf(servers: list) -> str:
     """Generate routes.conf content for all provided servers."""
     blocks = []
     for server in servers:
-        name = server.name if hasattr(server, "name") else server["name"]
-        port = server.port if hasattr(server, "port") else server["port"]
-        blocks.append(generate_route_block(name, port))
+        name = _get_server_attr(server, "name")
+        port = _get_server_attr(server, "port", 0)
+        url = _get_server_attr(server, "url")
+        blocks.append(generate_route_block(name, port, url))
     return "\n\n".join(blocks) + "\n" if blocks else ""
 
 
@@ -96,9 +115,10 @@ def build_full_caddyfile(servers: list) -> str:
     """Build a complete Caddyfile with all routes inlined."""
     route_blocks = []
     for server in servers:
-        name = server.name if hasattr(server, "name") else server["name"]
-        port = server.port if hasattr(server, "port") else server["port"]
-        route_blocks.append(generate_route_block(name, port))
+        name = _get_server_attr(server, "name")
+        port = _get_server_attr(server, "port", 0)
+        url = _get_server_attr(server, "url")
+        route_blocks.append(generate_route_block(name, port, url))
     return CADDYFILE_HEADER + "\n".join(route_blocks) + ui_caddyfile_footer()
 
 

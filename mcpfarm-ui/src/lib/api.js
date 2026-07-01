@@ -34,7 +34,76 @@ export function getOllamaUrl() {
   return localStorage.getItem('hd_ollama_url') || '';
 }
 
-export function saveSettings({ baseUrl, apiKey, adminSecret, claudeKey, openaiKey, ollamaUrl, heygenKey, heygenAvatarId }) {
+export function getBedrockApiKey() {
+  return localStorage.getItem('hd_bedrock_api_key') || '';
+}
+
+export function getBedrockRegion() {
+  return localStorage.getItem('hd_bedrock_region') || 'us-east-1';
+}
+
+export function getBedrockModels() {
+  return localStorage.getItem('hd_bedrock_models') || '';
+}
+
+export function getAzureOpenAIKey() {
+  return localStorage.getItem('hd_azure_openai_key') || '';
+}
+
+export function getAzureOpenAIEndpoint() {
+  return localStorage.getItem('hd_azure_openai_endpoint') || '';
+}
+
+export function getAzureOpenAIModels() {
+  return localStorage.getItem('hd_azure_openai_models') || '';
+}
+
+export function getOpenRouterKey() {
+  return localStorage.getItem('hd_openrouter_key') || '';
+}
+
+export function getOpenRouterModels() {
+  return localStorage.getItem('hd_openrouter_models') || '';
+}
+
+export function getGrokKey() {
+  return localStorage.getItem('hd_grok_key') || '';
+}
+
+export function getGrokModels() {
+  return localStorage.getItem('hd_grok_models') || '';
+}
+
+export function getGeminiKey() {
+  return localStorage.getItem('hd_gemini_key') || '';
+}
+
+export function getGeminiModels() {
+  return localStorage.getItem('hd_gemini_models') || '';
+}
+
+export function saveSettings({
+  baseUrl,
+  apiKey,
+  adminSecret,
+  claudeKey,
+  openaiKey,
+  ollamaUrl,
+  heygenKey,
+  heygenAvatarId,
+  bedrockApiKey,
+  bedrockRegion,
+  bedrockModels,
+  azureOpenaiKey,
+  azureOpenaiEndpoint,
+  azureOpenaiModels,
+  openrouterKey,
+  openrouterModels,
+  grokKey,
+  grokModels,
+  geminiKey,
+  geminiModels,
+}) {
   if (baseUrl !== undefined) localStorage.setItem('hd_base_url', baseUrl);
   if (apiKey !== undefined) localStorage.setItem('hd_api_key', apiKey);
   if (adminSecret !== undefined) localStorage.setItem('hd_admin_secret', adminSecret);
@@ -43,6 +112,18 @@ export function saveSettings({ baseUrl, apiKey, adminSecret, claudeKey, openaiKe
   if (ollamaUrl !== undefined) localStorage.setItem('hd_ollama_url', ollamaUrl);
   if (heygenKey !== undefined) localStorage.setItem('hd_heygen_key', heygenKey);
   if (heygenAvatarId !== undefined) localStorage.setItem('hd_heygen_avatar_id', heygenAvatarId);
+  if (bedrockApiKey !== undefined) localStorage.setItem('hd_bedrock_api_key', bedrockApiKey);
+  if (bedrockRegion !== undefined) localStorage.setItem('hd_bedrock_region', bedrockRegion);
+  if (bedrockModels !== undefined) localStorage.setItem('hd_bedrock_models', bedrockModels);
+  if (azureOpenaiKey !== undefined) localStorage.setItem('hd_azure_openai_key', azureOpenaiKey);
+  if (azureOpenaiEndpoint !== undefined) localStorage.setItem('hd_azure_openai_endpoint', azureOpenaiEndpoint);
+  if (azureOpenaiModels !== undefined) localStorage.setItem('hd_azure_openai_models', azureOpenaiModels);
+  if (openrouterKey !== undefined) localStorage.setItem('hd_openrouter_key', openrouterKey);
+  if (openrouterModels !== undefined) localStorage.setItem('hd_openrouter_models', openrouterModels);
+  if (grokKey !== undefined) localStorage.setItem('hd_grok_key', grokKey);
+  if (grokModels !== undefined) localStorage.setItem('hd_grok_models', grokModels);
+  if (geminiKey !== undefined) localStorage.setItem('hd_gemini_key', geminiKey);
+  if (geminiModels !== undefined) localStorage.setItem('hd_gemini_models', geminiModels);
 }
 
 function authHeaders(extra = {}) {
@@ -173,5 +254,31 @@ export async function rotateSecret() {
   return apiFetch('/admin/rotate-secret', {
     method: 'POST',
     headers: adminHeaders(),
+  });
+}
+
+/** Create a new MCP server (Docker image or external HTTP endpoint) */
+export async function createServer(payload) {
+  return apiFetch('/admin/servers', {
+    method: 'POST',
+    headers: adminHeaders(),
+    body: JSON.stringify(payload),
+  });
+}
+
+/** Delete an MCP server */
+export async function deleteServer(name) {
+  return apiFetch(`/admin/servers/${encodeURIComponent(name)}`, {
+    method: 'DELETE',
+    headers: adminHeaders(),
+  });
+}
+
+/** Import servers from Claude/Cursor JSON config */
+export async function importServers(mcpServers) {
+  return apiFetch('/admin/servers/import', {
+    method: 'POST',
+    headers: adminHeaders(),
+    body: JSON.stringify({ mcpServers }),
   });
 }

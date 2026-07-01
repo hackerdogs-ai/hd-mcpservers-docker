@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { runAgenticLoop } from '../lib/claude.js';
 import { mcpClient } from '../lib/mcp.js';
 import { getClaudeKey } from '../lib/api.js';
+import ToolResultContent from './ToolResultContent.jsx';
 
 // ─── Collapsible card ─────────────────────────────────────────────────────────
 
@@ -63,16 +64,7 @@ function MessageBubble({ msg }) {
   }
 
   if (msg.role === 'tool_result') {
-    const { serverName, toolName, result, error } = msg.data;
-
-    function formatResult(r) {
-      if (!r) return '';
-      if (typeof r === 'string') return r;
-      if (r.content && Array.isArray(r.content)) {
-        return r.content.map((c) => (c.type === 'text' ? c.text : JSON.stringify(c, null, 2))).join('\n');
-      }
-      return JSON.stringify(r, null, 2);
-    }
+    const { toolName, result, error } = msg.data;
 
     return (
       <div className="mb-2 ml-2">
@@ -81,9 +73,11 @@ function MessageBubble({ msg }) {
           variant={error ? 'error' : 'ok'}
           defaultOpen={false}
         >
-          <pre className={`result-pre p-3 text-xs overflow-auto max-h-[300px]${error ? ' hd-result__body--error' : ''}`}>
-            {error ? String(error) : formatResult(result)}
-          </pre>
+          <ToolResultContent
+            result={result}
+            error={error}
+            className={`result-pre p-3 text-xs overflow-auto max-h-[300px]${error ? ' hd-result__body--error' : ''}`}
+          />
         </CollapsibleCard>
       </div>
     );

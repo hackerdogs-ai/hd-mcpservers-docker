@@ -18,6 +18,7 @@ Usage: python mcp_http_proxy.py --port 8600 -- command arg1 arg2
 """
 import json
 import os
+import signal
 import select
 import subprocess
 import sys
@@ -41,6 +42,19 @@ _KEEPALIVE_INTERVAL = float(os.environ.get("MCP_PROXY_KEEPALIVE_INTERVAL", "10")
 # would otherwise leak them until the process runs out of file descriptors.
 _SESSION_TTL = float(os.environ.get("MCP_PROXY_SESSION_TTL", "900"))
 _REAP_INTERVAL = float(os.environ.get("MCP_PROXY_REAP_INTERVAL", "60"))
+
+
+def _reap_orphans():
+    """Reap zombie children adopted by PID 1 (us) after process-group kills."""
+    while True:
+        try:
+            while True:
+                pid, _ = os.waitpid(-1, os.WNOHANG)
+                if pid == 0:
+                    break
+        except ChildProcessError:
+            pass
+        time.sleep(5)
 
 
 def _reap_sessions():
@@ -138,7 +152,9 @@ class StdioSession:
             stderr=subprocess.PIPE,
             text=True,
             bufsize=1,
+            start_new_session=True,
         )
+        self.pgid = os.getpgid(self.proc.pid)
         self.lock = threading.Lock()
         self.id = uuid.uuid4().hex
         self.last_used = time.time()
@@ -163,10 +179,28 @@ class StdioSession:
 
     def close(self):
         try:
-            self.proc.terminate()
+            os.killpg(self.pgid, signal.SIGTERM)
+        except (ProcessLookupError, OSError):
+            pass
+        try:
             self.proc.wait(timeout=3)
         except Exception:
-            self.proc.kill()
+            pass
+        try:
+            os.killpg(self.pgid, signal.SIGKILL)
+        except (ProcessLookupError, OSError):
+            pass
+        try:
+            self.proc.wait(timeout=1)
+        except Exception:
+            pass
+        try:
+            while True:
+                pid, _ = os.waitpid(-1, os.WNOHANG)
+                if pid == 0:
+                    break
+        except ChildProcessError:
+            pass
 
 
 class MCPHandler(BaseHTTPRequestHandler):
@@ -282,6 +316,20 @@ class MCPHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(b"Missing or invalid mcp-session-id")
 
+    def do_GET(self):
+        if self.path == "/health":
+            with lock:
+                session_count = len(sessions)
+            body = json.dumps({"status": "ok", "sessions": session_count}).encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+            return
+        self.send_response(404)
+        self.end_headers()
+
     def do_DELETE(self):
         session_id = self.headers.get("mcp-session-id", "")
         if session_id and session_id in sessions:
@@ -329,6 +377,7 @@ def main():
 
     MCPHandler.cmd = cmd
     threading.Thread(target=_reap_sessions, daemon=True).start()
+    threading.Thread(target=_reap_orphans, daemon=True).start()
     server = ThreadingHTTPServer((host, port), MCPHandler)
     print(f"[mcp-proxy] Listening on {host}:{port}/mcp", flush=True)
     print(f"[mcp-proxy] Wrapping: {' '.join(cmd)}", flush=True)

@@ -28,12 +28,38 @@ export function getCategoryInfo(cat) {
   return CATEGORIES[cat] || CATEGORIES['misc'];
 }
 
+export function isServerRunning(server) {
+  if (!server) return false;
+  const s = (server.status || '').toLowerCase();
+  if (s === 'disabled' || s === 'stopped') return false;
+  return server.health_ok === true;
+}
+
 export function getStatusInfo(server) {
   const s = (server.status || '').toLowerCase();
   if (s === 'disabled') return { label: 'Disabled', color: '#f85149', dot: '#f85149' };
+  if (s === 'stopped') return { label: 'Stopped', color: '#8b949e', dot: '#484f58' };
   if (server.health_ok) return { label: 'Running', color: '#3fb950', dot: '#3fb950' };
   if (s === 'running') return { label: 'Unhealthy', color: '#d29922', dot: '#d29922' };
   return { label: 'Stopped', color: '#8b949e', dot: '#484f58' };
+}
+
+const INTERNAL_ENV_KEYS = new Set(['MCP_TRANSPORT', 'MCP_PORT']);
+
+export function getRequiredEnvKeys(server) {
+  const env = server?.env;
+  if (!env) return [];
+  let envObj;
+  try {
+    envObj = typeof env === 'string' ? JSON.parse(env) : env;
+  } catch {
+    return [];
+  }
+  return Object.keys(envObj).filter(k => !INTERNAL_ENV_KEYS.has(k));
+}
+
+export function serverRequiresKey(server) {
+  return getRequiredEnvKeys(server).length > 0;
 }
 
 function hashCode(str) {

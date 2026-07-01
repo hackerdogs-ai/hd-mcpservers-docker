@@ -2,7 +2,9 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { getClaudeKey, getHeygenKey, getHeygenAvatarId } from '../lib/api.js';
 import { mcpClient } from '../lib/mcp.js';
 import { runChatTurn } from '../lib/claude.js';
+import { isServerRunning } from '../lib/categories.js';
 import HeyGenAvatar from './HeyGenAvatar.jsx';
+import ToolResultContent from './ToolResultContent.jsx';
 
 const AGENT_NAME = 'Nova';
 
@@ -51,17 +53,6 @@ function buildSystemPrompt(runningServers, allServers) {
   return BASE_SYSTEM_PROMPT + catalog;
 }
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
-
-function formatToolResult(result) {
-  if (!result) return '';
-  if (typeof result === 'string') return result;
-  if (result.content && Array.isArray(result.content)) {
-    return result.content.map((c) => (c.type === 'text' ? c.text : JSON.stringify(c, null, 2))).join('\n');
-  }
-  return JSON.stringify(result, null, 2);
-}
-
 // ── Tool card ─────────────────────────────────────────────────────────────────
 
 function ToolCard({ call }) {
@@ -97,7 +88,10 @@ function ToolCard({ call }) {
           {call.result !== undefined && (
             <div>
               <div className="hd-tool-card__label">Result</div>
-              <pre className="hd-code max-h-[180px] whitespace-pre-wrap">{formatToolResult(call.result)}</pre>
+              <ToolResultContent
+                result={call.result}
+                className="hd-code max-h-[180px] whitespace-pre-wrap"
+              />
             </div>
           )}
         </div>
@@ -154,7 +148,7 @@ function UserMsg({ text }) {
 
 export default function AgentChat({ servers }) {
   const allServers = Array.isArray(servers) ? servers : [];
-  const runningServers = allServers.filter((s) => s.health_ok);
+  const runningServers = allServers.filter((s) => isServerRunning(s));
 
   const welcome = runningServers.length > 0
     ? `Hi! I'm Nova, your AI security analyst.\n\nI have ${runningServers.length} security tools running right now. Give me a target — domain, IP, URL, or a question — and I'll get to work.\n\nWhat would you like me to investigate?`

@@ -42,6 +42,7 @@ class Server(SQLModel, table=True):
     status: str = Field(default="running")
     source: str = Field(default="static")
     category: Optional[str] = Field(default=None)
+    url: Optional[str] = Field(default=None)
     created_at: datetime = Field(default_factory=datetime.utcnow)
     last_health: Optional[datetime] = Field(default=None)
     health_ok: bool = Field(default=False)
@@ -96,10 +97,15 @@ class KeyUpdate(BaseModel):
 
 class ServerCreate(BaseModel):
     name: str
-    image: str
-    port: int
+    image: str = ""
+    port: int = 0
     env: Dict[str, str] = {}
     category: Optional[str] = None
+    url: Optional[str] = None
+
+
+class ServerImport(BaseModel):
+    mcpServers: Dict[str, dict]
 
 
 class ServerResponse(BaseModel):
@@ -110,6 +116,7 @@ class ServerResponse(BaseModel):
     status: str
     source: str
     category: Optional[str]
+    url: Optional[str]
     created_at: datetime
     last_health: Optional[datetime]
     health_ok: bool
