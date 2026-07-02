@@ -15,10 +15,11 @@
 4. [Redis vector index](#4-redis-vector-index)
 5. [API specification](#5-api-specification)
 6. [Frontend specification](#6-frontend-specification)
-7. [LLM key storage](#7-llm-key-storage)
-8. [Implementation phases](#8-implementation-phases)
-9. [Testing plan](#9-testing-plan)
-10. [Open questions](#10-open-questions)
+7. [Per-server Chat tab (assistant-ui)](#7-per-server-chat-tab-assistant-ui)
+8. [LLM key storage](#8-llm-key-storage)
+9. [Implementation phases](#9-implementation-phases)
+10. [Testing plan](#10-testing-plan)
+11. [Open questions](#11-open-questions)
 
 ---
 
@@ -26,15 +27,18 @@
 
 ### 1.1 Summary
 
-Add a **Chat** page to MCP Farm UI: a ChatGPT-style conversational interface built with [assistant-ui](https://www.assistant-ui.com/). Users send natural-language prompts; the system binds MCP tools and runs an agentic loop against running farm servers.
+This spec covers **two chat surfaces**, both rebuilt on [assistant-ui](https://www.assistant-ui.com/) so they share one runtime, one set of thread/tool primitives, and one orchestration layer:
 
-The page sits in the top navigation **between Catalog and Prompt**:
+1. **Chat page** — a new top-level, ChatGPT-style page for cross-server conversations with dynamic or static tool binding.
+2. **Per-server Chat tab** — the existing `ChatTab` inside `ServerDetail` (Catalog → server → Chat), reimplemented on assistant-ui. It is scoped to a single server (binding is always that server's tools) but reuses the same components and orchestrator.
+
+The **Chat page** sits in the top navigation **between Catalog and Prompt**:
 
 ```
 Catalog | Chat | Prompt | Nova
 ```
 
-Two tool-binding strategies are supported:
+Two tool-binding strategies are supported on the Chat page:
 
 | Mode | Label | Behavior |
 |------|-------|----------|
@@ -49,9 +53,11 @@ Today the farm has three chat-like surfaces with overlapping behavior:
 |---------|------------|
 | **Prompt** | Claude-only; binds all running servers or a server subset; no semantic tool selection |
 | **Nova** | Claude-only; persona + avatar; loads all health-running tools |
-| **Chat tab** (ServerDetail) | Single-server; multi-LLM; no cross-server routing |
+| **Chat tab** (ServerDetail) | Single-server; multi-LLM; hand-rolled message list and tool-call loop; no streaming, edit, regenerate, or cancel; duplicate chat code diverging from other surfaces |
 
 None provide a polished, ChatGPT-grade UX with intelligent tool routing at farm scale (~400 servers). Passing every tool schema to the LLM is impossible within context limits. Users need either automatic relevance-based binding or explicit control.
+
+The **per-server Chat tab** already delivers the right scope (one server, multi-LLM) but is built on bespoke message rendering (`ChatMessage`, manual `while` tool loop in `ChatTab.jsx`). Rebuilding it on assistant-ui removes duplicate code, gives it the same streaming/edit/cancel UX as the Chat page, and lets both surfaces share `chatOrchestrator.js`, the MCP Tool UI toolkit, and provider/model selection.
 
 ### 1.3 Goals
 
@@ -63,10 +69,12 @@ None provide a polished, ChatGPT-grade UX with intelligent tool routing at farm 
 | G4 | Multi-LLM support | All providers already in Settings (Claude, OpenAI, Ollama, Bedrock, Azure, OpenRouter, Grok, Gemini) |
 | G5 | Secure key handling | LLM keys encrypted at rest on auth-gateway; browser never stores plaintext keys after migration |
 | G6 | Farm-scale catalog | READMEs, server names, display names, categories, and tool metadata vectorized in hd-redis |
+| G7 | Unified per-server Chat tab | `ChatTab` reimplemented on assistant-ui; shares runtime, orchestrator, and Tool UI with the Chat page; single-server binding preserved |
 
 ### 1.4 Non-goals (v1)
 
 - Replacing Prompt or Nova modes
+- Removing the per-server Chat tab (it is reimplemented, not removed) or changing its single-server scope (no dynamic/vector binding inside the tab)
 - Thread persistence across devices (localStorage-only in v1; server persistence in v2)
 - File attachments / vision models
 - Voice / realtime audio
@@ -108,10 +116,17 @@ None provide a polished, ChatGPT-grade UX with intelligent tool routing at farm 
 - **US-11:** As a user, I can cancel an in-flight generation.
 - **US-12:** As a user, I can edit my last message and regenerate the assistant response.
 
+#### Per-server Chat tab
+
+- **US-13:** As a user on a server's detail page, I open the **Chat** tab and get the same assistant-ui thread and Tool UI as the main Chat page, scoped to that one server.
+- **US-14:** As a user, I choose provider and model in the tab; binding is fixed to the current server (no picker, no vector search).
+- **US-15:** As a user, if the server is stopped, the composer is disabled with a prompt to start it from Catalog.
+- **US-16:** As a user, I still get sample prompts derived from the server's tools when the thread is empty.
+
 #### Settings & security
 
-- **US-13:** As a user, I save LLM API keys in Settings; they are encrypted on the server and shown only as masked prefixes in the UI.
-- **US-14:** As an admin, I can trigger a full vector reindex from an admin endpoint.
+- **US-17:** As a user, I save LLM API keys in Settings; they are encrypted on the server and shown only as masked prefixes in the UI.
+- **US-18:** As an admin, I can trigger a full vector reindex from an admin endpoint.
 
 ### 1.7 UX requirements
 
@@ -164,6 +179,7 @@ None provide a polished, ChatGPT-grade UX with intelligent tool routing at farm 
 5. Tool execution routes through existing `mcpClient.callTool()` with namespaced tool names.
 6. LLM keys stored encrypted on auth-gateway; Chat calls go through `/chat/completions` proxy.
 7. Vector index contains all server READMEs and metadata; tool docs for running servers.
+8. Per-server Chat tab renders the assistant-ui thread scoped to that server, with streaming and tool cards, and no regression to other `ServerDetail` tabs. Old `ChatMessage`/manual loop code in `ChatTab.jsx` is removed.
 
 ---
 
@@ -225,6 +241,8 @@ None provide a polished, ChatGPT-grade UX with intelligent tool routing at farm 
 | `src/components/chat/BindingBar.jsx` | Auto/Manual toggle, selection chips, pin toggle |
 | `src/components/chat/ToolPickerDrawer.jsx` | Static server/tool tree with search |
 | `src/components/chat/AutoSelectionChips.jsx` | Shows dynamic binding results per turn |
+| `src/components/chat/ChatThread.jsx` | Shared assistant-ui `Thread` wrapper + composer toolbar (provider/model). Used by Chat page and per-server tab |
+| `src/components/chat/useMcpChatRuntime.js` | Hook that builds the `LocalRuntime` + `ChatModelAdapter` from a binding resolver. Parametrized so the per-server tab passes a fixed single-server resolver |
 | `src/components/assistant-ui/thread.tsx` | assistant-ui thread (from CLI or copied) |
 | `src/components/assistant-ui/thread-list.tsx` | Thread sidebar |
 | `src/components/assistant-ui/tool-fallback.tsx` | Default MCP tool card |
@@ -251,6 +269,8 @@ None provide a polished, ChatGPT-grade UX with intelligent tool routing at farm 
 | `mcpfarm-ui/package.json` | Add `@assistant-ui/react`, `@assistant-ui/react-markdown`, `zustand` |
 | `mcpfarm-ui/src/lib/api.js` | Add vector search, chat completions, llm-keys API |
 | `mcpfarm-ui/src/components/Settings.jsx` | Save keys via server vault; show masked prefixes |
+| `mcpfarm-ui/src/components/ChatTab.jsx` | **Reimplemented** on assistant-ui: replace `ChatMessage` list + manual tool loop with `ChatThread` + `useMcpChatRuntime` scoped to one server. Keep tool discovery and sample-prompt helpers |
+| `mcpfarm-ui/src/components/ServerDetail.jsx` | No prop changes required; still renders `<ChatTab serverName tools isRunning onLoadTools />` (see §7.3) |
 | `mcpfarm/auth-gateway/main.py` | Mount new routers; env vars for Redis |
 | `mcpfarm/docker-compose.yml` | `REDIS_URL`, `MCPFARM_SECRETS_KEY`, link to hd-redis network |
 
@@ -701,37 +721,53 @@ const MODES = [
 
 ### 6.3 LocalRuntime adapter
 
+The adapter is built by a shared hook, `useMcpChatRuntime`, which takes a **binding resolver** function. The Chat page passes a resolver that switches on Auto/Manual; the per-server Chat tab (§7) passes a fixed single-server resolver. Everything downstream (streaming, tool execution, Tool UI) is identical.
+
 ```javascript
-const ChatModelAdapter = {
-  async *run({ messages, abortSignal, runConfig, context }) {
-    const userText = lastUserMessage(messages);
-    const threadId = runConfig.custom?.threadId;
-    const bindingMode = runConfig.custom?.bindingMode ?? 'dynamic';
-    const staticSelection = runConfig.custom?.staticSelection;
+// useMcpChatRuntime.js
+export function useMcpChatRuntime({ resolveBinding, getProviderModel }) {
+  const adapter = useMemo(() => ({
+    async *run({ messages, abortSignal, runConfig }) {
+      const userText = lastUserMessage(messages);
+      const { provider, model } = getProviderModel();
 
-    // 1. Resolve binding
-    const binding = bindingMode === 'dynamic'
-      ? await resolveDynamicBinding(userText)
-      : await resolveStaticBinding(staticSelection, servers);
+      // 1. Resolve binding (Auto vs Manual vs fixed single-server)
+      const binding = await resolveBinding({ userText, runConfig, messages });
 
-    // 2. Emit binding metadata event (for chips)
-    yield { metadata: { custom: { binding } } };
+      // 2. Emit binding metadata (for AutoSelectionChips; ignored by the tab)
+      yield { metadata: { custom: { binding } } };
 
-    // 3. Run agentic loop with streaming
-    for await (const event of chatOrchestrator.streamTurn({
-      messages, binding, provider, model, abortSignal,
-    })) {
-      if (event.type === 'text') {
-        yield { content: [{ type: 'text', text: event.text }] };
+      // 3. Shared agentic loop with streaming
+      for await (const event of chatOrchestrator.streamTurn({
+        messages, binding, provider, model, abortSignal,
+      })) {
+        if (event.type === 'text') {
+          yield { content: [{ type: 'text', text: event.text }] };
+        }
+        if (event.type === 'tool_call') {
+          // accumulate in Map outside loop (per assistant-ui docs)
+          yield { content: [...accumulatedToolCalls, ...] };
+        }
       }
-      if (event.type === 'tool_call') {
-        // accumulate in Map outside loop (per assistant-ui docs)
-        yield { content: [...accumulatedToolCalls, ...] };
-      }
-    }
-  },
+    },
+  }), [resolveBinding, getProviderModel]);
+
+  return useLocalRuntime(adapter);
+}
+```
+
+**Chat page resolver:**
+
+```javascript
+const resolveBinding = ({ userText, runConfig }) => {
+  const mode = runConfig.custom?.bindingMode ?? 'dynamic';
+  return mode === 'dynamic'
+    ? resolveDynamicBinding(userText)              // vector search
+    : resolveStaticBinding(runConfig.custom?.staticSelection, servers);
 };
 ```
+
+**Per-server tab resolver** (see §7.2): always binds the current server's tools, no vector search, no picker.
 
 ### 6.4 ToolPickerDrawer (static mode)
 
@@ -819,13 +855,137 @@ npx assistant-ui@latest add thread thread-list
 
 ---
 
-## 7. LLM key storage
+## 7. Per-server Chat tab (assistant-ui)
 
-### 7.1 Current state (pre-migration)
+### 7.1 Purpose and scope
+
+The **Chat** tab inside `ServerDetail` (Catalog → open a server → Chat) is reimplemented on assistant-ui. It reuses the Chat page's runtime hook, orchestrator, and Tool UI, but is permanently scoped to the single server whose detail page is open.
+
+| Property | Chat page | Per-server Chat tab |
+|----------|-----------|---------------------|
+| Binding | Dynamic or Static (user choice) | **Fixed:** always the current server's tools |
+| Vector search | Yes (Auto mode) | No |
+| Tool picker / binding bar | Yes | No |
+| Thread list | Yes | No — single ephemeral thread per tab mount |
+| Provider/model picker | Yes | Yes (unchanged from current tab) |
+| Tool discovery button | No (implicit) | Yes (kept — explicit `tools/list`) |
+| Sample prompts | Suggestions API (v1.1) | Yes (kept — `getSamplePrompts`) |
+
+### 7.2 Current implementation being replaced
+
+`ChatTab.jsx` today (see file) contains, and will remove:
+
+- `ChatMessage` component with hand-rolled `user` / `assistant` / `tool-call` / `tool-result` / `error` rendering
+- A manual `while (rounds < MAX_TOOL_ROUNDS)` agentic loop calling `chatCompletion()` from `llm.js`
+- Manual per-provider tool-message shaping (`claude` / `openai` / fallback branches)
+- Custom message list, thinking dots, scroll-to-bottom, and input bar
+
+All of the above is superseded by assistant-ui `Thread` + the shared `chatOrchestrator.streamTurn` loop.
+
+**Kept from the current tab:**
+
+- `discoverTools()` → `mcpClient.listTools(serverName)` and the `onLoadTools` callback that lifts tools into `ServerDetail`
+- `getSamplePrompts(serverName, tools)` helper (rendered via assistant-ui suggestion/empty-state slot)
+- Provider/model selectors (moved into the shared composer toolbar)
+- Running/stopped gating of the composer
+
+### 7.3 New structure
+
+```jsx
+// ChatTab.jsx (reimplemented)
+export default function ChatTab({ serverName, tools, isRunning, onLoadTools }) {
+  const [provider, setProvider] = useState('ollama');
+  const [model, setModel] = useState('');
+  const [localTools, setLocalTools] = useState(tools || []);
+
+  // Fixed single-server binding — no vector search, no picker
+  const resolveBinding = useCallback(async () => {
+    const toolList = localTools.length ? localTools
+      : await mcpClient.listTools(serverName);
+    return toStaticBinding(serverName, toolList);   // toolBinding.js helper
+  }, [serverName, localTools]);
+
+  const runtime = useMcpChatRuntime({
+    resolveBinding,
+    getProviderModel: () => ({ provider, model }),
+  });
+
+  return (
+    <AssistantRuntimeProvider runtime={runtime}>
+      <div className="chat-tab">
+        <ComposerToolbar
+          provider={provider} model={model}
+          onProvider={setProvider} onModel={setModel}
+          onDiscover={discoverTools}          // keeps explicit discovery
+          toolCount={localTools.length}
+          disabled={!isRunning}
+        />
+        <ChatThread
+          disabled={!isRunning}
+          emptyState={
+            <ServerChatEmptyState
+              serverName={serverName}
+              isRunning={isRunning}
+              samplePrompts={getSamplePrompts(serverName, localTools)}
+            />
+          }
+        />
+      </div>
+    </AssistantRuntimeProvider>
+  );
+}
+```
+
+- `ServerDetail.jsx` keeps rendering `<ChatTab serverName tools isRunning onLoadTools />` exactly as it does at line ~756 today — **no prop changes**.
+- `ChatThread` and `ComposerToolbar` are the same shared components used by `ChatMode`.
+- No `ThreadList` is rendered in the tab; the thread is ephemeral to the tab's lifetime (v1). Optional: persist per-server threads via `chatThreads.js` keyed by `serverName` in v1.1.
+
+### 7.4 Binding helper
+
+```javascript
+// toolBinding.js
+export function toStaticBinding(serverName, tools) {
+  return {
+    mode: 'static',
+    servers: [serverName],
+    tools: tools.map((t) => ({
+      server: serverName,
+      tool: t,
+      anthropicName: `${serverName}__${t.name}`.replace(/-/g, '_'),
+    })),
+    meta: { vector_search: false },
+  };
+}
+```
+
+This is the same `BindingResult` shape defined in §3.5, so `chatOrchestrator.streamTurn` treats tab turns and Chat-page turns identically.
+
+### 7.5 Behavior parity checklist
+
+| Current behavior | Reimplemented behavior |
+|------------------|------------------------|
+| Discover tools button | Kept in composer toolbar; updates binding + `onLoadTools` |
+| Stopped server disables input | Composer disabled with "Start it to use chat" empty state |
+| Sample prompts populate input | Rendered in empty state; click sends or fills composer |
+| Multi-round tool calls | Handled by shared orchestrator (max 10 rounds) |
+| Markdown assistant output | assistant-ui markdown renderer |
+| Tool call + result cards | assistant-ui Tool UI (`McpToolCallCard`) |
+| Provider/model selection | Kept; drives `getProviderModel()` |
+| No streaming | **New:** streaming, plus cancel and edit/regenerate for free |
+
+### 7.6 CSS
+
+Existing `.chat-tab`, `.chat-provider-bar`, `.chat-*` classes in `index.css` are largely reused for the toolbar and container. assistant-ui `Thread` internals are styled to match via the shared `ChatThread` wrapper (same tokens as the Chat page), so the tab does not introduce a separate visual theme.
+
+---
+
+## 8. LLM key storage
+
+### 8.1 Current state (pre-migration)
 
 All keys in browser `localStorage` as **plaintext** (`hd_claude_key`, `hd_openai_key`, etc.). Password inputs only obscure on screen.
 
-### 7.2 Target state
+### 8.2 Target state
 
 | Location | Content |
 |----------|---------|
@@ -833,14 +993,14 @@ All keys in browser `localStorage` as **plaintext** (`hd_claude_key`, `hd_openai
 | auth-gateway SQLite | Fernet-encrypted ciphertext per provider |
 | Env | `MCPFARM_SECRETS_KEY` — never in repo |
 
-### 7.3 Settings.jsx changes
+### 8.3 Settings.jsx changes
 
 - Save triggers `PUT /llm-keys/{provider}` instead of `localStorage.setItem` for secret values.
 - Load triggers `GET /llm-keys` on mount; populate fields with masked values.
 - Empty field on save = no change (do not overwrite with blank).
-- Chat page never reads raw keys; calls `/chat/completions` only.
+- Chat page and per-server Chat tab never read raw keys; both call `/chat/completions` only.
 
-### 7.4 Supported providers (unchanged)
+### 8.4 Supported providers (unchanged)
 
 | Provider ID | Settings label |
 |-------------|----------------|
@@ -855,12 +1015,13 @@ All keys in browser `localStorage` as **plaintext** (`hd_claude_key`, `hd_openai
 
 ---
 
-## 8. Implementation phases
+## 9. Implementation phases
 
-### Phase 1 — Chat shell (no vectors)
+### Phase 1 — Chat shell + shared primitives (no vectors)
 
 - [ ] Add Chat nav + `ChatMode.jsx`
 - [ ] Install assistant-ui; add Thread + ThreadList
+- [ ] Build shared `ChatThread`, `ComposerToolbar`, `useMcpChatRuntime`, `chatOrchestrator.js`
 - [ ] `LocalRuntime` + static binding only (manual server select, all tools)
 - [ ] Claude provider via existing `/claude` proxy
 - [ ] Generic MCP Tool UI
@@ -876,6 +1037,16 @@ All keys in browser `localStorage` as **plaintext** (`hd_claude_key`, `hd_openai
 - [ ] Provider/model picker in composer
 
 **Exit:** Chat works with any configured provider; keys encrypted.
+
+### Phase 2b — Reimplement per-server Chat tab
+
+- [ ] Rewrite `ChatTab.jsx` on `useMcpChatRuntime` + `ChatThread` with fixed single-server binding
+- [ ] Add `toStaticBinding()` helper to `toolBinding.js`
+- [ ] Keep tool discovery + `onLoadTools` + sample prompts + running/stopped gating
+- [ ] Remove old `ChatMessage` and manual tool loop
+- [ ] Verify no regression to other `ServerDetail` tabs
+
+**Exit:** Per-server Chat tab runs on assistant-ui with streaming; parity checklist (§7.5) passes.
 
 ### Phase 3 — Redis vector index
 
@@ -906,18 +1077,19 @@ All keys in browser `localStorage` as **plaintext** (`hd_claude_key`, `hd_openai
 
 ---
 
-## 9. Testing plan
+## 10. Testing plan
 
-### 9.1 Unit tests
+### 10.1 Unit tests
 
 | Area | Cases |
 |------|-------|
 | `toolBinding.resolveStatic` | Server-only, tool-only, empty, pin |
 | `toolBinding.resolveDynamic` | Mock Redis responses, truncation, min_score |
+| `toolBinding.toStaticBinding` | Single-server shape, anthropicName mapping |
 | `vector_indexer` | README chunking, tool doc format |
 | `secrets_vault` | Encrypt roundtrip, wrong key fails |
 
-### 9.2 Integration tests
+### 10.2 Integration tests
 
 | Scenario | Expected |
 |----------|----------|
@@ -928,8 +1100,11 @@ All keys in browser `localStorage` as **plaintext** (`hd_claude_key`, `hd_openai
 | Tool call execution | `mcpClient.callTool` invoked with correct args |
 | Redis down | Fallback keyword or graceful error |
 | Key vault | Chat works without localStorage keys |
+| Per-server tab: bound to current server | Only that server's tools in context; no vector call |
+| Per-server tab: stopped server | Composer disabled; discovery blocked |
+| Per-server tab: discover then chat | `onLoadTools` fires; binding uses discovered tools |
 
-### 9.3 Manual QA checklist
+### 10.3 Manual QA checklist
 
 - [ ] Chat nav position correct
 - [ ] Dark/light theme consistent
@@ -937,10 +1112,12 @@ All keys in browser `localStorage` as **plaintext** (`hd_claude_key`, `hd_openai
 - [ ] Edit message + regenerate
 - [ ] Long tool result renders without layout break
 - [ ] 25+ tool binding truncates with warning chip
+- [ ] Per-server Chat tab matches parity checklist (§7.5)
+- [ ] Switching between `ServerDetail` tabs does not leak or duplicate threads
 
 ---
 
-## 10. Open questions
+## 11. Open questions
 
 | # | Question | Recommendation |
 |---|----------|----------------|
@@ -950,6 +1127,8 @@ All keys in browser `localStorage` as **plaintext** (`hd_claude_key`, `hd_openai
 | 4 | Store tool schemas in Redis or fetch live? | Redis for search/ranking; live `tools/list` for execution schema |
 | 5 | Deprecate Prompt mode long-term? | No; keep for power users |
 | 6 | Embedding model without OpenAI key? | Require Ollama embed model on farm host |
+| 7 | Persist per-server tab threads across visits? | No in v1 (ephemeral); optional `chatThreads.js` keyed by `serverName` in v1.1 |
+| 8 | Keep the explicit "Discover Tools" button in the tab? | Yes — preserves current UX and lets binding refresh on demand |
 
 ---
 
@@ -969,14 +1148,16 @@ All keys in browser `localStorage` as **plaintext** (`hd_claude_key`, `hd_openai
 
 ## Appendix B: Comparison with existing modes
 
-| Feature | Chat (new) | Prompt | Nova | ChatTab |
-|---------|------------|--------|------|---------|
-| UI framework | assistant-ui | Custom | Custom | Custom |
+| Feature | Chat (new) | Prompt | Nova | ChatTab (reimplemented) |
+|---------|------------|--------|------|-------------------------|
+| UI framework | assistant-ui | Custom | Custom | **assistant-ui** |
 | Multi-LLM | Yes | No | No | Yes |
-| Cross-server tools | Yes | Yes | Yes | No |
-| Dynamic binding | Yes | No | No | N/A |
-| Static tool-level binding | Yes | Server only | No | Implicit (one server) |
+| Cross-server tools | Yes | Yes | Yes | No (single server) |
+| Dynamic binding | Yes | No | No | No |
+| Static tool-level binding | Yes | Server only | No | Fixed to current server |
 | Vector search | Yes | No | No | No |
+| Streaming / cancel / edit | Yes | Partial | Partial | **Yes (new)** |
+| Shared orchestrator | Yes | No | No | Yes (`chatOrchestrator`) |
 | Avatar | No | No | Yes | No |
 
 ## Appendix C: References
@@ -986,3 +1167,4 @@ All keys in browser `localStorage` as **plaintext** (`hd_claude_key`, `hd_openai
 - [assistant-ui Tool UI](https://www.assistant-ui.com/docs/tools/tool-ui.md)
 - [Redis vector search](https://redis.io/docs/latest/develop/ai/search-and-query/vectors/)
 - Existing code: `mcpfarm-ui/src/lib/claude.js`, `mcpfarm-ui/src/lib/llm.js`, `mcpfarm-ui/src/lib/mcp.js`
+- Per-server tab being reimplemented: `mcpfarm-ui/src/components/ChatTab.jsx` (rendered by `ServerDetail.jsx` ~line 756)
