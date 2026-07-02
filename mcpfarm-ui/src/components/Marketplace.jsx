@@ -1,12 +1,13 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { ALL_CATEGORIES, getCategoryInfo, getStatusInfo, isServerRunning, generateServerIcon, getServerDescription, serverRequiresKey, getRequiredEnvKeys } from '../lib/categories.js';
+import { useTheme } from '../lib/theme.js';
 import { startServer, stopServer, enableServer, disableServer } from '../lib/api.js';
 import { mcpClient } from '../lib/mcp.js';
 import AddServerDialog from './AddServerDialog.jsx';
 
 /* ── Confirmation dialog (hd-dialog pattern) ──────────────────────────── */
 
-function ConfirmDialog({ open, title, message, confirmLabel, confirmClass, onConfirm, onCancel, loading }) {
+function ConfirmDialog({ open, title, message, confirmLabel, confirmClass, onConfirm, onCancel, loading, alert }) {
   if (!open) return null;
   return (
     <div className="hd-dialog-overlay" onClick={onCancel}>
@@ -14,9 +15,11 @@ function ConfirmDialog({ open, title, message, confirmLabel, confirmClass, onCon
         <div className="hd-dialog-title">{title}</div>
         <div className="hd-dialog-body">{message}</div>
         <div className="hd-dialog-actions">
-          <button className="hd-dialog-btn hd-dialog-btn--cancel" onClick={onCancel} disabled={loading}>
-            Cancel
-          </button>
+          {!alert && (
+            <button className="hd-dialog-btn hd-dialog-btn--cancel" onClick={onCancel} disabled={loading}>
+              Cancel
+            </button>
+          )}
           <button className={`hd-dialog-btn ${confirmClass || 'hd-dialog-btn--confirm'}`} onClick={onConfirm} disabled={loading}>
             {loading ? 'Working…' : confirmLabel}
           </button>
@@ -110,6 +113,8 @@ const ACTION_META = {
   stop:    { title: 'Stop Server',    verb: 'stop',    confirmClass: 'hd-dialog-btn--red' },
   enable:  { title: 'Enable Server',  verb: 'enable',  confirmClass: 'hd-dialog-btn--green' },
   disable: { title: 'Disable Server', verb: 'disable', confirmClass: 'hd-dialog-btn--amber' },
+  startAll: { title: 'Start Servers', verb: 'start', confirmClass: 'hd-dialog-btn--green', confirmLabel: 'Start All' },
+  stopAll:  { title: 'Stop Servers',  verb: 'stop',  confirmClass: 'hd-dialog-btn--red', confirmLabel: 'Stop All' },
 };
 
 const LIST_SORT_COLUMNS = [
@@ -117,7 +122,7 @@ const LIST_SORT_COLUMNS = [
   { id: 'description', label: 'Description' },
   { id: 'category', label: 'Category' },
   { id: 'status', label: 'Status' },
-  { id: 'key', label: 'Key Required' },
+  { id: 'key', label: 'Key' },
   { id: 'port', label: 'Port' },
 ];
 
@@ -201,7 +206,15 @@ function ListSortHeader({ column, label, sortBy, sortDir, onSort }) {
   );
 }
 
-function ListHeader({ sortBy, sortDir, onSort }) {
+function ListHeader({ sortBy, sortDir, onSort, allSelected, someSelected, onToggleSelectAll }) {
+  const selectAllRef = React.useRef(null);
+
+  React.useEffect(() => {
+    if (selectAllRef.current) {
+      selectAllRef.current.indeterminate = someSelected && !allSelected;
+    }
+  }, [someSelected, allSelected]);
+
   return (
     <div className="mkt-list-head" role="row">
       <span className="mkt-list-col mkt-list-col--icon" aria-hidden="true" />
@@ -216,13 +229,24 @@ function ListHeader({ sortBy, sortDir, onSort }) {
         />
       ))}
       <span className="mkt-list-col mkt-list-col--actions">Actions</span>
+      <span className="mkt-list-col mkt-list-col--select mkt-list-col-head-select">
+        <input
+          ref={selectAllRef}
+          type="checkbox"
+          className="mkt-select-checkbox"
+          checked={allSelected}
+          title="select all"
+          aria-label="Select all"
+          onChange={onToggleSelectAll}
+        />
+      </span>
     </div>
   );
 }
 
 /* ── Server list row ──────────────────────────────────────────────────── */
 
-function ServerListRow({ server, onClick, onAction, actionLoading }) {
+function ServerListRow({ server, onClick, onAction, actionLoading, selected, onToggleSelect }) {
   const cat = getCategoryInfo(server.category);
   const status = getStatusInfo(server);
   const desc = getServerDescription(server.name);
@@ -233,7 +257,7 @@ function ServerListRow({ server, onClick, onAction, actionLoading }) {
     : undefined;
 
   return (
-    <button
+    <div
       onClick={() => onClick(server.name)}
       className="mkt-list-row"
       style={{ '--card-accent': cat.color }}
@@ -264,13 +288,25 @@ function ServerListRow({ server, onClick, onAction, actionLoading }) {
         actionLoading={actionLoading}
         className="mkt-list-col mkt-list-col--actions mkt-list-row-actions"
       />
-    </button>
+      <span
+        className="mkt-list-col mkt-list-col--select"
+        onClick={e => e.stopPropagation()}
+      >
+        <input
+          type="checkbox"
+          className="mkt-select-checkbox"
+          checked={selected}
+          aria-label={`Select ${server.name}`}
+          onChange={() => onToggleSelect(server.name)}
+        />
+      </span>
+    </div>
   );
 }
 
 /* ── Server card with inline action buttons ───────────────────────────── */
 
-function ServerCard({ server, onClick, onAction, actionLoading }) {
+function ServerCard({ server, onClick, onAction, actionLoading, selected, onToggleSelect }) {
   const cat = getCategoryInfo(server.category);
   const status = getStatusInfo(server);
   const desc = getServerDescription(server.name);
@@ -317,6 +353,18 @@ function ServerCard({ server, onClick, onAction, actionLoading }) {
           actionLoading={actionLoading}
           className="mkt-card-actions"
         />
+        <label
+          className="mkt-card-select"
+          onClick={e => e.stopPropagation()}
+        >
+          <input
+            type="checkbox"
+            className="mkt-select-checkbox"
+            checked={selected}
+            aria-label={`Select ${server.name}`}
+            onChange={() => onToggleSelect(server.name)}
+          />
+        </label>
       </div>
     </button>
   );
@@ -330,6 +378,7 @@ const STATUS_FILTERS = [
 ];
 
 export default function Marketplace({ servers, loading, onSelectServer, onRefresh }) {
+  useTheme();
   const [search, setSearch] = useState('');
   const [selectedCats, setSelectedCats] = useState(new Set());
   const [statusFilter, setStatusFilter] = useState('all');
@@ -340,6 +389,8 @@ export default function Marketplace({ servers, loading, onSelectServer, onRefres
   const [confirm, setConfirm] = useState(null);
   const [actionLoading, setActionLoading] = useState(null);
   const [showAddServer, setShowAddServer] = useState(false);
+  const [selectedServers, setSelectedServers] = useState(new Set());
+  const [refreshing, setRefreshing] = useState(false);
 
   const categoryCounts = useMemo(() => {
     const counts = {};
@@ -400,10 +451,45 @@ export default function Marketplace({ servers, loading, onSelectServer, onRefres
     });
   }
 
+  function toggleSelect(name) {
+    setSelectedServers(prev => {
+      const next = new Set(prev);
+      if (next.has(name)) next.delete(name);
+      else next.add(name);
+      return next;
+    });
+  }
+
+  const allFilteredSelected = filtered.length > 0 && filtered.every(s => selectedServers.has(s.name));
+  const someFilteredSelected = filtered.some(s => selectedServers.has(s.name));
+
+  function toggleSelectAll() {
+    setSelectedServers(prev => {
+      const next = new Set(prev);
+      if (allFilteredSelected) {
+        filtered.forEach(s => next.delete(s.name));
+      } else {
+        filtered.forEach(s => next.add(s.name));
+      }
+      return next;
+    });
+  }
+
+  function showSelectAlert() {
+    setConfirm({
+      type: 'alert',
+      title: 'No servers selected',
+      message: 'Please select at least one server.',
+      confirmLabel: 'OK',
+      confirmClass: 'hd-dialog-btn--confirm',
+    });
+  }
+
   const handleCardAction = useCallback((server, action) => {
     const meta = ACTION_META[action];
     const displayName = server.name.replace(/-mcp$/, '');
     setConfirm({
+      type: 'single',
       server,
       action,
       title: meta.title,
@@ -413,8 +499,105 @@ export default function Marketplace({ servers, loading, onSelectServer, onRefres
     });
   }, []);
 
+  function handleStartAll() {
+    if (selectedServers.size === 0) {
+      showSelectAlert();
+      return;
+    }
+    const targets = (servers || []).filter(s =>
+      selectedServers.has(s.name) &&
+      (s.status || '').toLowerCase() !== 'disabled' &&
+      !isServerRunning(s)
+    );
+    if (targets.length === 0) {
+      setConfirm({
+        type: 'alert',
+        title: 'Nothing to start',
+        message: 'Selected servers are already running or disabled.',
+        confirmLabel: 'OK',
+        confirmClass: 'hd-dialog-btn--confirm',
+      });
+      return;
+    }
+    const meta = ACTION_META.startAll;
+    setConfirm({
+      type: 'bulk',
+      action: 'start',
+      servers: targets,
+      title: meta.title,
+      message: `Start ${targets.length} selected server${targets.length === 1 ? '' : 's'}?`,
+      confirmLabel: meta.confirmLabel,
+      confirmClass: meta.confirmClass,
+    });
+  }
+
+  function handleStopAll() {
+    if (selectedServers.size === 0) {
+      showSelectAlert();
+      return;
+    }
+    const targets = (servers || []).filter(s =>
+      selectedServers.has(s.name) && isServerRunning(s)
+    );
+    if (targets.length === 0) {
+      setConfirm({
+        type: 'alert',
+        title: 'Nothing to stop',
+        message: 'Selected servers are not currently running.',
+        confirmLabel: 'OK',
+        confirmClass: 'hd-dialog-btn--confirm',
+      });
+      return;
+    }
+    const meta = ACTION_META.stopAll;
+    setConfirm({
+      type: 'bulk',
+      action: 'stop',
+      servers: targets,
+      title: meta.title,
+      message: `Stop ${targets.length} selected server${targets.length === 1 ? '' : 's'}?`,
+      confirmLabel: meta.confirmLabel,
+      confirmClass: meta.confirmClass,
+    });
+  }
+
+  async function handleRefresh() {
+    setRefreshing(true);
+    try {
+      await onRefresh?.();
+    } finally {
+      setRefreshing(false);
+    }
+  }
+
   const executeAction = useCallback(async () => {
     if (!confirm) return;
+    if (confirm.type === 'alert') {
+      setConfirm(null);
+      return;
+    }
+
+    if (confirm.type === 'bulk') {
+      setActionLoading('bulk');
+      try {
+        for (const server of confirm.servers) {
+          if (confirm.action === 'start') {
+            await startServer(server.name);
+          } else if (confirm.action === 'stop') {
+            await mcpClient.terminateSession(server.name);
+            await stopServer(server.name);
+          }
+        }
+        await onRefresh?.();
+      } catch (err) {
+        console.error(`${confirm.action} all failed:`, err);
+      } finally {
+        setActionLoading(null);
+        setConfirm(null);
+      }
+      return;
+    }
+
     const { server, action } = confirm;
     setActionLoading(server.name);
     try {
@@ -576,6 +759,33 @@ export default function Marketplace({ servers, loading, onSelectServer, onRefres
           >
             + Add Server
           </button>
+          <div className="mkt-bulk-actions">
+            <button
+              type="button"
+              className="mkt-bulk-btn mkt-bulk-btn--start"
+              onClick={handleStartAll}
+              disabled={!!actionLoading}
+            >
+              Start All
+            </button>
+            <button
+              type="button"
+              className="mkt-bulk-btn mkt-bulk-btn--stop"
+              onClick={handleStopAll}
+              disabled={!!actionLoading}
+            >
+              Stop All
+            </button>
+            <button
+              type="button"
+              className="mkt-bulk-btn mkt-bulk-btn--refresh"
+              onClick={handleRefresh}
+              disabled={refreshing || loading}
+              title="Refresh server list"
+            >
+              {refreshing ? '…' : '↻'} Refresh
+            </button>
+          </div>
           <ViewToggle viewMode={viewMode} onChange={setViewMode} />
         </div>
 
@@ -614,7 +824,14 @@ export default function Marketplace({ servers, loading, onSelectServer, onRefres
         {/* Results: list or tile grid */}
         {viewMode === 'list' ? (
           <div className="mkt-list" role="table">
-            <ListHeader sortBy={sortBy} sortDir={sortDir} onSort={handleListSort} />
+            <ListHeader
+              sortBy={sortBy}
+              sortDir={sortDir}
+              onSort={handleListSort}
+              allSelected={allFilteredSelected}
+              someSelected={someFilteredSelected}
+              onToggleSelectAll={toggleSelectAll}
+            />
             {filtered.map(server => (
               <ServerListRow
                 key={server.name}
@@ -622,6 +839,8 @@ export default function Marketplace({ servers, loading, onSelectServer, onRefres
                 onClick={onSelectServer}
                 onAction={handleCardAction}
                 actionLoading={actionLoading}
+                selected={selectedServers.has(server.name)}
+                onToggleSelect={toggleSelect}
               />
             ))}
           </div>
@@ -634,6 +853,8 @@ export default function Marketplace({ servers, loading, onSelectServer, onRefres
                 onClick={onSelectServer}
                 onAction={handleCardAction}
                 actionLoading={actionLoading}
+                selected={selectedServers.has(server.name)}
+                onToggleSelect={toggleSelect}
               />
             ))}
           </div>
@@ -666,6 +887,7 @@ export default function Marketplace({ servers, loading, onSelectServer, onRefres
         onConfirm={executeAction}
         onCancel={() => setConfirm(null)}
         loading={!!actionLoading}
+        alert={confirm?.type === 'alert'}
       />
 
       {/* Add Server dialog */}

@@ -6042,6 +6042,67 @@ services:
         max-file: "3"
 
 
+  acuvity-mcp-server-alterx-mcp:
+    image: hackerdogs/acuvity-mcp-server-alterx-mcp:latest
+    container_name: acuvity-mcp-server-alterx-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8708
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-amass-mcp:
+    image: hackerdogs/acuvity-mcp-server-amass-mcp:latest
+    container_name: acuvity-mcp-server-amass-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8709
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-arjun-mcp:
+    image: hackerdogs/acuvity-mcp-server-arjun-mcp:latest
+    container_name: acuvity-mcp-server-arjun-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8710
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-assetfinder-mcp:
+    image: hackerdogs/acuvity-mcp-server-assetfinder-mcp:latest
+    container_name: acuvity-mcp-server-assetfinder-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8711
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+
 networks:
   mcpfarm:
     name: mcpfarm_internal

@@ -1,13 +1,42 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { startServer, stopServer, enableServer, disableServer, updateServerEnv, getApiKey, getBaseUrl, getServerReadme } from '../lib/api.js';
+import { startServer, stopServer, enableServer, disableServer, deleteServer, updateServerEnv, getApiKey, getBaseUrl, getServerReadme } from '../lib/api.js';
 import { mcpClient } from '../lib/mcp.js';
 import { getCategoryInfo, getStatusInfo, isServerRunning, generateServerIcon, getServerDescription } from '../lib/categories.js';
+import { useTheme } from '../lib/theme.js';
 import { getToolHints } from '../lib/toolHints.js';
 import MarkdownViewer from './MarkdownViewer.jsx';
 import { getBundledReadme } from '../lib/readmes.js';
 import ChatTab from './ChatTab.jsx';
 import ToolResultContent from './ToolResultContent.jsx';
 import { getToolResultDisplayText } from '../lib/toolResult.js';
+
+const ACTION_META = {
+  start:   { title: 'Start Server',   verb: 'start',   confirmClass: 'hd-dialog-btn--green' },
+  stop:    { title: 'Stop Server',    verb: 'stop',    confirmClass: 'hd-dialog-btn--red' },
+  enable:  { title: 'Enable Server',  verb: 'enable',  confirmClass: 'hd-dialog-btn--green' },
+  disable: { title: 'Disable Server', verb: 'disable', confirmClass: 'hd-dialog-btn--amber' },
+  delete:  { title: 'Delete Server',  verb: 'permanently delete', confirmClass: 'hd-dialog-btn--red' },
+};
+
+function ConfirmDialog({ open, title, message, confirmLabel, confirmClass, onConfirm, onCancel, loading }) {
+  if (!open) return null;
+  return (
+    <div className="hd-dialog-overlay" onClick={onCancel}>
+      <div className="hd-dialog" onClick={e => e.stopPropagation()}>
+        <div className="hd-dialog-title">{title}</div>
+        <div className="hd-dialog-body">{message}</div>
+        <div className="hd-dialog-actions">
+          <button className="hd-dialog-btn hd-dialog-btn--cancel" onClick={onCancel} disabled={loading}>
+            Cancel
+          </button>
+          <button className={`hd-dialog-btn ${confirmClass || 'hd-dialog-btn--confirm'}`} onClick={onConfirm} disabled={loading}>
+            {loading ? 'Working…' : confirmLabel}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function TerminalOutput({ lines }) {
   const ref = useRef(null);
@@ -214,6 +243,7 @@ function ReadmePanel({ serverName }) {
 }
 
 export default function ServerDetail({ serverName, servers, onBack, onRefresh }) {
+  useTheme();
   const server = servers?.find(s => s.name === serverName);
   const [tools, setTools] = useState([]);
   const [toolsLoading, setToolsLoading] = useState(false);
@@ -224,6 +254,7 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
   const [resultError, setResultError] = useState(null);
   const [termLines, setTermLines] = useState([]);
   const [actionLoading, setActionLoading] = useState(null);
+  const [confirm, setConfirm] = useState(null);
   const [showConfig, setShowConfig] = useState(false);
   const [showTools, setShowTools] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
@@ -300,6 +331,19 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
     }
   }, [serverName, isRunning, loadTools]);
 
+  function requestAction(action) {
+    const meta = ACTION_META[action];
+    if (!meta) return;
+    const displayName = serverName.replace(/-mcp$/, '');
+    setConfirm({
+      action,
+      title: meta.title,
+      message: `Are you sure you want to ${meta.verb} "${displayName}"?`,
+      confirmLabel: meta.title,
+      confirmClass: meta.confirmClass,
+    });
+  }
+
   async function handleAction(action) {
     setActionLoading(action);
     const labels = { start: 'Starting', stop: 'Stopping', test: 'Testing', enable: 'Enabling', disable: 'Disabling' };
@@ -347,6 +391,13 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
           await new Promise(r => setTimeout(r, 1000));
         }
         log('Server stopped', 'success');
+      } else if (action === 'delete') {
+        await mcpClient.terminateSession(serverName);
+        await deleteServer(serverName);
+        log('Server deleted', 'success');
+        onRefresh?.();
+        onBack?.();
+        return;
       } else if (action === 'test') {
         log('Initializing MCP session...');
         mcpClient.resetSession(serverName);
@@ -373,6 +424,12 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
     } finally {
       setActionLoading(null);
     }
+  }
+
+  async function executeConfirmedAction() {
+    if (!confirm) return;
+    await handleAction(confirm.action);
+    setConfirm(null);
   }
 
   async function handleRunTool(args) {
@@ -448,7 +505,7 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
         <div className="sd-actions">
           {isDisabled ? (
             <button
-              onClick={() => handleAction('enable')}
+              onClick={() => requestAction('enable')}
               disabled={!!actionLoading}
               className="sd-btn sd-btn--start"
             >
@@ -457,14 +514,14 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
           ) : !isRunning ? (
             <>
               <button
-                onClick={() => handleAction('start')}
+                onClick={() => requestAction('start')}
                 disabled={!!actionLoading}
                 className="sd-btn sd-btn--start"
               >
                 {actionLoading === 'start' ? <><span className="spinner" style={{ width: 12, height: 12 }} /> Starting...</> : '▶ Start'}
               </button>
               <button
-                onClick={() => handleAction('disable')}
+                onClick={() => requestAction('disable')}
                 disabled={!!actionLoading}
                 className="sd-btn sd-btn--disable"
               >
@@ -474,14 +531,14 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
           ) : (
             <>
               <button
-                onClick={() => handleAction('stop')}
+                onClick={() => requestAction('stop')}
                 disabled={!!actionLoading}
                 className="sd-btn sd-btn--stop"
               >
                 {actionLoading === 'stop' ? 'Stopping...' : '■ Stop'}
               </button>
               <button
-                onClick={() => handleAction('disable')}
+                onClick={() => requestAction('disable')}
                 disabled={!!actionLoading}
                 className="sd-btn sd-btn--disable"
               >
@@ -489,6 +546,13 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
               </button>
             </>
           )}
+          <button
+            onClick={() => requestAction('delete')}
+            disabled={!!actionLoading}
+            className="sd-btn sd-btn--delete"
+          >
+            {actionLoading === 'delete' ? 'Deleting...' : '✕ Delete'}
+          </button>
         </div>
       </div>
 
@@ -749,6 +813,17 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
           </div>
         )}
       </div>
+
+      <ConfirmDialog
+        open={!!confirm}
+        title={confirm?.title}
+        message={confirm?.message}
+        confirmLabel={confirm?.confirmLabel}
+        confirmClass={confirm?.confirmClass}
+        onConfirm={executeConfirmedAction}
+        onCancel={() => setConfirm(null)}
+        loading={!!actionLoading}
+      />
     </div>
   );
 }

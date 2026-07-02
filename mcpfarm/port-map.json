@@ -2609,5 +2609,36 @@
     "category": "appsec",
     "image": "hackerdogs/xpoz-mcp-server-mcp:latest",
     "env": {}
+  },
+  "acuvity-mcp-server-alterx-mcp": {
+    "image": "hackerdogs/acuvity-mcp-server-alterx-mcp:latest",
+    "port": 8708,
+    "category": "recon",
+    "env": []
+  },
+  "acuvity-mcp-server-amass-mcp": {
+    "image": "hackerdogs/acuvity-mcp-server-amass-mcp:latest",
+    "port": 8709,
+    "category": "recon",
+    "env": []
+  },
+  "acuvity-mcp-server-arjun-mcp": {
+    "image": "hackerdogs/acuvity-mcp-server-arjun-mcp:latest",
+    "port": 8710,
+    "category": "recon",
+    "env": []
+  },
+  "acuvity-mcp-server-assetfinder-mcp": {
+    "image": "hackerdogs/acuvity-mcp-server-assetfinder-mcp:latest",
+    "port": 8711,
+    "category": "recon",
+    "env": []
+  },
+  "hackerdogs-mcp-server-mcp": {
+    "image": "",
+    "port": 8712,
+    "category": "misc",
+    "env": [],
+    "url": "https://mcp.hackerdogs.ai/mcp"
   }
 }

@@ -1,24 +1,20 @@
 import React, { useState, useMemo } from 'react';
 import { startServer, stopServer } from '../lib/api.js';
 import { mcpClient } from '../lib/mcp.js';
-import { isServerRunning } from '../lib/categories.js';
+import { getStatusInfo } from '../lib/categories.js';
+import { useTheme } from '../lib/theme.js';
 
 const CATEGORIES = ['all', 'recon', 'exploit', 'cloud', 'misc'];
 
 function getStatusColor(server) {
-  if (!server) return '#8b949e';
-  if (isServerRunning(server)) return '#3fb950';
-  const s = (server.status || '').toLowerCase();
-  if (s === 'running') return '#d29922'; // registered running but not reachable
-  return '#f85149';
+  return getStatusInfo(server).dot;
 }
 
 function getStatusTitle(server) {
   if (!server) return 'unknown';
-  if (isServerRunning(server)) return 'running';
-  const s = (server.status || '').toLowerCase();
-  if (s === 'running') return 'not reachable';
-  return s || 'stopped';
+  const label = getStatusInfo(server).label.toLowerCase();
+  if (label === 'unhealthy') return 'not reachable';
+  return label;
 }
 
 function guessCategory(name) {
@@ -39,6 +35,7 @@ export default function ServerList({
   mode,
   onRefresh,
 }) {
+  useTheme();
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('all');
   const [actionLoading, setActionLoading] = useState({});

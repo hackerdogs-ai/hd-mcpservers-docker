@@ -1,31 +1,62 @@
 // categories.js — Category definitions, colors, and icon generation
 
-function catColors(color) {
+import { getCurrentTheme } from './theme.js';
+
+function isLightTheme() {
+  return getCurrentTheme() === 'light';
+}
+
+function resolveCatColors(dark, light) {
+  const lightMode = isLightTheme();
+  const color = lightMode ? light : dark;
+  const bgMix = lightMode ? 22 : 12;
+  const borderMix = lightMode ? 48 : 30;
   return {
     color,
-    bg: `color-mix(in srgb, ${color} 12%, transparent)`,
-    border: `color-mix(in srgb, ${color} 30%, transparent)`,
+    bg: `color-mix(in srgb, ${color} ${bgMix}%, transparent)`,
+    border: `color-mix(in srgb, ${color} ${borderMix}%, transparent)`,
   };
 }
 
-export const CATEGORIES = {
-  'core':            { label: 'Core',            ...catColors('#3fb950') },
-  'network-recon':   { label: 'Network Recon',   ...catColors('#58a6ff') },
-  'web-app':         { label: 'Web App',         ...catColors('#bc8cff') },
-  'appsec':          { label: 'AppSec',          ...catColors('#f0883e') },
-  'osint':           { label: 'OSINT',           ...catColors('#d29922') },
-  'vuln-scanning':   { label: 'Vuln Scanning',   ...catColors('#f85149') },
-  'binary-re':       { label: 'Binary RE',       ...catColors('#f778ba') },
-  'cloud-container': { label: 'Cloud',           ...catColors('#79c0ff') },
-  'exploitation':    { label: 'Exploitation',    ...catColors('#ff7b72') },
-  'network-attacks': { label: 'Net Attacks',     ...catColors('#e3b341') },
-  'misc':            { label: 'Misc',            ...catColors('#8b949e') },
+const CATEGORY_DEFS = {
+  'core':            { label: 'Core',            dark: '#6eceda', light: '#0e7490' },
+  'network-recon':   { label: 'Network Recon',   dark: '#58a6ff', light: '#1d4ed8' },
+  'web-app':         { label: 'Web App',         dark: '#bc8cff', light: '#6d28d9' },
+  'appsec':          { label: 'AppSec',          dark: '#9b8afb', light: '#4338ca' },
+  'osint':           { label: 'OSINT',           dark: '#b19cd9', light: '#7c3aed' },
+  'vuln-scanning':   { label: 'Vuln Scanning',   dark: '#da77f2', light: '#86198f' },
+  'binary-re':       { label: 'Binary RE',       dark: '#f778ba', light: '#be185d' },
+  'cloud-container': { label: 'Cloud',           dark: '#79c0ff', light: '#0369a1' },
+  'exploitation':    { label: 'Exploitation',    dark: '#e091d4', light: '#7e22ce' },
+  'network-attacks': { label: 'Net Attacks',     dark: '#8892ff', light: '#3730a3' },
+  'misc':            { label: 'Misc',            dark: '#8b949e', light: '#4b5563' },
 };
 
-export const ALL_CATEGORIES = Object.keys(CATEGORIES);
+export const ALL_CATEGORIES = Object.keys(CATEGORY_DEFS);
 
 export function getCategoryInfo(cat) {
-  return CATEGORIES[cat] || CATEGORIES['misc'];
+  const def = CATEGORY_DEFS[cat] || CATEGORY_DEFS.misc;
+  return { label: def.label, ...resolveCatColors(def.dark, def.light) };
+}
+
+const STATUS_PALETTE = {
+  dark: {
+    disabled:  { color: '#f85149', dot: '#f85149' },
+    stopped:   { color: '#8b949e', dot: '#484f58' },
+    running:   { color: '#3fb950', dot: '#3fb950' },
+    unhealthy: { color: '#d29922', dot: '#d29922' },
+  },
+  light: {
+    disabled:  { color: '#b91c1c', dot: '#dc2626' },
+    stopped:   { color: '#4b5563', dot: '#374151' },
+    running:   { color: '#15803d', dot: '#16a34a' },
+    unhealthy: { color: '#b45309', dot: '#d97706' },
+  },
+};
+
+function statusColors(key) {
+  const palette = isLightTheme() ? STATUS_PALETTE.light : STATUS_PALETTE.dark;
+  return palette[key];
 }
 
 export function isServerRunning(server) {
@@ -37,11 +68,11 @@ export function isServerRunning(server) {
 
 export function getStatusInfo(server) {
   const s = (server.status || '').toLowerCase();
-  if (s === 'disabled') return { label: 'Disabled', color: '#f85149', dot: '#f85149' };
-  if (s === 'stopped') return { label: 'Stopped', color: '#8b949e', dot: '#484f58' };
-  if (server.health_ok) return { label: 'Running', color: '#3fb950', dot: '#3fb950' };
-  if (s === 'running') return { label: 'Unhealthy', color: '#d29922', dot: '#d29922' };
-  return { label: 'Stopped', color: '#8b949e', dot: '#484f58' };
+  if (s === 'disabled') return { label: 'Disabled', ...statusColors('disabled') };
+  if (s === 'stopped') return { label: 'Stopped', ...statusColors('stopped') };
+  if (server.health_ok) return { label: 'Running', ...statusColors('running') };
+  if (s === 'running') return { label: 'Unhealthy', ...statusColors('unhealthy') };
+  return { label: 'Stopped', ...statusColors('stopped') };
 }
 
 const INTERNAL_ENV_KEYS = new Set(['MCP_TRANSPORT', 'MCP_PORT']);
@@ -85,12 +116,14 @@ export function generateServerIcon(name, category, size = 40) {
   const abbrev = getServerAbbrev(name);
   const h = hashCode(name);
   const patternIndex = h % 4;
+  const strokeOpacity = isLightTheme() ? 0.28 : 0.15;
+  const fillOpacity = isLightTheme() ? 0.2 : 0.1;
 
   const patterns = [
-    `<circle cx="${size/2}" cy="${size/2}" r="${size*0.38}" fill="none" stroke="${cat.color}" stroke-opacity="0.15" stroke-width="1"/>`,
-    `<rect x="${size*0.15}" y="${size*0.15}" width="${size*0.7}" height="${size*0.7}" rx="${size*0.12}" fill="none" stroke="${cat.color}" stroke-opacity="0.15" stroke-width="1"/>`,
-    `<line x1="${size*0.2}" y1="${size*0.8}" x2="${size*0.8}" y2="${size*0.2}" stroke="${cat.color}" stroke-opacity="0.1" stroke-width="1"/>`,
-    `<circle cx="${size*0.3}" cy="${size*0.7}" r="${size*0.08}" fill="${cat.color}" fill-opacity="0.1"/><circle cx="${size*0.7}" cy="${size*0.3}" r="${size*0.08}" fill="${cat.color}" fill-opacity="0.1"/>`,
+    `<circle cx="${size/2}" cy="${size/2}" r="${size*0.38}" fill="none" stroke="${cat.color}" stroke-opacity="${strokeOpacity}" stroke-width="1"/>`,
+    `<rect x="${size*0.15}" y="${size*0.15}" width="${size*0.7}" height="${size*0.7}" rx="${size*0.12}" fill="none" stroke="${cat.color}" stroke-opacity="${strokeOpacity}" stroke-width="1"/>`,
+    `<line x1="${size*0.2}" y1="${size*0.8}" x2="${size*0.8}" y2="${size*0.2}" stroke="${cat.color}" stroke-opacity="${strokeOpacity * 0.7}" stroke-width="1"/>`,
+    `<circle cx="${size*0.3}" cy="${size*0.7}" r="${size*0.08}" fill="${cat.color}" fill-opacity="${fillOpacity}"/><circle cx="${size*0.7}" cy="${size*0.3}" r="${size*0.08}" fill="${cat.color}" fill-opacity="${fillOpacity}"/>`,
   ];
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">

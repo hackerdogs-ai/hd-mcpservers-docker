@@ -1,5 +1,7 @@
 /** Theme helpers — follows worldmonitor-main theme-manager conventions. */
 
+import { useState, useEffect } from 'react';
+
 export const STORAGE_KEY = 'worldmonitor-theme';
 const DEFAULT_THEME = 'dark';
 
@@ -36,6 +38,17 @@ export function setTheme(theme) {
     meta.content = theme === 'dark' ? '#0a0f0a' : '#f8f9fa';
   }
   window.dispatchEvent(new CustomEvent('theme-changed', { detail: { theme } }));
+}
+
+/** Re-render when the document theme changes. */
+export function useTheme() {
+  const [theme, setThemeState] = useState(getCurrentTheme);
+  useEffect(() => {
+    const onThemeChanged = () => setThemeState(getCurrentTheme());
+    window.addEventListener('theme-changed', onThemeChanged);
+    return () => window.removeEventListener('theme-changed', onThemeChanged);
+  }, []);
+  return theme;
 }
 
 /** Apply stored theme before React mounts (FOUC safety net). */

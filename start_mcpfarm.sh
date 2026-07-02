@@ -21,7 +21,7 @@ FARM_PORT="${FARM_PORT:-8485}"
 UI_DEV_PORT="${UI_DEV_PORT:-5173}"
 FARM_HTTP="http://localhost:${FARM_PORT}"
 
-SKIP_BUILD=false
+DO_BUILD=false
 DOCKER_UI=false
 START_SERVERS=false
 SERVERS=""
@@ -35,12 +35,13 @@ usage() {
 Usage: $(basename "$0") [options]
 
 Start the MCP Farm locally: Docker backend (Caddy + auth-gateway) and,
-by default, a Vite UI dev server in the background.
+by default, a Vite UI dev server in the background. Does not rebuild
+Docker images unless you pass --build.
 
 Options:
   -h, --help           Show this help and exit
   -f, --foreground     Run the UI dev server in the foreground (logs in terminal)
-  --skip-build         Skip Docker image builds
+  --build              Build auth-gateway and mcpfarm-ui images before starting
   --docker-ui          Serve the production UI from Docker on FARM_PORT (no Vite)
   --start-servers      Also start a default MCP server set
   --servers LIST       Comma-separated MCP servers to start (e.g. nmap-mcp,whois-mcp)
@@ -52,9 +53,10 @@ Environment:
   ADMIN_SECRET=...     Admin API secret (auto-generated in mcpfarm/.env on first run)
 
 Examples:
-  $(basename "$0")                          # daemon: UI on :8485 and :5173
-  $(basename "$0") -f                       # same, but Vite attached to terminal
-  $(basename "$0") --skip-build --docker-ui # production UI only on :8485
+  $(basename "$0")                          # start without rebuilding (default)
+  $(basename "$0") -f                       # same, Vite attached to terminal
+  $(basename "$0") --build                  # rebuild images, then start
+  $(basename "$0") --build --docker-ui      # rebuild + production UI only on :8485
   $(basename "$0") --start-servers          # also start nmap/whois/nuclei/shodan
   $(basename "$0") --stop                     # stop local farm
 
@@ -147,7 +149,7 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     -h|--help)        usage ;;
     -f|--foreground)  FOREGROUND=true; shift ;;
-    --skip-build)     SKIP_BUILD=true; shift ;;
+    --build)          DO_BUILD=true; shift ;;
     --docker-ui)      DOCKER_UI=true; shift ;;
     --start-servers)  START_SERVERS=true; shift ;;
     --stop)           DO_STOP=true; shift ;;
@@ -231,7 +233,7 @@ fi
 # ---------------------------------------------------------------------------
 cd "$MCPFARM_DIR"
 
-if [[ "$SKIP_BUILD" == "false" ]]; then
+if [[ "$DO_BUILD" == "true" ]]; then
   info "Building auth-gateway..."
   docker compose build auth-gateway
   success "auth-gateway built"
@@ -240,7 +242,7 @@ if [[ "$SKIP_BUILD" == "false" ]]; then
   docker compose build mcpfarm-ui
   success "mcpfarm-ui built"
 else
-  info "Skipping Docker builds (--skip-build)"
+  info "Skipping Docker builds (pass --build to rebuild images)"
 fi
 
 # ---------------------------------------------------------------------------
