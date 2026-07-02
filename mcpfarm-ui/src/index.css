@@ -2898,46 +2898,6 @@ input[type="checkbox"] {
   color: var(--semantic-info);
 }
 
-.hd-tool-entry {
-  padding: 0.5rem 0.75rem;
-  cursor: pointer;
-  border-bottom: 1px solid var(--border-subtle);
-  transition: background 0.12s;
-}
-
-.hd-tool-entry:hover:not(.hd-tool-entry--selected) {
-  background: var(--surface-hover);
-}
-
-.hd-tool-entry--selected {
-  background: var(--surface-active);
-}
-
-.hd-tool-entry__name {
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--semantic-info);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.hd-tool-entry__server {
-  font-size: 0.6875rem;
-  color: var(--semantic-success);
-  margin-top: 2px;
-}
-
-.hd-tool-entry__desc {
-  font-size: 0.6875rem;
-  color: var(--text-dim);
-  margin-top: 2px;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-}
-
 /* ═══════════════════════════════════════════════════════════════════════════
    Responsive
    ═══════════════════════════════════════════════════════════════════════════ */

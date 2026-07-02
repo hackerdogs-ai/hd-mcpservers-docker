@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { startServer, stopServer } from '../lib/api.js';
 import { mcpClient } from '../lib/mcp.js';
-import { getStatusInfo } from '../lib/categories.js';
+import { getStatusInfo, isServerRunning } from '../lib/categories.js';
 import { useTheme } from '../lib/theme.js';
 
 const CATEGORIES = ['all', 'recon', 'exploit', 'cloud', 'misc'];
@@ -30,9 +30,6 @@ export default function ServerList({
   loading,
   selectedServer,
   onSelectServer,
-  multiSelected,
-  onToggleMulti,
-  mode,
   onRefresh,
 }) {
   useTheme();
@@ -149,7 +146,6 @@ export default function ServerList({
           const name = server.name || server.id || '';
           const isRunning = isServerRunning(server);
           const isSelected = selectedServer === name;
-          const isMultiChecked = multiSelected?.has(name);
           const isActing = !!actionLoading[name];
           const err = actionError[name];
 
@@ -159,19 +155,6 @@ export default function ServerList({
               onClick={() => onSelectServer?.(name)}
               className={`hd-list-item group relative ${isSelected ? 'hd-list-item--selected' : ''}`}
             >
-              {mode === 'multi' && (
-                <input
-                  type="checkbox"
-                  checked={isMultiChecked || false}
-                  onChange={(e) => {
-                    e.stopPropagation();
-                    onToggleMulti?.(name);
-                  }}
-                  onClick={(e) => e.stopPropagation()}
-                  className="flex-shrink-0"
-                />
-              )}
-
               <span
                 className="flex-shrink-0 rounded-full"
                 title={getStatusTitle(server)}

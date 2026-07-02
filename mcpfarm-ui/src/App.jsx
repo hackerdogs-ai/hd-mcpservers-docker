@@ -4,7 +4,6 @@ import { isServerRunning } from './lib/categories.js';
 import Marketplace from './components/Marketplace.jsx';
 import ServerDetail from './components/ServerDetail.jsx';
 import ServerList from './components/ServerList.jsx';
-import MultiMode from './components/MultiMode.jsx';
 import PromptMode from './components/PromptMode.jsx';
 import AgentChat from './components/AgentChat.jsx';
 import Settings from './components/Settings.jsx';
@@ -12,7 +11,6 @@ import ThemeToggle from './components/ThemeToggle.jsx';
 
 const MODES = [
   { id: 'manual', label: 'Catalog' },
-  { id: 'multi', label: 'Multi-select' },
   { id: 'prompt', label: 'Prompt' },
   { id: 'agent', label: '✦ Nova' },
 ];
@@ -25,7 +23,6 @@ export default function App() {
   const [stats, setStats] = useState(null);
   const [showSettings, setShowSettings] = useState(false);
   const [selectedServer, setSelectedServer] = useState(null);
-  const [multiSelected, setMultiSelected] = useState(new Set());
 
   const loadServers = useCallback(async () => {
     setServersLoading(true);
@@ -79,21 +76,8 @@ export default function App() {
     return () => clearInterval(interval);
   }, [loadServers, loadStats]);
 
-  function handleToggleMulti(name) {
-    setMultiSelected((prev) => {
-      const next = new Set(prev);
-      if (next.has(name)) next.delete(name);
-      else next.add(name);
-      return next;
-    });
-  }
-
   function handleSelectServer(name) {
-    if (mode === 'multi') {
-      handleToggleMulti(name);
-    } else {
-      setSelectedServer(name);
-    }
+    setSelectedServer(name);
   }
 
   function goHome() {
@@ -166,17 +150,14 @@ export default function App() {
 
       {/* Main layout */}
       <div className="flex flex-1 overflow-hidden">
-        {/* ServerList sidebar — only for multi and prompt modes */}
-        {(mode === 'multi' || mode === 'prompt') && (
+        {/* ServerList sidebar — only for prompt mode */}
+        {mode === 'prompt' && (
           <div className="w-56 flex-shrink-0 flex flex-col overflow-hidden">
             <ServerList
               servers={servers}
               loading={serversLoading}
               selectedServer={null}
               onSelectServer={handleSelectServer}
-              multiSelected={mode === 'multi' ? multiSelected : new Set()}
-              onToggleMulti={handleToggleMulti}
-              mode={mode}
               onRefresh={loadServers}
             />
           </div>
@@ -198,13 +179,6 @@ export default function App() {
               servers={servers}
               onBack={() => setSelectedServer(null)}
               onRefresh={loadServers}
-            />
-          )}
-          {mode === 'multi' && (
-            <MultiMode
-              servers={servers}
-              multiSelected={multiSelected}
-              onToggleMulti={handleToggleMulti}
             />
           )}
           {mode === 'prompt' && (
