@@ -174,8 +174,24 @@ async def _next_available_port() -> int:
 # Background health check
 # ---------------------------------------------------------------------------
 
+async def _probe_mcp_server(client: httpx.AsyncClient, name: str, port: int) -> bool:
+    """Return True if the MCP server process is accepting HTTP.
+
+    Proxy-based servers expose GET /health → 200. Native FastMCP (streamable-http)
+    servers have no /health route but respond on GET /mcp/ with 4xx (< 500).
+    """
+    health_resp = await client.get(f"http://{name}:{port}/health")
+    if health_resp.status_code == 200:
+        return True
+    mcp_resp = await client.get(f"http://{name}:{port}/mcp/")
+    # 404 on /mcp/ means a proxy that only serves /health (and is not healthy).
+    if mcp_resp.status_code == 404:
+        return False
+    return mcp_resp.status_code < 500
+
+
 async def _check_one(name: str, port: int, url: str | None = None) -> tuple[str, bool]:
-    """Probe a single MCP server via lightweight GET /health (no session spawn)."""
+    """Probe a single MCP server without spawning an MCP session."""
     try:
         async with httpx.AsyncClient(timeout=5.0) as client:
             if url:
@@ -183,9 +199,16 @@ async def _check_one(name: str, port: int, url: str | None = None) -> tuple[str,
                 if not health_url.endswith("/health"):
                     health_url = health_url.rsplit("/", 1)[0] + "/health" if "/" in health_url.split("//", 1)[-1] else health_url + "/health"
                 resp = await client.get(health_url)
-            else:
-                resp = await client.get(f"http://{name}:{port}/health")
-            return name, resp.status_code == 200
+                if resp.status_code == 200:
+                    return name, True
+                # Custom URL may point at a proxy; fall through to /mcp/ only when needed.
+                base = health_url.rsplit("/health", 1)[0].rstrip("/")
+                mcp_resp = await client.get(f"{base}/mcp/")
+                if mcp_resp.status_code == 404:
+                    return name, False
+                return name, mcp_resp.status_code < 500
+            ok = await _probe_mcp_server(client, name, port)
+            return name, ok
     except Exception:
         return name, False
 
@@ -878,10 +901,10 @@ async def server_health(name: str):
     status_code = 0
     try:
         async with httpx.AsyncClient(timeout=5.0) as client:
+            ok = await _probe_mcp_server(client, name, port)
             resp = await client.get(f"http://{name}:{port}/mcp/")
             status_code = resp.status_code
-            ok = status_code < 500
-    except Exception as exc:
+    except Exception:
         status_code = -1
 
     now_iso = datetime.utcnow().isoformat()

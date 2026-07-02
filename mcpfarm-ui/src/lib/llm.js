@@ -44,6 +44,103 @@ function parseModelsList(raw, fallback) {
   return fallback;
 }
 
+// Coerce a stringified parameter value into a JS primitive/object when possible.
+// Falls back to the trimmed string so free-text args (URLs, prompts) survive intact.
+function coerceParamValue(raw) {
+  const v = (raw ?? '').trim();
+  if (v === '') return v;
+  if (v === 'true') return true;
+  if (v === 'false') return false;
+  if (v === 'null') return null;
+  if (/^-?\d+$/.test(v)) {
+    const n = Number(v);
+    if (Number.isSafeInteger(n)) return n;
+  }
+  if (/^-?\d*\.\d+$/.test(v)) return Number(v);
+  if ((v.startsWith('{') && v.endsWith('}')) || (v.startsWith('[') && v.endsWith(']'))) {
+    try { return JSON.parse(v); } catch { /* keep as string */ }
+  }
+  return v;
+}
+
+/**
+ * Fallback parser for models that emit tool calls as plain text inside the
+ * message content instead of the provider's structured tool-call field.
+ *
+ * Handles the two most common text formats seen from Qwen / Llama / Hermes
+ * style models served via Ollama, OpenRouter, Bedrock, etc.:
+ *
+ *   1. XML-ish:  <function=NAME><parameter=KEY>VALUE</parameter>...</function>
+ *                (optionally wrapped in <tool_call>...</tool_call>)
+ *   2. JSON:     <tool_call>{"name":"NAME","arguments":{...}}</tool_call>
+ *
+ * Returns the content with the tool-call markup stripped out, plus any
+ * extracted tool calls (with stable ids so the caller can round-trip them).
+ */
+export function extractInlineToolCalls(content) {
+  if (!content || typeof content !== 'string') {
+    return { text: content || '', toolCalls: [] };
+  }
+
+  const toolCalls = [];
+  let cleaned = content;
+
+  // Format 1: <function=NAME> ... <parameter=KEY>VALUE</parameter> ... </function>
+  const fnRe = /<function\s*=\s*([^>\s]+)\s*>([\s\S]*?)<\/function\s*>/gi;
+  let m;
+  while ((m = fnRe.exec(content)) !== null) {
+    const name = m[1].trim();
+    const inner = m[2] || '';
+    const args = {};
+    const paramRe = /<parameter\s*=\s*([^>\s]+)\s*>([\s\S]*?)<\/parameter\s*>/gi;
+    let pm;
+    while ((pm = paramRe.exec(inner)) !== null) {
+      args[pm[1].trim()] = coerceParamValue(pm[2]);
+    }
+    toolCalls.push({ name, arguments: args });
+    cleaned = cleaned.replace(m[0], '');
+  }
+
+  // Format 2: <tool_call>{ json }</tool_call>
+  const jsonRe = /<tool_call>\s*([\s\S]*?)\s*<\/tool_call>/gi;
+  while ((m = jsonRe.exec(content)) !== null) {
+    const body = (m[1] || '').trim();
+    if (!body || body.startsWith('<')) continue; // already handled as format 1
+    try {
+      const obj = JSON.parse(body);
+      const name = obj.name || obj.tool || obj.function?.name;
+      let rawArgs = obj.arguments ?? obj.parameters ?? obj.function?.arguments ?? {};
+      if (typeof rawArgs === 'string') {
+        try { rawArgs = JSON.parse(rawArgs); } catch { rawArgs = {}; }
+      }
+      if (name) {
+        toolCalls.push({ name, arguments: rawArgs || {} });
+        cleaned = cleaned.replace(m[0], '');
+      }
+    } catch { /* not valid JSON — leave as text */ }
+  }
+
+  // Remove any dangling wrapper tags the model left behind.
+  cleaned = cleaned.replace(/<\/?tool_call\s*>/gi, '').trim();
+
+  // Assign stable ids so assistant tool_calls and tool_results stay consistent.
+  toolCalls.forEach((tc, i) => { tc.id = `call_${i}`; });
+
+  return { text: cleaned, toolCalls };
+}
+
+/**
+ * Given a raw text response with no structured tool calls, return a normalized
+ * assistant message — promoting inline text tool calls to real tool calls.
+ */
+function finalizeTextResponse(content) {
+  const { text, toolCalls } = extractInlineToolCalls(content);
+  if (toolCalls.length > 0) {
+    return { role: 'assistant', content: text, toolCalls };
+  }
+  return { role: 'assistant', content: content || '' };
+}
+
 const LLM_PROVIDERS = {
   ollama: {
     label: 'Ollama (Local)',
@@ -205,7 +302,9 @@ function parseOpenAIResponse(data, label) {
     };
   }
 
-  return { role: 'assistant', content: choice.content || '' };
+  // Fallback: some models emit tool calls as text in `content` instead of
+  // populating `tool_calls`. Promote those so the agent loop can execute them.
+  return finalizeTextResponse(choice.content || '');
 }
 
 async function callOllama(messages, tools, model) {
@@ -249,7 +348,8 @@ async function callOllama(messages, tools, model) {
     content = content.replace(/<think>[\s\S]*?<\/think>\s*/g, '').trim();
   }
 
-  return { role: 'assistant', content };
+  // Fallback for models (e.g. qwen, llama) that write tool calls as text.
+  return finalizeTextResponse(content);
 }
 
 async function callClaude(messages, tools, model) {
@@ -324,7 +424,8 @@ async function callClaude(messages, tools, model) {
   }
 
   const text = data.content.map(b => b.text || '').join('\n');
-  return { role: 'assistant', content: text };
+  // Fallback in case a Claude-compatible endpoint returns a text tool call.
+  return finalizeTextResponse(text);
 }
 
 async function callOpenAICompatible(url, headers, messages, tools, model, defaultModel, label) {
