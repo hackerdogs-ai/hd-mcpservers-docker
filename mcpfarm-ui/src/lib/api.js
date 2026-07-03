@@ -282,3 +282,58 @@ export async function importServers(mcpServers) {
     body: JSON.stringify({ mcpServers }),
   });
 }
+
+// ─── Chat / vector search / encrypted LLM keys ────────────────────────────
+
+/** Server-side single-turn LLM completion (keys decrypted server-side). */
+export async function chatCompletionServer(payload) {
+  return apiFetch('/chat/completions', {
+    method: 'POST',
+    headers: authHeaders(),
+    body: JSON.stringify(payload),
+  });
+}
+
+/** Vector search for dynamic tool binding. */
+export async function vectorSearch(payload) {
+  return apiFetch('/vectors/search', {
+    method: 'POST',
+    headers: authHeaders(),
+    body: JSON.stringify(payload),
+  });
+}
+
+/** List configured LLM providers (masked prefixes only). */
+export async function listLlmKeys() {
+  return apiFetch('/llm-keys', { headers: adminHeaders() });
+}
+
+/** Upsert an encrypted LLM provider key. */
+export async function putLlmKey(provider, key) {
+  return apiFetch(`/llm-keys/${encodeURIComponent(provider)}`, {
+    method: 'PUT',
+    headers: adminHeaders(),
+    body: JSON.stringify({ key }),
+  });
+}
+
+/** Delete a stored LLM provider key. */
+export async function deleteLlmKey(provider) {
+  return apiFetch(`/llm-keys/${encodeURIComponent(provider)}`, {
+    method: 'DELETE',
+    headers: adminHeaders(),
+  });
+}
+
+/** Trigger a full vector reindex (admin). */
+export async function reindexVectors() {
+  return apiFetch('/admin/vectors/reindex', {
+    method: 'POST',
+    headers: adminHeaders(),
+  });
+}
+
+/** Vector index stats (admin). */
+export async function getVectorStats() {
+  return apiFetch('/admin/vectors/stats', { headers: adminHeaders() });
+}

@@ -3,26 +3,25 @@ import {
   getBaseUrl,
   getApiKey,
   getAdminSecret,
-  getClaudeKey,
-  getOpenAIKey,
   getOllamaUrl,
   getHeygenKey,
   getHeygenAvatarId,
-  getBedrockApiKey,
   getBedrockRegion,
   getBedrockModels,
-  getAzureOpenAIKey,
   getAzureOpenAIEndpoint,
   getAzureOpenAIModels,
-  getOpenRouterKey,
   getOpenRouterModels,
-  getGrokKey,
   getGrokModels,
-  getGeminiKey,
   getGeminiModels,
   saveSettings,
   rotateSecret,
+  listLlmKeys,
+  putLlmKey,
+  deleteLlmKey,
 } from '../lib/api.js';
+
+// LLM provider keys are stored server-side (encrypted). These never touch localStorage.
+const VAULT_PROVIDERS = ['claude', 'openai', 'bedrock', 'azure', 'openrouter', 'grok', 'gemini'];
 
 export default function Settings({ onClose }) {
   const [baseUrl, setBaseUrl] = useState('');
@@ -46,60 +45,87 @@ export default function Settings({ onClose }) {
   const [geminiKey, setGeminiKey] = useState('');
   const [geminiModels, setGeminiModels] = useState('');
   const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saveErr, setSaveErr] = useState(null);
   const [rotating, setRotating] = useState(false);
   const [rotateMsg, setRotateMsg] = useState(null);
+  // Masked status of server-side keys, keyed by provider → { key_prefix }.
+  const [vaultKeys, setVaultKeys] = useState({});
+
+  function loadVaultKeys() {
+    listLlmKeys()
+      .then((res) => {
+        const map = {};
+        (res.keys || []).forEach((k) => { map[k.provider] = k; });
+        setVaultKeys(map);
+      })
+      .catch(() => setVaultKeys({}));
+  }
 
   useEffect(() => {
     setBaseUrl(getBaseUrl());
     setApiKey(getApiKey());
     setAdminSecret(getAdminSecret());
-    setClaudeKey(getClaudeKey());
-    setOpenaiKey(getOpenAIKey());
     setOllamaUrl(getOllamaUrl());
     setHeygenKey(getHeygenKey());
     setHeygenAvatarId(getHeygenAvatarId());
-    setBedrockApiKey(getBedrockApiKey());
     setBedrockRegion(getBedrockRegion());
     setBedrockModels(getBedrockModels());
-    setAzureOpenaiKey(getAzureOpenAIKey());
     setAzureOpenaiEndpoint(getAzureOpenAIEndpoint());
     setAzureOpenaiModels(getAzureOpenAIModels());
-    setOpenrouterKey(getOpenRouterKey());
     setOpenrouterModels(getOpenRouterModels());
-    setGrokKey(getGrokKey());
     setGrokModels(getGrokModels());
-    setGeminiKey(getGeminiKey());
     setGeminiModels(getGeminiModels());
+    loadVaultKeys();
   }, []);
 
-  function handleSave() {
+  async function handleSave() {
+    setSaving(true);
+    setSaveErr(null);
+    // Non-secret preferences stay in localStorage; provider keys never do.
     saveSettings({
       baseUrl,
       apiKey,
       adminSecret,
-      claudeKey,
-      openaiKey,
       ollamaUrl,
       heygenKey,
       heygenAvatarId,
-      bedrockApiKey,
       bedrockRegion,
       bedrockModels,
-      azureOpenaiKey,
       azureOpenaiEndpoint,
       azureOpenaiModels,
-      openrouterKey,
       openrouterModels,
-      grokKey,
       grokModels,
-      geminiKey,
       geminiModels,
     });
-    setSaved(true);
-    setTimeout(() => {
-      setSaved(false);
-      onClose();
-    }, 800);
+
+    // Upload any newly-entered provider keys to the encrypted server vault.
+    const pending = [
+      ['claude', claudeKey], ['openai', openaiKey], ['bedrock', bedrockApiKey],
+      ['azure', azureOpenaiKey], ['openrouter', openrouterKey], ['grok', grokKey],
+      ['gemini', geminiKey],
+    ];
+    try {
+      for (const [provider, value] of pending) {
+        if (value && value.trim()) await putLlmKey(provider, value.trim());
+      }
+      setSaved(true);
+      setTimeout(() => { setSaved(false); onClose(); }, 800);
+    } catch (e) {
+      setSaveErr(e.message);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function handleClearKey(provider, setter) {
+    try {
+      await deleteLlmKey(provider);
+      setter('');
+      loadVaultKeys();
+    } catch (e) {
+      setSaveErr(e.message);
+    }
   }
 
   async function handleRotate() {
@@ -178,22 +204,29 @@ export default function Settings({ onClose }) {
           </div>
 
           <SectionTitle>Chat LLM Providers</SectionTitle>
+          <p className="hd-label-hint text-xs" style={{ marginTop: '-0.25rem' }}>
+            Provider keys are encrypted and stored on the server. They are never saved in your browser.
+          </p>
 
-          <Field
+          <KeyField
+            provider="claude"
             label="Claude API Key"
             hint="Prompt mode, Nova, and Chat (Claude provider)"
             value={claudeKey}
             onChange={setClaudeKey}
             placeholder="sk-ant-..."
-            type="password"
+            vaultKeys={vaultKeys}
+            onClear={handleClearKey}
           />
-          <Field
+          <KeyField
+            provider="openai"
             label="OpenAI API Key"
             hint="Chat tab (OpenAI provider)"
             value={openaiKey}
             onChange={setOpenaiKey}
             placeholder="sk-..."
-            type="password"
+            vaultKeys={vaultKeys}
+            onClear={handleClearKey}
           />
           <Field
             label="Ollama URL"
@@ -205,13 +238,15 @@ export default function Settings({ onClose }) {
           />
 
           <SectionTitle>AWS Bedrock</SectionTitle>
-          <Field
+          <KeyField
+            provider="bedrock"
             label="Bedrock API Key"
             hint="Bedrock API key for Chat tab"
             value={bedrockApiKey}
             onChange={setBedrockApiKey}
             placeholder="bedrock-api-key-..."
-            type="password"
+            vaultKeys={vaultKeys}
+            onClear={handleClearKey}
           />
           <Field
             label="Bedrock Region"
@@ -231,13 +266,15 @@ export default function Settings({ onClose }) {
           />
 
           <SectionTitle>Azure OpenAI</SectionTitle>
-          <Field
+          <KeyField
+            provider="azure"
             label="Azure OpenAI API Key"
             hint="Chat tab (Azure provider)"
             value={azureOpenaiKey}
             onChange={setAzureOpenaiKey}
             placeholder="azure-api-key"
-            type="password"
+            vaultKeys={vaultKeys}
+            onClear={handleClearKey}
           />
           <Field
             label="Azure OpenAI Endpoint"
@@ -257,13 +294,15 @@ export default function Settings({ onClose }) {
           />
 
           <SectionTitle>OpenRouter</SectionTitle>
-          <Field
+          <KeyField
+            provider="openrouter"
             label="OpenRouter API Key"
             hint="Chat tab (OpenRouter provider)"
             value={openrouterKey}
             onChange={setOpenrouterKey}
             placeholder="sk-or-..."
-            type="password"
+            vaultKeys={vaultKeys}
+            onClear={handleClearKey}
           />
           <Field
             label="OpenRouter Models"
@@ -275,13 +314,15 @@ export default function Settings({ onClose }) {
           />
 
           <SectionTitle>Grok (xAI)</SectionTitle>
-          <Field
+          <KeyField
+            provider="grok"
             label="Grok API Key"
             hint="Chat tab (Grok provider)"
             value={grokKey}
             onChange={setGrokKey}
             placeholder="xai-..."
-            type="password"
+            vaultKeys={vaultKeys}
+            onClear={handleClearKey}
           />
           <Field
             label="Grok Models"
@@ -293,13 +334,15 @@ export default function Settings({ onClose }) {
           />
 
           <SectionTitle>Google Gemini</SectionTitle>
-          <Field
+          <KeyField
+            provider="gemini"
             label="Gemini API Key"
             hint="Chat tab (Gemini provider)"
             value={geminiKey}
             onChange={setGeminiKey}
             placeholder="AIza..."
-            type="password"
+            vaultKeys={vaultKeys}
+            onClear={handleClearKey}
           />
           <Field
             label="Gemini Models"
@@ -330,11 +373,12 @@ export default function Settings({ onClose }) {
         </div>
 
         <div className="hd-modal__foot">
+          {saveErr && <span className="hd-text-err text-xs mr-auto">{saveErr}</span>}
           <button type="button" onClick={onClose} className="hd-btn hd-btn--ghost">
             Cancel
           </button>
-          <button type="button" onClick={handleSave} className="hd-btn hd-btn--primary">
-            {saved ? '✓ Saved' : 'Save'}
+          <button type="button" onClick={handleSave} disabled={saving} className="hd-btn hd-btn--primary">
+            {saving ? '…' : saved ? '✓ Saved' : 'Save'}
           </button>
         </div>
       </div>
@@ -345,6 +389,41 @@ export default function Settings({ onClose }) {
 function SectionTitle({ children }) {
   return (
     <h3 className="hd-settings-section-title">{children}</h3>
+  );
+}
+
+function KeyField({ provider, label, hint, value, onChange, placeholder, vaultKeys, onClear }) {
+  const stored = vaultKeys?.[provider];
+  return (
+    <div>
+      <label className="hd-label">
+        {label}
+        {hint && <span className="hd-label-hint ml-2 text-xs">{hint}</span>}
+      </label>
+      <div className="flex gap-2">
+        <input
+          type="password"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={stored ? `Stored: ${stored.key_prefix}` : placeholder}
+          className="hd-input flex-1 text-sm"
+          autoComplete="new-password"
+        />
+        {stored && (
+          <button
+            type="button"
+            onClick={() => onClear(provider, onChange)}
+            className="hd-btn hd-btn--muted whitespace-nowrap"
+            title="Remove stored key"
+          >
+            Clear
+          </button>
+        )}
+      </div>
+      {stored && (
+        <p className="hd-label-hint text-xs mt-1">Encrypted on server{stored.updated_at ? ` · updated ${stored.updated_at.slice(0, 10)}` : ''}</p>
+      )}
+    </div>
   );
 }
 

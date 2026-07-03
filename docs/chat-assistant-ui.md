@@ -1,9 +1,92 @@
 # PRD & Technical Spec: Chat Page (assistant-ui)
 
-> **Status:** Draft  
+> **Status:** Implemented & deployed (v1)  
 > **Owner:** MCP Farm UI  
-> **Last updated:** 2026-07-01  
+> **Last updated:** 2026-07-02  
 > **Related:** [FARM-PRD](./FARM-PRD.md), [FARM-ARCHITECTURE](./FARM-ARCHITECTURE.md), [assistant-ui docs](https://www.assistant-ui.com/docs)
+
+---
+
+## Implementation status (v1)
+
+Both chat surfaces are built on `@assistant-ui/react` with a shared runtime, and
+tool binding is backed by the shared **hd-redis** Redis Stack instance under
+farm-specific keys (`mcpfarm:v1:doc:*`, index `mcpfarm:idx`).
+
+**Backend (`mcpfarm/auth-gateway/`)**
+
+| Module | Purpose |
+| --- | --- |
+| `embeddings.py` | OpenAI / Ollama / offline `local` embedders (fixed `VECTOR_DIM`). |
+| `vector_index.py` | RediSearch HNSW index create/upsert/search/status/delete via `FT.*`. |
+| `vector_indexer.py` | README chunking, tool-schema summaries, doc building, reindex, internal MCP `tools/list`. |
+| `secrets_vault.py` | Fernet-encrypted LLM key vault in SQLite (`llm_secrets`). |
+| `chat_proxy.py` | Server-side single-turn multi-provider LLM proxy (keys decrypted server-side). |
+
+New endpoints in `main.py`: `POST /chat/completions`, `POST /vectors/search`,
+`GET|PUT|DELETE /llm-keys[/{provider}]`, `POST /admin/vectors/reindex`,
+`GET /admin/vectors/stats`, `POST /admin/vectors/index-server/{name}`. The
+`/claude` proxy now falls back to the encrypted vault key. Server start/stop/
+disable update the vector `status` tag; a started server's tools are indexed.
+
+**Frontend (`mcpfarm-ui/src/`)**
+
+`lib/toolBinding.js`, `lib/chatOrchestrator.js` (agentic loop → assistant-ui
+parts; MCP execution stays in-browser), `components/chat/useMcpChatRuntime.js`
+(shared `LocalRuntime`), `components/chat/ChatThread.jsx` + `McpToolCard.jsx` +
+`ProviderModelBar.jsx` + `ToolPickerDrawer.jsx` + `AutoSelectionChips.jsx`,
+`components/ChatMode.jsx` (new "Chat" nav item between Catalog and Prompt), and
+`components/ChatTab.jsx` reimplemented on the same runtime. `Settings.jsx` stores
+provider keys in the server vault (masked prefixes only; never localStorage).
+
+**Deploy**: `auth-gateway` joins the external `hdnet` network; config via
+`REDIS_URL`, `MCPFARM_SECRETS_KEY`, `MCPFARM_VECTOR_PREFIX/INDEX`, `VECTOR_DIM`,
+`EMBED_PROVIDER`, `OPENAI_API_KEY`, `OLLAMA_URL`. Populate the index once with
+`POST /admin/vectors/reindex` (or set `VECTOR_AUTO_REINDEX=true`).
+
+**Tests** (`mcpfarm/auth-gateway/tests/`, run with a venv + `pytest`): 24 tests
+covering embeddings, README chunking/doc building, the encrypted vault, chat
+message/response conversion (OpenAI/Claude/**Ollama**), FT.SEARCH reply parsing
+for **both RESP2 and RESP3**, health-authoritative status resolution, a live
+hd-redis index round-trip (create → index → KNN search → status filter → delete),
+and HTTP smoke tests of every new endpoint against the booted app. Frontend
+verified with `npm run build`.
+
+### Live deployment verification (2026-07-02)
+
+Deployed to the running farm and verified end-to-end against the shared
+`hd-redis`:
+
+- `auth-gateway` rebuilt on `hdnet`, created `mcpfarm:idx` on hd-redis, reindexed
+  **400 servers → 2579 docs** (`GET /admin/vectors/stats` reports `doc_count:2579,
+  dim:1536`), coexisting cleanly with the unrelated `hds:vec:idx`.
+- Dynamic search via the production farm port returns sensible routing, e.g.
+  "find subdomains" → `subfinder/shuffledns/assetfinder`, "scan open ports" →
+  `naabu/nmap/ivre`, "brute force login credentials" → `hydra/medusa/bully`.
+- Encrypted vault round-trip (`PUT/GET/DELETE /llm-keys`) confirmed: DB stores
+  only Fernet ciphertext (`gAAAAAB…`), zero plaintext leakage, masked prefix
+  returned to the UI.
+- **Full agentic loop** with Ollama `qwen3-coder`: user question → model emits
+  `whois_lookup({domain:"example.com"})` → executed live against `whois-mcp` →
+  result fed back → correct final answer (registrar, creation/expiry dates,
+  nameservers). Confirms the browser wire contract end-to-end.
+
+Deployment fixes made during verification:
+
+1. **Caddy routing source of truth** — the gateway rebuilds the whole Caddyfile
+   from `caddy_reload.py` and pushes it via the admin API, so the new
+   `/chat/*`, `/vectors/*`, `/llm-keys*` handles (and `PUT` in CORS) were added
+   there, not just the static `Caddyfile`.
+2. **RESP3 support** — redis-py ≥ 8 negotiates RESP3, so `FT.SEARCH` returns a
+   map; `vector_index._parse_search` now handles both the RESP3 dict and the
+   RESP2 array, and the built-in `FT.SEARCH` response callback is overridden with
+   a passthrough so the raw reply reaches our parser.
+3. **Ollama tool-call format** — Ollama's `/api/chat` expects tool-call
+   `arguments` as a JSON object (not a stringified JSON) and a non-null assistant
+   `content`; added `chat_proxy._messages_to_ollama`.
+4. **Health-authoritative status** — `vector_indexer._status_of` now trusts
+   `health_ok` rather than the optimistic DB `status`, so the vector `status` tag
+   is accurate and tool indexing only targets live servers.
 
 ---
 

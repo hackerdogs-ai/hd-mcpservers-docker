@@ -232,6 +232,21 @@ export function getProviders() {
   }));
 }
 
+/**
+ * Key-independent provider catalog for the Chat surfaces. Availability is
+ * resolved separately via the server-side encrypted key vault (`/llm-keys`),
+ * so this never reads secrets from localStorage.
+ */
+export function getProviderCatalog() {
+  return Object.entries(LLM_PROVIDERS).map(([id, p]) => ({
+    id,
+    label: p.label,
+    models: p.models,
+    defaultModel: p.defaultModel,
+    needsKey: p.needsKey,
+  }));
+}
+
 function mcpToolToOllama(tool) {
   return {
     type: 'function',

@@ -22,7 +22,7 @@ CADDYFILE_HEADER = """{
 :80, :11459 {
     header Access-Control-Allow-Origin *
     header Access-Control-Allow-Headers "Authorization, Content-Type, Accept, mcp-session-id, X-Admin-Secret"
-    header Access-Control-Allow-Methods "GET, POST, DELETE, OPTIONS"
+    header Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
     header Access-Control-Expose-Headers "mcp-session-id"
 
     @options method OPTIONS
@@ -51,6 +51,18 @@ CADDYFILE_HEADER = """{
     }
 
     handle /claude {
+        reverse_proxy auth-gateway:9090
+    }
+
+    handle /chat/* {
+        reverse_proxy auth-gateway:9090
+    }
+
+    handle /vectors/* {
+        reverse_proxy auth-gateway:9090
+    }
+
+    handle /llm-keys* {
         reverse_proxy auth-gateway:9090
     }
 

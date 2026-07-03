@@ -17,9 +17,14 @@ import aiosqlite
 import httpx
 from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request, Response
 from fastapi.responses import JSONResponse, PlainTextResponse
+from pydantic import BaseModel
 
 import caddy_reload
 import docker_manager
+import chat_proxy
+import secrets_vault
+import vector_index
+import vector_indexer
 from models import (
     ApiKey,
     KeyCreate,
@@ -320,6 +325,26 @@ async def startup_event() -> None:
         logger.warning("Caddy reload failed after all retries")
     asyncio.create_task(_reload_caddy_with_retry())
 
+    # Initialize the encrypted LLM-key vault table.
+    try:
+        await secrets_vault.init_db()
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("secrets_vault init failed: %s", exc)
+
+    # Ensure the Redis vector index exists (best-effort; hd-redis is shared).
+    async def _ensure_vectors():
+        try:
+            if await vector_index.ping():
+                await vector_index.ensure_index()
+                logger.info("Redis vector index ready (%s)", vector_index.INDEX_NAME)
+                if os.environ.get("VECTOR_AUTO_REINDEX", "").lower() in ("1", "true", "yes"):
+                    await _reindex_vectors()
+            else:
+                logger.warning("Redis not reachable at %s; vector search disabled", vector_index.REDIS_URL)
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("Vector index init failed: %s", exc)
+    asyncio.create_task(_ensure_vectors())
+
     # Start background health check
     asyncio.create_task(health_check_loop())
     logger.info("Auth-gateway started. DB: %s", DB_PATH)
@@ -333,6 +358,30 @@ async def require_admin(request: Request) -> None:
     secret = request.headers.get("X-Admin-Secret", "")
     if not secret or secret != ADMIN_SECRET:
         raise HTTPException(status_code=403, detail="Forbidden: invalid admin secret")
+
+
+async def require_api_key(request: Request) -> None:
+    """Validate a Bearer API key (active, non-expired) — used by chat/vector routes."""
+    auth_header = request.headers.get("Authorization", "")
+    if not auth_header.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Missing Bearer token")
+    token_hash = hashlib.sha256(auth_header[len("Bearer "):].encode()).hexdigest()
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute(
+            "SELECT is_active, expires_at FROM api_keys WHERE key_hash=?", (token_hash,)
+        ) as cursor:
+            row = await cursor.fetchone()
+    if not row:
+        raise HTTPException(status_code=401, detail="Invalid API key")
+    if not row["is_active"]:
+        raise HTTPException(status_code=403, detail="API key is inactive")
+    if row["expires_at"]:
+        try:
+            if datetime.utcnow() > datetime.fromisoformat(row["expires_at"]):
+                raise HTTPException(status_code=403, detail="API key has expired")
+        except ValueError:
+            pass
 
 
 @app.post("/admin/rotate-secret", dependencies=[Depends(require_admin)])
@@ -828,6 +877,8 @@ async def _probe_health_after_start(name: str, port: int) -> None:
             )
             await db.commit()
         if ok:
+            # Index this server's tools + mark running in the vector store.
+            asyncio.create_task(_vector_index_server_safe(name))
             break
 
 
@@ -849,6 +900,7 @@ async def stop_server_endpoint(name: str):
             await db.commit()
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
+    asyncio.create_task(_vector_set_status_safe(name, "stopped"))
     return {"stopped": name}
 
 
@@ -885,6 +937,7 @@ async def disable_server_endpoint(name: str):
         )
         await db.commit()
     await _reload_caddy_from_db()
+    asyncio.create_task(_vector_set_status_safe(name, "disabled"))
     return {"disabled": name}
 
 
@@ -1011,13 +1064,23 @@ async def export_farm():
 
 @app.post("/claude")
 async def claude_proxy(request: Request):
-    """Proxy Claude API calls from the UI to avoid CORS issues."""
+    """Proxy Claude API calls from the UI to avoid CORS issues.
+
+    The API key is taken from the encrypted vault; the legacy ``x-claude-key``
+    header is still accepted as a fallback for backward compatibility.
+    """
     body = await request.body()
     claude_key = request.headers.get("x-claude-key", "")
     anthropic_version = request.headers.get("anthropic-version", "2023-06-01")
 
     if not claude_key:
-        return JSONResponse({"error": "x-claude-key header required"}, status_code=400)
+        claude_key = await secrets_vault.get_secret("claude") or ""
+
+    if not claude_key:
+        return JSONResponse(
+            {"error": "No Claude API key configured. Add it in Settings."},
+            status_code=400,
+        )
 
     async with httpx.AsyncClient(timeout=120.0) as client:
         resp = await client.post(
@@ -1035,6 +1098,227 @@ async def claude_proxy(request: Request):
         status_code=resp.status_code,
         media_type="application/json",
     )
+
+
+# ---------------------------------------------------------------------------
+# Chat completions proxy (keys decrypted server-side)
+# ---------------------------------------------------------------------------
+
+class ChatCompletionRequest(BaseModel):
+    provider: str
+    model: Optional[str] = None
+    messages: List[dict] = []
+    tools: List[dict] = []
+    max_tokens: int = 4096
+
+
+@app.post("/chat/completions", dependencies=[Depends(require_api_key)])
+async def chat_completions(req: ChatCompletionRequest):
+    try:
+        return await chat_proxy.run_completion(req.model_dump())
+    except chat_proxy.ChatProxyError as exc:
+        raise HTTPException(status_code=exc.status, detail=exc.message)
+    except Exception as exc:  # noqa: BLE001
+        logger.exception("chat_completions failed")
+        raise HTTPException(status_code=502, detail=str(exc))
+
+
+# ---------------------------------------------------------------------------
+# Vector search (dynamic tool binding)
+# ---------------------------------------------------------------------------
+
+class VectorSearchRequest(BaseModel):
+    query: str
+    mode: str = "dynamic"
+    filters: dict = {}
+    top_k_servers: int = 5
+    top_k_tools: int = 20
+    min_score: float = 0.0
+
+
+@app.post("/vectors/search", dependencies=[Depends(require_api_key)])
+async def vectors_search(req: VectorSearchRequest):
+    import embeddings
+
+    if not await vector_index.ping():
+        raise HTTPException(status_code=503, detail="Vector store unavailable")
+    if not await vector_index.index_exists():
+        raise HTTPException(status_code=503, detail="Vector index not built; run /admin/vectors/reindex")
+
+    statuses = None
+    status_filter = (req.filters or {}).get("status")
+    if status_filter:
+        statuses = [status_filter] if isinstance(status_filter, str) else list(status_filter)
+    categories = (req.filters or {}).get("categories") or None
+
+    query_vec = await embeddings.embed_text(req.query)
+
+    # Stage 1 — server discovery over server/alias/readme docs.
+    stage1 = await vector_index.search_knn(
+        query_vec,
+        top_k=max(req.top_k_servers * 4, 12),
+        doc_types=["server", "alias", "readme"],
+        statuses=statuses,
+        categories=categories,
+    )
+    server_order: List[str] = []
+    for row in stage1:
+        srv = row.get("server")
+        if srv and srv not in server_order:
+            server_order.append(srv)
+        if len(server_order) >= req.top_k_servers:
+            break
+
+    # Stage 2 — rank tools within the discovered servers.
+    tools: List[dict] = []
+    if server_order:
+        stage2 = await vector_index.search_knn(
+            query_vec,
+            top_k=req.top_k_tools,
+            doc_types=["tool"],
+            servers=server_order,
+            statuses=statuses,
+        )
+        for row in stage2:
+            sim = row.get("similarity")
+            if sim is not None and sim < req.min_score:
+                continue
+            tools.append({
+                "server": row.get("server"),
+                "tool": row.get("tool"),
+                "description": row.get("text"),
+                "score": row.get("similarity"),
+            })
+
+    return {
+        "mode": req.mode,
+        "servers": server_order,
+        "tools": tools,
+        "meta": {"stage1": len(stage1), "returned_tools": len(tools)},
+    }
+
+
+# ---------------------------------------------------------------------------
+# LLM key vault (admin)
+# ---------------------------------------------------------------------------
+
+class LlmKeyUpsert(BaseModel):
+    key: str
+
+
+@app.get("/llm-keys", dependencies=[Depends(require_admin)])
+async def list_llm_keys():
+    return {"keys": await secrets_vault.list_secrets(), "providers": sorted(secrets_vault.SECRET_PROVIDERS)}
+
+
+@app.put("/llm-keys/{provider}", dependencies=[Depends(require_admin)])
+async def put_llm_key(provider: str, payload: LlmKeyUpsert):
+    if provider.lower() not in secrets_vault.SECRET_PROVIDERS:
+        raise HTTPException(status_code=400, detail=f"Unknown provider: {provider}")
+    if not payload.key.strip():
+        raise HTTPException(status_code=400, detail="Empty key")
+    return await secrets_vault.set_secret(provider, payload.key.strip())
+
+
+@app.delete("/llm-keys/{provider}", dependencies=[Depends(require_admin)])
+async def delete_llm_key(provider: str):
+    await secrets_vault.delete_secret(provider)
+    return {"status": "deleted", "provider": provider.lower()}
+
+
+# ---------------------------------------------------------------------------
+# Vector index admin
+# ---------------------------------------------------------------------------
+
+def _read_readme(server_name: str) -> Optional[str]:
+    path = _readme_path(server_name)
+    if not path:
+        return None
+    with open(path, encoding="utf-8", errors="replace") as f:
+        return f.read()
+
+
+async def _load_tools_for_server(srv: dict) -> List[dict]:
+    name = srv.get("name")
+    port = srv.get("port")
+    if not name or not port:
+        return []
+    return await vector_indexer.list_tools_internal(name, int(port))
+
+
+async def _reindex_vectors() -> dict:
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute("SELECT * FROM servers") as cursor:
+            servers = [dict(r) for r in await cursor.fetchall()]
+    return await vector_indexer.reindex_all(servers, _read_readme, _load_tools_for_server)
+
+
+async def _vector_set_status_safe(name: str, status: str) -> None:
+    """Best-effort: flip a server's status tag in the vector index."""
+    try:
+        if await vector_index.ping() and await vector_index.index_exists():
+            await vector_index.set_server_status(name, status)
+    except Exception as exc:  # noqa: BLE001
+        logger.debug("vector status update failed for %s: %s", name, exc)
+
+
+async def _vector_index_server_safe(name: str) -> None:
+    """Best-effort: (re)index a single running server's tools + metadata."""
+    try:
+        if not (await vector_index.ping() and await vector_index.index_exists()):
+            return
+        async with aiosqlite.connect(DB_PATH) as db:
+            db.row_factory = aiosqlite.Row
+            async with db.execute("SELECT * FROM servers WHERE name=?", (name,)) as cursor:
+                row = await cursor.fetchone()
+        if not row:
+            return
+        srv = dict(row)
+        status = vector_indexer._status_of(srv)
+        tools = None
+        if status == "running":
+            try:
+                tools = await _load_tools_for_server(srv)
+            except Exception:  # noqa: BLE001
+                tools = None
+        await vector_indexer.index_server(name, srv.get("category"), status, _read_readme(name), tools)
+    except Exception as exc:  # noqa: BLE001
+        logger.debug("vector index-server failed for %s: %s", name, exc)
+
+
+@app.post("/admin/vectors/reindex", dependencies=[Depends(require_admin)])
+async def admin_vectors_reindex():
+    if not await vector_index.ping():
+        raise HTTPException(status_code=503, detail="Vector store unavailable")
+    return await _reindex_vectors()
+
+
+@app.get("/admin/vectors/stats", dependencies=[Depends(require_admin)])
+async def admin_vectors_stats():
+    return await vector_index.stats()
+
+
+@app.post("/admin/vectors/index-server/{name}", dependencies=[Depends(require_admin)])
+async def admin_vectors_index_server(name: str):
+    if not await vector_index.ping():
+        raise HTTPException(status_code=503, detail="Vector store unavailable")
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute("SELECT * FROM servers WHERE name=?", (name,)) as cursor:
+            row = await cursor.fetchone()
+    if not row:
+        raise HTTPException(status_code=404, detail="Server not found")
+    srv = dict(row)
+    status = vector_indexer._status_of(srv)
+    tools = None
+    if status == "running":
+        try:
+            tools = await _load_tools_for_server(srv)
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("index-server %s tools failed: %s", name, exc)
+    n = await vector_indexer.index_server(name, srv.get("category"), status, _read_readme(name), tools)
+    return {"server": name, "docs": n, "status": status, "tools": len(tools or [])}
 
 
 # ---------------------------------------------------------------------------

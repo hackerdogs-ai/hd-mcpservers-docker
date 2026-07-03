@@ -6,11 +6,13 @@ import ServerDetail from './components/ServerDetail.jsx';
 import ServerList from './components/ServerList.jsx';
 import PromptMode from './components/PromptMode.jsx';
 import AgentChat from './components/AgentChat.jsx';
+import ChatMode from './components/ChatMode.jsx';
 import Settings from './components/Settings.jsx';
 import ThemeToggle from './components/ThemeToggle.jsx';
 
 const MODES = [
   { id: 'manual', label: 'Catalog' },
+  { id: 'chat', label: 'Chat' },
   { id: 'prompt', label: 'Prompt' },
   { id: 'agent', label: '✦ Nova' },
 ];
@@ -180,6 +182,9 @@ export default function App() {
               onBack={() => setSelectedServer(null)}
               onRefresh={loadServers}
             />
+          )}
+          {mode === 'chat' && (
+            <ChatMode servers={servers} />
           )}
           {mode === 'prompt' && (
             <PromptMode servers={servers} />

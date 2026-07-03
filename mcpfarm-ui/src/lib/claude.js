@@ -28,8 +28,9 @@ function mcpToolToAnthropic(tool, serverName) {
  * Call Claude API with messages and tools
  */
 async function callClaude(messages, tools, claudeKey, options = {}) {
+  // The key is decrypted server-side from the vault. A caller-provided key is
+  // still forwarded for backward compatibility, but is no longer required.
   const key = claudeKey || getClaudeKey();
-  if (!key) throw new Error('Claude API key is required. Set it in Settings.');
 
   // Strip internal routing fields before sending to API
   const apiTools = tools.map(({ _serverName, _toolName, ...t }) => t);
@@ -46,7 +47,7 @@ async function callClaude(messages, tools, claudeKey, options = {}) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-claude-key': key,
+      ...(key ? { 'x-claude-key': key } : {}),
       'anthropic-version': ANTHROPIC_VERSION,
     },
     body: JSON.stringify(body),
