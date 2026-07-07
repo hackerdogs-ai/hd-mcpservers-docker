@@ -337,3 +337,45 @@ export async function reindexVectors() {
 export async function getVectorStats() {
   return apiFetch('/admin/vectors/stats', { headers: adminHeaders() });
 }
+
+// ─── Automation / batch operations ───────────────────────────────────────
+
+/** Batch start/stop/restart/enable/disable multiple servers. */
+export async function batchServerAction(servers, action) {
+  return apiFetch('/admin/servers/batch', {
+    method: 'POST',
+    headers: adminHeaders(),
+    body: JSON.stringify({ servers, action }),
+  });
+}
+
+/** Health-check all (or specific) servers at once. */
+export async function batchHealthCheck(names = null) {
+  return apiFetch('/admin/servers/health-check', {
+    method: 'POST',
+    headers: adminHeaders(),
+    body: JSON.stringify(names),
+  });
+}
+
+/** Search/filter servers by name, category, status, source, health. */
+export async function searchServers({ q, category, status, source, healthy } = {}) {
+  const params = new URLSearchParams();
+  if (q) params.set('q', q);
+  if (category) params.set('category', category);
+  if (status) params.set('status', status);
+  if (source) params.set('source', source);
+  if (healthy !== undefined) params.set('healthy', healthy);
+  const qs = params.toString();
+  return apiFetch(`/admin/servers/search${qs ? '?' + qs : ''}`, { headers: adminHeaders() });
+}
+
+/** Get MCP tools exposed by a running server. */
+export async function getServerTools(name) {
+  return apiFetch(`/admin/servers/${encodeURIComponent(name)}/tools`, { headers: adminHeaders() });
+}
+
+/** List all server categories with counts. */
+export async function listCategories() {
+  return apiFetch('/admin/servers/categories', { headers: adminHeaders() });
+}

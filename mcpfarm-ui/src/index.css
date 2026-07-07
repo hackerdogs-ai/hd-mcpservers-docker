@@ -3367,6 +3367,27 @@ input[type="checkbox"] {
   width: 100%;
 }
 
+/* Loading indicator (assistant working / between tool rounds) */
+.aui-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 2px;
+}
+.aui-loading-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  animation: aui-bounce 1.2s infinite ease-in-out both;
+}
+.aui-loading-dot:nth-child(1) { animation-delay: -0.24s; }
+.aui-loading-dot:nth-child(2) { animation-delay: -0.12s; }
+@keyframes aui-bounce {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
 /* Action bar (copy / regenerate) */
 .aui-actionbar {
   display: flex;

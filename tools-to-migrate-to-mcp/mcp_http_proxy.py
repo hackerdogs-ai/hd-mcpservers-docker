@@ -154,6 +154,7 @@ class StdioSession:
             bufsize=1,
             start_new_session=True,
         )
+        self.pgid = os.getpgid(self.proc.pid)
         self.lock = threading.Lock()
         self.id = uuid.uuid4().hex
         self.last_used = time.time()
@@ -177,29 +178,29 @@ class StdioSession:
                 return None
 
     def close(self):
-        pgid = None
         try:
-            pgid = os.getpgid(self.proc.pid)
+            os.killpg(self.pgid, signal.SIGTERM)
         except (ProcessLookupError, OSError):
             pass
-        if pgid and pgid != os.getpid():
-            try:
-                os.killpg(pgid, signal.SIGTERM)
-                self.proc.wait(timeout=3)
-            except Exception:
-                try:
-                    os.killpg(pgid, signal.SIGKILL)
-                except (ProcessLookupError, OSError):
-                    pass
-        else:
-            try:
-                self.proc.terminate()
-                self.proc.wait(timeout=3)
-            except Exception:
-                try:
-                    self.proc.kill()
-                except (ProcessLookupError, OSError):
-                    pass
+        try:
+            self.proc.wait(timeout=3)
+        except Exception:
+            pass
+        try:
+            os.killpg(self.pgid, signal.SIGKILL)
+        except (ProcessLookupError, OSError):
+            pass
+        try:
+            self.proc.wait(timeout=1)
+        except Exception:
+            pass
+        try:
+            while True:
+                pid, _ = os.waitpid(-1, os.WNOHANG)
+                if pid == 0:
+                    break
+        except ChildProcessError:
+            pass
 
 
 class MCPHandler(BaseHTTPRequestHandler):

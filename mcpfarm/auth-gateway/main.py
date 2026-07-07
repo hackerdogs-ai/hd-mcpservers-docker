@@ -651,14 +651,19 @@ async def create_server(payload: ServerCreate):
     status = "running" if is_external else "starting"
 
     async with aiosqlite.connect(DB_PATH) as db:
-        await db.execute(
-            """INSERT INTO servers (name, image, port, env, status, source, category, url,
-               created_at, last_health, health_ok)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-            (payload.name, payload.image or "", port, env_json,
-             status, source, payload.category, payload.url, now_iso, None, 0),
-        )
-        await db.commit()
+        try:
+            await db.execute(
+                """INSERT INTO servers (name, image, port, env, status, source, category, url,
+                   created_at, last_health, health_ok)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                (payload.name, payload.image or "", port, env_json,
+                 status, source, payload.category, payload.url, now_iso, None, 0),
+            )
+            await db.commit()
+        except Exception as exc:
+            if "UNIQUE" in str(exc).upper() or "IntegrityError" in type(exc).__name__:
+                raise HTTPException(status_code=409, detail=f"Server '{payload.name}' already exists")
+            raise
 
     if not is_external:
         try:
@@ -751,6 +756,124 @@ async def list_servers():
             rows = await cursor.fetchall()
     return [_to_server_response(dict(r)) for r in rows]
 
+
+# ---------------------------------------------------------------------------
+# Automation API — static routes (must be before /admin/servers/{name})
+# ---------------------------------------------------------------------------
+
+
+class BatchAction(BaseModel):
+    servers: List[str] = []
+    action: str
+
+
+@app.post("/admin/servers/batch", dependencies=[Depends(require_admin)])
+async def batch_server_action(payload: BatchAction):
+    """Run start/stop/restart/enable/disable on multiple servers at once."""
+    allowed = {"start", "stop", "restart", "enable", "disable"}
+    if payload.action not in allowed:
+        raise HTTPException(status_code=400, detail=f"action must be one of {sorted(allowed)}")
+
+    handler_map = {
+        "start": start_server_endpoint,
+        "stop": stop_server_endpoint,
+        "restart": restart_server_endpoint,
+        "enable": enable_server_endpoint,
+        "disable": disable_server_endpoint,
+    }
+    handler = handler_map[payload.action]
+    results = []
+    for name in payload.servers:
+        try:
+            resp = await handler(name)
+            results.append({"name": name, "status": "ok", "result": resp})
+        except HTTPException as exc:
+            results.append({"name": name, "status": "error", "detail": exc.detail})
+        except Exception as exc:
+            results.append({"name": name, "status": "error", "detail": str(exc)})
+    return {"action": payload.action, "total": len(results), "results": results}
+
+
+@app.post("/admin/servers/health-check", dependencies=[Depends(require_admin)])
+async def batch_health_check(names: Optional[List[str]] = None):
+    """Health-check all servers (or a subset). Returns per-server results."""
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        if names:
+            placeholders = ",".join("?" for _ in names)
+            query = f"SELECT name, port, status FROM servers WHERE name IN ({placeholders})"
+            async with db.execute(query, names) as cursor:
+                rows = await cursor.fetchall()
+        else:
+            async with db.execute("SELECT name, port, status FROM servers") as cursor:
+                rows = await cursor.fetchall()
+
+    async def _check_one_health(row):
+        name = row["name"]
+        port = row["port"]
+        if row["status"] in ("stopped", "disabled"):
+            return {"name": name, "healthy": False, "reason": row["status"]}
+        try:
+            async with httpx.AsyncClient(timeout=5.0) as client:
+                ok = await _probe_mcp_server(client, name, port)
+            return {"name": name, "healthy": ok}
+        except Exception:
+            return {"name": name, "healthy": False, "reason": "unreachable"}
+
+    results = await asyncio.gather(*[_check_one_health(r) for r in rows])
+    healthy = sum(1 for r in results if r["healthy"])
+    return {"total": len(results), "healthy": healthy, "unhealthy": len(results) - healthy, "results": list(results)}
+
+
+@app.get("/admin/servers/search", dependencies=[Depends(require_admin)])
+async def search_servers(
+    q: Optional[str] = Query(default=None, description="Name substring match"),
+    category: Optional[str] = Query(default=None),
+    status: Optional[str] = Query(default=None),
+    source: Optional[str] = Query(default=None),
+    healthy: Optional[bool] = Query(default=None),
+):
+    """Filter servers by name, category, status, source, or health."""
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        clauses = []
+        params: list = []
+        if q:
+            clauses.append("name LIKE ?")
+            params.append(f"%{q}%")
+        if category:
+            clauses.append("category = ?")
+            params.append(category)
+        if status:
+            clauses.append("status = ?")
+            params.append(status)
+        if source:
+            clauses.append("source = ?")
+            params.append(source)
+        if healthy is not None:
+            clauses.append("health_ok = ?")
+            params.append(1 if healthy else 0)
+
+        where = (" WHERE " + " AND ".join(clauses)) if clauses else ""
+        async with db.execute(f"SELECT * FROM servers{where}", params) as cursor:
+            rows = await cursor.fetchall()
+    return {"count": len(rows), "servers": [_to_server_response(dict(r)) for r in rows]}
+
+
+@app.get("/admin/servers/categories", dependencies=[Depends(require_admin)])
+async def list_categories():
+    """List all distinct server categories with counts."""
+    async with aiosqlite.connect(DB_PATH) as db:
+        async with db.execute(
+            "SELECT category, COUNT(*) as count FROM servers GROUP BY category ORDER BY count DESC"
+        ) as cursor:
+            rows = await cursor.fetchall()
+    return {"categories": [{"category": r[0] or "uncategorized", "count": r[1]} for r in rows]}
+
+
+# ---------------------------------------------------------------------------
+# Admin: single-server endpoints (parameterized routes)
+# ---------------------------------------------------------------------------
 
 @app.get("/admin/servers/{name}", dependencies=[Depends(require_admin)])
 async def get_server(name: str):
@@ -969,6 +1092,23 @@ async def server_health(name: str):
         await db.commit()
 
     return {"name": name, "healthy": ok, "status_code": status_code, "checked_at": now_iso}
+
+
+@app.get("/admin/servers/{name}/tools", dependencies=[Depends(require_admin)])
+async def get_server_tools(name: str):
+    """List MCP tools exposed by a running server."""
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute("SELECT * FROM servers WHERE name=?", (name,)) as cursor:
+            row = await cursor.fetchone()
+    if not row:
+        raise HTTPException(status_code=404, detail="Server not found")
+    srv = dict(row)
+    try:
+        tools = await _load_tools_for_server(srv)
+    except Exception as exc:
+        raise HTTPException(status_code=502, detail=f"Could not fetch tools: {exc}")
+    return {"server": name, "tools": tools or [], "count": len(tools or [])}
 
 
 @app.get("/admin/servers/{name}/logs", dependencies=[Depends(require_admin)])
@@ -1319,6 +1459,8 @@ async def admin_vectors_index_server(name: str):
             logger.warning("index-server %s tools failed: %s", name, exc)
     n = await vector_indexer.index_server(name, srv.get("category"), status, _read_readme(name), tools)
     return {"server": name, "docs": n, "status": status, "tools": len(tools or [])}
+
+
 
 
 # ---------------------------------------------------------------------------

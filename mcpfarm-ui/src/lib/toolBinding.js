@@ -101,40 +101,79 @@ export async function resolveDynamicBinding(query, opts = {}) {
     filters: onlyRunning ? { status: 'running' } : {},
   });
 
-  const wantByServer = {};
-  for (const t of res.tools || []) {
-    if (!t.server || !t.tool) continue;
-    (wantByServer[t.server] = wantByServer[t.server] || []).push(t.tool);
-  }
-
   // Fetch live tool schemas for the matched servers in parallel, each with a
   // short timeout so a stopped/unhealthy server (Caddy 502) can't stall the
-  // turn. Cap the number of servers we probe to keep the context tight.
+  // turn. This is best-effort ENRICHMENT only: a server that fails or times
+  // out here must not cause its vector-matched tools to be dropped — the
+  // vector result already carries the tool name + description, which is enough
+  // to bind. We only use the live list to attach a precise input schema.
   const candidateServers = (res.servers || []).slice(0, topKServers);
   const settled = await Promise.allSettled(
-    candidateServers.map((server) => withTimeout(mcpClient.listTools(server), 4000)),
+    candidateServers.map((server) => withTimeout(mcpClient.listTools(server), 5000)),
   );
-  const perServer = candidateServers.map((server, i) => {
+  const liveByServer = {};
+  candidateServers.forEach((server, i) => {
     const r = settled[i];
     const live = r.status === 'fulfilled' && Array.isArray(r.value) ? r.value : [];
-    const wanted = wantByServer[server];
-    const filtered = wanted && wanted.length
-      ? live.filter((t) => wanted.includes(t.name))
-      : live;
-    return { server, tools: filtered };
+    const map = new Map();
+    for (const t of live) if (t && t.name) map.set(t.name, t);
+    liveByServer[server] = map;
   });
 
-  const merged = mergeStaticBindings(perServer);
-  // Preserve vector rank order and cap total tools to protect context window.
-  const rank = (res.tools || []).map((t) => `${t.server}::${t.tool}`);
-  merged.tools.sort((a, b) => rank.indexOf(`${a.server}::${a.name}`) - rank.indexOf(`${b.server}::${b.name}`));
-  merged.tools = merged.tools.slice(0, maxTools);
-  merged.servers = [...new Set(merged.tools.map((t) => t.server))];
-  merged.mode = 'dynamic';
-  merged.notes = res.servers?.length
-    ? `Matched ${merged.servers.length} server(s) via vector search`
-    : 'No matching servers found';
-  return merged;
+  const schemaOf = (liveTool) =>
+    liveTool?.inputSchema || liveTool?.input_schema || { type: 'object', properties: {} };
+
+  // Tier 1 — tool-level matches from the vector search, in rank order. Bound
+  // straight from the vector result so a slow live fetch can never drop them;
+  // enriched with the live schema when the server responded.
+  const ranked = [];
+  const seen = new Set();
+  for (const t of res.tools || []) {
+    if (!t.server || !t.tool) continue;
+    const id = `${t.server}::${t.tool}`;
+    if (seen.has(id)) continue;
+    seen.add(id);
+    const liveTool = liveByServer[t.server]?.get(t.tool);
+    ranked.push({
+      server: t.server,
+      name: t.tool,
+      description: liveTool?.description || t.description || '',
+      inputSchema: schemaOf(liveTool),
+      score: t.score,
+    });
+  }
+
+  // Tier 2 — server-level fallback. For a server that matched only at the
+  // server level (no specific tool ranked) AND whose live tools we actually
+  // have, offer its tools to fill leftover budget. Precise matches always win
+  // slots first, so a broadly-matching server can't crowd them out.
+  const rankedServers = new Set(ranked.map((t) => t.server));
+  const fallback = [];
+  for (const server of candidateServers) {
+    if (rankedServers.has(server)) continue;
+    for (const [name, liveTool] of liveByServer[server] || []) {
+      const id = `${server}::${name}`;
+      if (seen.has(id)) continue;
+      seen.add(id);
+      fallback.push({
+        server,
+        name,
+        description: liveTool.description || '',
+        inputSchema: schemaOf(liveTool),
+      });
+    }
+  }
+
+  const tools = [...ranked, ...fallback].slice(0, maxTools);
+  const servers = [...new Set(tools.map((t) => t.server))];
+  return {
+    servers,
+    tools,
+    mode: 'dynamic',
+    notes: res.servers?.length
+      ? `Matched ${servers.length} server(s) via vector search`
+      : 'No matching servers found',
+  };
 }
 
 /**

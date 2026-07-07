@@ -13,7 +13,24 @@ function MarkdownText() {
   return <MarkdownTextPrimitive remarkPlugins={[remarkGfm]} className="aui-md" />;
 }
 
+/**
+ * Rendered by assistant-ui whenever the assistant message has no visible part
+ * yet but the run is in progress — i.e. while we resolve tools / wait on the
+ * model, and between a tool call and the model's next reply. This is the
+ * loading indicator the runtime surfaces "for free".
+ */
+function LoadingIndicator() {
+  return (
+    <div className="aui-loading" role="status" aria-label="Assistant is working">
+      <span className="aui-loading-dot" />
+      <span className="aui-loading-dot" />
+      <span className="aui-loading-dot" />
+    </div>
+  );
+}
+
 const PARTS_COMPONENTS = {
+  Empty: LoadingIndicator,
   Text: MarkdownText,
   tools: { Fallback: McpToolCard },
 };
@@ -142,7 +159,6 @@ export function SamplePrompts({ prompts = [] }) {
           className="aui-suggestion"
           prompt={p}
           method="replace"
-          autoSend
         >
           {p}
         </ThreadPrimitive.Suggestion>

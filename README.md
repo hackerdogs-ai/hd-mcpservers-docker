@@ -26,7 +26,7 @@ For more information, see [Hackerdogs Legal & Compliance](https://hackerdogs.ai/
 
 # hd-mcpservers-docker
 
-Registry of **202 containerized MCP servers** for security tools, ready for deployment on [Hackerdogs](https://hackerdogs.ai).
+Registry of **400 containerized MCP servers** for security, OSINT, cloud, and developer tools, ready for deployment on [Hackerdogs](https://hackerdogs.ai).
 
 Each tool is wrapped as a [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server using [FastMCP](https://github.com/jlowin/fastmcp), supporting both **stdio** and **HTTP streamable** transports. All tools are packaged as multi-architecture Docker images (linux/amd64, linux/arm64).
 
@@ -271,6 +271,20 @@ The fastest way to get started is through [Hackerdogs](https://hackerdogs.ai):
 | 201 | [blackbird-mcp](./blackbird-mcp/) | [p1ngul1n0/blackbird](https://github.com/p1ngul1n0/blackbird) | Username OSINT across 500+ sites | 8220 | `hackerdogs/blackbird-mcp` |
 | 202 | [maigret-mcp](./maigret-mcp/) | [soxoj/maigret](https://github.com/soxoj/maigret) | Username OSINT across 3000+ sites | 8221 | `hackerdogs/maigret-mcp` |
 
+### Phase 5 — Cloud, OSINT, Developer & Utility Tools (203 tools)
+
+An additional 203 servers covering cloud/container security, OSINT intelligence, developer utilities, and third-party integrations are registered in the farm but not individually listed here. These include tools from Acuvity, Abstract, Cortex, DuckDuckGo, Edgar, GitHub, GitLab, Kubernetes, MongoDB, Neo4j, Notion, PagerDuty, Postman, Redis, Sentry, Slack, Snowflake, Splunk, Terraform, and more.
+
+To see the full list:
+
+```bash
+# Via the farm API
+curl http://localhost:8485/services -H "Authorization: Bearer <KEY>" | python3 -m json.tool
+
+# Or from port-map.json
+python3 -c "import json; [print(f'{v[\"port\"]} {k}') for k,v in sorted(json.load(open('mcpfarm/port-map.json')).items(), key=lambda x: x[1]['port']) if v['port'] >= 8380]"
+```
+
 ### Port Allocation
 
 | Phase | Range | Count |
@@ -279,13 +293,16 @@ The fastest way to get started is through [Hackerdogs](https://hackerdogs.ai):
 | Phase 2 | 8200–8284 | 85 |
 | Phase 3 | 8285–8365 | 81 |
 | Phase 4 | 8366–8379 | 19 |
+| Phase 5 | 8400–8712 | 203 |
+| **Total** | | **400** |
 
 ### Reserved Ports (do not use)
 
 - 80 (HTTP)
 - 8000-8010 (general app servers)
-- 8501-8510 (Streamlit)
+- 8485 (MCP Farm — Caddy reverse proxy)
 - 9000-9010 (monitoring)
+- 9090 (auth-gateway)
 
 ## Quick Start
 
@@ -469,6 +486,65 @@ docker run -d --rm --network ivre-deployment_default \
 ```
 
 Then connect your MCP client to `http://localhost:8366/mcp`.
+
+## MCP Farm
+
+The **MCP Farm** is a self-hosted infrastructure for running all 400 servers behind a single authenticated endpoint. It combines a Caddy reverse proxy, a FastAPI auth gateway, and a web dashboard into a turnkey deployment.
+
+### Architecture
+
+```
+Client → Caddy (:8485) → forward_auth → auth-gateway (:9090) → MCP server containers
+                                              │
+                                         SQLite + Redis
+                                         (keys, audit, vectors)
+```
+
+### What you get
+
+- **Single endpoint**: `https://your-domain/{server-name}/mcp` for all 400 servers
+- **API key auth**: create, revoke, scope, and rate-limit keys
+- **44 admin API endpoints**: server CRUD, batch ops, search/filter, health checks, audit log, config export
+- **LLM key vault**: store provider API keys encrypted at rest, use them server-side for chat completions
+- **Vector search**: Redis-backed tool index for dynamic MCP tool binding
+- **Web dashboard**: manage servers, keys, and configuration from a browser
+
+### Quick deploy
+
+```bash
+cd mcpfarm
+ADMIN_SECRET=<your-secret> ./deploy.sh --no-tunnel   # local only
+TUNNEL_TOKEN=<cf-token> ./deploy.sh                   # public via Cloudflare
+```
+
+See [mcpfarm/DEPLOY.md](./mcpfarm/DEPLOY.md) for the full deployment guide, API reference, and configuration options.
+
+### Connecting a client
+
+```json
+{
+  "mcpServers": {
+    "nmap": {
+      "type": "http",
+      "url": "http://localhost:8485/nmap-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <API_KEY>"
+      }
+    }
+  }
+}
+```
+
+### Farm images
+
+| Image | Description |
+|-------|-------------|
+| `hackerdogs/auth-gateway` | FastAPI auth gateway + admin API |
+| `hackerdogs/mcpfarm-ui` | SvelteKit web dashboard |
+
+Both are multi-arch (amd64 + arm64) and published to DockerHub.
+
+---
 
 ## License
 
