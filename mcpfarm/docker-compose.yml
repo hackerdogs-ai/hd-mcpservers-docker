@@ -77,7 +77,7 @@ services:
       - MCPFARM_VECTOR_PREFIX=${MCPFARM_VECTOR_PREFIX:-mcpfarm:v1}
       - MCPFARM_VECTOR_INDEX=${MCPFARM_VECTOR_INDEX:-mcpfarm:idx}
       - VECTOR_DIM=${VECTOR_DIM:-1536}
-      - VECTOR_AUTO_REINDEX=${VECTOR_AUTO_REINDEX:-false}
+      - VECTOR_AUTO_REINDEX=${VECTOR_AUTO_REINDEX:-true}
       # Embeddings + server-side LLM proxy config.
       - EMBED_PROVIDER=${EMBED_PROVIDER:-auto}
       - OPENAI_API_KEY=${OPENAI_API_KEY:-}

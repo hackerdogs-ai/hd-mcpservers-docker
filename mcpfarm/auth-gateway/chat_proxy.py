@@ -66,6 +66,69 @@ class ChatProxyError(Exception):
 
 
 # ---------------------------------------------------------------------------
+# Text-based tool call parsing (fallback for models that emit tool calls as
+# markup instead of structured JSON in the response).
+# ---------------------------------------------------------------------------
+
+import re
+
+_FUNC_TAG_RE = re.compile(
+    r"<function=(\w+)>\s*(.*?)\s*</function>",
+    re.DOTALL,
+)
+_PARAM_TAG_RE = re.compile(
+    r"<parameter=(\w+)>\s*(.*?)\s*</parameter>",
+    re.DOTALL,
+)
+_TOOL_CALL_JSON_RE = re.compile(
+    r"<tool_call>\s*(\{.*?\})\s*</tool_call>",
+    re.DOTALL,
+)
+
+
+def _parse_text_tool_calls(text: str, available_tools: List[str]) -> tuple:
+    """Extract tool calls embedded as text markup and return (clean_text, calls).
+
+    Handles two common formats:
+      1. <function=name> <parameter=key> value </parameter> </function>
+      2. <tool_call> {"name": "...", "arguments": {...}} </tool_call>
+
+    Returns (remaining_text, list_of_tool_call_dicts).
+    """
+    calls: List[Dict] = []
+    clean = text
+
+    # Format 1: <function=name> ... </function>
+    for m in _FUNC_TAG_RE.finditer(text):
+        name = m.group(1)
+        if name not in available_tools:
+            continue
+        params = {}
+        for pm in _PARAM_TAG_RE.finditer(m.group(2)):
+            params[pm.group(1)] = pm.group(2).strip()
+        calls.append({"id": f"text_call_{len(calls)}", "name": name, "arguments": params})
+        clean = clean.replace(m.group(0), "")
+
+    # Format 2: <tool_call> {json} </tool_call>
+    for m in _TOOL_CALL_JSON_RE.finditer(text):
+        try:
+            obj = json.loads(m.group(1))
+            name = obj.get("name") or obj.get("function", {}).get("name")
+            args = obj.get("arguments") or obj.get("function", {}).get("arguments") or {}
+            if isinstance(args, str):
+                args = json.loads(args)
+            if name and name in available_tools:
+                calls.append({"id": f"text_call_{len(calls)}", "name": name, "arguments": args})
+                clean = clean.replace(m.group(0), "")
+        except (json.JSONDecodeError, AttributeError):
+            pass
+
+    # Strip leftover </tool_call> tags and excessive whitespace.
+    clean = clean.replace("</tool_call>", "").strip()
+    return clean, calls
+
+
+# ---------------------------------------------------------------------------
 # Tool schema conversion
 # ---------------------------------------------------------------------------
 
@@ -323,14 +386,40 @@ async def _call_gemini(req) -> Dict:
     )
 
 
+_QWEN_THINK_MODELS = ("qwen3", "qwen2.5", "qwq")
+
+
+def _needs_no_think(model: str) -> bool:
+    """Qwen3's default /think mode breaks structured tool calling ~87% of the
+    time — the model emits tool calls as text markup instead.  Appending
+    /no_think to the system prompt forces deterministic structured output."""
+    lower = (model or "").lower()
+    return any(lower.startswith(prefix) for prefix in _QWEN_THINK_MODELS)
+
+
 async def _call_ollama(req) -> Dict:
+    model = req.get("model") or DEFAULT_MODELS["ollama"]
+    messages = _messages_to_ollama(req["messages"])
+
+    # Disable Qwen3 reasoning when tools are present to prevent text-based
+    # tool call output (confirmed via testing: 87% failure rate with /think).
+    if req.get("tools") and _needs_no_think(model):
+        if messages and messages[0].get("role") == "system":
+            sys_content = messages[0].get("content") or ""
+            if "/no_think" not in sys_content:
+                messages[0] = {**messages[0], "content": sys_content.rstrip() + " /no_think"}
+        else:
+            messages.insert(0, {"role": "system", "content": "/no_think"})
+
     body = {
-        "model": req.get("model") or DEFAULT_MODELS["ollama"],
-        "messages": _messages_to_ollama(req["messages"]),
+        "model": model,
+        "messages": messages,
         "stream": False,
     }
+    tool_names = []
     if req.get("tools"):
         body["tools"] = [_tool_to_openai(t) for t in req["tools"]]
+        tool_names = [t.get("name") for t in req["tools"] if t.get("name")]
     data = await _post_json(f"{OLLAMA_URL}/api/chat", {"Content-Type": "application/json"}, body, "Ollama")
     msg = data.get("message") or {}
     tool_calls = msg.get("tool_calls") or []
@@ -343,7 +432,15 @@ async def _call_ollama(req) -> Dict:
                 for tc in tool_calls
             ],
         }
-    return {"content": msg.get("content") or "", "toolCalls": []}
+    # Fallback: some models emit tool calls as text markup instead of
+    # structured tool_calls. Parse them so the agentic loop can execute.
+    content = msg.get("content") or ""
+    if tool_names and ("<function=" in content or "<tool_call>" in content):
+        clean_text, parsed = _parse_text_tool_calls(content, tool_names)
+        if parsed:
+            logger.info("Ollama: extracted %d text-based tool call(s) from response", len(parsed))
+            return {"content": clean_text, "toolCalls": parsed}
+    return {"content": content, "toolCalls": []}
 
 
 _DISPATCH = {
@@ -366,4 +463,19 @@ async def run_completion(req: Dict) -> Dict:
     req["provider"] = provider
     req.setdefault("messages", [])
     req.setdefault("tools", [])
-    return await handler(req)
+    result = await handler(req)
+
+    # Final fallback: if no structured tool calls were returned but the text
+    # contains markup-encoded tool calls, parse them. This covers any
+    # provider whose model emits tool calls as text.
+    if not result.get("toolCalls") and req["tools"]:
+        content = result.get("content") or ""
+        if "<function=" in content or "<tool_call>" in content:
+            tool_names = [t.get("name") for t in req["tools"] if t.get("name")]
+            clean_text, parsed = _parse_text_tool_calls(content, tool_names)
+            if parsed:
+                logger.info("%s: extracted %d text-based tool call(s)", provider, len(parsed))
+                result["content"] = clean_text
+                result["toolCalls"] = parsed
+
+    return result

@@ -6,6 +6,7 @@ import ComposerToolsButton from './chat/ComposerToolsButton.jsx';
 import ToolPickerDrawer from './chat/ToolPickerDrawer.jsx';
 import { useMcpChatRuntime } from './chat/useMcpChatRuntime.js';
 import { resolveDynamicBinding, resolveStaticSelection } from '../lib/toolBinding.js';
+import { reindexVectors } from '../lib/api.js';
 
 const SAMPLE_PROMPTS = [
   'Scan example.com for open ports and running services',
@@ -24,6 +25,7 @@ export default function ChatMode({ servers }) {
   const [model, setModel] = useState('');
   const [selection, setSelection] = useState({ servers: [], tools: {} });
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [indexing, setIndexing] = useState(false);
 
   const staticCount = selection.servers.length;
   const bindingMode = staticCount ? 'static' : 'dynamic';
@@ -33,7 +35,20 @@ export default function ChatMode({ servers }) {
       if (bindingMode === 'static' && selection.servers.length) {
         return resolveStaticSelection(selection);
       }
-      return resolveDynamicBinding(query, { onlyRunning: true });
+      try {
+        return await resolveDynamicBinding(query, { onlyRunning: true });
+      } catch (err) {
+        if (String(err.message || '').includes('reindex')) {
+          setIndexing(true);
+          try {
+            await reindexVectors();
+            return await resolveDynamicBinding(query, { onlyRunning: true });
+          } finally {
+            setIndexing(false);
+          }
+        }
+        throw err;
+      }
     },
     [bindingMode, selection],
   );
@@ -47,14 +62,16 @@ export default function ChatMode({ servers }) {
       <>
         <div className="aui-empty-title">MCP Farm Assistant</div>
         <p className="aui-empty-sub">
-          {staticCount
-            ? `${staticCount} server(s) bound. Ask a question.`
-            : 'Ask anything. The right tools are selected automatically from all running servers.'}
+          {indexing
+            ? 'Building vector index — this may take a moment…'
+            : staticCount
+              ? `${staticCount} server(s) bound. Ask a question.`
+              : 'Ask anything. The right tools are selected automatically from all running servers.'}
         </p>
         <SamplePrompts prompts={SAMPLE_PROMPTS} />
       </>
     ),
-    [staticCount],
+    [staticCount, indexing],
   );
 
   const composerToolbar = (

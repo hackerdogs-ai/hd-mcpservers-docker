@@ -128,9 +128,17 @@ async def run_gitleaks(
                 arguments = f"{arguments} {job_info['path']}".strip()
 
         args = shlex.split(arguments) if arguments.strip() else []
+
+        # Default to JSON report output so findings are machine-readable.
+        if not any(a.startswith("--report-format") or a.startswith("-f") for a in args):
+            args.extend(["--report-format", "json"])
+        if not any(a.startswith("--report-path") or a.startswith("-r") for a in args):
+            args.extend(["--report-path", "/tmp/gitleaks-report.json"])
+
         result = await _run_command(args, timeout_seconds=timeout_seconds)
 
-        if result["return_code"] != 0:
+        # gitleaks exit codes: 0 = no leaks, 1 = leaks found, >1 = error.
+        if result["return_code"] not in (0, 1):
             logger.warning("gitleaks command failed with exit code %d", result["return_code"])
             error_detail = result["stderr"] or result["stdout"] or "Unknown error"
             return json.dumps(
@@ -143,10 +151,37 @@ async def run_gitleaks(
                 indent=2,
             )
 
+        # Try to read the JSON report file first (structured findings).
+        report_findings = []
+        try:
+            with open("/tmp/gitleaks-report.json", "r") as f:
+                report_findings = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            pass
+
+        if report_findings:
+            return json.dumps(
+                {
+                    "leaks_found": len(report_findings),
+                    "exit_code": result["return_code"],
+                    "findings": report_findings,
+                    "summary": result["stderr"].strip() if result["stderr"] else "",
+                },
+                indent=2,
+            )
+
+        # Fallback to stdout parsing.
         stdout = result["stdout"].strip()
 
+        if not stdout and result["return_code"] == 0:
+            return json.dumps({"leaks_found": 0, "message": "No leaks detected"})
+
         if not stdout:
-            return json.dumps({"message": "Command completed with no output", "arguments": arguments})
+            return json.dumps({
+                "leaks_found": 0,
+                "message": "Scan completed",
+                "summary": result["stderr"].strip() if result["stderr"] else "",
+            })
 
         results = []
         for line in stdout.splitlines():
@@ -158,9 +193,15 @@ async def run_gitleaks(
             except json.JSONDecodeError:
                 results.append({"raw": line})
 
-        if len(results) == 1:
-            return json.dumps(results[0], indent=2)
-        return json.dumps(results, indent=2)
+        return json.dumps(
+            {
+                "leaks_found": len(results),
+                "exit_code": result["return_code"],
+                "findings": results,
+                "summary": result["stderr"].strip() if result["stderr"] else "",
+            },
+            indent=2,
+        )
     finally:
         if job_info:
             hd_fetch.cleanup(job_info["job_id"])
