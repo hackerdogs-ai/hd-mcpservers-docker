@@ -168,7 +168,8 @@ echo ""
 # Check Docker Hub authentication if publishing
 if [ "$DO_PUBLISH" = true ]; then
     echo -e "${YELLOW}Checking Docker Hub authentication...${NC}"
-    if ! docker info | grep -q "Username"; then
+    if ! docker info 2>/dev/null | grep -q "Username" && \
+       ! grep -q "index.docker.io" ~/.docker/config.json 2>/dev/null; then
         echo -e "${YELLOW}You are not logged in to Docker Hub.${NC}"
         echo "Please log in with: docker login"
         read -p "Do you want to log in now? (y/n) " -n 1 -r

@@ -1,5 +1,5 @@
 # ---- Stage 1: Build gitleaks from source ----
-FROM golang:1.24-bookworm AS builder
+FROM golang:1.25-bookworm AS builder
 
 # FIX: Use the module path declared in the project's go.mod file (zricethezav)
 RUN go install -v github.com/zricethezav/gitleaks/v8@latest
