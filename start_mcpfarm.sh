@@ -177,7 +177,7 @@ if [[ "$DO_STOP" == "true" ]]; then
   stop_vite
   info "Stopping MCP Farm infra containers..."
   cd "$MCPFARM_DIR"
-  docker compose stop caddy auth-gateway mcpfarm-ui cloudflared 2>/dev/null || true
+  docker compose stop caddy auth-gateway mcpfarm-ui 2>/dev/null || true
   success "Local MCP Farm stopped (individual *-mcp containers were left running)"
   exit 0
 fi
@@ -211,7 +211,6 @@ ENV_FILE="$MCPFARM_DIR/.env"
 if [[ ! -f "$ENV_FILE" ]]; then
   ADMIN_SECRET="$(python3 -c "import secrets; print(secrets.token_hex(32))")"
   cat > "$ENV_FILE" <<EOF
-TUNNEL_TOKEN=local-no-tunnel
 ADMIN_SECRET=${ADMIN_SECRET}
 FARM_PORT=${FARM_PORT}
 EOF
