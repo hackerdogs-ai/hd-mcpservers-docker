@@ -3,7 +3,9 @@
 > **Status:** Implemented & deployed (v1)  
 > **Owner:** MCP Farm UI  
 > **Last updated:** 2026-07-02  
-> **Related:** [FARM-PRD](./FARM-PRD.md), [FARM-ARCHITECTURE](./FARM-ARCHITECTURE.md), [assistant-ui docs](https://www.assistant-ui.com/docs)
+> **Related:** [AI-aware zero-trust gateway / FARM design](./AI-aware-zero-trust-gateway-for-MCP.md), [assistant-ui docs](https://www.assistant-ui.com/docs)
+>
+> Historical: [FARM-PRD-old](./FARM-PRD-old.md), [FARM-ARCHITECTURE-old](./FARM-ARCHITECTURE-old.md)
 
 ---
 

@@ -18,7 +18,7 @@
 | Farm backend (`mcpfarm/`) | 🟢 Functionally complete | Auth + routing + lifecycle work end-to-end (SQLite) |
 | Farm UI (`mcpfarm-ui/`) | 🟢 Functionally complete | 4 modes; tool exec + agentic loop wired |
 | Docker Hub auto-publish (CI) | 🔴 **Missing** | No publish workflow; only `security-scan.yml` exists |
-| Architecture consolidation | 🔴 **Not done** | 5 competing docs; implementation ≠ canonical design |
+| Architecture consolidation | 🟢 **Done** | Canonical: `AI-aware-zero-trust-gateway-for-MCP.md`; others archived `*-old.md` |
 | Zero-trust / multi-tenant / L3 policy | 🔴 **Not implemented** | Required by canonical design, absent from code |
 
 Legend: 🟢 complete · 🟡 partial · 🔴 not started / missing
@@ -206,31 +206,27 @@ relative URLs (dev proxy in `vite.config.js`).
 
 ---
 
-## 5. Architecture Consolidation — 🔴 not done
+## 5. Architecture Consolidation — 🟢 done (2026-07-13)
 
-The brief asks to consolidate "multiple farm architectures in `docs/`" into one central
-design implemented in `mcpfarm/` + `mcpfarm-ui/`. Five docs currently disagree:
-`FARM-ARCHITECTURE.md`, `FARM-ARCHITECTURE-DIAGRAM.md`, `FARM-PRD.md`,
-`AI-aware-zero-trust-gateway-for-MCP.md`, `ChatGPT Guidance on MCP Server Farm.md`,
-plus `docs/schema/mcp-farm-timescaledb.sql`.
+Canonical design & roadmap: **[`docs/AI-aware-zero-trust-gateway-for-MCP.md`](./AI-aware-zero-trust-gateway-for-MCP.md)** (§11 archives, §16 impl delta).
 
-### Key conflicts to resolve
-| Topic | FARM-ARCH / FARM-PRD | AI-aware / schema / ChatGPT | Recommended decision |
-|-------|----------------------|-----------------------------|----------------------|
-| Datastore | SQLite | **Postgres + TimescaleDB** | Postgres+TimescaleDB for GA; SQLite = dev only |
-| L3 tool-call firewall | Optional | **Mandatory for security GA** | Mandatory (phase P1) |
-| Ingress | Caddy only | Envoy AI Gateway (ChatGPT) | Caddy now; Envoy optional later |
-| Scope model | CSV `scopes` | **Normalized `api_key_mcp_grants`** | Normalized grants |
-| Server registry | flat `servers` table | `platform_mcp_servers` + `tenant_mcp_deployments` | Normalized + multi-tenant |
-| Tenancy | single-tenant | **multi-tenant** | Multi-tenant if required by GA |
+Archived as `*-old.md`: `FARM-ARCHITECTURE`, `FARM-ARCHITECTURE-DIAGRAM`, `FARM-PRD`, `ChatGPT Guidance on MCP Server Farm`, `multi-instance-mcpfarm`. Schema remains at `docs/schema/mcp-farm-timescaledb.sql`.
 
-### Action items
-- [ ] Write **one** canonical `docs/FARM-DESIGN.md` (layers L0–L5, request flow,
-      auth/zero-trust, Docker Hub CI, scaling, call tracking/metering), superseding the
-      five docs (archive the rest under `docs/archive/`).
-- [ ] Record explicit decisions on the six conflicts above.
-- [ ] File a delta list of where the current `mcpfarm/` implementation diverges from the
-      chosen canonical design (datastore, L3, tenancy, scope model) and sequence the work.
+### Resolved decisions
+| Topic | Decision |
+|-------|----------|
+| Datastore | **Postgres + TimescaleDB** for GA; SQLite = local/dev only |
+| L3 tool-call firewall | **Mandatory for security GA** (P1) |
+| Ingress | Caddy now; Envoy optional later (P2) |
+| Scope model | Normalized `api_key_mcp_grants` |
+| Server registry | Target `platform_mcp_servers` + `tenant_mcp_deployments`; flat `servers` transitional |
+| Tenancy | Multi-tenant (§7); path from single-tenant SQLite |
+| Multi-instance | Roadmap **P5** (summary in canonical §15) |
+
+### Remaining follow-ups
+- [x] One canonical design doc (AI-aware) + archive the rest as `*-old`
+- [x] Record explicit decisions on the six conflicts
+- [ ] Close the **implementation delta** (§16): datastore, L3, tenancy, scope model, Docker Hub CI
 
 ---
 
@@ -311,7 +307,7 @@ key-configured servers verify reliably in CI.
 1. **Make the farm provably runnable end-to-end** (highest signal): fix the 6 build
    failures + `hd_fetch` gap, re-run the sweep toward 100% PASS.
 2. **Close requirement #2**: add the Docker Hub publish CI workflow.
-3. **Consolidate the architecture** into one canonical doc + decision log.
+3. ~~**Consolidate the architecture**~~ → done (`AI-aware-zero-trust-gateway-for-MCP.md` + `*-old` archives).
 4. **Backfill server hygiene**: `progress.md`, `publish_to_hackerdogs.sh`, reconcile the
    15 unregistered dirs.
 5. **UI gaps that surface the value prop**: usage dashboard, API-key management, install-config export.

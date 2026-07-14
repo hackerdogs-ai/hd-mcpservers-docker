@@ -1,15 +1,37 @@
-# AI-aware zero-trust gateway for MCP
+# Hackerdogs MCP Server Farm — Design & Roadmap
 
-**Status:** Canonical architecture and product specification  
-**Scope:** Hackerdogs MCP server farm and the security gateway that fronts it
+**(AI-aware zero-trust gateway for MCP)**
+
+**Status:** Canonical — consolidated design, architecture, and roadmap  
+**Scope:** Hackerdogs MCP server farm and the security gateway that fronts it  
+**Updated:** 2026-07-13 (consolidation)
 
 This document is the **single source of truth** for what we build: an **AI-aware zero-trust gateway** that sits in front of a large catalog of MCP security-tool servers, enforcing identity, policy, and safety **before** tools execute—while remaining **transparent** to standard MCP clients (URL + headers, streamable HTTP).
+
+It absorbs product, ops, diagrams, and roadmap previously split across `FARM-PRD`, `FARM-ARCHITECTURE`, `FARM-ARCHITECTURE-DIAGRAM`, `ChatGPT Guidance on MCP Server Farm`, and `multi-instance-mcpfarm`. Those files are archived as `*-old.md` (§11).
+
+**Companion schema:** [`docs/schema/mcp-farm-timescaledb.sql`](./schema/mcp-farm-timescaledb.sql)  
+**Deploy runbook (ops):** [`mcpfarm/DEPLOY.md`](../mcpfarm/DEPLOY.md)
+
+### Document map
+
+| § | Topic |
+|---|--------|
+| Architecture overview | OSS components, GA + extended data-flow diagrams |
+| 1–6 | Thesis, goals, layers L0–L5, policy, trust tiers, client contract |
+| 7–8 | Persistence (Postgres + TimescaleDB), observability |
+| 9 | Roadmap P0–P5 (security GA = P0+P1; multi-instance = P5) |
+| 10 | Security controls & residual risk |
+| 11 | Archived docs + resolved design decisions |
+| 12 | Step-by-step implementation (zero → hero) |
+| 14–16 | Farm product surface, multi-instance (P5), impl vs design delta |
+| 17 | Summary |
 
 ---
 
 ## Architecture overview
 
-This section names **third-party open source** building blocks (not Hackerdogs-authored services such as `auth-gateway` or MCP server images), where each sits in **data flow**, and how that compares to the diagrams in [`FARM-PRD.md`](./FARM-PRD.md) and [`ChatGPT Guidance on MCP Server Farm.md`](./ChatGPT%20Guidance%20on%20MCP%20Server%20Farm.md). **§3** below shows the same stack as **logical layers (L0–L5)**.
+This section names **third-party open source** building blocks (not Hackerdogs-authored services such as `auth-gateway` or MCP server images), where each sits in **data flow**. **§3** shows the same stack as **logical layers (L0–L5)**.
 
 ### Third-party open source components
 
@@ -65,7 +87,7 @@ This section names **third-party open source** building blocks (not Hackerdogs-a
 
 ### Data flow diagram (MCP request path — GA target)
 
-Aligned with [FARM-PRD §3](./FARM-PRD.md#3-architecture) and §3.1 **request flow**, with **L3**, **PostgreSQL + TimescaleDB**, and optional **Redis**. **Caddy** issues a **`forward_auth` subrequest** to **auth-gateway** first; only on **2xx** does the **main** request continue to L3 (or straight to MCP if L3 is not deployed).
+GA target request path with **L3**, **PostgreSQL + TimescaleDB**, and optional **Redis**. **Caddy** issues a **`forward_auth` subrequest** to **auth-gateway** first; only on **2xx** does the **main** request continue to L3 (or straight to MCP if L3 is not deployed).
 
 ```
                          Internet (TLS)
@@ -172,13 +194,16 @@ Condensed from extended architecture guidance: **P2–P4** adds ingress/policy/D
 
 | Goal | Description |
 |------|-------------|
-| **Single gateway story** | One named architecture: layers, phases, and responsibilities—no parallel “farm doc” vs “firewall doc” as competing specs. |
+| **Single gateway story** | One named architecture: layers, phases, and responsibilities—no parallel competing farm specs. |
+| **One-command deploy** | `docker compose up -d` brings up farm infra + MCP catalog (pre-built `hackerdogs/*-mcp` images). |
 | **Transparent to clients** | Users point MCP clients at `https://…/{server}/mcp/` with Bearer token (and optional upstream `X-*` headers); protocol and errors stay standard MCP. |
 | **Operator-owned safety** | Policies and guardrails are **infrastructure**, controlled by the farm operator—not opt-in per end user. |
-| **Scalable catalog** | Many independent MCP server containers (155+), uniform URL scheme, dynamic registration where required. |
-| **Phased depth** | Ship a minimal viable gateway quickly; add inspection, advanced ingress, and runtime hardening in defined phases without redesign. |
+| **Secure by default** | No MCP container is host-exposed; all MCP traffic through Caddy + Bearer auth (+ L3 at security GA). |
+| **Scalable catalog** | Hundreds of independent MCP containers, uniform URL scheme, dynamic registration, optional multi-instance (P5). |
+| **API + UI management** | Admin REST API is the automation plane; `mcpfarm-ui` is an operator console on top of the same APIs. |
+| **Phased depth** | Ship a usable farm quickly; add L3, inspection, advanced ingress, runtime hardening, replicas in defined phases. |
 
-Non-goals for v1 of the gateway are listed per phase (see §9).
+Non-goals for early phases are listed in §9 (and multi-instance non-goals in §15).
 
 ---
 
@@ -271,11 +296,20 @@ Servers are classified so default policies can differ without per-tool bespoke w
 ## 6. Product contract (client-visible)
 
 - **Base URL:** `https://<farm-host>/{server-name}/mcp/` (streamable HTTP as exposed by FastMCP).  
-- **Authentication:** `Authorization: Bearer <farm_api_key>`.  
-- **Upstream tool keys:** Passed as `X-*` headers; **not** stored in the farm DB; per-request isolation in server middleware.  
+- **Authentication:** `Authorization: Bearer <farm_api_key>` (`hd_sk_…` format).  
+- **Upstream tool keys:** Passed as `X-*` headers; **not** stored in the farm DB; per-request isolation in server middleware (§14.5).  
 - **Transparency:** Gateway and policies are invisible in the happy path; denials look like normal MCP failures unless the product chooses to expose reason codes later.
+- **Management:** Operators use Admin API (§14.3) and/or `mcpfarm-ui`; end users never need a special “farm client.”
 
-Detailed admin API, compose layout, port maps, and migration constraints (e.g. no Minibridge in farm images) remain **implementation specifics** documented alongside this spec in the repository.
+Examples (production host `mcp.hackerdogs.ai`):
+
+```
+https://mcp.hackerdogs.ai/naabu-mcp/mcp/
+https://mcp.hackerdogs.ai/trivy-mcp/mcp/
+https://mcp.hackerdogs.ai/nuclei-mcp/mcp/
+```
+
+Farm layout, ports, dynamic registration, and runbook details: **§14**.
 
 ---
 
@@ -294,7 +328,7 @@ This section covers **durable data** the product owns: tenants, keys, catalog, a
 
 **Schema:** [`docs/schema/mcp-farm-timescaledb.sql`](./schema/mcp-farm-timescaledb.sql) — multi-tenant FKs, optional commented RLS for analyst-only roles, Timescale **compression** segmenting by **`tenant_id`** + **`server_key`**.
 
-**Runtime:** e.g. `timescale/timescaledb-ha:pg16` or `timescale/timescaledb:latest-pg16`; apply schema via migrations on deploy. Overlap with [FARM-PRD §4.2](./FARM-PRD.md#42-auth-gateway-api-only) is **conceptual** only—this file and the SQL schema supersede PRD table names.
+**Runtime:** e.g. `timescale/timescaledb-ha:pg16` or `timescale/timescaledb:latest-pg16`; apply schema via migrations on deploy. Early SQLite schemas (archived PRD) are **conceptual only**—this file and the SQL schema supersede table names.
 
 ### 7.2 Audit record model (what the database must capture)
 
@@ -355,11 +389,14 @@ Phases are **delivery ordering**, not a claim that “P4 = security.” **Securi
 
 | Phase | Name | Security objective | Platform / ops objective |
 |-------|------|--------------------|---------------------------|
-| **P0** | Foundation | Authenticate every MCP request; **tenant-scoped** keys and grants; **no** direct exposure of MCP containers; durable **§7** audit of access. | Single `docker compose` (or equivalent); tunnel + Caddy + auth-gateway + Postgres/Timescale; admin API; catalog wiring. |
+| **P0** | Foundation | Authenticate every MCP request; **tenant-scoped** keys and grants; **no** direct exposure of MCP containers; durable **§7** audit of access. | Single `docker compose`; tunnel + Caddy + auth-gateway + Postgres/Timescale (SQLite = local/dev only); admin API + UI; catalog wiring via `port-map.json`. |
 | **P1** | MCP policy GA | **Mandatory L3:** tool- and argument-aware **deny/allow** before tools execute; trust-tier defaults; policy events in **`policy_event_log`**. | Latency budget for L3 hot path; negative tests; operator policy lifecycle. |
 | **P2** | Advanced ingress & policy engine | Stronger **identity at the edge** (OAuth/JWKS, mTLS if required); optional **OPA** for complex Rego; **Coraza**/WASM for protocol abuse. | Replace or augment Caddy when MCP multiplexing or fleet-wide filter rollout demands it; version-pinned gateways. |
-| **P3** | Content & data protection | **Presidio** / **TruffleHog** (or equivalents) on request/response paths; **redaction** and secret blocking—**security controls**, with latency/async design. | Bounded buffers, sampling, false-positive tuning; **not** the same team milestone as “turn on Grafana.” |
+| **P3** | Content & data protection | **Presidio** / **TruffleHog** (or equivalents) on request/response paths; **redaction** and secret blocking. | Bounded buffers, sampling, false-positive tuning. |
 | **P4** | Runtime hardening | **KubeArmor** / **seccomp** / **network egress allowlists** reduce blast radius if a container is compromised. | Linux-first ops; Kubernetes or hardened Docker hosts; **Falco**-class alerts feed **§8.4**. |
+| **P5** | Multi-instance MCP | Unchanged auth/L3 story; replicas must not bypass policy. | Horizontal replicas per logical server, session affinity, admin/UI scale controls (§15). |
+
+**Security GA** = **P0 + P1**. **P5** is platform capacity; it may ship after GA and does not replace L3.
 
 ### 9.2 P0 — Foundation (detail)
 
@@ -387,11 +424,16 @@ Phases are **delivery ordering**, not a claim that “P4 = security.” **Securi
 
 **Observability maturity:** By GA, **§8.2** should provide **metrics + traces** for auth-gateway and L3 at minimum; full Grafana/ClickHouse is **operational maturity**, not a GA security gate.
 
+### 9.8 P5 — Multi-instance (detail)
+
+**Entry:** Stable single-instance farm (P0). Can proceed in parallel with P1+.  
+**Exit:** `desired_replicas` + reconciliation; pooled `/{name}/*` with **mcp-session-id** affinity; admin/UI scale; zero client URL changes. See **§15**.
+
 ---
 
 ## 10. Security controls & residual risk
 
-This section summarizes **control types**; detailed implementation remains in **§3–§7**, **§9**, and [`FARM-PRD.md`](./FARM-PRD.md).
+This section summarizes **control types**; detailed implementation remains in **§3–§7**, **§9**, and **§14**.
 
 | Control class | Examples in this architecture | Residual risk if misconfigured |
 |---------------|------------------------------|--------------------------------|
@@ -406,20 +448,41 @@ This section summarizes **control types**; detailed implementation remains in **
 
 ---
 
-## 11. Relationship to other documents
+## 11. Archived documents & design decisions
 
-- **`docs/FARM-PRD.md`** — Compose detail, admin API tables, dynamic registration, guardrail catalog. **Persistence:** PRD may still mention SQLite for minimal dev; **canonical store is §7** and [`docs/schema/mcp-farm-timescaledb.sql`](./schema/mcp-farm-timescaledb.sql). This spec wins on conflict.  
-- **`docs/ChatGPT Guidance on MCP Server Farm.md`** — Reference ideas for **P2–P4** and telemetry backends; map components to **§8** (observability) vs **§9** (phased security)—not a parallel spec.
+### 11.1 Archives (`*-old`)
+
+Superseded source material (kept for history; **this file wins on conflict**):
+
+| Archive | Former role |
+|---------|-------------|
+| [`FARM-PRD-old.md`](./FARM-PRD-old.md) | Product/ops PRD (compose, admin API, guardrail research) |
+| [`FARM-ARCHITECTURE-old.md`](./FARM-ARCHITECTURE-old.md) | Architecture prose derived from early PRD |
+| [`FARM-ARCHITECTURE-DIAGRAM-old.md`](./FARM-ARCHITECTURE-DIAGRAM-old.md) | Narrative diagram (SQLite-era topology) |
+| [`ChatGPT Guidance on MCP Server Farm-old.md`](./ChatGPT%20Guidance%20on%20MCP%20Server%20Farm-old.md) | Ideation for P2–P4 / telemetry (map to §8–§9) |
+| [`multi-instance-mcpfarm-old.md`](./multi-instance-mcpfarm-old.md) | Full multi-instance technical draft (canonical summary: **§15**) |
+
+### 11.2 Resolved conflicts (was competing across docs)
+
+| Topic | Decision (canonical) |
+|-------|----------------------|
+| Datastore | **PostgreSQL + TimescaleDB** for GA (§7); SQLite allowed for local/dev only |
+| L3 tool-call firewall | **Mandatory for security GA** (P1) |
+| Ingress | **Caddy now**; Envoy / AI Gateway optional later (P2) |
+| Scope model | Normalized **`api_key_mcp_grants`** (+ `scope_mode`); legacy CSV `scopes` is transitional |
+| Server registry | Target: `platform_mcp_servers` + optional `tenant_mcp_deployments`; today’s flat `servers` is the pre-migration shape |
+| Tenancy | **Multi-tenant** model in §7; implement path from single-tenant SQLite |
+| Management UI | **API is source of automation**; `mcpfarm-ui` is supported operator UI (early “API-only” PRD text is obsolete) |
 
 ---
 
 ## 12. Step-by-step implementation guide (zero to hero)
 
-This section is the **execution path** from nothing running to a **production-shaped** AI-aware zero-trust MCP gateway. It maps to **§9 phases** (P0–P4), adds a **parallel observability track** (**§12.6**, aligned with **§8**), and includes **technical contracts** (HTTP, Caddy `forward_auth`, auth-gateway behavior, MCP JSON-RPC, Compose networking). **§12.0A** is the **index of every third-party OSS component** from **Architecture overview** → **subsection + step**. Full SQL and admin API tables remain in [`FARM-PRD.md`](./FARM-PRD.md).
+This section is the **execution path** from nothing running to a **production-shaped** AI-aware zero-trust MCP gateway. It maps to **§9 phases** (P0–P5), adds a **parallel observability track** (**§12.6**, aligned with **§8**), and includes **technical contracts** (HTTP, Caddy `forward_auth`, auth-gateway behavior, MCP JSON-RPC, Compose networking). **§12.0A** indexes third-party OSS → steps. Farm layout, ports, admin API, and client config live in **§14**; multi-instance in **§15**.
 
 **Legend:** Steps marked **(build)** are required when the `mcpfarm/` stack (or equivalent) is not yet in the repository.
 
-**Outline:** **12.0** Prerequisites + **§12.0A OSS master map** → **12.1** P0 + **§12.1.A–I** → **12.2** P1 + **§12.2.A–F** → **12.3–12.5** P2–P4 → **12.6** Observability (§8 parallel) → **12.7** Companion plane → **12.8** Scaling → **12.9** Troubleshooting → **12.10** Final checklist.
+**Outline:** **12.0** Prerequisites + **§12.0A OSS master map** → **12.1** P0 + **§12.1.A–I** → **12.2** P1 + **§12.2.A–F** → **12.3–12.5** P2–P4 → **12.6** Observability (§8 parallel) → **12.7** Companion plane → **12.8** Scaling (+ P5) → **12.9** Troubleshooting → **12.10** Final checklist.
 
 ---
 
@@ -478,19 +541,19 @@ The existing folders (e.g. `naabu-mcp-server-mcp/`, `trivy-mcp-server-mcp/`, …
 
 | Step | Action | Done when |
 |------|--------|-----------|
-| 1.1 **(build)** | Create the **farm orchestration** layout (PRD name: `mcpfarm/`—or an equivalent path) per [FARM-PRD §8.1](./FARM-PRD.md#81-directory-structure): `caddy/`, `auth-gateway/`, `cloudflared/` (or tunnel env only), `scripts/`, `port-map.json`. Do **not** duplicate each MCP server’s source here; only infra + generators + gateway code. | Directories and placeholders exist. |
-| 1.2 **(build)** | Author **`port-map.json`**: map each MCP server name → internal port (see [FARM-PRD §7](./FARM-PRD.md#7-port-allocation-strategy)). Start with a **small subset** (2–5 servers) for faster iteration. | Generator can read the file. |
+| 1.1 **(build)** | Create the **farm orchestration** layout under `mcpfarm/` (or equivalent) per **§14.1**: `caddy/`, `auth-gateway/`, `cloudflared/` (or tunnel env only), `scripts/`, `port-map.json`. Do **not** duplicate each MCP server’s source here; only infra + generators + gateway code. | Directories and placeholders exist. |
+| 1.2 **(build)** | Author **`port-map.json`**: map each MCP server name → internal port (see **§14.2**). Start with a **small subset** (2–5 servers) for faster iteration. | Generator can read the file. |
 | 1.3 **(build)** | Implement **`scripts/generate-compose.py`**: emit `docker-compose.yml` service blocks for infra + each MCP image (`hackerdogs/<name>-mcp:latest`), internal network only, **no** `ports:` on MCP services. | `docker compose config` validates. |
 | 1.4 **(build)** | Implement **auth-gateway** (FastAPI): `GET /verify` for Caddy `forward_auth`; **PostgreSQL** for `api_keys` and `servers`; **hypertables** for `request_log` (and `policy_event_log` when L3 exists) per [`docs/schema/mcp-farm-timescaledb.sql`](./schema/mcp-farm-timescaledb.sql); hash keys at rest; connection pool + migrations. | Local hit to `/verify` returns 200/401; DB schema applied. |
-| 1.5 **(build)** | Implement admin API: `POST/GET/PATCH/DELETE /admin/keys`, server registry, audit query paths, `X-Admin-Secret` on admin routes. | You can create a key via `curl` (see PRD §4.3). |
+| 1.5 **(build)** | Implement admin API: `POST/GET/PATCH/DELETE /admin/keys`, server registry, audit query paths, `X-Admin-Secret` on admin routes. | You can create a key via `curl` (see **§14.3**). |
 | 1.6 **(build)** | **Caddyfile**: health, `/admin/*` and `/services` to auth-gateway, `import` of generated **`routes.conf`**; each route: `forward_auth` → strip prefix → `reverse_proxy` to container. | One MCP server reachable internally through Caddy. |
 | 1.7 | Add **`cloudflared`** service with `TUNNEL_TOKEN` **or** document alternate edge; tunnel targets **Caddy:80** on the internal network. | Public URL loads `/health` (or equivalent). |
 | 1.8 | Create **`.env`** from `.env.example`: `TUNNEL_TOKEN`, `ADMIN_SECRET`, optional upstream keys for shared defaults. | No secrets committed. |
 | 1.9 | Run **`python scripts/generate-compose.py`**, then **`docker compose pull && docker compose up -d`**. | All targeted containers healthy. |
 | 1.10 | **Bootstrap keys:** seed tenant + `POST /admin/keys` (or equivalent); keys use **`scope_mode`** + **`api_key_mcp_grants`** per **§7** schema (not a CSV `scopes` string). | User key cannot call disallowed `server_key` (403). |
 | 1.11 | **Verify MCP:** `POST` a valid MCP/JSON-RPC message to `https://<host>/<server>/mcp/` with `Authorization: Bearer …` (use client or `curl`). | Tool list or session initializes without 401. |
-| 1.12 | **Configure a real MCP client** (Cursor, Claude, etc.) with `streamable-http` URL and headers per [FARM-PRD §8.4](./FARM-PRD.md#84-client-configuration). | End-to-end tool call succeeds. |
-| 1.13 **(optional)** | Implement **dynamic server registration** (Docker socket on gateway, Caddy reload)—per PRD §5. | New server appears at new path without full stack restart. |
+| 1.12 | **Configure a real MCP client** (Cursor, Claude, etc.) with `streamable-http` URL and headers per **§14.6**. | End-to-end tool call succeeds. |
+| 1.13 **(optional)** | Implement **dynamic server registration** (Docker socket on gateway, Caddy reload)—per **§14.4**. | New server appears at new path without full stack restart. |
 | 1.14 | **Hardening pass:** ensure Caddy/access logs **redact** `Authorization` and sensitive `X-*` headers; confirm MCP containers are **not** published to host ports. | Log sample shows no raw secrets. |
 
 #### 12.1.A Docker network and ports
@@ -512,7 +575,7 @@ Single source of truth for compose services and `routes.conf`. Minimal example:
 }
 ```
 
-Add `tier` before P1. Reserve **8400–8499** for dynamically registered servers (per PRD).
+Add `tier` before P1. Reserve **8400–8499** for dynamically registered servers (**§14.2**).
 
 #### 12.1.C Auth-gateway: `GET /verify` contract
 
@@ -628,7 +691,7 @@ curl -sS -X POST "http://127.0.0.1:9090/admin/keys" \
   -d '{"name":"dev-agent","scope_mode":"restricted","rate_limit_rpm":60,"mcp_grants":["naabu-mcp"]}'
 ```
 
-*Example body reflects **§7** `scope_mode` + grants; align with your implemented admin API or [FARM-PRD §4.3](./FARM-PRD.md#43-complete-admin-api-reference) if it still documents legacy `scopes`.*
+*Example body reflects **§7** `scope_mode` + grants; align with your implemented admin API (**§14.3**). Legacy CSV `scopes` may still appear in transitional code.*
 
 Use HTTPS and your tunnel hostname in production.
 
@@ -656,7 +719,7 @@ On **dynamic registration**, the auth-gateway rewrites `routes.conf` and trigger
 
 | Step | Action | Done when |
 |------|--------|-----------|
-| 2.1 | Select an **L3 implementation** (Apache-2.0-friendly options preferred for distribution): e.g. PolicyLayer Intercept, `mcpwall`, or IronCurtain-style proxy—see [FARM-PRD §12.4](./FARM-PRD.md#124-open-source-options). | License + ops model approved. |
+| 2.1 | Select an **L3 implementation** (Apache-2.0-friendly options preferred for distribution): e.g. PolicyLayer Intercept, `mcpwall`, or IronCurtain-style proxy—see Architecture overview L3 table. | License + ops model approved. |
 | 2.2 | **Classify servers** into trust tiers **T0–T3** (§5); store tier in registry metadata or a `tier` field alongside each server in config. | Spreadsheet or YAML lists every server with a tier. |
 | 2.3 | **Author policies** per tier: allowed tool names/patterns, argument regexes (URLs, IPs—block metadata IPs, loopback, RFC1918 unless allowed), rate limits for `tools/call`. | Policy files in git, reviewed. |
 | 2.4 | Add **L3 container** to Compose; place it **between** authenticated traffic and MCP upstreams. **Rewire** Caddy so: after `forward_auth`, traffic goes to **L3**, and L3 proxies to the existing per-server upstream (or to Caddy internal routes—avoid loops; single clear path). | `tools/call` hits L3 logs. |
@@ -838,7 +901,7 @@ Many security CLIs need **extra caps** or writable cache dirs—**test** before 
 
 | Step | Action | Done when |
 |------|--------|-----------|
-| 7.1 | Deploy **InferShield**, **LlamaFirewall**, or **NeMo Guardrails** **between** your agent app and the **LLM provider API** (see [FARM-PRD §12.5–12.7](./FARM-PRD.md#125-recommended-architecture-defense-in-depth)). | Injection test cases reduce unsafe tool-planning. |
+| 7.1 | Deploy **InferShield**, **LlamaFirewall**, or **NeMo Guardrails** **between** your agent app and the **LLM provider API** (companion plane; Architecture overview). | Injection test cases reduce unsafe tool-planning. |
 | 7.2 | Optionally standardize a **security metadata envelope** on tool calls (agent id, session id, approval state) so L3 can enforce **step-up** without seeing full chat. | Documented contract for internal agents. |
 
 **Technical — optional non-secret headers:** If the agent controls HTTP to the farm, it may send `X-Farm-Agent-Id`, `X-Farm-Session-Id` (opaque IDs, not JWTs unless validated). L3 policies can **require** these for T2+. Add them to Caddy `copy_headers` so they reach L3 and MCP servers. **Never** place upstream API secrets in these headers.
@@ -853,8 +916,9 @@ Many security CLIs need **extra caps** or writable cache dirs—**test** before 
 |------|--------|-----------|
 | 8.1 | **PostgreSQL + TimescaleDB** already shared by replicas; scale DB with your HA playbook (replicas, PgBouncer, managed Timescale). | Multiple auth-gateway containers use one DSN. |
 | 8.2 | Put **shared rate-limit state** in **Redis** when horizontally scaling L2 (required for consistent sliding windows). | Limits align across replicas. |
-| 8.3 | **Load-balance** multiple identical farm stacks behind edge LB; sticky sessions only if MCP transport requires it. | Health checks route around failures. |
+| 8.3 | **Load-balance** multiple identical farm stacks behind edge LB; sticky sessions only if MCP transport requires it. For **per-MCP multi-instance** (replicas of one logical server), see **§15 / P5**. | Health checks route around failures. |
 | 8.4 | Tune **Timescale** `add_retention_policy` / `add_compression_policy` on `request_log` and `policy_event_log` for cost and query speed. | Old chunks drop or compress on schedule. |
+| 8.5 **(P5)** | Implement replica reconciliation + session affinity for hot MCP servers (**§15**). | Scale a logical server to N without client URL changes. |
 
 **Technical — session stickiness:** Streamable HTTP / SSE may associate server-side session state with a connection. If you scale **Caddy** horizontally, use **consistent hashing** on a stable client key, **or** terminate MCP on one replica per deployment until your MCP stack is stateless at the transport layer—verify with your FastMCP version.
 
@@ -890,6 +954,160 @@ Many security CLIs need **extra caps** or writable cache dirs—**test** before 
 
 ---
 
-## 13. Summary
+## 14. Farm product & operations surface
 
-The **AI-aware zero-trust gateway for MCP** is the **name and topic of the main spec**: a **layered** system (§3) that treats every tool call as **untrusted until proven compliant**, understands **MCP semantics**, and scales from **one Compose deployment** to **defense-in-depth** (§9 P2–P4). **§7** defines the **tenant data plane and durable audit**; **§8** separates **telemetry and SRE observability** from **preventive controls**. **§12** is the implementation guide; **§12.0A** maps each **Architecture overview** OSS product to a **numbered step**.
+Material absorbed from the former PRD/architecture docs. Operational detail for day-2 deploy also lives in [`mcpfarm/DEPLOY.md`](../mcpfarm/DEPLOY.md).
+
+### 14.1 Directory layout (`mcpfarm/`)
+
+```
+mcpfarm/
+├── docker-compose.yml          # Generated — MCP services + infra
+├── .env / .env.example
+├── port-map.json               # Canonical server → port / image
+├── caddy/
+│   ├── Caddyfile
+│   └── routes.conf             # Generated per-server routes
+├── auth-gateway/               # FastAPI: /verify, admin API, Docker lifecycle
+├── cloudflared/                # Optional; often TUNNEL_TOKEN only
+└── scripts/
+    └── generate-compose.py
+```
+
+Sibling: `mcpfarm-ui/` — operator UI over the same admin APIs.
+
+### 14.2 Port allocation
+
+| Range | Use |
+|-------|-----|
+| 8100–8399 | Catalog bands (core, recon, vuln, web, OSINT, …) |
+| 8400–8499 | Reserved for **dynamic** servers |
+
+`port-map.json` feeds compose generation, Caddy routes, and gateway seed/registry.
+
+### 14.3 Admin API (index)
+
+All admin routes require `X-Admin-Secret` (matches `ADMIN_SECRET`). Prefer §7 grants over legacy CSV scopes when creating keys.
+
+| Area | Methods / paths |
+|------|-----------------|
+| Keys | `POST/GET/PATCH/DELETE /admin/keys`, `GET /admin/keys/{id}/usage` |
+| Servers | `GET/POST /admin/servers`, `GET/DELETE …/{name}`, start/stop/restart, health, logs |
+| Farm | `GET /admin/stats`, `GET /admin/audit`, `POST /admin/reload`, `GET /admin/export` |
+| Public | `GET /health`, `GET /services` (no admin secret; recon tradeoff) |
+| Auth hop | `GET /verify` — Caddy `forward_auth` only |
+
+API key format: `hd_sk_<hex>`. Plaintext shown once at create; store `key_hash` only.
+
+### 14.4 Dynamic server registration
+
+`POST /admin/servers` → validate name/port/image → insert registry (`source=dynamic`) → Docker pull/start on `mcpfarm_internal` → regenerate `routes.conf` → Caddy reload → health loop.
+
+Constraints: dynamic containers are not necessarily in compose YAML; gateway boot should re-reconcile `source=dynamic` (and later replicas) from DB. Docker socket access on auth-gateway is a privileged control plane — audit and least-privilege.
+
+### 14.5 Upstream API keys (pass-through)
+
+Farm **does not** broker third-party keys (Shodan, PDCP, OpenAI, …). Clients send `X-*` headers; Caddy forwards them; MCP middleware maps headers → per-request env via `contextvars`.
+
+Fallback: per-request header → container env (`.env` / compose) → none (tool degrades or errors). Never log upstream key values; redact in access logs.
+
+### 14.6 Client configuration example
+
+```json
+{
+  "mcpServers": {
+    "naabu-mcp": {
+      "url": "https://mcp.hackerdogs.ai/naabu-mcp/mcp/",
+      "transport": "streamable-http",
+      "headers": { "Authorization": "Bearer hd_sk_…" }
+    },
+    "cvemap-mcp": {
+      "url": "https://mcp.hackerdogs.ai/cvemap-mcp/mcp/",
+      "transport": "streamable-http",
+      "headers": {
+        "Authorization": "Bearer hd_sk_…",
+        "X-PDCP-API-KEY": "pdcp_…"
+      }
+    }
+  }
+}
+```
+
+### 14.7 Request flow (happy path)
+
+1. Client `POST https://mcp.hackerdogs.ai/{server}/mcp/` + Bearer (+ optional `X-*`).
+2. Cloudflare Edge → cloudflared → Caddy `:80`.
+3. Caddy `forward_auth` → auth-gateway `/verify` (key, grants, rate limit, audit).
+4. On 2xx: strip `/{server}` prefix → **L3** (GA) → MCP container DNS `:{port}`.
+5. Response returns via Caddy (and L3 if inspecting).
+
+### 14.8 Caddy skeleton
+
+```caddyfile
+:80 {
+    handle /health { respond "OK" 200 }
+    handle /admin/* { reverse_proxy auth-gateway:9090 }
+    handle /services { reverse_proxy auth-gateway:9090 }
+    import /etc/caddy/routes.conf
+}
+```
+
+Per-server route: `forward_auth` → `uri strip_prefix` → `reverse_proxy` (via L3 when deployed).
+
+---
+
+## 15. Multi-instance MCP servers (P5)
+
+Canonical summary of the former `multi-instance-mcpfarm` draft. Full historical detail: [`multi-instance-mcpfarm-old.md`](./multi-instance-mcpfarm-old.md).
+
+### 15.1 Problem
+
+Today: **1 name → 1 DB row → 1 port → 1 container → 1 Caddy upstream**. No first-class replicas. Throughput-bound tools (e.g. crawl) cannot scale horizontally without hacks.
+
+### 15.2 Goals / non-goals
+
+**Goals:** `desired_replicas`; single client URL `/{name}/mcp`; LB across healthy replicas; **mcp-session-id affinity** (correctness, not optional); per-replica health; admin/UI scale; restart-safe reconciliation; backward compatible (`desired_replicas` default `1`).
+
+**Non-goals (v1):** multi-host swarm/K8s; metrics autoscaling; shared writable volumes across replicas.
+
+### 15.3 Delivery
+
+| Sub-phase | Deliverable |
+|-----------|-------------|
+| **P5a** | Replica lifecycle + per-instance health; optional dedicated routes `/{name}-{i}/*` |
+| **P5b** | Pooled `/{name}/*` + session affinity (`session_affinity` table / sticky LB) |
+
+Replicas can **share the same internal container port** because they use distinct Docker DNS names (`name-1`, `name-2`, …) with no host port bind.
+
+### 15.4 Data model (shape)
+
+- `servers.desired_replicas` (default 1).
+- `server_instances` — one row per replica (`{name}-{index}`, status, health).
+- `session_affinity` (P5b) — `mcp-session-id` → `instance_id`.
+
+Logical health = aggregate (≥1 healthy instance). Auth/scoping stays on the **logical** path segment (`crawl4ai-mcp`), not the replica index.
+
+### 15.5 Ops / UI
+
+Admin: set replica count, list/restart instances. UI: replica count, per-replica health, scale control. Reconciliation loop keeps Docker state = desired. Detailed API shapes and rollout steps remain in the archived draft.
+
+---
+
+## 16. Implementation vs design delta (current code)
+
+Honest snapshot so the roadmap is actionable (also tracked in [`completion-list.md`](./completion-list.md)):
+
+| Canonical design | Typical current `mcpfarm/` reality | Sequence |
+|------------------|------------------------------------|----------|
+| Postgres + TimescaleDB (§7) | SQLite (+ WAL) | Migrate schema; keep SQLite for quick local if needed |
+| Normalized grants + tenancy | Flat `servers` + CSV-ish `scopes` | Introduce grants/tenants; dual-read then cut over |
+| L3 mandatory (P1) | Auth + Caddy only | Select L3 proxy; put all MCP routes behind it |
+| Multi-tenant GA | Effectively single-tenant | Land tenants table with default tenant first |
+| Multi-instance (P5) | 1:1 containers | After stable single-instance ops |
+| Docker Hub publish CI | Incomplete / missing workflow | Required for “seconds to ready” at scale |
+
+---
+
+## 17. Summary
+
+This file is the **consolidated Hackerdogs MCP farm design and roadmap**: a **layered** AI-aware zero-trust gateway (§3) that treats every tool call as **untrusted until proven compliant**, understands **MCP semantics**, and scales from **one Compose deployment** through defense-in-depth (**§9 P0–P5**). **§7** is the tenant/audit data plane; **§8** is SRE observability (orthogonal to preventive controls); **§12** is the build path; **§14–§15** are the farm ops and multi-instance product surface; **§16** is the gap list vs today’s code. Archived pre-consolidation docs are listed in **§11**.

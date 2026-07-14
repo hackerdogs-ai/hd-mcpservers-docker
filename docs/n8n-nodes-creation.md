@@ -4,7 +4,9 @@
 **Date:** 2026-07-09  
 **Status:** Draft  
 **Audience:** Hackerdogs engineering, platform, and partner teams  
-**Related docs:** [FARM-ARCHITECTURE.md](./FARM-ARCHITECTURE.md), [FARM-PRD.md](./FARM-PRD.md), [mcpfarm-ui/src/lib/mcp.js](../mcpfarm-ui/src/lib/mcp.js)
+**Related docs:** [AI-aware zero-trust gateway / FARM design](./AI-aware-zero-trust-gateway-for-MCP.md), [mcpfarm-ui/src/lib/mcp.js](../mcpfarm-ui/src/lib/mcp.js)
+>
+> Historical: [FARM-ARCHITECTURE-old.md](./FARM-ARCHITECTURE-old.md), [FARM-PRD-old.md](./FARM-PRD-old.md)
 
 ---
 
@@ -161,7 +163,7 @@ The n8n node is **not** in the execution path for CLI/subprocess logic. It is an
 | Accept | `application/json, text/event-stream` |
 | Session header | `mcp-session-id: <uuid>` (after initialize) |
 
-**Example — tool call via Farm (from FARM-ARCHITECTURE.md):**
+**Example — tool call via Farm (from farm architecture):**
 
 ```http
 POST https://mcp.hackerdogs.ai/naabu-mcp/mcp
@@ -201,7 +203,7 @@ Reference implementation: `mcpfarm-ui/src/lib/mcp.js`.
 
 ### 4.4 Auth and authorization (Farm-side)
 
-Before a request reaches an MCP container, auth-gateway verifies (see FARM-ARCHITECTURE §7):
+Before a request reaches an MCP container, auth-gateway verifies (see [AI-aware / FARM design](./AI-aware-zero-trust-gateway-for-MCP.md) §12 / §14):
 
 - Bearer token exists and is active
 - Token not expired
@@ -783,8 +785,9 @@ Compare to **native rewrite** (no Farm wrapper): estimated **2–4+ person-years
 
 | Resource | Path |
 |----------|------|
-| MCP Farm architecture | [docs/FARM-ARCHITECTURE.md](./FARM-ARCHITECTURE.md) |
-| MCP Farm PRD | [docs/FARM-PRD.md](./FARM-PRD.md) |
+| MCP Farm design & roadmap | [docs/AI-aware-zero-trust-gateway-for-MCP.md](./AI-aware-zero-trust-gateway-for-MCP.md) |
+| MCP Farm architecture (archived) | [docs/FARM-ARCHITECTURE-old.md](./FARM-ARCHITECTURE-old.md) |
+| MCP Farm PRD (archived) | [docs/FARM-PRD-old.md](./FARM-PRD-old.md) |
 | MCP UI client (reference impl) | [mcpfarm-ui/src/lib/mcp.js](../mcpfarm-ui/src/lib/mcp.js) |
 | Generic CLI MCP template | [phase2-common/mcp_server_generic.py](../phase2-common/mcp_server_generic.py) |
 | Farm deploy guide | [mcpfarm/DEPLOY.md](../mcpfarm/DEPLOY.md) |

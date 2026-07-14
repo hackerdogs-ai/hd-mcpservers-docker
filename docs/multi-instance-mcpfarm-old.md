@@ -1,8 +1,10 @@
+> **SUPERSEDED.** Canonical design & roadmap: [`AI-aware-zero-trust-gateway-for-MCP.md`](./AI-aware-zero-trust-gateway-for-MCP.md). This file is archived historical material.
+
 # Technical Spec: Multi-Instance MCP Servers in the Farm
 
 > **Status:** Draft / Proposal
 > **Scope:** Allow a single logical MCP server (e.g. `crawl4ai-mcp`) to run as **N horizontally-scaled replicas** behind one farm endpoint, with health, routing, session affinity, and lifecycle managed by the auth-gateway.
-> **Related docs:** [FARM-PRD.md](./FARM-PRD.md), [FARM-ARCHITECTURE.md](./FARM-ARCHITECTURE.md), [AI-aware zero-trust gateway for MCP](./AI-aware-zero-trust-gateway-for-MCP.md)
+> **Related docs:** [AI-aware zero-trust gateway for MCP](./AI-aware-zero-trust-gateway-for-MCP.md) (canonical §15), [FARM-PRD-old.md](./FARM-PRD-old.md), [FARM-ARCHITECTURE-old.md](./FARM-ARCHITECTURE-old.md)
 
 ---
 
