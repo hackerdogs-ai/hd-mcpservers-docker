@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -14,18 +12,31 @@ MCP server wrapper for [Octagon](https://github.com/octagon-agents/octagon-mcp) 
 
 ## What is Octagon?
 
-MCP server for [Octagon](https://www.octagon.ai/) — financial data and analysis platform. Access company financials, funding rounds, market data, and investment intelligence through AI assistants.
+[Octagon](https://www.octagon.ai/) is a financial intelligence platform providing structured data on private company funding rounds, investor portfolios, market comparables, and M&A activity. This MCP server wraps the official `octagon-mcp` package so AI assistants can answer questions about startup funding, venture capital deal flow, and company financials through natural language. See [octagon-agents/octagon-mcp](https://github.com/octagon-agents/octagon-mcp) for full documentation.
 
-**API key required** — sign up at [octagon.ai](https://www.octagon.ai/).
+**API key required** — sign up at [octagon.ai](https://www.octagon.ai/) to get an `OCTAGON_API_KEY`.
 
 **Summary.** Octagon MCP Server — Dockerized from upstream `octagon-mcp` package.
+
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `octagon-deep-research-agent` | Octagon Deep Research Agent |
+| `octagon-agent` | Octagon Agent |
+| `octagon-prediction-markets-agent` | Octagon Prediction Markets Agent |
+| `prediction_markets_history` | Prediction Markets History |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me the latest funding rounds for AI startups."
-- "Get financial data for company X."
+- "Show me the latest Series B and C funding rounds for AI infrastructure companies."
+- "What is Anthropic's total funding raised and who are its main investors?"
+- "Find all startups in the cybersecurity space that raised a round in the last 90 days."
+- "Compare the funding history of OpenAI and Google DeepMind."
+- "List the top 10 most active venture capital firms by deal count in 2024."
+- "What was the pre-money valuation of the last Stripe funding round?"
 
 ## Deploy
 
@@ -98,6 +109,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "octagon-mcp-server-mcp": {
+      "url": "http://localhost:8485/octagon-mcp-server-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

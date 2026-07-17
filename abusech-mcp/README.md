@@ -1,56 +1,204 @@
 <p align="center">
-  <a href="https://hackerdogs.ai"><img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/></a>
-  <br/>
-  <a href="https://hackerdogs.ai"><img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/></a>
+  <a href="https://hackerdogs.ai">
+    <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
+    <br/>
+    <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
+  </a>
 </p>
 
-# Abuse.ch MCP Server
+# Abusech MCP Server
 
-MCP server for [Abuse.ch](https://abuse.ch) threat intelligence: **MalwareBazaar**, **URLhaus**, and **ThreatFox**.
+MCP server wrapper for [Abuse.ch](https://abuse.ch/) — threat intelligence via MalwareBazaar, URLhaus, and ThreatFox.
 
-**Requires:** `ABUSECH_API_KEY` (get a free key at [auth.abuse.ch](https://auth.abuse.ch)).
+## What is Abuse.ch?
+
+Abuse.ch operates three community-driven threat intelligence platforms: MalwareBazaar (a repository of malware samples searchable by SHA256 hash), URLhaus (a database of malicious URLs and hosting infrastructure), and ThreatFox (an IOC-sharing platform covering IPs, domains, URLs, and file hashes tied to malware families). See [abuse.ch](https://abuse.ch/) for full documentation. **API key required** — set `ABUSECH_API_KEY` before running the container.
 
 **Tools:**
-- `urlhaus_host` — URLhaus host report for a hostname or IP
-- `urlhaus_url` — URLhaus URL report
-- `malwarebazaar_hash` — MalwareBazaar info for a SHA256 hash
-- `threatfox_iocs` — Recent ThreatFox IOCs (days: 1–365)
+- `urlhaus_host` — Get the URLhaus report for a hostname or IP, including all associated malicious URLs and payload metadata.
+- `urlhaus_url` — Look up a specific URL in URLhaus to check whether it is flagged as malicious.
+- `malwarebazaar_hash` — Retrieve MalwareBazaar metadata for a SHA256 file hash, including malware family, tags, and first-seen date.
+- `threatfox_iocs` — Fetch recent IOCs from ThreatFox for a configurable look-back window (1–365 days).
+
+## Tools Reference
+
+## Example Prompts
+
+Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
+
+- "Check the URLhaus host report for 185.220.101.47 and list all associated malicious URLs."
+- "Look up the URL http://malware.example.com/payload.exe in URLhaus and report its status."
+- "Query MalwareBazaar for the SHA256 hash 44d88612fea8a8f36de82e1278abb02f and return its malware family."
+- "Fetch the last 7 days of ThreatFox IOCs and summarize the most common malware families."
+- "Is the domain fast-flux.example.net listed in URLhaus? Show any associated payloads."
+- "Pull the most recent 30 days of ThreatFox IOCs and identify any entries tagged as botnet_cc."
 
 ## Deploy
 
-### Docker Compose
+### Docker Compose (recommended)
+
 ```bash
 docker-compose up -d
 ```
-Set `ABUSECH_API_KEY` in the environment or a `.env` file.
 
-### Docker Run (stdio)
+### Docker Run (stdio mode)
+
 ```bash
-docker run -i --rm -e ABUSECH_API_KEY=your_key hackerdogs/abusech-mcp:latest
+docker run -i --rm hackerdogs/abusech-mcp:latest
 ```
 
-### Docker Run (HTTP streamable)
+### Docker Run (HTTP streamable mode)
+
 ```bash
 docker run -d -p 8373:8373 \
   -e MCP_TRANSPORT=streamable-http \
   -e MCP_PORT=8373 \
-  -e ABUSECH_API_KEY=your_key \
   hackerdogs/abusech-mcp:latest
 ```
 
 ## MCP Client Configuration
 
-**Stdio:** Use `mcpServer.json`; set `ABUSECH_API_KEY` in `env`.  
-**HTTP:** Connect to `http://localhost:8373` with `MCP_TRANSPORT=streamable-http`.
+### Stdio mode (default)
 
-| Env | Description | Default |
-|-----|-------------|---------|
-| `MCP_TRANSPORT` | `stdio` or `streamable-http` | `stdio` |
-| `MCP_PORT` | HTTP port (streamable-http) | `8373` |
-| `ABUSECH_API_KEY` | Abuse.ch API key | required |
+Add to your Claude Desktop or Cursor MCP config:
 
-## Example prompts
+```json
+{
+  "mcpServers": {
+    "abusech-mcp": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "hackerdogs/abusech-mcp:latest"],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
+    }
+  }
+}
+```
 
-- "Check URLhaus for host example.com."
-- "Get MalwareBazaar info for hash abc123..."
-- "List recent ThreatFox IOCs for the last 7 days."
+### HTTP mode (streamable-http)
+
+First, start the server using Docker Compose or `docker run` with HTTP mode (see [Deploy](#deploy) above), then point your MCP client at the running server:
+
+```json
+{
+  "mcpServers": {
+    "abusech-mcp": {
+      "url": "http://localhost:8373/mcp"
+    }
+  }
+}
+```
+
+> **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "abusech-mcp": {
+      "url": "http://localhost:8485/abusech-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
+
+## Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
+| `MCP_PORT` | `8373` | HTTP port (only used with `streamable-http`) |
+| `ABUSECH_API_KEY` | `` | Abusech api key |
+
+## Installing in Hackerdogs
+
+The fastest way to get started is through [Hackerdogs](https://hackerdogs.ai):
+
+1. **Log in** to your Hackerdogs account.
+2. Go to the **Tools Catalog**.
+3. **Search** for the tool by name (e.g. "nuclei", "naabu", "julius").
+4. Expand the tool card and click **Install** — you're ready to go.
+
+> Give it a couple of minutes to go live. Then start querying by asking Hackerdogs to use the tool explicitly (e.g. *"Use naabu to scan example.com"*). If you don't specify, Hackerdogs will automatically choose the best tool for the job — it may choose this one on its own.
+
+5. **Vendor API key required?** Add your key in the config environment variable field before clicking Install. Your key will be encrypted at rest.
+6. **Enable / Disable** the tool anytime from the **Enabled Tools** page.
+7. **Need to update a key or parameter?** Go to **My Tools** → toggle **Show Decrypted Values** → edit → **Save**.
+
+> **Want to contribute or chat with the team?** Join our [Discord](https://discord.gg/str9FcWuyM).
+
+## Build
+
+```bash
+docker build -t hackerdogs/abusech-mcp:latest .
+```
+
+## Testing
+
+### Automated tests
+
+```bash
+./test.sh
+```
+
+### Test directly with Docker
+
+**1. Start the server in HTTP mode:**
+
+```bash
+docker run -d --rm --name abusech-mcp-test -p 8373:8373 \
+  -e MCP_TRANSPORT=streamable-http \
+  hackerdogs/abusech-mcp:latest
+```
+
+**2. Initialize the MCP session:**
+
+```bash
+SESSION_ID=$(curl -s -D - -X POST http://localhost:8373/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"0.1"}}}' \
+  2>&1 | grep -i mcp-session-id | awk '{print $2}' | tr -d '\r\n')
+
+curl -s -X POST http://localhost:8373/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "mcp-session-id: $SESSION_ID" \
+  -d '{"jsonrpc":"2.0","method":"notifications/initialized"}'
+```
+
+**3. Call a tool:**
+
+```bash
+curl -s -X POST http://localhost:8373/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "mcp-session-id: $SESSION_ID" \
+  -d '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"run_abusech","arguments":{"arguments":"--help"}}}'
+```
+
+**4. Clean up:**
+
+```bash
+docker stop abusech-mcp-test
+```
+
+## Running the tool directly (bypassing MCP)
+
+You can run the Abusech CLI in the same container by overriding the entrypoint without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint abusech hackerdogs/abusech-mcp:latest --help
+```

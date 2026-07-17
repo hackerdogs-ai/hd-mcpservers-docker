@@ -1,31 +1,45 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS Aurora DSQL MCP Server
 
-MCP server wrapper for [Aurora DSQL](https://github.com/awslabs/mcp) — upstream package `awslabs.aurora-dsql-mcp-server`.
+MCP server wrapper for [Aurora DSQL](https://github.com/awslabs/mcp/tree/main/src/aurora-dsql-mcp-server) — interact with Amazon Aurora DSQL serverless distributed SQL clusters via natural language.
 
 ## What is Aurora DSQL?
 
-MCP server for Amazon Aurora DSQL, a distributed SQL database. Provides AI assistants with tools to query, manage, and interact with Aurora DSQL clusters and databases.
+Amazon Aurora DSQL is AWS's serverless distributed SQL database designed for multi-region active-active workloads with PostgreSQL compatibility. This MCP server enables AI assistants to connect to Aurora DSQL clusters, execute SQL queries, inspect schemas, and manage database objects without requiring direct psql access. See [awslabs/mcp](https://github.com/awslabs/mcp/tree/main/src/aurora-dsql-mcp-server) for full documentation.
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
-**Summary.** AWS Aurora DSQL MCP Server — Dockerized from upstream `awslabs.aurora-dsql-mcp-server` package.
+**Summary.** MCP server wrapper for [Aurora DSQL](https://github.com/awslabs/mcp/tree/main/src/aurora-dsql-mcp-server) — query and manage Amazon Aurora DSQL distributed SQL clusters from your AI assistant.
+
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `readonly_query` | Readonly Query |
+| `transact` | Transact |
+| `get_schema` | Get Schema |
+| `dsql_search_documentation` | Dsql Search Documentation |
+| `dsql_read_documentation` | Dsql Read Documentation |
+| `dsql_recommend` | Dsql Recommend |
+| `dsql_lint` | Dsql Lint |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Query my Aurora DSQL cluster for active connections."
-- "Show me the tables in my DSQL database."
+- "List all Aurora DSQL clusters in my account and show their endpoint addresses."
+- "Show me the tables and schemas in my Aurora DSQL cluster."
+- "Run a SELECT query against the orders table in my DSQL cluster."
+- "Check the current connection count and cluster status for my Aurora DSQL endpoint."
+- "Create a new table in my Aurora DSQL cluster with appropriate indexes for a users table."
+- "Show me the row counts for all tables in my Aurora DSQL database."
 
 ## Deploy
 
@@ -108,6 +122,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "aws-aurora-dsql-mcp": {
+      "url": "http://localhost:8485/aws-aurora-dsql-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

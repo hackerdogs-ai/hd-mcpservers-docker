@@ -1,31 +1,58 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Sentry MCP Server
 
-MCP server wrapper for [Sentry](https://github.com/getsentry/sentry-mcp) — upstream package `@sentry/mcp-server`.
+MCP server wrapper for [Sentry](https://sentry.io/) — query issues, stack traces, release health, and Seer AI analysis from Sentry directly within AI coding assistants.
 
 ## What is Sentry?
 
-MCP server for [Sentry](https://sentry.io/). Access issues, errors, projects, and Seer AI analysis. Investigate error stack traces, triage production incidents, and track error trends directly from your AI coding assistant.
+Sentry is an application monitoring platform that captures errors, performance bottlenecks, and crashes from production software. The official `@sentry/mcp-server` package exposes Sentry's API as MCP tools, enabling AI assistants to list and search issues, fetch full stack traces, review release health, assign and resolve issues, and invoke Sentry's Seer AI for root-cause analysis. See [getsentry/sentry-mcp](https://github.com/getsentry/sentry-mcp) for full documentation.
 
-**Auth token required** — create at Sentry → Settings → Auth Tokens.
+**Auth token required** — create a user auth token at Sentry under Settings → Account → API → Auth Tokens and set it as `SENTRY_AUTH_TOKEN`.
 
-**Summary.** Sentry MCP Server — Dockerized from upstream `@sentry/mcp-server` package.
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `whoami` | Whoami |
+| `find_organizations` | Find Organizations |
+| `find_teams` | Find Teams |
+| `find_projects` | Find Projects |
+| `find_releases` | Find Releases |
+| `get_issue_tag_values` | Get Issue Tag Values |
+| `get_replay_details` | Get Replay Details |
+| `get_event_attachment` | Get Event Attachment |
+| `update_issue` | Update Issue |
+| `search_events` | Search Events |
+| `create_team` | Create Team |
+| `create_project` | Create Project |
+| `update_project` | Update Project |
+| `create_dsn` | Create Dsn |
+| `find_dsns` | Find Dsns |
+| `analyze_issue_with_seer` | Analyze Issue With Seer |
+| `search_docs` | Search Docs |
+| `get_doc` | Get Doc |
+| `search_issues` | Search Issues |
+| `search_issue_events` | Search Issue Events |
+| `get_profile_details` | Get Profile Details |
+| `get_sentry_resource` | Get Sentry Resource |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me the top unresolved issues in my Sentry project."
-- "What caused the latest crash in production?"
+- "Show me all unresolved Sentry issues in the 'backend-api' project with more than 100 occurrences."
+- "Fetch the full stack trace for Sentry issue PROJ-1234 and explain what caused the error."
+- "List the 10 most frequent errors in production this week and group them by type."
+- "Check the release health for version 2.5.0 of my app and report the crash-free session rate."
+- "Use Sentry's Seer AI to analyze issue PROJ-5678 and suggest a fix."
+- "Mark all issues tagged 'low-priority' in the 'frontend' project as resolved."
 
 ## Deploy
 
@@ -98,6 +125,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "sentry-mcp": {
+      "url": "http://localhost:8485/sentry-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

@@ -1,31 +1,71 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS MQ MCP Server
 
-MCP server wrapper for [Amazon MQ](https://github.com/awslabs/mcp) — upstream package `awslabs.amazon-mq-mcp-server`.
+MCP server wrapper for [Amazon MQ](https://github.com/awslabs/mcp/tree/main/src/amazon-mq-mcp-server) — list, describe, and monitor Amazon MQ message brokers running ActiveMQ or RabbitMQ.
 
 ## What is Amazon MQ?
 
-MCP server for Amazon MQ. Manage RabbitMQ and ActiveMQ message brokers — create brokers, manage queues, and monitor broker health.
+Amazon MQ is a managed message broker service that supports Apache ActiveMQ and RabbitMQ, enabling reliable asynchronous messaging for distributed applications without managing broker infrastructure. This MCP server exposes Amazon MQ broker state, configuration, and queue metrics through natural-language queries via the `awslabs.amazon-mq-mcp-server` package. See [awslabs/mcp](https://github.com/awslabs/mcp) for full documentation.
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
-**Summary.** AWS MQ MCP Server — Dockerized from upstream `awslabs.amazon-mq-mcp-server` package.
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `delete_broker` | Delete Broker |
+| `delete_configuration` | Delete Configuration |
+| `describe_broker` | Describe Broker |
+| `describe_broker_engine_types` | Describe Broker Engine Types |
+| `describe_broker_instance_options` | Describe Broker Instance Options |
+| `describe_configuration` | Describe Configuration |
+| `describe_configuration_revision` | Describe Configuration Revision |
+| `describe_shared_resources` | Describe Shared Resources |
+| `describe_user` | Describe User |
+| `list_brokers` | List Brokers |
+| `list_configuration_revisions` | List Configuration Revisions |
+| `list_configurations` | List Configurations |
+| `list_tags` | List Tags |
+| `list_users` | List Users |
+| `promote` | Promote |
+| `reboot_broker` | Reboot Broker |
+| `update_broker` | Update Broker |
+| `update_configuration` | Update Configuration |
+| `rabbimq_broker_initialize_connection` | Rabbimq Broker Initialize Connection |
+| `rabbimq_broker_initialize_connection_with_oauth` | Rabbimq Broker Initialize Connection With Oauth |
+| `rabbitmq_broker_get_guideline` | Rabbitmq Broker Get Guideline |
+| `rabbitmq_broker_list_queues` | Rabbitmq Broker List Queues |
+| `rabbitmq_broker_list_exchanges` | Rabbitmq Broker List Exchanges |
+| `rabbitmq_broker_list_vhosts` | Rabbitmq Broker List Vhosts |
+| `rabbitmq_broker_get_queue_info` | Rabbitmq Broker Get Queue Info |
+| `rabbitmq_broker_get_exchange_info` | Rabbitmq Broker Get Exchange Info |
+| `rabbitmq_broker_list_shovels` | Rabbitmq Broker List Shovels |
+| `rabbitmq_broker_get_shovel_info` | Rabbitmq Broker Get Shovel Info |
+| `rabbitmq_broker_get_cluster_nodes_info` | Rabbitmq Broker Get Cluster Nodes Info |
+| `rabbitmq_broker_list_connections` | Rabbitmq Broker List Connections |
+| `rabbitmq_broker_list_consumers` | Rabbitmq Broker List Consumers |
+| `rabbitmq_broker_list_users` | Rabbitmq Broker List Users |
+| `rabbitmq_broker_is_in_alarm` | Rabbitmq Broker Is In Alarm |
+| `rabbitmq_broker_is_quorum_critical` | Rabbitmq Broker Is Quorum Critical |
+| `rabbitmq_broker_get_broker_definition` | Rabbitmq Broker Get Broker Definition |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me Amazon MQ resources in my AWS account."
-- "Describe the current state of my Amazon MQ setup."
+- "List all Amazon MQ brokers in my account and their current status."
+- "Show me the configuration details for the ActiveMQ broker named 'orders-prod'."
+- "Which of my RabbitMQ brokers are in a degraded or maintenance state?"
+- "Describe the storage and instance type for each of my MQ brokers."
+- "Find all MQ brokers that don't have automatic minor version upgrades enabled."
+- "What are the endpoints for the 'payments-broker' RabbitMQ instance?"
 
 ## Deploy
 
@@ -108,6 +148,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "aws-mq-mcp": {
+      "url": "http://localhost:8485/aws-mq-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

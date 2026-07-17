@@ -1,31 +1,43 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Puppeteer MCP Server
 
-MCP server wrapper for [Puppeteer](https://github.com/modelcontextprotocol/servers) — upstream package `@modelcontextprotocol/server-puppeteer`.
+MCP server wrapper for [Puppeteer](https://pptr.dev/) — headless Chrome browser automation for navigation, screenshots, PDFs, and form interaction.
 
 ## What is Puppeteer?
 
-MCP server for [Puppeteer](https://pptr.dev/) — headless Chrome browser automation. Navigate pages, take screenshots, generate PDFs, fill forms, and interact with web applications programmatically.
+Puppeteer is Google's official Node.js library for controlling a headless Chrome or Chromium browser, enabling programmatic navigation, screenshot capture, PDF generation, form filling, and interaction with JavaScript-heavy web applications. See [modelcontextprotocol/servers](https://github.com/modelcontextprotocol/servers) for full documentation of the MCP wrapper.
 
-**No API keys required** — this server works out of the box.
+**No API keys required** — this server runs locally inside the Docker container using a bundled Chromium instance.
 
-**Summary.** Puppeteer MCP Server — Dockerized from upstream `@modelcontextprotocol/server-puppeteer` package.
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `puppeteer_navigate` | Puppeteer Navigate |
+| `puppeteer_screenshot` | Puppeteer Screenshot |
+| `puppeteer_click` | Puppeteer Click |
+| `puppeteer_fill` | Puppeteer Fill |
+| `puppeteer_select` | Puppeteer Select |
+| `puppeteer_hover` | Puppeteer Hover |
+| `puppeteer_evaluate` | Puppeteer Evaluate |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Navigate to example.com and take a screenshot."
-- "Fill in the login form on this page."
+- "Navigate to https://example.com and take a full-page screenshot."
+- "Fill in the username and password fields on the login form at this URL and submit."
+- "Generate a PDF of https://docs.example.com/api-reference and save it."
+- "Click the 'Accept Cookies' button on this page, then scroll to the footer and screenshot it."
+- "Evaluate the JavaScript expression `document.title` on https://news.ycombinator.com and return the result."
+- "Navigate to the GitHub releases page for a repo and extract the latest version number from the DOM."
 
 ## Deploy
 
@@ -92,6 +104,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "puppeteer-mcp": {
+      "url": "http://localhost:8485/puppeteer-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

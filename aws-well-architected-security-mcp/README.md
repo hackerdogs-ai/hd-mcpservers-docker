@@ -1,31 +1,42 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS Well-Architected Security MCP Server
 
-MCP server wrapper for [Well-Architected Security](https://github.com/awslabs/mcp) — upstream package `awslabs.well-architected-security-mcp-server`.
+MCP server wrapper for [AWS Well-Architected Security](https://github.com/awslabs/mcp/tree/main/src/well-architected-security-mcp-server) — assess your AWS workloads against the Security pillar of the AWS Well-Architected Framework and surface high-risk findings.
 
-## What is Well-Architected Security?
+## What is AWS Well-Architected Security?
 
-MCP server for the AWS Well-Architected Security pillar. Monitor and assess AWS environments against security best practices and compliance frameworks.
+The AWS Well-Architected Framework Security pillar provides guidance across six areas: IAM, detection, infrastructure protection, data protection, incident response, and application security. This MCP server (`awslabs.well-architected-security-mcp-server`) integrates with AWS Well-Architected Tool workloads to list reviews, retrieve question-by-question answers, and identify high-risk issues (HRIs) and medium-risk issues (MRIs) — enabling AI-assisted security gap analysis against AWS best practices. See [awslabs/mcp](https://github.com/awslabs/mcp) for full documentation.
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
-**Summary.** AWS Well-Architected Security MCP Server — Dockerized from upstream `awslabs.well-architected-security-mcp-server` package.
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `CheckSecurityServices` | Checksecurityservices |
+| `GetSecurityFindings` | Getsecurityfindings |
+| `GetStoredSecurityContext` | Getstoredsecuritycontext |
+| `CheckStorageEncryption` | Checkstorageencryption |
+| `ListServicesInRegion` | Listservicesinregion |
+| `CheckNetworkSecurity` | Checknetworksecurity |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me Well-Architected Security resources in my AWS account."
-- "Describe the current state of my Well-Architected Security setup."
+- "List all Well-Architected workloads in my account and their risk counts."
+- "Show me the high-risk issues found in the Security pillar for the 'production-api' workload."
+- "What security best practices does AWS recommend for the IAM area of the Well-Architected Framework?"
+- "Summarize the medium-risk issues across all workloads in the Security pillar."
+- "Which Well-Architected security questions have unanswered items in my 'payments' workload?"
+- "Generate a remediation plan for the top 3 high-risk security findings in my Well-Architected review."
 
 ## Deploy
 
@@ -108,6 +119,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "aws-well-architected-security-mcp": {
+      "url": "http://localhost:8485/aws-well-architected-security-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

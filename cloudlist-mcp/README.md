@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -14,7 +12,7 @@ MCP server wrapper for [Cloudlist](https://github.com/projectdiscovery/cloudlist
 
 ## What is Cloudlist?
 
-Cloudlist is a cloud asset discovery tool by ProjectDiscovery that lists assets across multiple cloud providers. It supports AWS, GCP, Azure, DigitalOcean, Scaleway, Fastly, Heroku, Linode, Namecheap, Cloudflare, Hetzner, and more, providing a unified view for attack surface management.
+Cloudlist is a multi-cloud asset enumeration tool by ProjectDiscovery that lists hosts and IP addresses across AWS, GCP, Azure, DigitalOcean, Scaleway, Fastly, Heroku, Linode, Namecheap, Cloudflare, Hetzner, and more from a single YAML configuration. It is designed for attack surface management — providing a unified inventory of all externally reachable infrastructure across your cloud accounts. See [github.com/projectdiscovery/cloudlist](https://github.com/projectdiscovery/cloudlist) for full documentation.
 
 ## Prerequisites
 
@@ -178,6 +176,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "cloudlist-mcp": {
+      "url": "http://localhost:8485/cloudlist-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

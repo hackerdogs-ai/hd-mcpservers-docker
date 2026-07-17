@@ -1,26 +1,24 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Horusec MCP Server
 
-MCP server wrapper for [Horusec](https://github.com/Checkmarx/Horusec) — Static application security testing (SAST) tool.
+MCP server wrapper for [Horusec](https://github.com/ZupIT/horusec) — Static application security testing (SAST) tool.
 
 ## What is Horusec?
 
 Horusec (horusec) is a security tool that provides: **Static application security testing (SAST) tool.**
 
-See [Checkmarx/Horusec](https://github.com/Checkmarx/Horusec) for full documentation.
+See [Checkmarx/Horusec](https://github.com/ZupIT/horusec) for full documentation.
 
 **No API keys required** — Horusec runs locally inside the Docker container.
 
-**Summary.** MCP server wrapper for [Horusec](https://github.com/Checkmarx/Horusec) — Static application security testing (SAST) tool.
+**Summary.** MCP server wrapper for [Horusec](https://github.com/ZupIT/horusec) — Static application security testing (SAST) tool.
 
 **Tools:**
 - `run_horusec` — Run horusec with the given arguments. Returns structured JSON output.
@@ -145,6 +143,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "horusec-mcp": {
+      "url": "http://localhost:8485/horusec-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

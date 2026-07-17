@@ -2,7 +2,8 @@
 # Multi-arch build for linux/amd64 and linux/arm64
 
 # --- Stage 1: Build Dalfox ---
-FROM golang:1.24-bookworm AS builder
+FROM golang:1.26-bookworm AS builder
+ENV GOTOOLCHAIN=auto
 # Installing the latest version of Dalfox
 RUN go install github.com/hahwul/dalfox/v2@latest
 

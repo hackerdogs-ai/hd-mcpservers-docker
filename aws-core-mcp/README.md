@@ -1,31 +1,33 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS Core MCP Server
 
-MCP server wrapper for [AWS Core](https://github.com/awslabs/mcp) — upstream package `awslabs.core-mcp-server`.
+MCP server wrapper for [AWS Core](https://github.com/awslabs/mcp/tree/main/src/core-mcp-server) — orchestration and planning hub for the AWS MCP server suite, providing cross-service task planning and dynamic server discovery.
 
 ## What is AWS Core?
 
-Starting point for using AWS MCP servers through a dynamic proxy server strategy based on role-based environment variables. Includes planning and orchestration tools.
+The AWS Core MCP server is the recommended entry point when using multiple AWS MCP servers together. It provides planning tools that decompose multi-step AWS tasks across services, a dynamic proxy strategy that routes tool calls to the appropriate specialized MCP server based on role-based environment variables, and general AWS knowledge resources. Use it when you want an AI assistant to coordinate work across several AWS services — for example, planning a deployment that touches ECS, CloudWatch, and IAM together. See [awslabs/mcp](https://github.com/awslabs/mcp/tree/main/src/core-mcp-server) for full documentation.
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
-**Summary.** AWS Core MCP Server — Dockerized from upstream `awslabs.core-mcp-server` package.
+**Summary.** MCP server wrapper for [AWS Core](https://github.com/awslabs/mcp/tree/main/src/core-mcp-server) — multi-service planning and orchestration hub for coordinating tasks across the full AWS MCP server suite.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me AWS Core resources in my AWS account."
-- "Describe the current state of my AWS Core setup."
+- "Plan the steps needed to deploy a new containerized service on ECS with CloudWatch monitoring and IAM least-privilege roles."
+- "What AWS MCP servers are available and which ones should I use for a serverless API deployment?"
+- "Help me design an architecture plan for a multi-region active-active application using AWS services."
+- "Outline the AWS steps required to migrate an on-premises PostgreSQL database to RDS."
+- "What permissions does my IAM role need to use the EKS, CloudWatch, and S3 MCP servers together?"
+- "Create a task plan for setting up a CI/CD pipeline using CodePipeline, CodeBuild, and ECR."
 
 ## Deploy
 
@@ -108,6 +110,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "aws-core-mcp": {
+      "url": "http://localhost:8485/aws-core-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

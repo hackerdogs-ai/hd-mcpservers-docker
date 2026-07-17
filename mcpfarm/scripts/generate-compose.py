@@ -28,26 +28,14 @@ version: "3.8"
 
 services:
   # -----------------------------------------------------------------------
-  # Cloudflare Tunnel
-  # -----------------------------------------------------------------------
-  cloudflared:
-    image: cloudflare/cloudflared:latest
-    container_name: mcpfarm-tunnel
-    command: tunnel run
-    environment:
-      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
-    networks:
-      - mcpfarm
-    depends_on:
-      - caddy
-    restart: unless-stopped
-
-  # -----------------------------------------------------------------------
   # Caddy reverse proxy
   # -----------------------------------------------------------------------
   caddy:
     image: caddy:2-alpine
     container_name: mcpfarm-caddy
+    ports:
+      - "${FARM_PORT:-8485}:80"
+      - "2019:2019"
     volumes:
       - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_routes:/etc/caddy/dynamic

@@ -1,31 +1,42 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Steampipe MCP Server
 
-MCP server wrapper for [Steampipe](https://github.com/turbot/steampipe-mcp) — upstream package `steampipe-mcp-server`.
+MCP server wrapper for [Steampipe](https://github.com/turbot/steampipe-mcp) — query cloud infrastructure, SaaS APIs, and security data using SQL.
 
 ## What is Steampipe?
 
-MCP server for [Steampipe](https://steampipe.io/) — query cloud infrastructure using SQL. Connect to AWS, Azure, GCP, GitHub, and 140+ other data sources through a unified SQL interface.
+Steampipe is an open-source tool that lets you query cloud services (AWS, Azure, GCP, GitHub, Kubernetes, and 140+ others) using standard SQL. It exposes live API data as relational tables so you can join across providers — for example, correlating AWS IAM users with GitHub organization members. This MCP server surfaces Steampipe's SQL query capability to AI assistants for cloud security auditing and compliance checks. See [turbot/steampipe-mcp](https://github.com/turbot/steampipe-mcp) for full documentation.
 
-**No API keys required** — this server works out of the box.
+**Cloud credentials required** — configure provider credentials (e.g. AWS keys, Azure tokens) inside the container for the plugins you wish to query.
 
-**Summary.** Steampipe MCP Server — Dockerized from upstream `steampipe-mcp-server` package.
+**Summary.** MCP server wrapper for [Steampipe](https://github.com/turbot/steampipe-mcp) — query cloud infrastructure, SaaS APIs, and security data using SQL.
+
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `list_all_tables` | List All Tables |
+| `list_tables_in_schema` | List Tables In Schema |
+| `get_table_schema` | Get Table Schema |
+| `query` | Query |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Query my AWS resources using Steampipe SQL."
-- "Show all public S3 buckets in my account."
+- "Query Steampipe for all publicly accessible S3 buckets in my AWS account."
+- "Use Steampipe SQL to list all IAM users that have never logged in."
+- "Find all AWS security groups that allow unrestricted inbound access on port 22."
+- "Query Steampipe for all GCP service accounts with admin-level permissions."
+- "Show me all EC2 instances without CloudWatch monitoring enabled using Steampipe."
+- "Use Steampipe to list all GitHub repositories in my organization that have public visibility."
 
 ## Deploy
 
@@ -92,6 +103,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "steampipe-mcp": {
+      "url": "http://localhost:8485/steampipe-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

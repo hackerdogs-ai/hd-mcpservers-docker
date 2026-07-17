@@ -1,31 +1,39 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # S3 MCP Server
 
-MCP server wrapper for [Amazon S3](https://github.com/geunoh/s3-mcp-server) — upstream package `@geunoh/s3-mcp-server`.
+MCP server wrapper for [geunoh/s3-mcp-server](https://github.com/geunoh/s3-mcp-server) — list, read, upload, and delete objects in Amazon S3 buckets from AI assistants.
 
-## What is Amazon S3?
+## What is S3 MCP Server?
 
-MCP server for [Amazon S3](https://aws.amazon.com/s3/). List buckets, browse objects, upload and download files, and manage S3 storage through AI assistants.
+The `@geunoh/s3-mcp-server` package bridges the AWS S3 API and MCP, exposing tools for listing buckets, browsing objects by prefix, uploading and downloading file content, and deleting objects. It authenticates with standard AWS credentials and supports any S3-compatible endpoint. See [geunoh/s3-mcp-server](https://github.com/geunoh/s3-mcp-server) for full documentation.
 
-**AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
+**AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION` in the environment.
 
-**Summary.** S3 MCP Server — Dockerized from upstream `@geunoh/s3-mcp-server` package.
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `get_object` | Get Object |
+| `list_buckets` | List Buckets |
+| `upload_file` | Upload File |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "List all S3 buckets in my account."
-- "Show the contents of the 'my-data' bucket."
+- "List all S3 buckets in my AWS account and their regions."
+- "Show the objects in the 'my-data-bucket' bucket under the 'logs/2025/' prefix."
+- "Download the file 'config/settings.json' from the 'prod-assets' bucket and show me its contents."
+- "Upload the following JSON content as 'reports/summary.json' to the 'analytics-bucket'."
+- "Delete all objects in the 'staging-bucket' under the 'tmp/' prefix."
+- "Check whether a file named 'deployment.zip' exists in the 'ci-artifacts' bucket and report its size and last-modified date."
 
 ## Deploy
 
@@ -108,6 +116,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "s3-mcp-server-mcp": {
+      "url": "http://localhost:8485/s3-mcp-server-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

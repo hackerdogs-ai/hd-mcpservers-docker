@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -14,18 +12,50 @@ MCP server wrapper for [NASA](https://github.com/programcomputer/nasa-mcp-server
 
 ## What is NASA?
 
-MCP server for [NASA Open APIs](https://api.nasa.gov/). Access 20+ NASA data sources including Astronomy Picture of the Day (APOD), Mars Rover photos, Near-Earth Object tracking, satellite imagery, and more.
+This MCP server connects AI assistants to 20+ [NASA Open APIs](https://api.nasa.gov/), covering Astronomy Picture of the Day (APOD), Mars Rover photos from Curiosity and Perseverance, Near-Earth Object (NEO) asteroid tracking, satellite imagery via NASA Earth, space weather alerts, and more. See [programcomputer/nasa-mcp-server](https://github.com/programcomputer/nasa-mcp-server) for full documentation.
 
-**API key required** — get a free key at [api.nasa.gov](https://api.nasa.gov/).
+**API key required** — get a free key at [api.nasa.gov](https://api.nasa.gov/). A `DEMO_KEY` with rate limits is used by default.
 
 **Summary.** NASA MCP Server — Dockerized from upstream `@programcomputer/nasa-mcp-server` package.
+
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `nasa_apod` | Nasa Apod |
+| `nasa_neo` | Nasa Neo |
+| `nasa_epic` | Nasa Epic |
+| `nasa_gibs` | Nasa Gibs |
+| `nasa_cmr` | Nasa Cmr |
+| `nasa_firms` | Nasa Firms |
+| `nasa_images` | Nasa Images |
+| `nasa_exoplanet` | Nasa Exoplanet |
+| `nasa_donki` | Nasa Donki |
+| `nasa_mars_rover` | Nasa Mars Rover |
+| `nasa_eonet` | Nasa Eonet |
+| `nasa_power` | Nasa Power |
+| `jpl_sbdb` | Jpl Sbdb |
+| `jpl_fireball` | Jpl Fireball |
+| `jpl_jd_cal` | Jpl Jd Cal |
+| `jpl_nhats` | Jpl Nhats |
+| `jpl_cad` | Jpl Cad |
+| `jpl_sentry` | Jpl Sentry |
+| `jpl_horizons` | Jpl Horizons |
+| `jpl_horizons_file` | Jpl Horizons File |
+| `jpl_periodic_orbits` | Jpl Periodic Orbits |
+| `nasa_osdr_files` | Nasa Osdr Files |
+| `jpl_scout` | Jpl Scout |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me today's Astronomy Picture of the Day."
-- "Find near-Earth asteroids approaching this week."
+- "Show me today's Astronomy Picture of the Day with its explanation."
+- "List near-Earth asteroids approaching within 0.05 AU this week."
+- "Fetch the latest photos taken by the Curiosity Mars Rover's Navcam."
+- "Show me a satellite image of the Amazon River delta using NASA Earth imagery."
+- "Are there any active geomagnetic storms in today's space weather alerts?"
+- "Get details for asteroid 2024 YR4 including its diameter and close approach distance."
 
 ## Deploy
 
@@ -99,13 +129,33 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
 
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "nasa-mcp": {
+      "url": "http://localhost:8485/nasa-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
+
 ## Environment Variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
 | `MCP_PORT` | `8651` | HTTP port (only used with `streamable-http`) |
-| `NASA_API_KEY` | — | NASA API key — get a free key at [api.nasa.gov](https://api.nasa.gov/) |
+| `NASA_API_KEY` | `DEMO_KEY` | NASA API key — get a free key at [api.nasa.gov](https://api.nasa.gov/) |
 
 ## Installing in Hackerdogs
 

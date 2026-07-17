@@ -226,7 +226,7 @@
   "aibom-mcp": {
     "port": 8343,
     "image": "hackerdogs/aibom-mcp:latest",
-    "category": "vuln-scanning",
+    "category": "appsec",
     "env": []
   },
   "aircrack-ng-mcp": {
@@ -238,7 +238,7 @@
   "aistor-mcp": {
     "port": 8434,
     "image": "hackerdogs/aistor-mcp:latest",
-    "category": "vuln-scanning",
+    "category": "appsec",
     "env": []
   },
   "alphavantage-mcp": {
@@ -620,7 +620,7 @@
   "bearer-mcp": {
     "port": 8360,
     "image": "hackerdogs/bearer-mcp:latest",
-    "category": "vuln-scanning",
+    "category": "appsec",
     "env": []
   },
   "bettercap-mcp": {
@@ -933,7 +933,7 @@
   "dependency-check-mcp": {
     "port": 8361,
     "image": "hackerdogs/dependency-check-mcp:latest",
-    "category": "vuln-scanning",
+    "category": "appsec",
     "env": []
   },
   "dharma-mcp": {
@@ -1165,7 +1165,7 @@
   "garak-mcp": {
     "port": 8352,
     "image": "hackerdogs/garak-mcp:latest",
-    "category": "vuln-scanning",
+    "category": "appsec",
     "env": []
   },
   "gau-mcp": {
@@ -1189,7 +1189,7 @@
   "ggshield-mcp": {
     "port": 8363,
     "image": "hackerdogs/ggshield-mcp:latest",
-    "category": "vuln-scanning",
+    "category": "appsec",
     "env": []
   },
   "ghidra-mcp": {
@@ -1215,7 +1215,7 @@
   "gitleaks-mcp": {
     "port": 8332,
     "image": "hackerdogs/gitleaks-mcp:latest",
-    "category": "vuln-scanning",
+    "category": "appsec",
     "env": []
   },
   "globalping-mcp": {
@@ -1273,7 +1273,7 @@
   "grype-mcp": {
     "port": 8357,
     "image": "hackerdogs/grype-mcp:latest",
-    "category": "vuln-scanning",
+    "category": "appsec",
     "env": []
   },
   "hakrawler-mcp": {
@@ -1317,7 +1317,7 @@
   "horusec-mcp": {
     "port": 8359,
     "image": "hackerdogs/horusec-mcp:latest",
-    "category": "vuln-scanning",
+    "category": "appsec",
     "env": []
   },
   "http-headers-security-mcp": {
@@ -1414,7 +1414,7 @@
   "knostic-mcp-scanner-mcp": {
     "port": 8344,
     "image": "hackerdogs/knostic-mcp-scanner-mcp:latest",
-    "category": "vuln-scanning",
+    "category": "appsec",
     "env": []
   },
   "kube-bench-mcp": {
@@ -1480,13 +1480,13 @@
   "mcpscan-mcp": {
     "port": 8296,
     "image": "hackerdogs/mcpscan-mcp:latest",
-    "category": "vuln-scanning",
+    "category": "appsec",
     "env": []
   },
   "mcpserver-audit-mcp": {
     "port": 8340,
     "image": "hackerdogs/mcpserver-audit-mcp:latest",
-    "category": "vuln-scanning",
+    "category": "appsec",
     "env": []
   },
   "medusa-mcp": {
@@ -1730,7 +1730,7 @@
   "osv-mcp": {
     "port": 8347,
     "image": "hackerdogs/osv-mcp:latest",
-    "category": "vuln-scanning",
+    "category": "appsec",
     "env": []
   },
   "otx-mcp": {
@@ -1880,7 +1880,7 @@
   "ramparts-mcp": {
     "port": 8295,
     "image": "hackerdogs/ramparts-mcp:latest",
-    "category": "vuln-scanning",
+    "category": "appsec",
     "env": []
   },
   "rapidapi-hub-reverse-image-search-by-copyseeker-mcp": {
@@ -1924,7 +1924,7 @@
   "retire-js-mcp": {
     "port": 8364,
     "image": "hackerdogs/retire-js-mcp:latest",
-    "category": "vuln-scanning",
+    "category": "appsec",
     "env": []
   },
   "roadtools-mcp": {
@@ -2013,13 +2013,13 @@
   "securemcp-mcp": {
     "port": 8297,
     "image": "hackerdogs/securemcp-mcp:latest",
-    "category": "vuln-scanning",
+    "category": "appsec",
     "env": []
   },
   "semgrep-mcp": {
     "port": 8335,
     "image": "hackerdogs/semgrep-mcp:latest",
-    "category": "vuln-scanning",
+    "category": "appsec",
     "env": []
   },
   "sentry-mcp": {
@@ -2270,7 +2270,7 @@
   "trufflehog-mcp": {
     "port": 8258,
     "image": "hackerdogs/trufflehog-mcp:latest",
-    "category": "vuln-scanning",
+    "category": "appsec",
     "env": []
   },
   "uncover-mcp": {
@@ -2549,5 +2549,96 @@
     "image": "hackerdogs/zscaler-mcp-server-mcp:latest",
     "category": "cloud-container",
     "env": []
+  },
+  "censys-platform-mcp": {
+    "port": 8699,
+    "category": "network-recon",
+    "image": "hackerdogs/censys-platform-mcp:latest",
+    "env": {}
+  },
+  "github-mcp": {
+    "port": 8700,
+    "category": "core",
+    "image": "hackerdogs/github-mcp:latest",
+    "env": {}
+  },
+  "mcp-docker-mcp": {
+    "port": 8701,
+    "category": "cloud-container",
+    "image": "hackerdogs/mcp-docker-mcp:latest",
+    "env": {}
+  },
+  "mitre-attack-remote-mcp": {
+    "port": 8702,
+    "category": "vuln-scanning",
+    "image": "hackerdogs/mitre-attack-remote-mcp:latest",
+    "env": {}
+  },
+  "prowler-mcp": {
+    "port": 8703,
+    "category": "cloud-container",
+    "image": "hackerdogs/prowler-mcp:latest",
+    "env": {}
+  },
+  "serpapi-mcp": {
+    "port": 8704,
+    "category": "osint",
+    "image": "hackerdogs/serpapi-mcp:latest",
+    "env": {
+      "SERPAPI_API_KEY": ""
+    }
+  },
+  "tavily-remote-mcp": {
+    "port": 8705,
+    "category": "osint",
+    "image": "hackerdogs/tavily-remote-mcp:latest",
+    "env": {
+      "TAVILY_API_KEY": ""
+    }
+  },
+  "whoisxmlapi-mcp": {
+    "port": 8706,
+    "category": "network-recon",
+    "image": "hackerdogs/whoisxmlapi-mcp:latest",
+    "env": {
+      "WHOISXMLAPI_KEY": ""
+    }
+  },
+  "xpoz-mcp-server-mcp": {
+    "port": 8707,
+    "category": "appsec",
+    "image": "hackerdogs/xpoz-mcp-server-mcp:latest",
+    "env": {}
+  },
+  "acuvity-mcp-server-alterx-mcp": {
+    "image": "hackerdogs/acuvity-mcp-server-alterx-mcp:latest",
+    "port": 8708,
+    "category": "recon",
+    "env": []
+  },
+  "acuvity-mcp-server-amass-mcp": {
+    "image": "hackerdogs/acuvity-mcp-server-amass-mcp:latest",
+    "port": 8709,
+    "category": "recon",
+    "env": []
+  },
+  "acuvity-mcp-server-arjun-mcp": {
+    "image": "hackerdogs/acuvity-mcp-server-arjun-mcp:latest",
+    "port": 8710,
+    "category": "recon",
+    "env": []
+  },
+  "acuvity-mcp-server-assetfinder-mcp": {
+    "image": "hackerdogs/acuvity-mcp-server-assetfinder-mcp:latest",
+    "port": 8711,
+    "category": "recon",
+    "env": []
+  },
+  "hackerdogs-mcp-server-mcp": {
+    "image": "",
+    "port": 8712,
+    "category": "misc",
+    "env": [],
+    "url": "https://mcp.hackerdogs.ai/mcp"
   }
 }

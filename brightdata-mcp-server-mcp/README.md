@@ -1,31 +1,41 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Bright Data MCP Server
 
-MCP server wrapper for [Bright Data](https://github.com/brightdata/brightdata-mcp) — upstream package `@brightdata/mcp`.
+MCP server wrapper for [Bright Data](https://github.com/brightdata/brightdata-mcp) — scalable web scraping and data collection with built-in proxy infrastructure and bot bypass.
 
 ## What is Bright Data?
 
-MCP server for [Bright Data](https://brightdata.com/) — a web scraping and data collection platform. Provides reliable, scalable access to public web data with built-in proxy infrastructure, CAPTCHA solving, and anti-bot bypass.
+Bright Data is a web data platform offering managed proxy infrastructure, browser APIs, and scraping tools that bypass bot detection, CAPTCHAs, and geo-restrictions at scale. This server wraps the official `@brightdata/mcp` package to expose Bright Data's scraping and data collection capabilities — including the Scraping Browser, SERP API, and Web Unlocker — to any MCP client. See [github.com/brightdata/brightdata-mcp](https://github.com/brightdata/brightdata-mcp) for full documentation.
 
-**API token required** — sign up at [brightdata.com](https://brightdata.com/).
+**API token required** — sign up at [brightdata.com](https://brightdata.com/) and set `API_TOKEN`.
 
-**Summary.** Bright Data MCP Server — Dockerized from upstream `@brightdata/mcp` package.
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `search_engine` | Search Engine |
+| `scrape_as_markdown` | Scrape As Markdown |
+| `search_engine_batch` | Search Engine Batch |
+| `scrape_batch` | Scrape Batch |
+| `discover` | Discover |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Scrape the pricing page of example.com."
-- "Collect product data from an e-commerce site."
+- "Use Bright Data to scrape the product listings page at example-shop.com and return structured data."
+- "Fetch the JavaScript-rendered content of a React SPA at app.example.com using Bright Data's browser API."
+- "Collect Google SERP results for 'best VPN 2026' using Bright Data's SERP API."
+- "Use Bright Data to access geo-restricted content from a US IP address."
+- "Scrape competitor pricing from multiple e-commerce pages without getting blocked."
+- "Extract job listings from a site that blocks regular HTTP requests using Bright Data Web Unlocker."
 
 ## Deploy
 
@@ -99,6 +109,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
 
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "brightdata-mcp-server-mcp": {
+      "url": "http://localhost:8485/brightdata-mcp-server-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
+
 ## Environment Variables
 
 | Variable | Default | Description |
@@ -106,6 +136,7 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 | `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
 | `MCP_PORT` | `8630` | HTTP port (only used with `streamable-http`) |
 | `API_TOKEN` | — | Bright Data API token |
+| `BRIGHTDATA_API_TOKEN` | — | Bright Data API token (required) |
 
 ## Installing in Hackerdogs
 

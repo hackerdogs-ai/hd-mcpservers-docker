@@ -1,0 +1,7 @@
+.venv-test/
+__pycache__/
+*.pyc
+tests/_smoke_*.db*
+tests/_test_auth_*.db*
+tests/.pytest_cache/
+secrets.key

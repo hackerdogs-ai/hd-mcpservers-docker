@@ -1,31 +1,63 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS Network MCP Server
 
-MCP server wrapper for [AWS Networking](https://github.com/awslabs/mcp) — upstream package `awslabs.aws-network-mcp-server`.
+MCP server wrapper for [AWS Network](https://github.com/awslabs/mcp/tree/main/src/aws-network-mcp-server) — read-only inspection and troubleshooting of AWS networking resources including Cloud WAN, Transit Gateway, VPC, Network Firewall, and VPN.
 
-## What is AWS Networking?
+## What is AWS Network MCP?
 
-MCP server for AWS networking services. Troubleshoot and analyze Cloud WAN, Transit Gateway, VPC, Network Firewall, and VPN.
+The AWS Network MCP server provides read-only access to the full range of AWS networking services — VPCs, subnets, route tables, security groups, Transit Gateway attachments, Cloud WAN global networks, Network Firewall policies, and Site-to-Site VPN connections. Built from the `awslabs.aws-network-mcp-server` package (version 0.0.9+), it is purpose-built for troubleshooting connectivity issues and auditing network topology through natural language. See [awslabs/mcp](https://github.com/awslabs/mcp) for full documentation.
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
-**Summary.** AWS Network MCP Server — Dockerized from upstream `awslabs.aws-network-mcp-server` package.
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `get_path_trace_methodology` | Get Path Trace Methodology |
+| `find_ip_address` | Find Ip Address |
+| `get_eni_details` | Get Eni Details |
+| `detect_cwan_inspection` | Detect Cwan Inspection |
+| `get_all_cwan_routes` | Get All Cwan Routes |
+| `get_cwan_routes` | Get Cwan Routes |
+| `get_cwan_attachment` | Get Cwan Attachment |
+| `get_cwan` | Get Cwan |
+| `get_cwan_logs` | Get Cwan Logs |
+| `get_cwan_peering` | Get Cwan Peering |
+| `list_cwan_peerings` | List Cwan Peerings |
+| `list_core_networks` | List Core Networks |
+| `simulate_cwan_route_change` | Simulate Cwan Route Change |
+| `get_firewall_rules` | Get Firewall Rules |
+| `get_firewall_flow_logs` | Get Firewall Flow Logs |
+| `list_firewalls` | List Firewalls |
+| `detect_tgw_inspection` | Detect Tgw Inspection |
+| `get_all_tgw_routes` | Get All Tgw Routes |
+| `get_tgw` | Get Tgw |
+| `get_tgw_routes` | Get Tgw Routes |
+| `get_tgw_flow_logs` | Get Tgw Flow Logs |
+| `list_tgw_peerings` | List Tgw Peerings |
+| `list_transit_gateways` | List Transit Gateways |
+| `get_vpc_flow_logs` | Get Vpc Flow Logs |
+| `get_vpc_network` | Get Vpc Network |
+| `list_vpcs` | List Vpcs |
+| `list_vpn_connections` | List Vpn Connections |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me AWS Networking resources in my AWS account."
-- "Describe the current state of my AWS Networking setup."
+- "List all VPCs in us-east-1 and show their CIDR blocks and flow log status."
+- "Show me the Transit Gateway route tables and their associations in my account."
+- "Which security groups allow inbound traffic on port 22 from 0.0.0.0/0?"
+- "Describe the Cloud WAN global network and list its core network segments."
+- "Check the status of all Site-to-Site VPN connections and flag any that are down."
+- "Show the Network Firewall policies applied to each VPC in my account."
 
 ## Deploy
 
@@ -108,6 +140,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "aws-network-mcp": {
+      "url": "http://localhost:8485/aws-network-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

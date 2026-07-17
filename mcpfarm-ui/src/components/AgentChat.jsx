@@ -2,7 +2,9 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { getClaudeKey, getHeygenKey, getHeygenAvatarId } from '../lib/api.js';
 import { mcpClient } from '../lib/mcp.js';
 import { runChatTurn } from '../lib/claude.js';
+import { isServerRunning } from '../lib/categories.js';
 import HeyGenAvatar from './HeyGenAvatar.jsx';
+import ToolResultContent from './ToolResultContent.jsx';
 
 const AGENT_NAME = 'Nova';
 
@@ -51,55 +53,45 @@ function buildSystemPrompt(runningServers, allServers) {
   return BASE_SYSTEM_PROMPT + catalog;
 }
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
-
-function formatToolResult(result) {
-  if (!result) return '';
-  if (typeof result === 'string') return result;
-  if (result.content && Array.isArray(result.content)) {
-    return result.content.map((c) => (c.type === 'text' ? c.text : JSON.stringify(c, null, 2))).join('\n');
-  }
-  return JSON.stringify(result, null, 2);
-}
-
 // ── Tool card ─────────────────────────────────────────────────────────────────
 
 function ToolCard({ call }) {
   const [open, setOpen] = useState(false);
   const isError = !!call.error;
   const isDone = call.result !== undefined || isError;
-  const color = isError ? '#f85149' : isDone ? '#3fb950' : '#d29922';
+  const cardClass = isError
+    ? 'hd-tool-card hd-tool-card--err'
+    : isDone
+    ? 'hd-tool-card hd-tool-card--ok'
+    : 'hd-tool-card hd-tool-card--pending';
 
   return (
-    <div className="rounded border my-1.5 text-xs" style={{ borderColor: color + '44', background: '#0a0f14' }}>
-      <button onClick={() => setOpen((o) => !o)} className="w-full flex items-center gap-2 px-3 py-2 text-left">
-        <span style={{ color, fontSize: 10 }}>{isError ? '✗' : isDone ? '✓' : '↻'}</span>
-        {!isDone && <span className="spinner" style={{ width: 9, height: 9 }} />}
-        <span className="font-mono px-1.5 py-0.5 rounded" style={{ background: '#161b22', color: '#8b949e', fontSize: 10 }}>
-          {call.serverName}
+    <div className={cardClass}>
+      <button type="button" onClick={() => setOpen((o) => !o)} className="hd-tool-card__head">
+        <span className={isError ? 'hd-text-err' : isDone ? 'hd-text-ok' : ''} style={{ fontSize: 10 }}>
+          {isError ? '✗' : isDone ? '✓' : '↻'}
         </span>
-        <span style={{ color: '#c9d1d9' }}>{call.toolName}</span>
-        <span className="ml-auto" style={{ color: '#484f58' }}>{open ? '▲' : '▼'}</span>
+        {!isDone && <span className="spinner" style={{ width: 9, height: 9 }} />}
+        <span className="hd-tool-card__badge">{call.serverName}</span>
+        <span>{call.toolName}</span>
+        <span className="ml-auto hd-text-dim">{open ? '▲' : '▼'}</span>
       </button>
       {open && (
-        <div className="border-t px-3 pb-3 pt-2 space-y-2" style={{ borderColor: '#21262d' }}>
+        <div className="hd-tool-card__body space-y-2">
           {call.args && Object.keys(call.args).length > 0 && (
             <div>
-              <div className="mb-1 font-medium" style={{ color: '#8b949e' }}>Arguments</div>
-              <pre className="overflow-auto rounded p-2" style={{ background: '#161b22', color: '#58a6ff', maxHeight: 80, fontSize: 11 }}>
-                {JSON.stringify(call.args, null, 2)}
-              </pre>
+              <div className="hd-tool-card__label">Arguments</div>
+              <pre className="hd-code hd-code--json max-h-20">{JSON.stringify(call.args, null, 2)}</pre>
             </div>
           )}
-          {isError && (
-            <div className="rounded p-2" style={{ background: 'rgba(248,81,73,0.08)', color: '#f85149' }}>{call.error}</div>
-          )}
+          {isError && <div className="hd-tool-card__error">{call.error}</div>}
           {call.result !== undefined && (
             <div>
-              <div className="mb-1 font-medium" style={{ color: '#8b949e' }}>Result</div>
-              <pre className="overflow-auto rounded p-2 whitespace-pre-wrap" style={{ background: '#161b22', color: '#e6edf3', maxHeight: 180, fontSize: 11 }}>
-                {formatToolResult(call.result)}
-              </pre>
+              <div className="hd-tool-card__label">Result</div>
+              <ToolResultContent
+                result={call.result}
+                className="hd-code max-h-[180px] whitespace-pre-wrap"
+              />
             </div>
           )}
         </div>
@@ -116,8 +108,7 @@ function AgentMsg({ parts, isPending }) {
       {parts.map((part, i) => {
         if (part.type === 'text' && part.text) {
           return (
-            <div key={i} className="rounded-xl px-4 py-3 text-sm mb-2 whitespace-pre-wrap"
-              style={{ background: '#161b22', color: '#e6edf3', border: '1px solid #30363d', lineHeight: 1.6 }}>
+            <div key={i} className="hd-chat-bubble-agent text-sm mb-2 whitespace-pre-wrap">
               {part.text}
             </div>
           );
@@ -126,11 +117,18 @@ function AgentMsg({ parts, isPending }) {
         return null;
       })}
       {isPending && parts.length === 0 && (
-        <div className="rounded-xl px-4 py-3 flex items-center gap-1.5"
-          style={{ background: '#161b22', border: '1px solid #30363d', width: 'fit-content' }}>
+        <div className="hd-chat-bubble-agent inline-flex items-center gap-1.5 w-fit">
           {[0, 1, 2].map((i) => (
-            <span key={i} className="rounded-full inline-block"
-              style={{ width: 7, height: 7, background: '#3fb950', animation: `nova-bubble-pulse 1.2s ease-in-out ${i * 0.2}s infinite` }} />
+            <span
+              key={i}
+              className="rounded-full inline-block"
+              style={{
+                width: 7,
+                height: 7,
+                background: 'var(--status-live)',
+                animation: `nova-bubble-pulse 1.2s ease-in-out ${i * 0.2}s infinite`,
+              }}
+            />
           ))}
         </div>
       )}
@@ -141,9 +139,7 @@ function AgentMsg({ parts, isPending }) {
 function UserMsg({ text }) {
   return (
     <div className="flex justify-end mb-4">
-      <div className="max-w-md px-4 py-2.5 rounded-xl text-sm" style={{ background: '#1f6feb', color: '#fff', lineHeight: 1.5 }}>
-        {text}
-      </div>
+      <div className="max-w-md hd-chat-bubble-user text-sm">{text}</div>
     </div>
   );
 }
@@ -152,7 +148,7 @@ function UserMsg({ text }) {
 
 export default function AgentChat({ servers }) {
   const allServers = Array.isArray(servers) ? servers : [];
-  const runningServers = allServers.filter((s) => s.health_ok);
+  const runningServers = allServers.filter((s) => isServerRunning(s));
 
   const welcome = runningServers.length > 0
     ? `Hi! I'm Nova, your AI security analyst.\n\nI have ${runningServers.length} security tools running right now. Give me a target — domain, IP, URL, or a question — and I'll get to work.\n\nWhat would you like me to investigate?`
@@ -308,7 +304,6 @@ export default function AgentChat({ servers }) {
   }
 
   const statusLabel = novaState === 'thinking' ? (statusText || 'Thinking...') : novaState === 'talking' ? 'Responding...' : `${runningServers.length} tools available`;
-  const statusColor = novaState === 'idle' ? '#3fb950' : '#d29922';
 
   return (
     <>
@@ -319,90 +314,68 @@ export default function AgentChat({ servers }) {
         }
       `}</style>
 
-      <div className="flex h-full" style={{ background: '#0d1117' }}>
-
-        {/* ── Left panel: Nova avatar ── */}
-        <div
-          className="flex flex-col items-center pt-8 pb-6 px-4 flex-shrink-0"
-          style={{ width: 240, borderRight: '1px solid #21262d', background: '#0d1117' }}
-        >
+      <div className="flex h-full hd-chat-shell">
+        <div className="flex flex-col items-center pt-8 pb-6 px-4 flex-shrink-0 hd-chat-sidebar" style={{ width: 240 }}>
           <HeyGenAvatar ref={avatarRef} apiKey={getHeygenKey()} avatarId={getHeygenAvatarId()} width={208} />
 
           <div className="mt-5 text-center">
-            <div className="text-lg font-bold" style={{ color: '#e6edf3' }}>{AGENT_NAME}</div>
-            <div className="text-xs mt-1" style={{ color: '#8b949e' }}>Security Analyst AI</div>
+            <div className="text-lg font-bold">{AGENT_NAME}</div>
+            <div className="text-xs mt-1 hd-text-dim">Security Analyst AI</div>
           </div>
 
-          {/* Status badge */}
-          <div
-            className="mt-4 flex items-center gap-2 px-3 py-1.5 rounded-full text-xs"
-            style={{ background: '#161b22', border: `1px solid ${statusColor}44` }}
-          >
+          <div className="mt-4 flex items-center gap-2 px-3 py-1.5 rounded-full text-xs hd-panel">
             <span
               className="rounded-full flex-shrink-0"
-              style={{ width: 7, height: 7, background: statusColor,
-                boxShadow: novaState !== 'idle' ? `0 0 6px ${statusColor}` : 'none' }}
+              style={{
+                width: 7,
+                height: 7,
+                background: novaState === 'idle' ? 'var(--status-live)' : 'var(--semantic-warning)',
+              }}
             />
-            <span style={{ color: statusColor }}>
+            <span className={novaState === 'idle' ? 'hd-text-ok' : ''}>
               {novaState === 'idle' ? 'Ready' : novaState === 'thinking' ? 'Thinking' : 'Responding'}
             </span>
           </div>
 
-          {/* Running server count */}
-          <div className="mt-6 w-full rounded-lg px-3 py-3 text-center"
-            style={{ background: '#161b22', border: '1px solid #21262d' }}>
-            <div className="text-2xl font-bold" style={{ color: '#3fb950' }}>{runningServers.length}</div>
-            <div className="text-xs mt-0.5" style={{ color: '#8b949e' }}>tools available</div>
+          <div className="mt-6 w-full hd-panel rounded-lg px-3 py-3 text-center">
+            <div className="text-2xl font-bold hd-text-ok">{runningServers.length}</div>
+            <div className="text-xs mt-0.5 hd-text-dim">tools available</div>
           </div>
 
           {runningServers.length > 0 && (
             <div className="mt-3 w-full space-y-1 max-h-48 overflow-y-auto">
               {runningServers.slice(0, 8).map((s) => (
-                <div key={s.name} className="flex items-center gap-1.5 px-2 py-0.5 rounded text-xs"
-                  style={{ color: '#8b949e' }}>
-                  <span className="rounded-full flex-shrink-0" style={{ width: 5, height: 5, background: '#3fb950' }} />
+                <div key={s.name} className="flex items-center gap-1.5 px-2 py-0.5 rounded text-xs hd-text-dim">
+                  <span className="rounded-full flex-shrink-0 hd-text-ok" style={{ width: 5, height: 5, background: 'var(--status-live)' }} />
                   <span className="truncate">{s.name.replace(/-mcp$/, '')}</span>
                 </div>
               ))}
               {runningServers.length > 8 && (
-                <div className="text-xs text-center mt-1" style={{ color: '#484f58' }}>
-                  +{runningServers.length - 8} more
-                </div>
+                <div className="text-xs text-center mt-1 hd-text-dim">{runningServers.length - 8} more</div>
               )}
             </div>
           )}
 
           <div className="mt-auto pt-4 w-full">
-            <button onClick={handleClear} disabled={busy}
-              className="w-full py-1.5 rounded text-xs transition-colors"
-              style={{ border: '1px solid #30363d', color: '#8b949e', background: 'transparent' }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#e6edf3')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#8b949e')}
-            >
+            <button type="button" onClick={handleClear} disabled={busy} className="hd-btn hd-btn--ghost w-full text-xs">
               ↺ New conversation
             </button>
           </div>
         </div>
 
-        {/* ── Right panel: chat ── */}
-        <div className="flex flex-col flex-1 min-w-0">
-
-          {/* Chat header */}
-          <div className="flex items-center px-5 py-3 border-b flex-shrink-0"
-            style={{ borderColor: '#21262d', background: '#0d1117' }}>
-            <div className="text-sm" style={{ color: '#8b949e' }}>
-              <span style={{ color: statusColor }}>{statusLabel}</span>
+        <div className="flex flex-col flex-1 min-w-0 hd-chat-shell">
+          <div className="flex items-center px-5 py-3 border-b flex-shrink-0 hd-panel__head" style={{ borderBottom: '1px solid var(--border)' }}>
+            <div className="text-sm hd-text-dim">
+              <span className={novaState === 'idle' ? 'hd-text-ok' : ''}>{statusLabel}</span>
               {statusText && novaState === 'thinking' && (
-                <span className="ml-2 text-xs" style={{ color: '#484f58' }}>· {statusText}</span>
+                <span className="ml-2 text-xs hd-text-dim">· {statusText}</span>
               )}
             </div>
           </div>
 
-          {/* No Claude key warning */}
           {!getClaudeKey() && (
-            <div className="mx-5 mt-4 px-4 py-2.5 rounded-lg text-sm flex-shrink-0"
-              style={{ background: 'rgba(210,153,34,0.08)', border: '1px solid rgba(210,153,34,0.3)', color: '#d29922' }}>
-              Claude API key not set — open ⚙️ Settings and add your <code style={{ background: '#0d1117', padding: '1px 4px', borderRadius: 3 }}>sk-ant-...</code> key to activate Nova.
+            <div className="mx-5 mt-4 px-4 py-2.5 rounded-lg text-sm flex-shrink-0 hd-tool-card__error">
+              Claude API key not set — open ⚙️ Settings and add your <code className="hd-code inline px-1">sk-ant-...</code> key to activate Nova.
             </div>
           )}
 
@@ -417,7 +390,7 @@ export default function AgentChat({ servers }) {
           </div>
 
           {/* Input */}
-          <div className="px-5 pb-5 pt-3 flex-shrink-0 border-t" style={{ borderColor: '#21262d' }}>
+          <div className="px-5 pb-5 pt-3 flex-shrink-0 border-t" style={{ borderColor: 'var(--border)' }}>
             <div className="flex gap-3">
               <textarea
                 ref={inputRef}
@@ -427,29 +400,19 @@ export default function AgentChat({ servers }) {
                 disabled={busy}
                 rows={2}
                 placeholder="Ask Nova to scan a target, investigate a domain, check for vulnerabilities..."
-                className="flex-1 px-4 py-3 rounded-xl text-sm resize-none border transition-colors"
-                style={{
-                  background: '#161b22', borderColor: '#30363d', color: '#e6edf3',
-                  outline: 'none', opacity: busy ? 0.6 : 1, lineHeight: 1.5,
-                }}
-                onFocus={(e) => (e.target.style.borderColor = '#3fb950')}
-                onBlur={(e) => (e.target.style.borderColor = '#30363d')}
+                className="hd-textarea flex-1 rounded-xl text-sm resize-none"
+                style={{ opacity: busy ? 0.6 : 1, lineHeight: 1.5, minHeight: '4.5rem' }}
               />
-              <button onClick={handleSend} disabled={busy || !input.trim()}
-                className="px-5 rounded-xl text-sm font-semibold transition-all flex-shrink-0"
-                style={{
-                  background: busy || !input.trim() ? '#161b22' : 'linear-gradient(135deg, #3fb950, #238636)',
-                  color: busy || !input.trim() ? '#484f58' : '#fff',
-                  cursor: busy || !input.trim() ? 'not-allowed' : 'pointer',
-                  border: '1px solid',
-                  borderColor: busy || !input.trim() ? '#30363d' : '#3fb950',
-                  boxShadow: !busy && input.trim() ? '0 0 12px rgba(63,185,80,0.3)' : 'none',
-                }}
+              <button
+                type="button"
+                onClick={handleSend}
+                disabled={busy || !input.trim()}
+                className="hd-btn hd-btn--primary px-5 rounded-xl flex-shrink-0"
               >
                 {busy ? <span className="spinner" style={{ width: 16, height: 16 }} /> : '▶ Send'}
               </button>
             </div>
-            <div className="text-xs mt-2" style={{ color: '#484f58' }}>
+            <div className="text-xs mt-2 hd-text-dim">
               Enter to send · Shift+Enter for new line · Nova only uses currently running servers
             </div>
           </div>

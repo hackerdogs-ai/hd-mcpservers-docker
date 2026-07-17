@@ -1,31 +1,47 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS ECS MCP Server
 
-MCP server wrapper for [ECS](https://github.com/awslabs/mcp) — upstream package `awslabs.ecs-mcp-server`.
+MCP server wrapper for [Amazon ECS](https://github.com/awslabs/mcp/tree/main/src/ecs-mcp-server) — deploy, scale, and troubleshoot containerized applications running on Amazon Elastic Container Service.
 
-## What is ECS?
+## What is Amazon ECS?
 
-MCP server for Amazon ECS. Deploy, manage, and monitor containerized applications on Amazon Elastic Container Service.
+Amazon ECS is AWS's managed container orchestration service for running Docker containers on clusters of EC2 instances or AWS Fargate serverless compute. This MCP server enables AI assistants to list and describe clusters, services, and tasks; inspect task definitions and container logs; update service desired counts; and diagnose deployment failures and stopped task exit codes. See [awslabs/mcp](https://github.com/awslabs/mcp/tree/main/src/ecs-mcp-server) for full documentation.
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
-**Summary.** AWS ECS MCP Server — Dockerized from upstream `awslabs.ecs-mcp-server` package.
+**Summary.** MCP server wrapper for [Amazon ECS](https://github.com/awslabs/mcp/tree/main/src/ecs-mcp-server) — manage ECS clusters, services, and tasks including deployment updates and stopped-task diagnostics.
+
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `containerize_app` | Containerize App |
+| `build_and_push_image_to_ecr` | Build And Push Image To Ecr |
+| `validate_ecs_express_mode_prerequisites` | Validate Ecs Express Mode Prerequisites |
+| `delete_app` | Delete App |
+| `wait_for_service_ready` | Wait For Service Ready |
+| `ecs_resource_management` | Ecs Resource Management |
+| `ecs_troubleshooting_tool` | Ecs Troubleshooting Tool |
+| `aws_knowledge_aws___read_documentation` | Aws Knowledge Aws   Read Documentation |
+| `aws_knowledge_aws___search_documentation` | Aws Knowledge Aws   Search Documentation |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me ECS resources in my AWS account."
-- "Describe the current state of my ECS setup."
+- "List all ECS clusters in my account and show how many services are running in each."
+- "Show me all tasks in the production cluster that stopped in the last hour and their exit codes."
+- "Describe the task definition for the api-service and show the container image and environment variables."
+- "Update the desired count of the web-frontend service to 6 in the production cluster."
+- "Show the CloudWatch logs for the most recently stopped task in the checkout service."
+- "List all ECS services across all clusters that have a deployment in progress."
 
 ## Deploy
 
@@ -108,6 +124,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "aws-ecs-mcp": {
+      "url": "http://localhost:8485/aws-ecs-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

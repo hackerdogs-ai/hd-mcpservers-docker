@@ -1,31 +1,37 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Geocoding MCP Server
 
-MCP server wrapper for [Geocoding](https://github.com/nicholasgasior/geocode-mcp) — upstream package `geocode-mcp`.
+MCP server wrapper for [geocode-mcp](https://pypi.org/project/geocode-mcp/) — convert street addresses to geographic coordinates (forward geocoding) and GPS coordinates to human-readable addresses (reverse geocoding).
 
 ## What is Geocoding?
 
-MCP server for geocoding — convert addresses to coordinates and coordinates to addresses. Uses open geocoding services for forward and reverse geocoding lookups.
+`geocode-mcp` is a Python MCP server that wraps open geocoding services to give AI assistants address lookup and coordinate conversion capabilities. Forward geocoding resolves a street address or place name to latitude/longitude; reverse geocoding turns a coordinate pair into the nearest address. It is useful for location-aware workflows such as distance calculations, map plotting, or enriching datasets with geographic context.
 
-**No API keys required** — this server works out of the box.
+**No API keys required** — this server uses open geocoding services and works out of the box.
 
-**Summary.** Geocoding MCP Server — Dockerized from upstream `geocode-mcp` package.
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `get_coordinates` | Get Coordinates |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Geocode the address '1600 Pennsylvania Avenue, Washington DC'."
-- "What is the address at coordinates 37.7749, -122.4194?"
+- "Geocode '1600 Pennsylvania Avenue NW, Washington, DC' and give me the latitude and longitude."
+- "What is the street address at coordinates 48.8584, 2.2945?"
+- "Convert these 10 addresses in my CSV to lat/lon coordinates."
+- "Find the coordinates for the Eiffel Tower, the Colosseum, and Big Ben."
+- "Reverse geocode 37.7749, -122.4194 and tell me the city and neighborhood."
+- "What country and city is located at coordinates -33.8688, 151.2093?"
 
 ## Deploy
 
@@ -92,6 +98,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "geocoding-mcp": {
+      "url": "http://localhost:8485/geocoding-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

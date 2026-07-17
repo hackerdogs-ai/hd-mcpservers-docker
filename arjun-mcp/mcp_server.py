@@ -29,9 +29,10 @@ async def do_arjun(arguments: str, timeout_seconds: int = 300) -> str:
     """Run Arjun with CLI arguments (e.g. -u https://example.com)."""
     import shlex
     args = shlex.split(arguments) if arguments.strip() else ["-h"]
-    cmd = [ARJUN_CMD] + args
-    if not shutil.which(ARJUN_CMD) and ARJUN_CMD == "arjun":
-        cmd = ["python3", "/opt/arjun/arjun.py"] + args
+    cmd_prefix = shlex.split(ARJUN_CMD)
+    if len(cmd_prefix) == 1 and not shutil.which(cmd_prefix[0]) and cmd_prefix[0] == "arjun":
+        cmd_prefix = ["python3", "/opt/arjun/arjun.py"]
+    cmd = cmd_prefix + args
     logger.info("do_arjun arguments=%s", arguments)
     r = await _run(cmd, timeout=timeout_seconds)
     if r["return_code"] != 0:

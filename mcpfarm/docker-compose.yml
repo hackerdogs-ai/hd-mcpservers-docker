@@ -2,30 +2,16 @@ version: "3.8"
 
 services:
   # -----------------------------------------------------------------------
-  # Cloudflare Tunnel
-  # -----------------------------------------------------------------------
-  cloudflared:
-    image: cloudflare/cloudflared:latest
-    container_name: mcpfarm-tunnel
-    command: tunnel --no-autoupdate run --token ${TUNNEL_TOKEN}
-    environment:
-      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
-    network_mode: "service:caddy"
-    depends_on:
-      caddy:
-        condition: service_healthy
-    restart: unless-stopped
-
-  # -----------------------------------------------------------------------
   # Caddy reverse proxy
   # -----------------------------------------------------------------------
   caddy:
     image: caddy:2-alpine
     container_name: mcpfarm-caddy
     ports:
-      - "80:80"
-      - "11459:11459"
+      - "${FARM_PORT:-8485}:80"
       - "2019:2019"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_routes:/etc/caddy/dynamic
@@ -62,16 +48,36 @@ services:
     image: hackerdogs/auth-gateway:latest
     container_name: mcpfarm-auth
     user: root
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       - ADMIN_SECRET=${ADMIN_SECRET}
       - AUTH_DB_PATH=/data/auth.db
+      - READMES_ROOT=/repo
+      - UI_UPSTREAM=${UI_UPSTREAM:-mcpfarm-ui:3000}
+      # Chat: encrypted LLM key vault (set MCPFARM_SECRETS_KEY in production).
+      - MCPFARM_SECRETS_KEY=${MCPFARM_SECRETS_KEY:-}
+      # Chat: Redis Stack vector index on the shared hd-redis instance.
+      - REDIS_URL=${REDIS_URL:-redis://hd-redis:6379}
+      - MCPFARM_VECTOR_PREFIX=${MCPFARM_VECTOR_PREFIX:-mcpfarm:v1}
+      - MCPFARM_VECTOR_INDEX=${MCPFARM_VECTOR_INDEX:-mcpfarm:idx}
+      - VECTOR_DIM=${VECTOR_DIM:-1536}
+      - VECTOR_AUTO_REINDEX=${VECTOR_AUTO_REINDEX:-true}
+      # Embeddings + server-side LLM proxy config.
+      - EMBED_PROVIDER=${EMBED_PROVIDER:-auto}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - OLLAMA_URL=${OLLAMA_URL:-http://host.docker.internal:11434}
+      - BEDROCK_REGION=${BEDROCK_REGION:-us-east-1}
+      - AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT:-}
     volumes:
       - auth_data:/data
       - caddy_routes:/etc/caddy/dynamic
       - /var/run/docker.sock:/var/run/docker.sock
       - ./port-map.json:/app/port-map.json:ro
+      - ..:/repo:ro
     networks:
       - mcpfarm
+      - hdnet
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9090/health"]
       interval: 10s
@@ -91,6 +97,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8341
+    ports:
+      - "8341:8341"
     networks:
       - mcpfarm
     restart: 'no'
@@ -115,6 +123,8 @@ services:
       - ABSTRACT_EXCHANGE_API_KEY=${ABSTRACT_EXCHANGE_API_KEY}
       - ABSTRACT_COMPANY_API_KEY=${ABSTRACT_COMPANY_API_KEY}
       - ABSTRACT_TIMEZONE_API_KEY=${ABSTRACT_TIMEZONE_API_KEY}
+    ports:
+      - "8501:8501"
     networks:
       - mcpfarm
     restart: 'no'
@@ -131,6 +141,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8373
       - ABUSECH_API_KEY=${ABUSECH_API_KEY}
+    ports:
+      - "8373:8373"
     networks:
       - mcpfarm
     restart: 'no'
@@ -147,6 +159,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8374
       - ABUSEIPDB_API_KEY=${ABUSEIPDB_API_KEY}
+    ports:
+      - "8374:8374"
     networks:
       - mcpfarm
     restart: 'no'
@@ -162,6 +176,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8403
+    ports:
+      - "8403:8403"
     networks:
       - mcpfarm
     restart: 'no'
@@ -177,6 +193,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8404
+    ports:
+      - "8404:8404"
     networks:
       - mcpfarm
     restart: 'no'
@@ -192,6 +210,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8432
+    ports:
+      - "8432:8432"
     networks:
       - mcpfarm
     restart: 'no'
@@ -207,6 +227,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8405
+    ports:
+      - "8405:8405"
     networks:
       - mcpfarm
     restart: 'no'
@@ -222,6 +244,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8406
+    ports:
+      - "8406:8406"
     networks:
       - mcpfarm
     restart: 'no'
@@ -237,6 +261,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8407
+    ports:
+      - "8407:8407"
     networks:
       - mcpfarm
     restart: 'no'
@@ -252,6 +278,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8408
+    ports:
+      - "8408:8408"
     networks:
       - mcpfarm
     restart: 'no'
@@ -267,6 +295,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8412
+    ports:
+      - "8412:8412"
     networks:
       - mcpfarm
     restart: 'no'
@@ -282,6 +312,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8414
+    ports:
+      - "8414:8414"
     networks:
       - mcpfarm
     restart: 'no'
@@ -297,6 +329,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8417
+    ports:
+      - "8417:8417"
     networks:
       - mcpfarm
     restart: 'no'
@@ -312,6 +346,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8431
+    ports:
+      - "8431:8431"
     networks:
       - mcpfarm
     restart: 'no'
@@ -327,6 +363,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8418
+    ports:
+      - "8418:8418"
     networks:
       - mcpfarm
     restart: 'no'
@@ -342,6 +380,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8419
+    ports:
+      - "8419:8419"
     networks:
       - mcpfarm
     restart: 'no'
@@ -357,6 +397,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8421
+    ports:
+      - "8421:8421"
     networks:
       - mcpfarm
     restart: 'no'
@@ -372,6 +414,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8424
+    ports:
+      - "8424:8424"
     networks:
       - mcpfarm
     restart: 'no'
@@ -387,6 +431,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8425
+    ports:
+      - "8425:8425"
     networks:
       - mcpfarm
     restart: 'no'
@@ -402,6 +448,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8426
+    ports:
+      - "8426:8426"
     networks:
       - mcpfarm
     restart: 'no'
@@ -417,6 +465,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8427
+    ports:
+      - "8427:8427"
     networks:
       - mcpfarm
     restart: 'no'
@@ -432,6 +482,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8428
+    ports:
+      - "8428:8428"
     networks:
       - mcpfarm
     restart: 'no'
@@ -447,6 +499,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8433
+    ports:
+      - "8433:8433"
     networks:
       - mcpfarm
     restart: 'no'
@@ -462,6 +516,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8437
+    ports:
+      - "8437:8437"
     networks:
       - mcpfarm
     restart: 'no'
@@ -477,6 +533,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8441
+    ports:
+      - "8441:8441"
     networks:
       - mcpfarm
     restart: 'no'
@@ -492,6 +550,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8444
+    ports:
+      - "8444:8444"
     networks:
       - mcpfarm
     restart: 'no'
@@ -507,6 +567,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8450
+    ports:
+      - "8450:8450"
     networks:
       - mcpfarm
     restart: 'no'
@@ -522,6 +584,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8452
+    ports:
+      - "8452:8452"
     networks:
       - mcpfarm
     restart: 'no'
@@ -537,6 +601,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8455
+    ports:
+      - "8455:8455"
     networks:
       - mcpfarm
     restart: 'no'
@@ -552,6 +618,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8508
+    ports:
+      - "8508:8508"
     networks:
       - mcpfarm
     restart: 'no'
@@ -567,6 +635,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8509
+    ports:
+      - "8509:8509"
     networks:
       - mcpfarm
     restart: 'no'
@@ -582,6 +652,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8510
+    ports:
+      - "8510:8510"
     networks:
       - mcpfarm
     restart: 'no'
@@ -597,6 +669,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8601
+    ports:
+      - "8601:8601"
     networks:
       - mcpfarm
     restart: 'no'
@@ -612,6 +686,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8294
+    ports:
+      - "8294:8294"
     networks:
       - mcpfarm
     restart: 'no'
@@ -627,6 +703,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8343
+    ports:
+      - "8343:8343"
     networks:
       - mcpfarm
     restart: 'no'
@@ -642,6 +720,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8321
+    ports:
+      - "8321:8321"
     networks:
       - mcpfarm
     restart: 'no'
@@ -657,6 +737,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8434
+    ports:
+      - "8434:8434"
     networks:
       - mcpfarm
     restart: 'no'
@@ -672,6 +754,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8402
+    ports:
+      - "8402:8402"
     networks:
       - mcpfarm
     restart: 'no'
@@ -687,6 +771,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8681
+    ports:
+      - "8681:8681"
     networks:
       - mcpfarm
     restart: 'no'
@@ -702,6 +788,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8682
+    ports:
+      - "8682:8682"
     networks:
       - mcpfarm
     restart: 'no'
@@ -717,6 +805,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8229
+    ports:
+      - "8229:8229"
     networks:
       - mcpfarm
     restart: 'no'
@@ -732,6 +822,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8246
+    ports:
+      - "8246:8246"
     networks:
       - mcpfarm
     restart: 'no'
@@ -747,6 +839,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8511
+    ports:
+      - "8511:8511"
     networks:
       - mcpfarm
     restart: 'no'
@@ -762,6 +856,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8259
+    ports:
+      - "8259:8259"
     networks:
       - mcpfarm
     restart: 'no'
@@ -777,6 +873,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8512
+    ports:
+      - "8512:8512"
     networks:
       - mcpfarm
     restart: 'no'
@@ -792,6 +890,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8513
+    ports:
+      - "8513:8513"
     networks:
       - mcpfarm
     restart: 'no'
@@ -807,6 +907,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8683
+    ports:
+      - "8683:8683"
     networks:
       - mcpfarm
     restart: 'no'
@@ -822,6 +924,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8205
+    ports:
+      - "8205:8205"
     networks:
       - mcpfarm
     restart: 'no'
@@ -838,6 +942,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8110
       - PDCP_API_KEY=${PDCP_API_KEY}
+    ports:
+      - "8110:8110"
     networks:
       - mcpfarm
     restart: 'no'
@@ -853,6 +959,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8684
+    ports:
+      - "8684:8684"
     networks:
       - mcpfarm
     restart: 'no'
@@ -876,6 +984,8 @@ services:
       - GROQ_API_KEY=${GROQ_API_KEY}
       - MISTRAL_API_KEY=${MISTRAL_API_KEY}
       - TOGETHER_API_KEY=${TOGETHER_API_KEY}
+    ports:
+      - "8101:8101"
     networks:
       - mcpfarm
     restart: 'no'
@@ -891,6 +1001,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8201
+    ports:
+      - "8201:8201"
     networks:
       - mcpfarm
     restart: 'no'
@@ -909,6 +1021,8 @@ services:
       - AWS_REGION=${AWS_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8602:8602"
     networks:
       - mcpfarm
     restart: 'no'
@@ -927,6 +1041,8 @@ services:
       - AWS_REGION=${AWS_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8603:8603"
     networks:
       - mcpfarm
     restart: 'no'
@@ -945,6 +1061,8 @@ services:
       - AWS_REGION=${AWS_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8604:8604"
     networks:
       - mcpfarm
     restart: 'no'
@@ -963,6 +1081,8 @@ services:
       - AWS_REGION=${AWS_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8605:8605"
     networks:
       - mcpfarm
     restart: 'no'
@@ -981,6 +1101,8 @@ services:
       - AWS_REGION=${AWS_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8606:8606"
     networks:
       - mcpfarm
     restart: 'no'
@@ -999,6 +1121,8 @@ services:
       - AWS_REGION=${AWS_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8607:8607"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1017,6 +1141,8 @@ services:
       - AWS_REGION=${AWS_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8608:8608"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1035,6 +1161,8 @@ services:
       - AWS_REGION=${AWS_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8609:8609"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1050,6 +1178,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8610
+    ports:
+      - "8610:8610"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1068,6 +1198,8 @@ services:
       - AWS_REGION=${AWS_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8611:8611"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1086,6 +1218,8 @@ services:
       - AWS_REGION=${AWS_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8612:8612"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1104,6 +1238,8 @@ services:
       - AWS_REGION=${AWS_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8613:8613"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1122,6 +1258,8 @@ services:
       - AWS_REGION=${AWS_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8614:8614"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1140,6 +1278,8 @@ services:
       - AWS_REGION=${AWS_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8615:8615"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1158,6 +1298,8 @@ services:
       - AWS_REGION=${AWS_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8616:8616"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1176,6 +1318,8 @@ services:
       - AWS_REGION=${AWS_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8617:8617"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1194,6 +1338,8 @@ services:
       - AWS_REGION=${AWS_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8618:8618"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1212,6 +1358,8 @@ services:
       - AWS_REGION=${AWS_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8619:8619"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1230,6 +1378,8 @@ services:
       - AWS_REGION=${AWS_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8620:8620"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1248,6 +1398,8 @@ services:
       - AWS_REGION=${AWS_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8621:8621"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1263,6 +1415,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8346
+    ports:
+      - "8346:8346"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1281,6 +1435,8 @@ services:
       - AWS_REGION=${AWS_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8622:8622"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1299,6 +1455,8 @@ services:
       - AWS_REGION=${AWS_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8623:8623"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1317,6 +1475,8 @@ services:
       - AWS_REGION=${AWS_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8624:8624"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1335,6 +1495,8 @@ services:
       - AWS_REGION=${AWS_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8625:8625"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1353,6 +1515,8 @@ services:
       - AWS_REGION=${AWS_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8626:8626"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1372,6 +1536,8 @@ services:
       - AZURE_CLIENT_SECRET=${AZURE_CLIENT_SECRET}
       - AZURE_TENANT_ID=${AZURE_TENANT_ID}
       - AZURE_SUBSCRIPTION_ID=${AZURE_SUBSCRIPTION_ID}
+    ports:
+      - "8627:8627"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1387,6 +1553,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8628
+    ports:
+      - "8628:8628"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1402,6 +1570,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8514
+    ports:
+      - "8514:8514"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1417,6 +1587,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8360
+    ports:
+      - "8360:8360"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1432,6 +1604,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8318
+    ports:
+      - "8318:8318"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1448,6 +1622,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8515
       - BEVIGIL_API_KEY=${BEVIGIL_API_KEY}
+    ports:
+      - "8515:8515"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1463,6 +1639,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8241
+    ports:
+      - "8241:8241"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1478,6 +1656,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8516
+    ports:
+      - "8516:8516"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1493,6 +1673,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8220
+    ports:
+      - "8220:8220"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1508,6 +1690,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8286
+    ports:
+      - "8286:8286"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1523,6 +1707,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8338
+    ports:
+      - "8338:8338"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1538,6 +1724,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8333
+    ports:
+      - "8333:8333"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1554,6 +1742,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8629
       - BRAVE_API_KEY=${BRAVE_API_KEY}
+    ports:
+      - "8629:8629"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1570,6 +1760,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8517
       - BRAVE_API_KEY=${BRAVE_API_KEY}
+    ports:
+      - "8517:8517"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1586,6 +1778,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8630
       - BRIGHTDATA_API_KEY=${BRIGHTDATA_API_KEY}
+    ports:
+      - "8630:8630"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1603,6 +1797,8 @@ services:
       - MCP_PORT=8518
       - BROWSERLESS_URL=${BROWSERLESS_URL}
       - BROWSERLESS_API_KEY=${BROWSERLESS_API_KEY}
+    ports:
+      - "8518:8518"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1618,6 +1814,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8308
+    ports:
+      - "8308:8308"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1633,6 +1831,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8102
+    ports:
+      - "8102:8102"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1649,6 +1849,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8375
       - BUILTWITH_API_KEY=${BUILTWITH_API_KEY}
+    ports:
+      - "8375:8375"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1664,6 +1866,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8310
+    ports:
+      - "8310:8310"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1679,6 +1883,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8329
+    ports:
+      - "8329:8329"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1694,6 +1900,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8685
+    ports:
+      - "8685:8685"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1709,6 +1917,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8519
+    ports:
+      - "8519:8519"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1724,6 +1934,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8285
+    ports:
+      - "8285:8285"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1739,6 +1951,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8272
+    ports:
+      - "8272:8272"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1754,6 +1968,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8244
+    ports:
+      - "8244:8244"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1769,6 +1985,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8631
+    ports:
+      - "8631:8631"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1784,6 +2002,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8342
+    ports:
+      - "8342:8342"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1799,6 +2019,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8270
+    ports:
+      - "8270:8270"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1814,6 +2036,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8632
+    ports:
+      - "8632:8632"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1829,6 +2053,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8520
+    ports:
+      - "8520:8520"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1845,6 +2071,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8633
       - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
+    ports:
+      - "8633:8633"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1860,6 +2088,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8111
+    ports:
+      - "8111:8111"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1879,6 +2109,8 @@ services:
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN}
       - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+    ports:
+      - "8268:8268"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1894,6 +2126,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8376
+    ports:
+      - "8376:8376"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1909,6 +2143,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8225
+    ports:
+      - "8225:8225"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1924,6 +2160,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8634
+    ports:
+      - "8634:8634"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1939,6 +2177,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8292
+    ports:
+      - "8292:8292"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1954,6 +2194,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8410
+    ports:
+      - "8410:8410"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1969,6 +2211,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8208
+    ports:
+      - "8208:8208"
     networks:
       - mcpfarm
     restart: 'no'
@@ -1986,6 +2230,8 @@ services:
       - MCP_PORT=8521
       - CRAWL4AI_URL=${CRAWL4AI_URL}
       - CRAWL4AI_API_TOKEN=${CRAWL4AI_API_TOKEN}
+    ports:
+      - "8521:8521"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2001,6 +2247,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8290
+    ports:
+      - "8290:8290"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2016,6 +2264,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8307
+    ports:
+      - "8307:8307"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2031,6 +2281,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8686
+    ports:
+      - "8686:8686"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2046,6 +2298,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8324
+    ports:
+      - "8324:8324"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2061,6 +2315,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8411
+    ports:
+      - "8411:8411"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2076,6 +2332,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8401
+    ports:
+      - "8401:8401"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2091,6 +2349,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8320
+    ports:
+      - "8320:8320"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2107,6 +2367,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8106
       - PDCP_API_KEY=${PDCP_API_KEY}
+    ports:
+      - "8106:8106"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2122,6 +2384,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8221
+    ports:
+      - "8221:8221"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2137,6 +2401,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8377
+    ports:
+      - "8377:8377"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2152,6 +2418,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8361
+    ports:
+      - "8361:8361"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2167,6 +2435,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8334
+    ports:
+      - "8334:8334"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2182,6 +2452,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8214
+    ports:
+      - "8214:8214"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2197,6 +2469,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8215
+    ports:
+      - "8215:8215"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2212,6 +2486,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8635
+    ports:
+      - "8635:8635"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2227,6 +2503,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8216
+    ports:
+      - "8216:8216"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2242,6 +2520,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8304
+    ports:
+      - "8304:8304"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2257,6 +2537,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8293
+    ports:
+      - "8293:8293"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2272,6 +2554,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8203
+    ports:
+      - "8203:8203"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2287,6 +2571,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8636
+    ports:
+      - "8636:8636"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2302,6 +2588,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8108
+    ports:
+      - "8108:8108"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2317,6 +2605,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8254
+    ports:
+      - "8254:8254"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2332,6 +2622,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8223
+    ports:
+      - "8223:8223"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2347,6 +2639,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8413
+    ports:
+      - "8413:8413"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2362,6 +2656,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8457
+    ports:
+      - "8457:8457"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2377,6 +2673,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8415
+    ports:
+      - "8415:8415"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2392,6 +2690,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8416
+    ports:
+      - "8416:8416"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2407,6 +2707,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8209
+    ports:
+      - "8209:8209"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2422,6 +2724,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8210
+    ports:
+      - "8210:8210"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2437,6 +2741,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8313
+    ports:
+      - "8313:8313"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2452,6 +2758,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8263
+    ports:
+      - "8263:8263"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2468,6 +2776,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8637
       - EXA_API_KEY=${EXA_API_KEY}
+    ports:
+      - "8637:8637"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2483,6 +2793,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8505
+    ports:
+      - "8505:8505"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2498,6 +2810,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8638
+    ports:
+      - "8638:8638"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2513,6 +2827,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8502
+    ports:
+      - "8502:8502"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2528,6 +2844,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8302
+    ports:
+      - "8302:8302"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2543,6 +2861,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8271
+    ports:
+      - "8271:8271"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2558,6 +2878,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8676
+    ports:
+      - "8676:8676"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2573,6 +2895,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8639
+    ports:
+      - "8639:8639"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2588,6 +2912,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8687
+    ports:
+      - "8687:8687"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2603,6 +2929,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8202
+    ports:
+      - "8202:8202"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2618,6 +2946,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8522
+    ports:
+      - "8522:8522"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2633,6 +2963,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8420
+    ports:
+      - "8420:8420"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2649,6 +2981,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8640
       - FIRECRAWL_API_KEY=${FIRECRAWL_API_KEY}
+    ports:
+      - "8640:8640"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2664,6 +2998,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8422
+    ports:
+      - "8422:8422"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2679,6 +3015,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8249
+    ports:
+      - "8249:8249"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2694,6 +3032,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8309
+    ports:
+      - "8309:8309"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2709,6 +3049,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8423
+    ports:
+      - "8423:8423"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2724,6 +3066,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8352
+    ports:
+      - "8352:8352"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2739,6 +3083,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8218
+    ports:
+      - "8218:8218"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2754,6 +3100,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8238
+    ports:
+      - "8238:8238"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2769,6 +3117,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8641
+    ports:
+      - "8641:8641"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2784,6 +3134,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8363
+    ports:
+      - "8363:8363"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2799,6 +3151,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8240
+    ports:
+      - "8240:8240"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2814,6 +3168,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8677
+    ports:
+      - "8677:8677"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2830,6 +3186,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8642
       - GITLAB_TOKEN=${GITLAB_TOKEN}
+    ports:
+      - "8642:8642"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2845,6 +3203,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8332
+    ports:
+      - "8332:8332"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2860,6 +3220,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8643
+    ports:
+      - "8643:8643"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2875,6 +3237,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8213
+    ports:
+      - "8213:8213"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2891,6 +3255,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8644
       - GOOGLE_TI_API_KEY=${GOOGLE_TI_API_KEY}
+    ports:
+      - "8644:8644"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2906,6 +3272,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8350
+    ports:
+      - "8350:8350"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2921,6 +3289,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8688
+    ports:
+      - "8688:8688"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2936,6 +3306,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8282
+    ports:
+      - "8282:8282"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2951,6 +3323,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8523
+    ports:
+      - "8523:8523"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2967,6 +3341,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8645
       - GREYNOISE_API_KEY=${GREYNOISE_API_KEY}
+    ports:
+      - "8645:8645"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2982,6 +3358,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8357
+    ports:
+      - "8357:8357"
     networks:
       - mcpfarm
     restart: 'no'
@@ -2997,6 +3375,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8217
+    ports:
+      - "8217:8217"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3012,6 +3392,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8235
+    ports:
+      - "8235:8235"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3027,6 +3409,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8264
+    ports:
+      - "8264:8264"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3042,6 +3426,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8274
+    ports:
+      - "8274:8274"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3058,6 +3444,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8646
       - HIBP_API_KEY=${HIBP_API_KEY}
+    ports:
+      - "8646:8646"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3073,6 +3461,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8219
+    ports:
+      - "8219:8219"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3088,6 +3478,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8359
+    ports:
+      - "8359:8359"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3103,6 +3495,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8689
+    ports:
+      - "8689:8689"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3118,6 +3512,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8690
+    ports:
+      - "8690:8690"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3133,6 +3529,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8233
+    ports:
+      - "8233:8233"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3148,6 +3546,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8647
+    ports:
+      - "8647:8647"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3163,6 +3563,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8351
+    ports:
+      - "8351:8351"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3178,6 +3580,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8648
+    ports:
+      - "8648:8648"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3195,6 +3599,8 @@ services:
       - MCP_PORT=8366
       - IVRE_WEB_URL=${IVRE_WEB_URL}
       - IVRE_VERIFY_SSL=${IVRE_VERIFY_SSL}
+    ports:
+      - "8366:8366"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3210,6 +3616,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8232
+    ports:
+      - "8232:8232"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3228,6 +3636,8 @@ services:
       - JIRA_URL=${JIRA_URL}
       - JIRA_EMAIL=${JIRA_EMAIL}
       - JIRA_API_TOKEN=${JIRA_API_TOKEN}
+    ports:
+      - "8649:8649"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3243,6 +3653,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8234
+    ports:
+      - "8234:8234"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3258,6 +3670,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8305
+    ports:
+      - "8305:8305"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3273,6 +3687,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8100
+    ports:
+      - "8100:8100"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3288,6 +3704,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8265
+    ports:
+      - "8265:8265"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3303,6 +3721,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8691
+    ports:
+      - "8691:8691"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3318,6 +3738,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8344
+    ports:
+      - "8344:8344"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3333,6 +3755,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8253
+    ports:
+      - "8253:8253"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3348,6 +3772,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8252
+    ports:
+      - "8252:8252"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3363,6 +3789,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8362
+    ports:
+      - "8362:8362"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3378,6 +3806,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8277
+    ports:
+      - "8277:8277"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3393,6 +3823,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8326
+    ports:
+      - "8326:8326"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3408,6 +3840,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8678
+    ports:
+      - "8678:8678"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3423,6 +3857,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8429
+    ports:
+      - "8429:8429"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3438,6 +3874,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8430
+    ports:
+      - "8430:8430"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3453,6 +3891,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8692
+    ports:
+      - "8692:8692"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3468,6 +3908,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8409
+    ports:
+      - "8409:8409"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3483,6 +3925,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8296
+    ports:
+      - "8296:8296"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3498,6 +3942,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8340
+    ports:
+      - "8340:8340"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3513,6 +3959,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8261
+    ports:
+      - "8261:8261"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3528,6 +3976,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8524
+    ports:
+      - "8524:8524"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3543,6 +3993,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8236
+    ports:
+      - "8236:8236"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3560,6 +4012,8 @@ services:
       - MCP_PORT=8371
       - MISP_API_KEY=${MISP_API_KEY}
       - MISP_URL=${MISP_URL}
+    ports:
+      - "8371:8371"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3575,6 +4029,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8693
+    ports:
+      - "8693:8693"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3591,6 +4047,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8650
       - FABRIC_API_KEY=${FABRIC_API_KEY}
+    ports:
+      - "8650:8650"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3606,6 +4064,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8435
+    ports:
+      - "8435:8435"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3621,6 +4081,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8105
+    ports:
+      - "8105:8105"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3636,6 +4098,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8525
+    ports:
+      - "8525:8525"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3652,6 +4116,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8651
       - NASA_API_KEY=${NASA_API_KEY}
+    ports:
+      - "8651:8651"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3667,6 +4133,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8206
+    ports:
+      - "8206:8206"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3682,6 +4150,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8306
+    ports:
+      - "8306:8306"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3697,6 +4167,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8104
+    ports:
+      - "8104:8104"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3712,6 +4184,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8327
+    ports:
+      - "8327:8327"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3727,6 +4201,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8322
+    ports:
+      - "8322:8322"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3742,6 +4218,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8212
+    ports:
+      - "8212:8212"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3757,6 +4235,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8436
+    ports:
+      - "8436:8436"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3772,6 +4252,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8314
+    ports:
+      - "8314:8314"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3787,6 +4269,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8679
+    ports:
+      - "8679:8679"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3802,6 +4286,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8694
+    ports:
+      - "8694:8694"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3817,6 +4303,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8266
+    ports:
+      - "8266:8266"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3833,6 +4321,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8652
       - NOTION_API_KEY=${NOTION_API_KEY}
+    ports:
+      - "8652:8652"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3848,6 +4338,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8299
+    ports:
+      - "8299:8299"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3863,6 +4355,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8298
+    ports:
+      - "8298:8298"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3878,6 +4372,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8695
+    ports:
+      - "8695:8695"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3893,6 +4389,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8438
+    ports:
+      - "8438:8438"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3908,6 +4406,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8653
+    ports:
+      - "8653:8653"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3923,6 +4423,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8654
+    ports:
+      - "8654:8654"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3938,6 +4440,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8276
+    ports:
+      - "8276:8276"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3954,6 +4458,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8372
       - TOR_PROXY=${TOR_PROXY}
+    ports:
+      - "8372:8372"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3969,6 +4475,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8439
+    ports:
+      - "8439:8439"
     networks:
       - mcpfarm
     restart: 'no'
@@ -3986,6 +4494,8 @@ services:
       - MCP_PORT=8370
       - OPENCTI_API_KEY=${OPENCTI_API_KEY}
       - OPENCTI_URL=${OPENCTI_URL}
+    ports:
+      - "8370:8370"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4001,6 +4511,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8440
+    ports:
+      - "8440:8440"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4016,6 +4528,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8655
+    ports:
+      - "8655:8655"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4032,6 +4546,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8115
       - OPENAI_API_KEY=${OPENAI_API_KEY}
+    ports:
+      - "8115:8115"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4047,6 +4563,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8300
+    ports:
+      - "8300:8300"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4062,6 +4580,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8656
+    ports:
+      - "8656:8656"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4077,6 +4597,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8347
+    ports:
+      - "8347:8347"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4093,6 +4615,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8368
       - OTX_API_KEY=${OTX_API_KEY}
+    ports:
+      - "8368:8368"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4108,6 +4632,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8269
+    ports:
+      - "8269:8269"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4124,6 +4650,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8378
       - PAGESPEED_API_KEY=${PAGESPEED_API_KEY}
+    ports:
+      - "8378:8378"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4139,6 +4667,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8226
+    ports:
+      - "8226:8226"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4154,6 +4684,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8262
+    ports:
+      - "8262:8262"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4169,6 +4701,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8442
+    ports:
+      - "8442:8442"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4184,6 +4718,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8237
+    ports:
+      - "8237:8237"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4199,6 +4735,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8443
+    ports:
+      - "8443:8443"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4217,6 +4755,8 @@ services:
       - NUMVERIFY_API_KEY=${NUMVERIFY_API_KEY}
       - GOOGLE_API_KEY=${GOOGLE_API_KEY}
       - GOOGLECSE_CX=${GOOGLECSE_CX}
+    ports:
+      - "8503:8503"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4233,6 +4773,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8657
       - PINECONE_API_KEY=${PINECONE_API_KEY}
+    ports:
+      - "8657:8657"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4248,6 +4790,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8311
+    ports:
+      - "8311:8311"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4263,6 +4807,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8445
+    ports:
+      - "8445:8445"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4278,6 +4824,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8354
+    ports:
+      - "8354:8354"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4294,6 +4842,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8658
       - POSTMAN_API_KEY=${POSTMAN_API_KEY}
+    ports:
+      - "8658:8658"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4309,6 +4859,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8507
+    ports:
+      - "8507:8507"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4324,6 +4876,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8287
+    ports:
+      - "8287:8287"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4339,6 +4893,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8446
+    ports:
+      - "8446:8446"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4354,6 +4910,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8659
+    ports:
+      - "8659:8659"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4369,6 +4927,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8278
+    ports:
+      - "8278:8278"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4384,6 +4944,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8245
+    ports:
+      - "8245:8245"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4399,6 +4961,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8227
+    ports:
+      - "8227:8227"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4414,6 +4978,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8239
+    ports:
+      - "8239:8239"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4429,6 +4995,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8295
+    ports:
+      - "8295:8295"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4445,6 +5013,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8660
       - RAPIDAPI_KEY=${RAPIDAPI_KEY}
+    ports:
+      - "8660:8660"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4460,6 +5030,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8353
+    ports:
+      - "8353:8353"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4475,6 +5047,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8256
+    ports:
+      - "8256:8256"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4490,6 +5064,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8661
+    ports:
+      - "8661:8661"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4505,6 +5081,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8447
+    ports:
+      - "8447:8447"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4520,6 +5098,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8207
+    ports:
+      - "8207:8207"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4535,6 +5115,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8364
+    ports:
+      - "8364:8364"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4550,6 +5132,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8331
+    ports:
+      - "8331:8331"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4565,6 +5149,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8242
+    ports:
+      - "8242:8242"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4580,6 +5166,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8243
+    ports:
+      - "8243:8243"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4595,6 +5183,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8448
+    ports:
+      - "8448:8448"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4610,6 +5200,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8200
+    ports:
+      - "8200:8200"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4627,6 +5219,8 @@ services:
       - MCP_PORT=8662
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8662:8662"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4642,6 +5236,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8449
+    ports:
+      - "8449:8449"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4657,6 +5253,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8663
+    ports:
+      - "8663:8663"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4672,6 +5270,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8251
+    ports:
+      - "8251:8251"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4687,6 +5287,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8526
+    ports:
+      - "8526:8526"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4703,6 +5305,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8664
       - SEARCH1API_KEY=${SEARCH1API_KEY}
+    ports:
+      - "8664:8664"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4718,6 +5322,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8451
+    ports:
+      - "8451:8451"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4733,6 +5339,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8379
+    ports:
+      - "8379:8379"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4748,6 +5356,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8297
+    ports:
+      - "8297:8297"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4763,6 +5373,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8335
+    ports:
+      - "8335:8335"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4779,6 +5391,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8665
       - SENTRY_AUTH_TOKEN=${SENTRY_AUTH_TOKEN}
+    ports:
+      - "8665:8665"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4795,6 +5409,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8666
       - SERPER_API_KEY=${SERPER_API_KEY}
+    ports:
+      - "8666:8666"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4810,6 +5426,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8317
+    ports:
+      - "8317:8317"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4825,6 +5443,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8453
+    ports:
+      - "8453:8453"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4840,6 +5460,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8696
+    ports:
+      - "8696:8696"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4855,6 +5477,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8454
+    ports:
+      - "8454:8454"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4870,6 +5494,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8316
+    ports:
+      - "8316:8316"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4885,6 +5511,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8211
+    ports:
+      - "8211:8211"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4900,6 +5528,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8325
+    ports:
+      - "8325:8325"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4915,6 +5545,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8291
+    ports:
+      - "8291:8291"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4930,6 +5562,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8255
+    ports:
+      - "8255:8255"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4945,6 +5579,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8257
+    ports:
+      - "8257:8257"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4962,6 +5598,8 @@ services:
       - MCP_PORT=8667
       - SPLUNK_URL=${SPLUNK_URL}
       - SPLUNK_TOKEN=${SPLUNK_TOKEN}
+    ports:
+      - "8667:8667"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4977,6 +5615,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8697
+    ports:
+      - "8697:8697"
     networks:
       - mcpfarm
     restart: 'no'
@@ -4992,6 +5632,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8323
+    ports:
+      - "8323:8323"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5007,6 +5649,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8280
+    ports:
+      - "8280:8280"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5022,6 +5666,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8289
+    ports:
+      - "8289:8289"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5037,6 +5683,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8668
+    ports:
+      - "8668:8668"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5052,6 +5700,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8250
+    ports:
+      - "8250:8250"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5068,6 +5718,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8669
       - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+    ports:
+      - "8669:8669"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5083,6 +5735,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8367
+    ports:
+      - "8367:8367"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5098,6 +5752,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8260
+    ports:
+      - "8260:8260"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5113,6 +5769,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8301
+    ports:
+      - "8301:8301"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5128,6 +5786,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8365
+    ports:
+      - "8365:8365"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5143,6 +5803,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8358
+    ports:
+      - "8358:8358"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5158,6 +5820,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8670
+    ports:
+      - "8670:8670"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5173,6 +5837,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8273
+    ports:
+      - "8273:8273"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5188,6 +5854,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8283
+    ports:
+      - "8283:8283"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5203,6 +5871,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8279
+    ports:
+      - "8279:8279"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5218,6 +5888,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8204
+    ports:
+      - "8204:8204"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5233,6 +5905,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8345
+    ports:
+      - "8345:8345"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5248,6 +5922,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8103
+    ports:
+      - "8103:8103"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5263,6 +5939,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8113
+    ports:
+      - "8113:8113"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5278,6 +5956,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8109
+    ports:
+      - "8109:8109"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5294,6 +5974,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8671
       - TOMTOM_API_KEY=${TOMTOM_API_KEY}
+    ports:
+      - "8671:8671"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5309,6 +5991,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8267
+    ports:
+      - "8267:8267"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5324,6 +6008,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8330
+    ports:
+      - "8330:8330"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5339,6 +6025,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8356
+    ports:
+      - "8356:8356"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5354,6 +6042,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8456
+    ports:
+      - "8456:8456"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5369,6 +6059,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8258
+    ports:
+      - "8258:8258"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5394,6 +6086,8 @@ services:
       - NETLAS_API_KEY=${NETLAS_API_KEY}
       - CRIMINALIP_API_KEY=${CRIMINALIP_API_KEY}
       - ONYPHE_API_KEY=${ONYPHE_API_KEY}
+    ports:
+      - "8107:8107"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5409,6 +6103,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8284
+    ports:
+      - "8284:8284"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5424,6 +6120,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8112
+    ports:
+      - "8112:8112"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5439,6 +6137,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8228
+    ports:
+      - "8228:8228"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5454,6 +6154,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8348
+    ports:
+      - "8348:8348"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5470,6 +6172,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8672
       - VARIFLIGHT_API_KEY=${VARIFLIGHT_API_KEY}
+    ports:
+      - "8672:8672"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5486,6 +6190,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8527
       - VICTORIALOGS_URL=${VICTORIALOGS_URL}
+    ports:
+      - "8527:8527"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5502,6 +6208,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8369
       - VT_API_KEY=${VT_API_KEY}
+    ports:
+      - "8369:8369"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5517,6 +6225,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8506
+    ports:
+      - "8506:8506"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5532,6 +6242,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8248
+    ports:
+      - "8248:8248"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5547,6 +6259,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8247
+    ports:
+      - "8247:8247"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5562,6 +6276,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8339
+    ports:
+      - "8339:8339"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5578,6 +6294,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8116
       - PDCP_API_KEY=${PDCP_API_KEY}
+    ports:
+      - "8116:8116"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5593,6 +6311,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8230
+    ports:
+      - "8230:8230"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5608,6 +6328,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8288
+    ports:
+      - "8288:8288"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5623,6 +6345,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8114
+    ports:
+      - "8114:8114"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5638,6 +6362,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8698
+    ports:
+      - "8698:8698"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5653,6 +6379,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8504
+    ports:
+      - "8504:8504"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5668,6 +6396,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8224
+    ports:
+      - "8224:8224"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5683,6 +6413,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8528
+    ports:
+      - "8528:8528"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5698,6 +6430,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8281
+    ports:
+      - "8281:8281"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5713,6 +6447,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8673
+    ports:
+      - "8673:8673"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5728,6 +6464,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8312
+    ports:
+      - "8312:8312"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5743,6 +6481,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8674
+    ports:
+      - "8674:8674"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5758,6 +6498,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8458
+    ports:
+      - "8458:8458"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5773,6 +6515,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8315
+    ports:
+      - "8315:8315"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5788,6 +6532,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8459
+    ports:
+      - "8459:8459"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5803,6 +6549,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8680
+    ports:
+      - "8680:8680"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5818,6 +6566,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8275
+    ports:
+      - "8275:8275"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5833,6 +6583,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8222
+    ports:
+      - "8222:8222"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5848,6 +6600,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8349
+    ports:
+      - "8349:8349"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5863,6 +6617,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8328
+    ports:
+      - "8328:8328"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5878,6 +6634,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8336
+    ports:
+      - "8336:8336"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5893,6 +6651,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8461
+    ports:
+      - "8461:8461"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5908,6 +6668,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8319
+    ports:
+      - "8319:8319"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5923,6 +6685,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8337
+    ports:
+      - "8337:8337"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5938,6 +6702,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8460
+    ports:
+      - "8460:8460"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5953,6 +6719,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8462
+    ports:
+      - "8462:8462"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5968,6 +6736,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8675
+    ports:
+      - "8675:8675"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5983,6 +6753,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8355
+    ports:
+      - "8355:8355"
     networks:
       - mcpfarm
     restart: 'no'
@@ -5998,6 +6770,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8231
+    ports:
+      - "8231:8231"
     networks:
       - mcpfarm
     restart: 'no'
@@ -6013,6 +6787,8 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8303
+    ports:
+      - "8303:8303"
     networks:
       - mcpfarm
     restart: 'no'
@@ -6028,6 +6804,231 @@ services:
     environment:
       - MCP_TRANSPORT=streamable-http
       - MCP_PORT=8463
+    ports:
+      - "8463:8463"
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+
+  acuvity-mcp-server-alterx-mcp:
+    image: hackerdogs/acuvity-mcp-server-alterx-mcp:latest
+    container_name: acuvity-mcp-server-alterx-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8708
+    ports:
+      - "8708:8708"
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-amass-mcp:
+    image: hackerdogs/acuvity-mcp-server-amass-mcp:latest
+    container_name: acuvity-mcp-server-amass-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8709
+    ports:
+      - "8709:8709"
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-arjun-mcp:
+    image: hackerdogs/acuvity-mcp-server-arjun-mcp:latest
+    container_name: acuvity-mcp-server-arjun-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8710
+    ports:
+      - "8710:8710"
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  acuvity-mcp-server-assetfinder-mcp:
+    image: hackerdogs/acuvity-mcp-server-assetfinder-mcp:latest
+    container_name: acuvity-mcp-server-assetfinder-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8711
+    ports:
+      - "8711:8711"
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+
+  censys-platform-mcp:
+    image: hackerdogs/censys-platform-mcp:latest
+    container_name: censys-platform-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8699
+    ports:
+      - "8699:8699"
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  github-mcp:
+    image: hackerdogs/github-mcp:latest
+    container_name: github-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8700
+    ports:
+      - "8700:8700"
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  mcp-docker-mcp:
+    image: hackerdogs/mcp-docker-mcp:latest
+    container_name: mcp-docker-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8701
+    ports:
+      - "8701:8701"
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  mitre-attack-remote-mcp:
+    image: hackerdogs/mitre-attack-remote-mcp:latest
+    container_name: mitre-attack-remote-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8702
+    ports:
+      - "8702:8702"
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  prowler-mcp:
+    image: hackerdogs/prowler-mcp:latest
+    container_name: prowler-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8703
+    ports:
+      - "8703:8703"
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  serpapi-mcp:
+    image: hackerdogs/serpapi-mcp:latest
+    container_name: serpapi-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8704
+    ports:
+      - "8704:8704"
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  tavily-remote-mcp:
+    image: hackerdogs/tavily-remote-mcp:latest
+    container_name: tavily-remote-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8705
+    ports:
+      - "8705:8705"
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  whoisxmlapi-mcp:
+    image: hackerdogs/whoisxmlapi-mcp:latest
+    container_name: whoisxmlapi-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8706
+    ports:
+      - "8706:8706"
+    networks:
+      - mcpfarm
+    restart: 'no'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  xpoz-mcp-server-mcp:
+    image: hackerdogs/xpoz-mcp-server-mcp:latest
+    container_name: xpoz-mcp-server-mcp
+    environment:
+      - MCP_TRANSPORT=streamable-http
+      - MCP_PORT=8707
+    ports:
+      - "8707:8707"
     networks:
       - mcpfarm
     restart: 'no'
@@ -6042,6 +7043,11 @@ networks:
   mcpfarm:
     name: mcpfarm_internal
     driver: bridge
+  # Shared network hosting hd-redis (Redis Stack). Used for the Chat vector
+  # index. Created outside this compose project.
+  hdnet:
+    external: true
+    name: hdnet
 
 volumes:
   auth_data:

@@ -1,31 +1,62 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Firecrawl MCP Server
 
-MCP server wrapper for [Firecrawl](https://github.com/mendableai/firecrawl-mcp) — upstream package `firecrawl-mcp`.
+MCP server wrapper for [Firecrawl](https://firecrawl.dev/) — JavaScript-rendered web scraping and full-site crawling with clean markdown output. See [mendableai/firecrawl](https://github.com/mendableai/firecrawl) for full documentation.
 
 ## What is Firecrawl?
 
-MCP server for [Firecrawl](https://firecrawl.dev/) — a web scraping API that handles JavaScript rendering, anti-bot bypasses, and outputs clean markdown. Crawl entire sites or scrape individual pages with structured data extraction.
+Firecrawl is a managed web scraping API that handles headless browser rendering, anti-bot bypasses, and content extraction so you get clean, LLM-ready markdown instead of raw HTML. The MCP server exposes tools for scraping individual URLs, crawling entire websites, and performing structured data extraction with a JSON schema. It is ideal for turning dynamic web pages — documentation sites, product listings, dashboards — into content an AI can reason about.
 
-**API key required** — sign up at [firecrawl.dev](https://firecrawl.dev/).
+**API key required** — sign up at [firecrawl.dev](https://firecrawl.dev/) and set `FIRECRAWL_API_KEY`.
 
-**Summary.** Firecrawl MCP Server — Dockerized from upstream `firecrawl-mcp` package.
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `firecrawl_scrape` | Firecrawl Scrape |
+| `firecrawl_map` | Firecrawl Map |
+| `firecrawl_search` | Firecrawl Search |
+| `firecrawl_search_feedback` | Firecrawl Search Feedback |
+| `firecrawl_feedback` | Firecrawl Feedback |
+| `firecrawl_crawl` | Firecrawl Crawl |
+| `firecrawl_check_crawl_status` | Firecrawl Check Crawl Status |
+| `firecrawl_extract` | Firecrawl Extract |
+| `firecrawl_agent` | Firecrawl Agent |
+| `firecrawl_agent_status` | Firecrawl Agent Status |
+| `firecrawl_interact` | Firecrawl Interact |
+| `firecrawl_interact_stop` | Firecrawl Interact Stop |
+| `firecrawl_parse` | Firecrawl Parse |
+| `firecrawl_monitor_create` | Firecrawl Monitor Create |
+| `firecrawl_monitor_list` | Firecrawl Monitor List |
+| `firecrawl_monitor_get` | Firecrawl Monitor Get |
+| `firecrawl_monitor_update` | Firecrawl Monitor Update |
+| `firecrawl_monitor_delete` | Firecrawl Monitor Delete |
+| `firecrawl_monitor_run` | Firecrawl Monitor Run |
+| `firecrawl_monitor_checks` | Firecrawl Monitor Checks |
+| `firecrawl_monitor_check` | Firecrawl Monitor Check |
+| `firecrawl_research_search_papers` | Firecrawl Research Search Papers |
+| `firecrawl_research_inspect_paper` | Firecrawl Research Inspect Paper |
+| `firecrawl_research_related_papers` | Firecrawl Research Related Papers |
+| `firecrawl_research_read_paper` | Firecrawl Research Read Paper |
+| `firecrawl_research_search_github` | Firecrawl Research Search Github |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Scrape the content of https://example.com and return it as markdown."
-- "Crawl all pages on docs.example.com."
+- "Scrape https://docs.example.com/getting-started and summarize the installation steps."
+- "Crawl all pages under https://blog.example.com and find posts about security."
+- "Extract the product name, price, and description from https://shop.example.com/item/42 using structured extraction."
+- "Scrape the table of contents at https://docs.example.com and list all section headings."
+- "Crawl https://example.com with a depth of 2 and return all pages that mention 'authentication'."
+- "Fetch https://status.example.com as markdown and tell me if any services are degraded."
 
 ## Deploy
 
@@ -98,6 +129,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "firecrawl-mcp": {
+      "url": "http://localhost:8485/firecrawl-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

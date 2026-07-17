@@ -16,10 +16,15 @@ from typing import List, Optional
 import aiosqlite
 import httpx
 from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request, Response
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, PlainTextResponse
+from pydantic import BaseModel
 
 import caddy_reload
 import docker_manager
+import chat_proxy
+import secrets_vault
+import vector_index
+import vector_indexer
 from models import (
     ApiKey,
     KeyCreate,
@@ -28,6 +33,7 @@ from models import (
     RequestLog,
     Server,
     ServerCreate,
+    ServerImport,
     ServerResponse,
 )
 from rate_limiter import RateLimiter
@@ -37,6 +43,11 @@ from rate_limiter import RateLimiter
 # ---------------------------------------------------------------------------
 
 DB_PATH = os.environ.get("AUTH_DB_PATH", "/data/auth.db")
+READMES_ROOT = os.environ.get("READMES_ROOT", "")
+if not READMES_ROOT:
+    _repo_candidate = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+    if os.path.isfile(os.path.join(_repo_candidate, "nuclei-mcp", "README.md")):
+        READMES_ROOT = _repo_candidate
 _SECRET_FILE = "/data/admin-secret"
 
 def _load_admin_secret() -> str:
@@ -95,11 +106,17 @@ async def init_db() -> None:
                 status TEXT DEFAULT 'running',
                 source TEXT DEFAULT 'static',
                 category TEXT,
+                url TEXT,
                 created_at TEXT NOT NULL,
                 last_health TEXT,
                 health_ok INTEGER DEFAULT 0
             )
         """)
+        # Migration: add url column if missing (existing DBs)
+        try:
+            await db.execute("ALTER TABLE servers ADD COLUMN url TEXT")
+        except Exception:
+            pass
         await db.execute("""
             CREATE TABLE IF NOT EXISTS request_logs (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -142,30 +159,61 @@ def _to_server_response(row: dict) -> dict:
         "status": row["status"],
         "source": row["source"],
         "category": row.get("category"),
+        "url": row.get("url"),
         "created_at": row["created_at"],
         "last_health": row.get("last_health"),
         "health_ok": bool(row.get("health_ok", False)),
     }
 
 
+async def _next_available_port() -> int:
+    """Find the next available port starting from 9000."""
+    async with aiosqlite.connect(DB_PATH) as db:
+        async with db.execute("SELECT port FROM servers ORDER BY port DESC LIMIT 1") as cur:
+            row = await cur.fetchone()
+            max_port = row[0] if row else 8999
+    return max(9000, max_port + 1)
+
+
 # ---------------------------------------------------------------------------
 # Background health check
 # ---------------------------------------------------------------------------
 
-async def _check_one(name: str, port: int) -> tuple[str, bool]:
-    """Probe a single MCP server; returns (name, ok)."""
+async def _probe_mcp_server(client: httpx.AsyncClient, name: str, port: int) -> bool:
+    """Return True if the MCP server process is accepting HTTP.
+
+    Proxy-based servers expose GET /health → 200. Native FastMCP (streamable-http)
+    servers have no /health route but respond on GET /mcp/ with 4xx (< 500).
+    """
+    health_resp = await client.get(f"http://{name}:{port}/health")
+    if health_resp.status_code == 200:
+        return True
+    mcp_resp = await client.get(f"http://{name}:{port}/mcp/")
+    # 404 on /mcp/ means a proxy that only serves /health (and is not healthy).
+    if mcp_resp.status_code == 404:
+        return False
+    return mcp_resp.status_code < 500
+
+
+async def _check_one(name: str, port: int, url: str | None = None) -> tuple[str, bool]:
+    """Probe a single MCP server without spawning an MCP session."""
     try:
         async with httpx.AsyncClient(timeout=5.0) as client:
-            resp = await client.post(
-                f"http://{name}:{port}/mcp",
-                json={"jsonrpc": "2.0", "id": 0, "method": "initialize",
-                      "params": {"protocolVersion": "2024-11-05",
-                                 "capabilities": {},
-                                 "clientInfo": {"name": "health", "version": "1"}}},
-                headers={"Content-Type": "application/json",
-                         "Accept": "application/json, text/event-stream"},
-            )
-            return name, resp.status_code < 500
+            if url:
+                health_url = url.rstrip("/")
+                if not health_url.endswith("/health"):
+                    health_url = health_url.rsplit("/", 1)[0] + "/health" if "/" in health_url.split("//", 1)[-1] else health_url + "/health"
+                resp = await client.get(health_url)
+                if resp.status_code == 200:
+                    return name, True
+                # Custom URL may point at a proxy; fall through to /mcp/ only when needed.
+                base = health_url.rsplit("/health", 1)[0].rstrip("/")
+                mcp_resp = await client.get(f"{base}/mcp/")
+                if mcp_resp.status_code == 404:
+                    return name, False
+                return name, mcp_resp.status_code < 500
+            ok = await _probe_mcp_server(client, name, port)
+            return name, ok
     except Exception:
         return name, False
 
@@ -174,20 +222,20 @@ async def health_check_loop() -> None:
     """Periodically check health of all registered MCP servers (concurrent, max 40 at a time)."""
     sem = asyncio.Semaphore(40)
 
-    async def bounded_check(name: str, port: int) -> tuple[str, bool]:
+    async def bounded_check(name: str, port: int, url: str | None = None) -> tuple[str, bool]:
         async with sem:
-            return await _check_one(name, port)
+            return await _check_one(name, port, url)
 
     while True:
         await asyncio.sleep(30)
         try:
             async with aiosqlite.connect(DB_PATH) as db:
                 db.row_factory = aiosqlite.Row
-                async with db.execute("SELECT name, port FROM servers") as cursor:
+                async with db.execute("SELECT name, port, url FROM servers") as cursor:
                     servers = await cursor.fetchall()
 
             results = await asyncio.gather(
-                *[bounded_check(srv["name"], srv["port"]) for srv in servers],
+                *[bounded_check(srv["name"], srv["port"], srv.get("url")) for srv in servers],
                 return_exceptions=True,
             )
 
@@ -214,6 +262,30 @@ async def health_check_loop() -> None:
 async def startup_event() -> None:
     await init_db()
 
+    # Ensure /data/ui-api-key exists so the UI can authenticate MCP requests
+    if not os.path.exists("/data/ui-api-key"):
+        async with aiosqlite.connect(DB_PATH) as db:
+            db.row_factory = aiosqlite.Row
+            row = await db.execute_fetchall(
+                "SELECT key_hash FROM api_keys WHERE name='seed-admin' AND is_active=1"
+            )
+        if row:
+            raw = "hd_sk_" + secrets.token_hex(32)
+            key_hash = hashlib.sha256(raw.encode()).hexdigest()
+            key_id = secrets.token_hex(16)
+            now_iso = datetime.utcnow().isoformat()
+            async with aiosqlite.connect(DB_PATH) as db:
+                await db.execute(
+                    """INSERT INTO api_keys
+                       (id, key_hash, key_prefix, name, owner, scopes, rate_limit, is_active, created_at)
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                    (key_id, key_hash, raw[:12], "ui-auto", "system", "*", 1000, 1, now_iso),
+                )
+                await db.commit()
+            with open("/data/ui-api-key", "w") as kf:
+                kf.write(raw)
+            logger.info("Created ui-auto API key for UI authentication")
+
     # Recover dynamic servers
     async with aiosqlite.connect(DB_PATH) as db:
         db.row_factory = aiosqlite.Row
@@ -228,6 +300,10 @@ async def startup_event() -> None:
             self.image = row["image"]
             self.port = row["port"]
             self.env = row["env"]
+            try:
+                self.url = row["url"]
+            except (IndexError, KeyError):
+                self.url = None
 
     dynamic_servers = [_Srv(r) for r in dynamic_rows]
     if dynamic_servers:
@@ -241,10 +317,33 @@ async def startup_event() -> None:
     async def _reload_caddy_with_retry():
         for attempt in range(15):
             await asyncio.sleep(3)
-            if await caddy_reload.reload_caddy():
+            try:
+                await _reload_caddy_from_db()
                 return
+            except Exception:
+                pass
         logger.warning("Caddy reload failed after all retries")
     asyncio.create_task(_reload_caddy_with_retry())
+
+    # Initialize the encrypted LLM-key vault table.
+    try:
+        await secrets_vault.init_db()
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("secrets_vault init failed: %s", exc)
+
+    # Ensure the Redis vector index exists (best-effort; hd-redis is shared).
+    async def _ensure_vectors():
+        try:
+            if await vector_index.ping():
+                await vector_index.ensure_index()
+                logger.info("Redis vector index ready (%s)", vector_index.INDEX_NAME)
+                if os.environ.get("VECTOR_AUTO_REINDEX", "").lower() in ("1", "true", "yes"):
+                    await _reindex_vectors()
+            else:
+                logger.warning("Redis not reachable at %s; vector search disabled", vector_index.REDIS_URL)
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("Vector index init failed: %s", exc)
+    asyncio.create_task(_ensure_vectors())
 
     # Start background health check
     asyncio.create_task(health_check_loop())
@@ -259,6 +358,30 @@ async def require_admin(request: Request) -> None:
     secret = request.headers.get("X-Admin-Secret", "")
     if not secret or secret != ADMIN_SECRET:
         raise HTTPException(status_code=403, detail="Forbidden: invalid admin secret")
+
+
+async def require_api_key(request: Request) -> None:
+    """Validate a Bearer API key (active, non-expired) — used by chat/vector routes."""
+    auth_header = request.headers.get("Authorization", "")
+    if not auth_header.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Missing Bearer token")
+    token_hash = hashlib.sha256(auth_header[len("Bearer "):].encode()).hexdigest()
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute(
+            "SELECT is_active, expires_at FROM api_keys WHERE key_hash=?", (token_hash,)
+        ) as cursor:
+            row = await cursor.fetchone()
+    if not row:
+        raise HTTPException(status_code=401, detail="Invalid API key")
+    if not row["is_active"]:
+        raise HTTPException(status_code=403, detail="API key is inactive")
+    if row["expires_at"]:
+        try:
+            if datetime.utcnow() > datetime.fromisoformat(row["expires_at"]):
+                raise HTTPException(status_code=403, detail="API key has expired")
+        except ValueError:
+            pass
 
 
 @app.post("/admin/rotate-secret", dependencies=[Depends(require_admin)])
@@ -306,6 +429,26 @@ async def list_services():
         async with db.execute("SELECT * FROM servers") as cursor:
             rows = await cursor.fetchall()
     return [_to_server_response(dict(r)) for r in rows]
+
+
+def _readme_path(server_name: str) -> Optional[str]:
+    """Resolve README.md for an MCP server directory."""
+    if not READMES_ROOT:
+        return None
+    name = server_name if server_name.endswith("-mcp") else f"{server_name}-mcp"
+    path = os.path.join(READMES_ROOT, name, "README.md")
+    if os.path.isfile(path):
+        return path
+    return None
+
+
+@app.get("/services/{name}/readme")
+async def get_server_readme(name: str):
+    path = _readme_path(name)
+    if not path:
+        raise HTTPException(status_code=404, detail="README not found")
+    with open(path, encoding="utf-8", errors="replace") as f:
+        return PlainTextResponse(f.read(), media_type="text/markdown; charset=utf-8")
 
 
 @app.get("/verify")
@@ -502,34 +645,42 @@ async def key_usage(key_id: str):
 async def create_server(payload: ServerCreate):
     now_iso = datetime.utcnow().isoformat()
     env_json = json.dumps(payload.env)
+    is_external = bool(payload.url)
+    port = payload.port if payload.port else await _next_available_port()
+    source = "external" if is_external else "dynamic"
+    status = "running" if is_external else "starting"
 
     async with aiosqlite.connect(DB_PATH) as db:
-        await db.execute(
-            """INSERT INTO servers (name, image, port, env, status, source, category, created_at,
-               last_health, health_ok)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-            (payload.name, payload.image, payload.port, env_json,
-             "starting", "dynamic", payload.category, now_iso, None, 0),
-        )
-        await db.commit()
-
-    # Start container
-    try:
-        docker_manager.start_server(payload.name, payload.image, payload.port, payload.env)
-        async with aiosqlite.connect(DB_PATH) as db:
+        try:
             await db.execute(
-                "UPDATE servers SET status='running' WHERE name=?", (payload.name,)
+                """INSERT INTO servers (name, image, port, env, status, source, category, url,
+                   created_at, last_health, health_ok)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                (payload.name, payload.image or "", port, env_json,
+                 status, source, payload.category, payload.url, now_iso, None, 0),
             )
             await db.commit()
-    except Exception as exc:
-        logger.error("Failed to start container %s: %s", payload.name, exc)
-        async with aiosqlite.connect(DB_PATH) as db:
-            await db.execute(
-                "UPDATE servers SET status='error' WHERE name=?", (payload.name,)
-            )
-            await db.commit()
+        except Exception as exc:
+            if "UNIQUE" in str(exc).upper() or "IntegrityError" in type(exc).__name__:
+                raise HTTPException(status_code=409, detail=f"Server '{payload.name}' already exists")
+            raise
 
-    # Reload Caddy routes
+    if not is_external:
+        try:
+            docker_manager.start_server(payload.name, payload.image, port, payload.env)
+            async with aiosqlite.connect(DB_PATH) as db:
+                await db.execute(
+                    "UPDATE servers SET status='running' WHERE name=?", (payload.name,)
+                )
+                await db.commit()
+        except Exception as exc:
+            logger.error("Failed to start container %s: %s", payload.name, exc)
+            async with aiosqlite.connect(DB_PATH) as db:
+                await db.execute(
+                    "UPDATE servers SET status='error' WHERE name=?", (payload.name,)
+                )
+                await db.commit()
+
     await _reload_caddy_from_db()
 
     async with aiosqlite.connect(DB_PATH) as db:
@@ -537,6 +688,64 @@ async def create_server(payload: ServerCreate):
         async with db.execute("SELECT * FROM servers WHERE name=?", (payload.name,)) as cursor:
             row = await cursor.fetchone()
     return _to_server_response(dict(row))
+
+
+@app.post("/admin/servers/import", dependencies=[Depends(require_admin)])
+async def import_servers(payload: ServerImport):
+    """Import MCP servers from Claude Desktop or Cursor JSON config format."""
+    results = []
+    for name, config in payload.mcpServers.items():
+        server_name = name if name.endswith("-mcp") else f"{name}-mcp"
+        server_name = server_name.lower().replace(" ", "-").replace("_", "-")
+
+        async with aiosqlite.connect(DB_PATH) as db:
+            async with db.execute("SELECT name FROM servers WHERE name=?", (server_name,)) as cur:
+                if await cur.fetchone():
+                    results.append({"name": server_name, "status": "skipped", "reason": "already exists"})
+                    continue
+
+        url = config.get("url")
+        command = config.get("command", "")
+        args = config.get("args", [])
+        env = config.get("env", {})
+        category = config.get("category")
+
+        if url:
+            sc = ServerCreate(name=server_name, url=url, env=env, category=category)
+        elif command == "docker" and args:
+            image = next((a for a in args if "/" in a and ":" in a or not a.startswith("-")), "")
+            image = image.strip()
+            if not image:
+                image = args[-1] if args else ""
+            sc = ServerCreate(name=server_name, image=image, env=env, category=category)
+        elif command in ("npx", "node", "npm"):
+            pkg = ""
+            skip_next = False
+            for a in args:
+                if skip_next:
+                    skip_next = False
+                    continue
+                if a in ("-y", "--yes", "exec", "run"):
+                    continue
+                if a.startswith("-"):
+                    if a in ("-p", "--package"):
+                        skip_next = True
+                    continue
+                pkg = a
+                break
+            image = f"hackerdogs/{server_name}:latest"
+            sc = ServerCreate(name=server_name, image=image, env=env, category=category)
+        else:
+            results.append({"name": server_name, "status": "skipped", "reason": f"unsupported command: {command}"})
+            continue
+
+        try:
+            resp = await create_server(sc)
+            results.append({"name": server_name, "status": "created", "server": resp})
+        except Exception as exc:
+            results.append({"name": server_name, "status": "error", "reason": str(exc)})
+
+    return {"imported": len([r for r in results if r["status"] == "created"]), "results": results}
 
 
 @app.get("/admin/servers", dependencies=[Depends(require_admin)])
@@ -547,6 +756,124 @@ async def list_servers():
             rows = await cursor.fetchall()
     return [_to_server_response(dict(r)) for r in rows]
 
+
+# ---------------------------------------------------------------------------
+# Automation API — static routes (must be before /admin/servers/{name})
+# ---------------------------------------------------------------------------
+
+
+class BatchAction(BaseModel):
+    servers: List[str] = []
+    action: str
+
+
+@app.post("/admin/servers/batch", dependencies=[Depends(require_admin)])
+async def batch_server_action(payload: BatchAction):
+    """Run start/stop/restart/enable/disable on multiple servers at once."""
+    allowed = {"start", "stop", "restart", "enable", "disable"}
+    if payload.action not in allowed:
+        raise HTTPException(status_code=400, detail=f"action must be one of {sorted(allowed)}")
+
+    handler_map = {
+        "start": start_server_endpoint,
+        "stop": stop_server_endpoint,
+        "restart": restart_server_endpoint,
+        "enable": enable_server_endpoint,
+        "disable": disable_server_endpoint,
+    }
+    handler = handler_map[payload.action]
+    results = []
+    for name in payload.servers:
+        try:
+            resp = await handler(name)
+            results.append({"name": name, "status": "ok", "result": resp})
+        except HTTPException as exc:
+            results.append({"name": name, "status": "error", "detail": exc.detail})
+        except Exception as exc:
+            results.append({"name": name, "status": "error", "detail": str(exc)})
+    return {"action": payload.action, "total": len(results), "results": results}
+
+
+@app.post("/admin/servers/health-check", dependencies=[Depends(require_admin)])
+async def batch_health_check(names: Optional[List[str]] = None):
+    """Health-check all servers (or a subset). Returns per-server results."""
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        if names:
+            placeholders = ",".join("?" for _ in names)
+            query = f"SELECT name, port, status FROM servers WHERE name IN ({placeholders})"
+            async with db.execute(query, names) as cursor:
+                rows = await cursor.fetchall()
+        else:
+            async with db.execute("SELECT name, port, status FROM servers") as cursor:
+                rows = await cursor.fetchall()
+
+    async def _check_one_health(row):
+        name = row["name"]
+        port = row["port"]
+        if row["status"] in ("stopped", "disabled"):
+            return {"name": name, "healthy": False, "reason": row["status"]}
+        try:
+            async with httpx.AsyncClient(timeout=5.0) as client:
+                ok = await _probe_mcp_server(client, name, port)
+            return {"name": name, "healthy": ok}
+        except Exception:
+            return {"name": name, "healthy": False, "reason": "unreachable"}
+
+    results = await asyncio.gather(*[_check_one_health(r) for r in rows])
+    healthy = sum(1 for r in results if r["healthy"])
+    return {"total": len(results), "healthy": healthy, "unhealthy": len(results) - healthy, "results": list(results)}
+
+
+@app.get("/admin/servers/search", dependencies=[Depends(require_admin)])
+async def search_servers(
+    q: Optional[str] = Query(default=None, description="Name substring match"),
+    category: Optional[str] = Query(default=None),
+    status: Optional[str] = Query(default=None),
+    source: Optional[str] = Query(default=None),
+    healthy: Optional[bool] = Query(default=None),
+):
+    """Filter servers by name, category, status, source, or health."""
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        clauses = []
+        params: list = []
+        if q:
+            clauses.append("name LIKE ?")
+            params.append(f"%{q}%")
+        if category:
+            clauses.append("category = ?")
+            params.append(category)
+        if status:
+            clauses.append("status = ?")
+            params.append(status)
+        if source:
+            clauses.append("source = ?")
+            params.append(source)
+        if healthy is not None:
+            clauses.append("health_ok = ?")
+            params.append(1 if healthy else 0)
+
+        where = (" WHERE " + " AND ".join(clauses)) if clauses else ""
+        async with db.execute(f"SELECT * FROM servers{where}", params) as cursor:
+            rows = await cursor.fetchall()
+    return {"count": len(rows), "servers": [_to_server_response(dict(r)) for r in rows]}
+
+
+@app.get("/admin/servers/categories", dependencies=[Depends(require_admin)])
+async def list_categories():
+    """List all distinct server categories with counts."""
+    async with aiosqlite.connect(DB_PATH) as db:
+        async with db.execute(
+            "SELECT category, COUNT(*) as count FROM servers GROUP BY category ORDER BY count DESC"
+        ) as cursor:
+            rows = await cursor.fetchall()
+    return {"categories": [{"category": r[0] or "uncategorized", "count": r[1]} for r in rows]}
+
+
+# ---------------------------------------------------------------------------
+# Admin: single-server endpoints (parameterized routes)
+# ---------------------------------------------------------------------------
 
 @app.get("/admin/servers/{name}", dependencies=[Depends(require_admin)])
 async def get_server(name: str):
@@ -569,10 +896,11 @@ async def delete_server(name: str):
         raise HTTPException(status_code=404, detail="Server not found")
 
     srv = dict(row)
-    try:
-        docker_manager.stop_server(name)
-    except Exception as exc:
-        logger.warning("Could not stop container %s: %s", name, exc)
+    if srv.get("source") != "external":
+        try:
+            docker_manager.stop_server(name)
+        except Exception as exc:
+            logger.warning("Could not stop container %s: %s", name, exc)
 
     async with aiosqlite.connect(DB_PATH) as db:
         await db.execute("DELETE FROM servers WHERE name=?", (name,))
@@ -672,6 +1000,8 @@ async def _probe_health_after_start(name: str, port: int) -> None:
             )
             await db.commit()
         if ok:
+            # Index this server's tools + mark running in the vector store.
+            asyncio.create_task(_vector_index_server_safe(name))
             break
 
 
@@ -687,12 +1017,51 @@ async def stop_server_endpoint(name: str):
         docker_manager.stop_server(name)
         async with aiosqlite.connect(DB_PATH) as db:
             await db.execute(
-                "UPDATE servers SET status='stopped' WHERE name=?", (name,)
+                "UPDATE servers SET status='stopped', health_ok=0, last_health=? WHERE name=?",
+                (datetime.utcnow().isoformat(), name),
             )
             await db.commit()
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
+    asyncio.create_task(_vector_set_status_safe(name, "stopped"))
     return {"stopped": name}
+
+
+@app.post("/admin/servers/{name}/enable", dependencies=[Depends(require_admin)])
+async def enable_server_endpoint(name: str):
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute("SELECT * FROM servers WHERE name=?", (name,)) as cursor:
+            row = await cursor.fetchone()
+    if not row:
+        raise HTTPException(status_code=404, detail="Server not found")
+    srv = dict(row)
+    new_status = "running" if srv.get("health_ok") else "stopped"
+    async with aiosqlite.connect(DB_PATH) as db:
+        await db.execute(
+            "UPDATE servers SET status=? WHERE name=?", (new_status, name)
+        )
+        await db.commit()
+    await _reload_caddy_from_db()
+    return {"enabled": name, "status": new_status}
+
+
+@app.post("/admin/servers/{name}/disable", dependencies=[Depends(require_admin)])
+async def disable_server_endpoint(name: str):
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute("SELECT * FROM servers WHERE name=?", (name,)) as cursor:
+            row = await cursor.fetchone()
+    if not row:
+        raise HTTPException(status_code=404, detail="Server not found")
+    async with aiosqlite.connect(DB_PATH) as db:
+        await db.execute(
+            "UPDATE servers SET status='disabled' WHERE name=?", (name,)
+        )
+        await db.commit()
+    await _reload_caddy_from_db()
+    asyncio.create_task(_vector_set_status_safe(name, "disabled"))
+    return {"disabled": name}
 
 
 @app.get("/admin/servers/{name}/health", dependencies=[Depends(require_admin)])
@@ -708,10 +1077,10 @@ async def server_health(name: str):
     status_code = 0
     try:
         async with httpx.AsyncClient(timeout=5.0) as client:
+            ok = await _probe_mcp_server(client, name, port)
             resp = await client.get(f"http://{name}:{port}/mcp/")
             status_code = resp.status_code
-            ok = status_code < 500
-    except Exception as exc:
+    except Exception:
         status_code = -1
 
     now_iso = datetime.utcnow().isoformat()
@@ -723,6 +1092,23 @@ async def server_health(name: str):
         await db.commit()
 
     return {"name": name, "healthy": ok, "status_code": status_code, "checked_at": now_iso}
+
+
+@app.get("/admin/servers/{name}/tools", dependencies=[Depends(require_admin)])
+async def get_server_tools(name: str):
+    """List MCP tools exposed by a running server."""
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute("SELECT * FROM servers WHERE name=?", (name,)) as cursor:
+            row = await cursor.fetchone()
+    if not row:
+        raise HTTPException(status_code=404, detail="Server not found")
+    srv = dict(row)
+    try:
+        tools = await _load_tools_for_server(srv)
+    except Exception as exc:
+        raise HTTPException(status_code=502, detail=f"Could not fetch tools: {exc}")
+    return {"server": name, "tools": tools or [], "count": len(tools or [])}
 
 
 @app.get("/admin/servers/{name}/logs", dependencies=[Depends(require_admin)])
@@ -818,13 +1204,23 @@ async def export_farm():
 
 @app.post("/claude")
 async def claude_proxy(request: Request):
-    """Proxy Claude API calls from the UI to avoid CORS issues."""
+    """Proxy Claude API calls from the UI to avoid CORS issues.
+
+    The API key is taken from the encrypted vault; the legacy ``x-claude-key``
+    header is still accepted as a fallback for backward compatibility.
+    """
     body = await request.body()
     claude_key = request.headers.get("x-claude-key", "")
     anthropic_version = request.headers.get("anthropic-version", "2023-06-01")
 
     if not claude_key:
-        return JSONResponse({"error": "x-claude-key header required"}, status_code=400)
+        claude_key = await secrets_vault.get_secret("claude") or ""
+
+    if not claude_key:
+        return JSONResponse(
+            {"error": "No Claude API key configured. Add it in Settings."},
+            status_code=400,
+        )
 
     async with httpx.AsyncClient(timeout=120.0) as client:
         resp = await client.post(
@@ -845,19 +1241,248 @@ async def claude_proxy(request: Request):
 
 
 # ---------------------------------------------------------------------------
+# Chat completions proxy (keys decrypted server-side)
+# ---------------------------------------------------------------------------
+
+class ChatCompletionRequest(BaseModel):
+    provider: str
+    model: Optional[str] = None
+    messages: List[dict] = []
+    tools: List[dict] = []
+    max_tokens: int = 4096
+
+
+@app.post("/chat/completions", dependencies=[Depends(require_api_key)])
+async def chat_completions(req: ChatCompletionRequest):
+    try:
+        return await chat_proxy.run_completion(req.model_dump())
+    except chat_proxy.ChatProxyError as exc:
+        raise HTTPException(status_code=exc.status, detail=exc.message)
+    except Exception as exc:  # noqa: BLE001
+        logger.exception("chat_completions failed")
+        raise HTTPException(status_code=502, detail=str(exc))
+
+
+# ---------------------------------------------------------------------------
+# Vector search (dynamic tool binding)
+# ---------------------------------------------------------------------------
+
+class VectorSearchRequest(BaseModel):
+    query: str
+    mode: str = "dynamic"
+    filters: dict = {}
+    top_k_servers: int = 5
+    top_k_tools: int = 20
+    min_score: float = 0.0
+
+
+@app.post("/vectors/search", dependencies=[Depends(require_api_key)])
+async def vectors_search(req: VectorSearchRequest):
+    import embeddings
+
+    if not await vector_index.ping():
+        raise HTTPException(status_code=503, detail="Vector store unavailable")
+    if not await vector_index.index_exists():
+        raise HTTPException(status_code=503, detail="Vector index not built; run /admin/vectors/reindex")
+
+    statuses = None
+    status_filter = (req.filters or {}).get("status")
+    if status_filter:
+        statuses = [status_filter] if isinstance(status_filter, str) else list(status_filter)
+    categories = (req.filters or {}).get("categories") or None
+
+    query_vec = await embeddings.embed_text(req.query)
+
+    # Stage 1 — server discovery over server/alias/readme docs.
+    stage1 = await vector_index.search_knn(
+        query_vec,
+        top_k=max(req.top_k_servers * 4, 12),
+        doc_types=["server", "alias", "readme"],
+        statuses=statuses,
+        categories=categories,
+    )
+    server_order: List[str] = []
+    for row in stage1:
+        srv = row.get("server")
+        if srv and srv not in server_order:
+            server_order.append(srv)
+        if len(server_order) >= req.top_k_servers:
+            break
+
+    # Stage 2 — rank tools within the discovered servers.
+    tools: List[dict] = []
+    if server_order:
+        stage2 = await vector_index.search_knn(
+            query_vec,
+            top_k=req.top_k_tools,
+            doc_types=["tool"],
+            servers=server_order,
+            statuses=statuses,
+        )
+        for row in stage2:
+            sim = row.get("similarity")
+            if sim is not None and sim < req.min_score:
+                continue
+            tools.append({
+                "server": row.get("server"),
+                "tool": row.get("tool"),
+                "description": row.get("text"),
+                "score": row.get("similarity"),
+            })
+
+    return {
+        "mode": req.mode,
+        "servers": server_order,
+        "tools": tools,
+        "meta": {"stage1": len(stage1), "returned_tools": len(tools)},
+    }
+
+
+# ---------------------------------------------------------------------------
+# LLM key vault (admin)
+# ---------------------------------------------------------------------------
+
+class LlmKeyUpsert(BaseModel):
+    key: str
+
+
+@app.get("/llm-keys", dependencies=[Depends(require_admin)])
+async def list_llm_keys():
+    return {"keys": await secrets_vault.list_secrets(), "providers": sorted(secrets_vault.SECRET_PROVIDERS)}
+
+
+@app.put("/llm-keys/{provider}", dependencies=[Depends(require_admin)])
+async def put_llm_key(provider: str, payload: LlmKeyUpsert):
+    if provider.lower() not in secrets_vault.SECRET_PROVIDERS:
+        raise HTTPException(status_code=400, detail=f"Unknown provider: {provider}")
+    if not payload.key.strip():
+        raise HTTPException(status_code=400, detail="Empty key")
+    return await secrets_vault.set_secret(provider, payload.key.strip())
+
+
+@app.delete("/llm-keys/{provider}", dependencies=[Depends(require_admin)])
+async def delete_llm_key(provider: str):
+    await secrets_vault.delete_secret(provider)
+    return {"status": "deleted", "provider": provider.lower()}
+
+
+# ---------------------------------------------------------------------------
+# Vector index admin
+# ---------------------------------------------------------------------------
+
+def _read_readme(server_name: str) -> Optional[str]:
+    path = _readme_path(server_name)
+    if not path:
+        return None
+    with open(path, encoding="utf-8", errors="replace") as f:
+        return f.read()
+
+
+async def _load_tools_for_server(srv: dict) -> List[dict]:
+    name = srv.get("name")
+    port = srv.get("port")
+    if not name or not port:
+        return []
+    return await vector_indexer.list_tools_internal(name, int(port))
+
+
+async def _reindex_vectors() -> dict:
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute("SELECT * FROM servers") as cursor:
+            servers = [dict(r) for r in await cursor.fetchall()]
+    return await vector_indexer.reindex_all(servers, _read_readme, _load_tools_for_server)
+
+
+async def _vector_set_status_safe(name: str, status: str) -> None:
+    """Best-effort: flip a server's status tag in the vector index."""
+    try:
+        if await vector_index.ping() and await vector_index.index_exists():
+            await vector_index.set_server_status(name, status)
+    except Exception as exc:  # noqa: BLE001
+        logger.debug("vector status update failed for %s: %s", name, exc)
+
+
+async def _vector_index_server_safe(name: str) -> None:
+    """Best-effort: (re)index a single running server's tools + metadata."""
+    try:
+        if not (await vector_index.ping() and await vector_index.index_exists()):
+            return
+        async with aiosqlite.connect(DB_PATH) as db:
+            db.row_factory = aiosqlite.Row
+            async with db.execute("SELECT * FROM servers WHERE name=?", (name,)) as cursor:
+                row = await cursor.fetchone()
+        if not row:
+            return
+        srv = dict(row)
+        status = vector_indexer._status_of(srv)
+        tools = None
+        if status == "running":
+            try:
+                tools = await _load_tools_for_server(srv)
+            except Exception:  # noqa: BLE001
+                tools = None
+        await vector_indexer.index_server(name, srv.get("category"), status, _read_readme(name), tools)
+    except Exception as exc:  # noqa: BLE001
+        logger.debug("vector index-server failed for %s: %s", name, exc)
+
+
+@app.post("/admin/vectors/reindex", dependencies=[Depends(require_admin)])
+async def admin_vectors_reindex():
+    if not await vector_index.ping():
+        raise HTTPException(status_code=503, detail="Vector store unavailable")
+    return await _reindex_vectors()
+
+
+@app.get("/admin/vectors/stats", dependencies=[Depends(require_admin)])
+async def admin_vectors_stats():
+    return await vector_index.stats()
+
+
+@app.post("/admin/vectors/index-server/{name}", dependencies=[Depends(require_admin)])
+async def admin_vectors_index_server(name: str):
+    if not await vector_index.ping():
+        raise HTTPException(status_code=503, detail="Vector store unavailable")
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute("SELECT * FROM servers WHERE name=?", (name,)) as cursor:
+            row = await cursor.fetchone()
+    if not row:
+        raise HTTPException(status_code=404, detail="Server not found")
+    srv = dict(row)
+    status = vector_indexer._status_of(srv)
+    tools = None
+    if status == "running":
+        try:
+            tools = await _load_tools_for_server(srv)
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("index-server %s tools failed: %s", name, exc)
+    n = await vector_indexer.index_server(name, srv.get("category"), status, _read_readme(name), tools)
+    return {"server": name, "docs": n, "status": status, "tools": len(tools or [])}
+
+
+
+
+# ---------------------------------------------------------------------------
 # Internal helpers
 # ---------------------------------------------------------------------------
 
 async def _reload_caddy_from_db() -> None:
     async with aiosqlite.connect(DB_PATH) as db:
         db.row_factory = aiosqlite.Row
-        async with db.execute("SELECT name, port FROM servers") as cursor:
+        async with db.execute(
+            "SELECT name, port FROM servers WHERE status != 'disabled'"
+        ) as cursor:
             rows = await cursor.fetchall()
 
     class _Srv:
         def __init__(self, row):
             self.name = row["name"]
             self.port = row["port"]
+            try:
+                self.url = row["url"]
+            except (IndexError, KeyError):
+                self.url = None
 
     servers = [_Srv(r) for r in rows]
     await caddy_reload.write_and_reload(servers)

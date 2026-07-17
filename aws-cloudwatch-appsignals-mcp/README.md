@@ -1,31 +1,51 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS CloudWatch App Signals MCP Server
 
-MCP server wrapper for [CloudWatch Application Signals](https://github.com/awslabs/mcp) — upstream package `awslabs.cloudwatch-appsignals-mcp-server`.
+MCP server wrapper for [CloudWatch Application Signals](https://github.com/awslabs/mcp/tree/main/src/cloudwatch-appsignals-mcp-server) — monitor application health, service-level objectives (SLOs), and dependency topology through CloudWatch Application Signals.
 
 ## What is CloudWatch Application Signals?
 
-MCP server for AWS CloudWatch Application Signals. Monitor and analyze application performance, service health, and operational metrics.
+AWS CloudWatch Application Signals is an application performance monitoring (APM) feature that automatically discovers your services, tracks SLO compliance, and surfaces latency, error rate, and dependency health data from instrumented workloads on EKS, ECS, EC2, and Lambda. This MCP server lets AI assistants query service maps, check SLO status, and retrieve performance metrics to diagnose application degradations and dependency failures. See [awslabs/mcp](https://github.com/awslabs/mcp/tree/main/src/cloudwatch-appsignals-mcp-server) for full documentation.
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
-**Summary.** AWS CloudWatch App Signals MCP Server — Dockerized from upstream `awslabs.cloudwatch-appsignals-mcp-server` package.
+**Summary.** MCP server wrapper for [CloudWatch Application Signals](https://github.com/awslabs/mcp/tree/main/src/cloudwatch-appsignals-mcp-server) — query application performance, SLO compliance, and service dependency health from CloudWatch Application Signals.
+
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `audit_services` | Audit Services |
+| `audit_slos` | Audit Slos |
+| `audit_service_operations` | Audit Service Operations |
+| `analyze_canary_failures` | Analyze Canary Failures |
+| `list_monitored_services` | List Monitored Services |
+| `get_service_detail` | Get Service Detail |
+| `query_service_metrics` | Query Service Metrics |
+| `list_service_operations` | List Service Operations |
+| `get_slo` | Get Slo |
+| `list_slos` | List Slos |
+| `search_transaction_spans` | Search Transaction Spans |
+| `query_sampled_traces` | Query Sampled Traces |
+| `list_slis` | List Slis |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me CloudWatch Application Signals resources in my AWS account."
-- "Describe the current state of my CloudWatch Application Signals setup."
+- "List all services discovered by CloudWatch Application Signals and their current health status."
+- "Show me the SLO compliance status for all my services over the past 7 days."
+- "Which SLOs are currently breached or at risk of breaching?"
+- "Show me the latency and error rate metrics for the checkout service in the last hour."
+- "Display the service dependency map for my e-commerce application."
+- "List all Application Signals SLOs defined in my account and their target error budgets."
 
 ## Deploy
 
@@ -108,6 +128,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "aws-cloudwatch-appsignals-mcp": {
+      "url": "http://localhost:8485/aws-cloudwatch-appsignals-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

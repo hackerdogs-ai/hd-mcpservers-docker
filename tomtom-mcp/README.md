@@ -1,31 +1,48 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # TomTom MCP Server
 
-MCP server wrapper for [TomTom](https://github.com/tomtom-org/tomtom-mcp) — upstream package `@tomtom-org/tomtom-mcp`.
+MCP server wrapper for [TomTom](https://github.com/tomtom-org/tomtom-mcp) — geocoding, routing, traffic, and point-of-interest search via TomTom's mapping APIs.
 
 ## What is TomTom?
 
-MCP server for [TomTom](https://developer.tomtom.com/) Maps and Routing APIs. Geocoding, reverse geocoding, route calculation, traffic data, and point-of-interest search.
+TomTom provides global mapping, navigation, and traffic data APIs used in automotive, fleet management, and location-based services. This MCP server wraps TomTom's official MCP integration, enabling AI assistants to geocode addresses, calculate driving and walking routes, retrieve real-time traffic conditions, and search for nearby points of interest. See [tomtom-org/tomtom-mcp](https://github.com/tomtom-org/tomtom-mcp) for full documentation.
 
-**API key required** — sign up at [developer.tomtom.com](https://developer.tomtom.com/).
+**API key required** — sign up at [developer.tomtom.com](https://developer.tomtom.com/) to get a `TOMTOM_API_KEY`.
 
-**Summary.** TomTom MCP Server — Dockerized from upstream `@tomtom-org/tomtom-mcp` package.
+**Summary.** MCP server wrapper for [TomTom](https://github.com/tomtom-org/tomtom-mcp) — geocoding, routing, traffic, and point-of-interest search via TomTom's mapping APIs.
+
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `tomtom-geocode` | Tomtom Geocode |
+| `tomtom-reverse-geocode` | Tomtom Reverse Geocode |
+| `tomtom-fuzzy-search` | Tomtom Fuzzy Search |
+| `tomtom-poi-search` | Tomtom Poi Search |
+| `tomtom-nearby` | Tomtom Nearby |
+| `tomtom-routing` | Tomtom Routing |
+| `tomtom-waypoint-routing` | Tomtom Waypoint Routing |
+| `tomtom-reachable-range` | Tomtom Reachable Range |
+| `tomtom-traffic` | Tomtom Traffic |
+| `tomtom-static-map` | Tomtom Static Map |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Calculate a driving route from New York to Boston."
-- "Find restaurants near Times Square."
+- "Calculate a driving route from New York to Boston and show the estimated travel time with current traffic."
+- "Geocode the address '1600 Amphitheatre Parkway, Mountain View, CA' and return its coordinates."
+- "Find all coffee shops within 500 meters of 48.8566° N, 2.3522° E (Paris city center)."
+- "Reverse geocode coordinates 51.5074, -0.1278 to get the street address."
+- "Show current traffic conditions on the M25 motorway near London."
+- "Calculate the fastest walking route from the Eiffel Tower to the Louvre Museum."
 
 ## Deploy
 
@@ -98,6 +115,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "tomtom-mcp": {
+      "url": "http://localhost:8485/tomtom-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

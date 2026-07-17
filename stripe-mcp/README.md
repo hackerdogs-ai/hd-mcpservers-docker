@@ -1,32 +1,39 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Stripe MCP Server
 
-MCP server wrapper for [Stripe](https://github.com/stripe/agent-toolkit) — upstream package `@stripe/mcp`.
+MCP server wrapper for [Stripe](https://github.com/stripe/agent-toolkit) — manage payments, customers, subscriptions, and invoices via the Stripe API.
 
 ## What is Stripe?
 
-MCP server for [Stripe](https://stripe.com/). Interact with Stripe's payment platform — manage customers, subscriptions, invoices, charges, and payment methods through AI assistants.
+Stripe is a global payments platform that handles online transactions, billing, and financial infrastructure for businesses. This MCP server wraps Stripe's official MCP toolkit, giving AI assistants the ability to look up customers, list charges, manage subscriptions, create and void invoices, retrieve payment intents, and inspect product catalogs. See [stripe/agent-toolkit](https://github.com/stripe/agent-toolkit) for full documentation.
 
-**API key required** — find yours at [dashboard.stripe.com/apikeys](https://dashboard.stripe.com/apikeys).
+**API key required** — find your secret key at [dashboard.stripe.com/apikeys](https://dashboard.stripe.com/apikeys). Use a restricted key with only the permissions your workflow needs.
 
-**Summary.** Stripe MCP Server — Dockerized from upstream `@stripe/mcp` package.
+**Summary.** MCP server wrapper for [Stripe](https://github.com/stripe/agent-toolkit) — manage payments, customers, subscriptions, and invoices via the Stripe API.
+
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `stripe_health_check` | Stripe Health Check |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "List recent charges on my Stripe account."
-- "Show all active subscriptions."
-- "Look up customer cus_abc123."
+- "List the 10 most recent charges on my Stripe account and their statuses."
+- "Look up customer cus_abc123 and show their subscription and payment history."
+- "Find all active subscriptions that are past due on my Stripe account."
+- "Create a new invoice for customer cus_xyz789 for $150 with a description of 'Consulting services'."
+- "Show all Stripe payment intents from the past 7 days that have a status of 'requires_action'."
+- "Retrieve all products in my Stripe catalog along with their prices."
 
 ## Deploy
 
@@ -100,6 +107,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
 
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "stripe-mcp": {
+      "url": "http://localhost:8485/stripe-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
+
 ## Environment Variables
 
 | Variable | Default | Description |
@@ -107,6 +134,7 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 | `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
 | `MCP_PORT` | `8669` | HTTP port (only used with `streamable-http`) |
 | `STRIPE_SECRET_KEY` | — | Stripe secret API key — find at [dashboard.stripe.com/apikeys](https://dashboard.stripe.com/apikeys) |
+| `STRIPE_API_KEY` | — | Stripe API key (required) |
 
 ## Installing in Hackerdogs
 

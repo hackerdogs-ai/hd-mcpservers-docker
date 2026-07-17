@@ -1,73 +1,123 @@
+<p align="center">
+  <a href="https://hackerdogs.ai">
+    <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
+    <br/>
+    <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
+  </a>
+</p>
+
 # IVRE MCP Server
 
-MCP server for [IVRE](https://ivre.rocks/) — a network reconnaissance framework. Connects to an existing IVRE deployment's Web API to expose scan results, passive reconnaissance data, passive DNS, network flows, and IP geolocation as MCP tools.
+MCP server wrapper for [IVRE](https://github.com/ivre/ivre) — query an existing IVRE deployment for active scan results, passive reconnaissance, DNS records, and network flows.
 
-## Architecture
+## What is IVRE?
 
-This server acts as an HTTP client to an already-running IVRE instance. It does **not** bundle a database or IVRE itself — it queries the IVRE Web API over HTTP.
+IVRE (Instrument de Veille sur les Réseaux Extérieurs) is an open-source network reconnaissance framework that stores and indexes the output of Nmap, Masscan, Zeek, and other tools into a database, then provides a powerful query interface to explore hosts, services, passive DNS, SSL certificates, and network flows. This MCP server connects to an existing IVRE Web API deployment to expose its query capabilities as tools. See [ivre/ivre](https://github.com/ivre/ivre) for full documentation.
 
-```
-MCP Client (Cursor/Claude) ──MCP──▶ ivre-mcp container ──HTTP──▶ IVRE Web (ivre/web) ──▶ MongoDB
-```
+**No API keys required** — connects to your own self-hosted IVRE instance via the `IVRE_WEB_URL` environment variable.
 
-### Prerequisites
+**Tools:**
+- `query_hosts` — Query hosts from the IVRE scan or view database with filters.
+- `count_hosts` — Count hosts matching a filter in the IVRE database.
+- `query_passive` — Query passive reconnaissance records (DNS, HTTP headers, SSL certs, SSH keys).
+- `count_passive` — Count passive reconnaissance records matching a filter.
+- `top_values` — Get the most common values for a field (service, port, country, etc.).
+- `distinct_values` — Get all distinct values for a field across the dataset.
+- `get_host_ips` — Get a compact list of IP addresses matching a filter.
+- `get_ips_ports` — Get IP addresses with their open ports.
+- `get_timeline` — Get temporal distribution of scan results for time-series analysis.
+- `ip_data` — Get geolocation and ASN data for a specific IP address.
+- `passive_dns` — Query passive DNS records for a domain or IP.
+- `query_flows` — Query aggregated network flow data from the IVRE flow database.
 
-You need a running IVRE deployment with the Web API accessible. The standard IVRE Docker stack (`ivre/db` + `ivre/web` + `ivre/client`) or any IVRE installation with `ivre httpd` running will work.
+## Tools Reference
 
-**New to IVRE?** See [DEPLOY_IVRE.md](DEPLOY_IVRE.md) for a complete step-by-step guide to deploying IVRE with Docker.
+### `count_passive`
 
-## Quick Start
+Count passive reconnaissance records matching a filter.
 
-### With Docker (stdio mode)
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `filter` | str | No | `""` | IVRE filter string for passive data. Leave empty to count all records. |
+
+### `query_hosts`
+
+Query hosts from the IVRE scan or view database.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `database` | str | No | `"view"` | Database to query: `"scans"` or `"view"` |
+| `filter` | str | No | `""` | IVRE filter string (e.g. `"port:22"`, `"service:http"`, `"country:US"`) |
+| `limit` | int | No | `50` | Maximum number of results |
+| `skip` | int | No | `0` | Number of results to skip for pagination |
+| `sort` | str | No | `""` | Sort field; prefix with `-` for descending |
+
+### `query_passive`
+
+Query passive reconnaissance records (DNS, HTTP headers, SSL certificates, SSH keys).
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `filter` | str | No | `""` | IVRE filter string for passive data |
+| `limit` | int | No | `50` | Maximum number of results |
+| `skip` | int | No | `0` | Number of results to skip |
+| `sort` | str | No | `""` | Sort field |
+
+### `ip_data`
+
+Get geolocation and ASN data for a specific IP address.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `address` | str | Yes | — | IP address to look up (e.g. `"8.8.8.8"`) |
+
+## Example Prompts
+
+Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
+
+- "Query IVRE for all hosts with port 22 open and show their IP, banner, and country."
+- "Use IVRE to find the top 10 most common web server products in the view database."
+- "Count how many passive DNS records IVRE has for the domain example.com and its subdomains."
+- "Query IVRE passive records for SSL certificates issued to *.example.com."
+- "Get all hosts in the 10.0.0.0/8 range with open port 3306 from the IVRE scan database."
+- "Use IVRE to look up geolocation and ASN data for IP address 203.0.113.42."
+
+## Deploy
+
+### Docker Compose (recommended)
 
 ```bash
-docker run -i --rm \
-  -e IVRE_WEB_URL=http://your-ivre-host:80 \
-  -e MCP_TRANSPORT=stdio \
-  hackerdogs/ivre-mcp:latest
+docker-compose up -d
 ```
 
-### With Docker (streamable-http mode)
+### Docker Run (stdio mode)
 
 ```bash
-docker run -d --rm \
-  -e IVRE_WEB_URL=http://your-ivre-host:80 \
+docker run -i --rm hackerdogs/ivre-mcp:latest
+```
+
+### Docker Run (HTTP streamable mode)
+
+```bash
+docker run -d -p 8366:8366 \
   -e MCP_TRANSPORT=streamable-http \
   -e MCP_PORT=8366 \
-  -p 8366:8366 \
   hackerdogs/ivre-mcp:latest
 ```
 
-The MCP endpoint will be available at `http://localhost:8366/mcp`.
+## MCP Client Configuration
 
-### With Docker Compose
+### Stdio mode (default)
 
-```bash
-# Set your IVRE URL
-export IVRE_WEB_URL=http://your-ivre-host:80
-
-docker compose up
-```
-
-The compose file runs in streamable-http mode on port 8366 by default.
-
-### Claude Desktop / Cursor Configuration
-
-**stdio mode** (local, recommended for desktop use):
+Add to your Claude Desktop or Cursor MCP config:
 
 ```json
 {
   "mcpServers": {
     "ivre-mcp": {
       "command": "docker",
-      "args": [
-        "run", "-i", "--rm",
-        "-e", "IVRE_WEB_URL",
-        "-e", "MCP_TRANSPORT",
-        "hackerdogs/ivre-mcp:latest"
-      ],
+      "args": ["run", "-i", "--rm", "-e", "MCP_TRANSPORT", "hackerdogs/ivre-mcp:latest"],
       "env": {
-        "IVRE_WEB_URL": "http://your-ivre-instance:80",
         "MCP_TRANSPORT": "stdio"
       }
     }
@@ -75,7 +125,9 @@ The compose file runs in streamable-http mode on port 8366 by default.
 }
 ```
 
-**streamable-http mode** (remote / Hackerdogs deployment):
+### HTTP mode (streamable-http)
+
+First, start the server using Docker Compose or `docker run` with HTTP mode (see [Deploy](#deploy) above), then point your MCP client at the running server:
 
 ```json
 {
@@ -87,127 +139,116 @@ The compose file runs in streamable-http mode on port 8366 by default.
 }
 ```
 
+> **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "ivre-mcp": {
+      "url": "http://localhost:8485/ivre-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
+
 ## Environment Variables
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `IVRE_WEB_URL` | Yes | — | Base URL of the IVRE web interface (e.g., `http://ivre-web:80`) |
-| `IVRE_VERIFY_SSL` | No | `true` | Set to `false` to skip SSL certificate verification |
-| `MCP_TRANSPORT` | No | `stdio` | Transport mode: `stdio` or `streamable-http` |
-| `MCP_PORT` | No | `8366` | Port for streamable-http transport |
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
+| `MCP_PORT` | `8366` | HTTP port (only used with `streamable-http`) |
+| `IVRE_WEB_URL` | `""` | Ivre web url |
+| `IVRE_VERIFY_SSL` | `true` | Ivre verify ssl |
 
-## Tools
+## Installing in Hackerdogs
 
-### Query Tools
+The fastest way to get started is through [Hackerdogs](https://hackerdogs.ai):
 
-| Tool | Description |
-|------|-------------|
-| `query_hosts` | Query hosts from the scan or view database with full details (ports, services, banners, OS, scripts) |
-| `count_hosts` | Count hosts matching a filter |
-| `query_passive` | Query passive reconnaissance records (DNS, HTTP headers, SSL certs, SSH keys) |
-| `count_passive` | Count passive records matching a filter |
+1. **Log in** to your Hackerdogs account.
+2. Go to the **Tools Catalog**.
+3. **Search** for the tool by name (e.g. "nuclei", "naabu", "julius").
+4. Expand the tool card and click **Install** — you're ready to go.
 
-### Aggregation Tools
+> Give it a couple of minutes to go live. Then start querying by asking Hackerdogs to use the tool explicitly (e.g. *"Use naabu to scan example.com"*). If you don't specify, Hackerdogs will automatically choose the best tool for the job — it may choose this one on its own.
 
-| Tool | Description |
-|------|-------------|
-| `top_values` | Get the most common values for a field (top services, ports, products, countries, etc.) |
-| `distinct_values` | Get all distinct values for a field with counts |
+5. **Vendor API key required?** Add your key in the config environment variable field before clicking Install. Your key will be encrypted at rest.
+6. **Enable / Disable** the tool anytime from the **Enabled Tools** page.
+7. **Need to update a key or parameter?** Go to **My Tools** → toggle **Show Decrypted Values** → edit → **Save**.
 
-### Specialized Query Tools
+> **Want to contribute or chat with the team?** Join our [Discord](https://discord.gg/str9FcWuyM).
 
-| Tool | Description |
-|------|-------------|
-| `get_host_ips` | Get only IP addresses matching a filter (compact output for target lists) |
-| `get_ips_ports` | Get IPs with their open ports |
-| `get_timeline` | Get scan timeline data for time-series analysis |
-
-### Enrichment Tools
-
-| Tool | Description |
-|------|-------------|
-| `ip_data` | Get geolocation and AS number data for an IP address |
-| `passive_dns` | Query passive DNS records (Common Output Format compatible) |
-| `query_flows` | Query aggregated network flow data |
-
-## IVRE Filter Syntax
-
-The `filter` parameter across tools uses IVRE's web filter syntax:
-
-| Filter | Example | Description |
-|--------|---------|-------------|
-| `port:N` | `port:22` | Hosts with port N open |
-| `service:S` | `service:http` | Hosts running service S |
-| `hostname:H` | `hostname:example.com` | Hosts with hostname H |
-| `country:CC` | `country:US` | Hosts in country CC |
-| `net:CIDR` | `net:10.0.0.0/8` | Hosts in a network range |
-| `product:P` | `product:Apache` | Hosts running product P |
-| `version:V` | `version:2.4` | Hosts with version V |
-| `cert.issuer:I` | `cert.issuer:Let's Encrypt` | Certificate issuer filter |
-| `cpe.vendor:V` | `cpe.vendor:microsoft` | CPE vendor filter |
-| `category:C` | `category:SCAN-001` | Scan category filter |
-| `source:S` | `source:MyScanner` | Scan source filter |
-
-Multiple filters separated by spaces are **ANDed**. Use the `OR` keyword for OR logic.
-
-## Example Usage
-
-**Find all hosts with SSH open in a specific network:**
-```
-query_hosts(filter="port:22 net:192.168.0.0/16", limit=20)
-```
-
-**Get top 10 services across all scanned hosts:**
-```
-top_values(field="service", limit=10)
-```
-
-**Look up passive DNS for a domain:**
-```
-passive_dns(query="example.com", include_subdomains=True)
-```
-
-**Get geolocation for an IP:**
-```
-ip_data(address="8.8.8.8")
-```
-
-**Count hosts running Apache:**
-```
-count_hosts(filter="product:Apache")
-```
-
-## Building
+## Build
 
 ```bash
-# Build locally
 docker build -t hackerdogs/ivre-mcp:latest .
-
-# Or use the publish script
-./publish_to_hackerdogs.sh --build hackerdogs
 ```
 
-## Network Configuration
+## Testing
 
-When running alongside an IVRE Docker stack, ensure both containers share a Docker network:
+### Automated tests
 
 ```bash
-# If IVRE runs on network 'ivre_network':
-docker run -i --rm \
-  --network ivre_network \
-  -e IVRE_WEB_URL=http://ivre-web:80 \
-  -e MCP_TRANSPORT=stdio \
+./test.sh
+```
+
+### Test directly with Docker
+
+**1. Start the server in HTTP mode:**
+
+```bash
+docker run -d --rm --name ivre-mcp-test -p 8366:8366 \
+  -e MCP_TRANSPORT=streamable-http \
   hackerdogs/ivre-mcp:latest
 ```
 
-## References
+**2. Initialize the MCP session:**
 
-- [IVRE Documentation](https://doc.ivre.rocks/)
-- [IVRE Web API](https://doc.ivre.rocks/en/latest/dev/web-api.html)
-- [IVRE GitHub](https://github.com/ivre/ivre)
-- [IVRE Docker Images](https://hub.docker.com/u/ivre/)
+```bash
+SESSION_ID=$(curl -s -D - -X POST http://localhost:8366/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"0.1"}}}' \
+  2>&1 | grep -i mcp-session-id | awk '{print $2}' | tr -d '\r\n')
 
+curl -s -X POST http://localhost:8366/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "mcp-session-id: $SESSION_ID" \
+  -d '{"jsonrpc":"2.0","method":"notifications/initialized"}'
+```
+
+**3. Call a tool:**
+
+```bash
+curl -s -X POST http://localhost:8366/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "mcp-session-id: $SESSION_ID" \
+  -d '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"count_passive","arguments":{"arguments":"--help"}}}'
+```
+
+**4. Clean up:**
+
+```bash
+docker stop ivre-mcp-test
+```
 
 ## Running the tool directly (bypassing MCP)
 
-This MCP server does not wrap a single CLI binary; it talks to an **IVRE web API** (see `IVRE_WEB_URL`). To run IVRE CLI tools (e.g. `ivre run`, `ivre ipinfo`) directly, use the [official IVRE Docker images](https://hub.docker.com/u/ivre/) instead of this image.
+You can run the Ivre CLI in the same container by overriding the entrypoint without starting the MCP server.
+
+**Show help:**
+
+```bash
+docker run -i --rm --entrypoint ivre hackerdogs/ivre-mcp:latest --help
+```

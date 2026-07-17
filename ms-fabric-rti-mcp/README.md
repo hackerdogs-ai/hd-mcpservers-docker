@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -14,18 +12,66 @@ MCP server wrapper for [Microsoft Fabric RTI](https://github.com/microsoft/fabri
 
 ## What is Microsoft Fabric RTI?
 
-MCP server for [Microsoft Fabric](https://www.microsoft.com/en-us/microsoft-fabric) Real-Time Intelligence. Query and analyze real-time data streams, KQL databases, and eventhouses.
+Microsoft Fabric Real-Time Intelligence (RTI) provides tools for querying and analyzing real-time data streams, KQL (Kusto Query Language) databases, and Fabric eventhouses. This MCP server exposes Fabric RTI capabilities to AI assistants, enabling natural language querying of streaming analytics, time-series data, and live event pipelines. See [microsoft/fabric-rti-mcp](https://github.com/microsoft/fabric-rti-mcp) for full documentation.
 
-**API key required** — configure in your Microsoft Fabric workspace.
+**API key required** — configure your Microsoft Fabric workspace credentials and optionally a `KUSTO_SERVICE_URI` for your eventhouse endpoint.
 
 **Summary.** Microsoft Fabric RTI MCP Server — Dockerized from upstream `microsoft-fabric-rti-mcp` package.
+
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `kusto_known_services` | Kusto Known Services |
+| `kusto_query` | Kusto Query |
+| `kusto_command` | Kusto Command |
+| `kusto_list_entities` | Kusto List Entities |
+| `kusto_describe_database` | Kusto Describe Database |
+| `kusto_describe_database_entity` | Kusto Describe Database Entity |
+| `kusto_graph_query` | Kusto Graph Query |
+| `kusto_sample_entity` | Kusto Sample Entity |
+| `kusto_ingest_inline_into_table` | Kusto Ingest Inline Into Table |
+| `kusto_get_shots` | Kusto Get Shots |
+| `kusto_deeplink_from_query` | Kusto Deeplink From Query |
+| `kusto_show_queryplan` | Kusto Show Queryplan |
+| `kusto_diagnostics` | Kusto Diagnostics |
+| `eventstream_list` | Eventstream List |
+| `eventstream_get` | Eventstream Get |
+| `eventstream_get_definition` | Eventstream Get Definition |
+| `eventstream_create` | Eventstream Create |
+| `eventstream_update` | Eventstream Update |
+| `eventstream_delete` | Eventstream Delete |
+| `eventstream_start_definition` | Eventstream Start Definition |
+| `eventstream_get_current_definition` | Eventstream Get Current Definition |
+| `eventstream_clear_definition` | Eventstream Clear Definition |
+| `eventstream_add_sample_data_source` | Eventstream Add Sample Data Source |
+| `eventstream_add_custom_endpoint_source` | Eventstream Add Custom Endpoint Source |
+| `eventstream_add_derived_stream` | Eventstream Add Derived Stream |
+| `eventstream_add_eventhouse_destination` | Eventstream Add Eventhouse Destination |
+| `eventstream_add_custom_endpoint_destination` | Eventstream Add Custom Endpoint Destination |
+| `eventstream_validate_definition` | Eventstream Validate Definition |
+| `eventstream_create_from_definition` | Eventstream Create From Definition |
+| `eventstream_list_available_components` | Eventstream List Available Components |
+| `activator_list_artifacts` | Activator List Artifacts |
+| `activator_create_trigger` | Activator Create Trigger |
+| `map_list` | Map List |
+| `map_get` | Map Get |
+| `map_get_definition` | Map Get Definition |
+| `map_create` | Map Create |
+| `map_update_definition` | Map Update Definition |
+| `map_update` | Map Update |
+| `map_delete` | Map Delete |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Query real-time data from my Fabric eventhouse."
-- "Show recent events in my KQL database."
+- "Query the last 100 events from my Fabric eventhouse using KQL."
+- "Show me the real-time ingestion rate for my streaming pipeline over the past hour."
+- "Run a KQL query against the Samples database to find anomalies in telemetry data."
+- "List all tables in my KQL database and describe their schemas."
+- "Aggregate sensor readings from the last 24 hours and show me the min, max, and average."
+- "Find all error events in my eventhouse from the past 30 minutes grouped by error code."
 
 ## Deploy
 
@@ -99,6 +145,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
 
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "ms-fabric-rti-mcp": {
+      "url": "http://localhost:8485/ms-fabric-rti-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
+
 ## Environment Variables
 
 | Variable | Default | Description |
@@ -106,6 +172,9 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 | `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
 | `MCP_PORT` | `8650` | HTTP port (only used with `streamable-http`) |
 | `FABRIC_API_KEY` | — | Microsoft Fabric API key |
+| `KUSTO_SERVICE_URI` | `https://help.kusto.windows.net/` | Kusto/Eventhouse cluster URI |
+| `KUSTO_SERVICE_DEFAULT_DB` | `Samples` | Default KQL database name |
+| `FABRIC_API_BASE_URL` | `https://api.fabric.microsoft.com/v1` | Fabric REST API base URL |
 
 ## Installing in Hackerdogs
 

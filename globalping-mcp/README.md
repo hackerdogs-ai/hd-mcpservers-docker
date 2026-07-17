@@ -1,31 +1,42 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Globalping MCP Server
 
-MCP server wrapper for [Globalping](https://github.com/jsdelivr/globalping-mcp) — upstream package `globalping-mcp`.
+MCP server wrapper for [Globalping](https://www.jsdelivr.com/globalping) — run ping, traceroute, DNS lookup, MTR, and HTTP measurements from a distributed network of probes around the world. See [jsdelivr/globalping-mcp](https://github.com/jsdelivr/globalping-mcp) for full documentation.
 
 ## What is Globalping?
 
-MCP server for [Globalping](https://www.jsdelivr.com/globalping) — a global network measurement platform. Run ping, traceroute, DNS, MTR, and HTTP measurements from probe nodes distributed worldwide.
+Globalping is a free, open network measurement platform maintained by jsDelivr. It operates hundreds of probe nodes across different continents, ISPs, and cloud regions, letting you measure connectivity and latency from perspectives you cannot replicate locally. The MCP server exposes the Globalping API so AI assistants can diagnose routing issues, compare DNS resolution across regions, verify CDN performance, and detect geographic service outages — all without leaving the chat.
 
-**No API keys required** — this server works out of the box.
+**No API keys required** — the public Globalping API is free to use with generous rate limits, and an optional token unlocks higher quotas.
 
-**Summary.** Globalping MCP Server — Dockerized from upstream `globalping-mcp` package.
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `globalping-ping` | Globalping Ping |
+| `globalping-traceroute` | Globalping Traceroute |
+| `globalping-dns` | Globalping Dns |
+| `globalping-mtr` | Globalping Mtr |
+| `globalping-http` | Globalping Http |
+| `globalping-limits` | Globalping Limits |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Ping example.com from 5 locations worldwide."
-- "Run a traceroute to 8.8.8.8 from Europe."
+- "Ping example.com from 5 random locations worldwide and report the average RTT from each."
+- "Run a traceroute to 8.8.8.8 from a probe in Europe and identify any high-latency hops."
+- "Resolve the DNS A record for github.com from probes in the US, EU, and Asia and compare the results."
+- "Run an MTR test from a probe in Japan to 1.1.1.1 and show packet loss per hop."
+- "Make an HTTP GET request to https://example.com from 3 probes and compare the response times."
+- "Check whether api.example.com is reachable from Australia — ping it and show RTT and packet loss."
 
 ## Deploy
 
@@ -92,6 +103,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "globalping-mcp": {
+      "url": "http://localhost:8485/globalping-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

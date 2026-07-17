@@ -1,31 +1,38 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Exa MCP Server
 
-MCP server wrapper for [Exa](https://github.com/exa-labs/exa-mcp-server) — upstream package `exa-mcp-server`.
+MCP server wrapper for [Exa](https://github.com/exa-labs/exa-mcp-server) — neural search engine with semantic similarity ranking for web, research papers, code, and company data.
 
 ## What is Exa?
 
-MCP server for [Exa](https://exa.ai/) — a neural search engine. Provides real-time web search, code search, research paper search, and company research capabilities using Exa's embedding-based search index.
+Exa is a neural search engine that indexes the web using embedding-based similarity rather than keyword matching, delivering semantically relevant results for technical and research queries. This MCP server wraps the official `exa-mcp-server` package by [exa-labs](https://github.com/exa-labs/exa-mcp-server), providing tools for general web search, research paper discovery, code search, and company lookups. See [exa-labs/exa-mcp-server](https://github.com/exa-labs/exa-mcp-server) for full documentation.
 
-**API key required** — sign up at [exa.ai](https://exa.ai/).
+**API key required** — sign up at [exa.ai](https://exa.ai/) to obtain an `EXA_API_KEY`.
 
-**Summary.** Exa MCP Server — Dockerized from upstream `exa-mcp-server` package.
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `web_search_exa` | Web Search Exa |
+| `web_fetch_exa` | Web Fetch Exa |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Search for recent papers on LLM security."
-- "Find companies working on MCP protocol tooling."
+- "Use Exa to search for recent academic papers on prompt injection attacks against LLMs."
+- "Find companies building developer tools for AI agent orchestration using Exa's company search."
+- "Search Exa for code examples of implementing MCP servers in Python."
+- "Use Exa to find the most semantically relevant articles about zero-day vulnerability disclosure practices."
+- "Search Exa for research papers on retrieval-augmented generation published after January 2024."
+- "Find competitors to Anthropic Claude in the enterprise AI assistant space using Exa."
 
 ## Deploy
 
@@ -98,6 +105,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "exa-mcp": {
+      "url": "http://localhost:8485/exa-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

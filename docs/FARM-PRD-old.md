@@ -1,3 +1,5 @@
+> **SUPERSEDED.** Canonical design & roadmap: [`AI-aware-zero-trust-gateway-for-MCP.md`](./AI-aware-zero-trust-gateway-for-MCP.md). This file is archived historical material.
+
 # PRD: Hackerdogs MCP Server Farm
 
 > **Canonical architecture & product framing:** [AI-aware zero-trust gateway for MCP](./AI-aware-zero-trust-gateway-for-MCP.md). This PRD is supporting implementation detail (compose, admin API, guardrail research). If anything disagrees, the gateway spec wins. **Persistence:** the gateway spec standardizes **PostgreSQL + TimescaleDB** ([`docs/schema/mcp-farm-timescaledb.sql`](./schema/mcp-farm-timescaledb.sql)) for production; SQLite below remains a minimal-dev alternative, not the long-term target.

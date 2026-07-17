@@ -1,3 +1,5 @@
+> **SUPERSEDED.** Canonical design & roadmap: [`AI-aware-zero-trust-gateway-for-MCP.md`](./AI-aware-zero-trust-gateway-for-MCP.md). This file is archived historical material.
+
 # ChatGPT Guidance on MCP Server Farm and AI aware zero trust gateway
 
 I am building an mcpServer farm with 1000s of mcpservers. The architecture is that there are stateless MCP servers load balanced by caddy. But in front of these I want an AI security firewall that is tracking the MCP server requests from the LLM and track and have policies to block malicious requests. I want to use only the open source software for this firewall. Design this firewall  

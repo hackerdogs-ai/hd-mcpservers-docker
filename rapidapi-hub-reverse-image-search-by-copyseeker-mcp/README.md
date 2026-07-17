@@ -1,31 +1,37 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # RapidAPI Reverse Image Search MCP Server
 
-MCP server wrapper for [RapidAPI Reverse Image Search](https://rapidapi.com/) — upstream package `mcp-remote`.
+MCP server wrapper for [CopySeeker Reverse Image Search](https://rapidapi.com/copyseeker/api/reverse-image-search-by-copyseeker) via RapidAPI — find image origins, detect copies, and discover visually similar content.
 
 ## What is RapidAPI Reverse Image Search?
 
-MCP server for reverse image search via [RapidAPI](https://rapidapi.com/) and CopySeeker. Upload or link images to find visually similar results across the web.
+CopySeeker's Reverse Image Search API, accessed via the RapidAPI Hub, lets you submit an image URL and receive a ranked list of matching or visually similar images found across the web, including their source URLs and metadata. It is useful for copyright detection, content moderation, and OSINT image tracing.
 
-**API key required** — sign up at [rapidapi.com](https://rapidapi.com/).
+**API key required** — sign up at [rapidapi.com](https://rapidapi.com/) and subscribe to the CopySeeker Reverse Image Search API to obtain a `RAPIDAPI_KEY`.
 
-**Summary.** RapidAPI Reverse Image Search MCP Server — Dockerized from upstream `mcp-remote` package.
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `rapidapi-reverse-image-search_health_check` | Rapidapi Reverse Image Search Health Check |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Reverse image search this URL to find similar images."
-- "Find the original source of this image."
+- "Reverse image search https://example.com/photo.jpg and show me where else this image appears online."
+- "Find the original source of this product photo: https://cdn.shop.example.com/item.png."
+- "Check whether the image at this URL has been copied to other websites without attribution."
+- "Search for visually similar images to this logo and list the top 5 results with their source URLs."
+- "Identify whether this screenshot of a face has been used elsewhere on the internet."
+- "Run a reverse image search on this URL and report back any matches ranked by similarity score."
 
 ## Deploy
 
@@ -98,6 +104,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "rapidapi-hub-reverse-image-search-by-copyseeker-mcp": {
+      "url": "http://localhost:8485/rapidapi-hub-reverse-image-search-by-copyseeker-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

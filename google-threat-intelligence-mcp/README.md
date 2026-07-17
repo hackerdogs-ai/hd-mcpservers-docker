@@ -1,32 +1,71 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Google Threat Intelligence MCP Server
 
-MCP server wrapper for [Google Threat Intelligence](https://github.com/google/mcp-security) — upstream package `gti-mcp`.
+MCP server wrapper for [Google Threat Intelligence](https://cloud.google.com/threat-intelligence) (GTI) — query file hashes, URLs, domains, and IP addresses for malware verdicts, reputation scores, and Mandiant threat intelligence. See [google/mcp-security](https://github.com/google/mcp-security) for full documentation.
 
 ## What is Google Threat Intelligence?
 
-MCP server for [Google Threat Intelligence](https://cloud.google.com/threat-intelligence) (GTI), including insights from Mandiant and VirusTotal. Query file hashes, URLs, domains, and IP addresses for threat data, malware analysis, and reputation scores.
+Google Threat Intelligence MCP (`gti-mcp`) combines VirusTotal's crowdsourced malware scanning with Mandiant's enterprise threat research to give AI assistants a comprehensive view of any indicator of compromise. You can look up file hashes against 70+ antivirus engines, check whether a domain or IP is associated with known threat actors, retrieve behavioral sandbox reports for suspicious files, and search the GTI knowledge base for CVEs, malware families, and attack campaigns.
 
-**API key required** — get one at [virustotal.com](https://www.virustotal.com/).
+**API key required** — a VirusTotal API key (free or premium) is required; set `VIRUSTOTAL_API_KEY`. Premium GTI features require a Google Threat Intelligence subscription.
 
-**Summary.** Google Threat Intelligence MCP Server — Dockerized from upstream `gti-mcp` package.
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `get_collection_report` | Get Collection Report |
+| `get_entities_related_to_a_collection` | Get Entities Related To A Collection |
+| `search_threats` | Search Threats |
+| `search_campaigns` | Search Campaigns |
+| `search_threat_actors` | Search Threat Actors |
+| `search_malware_families` | Search Malware Families |
+| `search_software_toolkits` | Search Software Toolkits |
+| `search_threat_reports` | Search Threat Reports |
+| `search_vulnerabilities` | Search Vulnerabilities |
+| `get_collection_timeline_events` | Get Collection Timeline Events |
+| `get_collection_mitre_tree` | Get Collection Mitre Tree |
+| `create_collection` | Create Collection |
+| `update_collection_attributes` | Update Collection Attributes |
+| `update_iocs_in_collection` | Update Iocs In Collection |
+| `get_collection_feature_matches` | Get Collection Feature Matches |
+| `get_collections_commonalities` | Get Collections Commonalities |
+| `get_file_report` | Get File Report |
+| `get_entities_related_to_a_file` | Get Entities Related To A File |
+| `get_file_behavior_report` | Get File Behavior Report |
+| `get_file_behavior_summary` | Get File Behavior Summary |
+| `analyse_file` | Analyse File |
+| `search_digital_threat_monitoring` | Search Digital Threat Monitoring |
+| `search_iocs` | Search Iocs |
+| `get_hunting_ruleset` | Get Hunting Ruleset |
+| `get_entities_related_to_a_hunting_ruleset` | Get Entities Related To A Hunting Ruleset |
+| `get_domain_report` | Get Domain Report |
+| `get_entities_related_to_a_domain` | Get Entities Related To A Domain |
+| `get_ip_address_report` | Get Ip Address Report |
+| `get_entities_related_to_an_ip_address` | Get Entities Related To An Ip Address |
+| `list_threat_profiles` | List Threat Profiles |
+| `get_threat_profile` | Get Threat Profile |
+| `get_threat_profile_recommendations` | Get Threat Profile Recommendations |
+| `get_threat_profile_associations_timeline` | Get Threat Profile Associations Timeline |
+| `get_url_report` | Get Url Report |
+| `get_entities_related_to_an_url` | Get Entities Related To An Url |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Look up the hash abc123... on VirusTotal."
-- "Check the reputation of domain example.com."
-- "Analyze this suspicious URL for threats."
+- "Look up the SHA-256 hash d41d8cd98f00b204e9800998ecf8427e on VirusTotal and tell me how many engines flagged it."
+- "Check the reputation of domain malware-c2.example.com — is it associated with any threat actors?"
+- "Analyze the URL https://suspicious-site.example.com/payload.exe for threats."
+- "Look up IP address 45.33.32.156 and tell me if it is known for malicious activity."
+- "Search GTI for the Lazarus Group threat actor and summarize their TTPs."
+- "Get the sandbox behavior report for file hash abc123... and list any network connections it makes."
 
 ## Deploy
 
@@ -100,6 +139,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
 
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "google-threat-intelligence-mcp": {
+      "url": "http://localhost:8485/google-threat-intelligence-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
+
 ## Environment Variables
 
 | Variable | Default | Description |
@@ -107,6 +166,7 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 | `MCP_TRANSPORT` | `stdio` | Transport mode: `stdio` or `streamable-http` |
 | `MCP_PORT` | `8644` | HTTP port (only used with `streamable-http`) |
 | `VIRUSTOTAL_API_KEY` | — | VirusTotal / Google TI API key |
+| `GOOGLE_THREAT_INTELLIGENCE_API_KEY` | — | Google Threat Intelligence API key (required) |
 
 ## Installing in Hackerdogs
 

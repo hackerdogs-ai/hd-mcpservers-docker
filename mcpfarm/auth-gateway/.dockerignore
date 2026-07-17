@@ -1,0 +1,9 @@
+.venv-test/
+__pycache__/
+*.pyc
+tests/
+*.db
+*.db-wal
+*.db-shm
+secrets.key
+.gitignore

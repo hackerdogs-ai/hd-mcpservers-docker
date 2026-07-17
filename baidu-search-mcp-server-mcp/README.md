@@ -1,31 +1,37 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Baidu Search MCP Server
 
-MCP server wrapper for [Baidu Search](https://github.com/nicholasgasior/baidu-search-mcp) — upstream package `baidu-search-mcp-server`.
+MCP server wrapper for [baidu-mcp-server](https://pypi.org/project/baidu-mcp-server/) — search Baidu's web index and retrieve results optimized for Chinese-language and Asia-Pacific queries.
 
-## What is Baidu Search?
+## What is Baidu Search MCP?
 
-MCP server for [Baidu](https://www.baidu.com/) search engine. Perform web searches using Baidu's index, with content fetching and result parsing for Chinese-language and global queries.
+Baidu is China's largest search engine and a primary index for Chinese-language content. The `baidu-mcp-server` Python package exposes Baidu web search as an MCP tool, enabling LLMs to submit queries to Baidu and receive structured search results including titles, URLs, and snippets. It is particularly useful for research targeting Chinese-language sources, news, and regional content that may not surface prominently on Western search engines.
 
-**No API keys required** — this server works out of the box.
+**No API keys required** — this server queries Baidu's public web interface and runs entirely inside the Docker container.
 
-**Summary.** Baidu Search MCP Server — Dockerized from upstream `baidu-search-mcp-server` package.
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `search` | Search |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Search Baidu for 'cloud computing trends in China'."
-- "Find information about a topic using Baidu."
+- "Search Baidu for '人工智能最新进展' and summarize the top results."
+- "Use Baidu to find recent news about Alibaba Cloud's AI announcements."
+- "Search Baidu for information about cybersecurity regulations in China."
+- "Find Chinese-language developer documentation for the WeChat Mini Programs API using Baidu."
+- "Search Baidu for the latest statistics on China's e-commerce market in 2024."
+- "Use Baidu to look up the official documentation site for Baidu PaddlePaddle."
 
 ## Deploy
 
@@ -92,6 +98,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "baidu-search-mcp-server-mcp": {
+      "url": "http://localhost:8485/baidu-search-mcp-server-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

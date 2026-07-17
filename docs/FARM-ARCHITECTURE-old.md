@@ -1,3 +1,5 @@
+> **SUPERSEDED.** Canonical design & roadmap: [`AI-aware-zero-trust-gateway-for-MCP.md`](./AI-aware-zero-trust-gateway-for-MCP.md). This file is archived historical material.
+
 # Hackerdogs MCP Server Farm — Architecture Document
 
 **Version:** 1.0

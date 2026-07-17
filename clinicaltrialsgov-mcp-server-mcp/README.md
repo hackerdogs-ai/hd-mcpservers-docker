@@ -1,31 +1,41 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # ClinicalTrials.gov MCP Server
 
-MCP server wrapper for [ClinicalTrials.gov](https://github.com/pauljunsukhan/clinicaltrialsgov-mcp) — upstream package `clinicaltrialsgov-mcp-server`.
+MCP server wrapper for [ClinicalTrials.gov](https://github.com/pauljunsukhan/clinicaltrialsgov-mcp) — search the NLM's global registry of clinical studies by condition, intervention, location, and status.
 
 ## What is ClinicalTrials.gov?
 
-MCP server for [ClinicalTrials.gov](https://clinicaltrials.gov/). Search clinical trials by condition, intervention, location, and status. Access study details, eligibility criteria, and results.
+ClinicalTrials.gov is the U.S. National Library of Medicine's registry of publicly and privately supported clinical studies conducted around the world. This MCP server wraps the `clinicaltrialsgov-mcp-server` package, enabling structured searches of the ClinicalTrials.gov API by condition, intervention, location, sponsor, phase, and enrollment status — and retrieval of full study details, eligibility criteria, and reported results. See [github.com/pauljunsukhan/clinicaltrialsgov-mcp](https://github.com/pauljunsukhan/clinicaltrialsgov-mcp) for full documentation.
 
-**No API keys required** — this server works out of the box.
+**No API keys required** — queries the public ClinicalTrials.gov API directly.
 
-**Summary.** ClinicalTrials.gov MCP Server — Dockerized from upstream `clinicaltrialsgov-mcp-server` package.
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `clinicaltrials_analyze_trends` | Clinicaltrials Analyze Trends |
+| `clinicaltrials_compare_studies` | Clinicaltrials Compare Studies |
+| `clinicaltrials_find_eligible_studies` | Clinicaltrials Find Eligible Studies |
+| `clinicaltrials_get_study` | Clinicaltrials Get Study |
+| `clinicaltrials_search_studies` | Clinicaltrials Search Studies |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Search for active clinical trials on type 2 diabetes."
-- "Find trials for a specific drug near San Francisco."
+- "Search ClinicalTrials.gov for active Phase 3 trials studying semaglutide for obesity."
+- "Find clinical trials recruiting participants in New York for Alzheimer's disease."
+- "Look up the eligibility criteria and study design for trial NCT04280705."
+- "Search for completed trials that studied the combination of immunotherapy and chemotherapy for lung cancer."
+- "Find all trials sponsored by NIH for Type 1 Diabetes published in the last two years."
+- "What are the reported outcomes of the RECOVERY trial for COVID-19 treatments?"
 
 ## Deploy
 
@@ -92,6 +102,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "clinicaltrialsgov-mcp-server-mcp": {
+      "url": "http://localhost:8485/clinicaltrialsgov-mcp-server-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

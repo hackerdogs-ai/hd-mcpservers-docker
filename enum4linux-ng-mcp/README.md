@@ -1,26 +1,24 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Enum4linux-ng MCP Server
 
-MCP server wrapper for [Enum4Linux Ng](https://github.com/cddc/enum4linux-ng) — Advanced SMB enumeration with enhanced logging.
+MCP server wrapper for [Enum4Linux Ng](https://github.com/cddmp/enum4linux-ng) — Advanced SMB enumeration with enhanced logging.
 
 ## What is Enum4Linux Ng?
 
 Enum4Linux Ng (enum4linux-ng) is a security tool that provides: **Advanced SMB enumeration with enhanced logging.**
 
-See [cddc/enum4linux-ng](https://github.com/cddc/enum4linux-ng) for full documentation.
+See [cddc/enum4linux-ng](https://github.com/cddmp/enum4linux-ng) for full documentation.
 
 **No API keys required** — Enum4Linux Ng runs locally inside the Docker container.
 
-**Summary.** MCP server wrapper for [Enum4Linux Ng](https://github.com/cddc/enum4linux-ng) — Advanced SMB enumeration with enhanced logging.
+**Summary.** MCP server wrapper for [Enum4Linux Ng](https://github.com/cddmp/enum4linux-ng) — Advanced SMB enumeration with enhanced logging.
 
 **Tools:**
 - `run_enum4linux_ng` — Run enum4linux-ng with the given arguments. Returns structured JSON output.
@@ -121,6 +119,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "enum4linux-ng-mcp": {
+      "url": "http://localhost:8485/enum4linux-ng-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

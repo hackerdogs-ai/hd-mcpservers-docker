@@ -93,22 +93,25 @@ async def _run_command(args: list[str], timeout_seconds: int = 600) -> dict:
 
 @mcp.tool()
 async def run_gitleaks(
-    arguments: str,
+    arguments: str = "",
     source_url: str = "",
     timeout_seconds: int = 600,
 ) -> str:
-    """Run gitleaks with the given arguments.
+    """Scan a git repository or directory for hardcoded secrets using gitleaks.
 
-    Pass arguments as you would on the command line.  Use ``source_url`` to
-    have the server download files from a URL before processing.
+    When source_url is provided, the repository is cloned automatically and
+    scanned with ``gitleaks git <path>``.  You usually only need source_url.
+
+    Examples:
+        Scan a GitHub repo:  source_url="https://github.com/org/repo"
+        Scan with verbose:   source_url="https://github.com/org/repo", arguments="--verbose"
 
     Args:
-        arguments: Command-line arguments string.  Use ``{source}`` as a
-                   placeholder for the downloaded file path when using
-                   *source_url*.
-        source_url: Optional HTTP(S) URL, GitHub/GitLab repo URL, or archive
-                    URL.  Downloaded into the container; local path replaces
-                    ``{source}`` in *arguments* or is appended.
+        arguments: Extra CLI flags (e.g. ``--verbose``, ``--config /path``).
+                   Do NOT pass the subcommand (git/dir) or the path — those
+                   are added automatically when source_url is set.
+        source_url: GitHub/GitLab repo URL, HTTP(S) file URL, or archive URL.
+                    The server clones/downloads it and scans automatically.
         timeout_seconds: Maximum execution time in seconds (default 600).
     """
     import shlex
@@ -122,15 +125,38 @@ async def run_gitleaks(
                 job_info = hd_fetch.fetch(source_url)
             except hd_fetch.FetchError as exc:
                 return json.dumps({"error": True, "message": str(exc)}, indent=2)
-            if "{source}" in arguments:
-                arguments = arguments.replace("{source}", job_info["path"])
-            else:
-                arguments = f"{arguments} {job_info['path']}".strip()
 
-        args = shlex.split(arguments) if arguments.strip() else []
+        extra = shlex.split(arguments) if arguments.strip() else []
+
+        # Strip bogus flags the LLM sometimes generates.
+        extra = [a for a in extra if not a.startswith("--source")]
+
+        if job_info:
+            local_path = job_info["path"]
+            # Pick the right subcommand based on what was downloaded.
+            has_subcommand = any(a in extra for a in ("git", "dir", "stdin"))
+            if not has_subcommand:
+                is_git = os.path.isdir(os.path.join(local_path, ".git"))
+                subcommand = "git" if is_git else "dir"
+                args = [subcommand, local_path] + extra
+            else:
+                # User explicitly set a subcommand; append path.
+                args = extra + [local_path]
+        elif "{source}" in arguments:
+            args = extra
+        else:
+            args = extra
+
+        # Default to JSON report output so findings are machine-readable.
+        if not any(a.startswith("--report-format") or a.startswith("-f") for a in args):
+            args.extend(["--report-format", "json"])
+        if not any(a.startswith("--report-path") or a.startswith("-r") for a in args):
+            args.extend(["--report-path", "/tmp/gitleaks-report.json"])
+
         result = await _run_command(args, timeout_seconds=timeout_seconds)
 
-        if result["return_code"] != 0:
+        # gitleaks exit codes: 0 = no leaks, 1 = leaks found, >1 = error.
+        if result["return_code"] not in (0, 1):
             logger.warning("gitleaks command failed with exit code %d", result["return_code"])
             error_detail = result["stderr"] or result["stdout"] or "Unknown error"
             return json.dumps(
@@ -143,10 +169,37 @@ async def run_gitleaks(
                 indent=2,
             )
 
+        # Try to read the JSON report file first (structured findings).
+        report_findings = []
+        try:
+            with open("/tmp/gitleaks-report.json", "r") as f:
+                report_findings = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            pass
+
+        if report_findings:
+            return json.dumps(
+                {
+                    "leaks_found": len(report_findings),
+                    "exit_code": result["return_code"],
+                    "findings": report_findings,
+                    "summary": result["stderr"].strip() if result["stderr"] else "",
+                },
+                indent=2,
+            )
+
+        # Fallback to stdout parsing.
         stdout = result["stdout"].strip()
 
+        if not stdout and result["return_code"] == 0:
+            return json.dumps({"leaks_found": 0, "message": "No leaks detected"})
+
         if not stdout:
-            return json.dumps({"message": "Command completed with no output", "arguments": arguments})
+            return json.dumps({
+                "leaks_found": 0,
+                "message": "Scan completed",
+                "summary": result["stderr"].strip() if result["stderr"] else "",
+            })
 
         results = []
         for line in stdout.splitlines():
@@ -158,9 +211,15 @@ async def run_gitleaks(
             except json.JSONDecodeError:
                 results.append({"raw": line})
 
-        if len(results) == 1:
-            return json.dumps(results[0], indent=2)
-        return json.dumps(results, indent=2)
+        return json.dumps(
+            {
+                "leaks_found": len(results),
+                "exit_code": result["return_code"],
+                "findings": results,
+                "summary": result["stderr"].strip() if result["stderr"] else "",
+            },
+            indent=2,
+        )
     finally:
         if job_info:
             hd_fetch.cleanup(job_info["job_id"])

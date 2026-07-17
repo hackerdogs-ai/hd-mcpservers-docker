@@ -1,31 +1,43 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS Aurora PostgreSQL MCP Server
 
-MCP server wrapper for [Aurora PostgreSQL](https://github.com/awslabs/mcp) — upstream package `awslabs.postgres-mcp-server`.
+MCP server wrapper for [AWS PostgreSQL MCP](https://github.com/awslabs/mcp/tree/main/src/postgres-mcp-server) — connect to Amazon Aurora PostgreSQL or RDS PostgreSQL databases, inspect schemas, and run read-only SQL queries through natural language.
 
-## What is Aurora PostgreSQL?
+## What is AWS PostgreSQL MCP?
 
-MCP server for Aurora PostgreSQL. Translate human-readable questions into SQL queries, inspect schemas, and manage database operations.
+The AWS PostgreSQL MCP server (`awslabs.postgres-mcp-server`) acts as an intelligent bridge between an LLM and an Amazon Aurora PostgreSQL or RDS PostgreSQL instance. It introspects table schemas, translates natural-language questions into SQL, and returns query results — enabling conversational data exploration without writing SQL manually. See [awslabs/mcp](https://github.com/awslabs/mcp) for full documentation.
 
-**AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
+**AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`. A database connection string or endpoint must also be configured.
 
-**Summary.** AWS Aurora PostgreSQL MCP Server — Dockerized from upstream `awslabs.postgres-mcp-server` package.
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `run_query` | Run Query |
+| `get_table_schema` | Get Table Schema |
+| `connect_to_database` | Connect To Database |
+| `is_database_connected` | Is Database Connected |
+| `get_database_connection_info` | Get Database Connection Info |
+| `create_cluster` | Create Cluster |
+| `get_job_status` | Get Job Status |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me Aurora PostgreSQL resources in my AWS account."
-- "Describe the current state of my Aurora PostgreSQL setup."
+- "List all tables in the 'public' schema and describe their columns."
+- "How many orders were placed in the last 30 days? Query the orders table."
+- "Show me the 10 most recent rows in the 'events' table."
+- "What indexes exist on the 'users' table and are any columns missing indexes?"
+- "Generate a SQL query that finds the top 5 customers by total spend in the last quarter."
+- "Describe the foreign key relationships between the 'orders', 'customers', and 'products' tables."
 
 ## Deploy
 
@@ -108,6 +120,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "aws-postgres-mcp": {
+      "url": "http://localhost:8485/aws-postgres-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

@@ -1,31 +1,46 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS DynamoDB MCP Server
 
-MCP server wrapper for [DynamoDB](https://github.com/awslabs/mcp) — upstream package `awslabs.dynamodb-mcp-server`.
+MCP server wrapper for [Amazon DynamoDB](https://github.com/awslabs/mcp/tree/main/src/dynamodb-mcp-server) — table management, item queries, data modeling guidance, and capacity planning for DynamoDB from your AI assistant.
 
-## What is DynamoDB?
+## What is Amazon DynamoDB?
 
-MCP server for Amazon DynamoDB. Expert design guidance, data modeling assistance, and table management for DynamoDB.
+Amazon DynamoDB is AWS's fully managed serverless key-value and document database designed for single-digit millisecond performance at any scale. This MCP server exposes DynamoDB operations — including table description, item reads and writes, query and scan execution, and Global Secondary Index management — along with embedded guidance on single-table design patterns and access pattern modeling to help you build efficient DynamoDB schemas. See [awslabs/mcp](https://github.com/awslabs/mcp/tree/main/src/dynamodb-mcp-server) for full documentation.
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
-**Summary.** AWS DynamoDB MCP Server — Dockerized from upstream `awslabs.dynamodb-mcp-server` package.
+**Summary.** MCP server wrapper for [Amazon DynamoDB](https://github.com/awslabs/mcp/tree/main/src/dynamodb-mcp-server) — query tables, manage indexes, and get data modeling guidance for DynamoDB.
+
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `dynamodb_data_modeling` | Dynamodb Data Modeling |
+| `dynamodb_data_model_schema_converter` | Dynamodb Data Model Schema Converter |
+| `dynamodb_data_model_schema_validator` | Dynamodb Data Model Schema Validator |
+| `source_db_analyzer` | Source Db Analyzer |
+| `dynamodb_data_model_validation` | Dynamodb Data Model Validation |
+| `compute_performances_and_costs` | Compute Performances And Costs |
+| `generate_resources` | Generate Resources |
+| `generate_data_access_layer` | Generate Data Access Layer |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me DynamoDB resources in my AWS account."
-- "Describe the current state of my DynamoDB setup."
+- "List all DynamoDB tables in my account and show their billing mode and item count."
+- "Describe the schema and Global Secondary Indexes for my orders table."
+- "Query the orders table for all items with customerId 'C-12345'."
+- "Help me design a DynamoDB single-table schema for a multi-tenant SaaS application."
+- "Scan the products table for items where stock is less than 10 and return the SKU and name."
+- "Show me the read and write capacity consumed by my users table over the last hour."
 
 ## Deploy
 
@@ -108,6 +123,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "aws-dynamodb-mcp": {
+      "url": "http://localhost:8485/aws-dynamodb-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

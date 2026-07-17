@@ -25,9 +25,6 @@ LABEL org.opencontainers.image.title="x8-mcp"
 LABEL org.opencontainers.image.licenses="Apache-2.0"
 LABEL org.opencontainers.image.author="hackerdogs"
 
-# Copy x8 binary from builder
-COPY --from=x8-builder /usr/local/cargo/bin/x8 /usr/local/bin/x8
-
 # Security: Create non-root user
 RUN groupadd -g 1000 mcpuser && \
     useradd -u 1000 -g mcpuser -m -s /bin/bash mcpuser

@@ -1,32 +1,40 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS API MCP Server
 
-MCP server wrapper for [AWS API](https://github.com/awslabs/mcp) — upstream package `awslabs.aws-api-mcp-server`.
+MCP server wrapper for [AWS API](https://github.com/awslabs/mcp/tree/main/src/aws-api-mcp-server) — broad AWS service access via AWS CLI commands for any service and resource type.
 
 ## What is AWS API?
 
-AWS API MCP Server enables AI assistants to interact with AWS services and resources through AWS CLI commands. It provides programmatic access to any AWS service API, allowing agents to manage cloud infrastructure, query services, and automate operations across your AWS account.
+The AWS API MCP Server gives AI assistants the ability to execute AWS CLI commands against any AWS service — from EC2 and S3 to IAM, Lambda, RDS, and beyond. Rather than exposing a fixed set of typed tools, it passes commands directly to the AWS CLI, meaning the full breadth of AWS service APIs is available without waiting for purpose-built MCP tools. See [awslabs/mcp](https://github.com/awslabs/mcp/tree/main/src/aws-api-mcp-server) for full documentation.
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
-**Summary.** AWS API MCP Server — Dockerized from upstream `awslabs.aws-api-mcp-server` package.
+**Summary.** MCP server wrapper for [AWS API](https://github.com/awslabs/mcp/tree/main/src/aws-api-mcp-server) — run any AWS CLI command to manage cloud resources across all AWS services.
+
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `suggest_aws_commands` | Suggest Aws Commands |
+| `call_aws` | Call Aws |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "List all S3 buckets in my account."
-- "Describe the EC2 instances running in us-east-1."
-- "What Lambda functions do I have deployed?"
+- "List all S3 buckets in my account and show their creation dates."
+- "Describe all running EC2 instances in us-east-1 including their instance types and public IPs."
+- "List all Lambda functions deployed in my account and show their runtimes."
+- "Show me all IAM users and the date each one last used their credentials."
+- "List all RDS instances and tell me which ones are publicly accessible."
+- "Show me all security groups in us-west-2 that have inbound rules allowing 0.0.0.0/0 on port 22."
 
 ## Deploy
 
@@ -109,6 +117,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "aws-api-mcp": {
+      "url": "http://localhost:8485/aws-api-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

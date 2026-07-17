@@ -1,31 +1,80 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Postman MCP Server
 
-MCP server wrapper for [Postman](https://github.com/postmanlabs/postman-mcp-server) — upstream package `@postman/postman-mcp-server`.
+MCP server wrapper for [Postman](https://github.com/postmanlabs/postman-mcp-server) — manage Postman workspaces, collections, environments, and APIs from your AI assistant.
 
 ## What is Postman?
 
-MCP server for [Postman](https://www.postman.com/). Access your Postman collections, environments, APIs, and workspaces. Run API requests, inspect responses, and manage your API development workflow through AI assistants.
+Postman MCP Server (the official `@postman/postman-mcp-server` package) gives AI assistants access to your Postman account — browse workspaces and collections, inspect API definitions, retrieve environment variables, list team members, and navigate your entire API development workflow without leaving the chat. It connects to the Postman API using your personal API key. See [postmanlabs/postman-mcp-server](https://github.com/postmanlabs/postman-mcp-server) for full documentation.
 
 **API key required** — generate at [Postman API Keys](https://go.postman.co/settings/me/api-keys).
 
 **Summary.** Postman MCP Server — Dockerized from upstream `@postman/postman-mcp-server` package.
 
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `createCollection` | Createcollection |
+| `createCollectionRequest` | Createcollectionrequest |
+| `createCollectionResponse` | Createcollectionresponse |
+| `createEnvironment` | Createenvironment |
+| `createMock` | Createmock |
+| `createSpec` | Createspec |
+| `createSpecFile` | Createspecfile |
+| `createWorkspace` | Createworkspace |
+| `duplicateCollection` | Duplicatecollection |
+| `generateCollection` | Generatecollection |
+| `generateSpecFromCollection` | Generatespecfromcollection |
+| `getAllSpecs` | Getallspecs |
+| `getAuthenticatedUser` | Getauthenticateduser |
+| `getCollection` | Getcollection |
+| `getCollections` | Getcollections |
+| `getDuplicateCollectionTaskStatus` | Getduplicatecollectiontaskstatus |
+| `getEnabledTools` | Getenabledtools |
+| `getEnvironment` | Getenvironment |
+| `getEnvironments` | Getenvironments |
+| `getGeneratedCollectionSpecs` | Getgeneratedcollectionspecs |
+| `getMock` | Getmock |
+| `getMocks` | Getmocks |
+| `getSpec` | Getspec |
+| `getSpecCollections` | Getspeccollections |
+| `getSpecDefinition` | Getspecdefinition |
+| `getSpecFile` | Getspecfile |
+| `getSpecFiles` | Getspecfiles |
+| `getTaggedEntities` | Gettaggedentities |
+| `getWorkspace` | Getworkspace |
+| `getWorkspaces` | Getworkspaces |
+| `publishMock` | Publishmock |
+| `putCollection` | Putcollection |
+| `putEnvironment` | Putenvironment |
+| `runCollection` | Runcollection |
+| `searchPostmanElements` | Searchpostmanelements |
+| `syncCollectionWithSpec` | Synccollectionwithspec |
+| `syncSpecWithCollection` | Syncspecwithcollection |
+| `updateCollectionRequest` | Updatecollectionrequest |
+| `updateMock` | Updatemock |
+| `updateSpecFile` | Updatespecfile |
+| `updateSpecProperties` | Updatespecproperties |
+| `updateWorkspace` | Updateworkspace |
+
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "List my Postman collections."
-- "Show the API endpoints in my 'Auth Service' collection."
+- "List all my Postman workspaces and their types (personal, team, public)."
+- "Show me all collections in the 'Backend Services' workspace and their request counts."
+- "Get the environment variables defined in the 'Production' Postman environment."
+- "Find all API endpoints in the 'Auth Service' collection that use POST and return their paths."
+- "List my Postman team members and their roles."
+- "Show the OpenAPI/Swagger definition for the 'Payments API' in my Postman workspace."
 
 ## Deploy
 
@@ -98,6 +147,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "postman-mcp": {
+      "url": "http://localhost:8485/postman-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

@@ -1,31 +1,65 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Chrome DevTools MCP Server
 
-MCP server wrapper for [Chrome DevTools](https://github.com/anthropics/mcp-server-chrome-devtools) — upstream package `@anthropic/mcp-server-chrome-devtools`.
+MCP server wrapper for [Chrome DevTools Protocol](https://github.com/hangxingliu/mcp-chrome-devtools) — upstream package `@mcp-b/chrome-devtools-mcp`.
 
 ## What is Chrome DevTools?
 
-MCP server for Chrome DevTools Protocol. Control Chrome browser instances — inspect pages, capture screenshots, execute JavaScript, monitor network traffic, and debug web applications.
+The `@mcp-b/chrome-devtools-mcp` package exposes the Chrome DevTools Protocol (CDP) as MCP tools, allowing AI assistants to interact with a running Chrome instance. With it you can navigate pages, execute JavaScript in the browser context, inspect and modify the DOM, intercept and analyze network requests, and capture screenshots — enabling full browser automation and web app debugging workflows. See [github.com/hangxingliu/mcp-chrome-devtools](https://github.com/hangxingliu/mcp-chrome-devtools) for full documentation.
 
-**No API keys required** — this server works out of the box.
+**No API keys required** — connects to a Chrome instance with remote debugging enabled (pass the CDP WebSocket URL or use a local Chrome).
 
-**Summary.** Chrome DevTools MCP Server — Dockerized from upstream `@anthropic/mcp-server-chrome-devtools` package.
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `click` | Click |
+| `close_page` | Close Page |
+| `drag` | Drag |
+| `emulate` | Emulate |
+| `evaluate_script` | Evaluate Script |
+| `fill` | Fill |
+| `fill_form` | Fill Form |
+| `get_console_message` | Get Console Message |
+| `get_network_request` | Get Network Request |
+| `handle_dialog` | Handle Dialog |
+| `hover` | Hover |
+| `lighthouse_audit` | Lighthouse Audit |
+| `list_console_messages` | List Console Messages |
+| `list_network_requests` | List Network Requests |
+| `list_pages` | List Pages |
+| `navigate_page` | Navigate Page |
+| `new_page` | New Page |
+| `performance_analyze_insight` | Performance Analyze Insight |
+| `performance_start_trace` | Performance Start Trace |
+| `performance_stop_trace` | Performance Stop Trace |
+| `press_key` | Press Key |
+| `resize_page` | Resize Page |
+| `select_page` | Select Page |
+| `take_heapsnapshot` | Take Heapsnapshot |
+| `take_screenshot` | Take Screenshot |
+| `take_snapshot` | Take Snapshot |
+| `type_text` | Type Text |
+| `upload_file` | Upload File |
+| `wait_for` | Wait For |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Take a screenshot of the current page."
-- "Execute JavaScript on the active tab."
+- "Navigate to https://example.com and take a screenshot of the full page."
+- "Execute JavaScript on the active tab to extract all anchor tags and their hrefs."
+- "Intercept network requests on the current page and show me any XHR calls to /api/."
+- "Inspect the DOM of the login form at https://staging.myapp.com and return the input field names."
+- "Run a performance audit on https://example.com by checking network timing via Chrome DevTools."
+- "Use Chrome DevTools to set a breakpoint-style event listener and capture all console.log output on the page."
 
 ## Deploy
 
@@ -92,6 +126,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "chrome-devtools-mcp": {
+      "url": "http://localhost:8485/chrome-devtools-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

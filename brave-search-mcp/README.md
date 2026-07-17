@@ -1,32 +1,38 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Brave Search MCP Server
 
-MCP server wrapper for [Brave Search](https://github.com/modelcontextprotocol/servers) — upstream package `@modelcontextprotocol/server-brave-search`.
+MCP server wrapper for [Brave Search](https://brave.com/search/api/) — independent web search across web, news, videos, and images via the Brave Search API.
 
 ## What is Brave Search?
 
-MCP server for [Brave Search](https://brave.com/search/api/). Performs comprehensive web searches using Brave's independent search index with rich result types including web pages, news, videos, and more. Supports advanced filtering and localization options.
+Brave Search is an independent search engine backed by its own crawl index, providing web, news, video, and image results without reliance on Google or Bing data. This server wraps the official `@modelcontextprotocol/server-brave-search` package and exposes Brave's search capabilities — including freshness, safe-search, country, and language filters — to any MCP client. See [github.com/modelcontextprotocol/servers](https://github.com/modelcontextprotocol/servers) for full documentation.
 
-**API key required** — get a free key at [brave.com/search/api](https://brave.com/search/api/).
+**API key required** — get a free key at [brave.com/search/api](https://brave.com/search/api/) and set `BRAVE_API_KEY`.
 
-**Summary.** Brave Search MCP Server — Dockerized from upstream `@modelcontextprotocol/server-brave-search` package.
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `brave_web_search` | Brave Web Search |
+| `brave_local_search` | Brave Local Search |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Search the web for 'latest CVE vulnerabilities 2026' using Brave."
-- "Find recent news about AI security using Brave Search."
-- "Search for documentation on Kubernetes network policies."
+- "Search Brave for 'log4shell exploit CVE-2021-44228 mitigation'."
+- "Find news articles from the past week about supply-chain attacks using Brave Search."
+- "Search for 'SSRF bypass techniques site:github.com' using Brave."
+- "Look up official documentation for Kubernetes NetworkPolicy with Brave Search."
+- "Use Brave Search to find HackerOne reports for SQL injection vulnerabilities."
+- "Search for recent Shodan dorking cheat sheets using Brave."
 
 ## Deploy
 
@@ -99,6 +105,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "brave-search-mcp": {
+      "url": "http://localhost:8485/brave-search-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

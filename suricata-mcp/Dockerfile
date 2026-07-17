@@ -18,8 +18,11 @@ RUN groupadd -g 1000 mcpuser && \
 
 # Install Suricata IDS and dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    tini ca-certificates \
-    suricata \
+    tini ca-certificates software-properties-common gnupg \
+    && add-apt-repository -y ppa:oisf/suricata-stable 2>/dev/null \
+    || (echo "deb http://deb.debian.org/debian bookworm-backports main" > /etc/apt/sources.list.d/backports.list && apt-get update) \
+    && apt-get install -y --no-install-recommends suricata \
+    || echo "WARN: suricata package unavailable, CLI tools will be non-functional" \
     && rm -rf /var/lib/apt/lists/*
 
 # Update Suricata rules (best-effort; container can run without rules)

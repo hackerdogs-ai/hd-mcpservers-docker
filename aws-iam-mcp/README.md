@@ -1,31 +1,65 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS IAM MCP Server
 
-MCP server wrapper for [IAM](https://github.com/awslabs/mcp) — upstream package `awslabs.iam-mcp-server`.
+MCP server wrapper for [AWS IAM](https://github.com/awslabs/mcp/tree/main/src/iam-mcp-server) — inspect and manage AWS Identity and Access Management users, roles, policies, and permission boundaries.
 
-## What is IAM?
+## What is AWS IAM?
 
-MCP server for AWS Identity and Access Management. Manage users, roles, policies, and permissions for comprehensive AWS access control.
+AWS Identity and Access Management (IAM) is the access control plane for all AWS services, letting you create and manage users, groups, roles, and fine-grained permission policies. This MCP server wraps the `awslabs.iam-mcp-server` package so you can query IAM state, audit trust relationships, and inspect policy documents through natural language. See [awslabs/mcp](https://github.com/awslabs/mcp) for full documentation.
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
-**Summary.** AWS IAM MCP Server — Dockerized from upstream `awslabs.iam-mcp-server` package.
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `list_users` | List Users |
+| `get_user` | Get User |
+| `create_user` | Create User |
+| `delete_user` | Delete User |
+| `list_roles` | List Roles |
+| `create_role` | Create Role |
+| `list_policies` | List Policies |
+| `get_managed_policy_document` | Get Managed Policy Document |
+| `attach_user_policy` | Attach User Policy |
+| `detach_user_policy` | Detach User Policy |
+| `create_access_key` | Create Access Key |
+| `delete_access_key` | Delete Access Key |
+| `simulate_principal_policy` | Simulate Principal Policy |
+| `list_groups` | List Groups |
+| `get_group` | Get Group |
+| `create_group` | Create Group |
+| `delete_group` | Delete Group |
+| `add_user_to_group` | Add User To Group |
+| `remove_user_from_group` | Remove User From Group |
+| `attach_group_policy` | Attach Group Policy |
+| `detach_group_policy` | Detach Group Policy |
+| `put_user_policy` | Put User Policy |
+| `get_user_policy` | Get User Policy |
+| `delete_user_policy` | Delete User Policy |
+| `put_role_policy` | Put Role Policy |
+| `get_role_policy` | Get Role Policy |
+| `delete_role_policy` | Delete Role Policy |
+| `list_user_policies` | List User Policies |
+| `list_role_policies` | List Role Policies |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me IAM resources in my AWS account."
-- "Describe the current state of my IAM setup."
+- "List all IAM roles in my account that have administrator access."
+- "Show me the trust policy for the role named 'ECSTaskExecutionRole'."
+- "Which IAM users have no MFA enabled in my account?"
+- "Find all managed policies attached to the group 'Developers'."
+- "List IAM roles that can be assumed by Lambda and show their permission boundaries."
+- "Summarize the inline policies on user 'deploy-bot' and flag any overly broad permissions."
 
 ## Deploy
 
@@ -108,6 +142,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "aws-iam-mcp": {
+      "url": "http://localhost:8485/aws-iam-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

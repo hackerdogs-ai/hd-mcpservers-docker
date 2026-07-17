@@ -1,31 +1,41 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS Prometheus MCP Server
 
-MCP server wrapper for [Prometheus](https://github.com/awslabs/mcp) — upstream package `awslabs.prometheus-mcp-server`.
+MCP server wrapper for [AWS Managed Prometheus](https://github.com/awslabs/mcp/tree/main/src/prometheus-mcp-server) — execute PromQL queries and inspect metrics stored in Amazon Managed Service for Prometheus (AMP) workspaces.
 
-## What is Prometheus?
+## What is AWS Managed Prometheus?
 
-MCP server for AWS Managed Prometheus. Execute PromQL queries, inspect metrics, and analyze time-series monitoring data.
+Amazon Managed Service for Prometheus (AMP) is a serverless, Prometheus-compatible monitoring service that automatically scales to ingest millions of time-series metrics from containerized workloads. This MCP server, built from `awslabs.prometheus-mcp-server`, lets you query AMP workspaces using PromQL, list available metrics and labels, and investigate alert rules — all through natural language without needing to write PromQL manually. See [awslabs/mcp](https://github.com/awslabs/mcp) for full documentation.
 
-**AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
+**AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`. The AMP workspace ID must also be configured.
 
-**Summary.** AWS Prometheus MCP Server — Dockerized from upstream `awslabs.prometheus-mcp-server` package.
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `ExecuteQuery` | Executequery |
+| `ExecuteRangeQuery` | Executerangequery |
+| `ListMetrics` | Listmetrics |
+| `GetServerInfo` | Getserverinfo |
+| `GetAvailableWorkspaces` | Getavailableworkspaces |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me Prometheus resources in my AWS account."
-- "Describe the current state of my Prometheus setup."
+- "List all Prometheus workspaces in my AWS account and their aliases."
+- "Query CPU utilization for all pods in the 'production' namespace over the last hour."
+- "Show me the top 5 containers by memory usage right now."
+- "What alert rules are configured in my AMP workspace and which are currently firing?"
+- "Graph the request rate for the 'api-gateway' service over the last 6 hours."
+- "List all metric names available in my Prometheus workspace that start with 'node_'."
 
 ## Deploy
 
@@ -108,6 +118,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "aws-prometheus-mcp": {
+      "url": "http://localhost:8485/aws-prometheus-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

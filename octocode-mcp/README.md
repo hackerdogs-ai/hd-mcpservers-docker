@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -14,18 +12,40 @@ MCP server wrapper for [OctoCode](https://github.com/nicholasgasior/octocode-mcp
 
 ## What is OctoCode?
 
-MCP server for code analysis. Analyze code repositories for complexity, dependencies, and patterns. Useful for code review and quality assessment.
+OctoCode is an MCP server for intelligent code analysis and search across GitHub repositories. It provides AI assistants with tools to search code, browse repository contents, analyze file structures, and retrieve code snippets without needing a local clone. See [nicholasgasior/octocode-mcp](https://github.com/nicholasgasior/octocode-mcp) for full documentation.
 
-**No API keys required** — this server works out of the box.
+**No API keys required** — this server works out of the box. A GitHub token may be needed for private repositories or higher rate limits.
 
 **Summary.** OctoCode MCP Server — Dockerized from upstream `octocode-mcp` package.
+
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `githubSearchCode` | Githubsearchcode |
+| `githubGetFileContent` | Githubgetfilecontent |
+| `githubViewRepoStructure` | Githubviewrepostructure |
+| `githubSearchRepositories` | Githubsearchrepositories |
+| `githubSearchPullRequests` | Githubsearchpullrequests |
+| `packageSearch` | Packagesearch |
+| `localSearchCode` | Localsearchcode |
+| `localViewStructure` | Localviewstructure |
+| `localFindFiles` | Localfindfiles |
+| `localGetFileContent` | Localgetfilecontent |
+| `lspGotoDefinition` | Lspgotodefinition |
+| `lspFindReferences` | Lspfindreferences |
+| `lspCallHierarchy` | Lspcallhierarchy |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Analyze this code repository for complexity."
-- "Show me the dependency graph for this project."
+- "Search the kubernetes/kubernetes repository for usages of the `WatchEvent` type."
+- "Show me the directory structure of the top-level folders in torvalds/linux."
+- "Find all Python files in the pallets/flask repository that import `typing`."
+- "Retrieve the contents of `src/main.rs` from the rust-lang/rust repository."
+- "Search for TODO comments across the entire expressjs/express codebase."
+- "List recent commits to the main branch of facebook/react and summarize the changes."
 
 ## Deploy
 
@@ -92,6 +112,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "octocode-mcp": {
+      "url": "http://localhost:8485/octocode-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

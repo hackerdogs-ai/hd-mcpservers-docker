@@ -1,9 +1,7 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
@@ -14,18 +12,51 @@ MCP server wrapper for [Notion](https://github.com/notionhq/notion-mcp-server) �
 
 ## What is Notion?
 
-MCP server for [Notion](https://notion.so/). Search, read, create, and update pages, databases, and blocks in your Notion workspace. Manage content, knowledge bases, and project documentation through AI assistants.
+This MCP server connects AI assistants to your [Notion](https://notion.so/) workspace, enabling them to search pages, read and create content, manage databases, and update blocks through the Notion API. It is the official Notion MCP server published by Notionhq. See [notionhq/notion-mcp-server](https://github.com/notionhq/notion-mcp-server) for full documentation.
 
-**Integration token required** — create at [notion.so/my-integrations](https://www.notion.so/my-integrations).
+**Integration token required** — create a Notion integration and get your token at [notion.so/my-integrations](https://www.notion.so/my-integrations). Share the pages or databases you want to access with the integration.
 
 **Summary.** Notion MCP Server — Dockerized from upstream `@notionhq/notion-mcp-server` package.
+
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `API-get-user` | Api Get User |
+| `API-get-users` | Api Get Users |
+| `API-get-self` | Api Get Self |
+| `API-post-search` | Api Post Search |
+| `API-get-block-children` | Api Get Block Children |
+| `API-patch-block-children` | Api Patch Block Children |
+| `API-retrieve-a-block` | Api Retrieve A Block |
+| `API-update-a-block` | Api Update A Block |
+| `API-delete-a-block` | Api Delete A Block |
+| `API-retrieve-a-page` | Api Retrieve A Page |
+| `API-patch-page` | Api Patch Page |
+| `API-post-page` | Api Post Page |
+| `API-retrieve-a-page-property` | Api Retrieve A Page Property |
+| `API-retrieve-a-comment` | Api Retrieve A Comment |
+| `API-create-a-comment` | Api Create A Comment |
+| `API-query-data-source` | Api Query Data Source |
+| `API-retrieve-a-data-source` | Api Retrieve A Data Source |
+| `API-update-a-data-source` | Api Update A Data Source |
+| `API-create-a-data-source` | Api Create A Data Source |
+| `API-list-data-source-templates` | Api List Data Source Templates |
+| `API-retrieve-a-database` | Api Retrieve A Database |
+| `API-move-page` | Api Move Page |
+| `API-retrieve-page-markdown` | Api Retrieve Page Markdown |
+| `API-update-page-markdown` | Api Update Page Markdown |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Search my Notion workspace for pages about 'security'."
-- "Create a new page in my project database."
+- "Search my Notion workspace for all pages related to 'Q3 roadmap'."
+- "Create a new page in my Engineering database titled 'API Rate Limiting Design'."
+- "Read the contents of my 'Meeting Notes' Notion page from last Monday."
+- "Add a new row to my Notion task tracker database with status 'In Progress'."
+- "List all pages in my 'Projects' database that have the tag 'security'."
+- "Update the 'Status' property of the 'Deploy to Production' task to 'Done'."
 
 ## Deploy
 
@@ -104,6 +135,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
 
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "notion-mcp": {
+      "url": "http://localhost:8485/notion-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
+
 ## Environment Variables
 
 | Variable | Default | Description |
@@ -112,6 +163,7 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 | `MCP_PORT` | `8652` | HTTP port (only used with `streamable-http`) |
 | `OPENAI_API_KEY` | — | OpenAI API key (used for AI features) |
 | `NOTION_TOKEN` | — | Notion integration token — create at [notion.so/my-integrations](https://www.notion.so/my-integrations) |
+| `NOTION_API_KEY` | — | Notion API key (required) |
 
 ## Installing in Hackerdogs
 

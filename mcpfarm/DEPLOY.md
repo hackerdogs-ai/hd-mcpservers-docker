@@ -1,11 +1,12 @@
 # Hackerdogs MCP Server Farm — Deployment Guide
 
+The farm is **only** Docker Compose services: Caddy, auth-gateway, the UI, and MCP server containers. It listens on `FARM_PORT` (default **8485**). TLS, Cloudflare Tunnel, nginx, ALBs, and any other edge proxy are **outside** the farm — put them in front of `:8485` yourself if you need them. `deploy.sh` never configures or depends on a tunnel.
+
 ## Prerequisites
 
-- Docker Desktop (or Docker Engine on Linux) with at least 8GB RAM allocated
+- Docker Desktop (or Docker Engine on Linux) with at least 8 GB RAM allocated
 - `docker compose` v2+
 - `python3`
-- A Cloudflare Tunnel token (from Zero Trust dashboard)
 
 ---
 
@@ -15,178 +16,346 @@
 git clone <repo-url>
 cd hd-mcpservers-docker/mcpfarm
 
-TUNNEL_TOKEN=<your-token> ADMIN_SECRET=<your-secret> ./deploy.sh
+# Start infra (auth-gateway + Caddy + UI), seed DB, load routes
+ADMIN_SECRET=<your-secret> ./deploy.sh up --skip-build
+
+# Start the tools you need
+./deploy.sh start naabu-mcp nuclei-mcp
+
+# Check status
+./deploy.sh status
 ```
 
-That's it. The script handles everything end-to-end.
+Farm UI: `http://localhost:8485`  
+Health: `http://localhost:8485/health`
+
+Save the **Admin API Key** printed by `up` / `seed` — it is only shown once.
 
 ---
 
-## Deploy Script
+## deploy.sh commands
 
 ```bash
-./deploy.sh [options]
+./deploy.sh help
+./deploy.sh up [--skip-build] [--start-all]
+./deploy.sh down
+./deploy.sh start <name>-mcp ... | --all
+./deploy.sh stop  <name>-mcp ... | --all | --infra
+./deploy.sh restart <name>-mcp ... | --all | --infra
+./deploy.sh status
+./deploy.sh reload
+./deploy.sh seed
 ```
 
-| Option | Description |
-|--------|-------------|
-| *(none)* | Interactive — prompts for `TUNNEL_TOKEN`, generates `ADMIN_SECRET` |
-| `--skip-build` | Skip image builds (images must already exist locally or in registry) |
-| `--start-all` | Also start all 386 MCP server containers after infra is up |
+| Command | Description |
+|---------|-------------|
+| `up` | Build (unless `--skip-build`), start infra, seed DB, reload Caddy routes |
+| `up --start-all` | Same as `up`, then start every MCP server (16+ GB RAM recommended) |
+| `down` | `docker compose down` — stop and remove infra + MCP containers |
+| `start` / `stop` / `restart` | Lifecycle for named MCP servers, or `--all` / `--infra` |
+| `status` | Infra containers, health endpoint, running MCP containers, admin stats |
+| `reload` | Hot-reload all Caddy routes via the auth-gateway |
+| `seed` | Re-register servers from `port-map.json` |
 
 ### Environment variables
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `TUNNEL_TOKEN` | Yes | Cloudflare tunnel token from Zero Trust dashboard |
-| `ADMIN_SECRET` | No | Admin API password — auto-generated if not set |
+| `ADMIN_SECRET` | Recommended | Admin API password — auto-generated on first `up` if unset |
+| `FARM_PORT` | No | Host port for Caddy (default: `8485`) |
+| `FARM_HTTP` | No | URL used by the script for health/admin calls (default: `http://localhost:$FARM_PORT`) |
+| `MCPFARM_SECRETS_KEY` | Production | Fernet key for encrypting stored LLM provider keys |
+| `REDIS_URL` | No | Redis URL for vector index (default: `redis://hd-redis:6379`) |
+| `MCPFARM_VECTOR_PREFIX` | No | Redis key prefix (default: `mcpfarm:v1`) |
+| `MCPFARM_VECTOR_INDEX` | No | RediSearch index name (default: `mcpfarm:idx`) |
+| `VECTOR_DIM` | No | Embedding dimension (default: `1536`) |
+| `EMBED_PROVIDER` | No | `openai`, `ollama`, `local`, or `auto` (default: `auto`) |
+| `OPENAI_API_KEY` | No | For OpenAI embeddings and server-side chat proxy |
+| `OLLAMA_URL` | No | Ollama base URL (default: `http://host.docker.internal:11434`) |
 
-The script writes these to `.env` in the `mcpfarm/` directory.
-
----
-
-## What the Script Does
-
-1. **Checks prerequisites** — Docker running, python3 available
-2. **Writes `.env`** — `TUNNEL_TOKEN` + `ADMIN_SECRET`
-3. **Builds images** — all MCP server images from their Dockerfiles (skipped with `--skip-build`)
-4. **Starts auth-gateway** — waits until healthy before proceeding
-5. **Starts Caddy** — reverse proxy on ports 80 and 11459
-6. **Starts cloudflared** — Cloudflare tunnel (shares Caddy's network namespace)
-7. **Seeds the database** — registers all 386 servers, creates admin API key
-8. **Loads Caddy routes** — generates and hot-reloads all 386 proxy routes
-9. **Verifies** — health check + tunnel connection count + farm stats
+`up` writes `ADMIN_SECRET` and `FARM_PORT` into `.env` in this directory. See [`.env.example`](./.env.example) for the full list including tool API keys.
 
 ---
 
-## First Deploy vs Re-Deploy
+## What `up` does
 
-### First deploy (fresh machine)
+1. Checks Docker and python3
+2. Ensures `ADMIN_SECRET` / `.env`
+3. Builds auth-gateway, UI, and MCP images (skipped with `--skip-build`)
+4. Starts **auth-gateway** → **caddy** → **mcpfarm-ui**
+5. Seeds the database (registers servers from `port-map.json`)
+6. Reloads Caddy routes
+7. Optionally starts all MCP servers (`--start-all`)
+8. Prints health + admin stats
 
-Building ~380 images from source takes **30–60 minutes**. Run without `--skip-build`:
-
-```bash
-TUNNEL_TOKEN=xxx ./deploy.sh
-```
-
-Save the **Admin API Key** printed at the end — it is only shown once.
-
-### Re-deploy (same machine, updated code)
-
-```bash
-TUNNEL_TOKEN=xxx ADMIN_SECRET=xxx ./deploy.sh --skip-build
-```
-
-### Re-deploy to a new machine (using a registry)
-
-Push images from the source machine first:
-
-```bash
-docker images --format "{{.Repository}}:{{.Tag}}" | grep hackerdogs | \
-  xargs -I{} docker push {}
-```
-
-Then on the target machine:
-
-```bash
-TUNNEL_TOKEN=xxx ./deploy.sh --skip-build
-```
-
-Docker will pull the images from the registry instead of building them.
+MCP server containers use `restart: 'no'` — they only run when you `start` them (UI, API, or `./deploy.sh start`).
 
 ---
 
-## Manual Operations
+## Local vs production
 
-### Start / stop individual MCP servers
+Both use the same command. The farm always binds host port `FARM_PORT`.
 
-```bash
-# Start one server
-docker compose up -d --no-deps nmap-mcp
-
-# Stop one server
-docker compose stop nmap-mcp
-
-# Start a group
-docker compose up -d --no-deps nmap-mcp shodan-mcp nuclei-mcp whois-mcp
-```
-
-### Check what's running
+### Local
 
 ```bash
-docker info --format "{{.ContainersRunning}}/{{.Containers}} running"
-
-curl http://localhost/admin/stats \
-  -H "X-Admin-Secret: <ADMIN_SECRET>"
+ADMIN_SECRET=devsecret ./deploy.sh up --skip-build
+./deploy.sh start naabu-mcp
 ```
 
-### Reload Caddy routes (after adding/removing servers)
+Reach the farm at `http://localhost:8485`.
+
+### Production
 
 ```bash
-curl -X POST http://localhost/admin/reload \
-  -H "X-Admin-Secret: <ADMIN_SECRET>"
+ADMIN_SECRET=<strong-secret> \
+MCPFARM_SECRETS_KEY=<fernet-key> \
+./deploy.sh up --skip-build
 ```
 
-### View logs
+Then terminate TLS / publish the farm **in front of** port 8485 with whatever you already use (Cloudflare Tunnel, Caddy, nginx, ALB, Tailscale, etc.). Forward `Authorization` and `mcp-session-id` unchanged.
+
+Example (edge is your problem, not the farm's):
+
+```
+Internet → your TLS proxy / tunnel → http://farm-host:8485 → Caddy → MCP servers
+```
+
+**Checklist:**
+
+- [ ] Strong `ADMIN_SECRET` in a secrets manager
+- [ ] `MCPFARM_SECRETS_KEY` set for the LLM vault
+- [ ] External Redis if not using the shared `hd-redis` network
+- [ ] Prefer `./deploy.sh up --skip-build` on fresh hosts (pull from Docker Hub)
+- [ ] Start only needed servers (`./deploy.sh start …`), not `--start-all`, unless you have 16+ GB RAM
+- [ ] Create scoped API keys via `POST /admin/keys`
+- [ ] `POST /admin/vectors/reindex` after first deploy for chat tool binding
+
+### Publishing farm infra images
 
 ```bash
-docker logs mcpfarm-auth       # auth gateway
-docker logs mcpfarm-caddy      # caddy
-docker logs mcpfarm-tunnel     # cloudflare tunnel
-docker logs nmap-mcp           # any MCP server
+cd mcpfarm/auth-gateway && ./publish_to_hackerdogs.sh hackerdogs
+cd mcpfarm-ui && ./publish_to_hackerdogs.sh hackerdogs
 ```
+
+Multi-arch (amd64 + arm64) with retry logic.
 
 ---
 
 ## Architecture
 
 ```
-Internet
+Client (or your TLS edge)
    │
    ▼
-Cloudflare Edge  (mcpservers-dev.hackerdogs.ai)
-   │  QUIC tunnel
+Caddy :8485  ──forward_auth──▶  auth-gateway :9090
+   │                                 │
+   │                                 ├── SQLite (keys, audit)
+   │                                 └── Redis (vectors)
    ▼
-cloudflared  ──── localhost:11459 ────▶  Caddy :80/:11459
-                                              │
-                          ┌───────────────────┤
-                          │  /verify          │  /{server}/mcp
-                          ▼                   ▼
-                    auth-gateway        MCP Server
-                    (FastAPI)           (uvicorn)
-                    SQLite DB
+MCP server containers (on demand)
 ```
 
-- **Cloudflare tunnel** — zero open inbound ports; outbound only
-- **Caddy** — reverse proxy with `forward_auth` for token verification on every request
-- **Auth gateway** — bearer token validation, admin API, health monitoring
-- **MCP servers** — 386 containerised security tools on the internal `mcpfarm` network
+| Component | Container | Image | Description |
+|-----------|-----------|-------|-------------|
+| **Caddy** | `mcpfarm-caddy` | `caddy:2-alpine` | Reverse proxy + `forward_auth` |
+| **Auth Gateway** | `mcpfarm-auth` | `hackerdogs/auth-gateway` | Auth, admin API, chat proxy, vector index |
+| **Farm UI** | `mcpfarm-ui` | `hackerdogs/mcpfarm-ui` | Web dashboard |
+| **MCP Servers** | `{name}-mcp` | `hackerdogs/{name}-mcp` | Tools from `port-map.json` |
+
+Compose file: [`docker-compose.yml`](./docker-compose.yml) (generated/maintained from [`port-map.json`](./port-map.json)). There is **no** root-level repo `docker-compose.yml` — use this farm compose, or each tool's own `docker-compose.yml` for standalone runs.
 
 ---
 
-## Connecting an MCP Client
+## Configuration
 
-### URL pattern
+### Server-level environment variables
+
+| Variable | Description |
+|----------|-------------|
+| `MCP_TRANSPORT` | `stdio` or `streamable-http` |
+| `MCP_PORT` | HTTP port from `port-map.json` |
+
+Tool-specific keys are listed in `port-map.json` (`env` arrays) and `.env.example`.
+
+### Chat and vector search
+
+| Variable | Description |
+|----------|-------------|
+| `MCPFARM_SECRETS_KEY` | Fernet key for LLM API keys at rest |
+| `EMBED_PROVIDER` | `openai`, `ollama`, `local`, or `auto` |
+| `VECTOR_AUTO_REINDEX` | Auto-reindex on startup (`true`/`false`) |
+| `REDIS_URL` | Redis for vector index |
+
+### LLM key vault
+
+```bash
+BASE="http://localhost:8485"
+SECRET="<ADMIN_SECRET>"
+
+curl -X PUT "$BASE/llm-keys/openai" \
+  -H "X-Admin-Secret: $SECRET" \
+  -H "Content-Type: application/json" \
+  -d '{"key": "sk-..."}'
+
+curl "$BASE/llm-keys" -H "X-Admin-Secret: $SECRET"
+curl -X DELETE "$BASE/llm-keys/openai" -H "X-Admin-Secret: $SECRET"
+```
+
+Supported providers: `openai`, `claude`, `ollama`, `bedrock`, `azure_openai`, `openrouter`, `grok`, `gemini`.
+
+---
+
+## Admin API Reference
+
+All admin endpoints require the `X-Admin-Secret` header (plus a valid `Authorization: Bearer <API_KEY>` for endpoints that also pass through the auth middleware).
+
+### Public endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/health` | Health check |
+| `GET` | `/services` | List registered servers |
+| `GET` | `/services/{name}/readme` | README markdown |
+| `GET` | `/ui-config` | UI bootstrap config |
+
+### Server management
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/admin/servers` | List servers |
+| `GET` | `/admin/servers/{name}` | Get one server |
+| `POST` | `/admin/servers` | Create server (image or URL) |
+| `DELETE` | `/admin/servers/{name}` | Delete server |
+| `POST` | `/admin/servers/import` | Import Claude/Cursor JSON |
+| `PATCH` | `/admin/servers/{name}/env` | Update env vars |
+| `POST` | `/admin/servers/{name}/start` | Start container |
+| `POST` | `/admin/servers/{name}/stop` | Stop container |
+| `POST` | `/admin/servers/{name}/restart` | Restart container |
+| `POST` | `/admin/servers/{name}/enable` | Enable Caddy route |
+| `POST` | `/admin/servers/{name}/disable` | Disable Caddy route |
+| `GET` | `/admin/servers/{name}/health` | Health-check one |
+| `GET` | `/admin/servers/{name}/tools` | List MCP tools |
+| `GET` | `/admin/servers/{name}/logs` | Container logs |
+
+### Automation API
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/admin/servers/batch` | Batch start/stop/restart/enable/disable |
+| `POST` | `/admin/servers/health-check` | Health-check all or a subset |
+| `GET` | `/admin/servers/search` | Search/filter |
+| `GET` | `/admin/servers/categories` | Categories with counts |
+
+```bash
+# Batch stop
+curl -X POST "$BASE/admin/servers/batch" \
+  -H "X-Admin-Secret: $SECRET" -H "Authorization: Bearer $KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"servers": ["nmap-mcp", "trivy-mcp"], "action": "stop"}'
+
+# Search
+curl "$BASE/admin/servers/search?q=nmap&status=running" \
+  -H "X-Admin-Secret: $SECRET" -H "Authorization: Bearer $KEY"
+```
+
+### API key management
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/admin/keys` | List keys (hashed) |
+| `POST` | `/admin/keys` | Create key (plaintext once) |
+| `GET` | `/admin/keys/{id}` | Key metadata |
+| `PATCH` | `/admin/keys/{id}` | Update scopes / rate limit / active |
+| `DELETE` | `/admin/keys/{id}` | Revoke |
+| `GET` | `/admin/keys/{id}/usage` | Per-server usage |
+
+### Chat and vectors
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/chat/completions` | Server-side LLM completion |
+| `POST` | `/vectors/search` | Vector tool search |
+| `GET`/`PUT`/`DELETE` | `/llm-keys[/{provider}]` | LLM vault |
+| `POST` | `/admin/vectors/reindex` | Full reindex |
+| `GET` | `/admin/vectors/stats` | Index stats |
+| `POST` | `/admin/vectors/index-server/{name}` | Index one server |
+
+### Farm operations
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/admin/stats` | Farm summary |
+| `GET` | `/admin/audit` | Audit log |
+| `GET` | `/admin/export` | Export config JSON |
+| `POST` | `/admin/reload` | Reload Caddy routes |
+| `POST` | `/admin/rotate-secret` | Rotate admin secret |
+
+---
+
+## Manual operations
+
+Prefer `./deploy.sh start|stop|status`, or:
+
+```bash
+# Via API
+curl -X POST "$BASE/admin/servers/nmap-mcp/start" \
+  -H "X-Admin-Secret: $SECRET" -H "Authorization: Bearer $KEY"
+
+# Via compose
+docker compose up -d --no-deps nmap-mcp
+docker compose stop nmap-mcp
+```
+
+```bash
+docker logs mcpfarm-auth
+docker logs mcpfarm-caddy
+docker logs nmap-mcp
+```
+
+---
+
+## Testing
+
+```bash
+cd mcpfarm/auth-gateway
+python3 -m venv .venv-test
+.venv-test/bin/pip install -r requirements.txt pytest
+.venv-test/bin/python -m pytest tests/test_farm_api.py -v
+```
+
+Live smoke:
+
+```bash
+BASE="http://localhost:8485"
+KEY="<api-key>"
+SECRET="<admin-secret>"
+
+curl -s "$BASE/health"
+curl -s "$BASE/services" -H "Authorization: Bearer $KEY" | python3 -m json.tool | head
+curl -s "$BASE/admin/stats" -H "X-Admin-Secret: $SECRET" -H "Authorization: Bearer $KEY"
+```
+
+---
+
+## Connecting an MCP client
 
 ```
-https://mcpservers-dev.hackerdogs.ai/{server-name}/mcp
+http://localhost:8485/{server-name}/mcp
 ```
 
-### Claude Desktop (`claude_desktop_config.json`)
+Behind your own TLS edge:
+
+```
+https://mcpservers.example.com/{server-name}/mcp
+```
 
 ```json
 {
   "mcpServers": {
     "nmap": {
       "type": "http",
-      "url": "https://mcpservers-dev.hackerdogs.ai/nmap-mcp/mcp",
-      "headers": {
-        "Authorization": "Bearer <API_KEY>"
-      }
-    },
-    "whois": {
-      "type": "http",
-      "url": "https://mcpservers-dev.hackerdogs.ai/whois-mcp/mcp",
+      "url": "http://localhost:8485/nmap-mcp/mcp",
       "headers": {
         "Authorization": "Bearer <API_KEY>"
       }
@@ -195,98 +364,41 @@ https://mcpservers-dev.hackerdogs.ai/{server-name}/mcp
 }
 ```
 
-### MCP Inspector (browser UI)
+MCP Inspector: `npx @modelcontextprotocol/inspector` — Streamable HTTP + `Authorization` header.
+
+---
+
+## Publishing Docker images
 
 ```bash
-npx @modelcontextprotocol/inspector
-```
+# Individual MCP server
+cd nmap-mcp
+./publish_to_hackerdogs.sh hackerdogs
 
-Set transport to **Streamable HTTP**, URL to the server endpoint, and add the `Authorization` header.
-
-### curl (manual test)
-
-```bash
-KEY="<API_KEY>"
-BASE="https://mcpservers-dev.hackerdogs.ai/whois-mcp/mcp"
-
-# 1. Initialize — get session ID
-curl -s -D - "$BASE" \
-  -H "Authorization: Bearer $KEY" \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json, text/event-stream" \
-  -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}' \
-  | grep -i mcp-session-id
-
-# 2. Send initialized notification
-curl -s "$BASE" \
-  -H "Authorization: Bearer $KEY" \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json, text/event-stream" \
-  -H "mcp-session-id: <SESSION_ID>" \
-  -d '{"jsonrpc":"2.0","method":"notifications/initialized"}'
-
-# 3. List tools
-curl -s "$BASE" \
-  -H "Authorization: Bearer $KEY" \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json, text/event-stream" \
-  -H "mcp-session-id: <SESSION_ID>" \
-  -d '{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}'
-
-# 4. Call a tool
-curl -s "$BASE" \
-  -H "Authorization: Bearer $KEY" \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json, text/event-stream" \
-  -H "mcp-session-id: <SESSION_ID>" \
-  -d '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"whois_lookup","arguments":{"domain":"example.com"}}}'
+# Farm infra
+cd mcpfarm/auth-gateway && ./publish_to_hackerdogs.sh hackerdogs
+cd mcpfarm-ui && ./publish_to_hackerdogs.sh hackerdogs
 ```
 
 ---
 
-## Admin API
+## Known build failures
 
-All admin endpoints require `X-Admin-Secret: <ADMIN_SECRET>` header.
+| Server | Reason | Status |
+|--------|--------|--------|
+| `aws-core-mcp` | AWS removed `awslabs.core-mcp-server` from PyPI | Blocked upstream |
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET` | `/health` | Public health check |
-| `GET` | `/services` | List all registered servers and their status |
-| `GET` | `/admin/stats` | Farm summary (keys, servers, requests) |
-| `GET` | `/admin/keys` | List API keys |
-| `POST` | `/admin/keys` | Create a new API key |
-| `DELETE` | `/admin/keys/{key_id}` | Revoke an API key |
-| `GET` | `/admin/servers` | List servers with health status |
-| `POST` | `/admin/reload` | Regenerate and hot-reload all Caddy routes |
-| `GET` | `/admin/audit` | Request audit log |
-| `GET` | `/admin/export` | Export full config as JSON |
+Skip broken builds when using `start --all` if needed.
 
 ---
 
-## Known Build Failures
-
-Six servers cannot be built due to upstream issues:
-
-| Server | Reason |
-|--------|--------|
-| `bettercap-mcp` | `go install bettercap` fails — upstream dependency |
-| `gitleaks-mcp` | Build error in upstream source |
-| `horusec-mcp` | Horusec install script returns exit 127 |
-| `subjack-mcp` | Requires Go ≥ 1.25.1, base image uses 1.24 |
-| `vulnerability-scanner-mcp` | Missing `requirements.txt` in upstream repo |
-| `x8-mcp` | References non-existent base image `x8-builder:latest` |
-
-All other 380 servers build and run successfully.
-
----
-
-## Resource Guidelines
+## Resource guidelines
 
 | Containers running | Recommended RAM | Recommended CPUs |
 |-------------------|-----------------|------------------|
 | Infra only (3) | 2 GB | 2 |
 | Infra + 50 servers | 4 GB | 4 |
 | Infra + 200 servers | 8 GB | 6 |
-| Full farm (386) | 16 GB+ | 8+ |
+| Full farm (~400) | 16 GB+ | 8+ |
 
-Servers are set to `restart: 'no'` — they only run when explicitly started. Start only what you need to avoid overloading Docker Desktop.
+End-user UI guide: [mcpfarm-ui/docs/USERS-GUIDE.md](../mcpfarm-ui/docs/USERS-GUIDE.md).

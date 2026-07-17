@@ -1,31 +1,54 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS DocumentDB MCP Server
 
-MCP server wrapper for [DocumentDB](https://github.com/awslabs/mcp) — upstream package `awslabs.documentdb-mcp-server`.
+MCP server wrapper for [Amazon DocumentDB](https://github.com/awslabs/mcp/tree/main/src/documentdb-mcp-server) — query collections, manage indexes, and inspect cluster health on your MongoDB-compatible Amazon DocumentDB clusters.
 
-## What is DocumentDB?
+## What is Amazon DocumentDB?
 
-MCP server for AWS DocumentDB. Interact with DocumentDB databases — query collections, manage indexes, and inspect cluster health.
+Amazon DocumentDB is AWS's managed MongoDB-compatible document database service. This MCP server lets AI assistants connect to DocumentDB clusters to run aggregation queries, list collections, inspect index definitions, and retrieve cluster and instance metadata — all without requiring direct driver access or a MongoDB client. See [awslabs/mcp](https://github.com/awslabs/mcp/tree/main/src/documentdb-mcp-server) for full documentation.
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
-**Summary.** AWS DocumentDB MCP Server — Dockerized from upstream `awslabs.documentdb-mcp-server` package.
+**Summary.** MCP server wrapper for [Amazon DocumentDB](https://github.com/awslabs/mcp/tree/main/src/documentdb-mcp-server) — query and manage MongoDB-compatible DocumentDB collections, indexes, and cluster resources from your AI assistant.
+
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `connect` | Connect |
+| `disconnect` | Disconnect |
+| `find` | Find |
+| `aggregate` | Aggregate |
+| `insert` | Insert |
+| `update` | Update |
+| `delete` | Delete |
+| `listDatabases` | Listdatabases |
+| `createCollection` | Createcollection |
+| `listCollections` | Listcollections |
+| `dropCollection` | Dropcollection |
+| `countDocuments` | Countdocuments |
+| `getDatabaseStats` | Getdatabasestats |
+| `getCollectionStats` | Getcollectionstats |
+| `analyzeSchema` | Analyzeschema |
+| `explainOperation` | Explainoperation |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me DocumentDB resources in my AWS account."
-- "Describe the current state of my DocumentDB setup."
+- "List all DocumentDB clusters in my account and show their current status."
+- "Show me all collections in my DocumentDB database and their document counts."
+- "Run a find query on the customers collection where status is 'active'."
+- "List the indexes defined on the orders collection in my DocumentDB cluster."
+- "Show me the storage and instance metrics for my DocumentDB cluster."
+- "Create a new index on the email field of the users collection in my DocumentDB database."
 
 ## Deploy
 
@@ -108,6 +131,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "aws-documentdb-mcp": {
+      "url": "http://localhost:8485/aws-documentdb-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

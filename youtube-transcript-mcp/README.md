@@ -1,31 +1,35 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # YouTube Transcript MCP Server
 
-MCP server wrapper for [YouTube Transcript](https://github.com/kimtaeyoon83/mcp-server-youtube-transcript) — upstream package `@kimtaeyoon83/mcp-server-youtube-transcript`.
+MCP server wrapper for [mcp-server-youtube-transcript](https://github.com/kimtaeyoon83/mcp-server-youtube-transcript) — extract YouTube video transcripts and captions in multiple languages via the `@kimtaeyoon83/mcp-server-youtube-transcript` npm package.
 
 ## What is YouTube Transcript?
 
-MCP server for extracting YouTube video transcripts. Retrieve captions and subtitles from YouTube videos in multiple languages for summarization, analysis, and content processing.
+The YouTube Transcript MCP server fetches auto-generated and manual subtitles/captions from YouTube videos without requiring a YouTube Data API key. Given a video URL or ID, it returns the full transcript text along with timestamp data in the requested language. This is useful for video summarization, meeting notes extraction, content research, and feeding video content into AI analysis pipelines. See [kimtaeyoon83/mcp-server-youtube-transcript](https://github.com/kimtaeyoon83/mcp-server-youtube-transcript) for full documentation. No API keys are required — it uses the public YouTube transcript endpoint.
 
-**No API keys required** — this server works out of the box.
+## Tools Reference
 
-**Summary.** YouTube Transcript MCP Server — Dockerized from upstream `@kimtaeyoon83/mcp-server-youtube-transcript` package.
+| Tool | Description |
+|------|-------------|
+| `get_transcript` | Get Transcript |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Get the transcript of this YouTube video."
-- "Extract the English subtitles from this YouTube link."
+- "Get the full transcript for this YouTube video: https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+- "Extract the English captions from this YouTube video and summarize the key points."
+- "Retrieve the Spanish transcript for this YouTube tutorial and translate it to English."
+- "Get the transcript of this YouTube conference talk and identify the main topics discussed."
+- "Fetch the auto-generated subtitles for this YouTube video and extract all action items mentioned."
+- "Pull the transcript from this YouTube video with timestamps so I can find where a specific topic is discussed."
 
 ## Deploy
 
@@ -92,6 +96,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "youtube-transcript-mcp": {
+      "url": "http://localhost:8485/youtube-transcript-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

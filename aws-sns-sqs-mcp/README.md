@@ -1,31 +1,79 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS SNS/SQS MCP Server
 
-MCP server wrapper for [SNS/SQS](https://github.com/awslabs/mcp) — upstream package `awslabs.amazon-sns-sqs-mcp-server`.
+MCP server wrapper for [Amazon SNS/SQS](https://github.com/awslabs/mcp/tree/main/src/amazon-sns-sqs-mcp-server) — list, inspect, and interact with Amazon Simple Notification Service topics and Simple Queue Service queues for event-driven architectures.
 
-## What is SNS/SQS?
+## What is Amazon SNS/SQS?
 
-MCP server for Amazon SNS and SQS. Manage topics, queues, subscriptions, and messages for event-driven architectures.
+Amazon SNS (Simple Notification Service) is a pub/sub messaging service for fan-out notifications to multiple subscribers, while Amazon SQS (Simple Queue Service) provides managed message queues for decoupling distributed systems. This MCP server, built from `awslabs.amazon-sns-sqs-mcp-server`, lets you list topics and queues, inspect subscriptions and dead-letter queue configurations, send and receive messages, and review queue depth and attributes — all through conversational prompts. See [awslabs/mcp](https://github.com/awslabs/mcp) for full documentation.
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
-**Summary.** AWS SNS/SQS MCP Server — Dockerized from upstream `awslabs.amazon-sns-sqs-mcp-server` package.
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `add_sns_permission` | Add Sns Permission |
+| `check_if_phone_number_is_opted_out` | Check If Phone Number Is Opted Out |
+| `confirm_subscription` | Confirm Subscription |
+| `get_data_protection_policy` | Get Data Protection Policy |
+| `get_endpoint_attributes` | Get Endpoint Attributes |
+| `get_platform_application_attributes` | Get Platform Application Attributes |
+| `get_subscription_attributes` | Get Subscription Attributes |
+| `get_topic_attributes` | Get Topic Attributes |
+| `list_endpoints_by_platform_application` | List Endpoints By Platform Application |
+| `list_origination_numbers` | List Origination Numbers |
+| `list_phone_numbers_opted_out` | List Phone Numbers Opted Out |
+| `list_platform_applications` | List Platform Applications |
+| `list_subscriptions` | List Subscriptions |
+| `list_subscriptions_by_topic` | List Subscriptions By Topic |
+| `list_tags_for_resource` | List Tags For Resource |
+| `list_topics` | List Topics |
+| `opt_in_phone_number` | Opt In Phone Number |
+| `publish` | Publish |
+| `publish_batch` | Publish Batch |
+| `put_data_protection_policy` | Put Data Protection Policy |
+| `set_subscription_attributes` | Set Subscription Attributes |
+| `set_topic_attributes` | Set Topic Attributes |
+| `subscribe` | Subscribe |
+| `unsubscribe` | Unsubscribe |
+| `add_sqs_permission` | Add Sqs Permission |
+| `cancel_message_move_task` | Cancel Message Move Task |
+| `change_message_visibility` | Change Message Visibility |
+| `change_message_visibility_batch` | Change Message Visibility Batch |
+| `delete_message` | Delete Message |
+| `delete_message_batch` | Delete Message Batch |
+| `get_queue_attributes` | Get Queue Attributes |
+| `get_queue_url` | Get Queue Url |
+| `list_dead_letter_source_queues` | List Dead Letter Source Queues |
+| `list_message_move_tasks` | List Message Move Tasks |
+| `list_queue_tags` | List Queue Tags |
+| `list_queues` | List Queues |
+| `purge_queue` | Purge Queue |
+| `receive_message` | Receive Message |
+| `remove_sqs_permission` | Remove Sqs Permission |
+| `send_message` | Send Message |
+| `send_message_batch` | Send Message Batch |
+| `set_queue_attributes` | Set Queue Attributes |
+| `start_message_move_task` | Start Message Move Task |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me SNS/SQS resources in my AWS account."
-- "Describe the current state of my SNS/SQS setup."
+- "List all SNS topics in my account and show their subscriber counts."
+- "What are the current message counts (visible, in-flight, delayed) for all my SQS queues?"
+- "Show me the dead-letter queue configuration for the 'order-events' SQS queue."
+- "List all subscriptions to the SNS topic 'alerts-prod' and their protocols."
+- "Send a test message to the 'dev-notifications' SQS queue."
+- "Which SQS queues have messages in their dead-letter queue right now?"
 
 ## Deploy
 
@@ -108,6 +156,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "aws-sns-sqs-mcp": {
+      "url": "http://localhost:8485/aws-sns-sqs-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

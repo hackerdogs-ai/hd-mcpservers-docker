@@ -1,31 +1,49 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Splunk MCP Server
 
-MCP server wrapper for [Splunk](https://github.com/splunk/splunk-mcp) — upstream package `splunk-mcp`.
+MCP server wrapper for [Splunk](https://github.com/splunk/splunk-mcp) — run SPL searches, query indexes, and investigate security events in Splunk.
 
 ## What is Splunk?
 
-MCP server for [Splunk](https://www.splunk.com/). Run SPL searches, query indexes, manage saved searches, and access dashboards. Investigate security events and operational data through AI assistants.
+Splunk is an industry-leading platform for searching, monitoring, and analyzing machine-generated data including logs, metrics, and security events. This MCP server lets AI assistants run SPL (Search Processing Language) queries, list available indexes, retrieve saved searches, and access Splunk dashboards for threat hunting and operational investigations. See [splunk/splunk-mcp](https://github.com/splunk/splunk-mcp) for full documentation.
 
-**Splunk credentials required** — set `SPLUNK_URL` and `SPLUNK_TOKEN`.
+**Splunk credentials required** — set `SPLUNK_URL` (e.g. `https://splunk.example.com:8089`) and `SPLUNK_TOKEN` (a Splunk bearer token or session key).
 
-**Summary.** Splunk MCP Server — Dockerized from upstream `splunk-mcp` package.
+**Summary.** MCP server wrapper for [Splunk](https://github.com/splunk/splunk-mcp) — run SPL searches, query indexes, and investigate security events in Splunk.
+
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `search_splunk` | Search Splunk |
+| `list_indexes` | List Indexes |
+| `get_index_info` | Get Index Info |
+| `list_saved_searches` | List Saved Searches |
+| `current_user` | Current User |
+| `list_users` | List Users |
+| `list_kvstore_collections` | List Kvstore Collections |
+| `health_check` | Health Check |
+| `get_indexes_and_sourcetypes` | Get Indexes And Sourcetypes |
+| `ping` | Ping |
+| `health` | Health |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Search Splunk for failed SSH logins in the last 24 hours."
-- "Show me the top 10 source IPs in the firewall index."
+- "Search Splunk for failed SSH login attempts in the last 24 hours and show the top source IPs."
+- "Run an SPL query to find all Windows Event ID 4625 (failed logon) events from the past week."
+- "List all available Splunk indexes and their event counts."
+- "Search the firewall index for outbound connections to suspicious IPs in the last hour."
+- "Show me saved searches related to security monitoring in Splunk."
+- "Find all Splunk events for user 'jsmith' across all indexes in the last 7 days."
 
 ## Deploy
 
@@ -103,6 +121,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "splunk-mcp": {
+      "url": "http://localhost:8485/splunk-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

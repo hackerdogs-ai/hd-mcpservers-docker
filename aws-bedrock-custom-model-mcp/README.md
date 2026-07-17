@@ -1,31 +1,44 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS Bedrock Custom Model MCP Server
 
-MCP server wrapper for [Bedrock Custom Model Import](https://github.com/awslabs/mcp) — upstream package `awslabs.aws-bedrock-custom-model-import-mcp-server`.
+MCP server wrapper for [Bedrock Custom Model Import](https://github.com/awslabs/mcp/tree/main/src/aws-bedrock-custom-model-import-mcp-server) — import and manage custom fine-tuned models in Amazon Bedrock.
 
 ## What is Bedrock Custom Model Import?
 
-MCP server for Amazon Bedrock Custom Model Import. Streamlines the process of importing custom models into Amazon Bedrock, including creating, listing, and managing model import jobs.
+Amazon Bedrock Custom Model Import allows you to bring your own fine-tuned models (such as those trained externally or via SageMaker) into Bedrock so they can be served through the same managed inference API as foundation models. This MCP server lets AI assistants create import jobs, track their status, list imported models, and manage the lifecycle of custom models within Bedrock. See [awslabs/mcp](https://github.com/awslabs/mcp/tree/main/src/aws-bedrock-custom-model-import-mcp-server) for full documentation.
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
-**Summary.** AWS Bedrock Custom Model MCP Server — Dockerized from upstream `awslabs.aws-bedrock-custom-model-import-mcp-server` package.
+**Summary.** MCP server wrapper for [Bedrock Custom Model Import](https://github.com/awslabs/mcp/tree/main/src/aws-bedrock-custom-model-import-mcp-server) — create and manage import jobs to bring fine-tuned models into Amazon Bedrock's managed inference platform.
+
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `create_model_import_job` | Create Model Import Job |
+| `get_model_import_job` | Get Model Import Job |
+| `list_model_import_jobs` | List Model Import Jobs |
+| `get_imported_model` | Get Imported Model |
+| `delete_imported_model` | Delete Imported Model |
+| `list_imported_models` | List Imported Models |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me Bedrock Custom Model Import resources in my AWS account."
-- "Describe the current state of my Bedrock Custom Model Import setup."
+- "List all custom model import jobs in my Bedrock account and show their status."
+- "Show me all successfully imported custom models available in Amazon Bedrock."
+- "Start a new model import job for the fine-tuned model stored in my S3 bucket."
+- "Check the status of my in-progress Bedrock model import job."
+- "List my Bedrock custom models and show which ones are currently active and invokable."
+- "Delete a completed custom model import job that is no longer needed."
 
 ## Deploy
 
@@ -108,6 +121,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "aws-bedrock-custom-model-mcp": {
+      "url": "http://localhost:8485/aws-bedrock-custom-model-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

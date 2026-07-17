@@ -1,32 +1,125 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Cloudflare MCP Server
 
-MCP server wrapper for [Cloudflare](https://github.com/cloudflare/mcp-server-cloudflare) — upstream package `@cloudflare/mcp-server-cloudflare`.
+MCP server wrapper for [Cloudflare](https://github.com/cloudflare/mcp-server-cloudflare) — manage Workers, DNS, KV, R2, D1, and Pages through the Cloudflare API.
 
 ## What is Cloudflare?
 
-MCP server for [Cloudflare](https://cloudflare.com/). Manage Workers, KV namespaces, R2 buckets, D1 databases, and other Cloudflare services. Deploy, configure, and monitor your Cloudflare infrastructure through AI assistants.
+The official `@cloudflare/mcp-server-cloudflare` package exposes Cloudflare's management API as MCP tools. You can manage Workers (deploy, list, delete scripts), KV namespaces (read/write keys), R2 buckets (list/upload/delete objects), D1 databases (run SQL queries), DNS zones and records, and Cloudflare Pages projects — all from an AI assistant. See [github.com/cloudflare/mcp-server-cloudflare](https://github.com/cloudflare/mcp-server-cloudflare) for full documentation.
 
-**API token required** — create one at [dash.cloudflare.com/profile/api-tokens](https://dash.cloudflare.com/profile/api-tokens).
+**API token required** — create a token at [dash.cloudflare.com/profile/api-tokens](https://dash.cloudflare.com/profile/api-tokens) with the appropriate scopes, and set `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`.
 
-**Summary.** Cloudflare MCP Server — Dockerized from upstream `@cloudflare/mcp-server-cloudflare` package.
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `get_kvs` | Get Kvs |
+| `kv_get` | Kv Get |
+| `kv_put` | Kv Put |
+| `kv_delete` | Kv Delete |
+| `kv_list` | Kv List |
+| `worker_list` | Worker List |
+| `worker_get` | Worker Get |
+| `worker_put` | Worker Put |
+| `worker_delete` | Worker Delete |
+| `worker_deploy` | Worker Deploy |
+| `analytics_get` | Analytics Get |
+| `workers_analytics_search` | Workers Analytics Search |
+| `r2_list_buckets` | R2 List Buckets |
+| `r2_create_bucket` | R2 Create Bucket |
+| `r2_delete_bucket` | R2 Delete Bucket |
+| `r2_list_objects` | R2 List Objects |
+| `r2_get_object` | R2 Get Object |
+| `r2_put_object` | R2 Put Object |
+| `r2_delete_object` | R2 Delete Object |
+| `d1_list_databases` | D1 List Databases |
+| `d1_create_database` | D1 Create Database |
+| `d1_delete_database` | D1 Delete Database |
+| `d1_query` | D1 Query |
+| `do_create_namespace` | Do Create Namespace |
+| `do_delete_namespace` | Do Delete Namespace |
+| `do_list_namespaces` | Do List Namespaces |
+| `do_get_object` | Do Get Object |
+| `do_list_objects` | Do List Objects |
+| `do_delete_object` | Do Delete Object |
+| `do_alarm_list` | Do Alarm List |
+| `do_alarm_set` | Do Alarm Set |
+| `do_alarm_delete` | Do Alarm Delete |
+| `queue_create` | Queue Create |
+| `queue_delete` | Queue Delete |
+| `queue_list` | Queue List |
+| `queue_get` | Queue Get |
+| `queue_send_message` | Queue Send Message |
+| `queue_send_batch` | Queue Send Batch |
+| `queue_get_message` | Queue Get Message |
+| `queue_delete_message` | Queue Delete Message |
+| `queue_update_visibility` | Queue Update Visibility |
+| `ai_inference` | Ai Inference |
+| `ai_list_models` | Ai List Models |
+| `ai_get_model` | Ai Get Model |
+| `ai_embeddings` | Ai Embeddings |
+| `ai_text_generation` | Ai Text Generation |
+| `ai_image_generation` | Ai Image Generation |
+| `workflow_get` | Workflow Get |
+| `workflow_create` | Workflow Create |
+| `workflow_delete` | Workflow Delete |
+| `workflow_list` | Workflow List |
+| `workflow_update` | Workflow Update |
+| `workflow_execute` | Workflow Execute |
+| `template_list` | Template List |
+| `template_get` | Template Get |
+| `template_create_worker` | Template Create Worker |
+| `wfp_create_dispatch_namespace` | Wfp Create Dispatch Namespace |
+| `wfp_delete_dispatch_namespace` | Wfp Delete Dispatch Namespace |
+| `wfp_list_dispatch_namespaces` | Wfp List Dispatch Namespaces |
+| `wfp_add_custom_domain` | Wfp Add Custom Domain |
+| `wfp_remove_custom_domain` | Wfp Remove Custom Domain |
+| `wfp_list_custom_domains` | Wfp List Custom Domains |
+| `service_binding_create` | Service Binding Create |
+| `service_binding_delete` | Service Binding Delete |
+| `service_binding_list` | Service Binding List |
+| `service_binding_update` | Service Binding Update |
+| `env_var_set` | Env Var Set |
+| `env_var_delete` | Env Var Delete |
+| `env_var_list` | Env Var List |
+| `env_var_bulk_set` | Env Var Bulk Set |
+| `route_create` | Route Create |
+| `route_delete` | Route Delete |
+| `route_list` | Route List |
+| `route_update` | Route Update |
+| `cron_create` | Cron Create |
+| `cron_delete` | Cron Delete |
+| `cron_list` | Cron List |
+| `cron_update` | Cron Update |
+| `zones_list` | Zones List |
+| `zones_get` | Zones Get |
+| `domain_list` | Domain List |
+| `secret_put` | Secret Put |
+| `secret_delete` | Secret Delete |
+| `secret_list` | Secret List |
+| `version_list` | Version List |
+| `version_get` | Version Get |
+| `version_rollback` | Version Rollback |
+| `wrangler_config_get` | Wrangler Config Get |
+| `wrangler_config_update` | Wrangler Config Update |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "List all my Cloudflare Workers."
-- "Show DNS records for example.com."
-- "Deploy a new Worker script."
+- "List all Cloudflare Workers in my account and show their route bindings."
+- "Show all DNS records for the zone example.com in Cloudflare."
+- "Deploy a new Cloudflare Worker script that returns 'Hello World' on all requests."
+- "List the contents of my R2 bucket named 'assets-prod'."
+- "Run a SQL query against my D1 database 'app-db' to count all users."
+- "Add an A record pointing www.example.com to 203.0.113.10 in Cloudflare DNS."
 
 ## Deploy
 
@@ -104,6 +197,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "cloudflare-mcp": {
+      "url": "http://localhost:8485/cloudflare-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

@@ -1,15 +1,18 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { listServices, getAdminStats } from './lib/api.js';
+import { isServerRunning } from './lib/categories.js';
+import Marketplace from './components/Marketplace.jsx';
+import ServerDetail from './components/ServerDetail.jsx';
 import ServerList from './components/ServerList.jsx';
-import ManualMode from './components/ManualMode.jsx';
-import MultiMode from './components/MultiMode.jsx';
 import PromptMode from './components/PromptMode.jsx';
 import AgentChat from './components/AgentChat.jsx';
+import ChatMode from './components/ChatMode.jsx';
 import Settings from './components/Settings.jsx';
+import ThemeToggle from './components/ThemeToggle.jsx';
 
 const MODES = [
-  { id: 'manual', label: 'Manual' },
-  { id: 'multi', label: 'Multi-select' },
+  { id: 'manual', label: 'Catalog' },
+  { id: 'chat', label: 'Chat' },
   { id: 'prompt', label: 'Prompt' },
   { id: 'agent', label: '✦ Nova' },
 ];
@@ -17,19 +20,17 @@ const MODES = [
 export default function App() {
   const [mode, setMode] = useState('manual');
   const [servers, setServers] = useState([]);
-  const [serversLoading, setServersLoading] = useState(false);
+  const [serversLoading, setServersLoading] = useState(true);
   const [serversError, setServersError] = useState(null);
   const [stats, setStats] = useState(null);
   const [showSettings, setShowSettings] = useState(false);
   const [selectedServer, setSelectedServer] = useState(null);
-  const [multiSelected, setMultiSelected] = useState(new Set());
 
   const loadServers = useCallback(async () => {
     setServersLoading(true);
     setServersError(null);
     try {
       const data = await listServices();
-      // Normalize: accept array or object with servers key
       const arr = Array.isArray(data)
         ? data
         : Array.isArray(data?.servers)
@@ -52,12 +53,9 @@ export default function App() {
     try {
       const s = await getAdminStats();
       setStats(s);
-    } catch {
-      // Stats are optional, admin-only
-    }
+    } catch {}
   }, []);
 
-  // Sync credentials from server on every load — ensures admin secret stays current after rebuilds
   useEffect(() => {
     fetch('/ui-config')
       .then((r) => r.json())
@@ -73,7 +71,6 @@ export default function App() {
   useEffect(() => {
     loadServers();
     loadStats();
-    // Poll every 30 seconds
     const interval = setInterval(() => {
       loadServers();
       loadStats();
@@ -81,108 +78,88 @@ export default function App() {
     return () => clearInterval(interval);
   }, [loadServers, loadStats]);
 
-  function handleToggleMulti(name) {
-    setMultiSelected((prev) => {
-      const next = new Set(prev);
-      if (next.has(name)) next.delete(name);
-      else next.add(name);
-      return next;
-    });
-  }
-
   function handleSelectServer(name) {
-    if (mode === 'multi') {
-      handleToggleMulti(name);
-    } else {
-      setSelectedServer(name);
-    }
+    setSelectedServer(name);
   }
 
-  const runningCount = servers.filter((s) => (s.status || '').toLowerCase() === 'running').length;
+  function goHome() {
+    setMode('manual');
+    setSelectedServer(null);
+  }
+
+  const runningCount = servers.filter((s) => isServerRunning(s)).length;
 
   return (
-    <div
-      className="flex flex-col h-screen overflow-hidden"
-      style={{ background: '#0d1117', color: '#e6edf3' }}
-    >
-      {/* ── Top bar ── */}
-      <header
-        className="flex-shrink-0 flex items-center justify-between px-4 py-2 border-b"
-        style={{ background: '#161b22', borderColor: '#30363d', minHeight: 48 }}
-      >
-        {/* Logo + title */}
-        <div className="flex items-center gap-3">
-          <img
-            src="https://hackerdogs.ai/images/logo.svg"
-            alt="Hackerdogs"
-            style={{ height: 28, width: 'auto' }}
-          />
-          <div>
-            <span className="font-semibold text-sm" style={{ color: '#e6edf3' }}>
-              MCP Farm
-            </span>
-            {stats ? (
-              <span className="ml-2 text-xs" style={{ color: '#8b949e' }}>
-                {stats.healthy_servers ?? runningCount}/{stats.total_servers ?? servers.length} healthy
+    <div className="app-shell flex flex-col h-screen overflow-hidden">
+      {/* Top bar */}
+      <header className="app-header">
+        <div className="app-header__brand">
+          <button
+            type="button"
+            className="app-header__logo-btn"
+            onClick={goHome}
+            title="Back to catalog search"
+            aria-label="Back to catalog search"
+          >
+            <img
+              src="/images/logo.svg"
+              alt=""
+              style={{ height: 28, width: 'auto' }}
+            />
+            <div>
+              <span className="app-header__title">MCP Farm</span>
+              <span className="app-header__stats">
+                {serversLoading && servers.length === 0 ? (
+                  <>
+                    <span className="spinner" style={{ width: 10, height: 10, marginRight: 4, verticalAlign: 'middle' }} />
+                    loading...
+                  </>
+                ) : (
+                  <>
+                    <span className="app-header__stats-live">{runningCount}</span>/{servers.length} running
+                  </>
+                )}
               </span>
-            ) : (
-              <span className="ml-2 text-xs" style={{ color: '#8b949e' }}>
-                {runningCount}/{servers.length} running
-              </span>
-            )}
-          </div>
+            </div>
+          </button>
           {serversError && (
-            <span className="text-xs px-2 py-0.5 rounded" style={{ background: 'rgba(248,81,73,0.15)', color: '#f85149' }}>
-              {serversError}
-            </span>
+            <span className="app-header__error">{serversError}</span>
           )}
         </div>
 
-        {/* Mode tabs + settings */}
-        <div className="flex items-center gap-3">
-          <nav className="flex rounded-lg overflow-hidden border" style={{ borderColor: '#30363d' }}>
+        <div className="app-header__controls">
+          <nav className="app-nav">
             {MODES.map((m) => (
               <button
                 key={m.id}
-                onClick={() => setMode(m.id)}
-                className="px-4 py-1.5 text-sm font-medium transition-colors"
-                style={{
-                  background: mode === m.id ? '#3fb950' : 'transparent',
-                  color: mode === m.id ? '#0d1117' : '#8b949e',
-                  borderRight: '1px solid #30363d',
-                }}
+                onClick={() => { setMode(m.id); if (m.id === 'manual') setSelectedServer(null); }}
+                className={`app-nav__btn${mode === m.id ? ' app-nav__btn--active' : ''}`}
               >
                 {m.label}
               </button>
             ))}
           </nav>
-
+          <ThemeToggle />
           <button
             onClick={() => setShowSettings(true)}
             title="Settings"
-            className="p-1.5 rounded transition-colors text-lg"
-            style={{ color: '#8b949e' }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = '#e6edf3')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = '#8b949e')}
+            className="app-header__settings-btn"
           >
             ⚙️
           </button>
         </div>
       </header>
 
-      {/* ── Main layout ── */}
+      {/* Main layout */}
       <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar — hidden in Nova/agent mode */}
-        {mode !== 'agent' && (
+        {/* ServerList sidebar — only for prompt mode */}
+        {mode === 'prompt' && (
           <div className="w-56 flex-shrink-0 flex flex-col overflow-hidden">
             <ServerList
               servers={servers}
               loading={serversLoading}
-              selectedServer={mode === 'manual' ? selectedServer : null}
+              selectedServer={null}
               onSelectServer={handleSelectServer}
-              multiSelected={mode === 'multi' ? multiSelected : new Set()}
-              onToggleMulti={handleToggleMulti}
-              mode={mode}
               onRefresh={loadServers}
             />
           </div>
@@ -190,19 +167,24 @@ export default function App() {
 
         {/* Main panel */}
         <main className="flex flex-1 overflow-hidden">
-          {mode === 'manual' && (
-            <ManualMode
-              selectedServer={selectedServer}
+          {mode === 'manual' && !selectedServer && (
+            <Marketplace
               servers={servers}
+              loading={serversLoading}
+              onSelectServer={handleSelectServer}
               onRefresh={loadServers}
             />
           )}
-          {mode === 'multi' && (
-            <MultiMode
+          {mode === 'manual' && selectedServer && (
+            <ServerDetail
+              serverName={selectedServer}
               servers={servers}
-              multiSelected={multiSelected}
-              onToggleMulti={handleToggleMulti}
+              onBack={() => setSelectedServer(null)}
+              onRefresh={loadServers}
             />
+          )}
+          {mode === 'chat' && (
+            <ChatMode servers={servers} />
           )}
           {mode === 'prompt' && (
             <PromptMode servers={servers} />
@@ -213,7 +195,6 @@ export default function App() {
         </main>
       </div>
 
-      {/* Settings modal */}
       {showSettings && (
         <Settings onClose={() => setShowSettings(false)} />
       )}

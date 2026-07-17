@@ -1,31 +1,47 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # VariFlight MCP Server
 
-MCP server wrapper for [VariFlight](https://github.com/AirSavvy/variflight-mcp) — upstream package `@variflight-ai/variflight-mcp`.
+MCP server wrapper for [VariFlight](https://github.com/AirSavvy/variflight-mcp) — real-time flight tracking, historical flight data, and airport/airline information via VariFlight's aviation API.
 
 ## What is VariFlight?
 
-MCP server for [VariFlight](https://www.variflight.com/) — flight tracking and aviation data. Real-time flight status, historical flight data, airport information, and airline schedules.
+VariFlight is a Chinese aviation data platform providing comprehensive flight intelligence covering global commercial flights, with strong coverage of Asian routes. This MCP server wraps the VariFlight API, giving AI assistants the ability to track live flight positions, retrieve departure and arrival information for airports, look up historical flight records, and query airline schedules. See [AirSavvy/variflight-mcp](https://github.com/AirSavvy/variflight-mcp) for full documentation.
 
-**API key required** — sign up at [variflight.com](https://www.variflight.com/).
+**API key required** — sign up at [variflight.com](https://www.variflight.com/) and set `VARIFLIGHT_API_KEY`.
 
-**Summary.** VariFlight MCP Server — Dockerized from upstream `@variflight-ai/variflight-mcp` package.
+**Summary.** MCP server wrapper for [VariFlight](https://github.com/AirSavvy/variflight-mcp) — real-time flight tracking, historical flight data, and airport/airline information via VariFlight's aviation API.
+
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `searchFlightsByDepArr` | Searchflightsbydeparr |
+| `searchFlightsByNumber` | Searchflightsbynumber |
+| `getFlightTransferInfo` | Getflighttransferinfo |
+| `flightHappinessIndex` | Flighthappinessindex |
+| `getRealtimeLocationByAnum` | Getrealtimelocationbyanum |
+| `getTodayDate` | Gettodaydate |
+| `getFutureWeatherByAirport` | Getfutureweatherbyairport |
+| `searchFlightItineraries` | Searchflightitineraries |
+| `getFlightPriceByCities` | Getflightpricebycities |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Track flight UA123 in real time."
-- "Show arrival flights at SFO today."
+- "Track the real-time status and position of flight CA981."
+- "Show all departure flights from Beijing Capital Airport (PEK) for today."
+- "What is the current arrival status of flight MU5137?"
+- "Retrieve historical flight data for Air China flight CA1234 on 2024-11-15."
+- "List all flights scheduled between Shanghai Pudong (PVG) and Tokyo Narita (NRT) tomorrow."
+- "What is the typical on-time performance rate for flights operated by China Eastern Airlines?"
 
 ## Deploy
 
@@ -98,6 +114,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "variflight-mcp": {
+      "url": "http://localhost:8485/variflight-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

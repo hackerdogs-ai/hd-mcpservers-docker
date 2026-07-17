@@ -1,31 +1,54 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS EKS MCP Server
 
-MCP server wrapper for [EKS](https://github.com/awslabs/mcp) — upstream package `awslabs.eks-mcp-server`.
+MCP server wrapper for [Amazon EKS](https://github.com/awslabs/mcp/tree/main/src/eks-mcp-server) — inspect and manage Kubernetes clusters on Amazon EKS, including nodes, workloads, namespaces, and cluster configuration.
 
-## What is EKS?
+## What is Amazon EKS?
 
-MCP server for Amazon EKS. Resource management tools and real-time cluster state visibility for Kubernetes on AWS.
+Amazon EKS is AWS's managed Kubernetes service, running upstream Kubernetes control planes with native integration into IAM, VPC networking, and AWS load balancers. This MCP server gives AI assistants visibility into EKS cluster state — listing clusters and node groups, describing deployments and pods, checking node health, inspecting resource quotas, and retrieving Kubernetes events — enabling natural-language Kubernetes operations without requiring `kubectl` access. See [awslabs/mcp](https://github.com/awslabs/mcp/tree/main/src/eks-mcp-server) for full documentation.
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
 
-**Summary.** AWS EKS MCP Server — Dockerized from upstream `awslabs.eks-mcp-server` package.
+**Summary.** MCP server wrapper for [Amazon EKS](https://github.com/awslabs/mcp/tree/main/src/eks-mcp-server) — query EKS cluster resources, node groups, workload state, and Kubernetes events for cluster management and troubleshooting.
+
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `list_k8s_resources` | List K8S Resources |
+| `get_pod_logs` | Get Pod Logs |
+| `get_k8s_events` | Get K8S Events |
+| `list_api_versions` | List Api Versions |
+| `manage_k8s_resource` | Manage K8S Resource |
+| `apply_yaml` | Apply Yaml |
+| `generate_app_manifest` | Generate App Manifest |
+| `search_eks_troubleshoot_guide` | Search Eks Troubleshoot Guide |
+| `get_cloudwatch_logs` | Get Cloudwatch Logs |
+| `get_cloudwatch_metrics` | Get Cloudwatch Metrics |
+| `manage_eks_stacks` | Manage Eks Stacks |
+| `add_inline_policy` | Add Inline Policy |
+| `get_policies_for_role` | Get Policies For Role |
+| `get_eks_metrics_guidance` | Get Eks Metrics Guidance |
+| `get_eks_vpc_config` | Get Eks Vpc Config |
+| `get_eks_insights` | Get Eks Insights |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me EKS resources in my AWS account."
-- "Describe the current state of my EKS setup."
+- "List all EKS clusters in my account and show their Kubernetes version and status."
+- "Show me all node groups for my production EKS cluster and their instance types and scaling settings."
+- "List all pods in the default namespace of my EKS cluster that are not in Running state."
+- "Describe all deployments in the kube-system namespace and show their replica counts."
+- "Show me the most recent Kubernetes Warning events across all namespaces in my cluster."
+- "List all services of type LoadBalancer in my EKS cluster and show their external endpoints."
 
 ## Deploy
 
@@ -108,6 +131,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "aws-eks-mcp": {
+      "url": "http://localhost:8485/aws-eks-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

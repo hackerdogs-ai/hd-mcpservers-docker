@@ -1,31 +1,42 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS Documentation MCP Server
 
-MCP server wrapper for [AWS Documentation](https://github.com/awslabs/mcp) — upstream package `awslabs.aws-documentation-mcp-server`.
+MCP server wrapper for [AWS Documentation](https://github.com/awslabs/mcp/tree/main/src/aws-documentation-mcp-server) — search and retrieve up-to-date AWS service documentation, API references, and best practice guides.
 
 ## What is AWS Documentation?
 
-MCP server for searching and retrieving AWS documentation. Provides AI assistants with up-to-date AWS service documentation, best practices, and reference guides.
+The AWS Documentation MCP server connects AI assistants to the official AWS documentation corpus, enabling semantic search across service guides, API references, developer guides, and best practices whitepapers. It fetches live content from docs.aws.amazon.com so responses reflect the current state of AWS services rather than training-data cutoffs. Use it when you need accurate API parameter details, service limits, IAM permission requirements, or architectural guidance. See [awslabs/mcp](https://github.com/awslabs/mcp/tree/main/src/aws-documentation-mcp-server) for full documentation.
 
-**No API keys required** — this server works out of the box.
+**No AWS credentials required** — this server queries the public AWS documentation website.
 
-**Summary.** AWS Documentation MCP Server — Dockerized from upstream `awslabs.aws-documentation-mcp-server` package.
+**Summary.** MCP server wrapper for [AWS Documentation](https://github.com/awslabs/mcp/tree/main/src/aws-documentation-mcp-server) — search the live AWS documentation corpus for API references, service guides, and best practices without leaving your AI assistant.
+
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `read_documentation` | Read Documentation |
+| `read_sections` | Read Sections |
+| `search_documentation` | Search Documentation |
+| `recommend` | Recommend |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Search AWS docs for S3 bucket policy examples."
-- "Find documentation on Lambda concurrency limits."
+- "Search AWS docs for S3 bucket policy examples that restrict access by IP address."
+- "Find the documentation for Lambda reserved concurrency vs. provisioned concurrency."
+- "What IAM permissions are required to create an EKS cluster?"
+- "Look up the AWS documentation on DynamoDB single-table design patterns."
+- "Find the CloudFormation resource reference for AWS::ECS::TaskDefinition."
+- "Search AWS docs for the VPC endpoint policy format for S3 gateway endpoints."
 
 ## Deploy
 
@@ -92,6 +103,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "aws-documentation-mcp": {
+      "url": "http://localhost:8485/aws-documentation-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

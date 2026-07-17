@@ -3,8 +3,10 @@
 # Subjack has no pre-built release assets; build from Go source.
 
 # Stage 1: Builder for the Go binary
-FROM golang:1.24-bookworm AS builder
+# subjack@latest now requires Go >= 1.25.1; use 1.25 and allow toolchain auto-upgrade.
+FROM golang:1.25-bookworm AS builder
 ENV CGO_ENABLED=0
+ENV GOTOOLCHAIN=auto
 RUN go install github.com/haccer/subjack@latest
 
 # Stage 2: Final lightweight Python environment
@@ -35,7 +37,7 @@ COPY --from=builder /go/bin/subjack /usr/local/bin/subjack
 
 # Download fingerprints.json into the exact hardcoded path the Go binary expects
 RUN mkdir -p /src/github.com/haccer/subjack && \
-    wget -q https://raw.githubusercontent.com/haccer/subjack/master/fingerprints.json -O /src/github.com/haccer/subjack/fingerprints.json && \
+    wget -q https://raw.githubusercontent.com/haccer/subjack/master/subjack/fingerprints.json -O /src/github.com/haccer/subjack/fingerprints.json && \
     chown -R mcpuser:mcpuser /src
 
 WORKDIR /app

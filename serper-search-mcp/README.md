@@ -1,31 +1,38 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Serper Search MCP Server
 
-MCP server wrapper for [Serper](https://github.com/nicholasoxford/serper-search-scrape-mcp) — upstream package `serper-search-scrape-mcp-server`.
+MCP server wrapper for [Serper](https://serper.dev/) — Google Search API with web search, news, images, shopping results, and webpage scraping via a single API key.
 
 ## What is Serper?
 
-MCP server for [Serper](https://serper.dev/) — a Google Search API. Perform Google searches, scrape web pages, and extract structured search results with news, images, and shopping data.
+Serper is a fast, affordable Google Search API that returns structured JSON results for web, news, image, video, shopping, and map queries. The `serper-search-scrape-mcp-server` package wraps it as MCP tools, also adding a webpage scraping tool that extracts clean text content from any URL. See [nicholasoxford/serper-search-scrape-mcp](https://github.com/nicholasoxford/serper-search-scrape-mcp) for full documentation.
 
-**API key required** — sign up at [serper.dev](https://serper.dev/).
+**API key required** — sign up at [serper.dev](https://serper.dev/) and set the `SERPER_API_KEY` environment variable.
 
-**Summary.** Serper Search MCP Server — Dockerized from upstream `serper-search-scrape-mcp-server` package.
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `google_search` | Google Search |
+| `scrape` | Scrape |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Google search for 'OWASP Top 10 2025'."
-- "Scrape the content of this search result page."
+- "Google search for 'Log4Shell CVE-2021-44228 mitigation strategies' and summarize the top 5 results."
+- "Use Serper to search for current news about the SEC cybersecurity disclosure rules."
+- "Search Google Images for diagrams explaining TCP three-way handshake."
+- "Find Google Shopping results for 'Flipper Zero' and list the prices from different sellers."
+- "Scrape the text content from https://owasp.org/www-project-top-ten/ using the Serper scraping tool."
+- "Search Google for 'site:github.com nuclei templates CVE' and return the top 10 matching repositories."
 
 ## Deploy
 
@@ -98,6 +105,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "serper-search-mcp": {
+      "url": "http://localhost:8485/serper-search-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

@@ -1,31 +1,31 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # AWS Step Functions MCP Server
 
-MCP server wrapper for [Step Functions](https://github.com/awslabs/mcp) — upstream package `Custom FastMCP (boto3)`.
+MCP server wrapper for AWS Step Functions — list state machines and retrieve their Amazon States Language (ASL) definitions and execution role details via boto3.
 
-## What is Step Functions?
+## What is AWS Step Functions?
 
-MCP server for AWS Step Functions. List, describe, and manage state machines and workflow executions.
+AWS Step Functions is a serverless orchestration service that lets you coordinate multiple AWS services into visual workflows defined in Amazon States Language (ASL). This MCP server is a custom FastMCP implementation (using boto3 directly) that exposes two tools: `list_state_machines` to enumerate all Step Functions state machines in the configured account, and `describe_state_machine` to retrieve the full ASL definition, IAM role ARN, and metadata for a specific state machine by ARN. No API key beyond standard AWS credentials is required.
 
 **AWS credentials required** — set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
-
-**Summary.** AWS Step Functions MCP Server — Dockerized from upstream `Custom FastMCP (boto3)` package.
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Show me Step Functions resources in my AWS account."
-- "Describe the current state of my Step Functions setup."
+- "List all Step Functions state machines in my AWS account."
+- "Show me the full state machine definition (ASL) for the 'order-fulfillment' workflow."
+- "What IAM role does the 'data-pipeline' state machine use for execution?"
+- "Find all state machines of type EXPRESS in my account."
+- "Retrieve the definition of state machine arn:aws:states:us-east-1:123456789012:stateMachine:MyWorkflow."
+- "List state machines in my account and identify any that reference a Lambda function named 'process-payment'."
 
 ## Deploy
 
@@ -108,6 +108,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "aws-stepfunctions-mcp": {
+      "url": "http://localhost:8485/aws-stepfunctions-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

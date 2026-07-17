@@ -1,31 +1,37 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # Fetch MCP Server
 
-MCP server wrapper for [Fetch](https://github.com/modelcontextprotocol/servers) — upstream package `mcp-server-fetch`.
+MCP server wrapper for [mcp-server-fetch](https://github.com/modelcontextprotocol/servers/tree/main/src/fetch) — retrieve web page content as clean markdown or plain text for AI consumption. See [modelcontextprotocol/servers](https://github.com/modelcontextprotocol/servers) for full documentation.
 
 ## What is Fetch?
 
-MCP server for fetching web content. Retrieves web pages and converts them to markdown or plain text for AI consumption. Supports URL fetching with configurable user-agent and content extraction.
+`mcp-server-fetch` is the official Model Context Protocol server for HTTP content retrieval. It fetches any URL, strips HTML to readable markdown using the `readability` library, and returns the result to the AI client — making it straightforward to read documentation pages, news articles, or API responses without a browser. The server supports configurable user-agent strings and respects `robots.txt` by default.
 
-**No API keys required** — this server works out of the box.
+**No API keys required** — works out of the box with any public URL.
 
-**Summary.** Fetch MCP Server — Dockerized from upstream `mcp-server-fetch` package.
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `fetch` | Fetch |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Fetch the contents of https://example.com."
-- "Get the text content of this web page."
+- "Fetch https://docs.python.org/3/library/asyncio.html and summarize the key concepts."
+- "Retrieve https://nvd.nist.gov/vuln/detail/CVE-2024-1234 and explain the vulnerability."
+- "Get the content of https://example.com/api/status and tell me what it returns."
+- "Fetch the Hacker News front page at https://news.ycombinator.com and list the top 5 stories."
+- "Read https://raw.githubusercontent.com/owner/repo/main/README.md and give me an overview."
+- "Fetch https://httpbin.org/json and show me the JSON response."
 
 ## Deploy
 
@@ -92,6 +98,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "fetch-mcp": {
+      "url": "http://localhost:8485/fetch-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 

@@ -6,7 +6,7 @@
 :80, :11459 {
     header Access-Control-Allow-Origin *
     header Access-Control-Allow-Headers "Authorization, Content-Type, Accept, mcp-session-id, X-Admin-Secret"
-    header Access-Control-Allow-Methods "GET, POST, DELETE, OPTIONS"
+    header Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
     header Access-Control-Expose-Headers "mcp-session-id"
 
     @options method OPTIONS
@@ -22,7 +22,7 @@
         reverse_proxy auth-gateway:9090
     }
 
-    handle /services {
+    handle /services* {
         reverse_proxy auth-gateway:9090
     }
 
@@ -34,7 +34,26 @@
         reverse_proxy auth-gateway:9090
     }
 
-    import /etc/caddy/dynamic/routes.conf
+    handle /claude {
+        reverse_proxy auth-gateway:9090
+    }
+
+    handle /chat/* {
+        reverse_proxy auth-gateway:9090
+    }
+
+    handle /vectors/* {
+        reverse_proxy auth-gateway:9090
+    }
+
+    handle /llm-keys* {
+        reverse_proxy auth-gateway:9090
+    }
+
+    # Glob import is optional: on a fresh deploy routes.conf does not exist yet
+    # (the auth-gateway writes it on seed/admin reload). A non-glob import of a
+    # missing file makes Caddy fail to load and crash-loop, deadlocking first boot.
+    import /etc/caddy/dynamic/*.conf
 
     handle {
         reverse_proxy mcpfarm-ui:3000

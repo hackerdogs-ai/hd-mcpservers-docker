@@ -1,31 +1,42 @@
 <p align="center">
   <a href="https://hackerdogs.ai">
     <img src="https://hackerdogs.ai/images/logo.png" alt="Hackerdogs" width="120"/>
-  </a>
-  <br/>
-  <a href="https://hackerdogs.ai">
+    <br/>
     <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=20&duration=1&pause=10000000&color=000000&center=true&vCenter=true&repeat=false&width=180&height=28&lines=hackerdogs" alt="hackerdogs"/>
   </a>
 </p>
 
 # IP Locate MCP Server
 
-MCP server wrapper for [IP Locate](https://github.com/nicholasgasior/iplocate-mcp) — upstream package `iplocate-mcp`.
+MCP server wrapper for [IPLocate](https://www.iplocate.io) — IP geolocation and organization lookup via the IPLocate API.
 
 ## What is IP Locate?
 
-MCP server for IP geolocation. Look up geographic location, ISP, ASN, and organization data for any IP address using free geolocation APIs.
+IPLocate is an IP address intelligence service that returns geographic location data (country, region, city, latitude/longitude), ISP and organization name, ASN, and whether an IP belongs to a hosting provider, VPN, Tor exit node, or proxy. It is commonly used during incident response and reconnaissance to quickly contextualize IP addresses from logs, alerts, or scan results. See [@iplocate/mcp-server](https://www.npmjs.com/package/@iplocate/mcp-server) for full documentation.
 
-**No API keys required** — this server works out of the box.
+**No API keys required** — the server uses IPLocate's free-tier public API out of the box.
 
-**Summary.** IP Locate MCP Server — Dockerized from upstream `iplocate-mcp` package.
+## Tools Reference
+
+| Tool | Description |
+|------|-------------|
+| `lookup_ip_address_details` | Lookup Ip Address Details |
+| `lookup_ip_address_location` | Lookup Ip Address Location |
+| `lookup_ip_address_privacy` | Lookup Ip Address Privacy |
+| `lookup_ip_address_network` | Lookup Ip Address Network |
+| `lookup_ip_address_company` | Lookup Ip Address Company |
+| `lookup_ip_address_abuse_contacts` | Lookup Ip Address Abuse Contacts |
 
 ## Example Prompts
 
 Here are example prompts you can use with Claude (or any MCP client) when this tool is connected:
 
-- "Where is the IP address 8.8.8.8 located?"
-- "Look up the geolocation for this IP address."
+- "Look up the geographic location and ISP for IP address 8.8.8.8."
+- "Is the IP 185.220.101.34 a Tor exit node or known VPN according to IPLocate?"
+- "Geolocate the IP 103.21.244.0 and tell me which country and ASN it belongs to."
+- "Check whether IP 104.26.10.78 is a cloud hosting provider IP according to IPLocate."
+- "I have ten suspicious IPs from our firewall logs — use IPLocate to geolocate each one."
+- "Look up the organization and ASN registered to IP 1.1.1.1 using IPLocate."
 
 ## Deploy
 
@@ -92,6 +103,26 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 ```
 
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
+
+
+## Securely Accessing MCP
+
+When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers are accessed through the authenticated gateway instead of direct container ports:
+
+```json
+{
+  "mcpServers": {
+    "iplocate-mcp": {
+      "url": "http://localhost:8485/iplocate-mcp/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-api-key>"
+      }
+    }
+  }
+}
+```
+
+> **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
 
 ## Environment Variables
 
