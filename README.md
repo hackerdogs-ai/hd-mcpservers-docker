@@ -842,6 +842,10 @@ Client → Caddy (:8485) → forward_auth → auth-gateway (:9090) → MCP serve
 
 ### Local deployment (Docker)
 
+You still need the `mcpfarm/` directory from this repo (compose file, Caddyfile, `port-map.json`). Farm **images** are pulled from Docker Hub — no local build required.
+
+**Option A — `deploy.sh`:** wraps secret/`.env` setup, ordered startup + health waits, DB seed, and Caddy route reload in one command.
+
 ```bash
 git clone <repo-url>
 cd hd-mcpservers-docker/mcpfarm
@@ -857,6 +861,37 @@ ADMIN_SECRET=<your-secret> ./deploy.sh up --skip-build
 | `./deploy.sh start <name>…` / `--all` | Start MCP servers |
 | `./deploy.sh stop …` / `down` | Stop servers or tear down the farm |
 | `./deploy.sh status` | Health + running containers |
+
+**Option B — Docker Compose only (no scripts):**
+
+```bash
+git clone <repo-url>
+cd hd-mcpservers-docker/mcpfarm
+
+docker network create hdnet 2>/dev/null || true
+echo "ADMIN_SECRET=<your-secret>" > .env
+
+docker compose pull auth-gateway caddy mcpfarm-ui
+docker compose up -d --no-deps auth-gateway
+docker compose up -d --no-deps caddy
+docker compose up -d --no-deps mcpfarm-ui
+
+docker exec mcpfarm-auth python seed.py
+curl -s -X POST http://localhost:8485/admin/reload \
+  -H "X-Admin-Secret: <your-secret>"
+
+docker compose up -d --pull never --no-deps naabu-mcp
+```
+
+Host port defaults to **8485**. To change it, set `FARM_PORT` in `.env` (see [`.env.example`](./mcpfarm/.env.example)).
+
+| Compose / Docker | Purpose |
+|------------------|---------|
+| `docker compose up -d --no-deps auth-gateway caddy mcpfarm-ui` | Farm infra + UI |
+| `docker exec mcpfarm-auth python seed.py` | Register servers from `port-map.json` |
+| `POST /admin/reload` | Load Caddy routes |
+| `docker compose up -d --pull never --no-deps <name>-mcp` | Start an MCP server |
+| `docker compose stop <name>-mcp` / `docker compose down` | Stop a server / tear down |
 
 **What starts on `up`:**
 
