@@ -842,12 +842,16 @@ Client → Caddy (:8485) → forward_auth → auth-gateway (:9090) → MCP serve
 
 ### Local deployment (Docker)
 
+You need the `mcpfarm/` directory (compose, Caddyfile, `port-map.json`). Farm **images** pull from Docker Hub — no local build with `--skip-build` or plain `docker compose pull`.
+
+**Option A — `deploy.sh`:** wraps secret/`.env` setup, ordered startup + health waits, DB seed, and Caddy route reload in one command.
+
 ```bash
 git clone <repo-url>
 cd hd-mcpservers-docker/mcpfarm
 
 ADMIN_SECRET=<your-secret> ./deploy.sh up --skip-build
-./deploy.sh start naabu-mcp
+./deploy.sh start naabu-mcp   # example tool — replace with any name from port-map.json
 ./deploy.sh status
 ```
 
@@ -857,6 +861,47 @@ ADMIN_SECRET=<your-secret> ./deploy.sh up --skip-build
 | `./deploy.sh start <name>…` / `--all` | Start MCP servers |
 | `./deploy.sh stop …` / `down` | Stop servers or tear down the farm |
 | `./deploy.sh status` | Health + running containers |
+
+**Option B — Docker Compose only (no scripts):**
+
+```bash
+# 1. Get farm config (compose + Caddyfile + port-map). Images still come from Docker Hub.
+git clone <repo-url>
+cd hd-mcpservers-docker/mcpfarm
+
+# 2. Shared Docker network for Redis (auth-gateway joins hdnet; create if missing).
+docker network create hdnet 2>/dev/null || true
+
+# 3. Minimal .env — ADMIN_SECRET is required for admin/seed/reload.
+#    Host port defaults to 8485; change via FARM_PORT in .env (see .env.example).
+echo "ADMIN_SECRET=<your-secret>" > .env
+
+# 4. Pull + start farm infra only (naming these three does not start the 400 tools).
+#    Caddy waits for auth-gateway healthy via depends_on; UI starts alongside.
+docker compose pull auth-gateway caddy mcpfarm-ui
+docker compose up -d auth-gateway caddy mcpfarm-ui
+
+# 5. Register servers from port-map.json into SQLite; print one-time admin API key.
+docker exec mcpfarm-auth python seed.py
+
+# 6. Write / reload Caddy routes so /{server-name}/* proxies to tool containers.
+curl -s -X POST http://localhost:8485/admin/reload \
+  -H "X-Admin-Secret: <your-secret>"
+
+# 7. Optional — start one MCP tool on demand (naabu-mcp is only an example).
+#    Replace with any name from port-map.json. Image pulls on first start if needed.
+docker compose up -d --no-deps naabu-mcp
+```
+
+Why not a bare `docker compose up` with no service names? That would start **all ~400** MCP tools (high RAM). Name the infra services (or use `deploy.sh up`) so tools stay on demand.
+
+| Compose / Docker | Purpose |
+|------------------|---------|
+| `docker compose up -d auth-gateway caddy mcpfarm-ui` | Farm infra + UI |
+| `docker exec mcpfarm-auth python seed.py` | Register servers from `port-map.json` |
+| `POST /admin/reload` | Load Caddy routes |
+| `docker compose up -d --no-deps <name>-mcp` | Start one MCP server |
+| `docker compose stop <name>-mcp` / `docker compose down` | Stop a server / tear down |
 
 **What starts on `up`:**
 

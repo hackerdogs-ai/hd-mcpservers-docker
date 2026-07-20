@@ -12,19 +12,54 @@ The farm is **only** Docker Compose services: Caddy, auth-gateway, the UI, and M
 
 ## Quick Start
 
+You need the `mcpfarm/` directory (compose, Caddyfile, `port-map.json`). Images come from Docker Hub when using `--skip-build` or `docker compose pull`.
+
+### With `deploy.sh`
+
+Wraps secret/`.env` setup, ordered startup + health waits, DB seed, and Caddy route reload.
+
 ```bash
 git clone <repo-url>
 cd hd-mcpservers-docker/mcpfarm
 
-# Start infra (auth-gateway + Caddy + UI), seed DB, load routes
 ADMIN_SECRET=<your-secret> ./deploy.sh up --skip-build
-
-# Start the tools you need
-./deploy.sh start naabu-mcp nuclei-mcp
-
-# Check status
+./deploy.sh start naabu-mcp nuclei-mcp   # examples — any names from port-map.json
 ./deploy.sh status
 ```
+
+### Docker Compose only (no scripts)
+
+```bash
+# 1. Get farm config (compose + Caddyfile + port-map). Images still come from Docker Hub.
+git clone <repo-url>
+cd hd-mcpservers-docker/mcpfarm
+
+# 2. Shared Docker network for Redis (auth-gateway joins hdnet; create if missing).
+docker network create hdnet 2>/dev/null || true
+
+# 3. Minimal .env — ADMIN_SECRET is required for admin/seed/reload.
+#    Host port defaults to 8485; change via FARM_PORT in .env (see .env.example).
+echo "ADMIN_SECRET=<your-secret>" > .env
+
+# 4. Pull + start farm infra only (naming these three does not start the 400 tools).
+#    Caddy waits for auth-gateway healthy via depends_on; UI starts alongside.
+docker compose pull auth-gateway caddy mcpfarm-ui
+docker compose up -d auth-gateway caddy mcpfarm-ui
+
+# 5. Register servers from port-map.json into SQLite; print one-time admin API key.
+docker exec mcpfarm-auth python seed.py
+
+# 6. Write / reload Caddy routes so /{server-name}/* proxies to tool containers.
+curl -s -X POST http://localhost:8485/admin/reload \
+  -H "X-Admin-Secret: <your-secret>"
+
+# 7. Optional — start one MCP tool on demand (naabu-mcp is only an example).
+docker compose up -d --no-deps naabu-mcp
+```
+
+A bare `docker compose up` with no service names would start all ~400 MCP tools. Name the infra services (or use `deploy.sh up`) so tools stay on demand.
+
+A pure “images only / no clone” path is **not** supported today: Caddy and the auth-gateway mount files from this directory (`caddy/Caddyfile`, `port-map.json`, and the repo for README indexing).
 
 Farm UI: `http://localhost:8485`  
 Health: `http://localhost:8485/health`
