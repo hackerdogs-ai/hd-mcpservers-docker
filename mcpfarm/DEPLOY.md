@@ -30,34 +30,32 @@ ADMIN_SECRET=<your-secret> ./deploy.sh up --skip-build
 ### Docker Compose only (no scripts)
 
 ```bash
-# 1. Get farm config (compose + Caddyfile + port-map). Images still come from Docker Hub.
+# Clone farm config (compose, Caddyfile, port-map.json) — images still pull from Hub
 git clone <repo-url>
 cd hd-mcpservers-docker/mcpfarm
 
-# 2. Shared Docker network for Redis (auth-gateway joins hdnet; create if missing).
+# Create external Docker network `hdnet` (auth-gateway attaches here for Redis)
 docker network create hdnet 2>/dev/null || true
 
-# 3. Minimal .env — ADMIN_SECRET is required for admin/seed/reload.
-#    Host port defaults to 8485; change via FARM_PORT in .env (see .env.example).
+# Write ADMIN_SECRET used by X-Admin-Secret /admin calls (port stays 8485 unless FARM_PORT set)
 echo "ADMIN_SECRET=<your-secret>" > .env
 
-# 4. Pull + start farm infra only (naming these three does not start the 400 tools).
-#    Caddy waits for auth-gateway healthy via depends_on; UI starts alongside.
+# Download + start only farm infra: auth-gateway, Caddy (:8485), mcpfarm-ui — not the 400 tools
 docker compose pull auth-gateway caddy mcpfarm-ui
 docker compose up -d auth-gateway caddy mcpfarm-ui
 
-# 5. Register servers from port-map.json into SQLite; print one-time admin API key.
+# Load port-map.json into SQLite `servers`; create seed-admin API key on first run (print once)
 docker exec mcpfarm-auth python seed.py
 
-# 6. Write / reload Caddy routes so /{server-name}/* proxies to tool containers.
+# Build Caddy routes from `servers` and hot-reload so /{name}/* proxies to each tool
 curl -s -X POST http://localhost:8485/admin/reload \
   -H "X-Admin-Secret: <your-secret>"
 
-# 7. Optional — start one MCP tool on demand (naabu-mcp is only an example).
+# Optional: pull/start one tool container (naabu-mcp = example; any port-map.json name works)
 docker compose up -d --no-deps naabu-mcp
 ```
 
-A bare `docker compose up` with no service names would start all ~400 MCP tools. Name the infra services (or use `deploy.sh up`) so tools stay on demand.
+Omit service names on `docker compose up` and Compose starts all ~400 tools. Keep tools on demand.
 
 A pure “images only / no clone” path is **not** supported today: Caddy and the auth-gateway mount files from this directory (`caddy/Caddyfile`, `port-map.json`, and the repo for README indexing).
 

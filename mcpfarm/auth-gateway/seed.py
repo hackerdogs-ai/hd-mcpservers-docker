@@ -1,9 +1,23 @@
 """
-Seed script — idempotent, run via:
-    docker compose exec auth-gateway python seed.py
+Idempotent SQLite bootstrap for a fresh (or existing) auth-gateway database.
 
-Reads /app/port-map.json and populates the servers table.
-Creates a seed-admin API key if one doesn't exist yet.
+Run inside the auth-gateway container:
+    docker exec mcpfarm-auth python seed.py
+    # or: docker compose exec auth-gateway python seed.py
+
+Exact behavior:
+  1. Open AUTH_DB_PATH (default /data/auth.db) and create tables if missing
+     (api_keys, servers, request_logs).
+  2. Read /app/port-map.json and INSERT OR IGNORE each entry into `servers`
+     (name, image, port, env key placeholders, category, source=static).
+     Existing rows are left unchanged.
+  3. If no api_keys row named `seed-admin` exists, create one full-scope key
+     (hd_sk_…), store only its SHA-256 hash in SQLite, write the plaintext
+     once to /data/ui-api-key for the UI, and print the plaintext to stdout
+     (shown only on first seed — save it).
+
+Does not start containers, pull images, or reload Caddy. Pair with
+POST /admin/reload after seed so proxy routes match the servers table.
 """
 from __future__ import annotations
 
