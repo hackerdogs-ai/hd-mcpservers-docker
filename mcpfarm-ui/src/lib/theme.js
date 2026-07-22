@@ -35,7 +35,7 @@ export function setTheme(theme) {
   }
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) {
-    meta.content = theme === 'dark' ? '#0a0f0a' : '#f8f9fa';
+    meta.content = theme === 'dark' ? '#212121' : '#ffffff';
   }
   window.dispatchEvent(new CustomEvent('theme-changed', { detail: { theme } }));
 }
@@ -57,6 +57,6 @@ export function applyStoredTheme() {
   document.documentElement.dataset.theme = theme;
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) {
-    meta.content = theme === 'dark' ? '#0a0f0a' : '#f8f9fa';
+    meta.content = theme === 'dark' ? '#212121' : '#ffffff';
   }
 }

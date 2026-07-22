@@ -8,6 +8,7 @@ import {
 import { MarkdownTextPrimitive } from '@assistant-ui/react-markdown';
 import remarkGfm from 'remark-gfm';
 import McpToolCard from './McpToolCard.jsx';
+import Icon from '../Icon.jsx';
 
 function MarkdownText() {
   return <MarkdownTextPrimitive remarkPlugins={[remarkGfm]} className="aui-md" />;
@@ -168,31 +169,13 @@ export function SamplePrompts({ prompts = [] }) {
 }
 
 function SendIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path d="M12 19V5M12 5l-6 6M12 5l6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
+  return <Icon name="arrow_upward" size={18} />;
 }
 
 function StopIcon() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-      <rect x="6" y="6" width="12" height="12" rx="2" />
-    </svg>
-  );
+  return <Icon name="stop" size={18} fill />;
 }
 
 export function ToolsIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
+  return <Icon name="build" size={16} />;
 }

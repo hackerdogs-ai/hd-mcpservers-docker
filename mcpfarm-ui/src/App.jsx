@@ -16,11 +16,12 @@ import ChatMode from './components/ChatMode.jsx';
 import Settings from './components/Settings.jsx';
 import ThemeToggle from './components/ThemeToggle.jsx';
 import OnboardingWizard from './components/OnboardingWizard.jsx';
+import Icon from './components/Icon.jsx';
 
 const MODES = [
   { id: 'manual', label: 'Catalog' },
   { id: 'chat', label: 'Chat' },
-  { id: 'agent', label: '✦ Nova' },
+  { id: 'agent', label: 'Nova' },
 ];
 
 export default function App() {
@@ -201,8 +202,9 @@ export default function App() {
             onClick={() => setShowSettings(true)}
             title="Settings"
             className="app-header__settings-btn"
+            aria-label="Settings"
           >
-            ⚙️
+            <Icon name="settings" size={20} />
           </button>
         </div>
       </header>

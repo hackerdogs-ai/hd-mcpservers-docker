@@ -2,38 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Hackerdogs design tokens (worldmonitor-main) ────────────────────────── */
+/* ── yoyo design tokens — ChatGPT-style neutral B/W (dark default) ───────── */
 :root {
-  --bg: #0a0a0a;
-  --bg-secondary: #111;
-  --surface: #141414;
-  --surface-hover: #1e1e1e;
-  --surface-active: #1a1a2e;
-  --border: #2a2a2a;
-  --border-strong: #444;
-  --border-subtle: #1a1a1a;
-  --text: #e8e8e8;
-  --text-secondary: #ccc;
-  --text-dim: #888;
-  --text-muted: #666;
-  --text-faint: #555;
-  --input-bg: #1a1a1a;
-  --panel-bg: #141414;
-  --shadow-color: rgba(0, 0, 0, 0.45);
-  --overlay-bg: color-mix(in srgb, var(--bg) 50%, transparent);
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  --font-display: 'Sora', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  --font-brand: 'Orbitron', var(--font-body);
-  --font-mono: 'SF Mono', 'Monaco', 'Cascadia Code', 'Fira Code', 'DejaVu Sans Mono', 'Liberation Mono', monospace;
-  --hd-primary: #29abe2;
-  --hd-btn-radius: 6px;
-  --status-live: #44ff88;
-  --nav-active-text: #0a0a0a;
+  /* Dark = ChatGPT charcoal (default theme) */
+  --bg: #212121;
+  --bg-secondary: #171717;
+  --surface: #2a2a2a;
+  --surface-hover: #303030;
+  --surface-active: #383838;
+  --border: #383838;
+  --border-strong: #4a4a4a;
+  --border-subtle: #2a2a2a;
+  --text: #ececec;
+  --text-secondary: #c7c7c7;
+  --text-dim: #9a9a9a;
+  --text-muted: #7d7d7d;
+  --text-faint: #6a6a6a;
+  --input-bg: #2a2a2a;
+  --panel-bg: #171717;
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  --overlay-bg: color-mix(in srgb, var(--bg) 55%, transparent);
+  --font-body: 'Inter', ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
+  --font-display: var(--font-body);
+  --font-brand: var(--font-body);
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Monaco, 'Cascadia Code', monospace;
+  --hd-primary: #10a37f;
+  --hd-btn-radius: 8px;
+  --status-live: #10a37f;
+  --nav-active-text: #ffffff;
   --header-control-height: 28px;
-  --semantic-success: #22c55e;
-  --semantic-error: #ef4444;
-  --semantic-warning: #f59e0b;
-  --semantic-info: #58a6ff;
+  --semantic-success: #10a37f;
+  --semantic-error: #e5484d;
+  --semantic-warning: #d97706;
+  --semantic-info: #94a3b8;
   /* Type scale (rem @ 16px root). Dense dashboard body is 14px; avoid <12px. */
   --font-size-xs: 0.75rem;      /* 12px — captions, hints, table meta */
   --font-size-sm: 0.875rem;     /* 14px — body / controls (dashboard default) */
@@ -45,66 +46,68 @@
   --font-size-caption: var(--font-size-xs);
   --line-height-tight: 1.25;
   --line-height-normal: 1.5;
-  --code-bg: #1a1a1a;
-  --code-text: #e8e8e8;
+  --code-bg: #171717;
+  --code-text: #ececec;
   --code-key: #79c0ff;
-  --result-bg: #121212;
-  --result-text: #e8e8e8;
-  --chat-user-bg: #1f6feb;
-  --chat-user-text: #ffffff;
+  --result-bg: #171717;
+  --result-text: #ececec;
+  --chat-user-bg: #303030;
+  --chat-user-text: #ececec;
   --chat-agent-bg: var(--surface);
   --chat-agent-border: var(--border);
-  --btn-primary-bg: #3fb950;
-  --btn-primary-text: #0a0a0a;
-  --btn-secondary-bg: #22d3ee;
-  --btn-secondary-text: #0a0a0a;
-  --btn-disabled-bg: #d1d5db;
-  --btn-disabled-text: #6b7280;
+  --btn-primary-bg: #10a37f;
+  --btn-primary-text: #ffffff;
+  --btn-secondary-bg: #343434;
+  --btn-secondary-text: #ececec;
+  --btn-disabled-bg: #3a3a3a;
+  --btn-disabled-text: #6a6a6a;
   --btn-muted-bg: var(--surface-hover);
   --btn-muted-text: var(--text-dim);
 }
 
 [data-theme="light"] {
-  --status-live: #16a34a;
+  /* Light = ChatGPT near-white */
+  --status-live: #10a37f;
   --nav-active-text: #ffffff;
-  --bg: #f8f9fa;
-  --bg-secondary: #f0f1f3;
+  --bg: #ffffff;
+  --bg-secondary: #f7f7f8;
   --surface: #ffffff;
-  --surface-hover: #f0f0f0;
-  --surface-active: #e8e8f0;
-  --border: #d4d4d4;
-  --border-strong: #b0b0b0;
-  --border-subtle: #e8e8e8;
-  --text: #1a1a1a;
-  --text-secondary: #333333;
-  --text-dim: #6b6b6b;
-  --text-muted: #767676;
-  --text-faint: #aaaaaa;
+  --surface-hover: #f4f4f5;
+  --surface-active: #ececec;
+  --border: #e5e5e5;
+  --border-strong: #d4d4d8;
+  --border-subtle: #efefef;
+  --text: #0d0d0d;
+  --text-secondary: #3f3f46;
+  --text-dim: #71717a;
+  --text-muted: #8a8a91;
+  --text-faint: #b4b4bb;
   --input-bg: #ffffff;
-  --panel-bg: #ffffff;
+  --panel-bg: #f7f7f8;
   --shadow-color: rgba(0, 0, 0, 0.1);
   --overlay-bg: color-mix(in srgb, var(--bg) 35%, rgba(0, 0, 0, 0.25));
-  --semantic-success: #15803d;
-  --semantic-error: #dc2626;
+  --hd-primary: #10a37f;
+  --semantic-success: #0d8a6a;
+  --semantic-error: #e5484d;
   --semantic-warning: #d97706;
-  --semantic-info: #2563eb;
-  --code-bg: #f0f1f3;
-  --code-text: #1a1a1a;
+  --semantic-info: #475569;
+  --code-bg: #f4f4f5;
+  --code-text: #0d0d0d;
   --code-key: #1d4ed8;
   --result-bg: #ffffff;
-  --result-text: #1a1a1a;
-  --chat-user-bg: #2563eb;
-  --chat-user-text: #ffffff;
+  --result-text: #0d0d0d;
+  --chat-user-bg: #f4f4f5;
+  --chat-user-text: #0d0d0d;
   --chat-agent-bg: #ffffff;
-  --chat-agent-border: #d4d4d4;
-  --btn-primary-bg: #16a34a;
+  --chat-agent-border: #e5e5e5;
+  --btn-primary-bg: #10a37f;
   --btn-primary-text: #ffffff;
-  --btn-secondary-bg: #06b6d4;
-  --btn-secondary-text: #ffffff;
-  --btn-disabled-bg: #d1d5db;
-  --btn-disabled-text: #94a3b8;
-  --btn-muted-bg: #f0f1f3;
-  --btn-muted-text: #6b6b6b;
+  --btn-secondary-bg: #f4f4f5;
+  --btn-secondary-text: #0d0d0d;
+  --btn-disabled-bg: #ececec;
+  --btn-disabled-text: #a1a1aa;
+  --btn-muted-bg: #f4f4f5;
+  --btn-muted-text: #71717a;
 }
 
 * {
@@ -138,6 +141,35 @@ body, #root {
 input[type="checkbox"] {
   accent-color: var(--btn-primary-bg);
 }
+
+/* ── Icons: Google Material Symbols (Outlined) ───────────────────────────
+   Usage: <span class="mi">home</span> — the child text is a ligature name.
+   Size via mi-16 / mi-18 / mi-20 / mi-24 / mi-32 (standard sizes only). */
+.mi {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 18px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-grid;
+  place-items: center;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'liga';
+  user-select: none;
+  vertical-align: middle;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+}
+.mi.fill { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20; }
+.mi-16 { font-size: 16px; font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 16; }
+.mi-18 { font-size: 18px; font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 18; }
+.mi-20 { font-size: 20px; font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20; }
+.mi-24 { font-size: 24px; font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.mi-32 { font-size: 32px; font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 32; }
 
 ::-webkit-scrollbar {
   width: 6px;
@@ -254,11 +286,11 @@ input[type="checkbox"] {
 
 .app-header__title {
   font-family: var(--font-brand);
-  font-size: 0.875rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  text-transform: lowercase;
-  color: var(--hd-primary);
+  font-size: 0.9375rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--text);
 }
 
 .app-header__stats {
@@ -3288,8 +3320,8 @@ input[type="checkbox"] {
 }
 
 .chat-msg--user .chat-msg-body {
-  background: var(--hd-primary);
-  color: #fff;
+  background: var(--chat-user-bg);
+  color: var(--chat-user-text);
   border-bottom-right-radius: 4px;
 }
 
@@ -3557,8 +3589,8 @@ input[type="checkbox"] {
   overflow-wrap: anywhere;
 }
 .aui-bubble-user {
-  background: var(--hd-primary);
-  color: #fff;
+  background: var(--chat-user-bg);
+  color: var(--chat-user-text);
   border-bottom-right-radius: 4px;
 }
 .aui-bubble-assistant {

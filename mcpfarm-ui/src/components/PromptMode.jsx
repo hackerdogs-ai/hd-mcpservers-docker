@@ -3,6 +3,7 @@ import { runAgenticLoop } from '../lib/claude.js';
 import { mcpClient } from '../lib/mcp.js';
 import { getClaudeKey } from '../lib/api.js';
 import ToolResultContent from './ToolResultContent.jsx';
+import Icon from './Icon.jsx';
 
 // ─── Collapsible card ─────────────────────────────────────────────────────────
 
@@ -16,7 +17,7 @@ function CollapsibleCard({ header, children, defaultOpen = false, variant = 'def
   return (
     <div className="hd-collapsible">
       <div className={headClass} onClick={() => setOpen((v) => !v)}>
-        <span className="hd-result__toggle">{open ? '▼' : '▶'}</span>
+        <span className="hd-result__toggle"><Icon name={open ? 'expand_more' : 'chevron_right'} size={16} /></span>
         <span className="font-mono flex-1">{header}</span>
       </div>
       {open && <div className="hd-collapsible__body">{children}</div>}
@@ -51,7 +52,7 @@ function MessageBubble({ msg }) {
     return (
       <div className="mb-2 ml-2">
         <CollapsibleCard
-          header={`🔧 ${serverName} → ${toolName}(${JSON.stringify(args || {}).slice(0, 80)})`}
+          header={`${serverName} → ${toolName}(${JSON.stringify(args || {}).slice(0, 80)})`}
           variant="ok"
           defaultOpen={false}
         >
@@ -69,7 +70,7 @@ function MessageBubble({ msg }) {
     return (
       <div className="mb-2 ml-2">
         <CollapsibleCard
-          header={error ? `✗ ${toolName} error` : `✓ ${toolName} result`}
+          header={error ? `${toolName} error` : `${toolName} result`}
           variant={error ? 'error' : 'ok'}
           defaultOpen={false}
         >
@@ -98,7 +99,7 @@ function MessageBubble({ msg }) {
         className="mb-2 px-3 py-2 rounded text-xs"
         style={{ background: 'rgba(248,81,73,0.1)', color: '#f85149', border: '1px solid rgba(248,81,73,0.3)' }}
       >
-        ✗ {msg.text}
+        <Icon name="error" size={16} /> {msg.text}
       </div>
     );
   }
@@ -106,7 +107,7 @@ function MessageBubble({ msg }) {
   if (msg.role === 'warning') {
     return (
       <div className="mb-2 text-xs" style={{ color: '#d29922' }}>
-        ⚠ {msg.text}
+        <Icon name="warning" size={16} /> {msg.text}
       </div>
     );
   }
@@ -310,7 +311,7 @@ export default function PromptMode({ servers }) {
         {useAllRunning && (
           <div className="flex-1 flex items-center justify-center">
             <div className="text-center px-3">
-              <div className="text-2xl mb-2">🤖</div>
+              <div className="mb-2"><Icon name="smart_toy" size={24} /></div>
               <p className="text-xs hd-text-dim">
                 Claude will automatically choose from {runningServers.length} running servers
               </p>
@@ -335,7 +336,7 @@ export default function PromptMode({ servers }) {
           {messages.length === 0 && (
             <div className="flex items-center justify-center h-full">
               <div className="text-center hd-empty-hint">
-                <div className="text-4xl mb-3">💬</div>
+                <div className="mb-3"><Icon name="chat" size={32} /></div>
                 <p className="text-sm">Ask Claude to use any MCP tool.</p>
                 <p className="text-xs mt-1 hd-text-muted">
                   Example: "Scan hackerdogs.ai with nmap and check for open ports"

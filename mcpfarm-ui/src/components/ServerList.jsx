@@ -3,6 +3,7 @@ import { startServer, stopServer } from '../lib/api.js';
 import { mcpClient } from '../lib/mcp.js';
 import { getStatusInfo, isServerRunning } from '../lib/categories.js';
 import { useTheme } from '../lib/theme.js';
+import Icon from './Icon.jsx';
 
 const CATEGORIES = ['all', 'recon', 'exploit', 'cloud', 'misc'];
 
@@ -175,7 +176,7 @@ export default function ServerList({
                     title="Stop server"
                     className="hd-list-action hd-list-action--stop"
                   >
-                    ■
+                    <Icon name="stop" size={16} fill />
                   </button>
                 ) : (
                   <button
@@ -183,7 +184,7 @@ export default function ServerList({
                     title="Start server"
                     className="hd-list-action hd-list-action--start"
                   >
-                    ▶
+                    <Icon name="play_arrow" size={16} fill />
                   </button>
                 )}
               </div>
@@ -199,7 +200,7 @@ export default function ServerList({
           disabled={loading}
           className="hd-btn hd-btn--muted w-full"
         >
-          {loading ? 'Refreshing...' : '↻ Refresh'}
+          {loading ? 'Refreshing...' : <><Icon name="refresh" size={16} /> Refresh</>}
         </button>
       </div>
     </div>

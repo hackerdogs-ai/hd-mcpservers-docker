@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useImperativeHandle, forwardRef, useState } from 'react';
 import { LiveAvatarSession, SessionEvent } from '@heygen/liveavatar-web-sdk';
+import Icon from './Icon.jsx';
 
 const TOKEN_URL = 'https://api.liveavatar.com/v1/sessions/token';
 
@@ -106,7 +107,7 @@ const HeyGenAvatar = forwardRef(function HeyGenAvatar({ apiKey, avatarId, width 
   if (!apiKey || !avatarId) {
     return placeholder(
       <>
-        <span style={{ fontSize: 34 }}>🤖</span>
+        <Icon name="smart_toy" size={32} style={{ color: 'var(--text-dim)' }} />
         <span style={{ fontSize: 11, color: '#8b949e', textAlign: 'center', padding: '0 14px', lineHeight: 1.6 }}>
           Add your HeyGen API key and Avatar ID in Settings to enable the live avatar
         </span>
@@ -143,13 +144,13 @@ const HeyGenAvatar = forwardRef(function HeyGenAvatar({ apiKey, avatarId, width 
           </>
         ) : phase === 'error' ? (
           <>
-            <span style={{ fontSize: 26 }}>⚠️</span>
+            <Icon name="warning" size={24} style={{ color: '#f85149' }} />
             <span style={{ fontSize: 11, color: '#f85149', textAlign: 'center', padding: '0 12px', lineHeight: 1.5 }}>
               {errMsg}
             </span>
           </>
         ) : (
-          <span style={{ fontSize: 34 }}>🤖</span>
+          <Icon name="smart_toy" size={32} style={{ color: 'var(--text-dim)' }} />
         )
       )}
     </div>

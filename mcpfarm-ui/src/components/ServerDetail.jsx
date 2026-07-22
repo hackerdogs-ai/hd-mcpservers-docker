@@ -9,6 +9,7 @@ import { getBundledReadme } from '../lib/readmes.js';
 import ChatTab from './ChatTab.jsx';
 import ToolResultContent from './ToolResultContent.jsx';
 import { getToolResultDisplayText } from '../lib/toolResult.js';
+import Icon from './Icon.jsx';
 
 const ACTION_META = {
   start:   { title: 'Start Server',   verb: 'start',   confirmClass: 'hd-dialog-btn--green' },
@@ -51,7 +52,7 @@ function TerminalOutput({ lines }) {
       ) : (
         lines.map((line, i) => (
           <div key={i} className={`sd-term-line ${line.type === 'error' ? 'sd-term-err' : line.type === 'success' ? 'sd-term-ok' : ''}`}>
-            <span className="sd-term-prompt">{line.type === 'error' ? '✗' : line.type === 'success' ? '✓' : '›'}</span>
+            <span className="sd-term-prompt"><Icon name={line.type === 'error' ? 'close' : line.type === 'success' ? 'check' : 'chevron_right'} size={16} /></span>
             <span>{line.text}</span>
           </div>
         ))
@@ -192,9 +193,9 @@ function ResultViewer({ result, error }) {
     <div className={`sd-result${error ? ' sd-result--error' : ''}`}>
       <div className="sd-result-head" onClick={() => setCollapsed(c => !c)}>
         <span className={error ? 'sd-result-head--err' : 'sd-result-head--ok'}>
-          {error ? '✗ Error' : '✓ Result'}
+          {error ? <><Icon name="error" size={16} /> Error</> : <><Icon name="check_circle" size={16} /> Result</>}
         </span>
-        <span className="hd-result__toggle">{collapsed ? '▶' : '▼'}</span>
+        <span className="hd-result__toggle"><Icon name={collapsed ? 'chevron_right' : 'expand_more'} size={16} /></span>
       </div>
       {!collapsed && (
         <>
@@ -477,7 +478,7 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
       <div className="sd-header">
         <div className="sd-header-left">
           <button type="button" onClick={onBack} className="sd-back" aria-label="Back to catalog">
-            ← Back
+            <Icon name="arrow_back" size={16} /> Back
           </button>
           <div className="sd-header-main">
             <span className="sd-header-icon" dangerouslySetInnerHTML={{ __html: iconSvg }} />
@@ -509,7 +510,7 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
               disabled={!!actionLoading}
               className="sd-btn sd-btn--start"
             >
-              {actionLoading === 'enable' ? <><span className="spinner" style={{ width: 12, height: 12 }} /> Enabling...</> : '✓ Enable'}
+              {actionLoading === 'enable' ? <><span className="spinner" style={{ width: 12, height: 12 }} /> Enabling...</> : <><Icon name="check" size={16} /> Enable</>}
             </button>
           ) : !isRunning ? (
             <>
@@ -518,14 +519,14 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
                 disabled={!!actionLoading}
                 className="sd-btn sd-btn--start"
               >
-                {actionLoading === 'start' ? <><span className="spinner" style={{ width: 12, height: 12 }} /> Starting...</> : '▶ Start'}
+                {actionLoading === 'start' ? <><span className="spinner" style={{ width: 12, height: 12 }} /> Starting...</> : <><Icon name="play_arrow" size={16} fill /> Start</>}
               </button>
               <button
                 onClick={() => requestAction('disable')}
                 disabled={!!actionLoading}
                 className="sd-btn sd-btn--disable"
               >
-                {actionLoading === 'disable' ? 'Disabling...' : '⊘ Disable'}
+                {actionLoading === 'disable' ? 'Disabling...' : <><Icon name="block" size={16} /> Disable</>}
               </button>
             </>
           ) : (
@@ -535,14 +536,14 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
                 disabled={!!actionLoading}
                 className="sd-btn sd-btn--stop"
               >
-                {actionLoading === 'stop' ? 'Stopping...' : '■ Stop'}
+                {actionLoading === 'stop' ? 'Stopping...' : <><Icon name="stop" size={16} fill /> Stop</>}
               </button>
               <button
                 onClick={() => requestAction('disable')}
                 disabled={!!actionLoading}
                 className="sd-btn sd-btn--disable"
               >
-                {actionLoading === 'disable' ? 'Disabling...' : '⊘ Disable'}
+                {actionLoading === 'disable' ? 'Disabling...' : <><Icon name="block" size={16} /> Disable</>}
               </button>
             </>
           )}
@@ -551,7 +552,7 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
             disabled={!!actionLoading}
             className="sd-btn sd-btn--delete"
           >
-            {actionLoading === 'delete' ? 'Deleting...' : '✕ Delete'}
+            {actionLoading === 'delete' ? 'Deleting...' : <><Icon name="delete" size={16} /> Delete</>}
           </button>
         </div>
       </div>
@@ -612,7 +613,7 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
                     disabled={!!actionLoading}
                     className="sd-btn sd-btn--test"
                   >
-                    {actionLoading === 'test' ? <><span className="spinner" style={{ width: 12, height: 12 }} /> Testing...</> : '⚡ Test'}
+                    {actionLoading === 'test' ? <><span className="spinner" style={{ width: 12, height: 12 }} /> Testing...</> : <><Icon name="bolt" size={16} /> Test</>}
                   </button>
                 )}
               </div>
@@ -626,8 +627,8 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
             <div className="sd-tools-list">
               <div className="sd-tools-list-head">
                 <span>{tools.length} Tools</span>
-                <button onClick={loadTools} disabled={toolsLoading} className="sd-btn sd-btn--sm">
-                  {toolsLoading ? '...' : '↻'}
+                <button onClick={loadTools} disabled={toolsLoading} className="sd-btn sd-btn--sm" aria-label="Reload tools">
+                  {toolsLoading ? <span className="spinner" style={{ width: 12, height: 12 }} /> : <Icon name="refresh" size={16} />}
                 </button>
               </div>
               {toolsLoading && tools.length === 0 && (
@@ -1022,7 +1023,7 @@ function ConfigTab({ serverName, server, envObj, baseUrl, farmKey, onLog, onSave
         <div className="sd-terminal-head" style={{ marginBottom: 8 }}>
           <h3 className="sd-section-title" style={{ marginBottom: 0 }}>MCP Server Configurations</h3>
           <button onClick={handleGenerate} className="sd-btn sd-btn--primary">
-            {generated ? '↻ Regenerate' : 'Generate MCP Configurations'}
+            {generated ? <><Icon name="refresh" size={16} /> Regenerate</> : 'Generate MCP Configurations'}
           </button>
         </div>
         <p className="hd-text-dim" style={{ marginBottom: 12 }}>

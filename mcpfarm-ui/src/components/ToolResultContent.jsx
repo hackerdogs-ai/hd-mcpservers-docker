@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { classifyToolResultContent } from '../lib/toolResult.js';
+import Icon from './Icon.jsx';
 
 function JsonPrimitive({ value }) {
   if (value === null) return <span className="json-null">null</span>;
@@ -40,7 +41,7 @@ function JsonNode({ name, value, depth = 0 }) {
     <div className="json-node">
       <button type="button" className="json-line json-line--toggle" onClick={() => setOpen((o) => !o)}>
         {name !== undefined && <span className="json-key">{name}: </span>}
-        <span className="json-toggle">{open ? '▼' : '▶'}</span>
+        <span className="json-toggle">{<Icon name={open ? 'expand_more' : 'chevron_right'} size={16} />}</span>
         <span className="json-bracket">{openBracket}</span>
         {!open && <span className="json-preview">{preview}</span>}
         {!open && <span className="json-bracket">{closeBracket}</span>}

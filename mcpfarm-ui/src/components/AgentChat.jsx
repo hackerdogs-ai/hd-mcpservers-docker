@@ -5,6 +5,7 @@ import { runChatTurn } from '../lib/claude.js';
 import { isServerRunning } from '../lib/categories.js';
 import HeyGenAvatar from './HeyGenAvatar.jsx';
 import ToolResultContent from './ToolResultContent.jsx';
+import Icon from './Icon.jsx';
 
 const AGENT_NAME = 'Nova';
 
@@ -68,13 +69,13 @@ function ToolCard({ call }) {
   return (
     <div className={cardClass}>
       <button type="button" onClick={() => setOpen((o) => !o)} className="hd-tool-card__head">
-        <span className={isError ? 'hd-text-err' : isDone ? 'hd-text-ok' : ''} style={{ fontSize: 10 }}>
-          {isError ? '✗' : isDone ? '✓' : '↻'}
+        <span className={isError ? 'hd-text-err' : isDone ? 'hd-text-ok' : ''}>
+          <Icon name={isError ? 'close' : isDone ? 'check' : 'sync'} size={16} />
         </span>
         {!isDone && <span className="spinner" style={{ width: 9, height: 9 }} />}
         <span className="hd-tool-card__badge">{call.serverName}</span>
         <span>{call.toolName}</span>
-        <span className="ml-auto hd-text-dim">{open ? '▲' : '▼'}</span>
+        <span className="ml-auto hd-text-dim">{<Icon name={open ? 'expand_less' : 'expand_more'} size={16} />}</span>
       </button>
       {open && (
         <div className="hd-tool-card__body space-y-2">
@@ -195,7 +196,7 @@ export default function AgentChat({ servers }) {
     const key = getClaudeKey();
     if (!key) {
       setDisplayMsgs((prev) => [...prev,
-        { id: Date.now(), type: 'agent', parts: [{ type: 'text', text: "I need a Claude API key to think. Open ⚙️ Settings and add your sk-ant-... key, then try again." }] },
+        { id: Date.now(), type: 'agent', parts: [{ type: 'text', text: "I need a Claude API key to think. Open Settings and add your sk-ant-... key, then try again." }] },
       ]);
       return;
     }
@@ -358,7 +359,7 @@ export default function AgentChat({ servers }) {
 
           <div className="mt-auto pt-4 w-full">
             <button type="button" onClick={handleClear} disabled={busy} className="hd-btn hd-btn--ghost w-full text-xs">
-              ↺ New conversation
+              <Icon name="restart_alt" size={16} /> New conversation
             </button>
           </div>
         </div>
@@ -375,7 +376,7 @@ export default function AgentChat({ servers }) {
 
           {!getClaudeKey() && (
             <div className="mx-5 mt-4 px-4 py-2.5 rounded-lg text-sm flex-shrink-0 hd-tool-card__error">
-              Claude API key not set — open ⚙️ Settings and add your <code className="hd-code inline px-1">sk-ant-...</code> key to activate Nova.
+              Claude API key not set — open Settings and add your <code className="hd-code inline px-1">sk-ant-...</code> key to activate Nova.
             </div>
           )}
 
@@ -409,7 +410,7 @@ export default function AgentChat({ servers }) {
                 disabled={busy || !input.trim()}
                 className="hd-btn hd-btn--primary px-5 rounded-xl flex-shrink-0"
               >
-                {busy ? <span className="spinner" style={{ width: 16, height: 16 }} /> : '▶ Send'}
+                {busy ? <span className="spinner" style={{ width: 16, height: 16 }} /> : <><Icon name="send" size={16} /> Send</>}
               </button>
             </div>
             <div className="text-xs mt-2 hd-text-dim">

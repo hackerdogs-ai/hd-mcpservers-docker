@@ -4,6 +4,7 @@ import { startServer, updateServerEnv, startServer as restartServer } from '../l
 import { getToolHints } from '../lib/toolHints.js';
 import { isServerRunning } from '../lib/categories.js';
 import ToolResultContent from './ToolResultContent.jsx';
+import Icon from './Icon.jsx';
 
 // ─── Tool Form ────────────────────────────────────────────────────────────────
 
@@ -256,10 +257,10 @@ function ResultViewer({ result, error }) {
         onClick={() => setCollapsed((c) => !c)}
       >
         <span className="text-xs font-semibold" style={{ color: error ? '#f85149' : '#3fb950' }}>
-          {error ? '✗ Error' : '✓ Result'}
+          {error ? <><Icon name="error" size={16} /> Error</> : <><Icon name="check_circle" size={16} /> Result</>}
         </span>
         <span className="text-xs" style={{ color: '#8b949e' }}>
-          {collapsed ? '▶' : '▼'}
+          <Icon name={collapsed ? 'chevron_right' : 'expand_more'} size={16} />
         </span>
       </div>
 
@@ -341,7 +342,7 @@ function ServerConfig({ serverInfo, onClose, onSaved }) {
           </p>
         </div>
         <button onClick={onClose} className="text-xs px-2 py-1 rounded" style={{ color: '#8b949e', border: '1px solid #30363d' }}>
-          ✕ Close
+          <Icon name="close" size={16} /> Close
         </button>
       </div>
 
@@ -368,7 +369,7 @@ function ServerConfig({ serverInfo, onClose, onSaved }) {
                 className="px-2 rounded text-xs"
                 style={{ background: '#21262d', color: '#8b949e', border: '1px solid #30363d' }}
               >
-                {showValues[key] ? '🙈' : '👁'}
+                <Icon name={showValues[key] ? 'visibility_off' : 'visibility'} size={16} />
               </button>
             </div>
           </div>
@@ -376,7 +377,7 @@ function ServerConfig({ serverInfo, onClose, onSaved }) {
       </div>
 
       {error && <p className="mt-3 text-xs" style={{ color: '#f85149' }}>{error}</p>}
-      {saved && !error && <p className="mt-3 text-xs" style={{ color: '#3fb950' }}>✓ Saved — restart the server to apply changes.</p>}
+      {saved && !error && <p className="mt-3 text-xs" style={{ color: '#3fb950' }}>Saved — restart the server to apply changes.</p>}
 
       <div className="flex gap-2 mt-4">
         <button
@@ -385,7 +386,7 @@ function ServerConfig({ serverInfo, onClose, onSaved }) {
           className="px-3 py-1.5 rounded text-xs font-medium"
           style={{ background: 'rgba(63,185,80,0.15)', color: '#3fb950', border: '1px solid rgba(63,185,80,0.3)' }}
         >
-          {saving && !restarting ? 'Saving...' : '💾 Save'}
+          {saving && !restarting ? 'Saving...' : <><Icon name="save" size={16} /> Save</>}
         </button>
         <button
           onClick={handleSaveAndRestart}
@@ -393,7 +394,7 @@ function ServerConfig({ serverInfo, onClose, onSaved }) {
           className="px-3 py-1.5 rounded text-xs font-medium"
           style={{ background: 'rgba(88,166,255,0.1)', color: '#58a6ff', border: '1px solid rgba(88,166,255,0.25)' }}
         >
-          {restarting ? 'Restarting...' : '↺ Save & Restart'}
+          {restarting ? 'Restarting...' : <><Icon name="restart_alt" size={16} /> Save & Restart</>}
         </button>
       </div>
     </div>
@@ -484,7 +485,7 @@ export default function ManualMode({ selectedServer, servers, onRefresh }) {
     return (
       <div className="flex-1 flex items-center justify-center" style={{ color: '#8b949e' }}>
         <div className="text-center">
-          <div className="text-4xl mb-3">🖥️</div>
+          <div className="mb-3"><Icon name="dns" size={32} /></div>
           <p className="text-sm">Select a server from the sidebar to get started</p>
         </div>
       </div>
@@ -514,7 +515,7 @@ export default function ManualMode({ selectedServer, servers, onRefresh }) {
                   border: `1px solid ${showConfig ? '#58a6ff' : '#30363d'}`,
                 }}
               >
-                🔑 Keys
+                <Icon name="key" size={16} /> Keys
               </button>
             )}
             <button
@@ -522,8 +523,9 @@ export default function ManualMode({ selectedServer, servers, onRefresh }) {
               disabled={toolsLoading || !isRunning}
               className="text-xs px-2 py-0.5 rounded transition-colors"
               style={{ color: '#8b949e', background: '#0d1117', border: '1px solid #30363d' }}
+              aria-label="Reload tools"
             >
-              ↻
+              <Icon name="refresh" size={16} />
             </button>
           </div>
         </div>
@@ -544,7 +546,7 @@ export default function ManualMode({ selectedServer, servers, onRefresh }) {
                 border: '1px solid rgba(63,185,80,0.3)',
               }}
             >
-              {startLoading ? 'Starting...' : '▶ Start Server'}
+              {startLoading ? 'Starting...' : <><Icon name="play_arrow" size={16} fill /> Start Server</>}
             </button>
             {startError && (
               <p className="text-xs" style={{ color: '#f85149' }}>

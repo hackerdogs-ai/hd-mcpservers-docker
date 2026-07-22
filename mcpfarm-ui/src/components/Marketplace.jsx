@@ -4,6 +4,7 @@ import { useTheme } from '../lib/theme.js';
 import { startServer, stopServer, enableServer, disableServer } from '../lib/api.js';
 import { mcpClient } from '../lib/mcp.js';
 import AddServerDialog from './AddServerDialog.jsx';
+import Icon from './Icon.jsx';
 
 /* ── Confirmation dialog (hd-dialog pattern) ──────────────────────────── */
 
@@ -45,24 +46,24 @@ function ServerActions({ server, onAction, actionLoading, className }) {
     <span className={className} onClick={e => e.stopPropagation()}>
       {isDisabled ? (
         <button className="mkt-card-btn mkt-card-btn--start" onClick={e => act(e, 'enable')} disabled={thisLoading} title="Enable">
-          ✓
+          <Icon name="check" size={16} />
         </button>
       ) : isRunning ? (
         <>
           <button className="mkt-card-btn mkt-card-btn--stop" onClick={e => act(e, 'stop')} disabled={thisLoading} title="Stop">
-            ■
+            <Icon name="stop" size={16} fill />
           </button>
           <button className="mkt-card-btn mkt-card-btn--disable" onClick={e => act(e, 'disable')} disabled={thisLoading} title="Disable">
-            ⊘
+            <Icon name="block" size={16} />
           </button>
         </>
       ) : (
         <>
           <button className="mkt-card-btn mkt-card-btn--start" onClick={e => act(e, 'start')} disabled={thisLoading} title="Start">
-            ▶
+            <Icon name="play_arrow" size={16} fill />
           </button>
           <button className="mkt-card-btn mkt-card-btn--disable" onClick={e => act(e, 'disable')} disabled={thisLoading} title="Disable">
-            ⊘
+            <Icon name="block" size={16} />
           </button>
         </>
       )}
@@ -83,11 +84,7 @@ function ViewToggle({ viewMode, onChange }) {
         aria-label="List view"
         aria-pressed={viewMode === 'list'}
       >
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <line x1="2" y1="4" x2="14" y2="4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-          <line x1="2" y1="8" x2="14" y2="8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-          <line x1="2" y1="12" x2="14" y2="12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-        </svg>
+        <Icon name="view_list" size={18} />
       </button>
       <button
         type="button"
@@ -97,12 +94,7 @@ function ViewToggle({ viewMode, onChange }) {
         aria-label="Tile view"
         aria-pressed={viewMode === 'tile'}
       >
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.5"/>
-          <rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.5"/>
-          <rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.5"/>
-          <rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.5"/>
-        </svg>
+        <Icon name="grid_view" size={18} />
       </button>
     </div>
   );
@@ -126,25 +118,8 @@ const LIST_SORT_COLUMNS = [
   { id: 'port', label: 'Port' },
 ];
 
-function KeyIcon({ size = 14, className }) {
-  return (
-    <svg
-      className={className}
-      width={size}
-      height={size}
-      viewBox="0 0 16 16"
-      fill="none"
-      aria-hidden="true"
-    >
-      <circle cx="5.5" cy="6.5" r="3" stroke="currentColor" strokeWidth="1.5" />
-      <path
-        d="M8 6.5h5.5M11.5 6.5v2M13.5 6.5v2"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
+function KeyIcon({ size = 16, className }) {
+  return <Icon name="key" size={size} className={className} />;
 }
 
 function getStatusRank(server) {
@@ -200,7 +175,7 @@ function ListSortHeader({ column, label, sortBy, sortDir, onSort }) {
     >
       <span className="mkt-list-col-head-label">{label}</span>
       <span className="mkt-sort-indicator" aria-hidden="true">
-        {active ? (sortDir === 'asc' ? '↑' : '↓') : '↕'}
+        <Icon name={active ? (sortDir === 'asc' ? 'arrow_upward' : 'arrow_downward') : 'unfold_more'} size={16} />
       </span>
     </button>
   );
@@ -704,10 +679,7 @@ export default function Marketplace({ servers, loading, onSelectServer, onRefres
         {/* Toolbar: search + sort dropdown + info */}
         <div className="mkt-toolbar">
           <div className="mkt-search-wrap">
-            <svg className="mkt-search-icon" width="14" height="14" viewBox="0 0 16 16" fill="none">
-              <circle cx="7" cy="7" r="5.5" stroke="currentColor" strokeWidth="1.5"/>
-              <line x1="11" y1="11" x2="14.5" y2="14.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-            </svg>
+            <Icon name="search" size={18} className="mkt-search-icon" />
             <input
               type="text"
               value={search}
@@ -783,7 +755,7 @@ export default function Marketplace({ servers, loading, onSelectServer, onRefres
               disabled={refreshing || loading}
               title="Refresh server list"
             >
-              {refreshing ? '…' : '↻'} Refresh
+              {refreshing ? <span className="spinner" style={{ width: 14, height: 14 }} /> : <Icon name="refresh" size={16} />} Refresh
             </button>
           </div>
           <ViewToggle viewMode={viewMode} onChange={setViewMode} />
@@ -869,7 +841,7 @@ export default function Marketplace({ servers, loading, onSelectServer, onRefres
               </>
             ) : (
               <>
-                <div style={{ fontSize: 32, marginBottom: 8 }}>🔍</div>
+                <div style={{ marginBottom: 8, color: 'var(--text-muted)' }}><Icon name="search_off" size={32} /></div>
                 <div>No servers match your filters</div>
               </>
             )}

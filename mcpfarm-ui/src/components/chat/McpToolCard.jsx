@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { decodeToolCallId } from '../../lib/toolBinding.js';
 import { mcpResultToText } from '../../lib/chatOrchestrator.js';
+import Icon from '../Icon.jsx';
 
 /**
  * Tool UI card rendered for every MCP tool call in an assistant message.
@@ -26,7 +27,7 @@ export default function McpToolCard({ toolCallId, toolName, args, result, isErro
         <span className="aui-tool-state">
           {state === 'running' ? 'running…' : state === 'error' ? 'error' : 'done'}
         </span>
-        <span className="aui-tool-caret">{open ? '▾' : '▸'}</span>
+        <span className="aui-tool-caret">{<Icon name={open ? 'expand_more' : 'chevron_right'} size={16} />}</span>
       </button>
       {open && (
         <div className="aui-tool-body">
