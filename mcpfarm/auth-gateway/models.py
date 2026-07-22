@@ -95,6 +95,11 @@ class KeyUpdate(BaseModel):
     expires_at: Optional[datetime] = None
 
 
+class BootstrapAdmin(BaseModel):
+    """One-shot initial admin secret. Omit admin_secret to let the server generate one."""
+    admin_secret: Optional[str] = None
+
+
 class ServerCreate(BaseModel):
     name: str
     image: str = ""

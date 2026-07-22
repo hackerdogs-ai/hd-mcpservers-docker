@@ -183,21 +183,70 @@ export async function listApiKeys() {
   return apiFetch('/admin/keys', { headers: adminHeaders() });
 }
 
-/** Create API key */
-export async function createApiKey(label) {
+/** Create API key — returns plaintext `key` once */
+export async function createApiKey(name, opts = {}) {
   return apiFetch('/admin/keys', {
     method: 'POST',
     headers: adminHeaders(),
-    body: JSON.stringify({ label }),
+    body: JSON.stringify({
+      name,
+      owner: opts.owner ?? null,
+      scopes: opts.scopes ?? '*',
+      rate_limit: opts.rate_limit ?? 100,
+    }),
   });
 }
 
-/** Revoke API key */
+/** Revoke (delete) API key */
 export async function revokeApiKey(id) {
   return apiFetch(`/admin/keys/${id}`, {
     method: 'DELETE',
     headers: adminHeaders(),
   });
+}
+
+/** Public setup status — { admin_configured, api_key?, base_url? } */
+export async function fetchUiConfig() {
+  const res = await fetch('/ui-config');
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+
+/**
+ * One-shot bootstrap when no admin secret is configured yet.
+ * Pass secret or omit to let the server generate one.
+ */
+export async function bootstrapAdminSecret(adminSecret) {
+  const body =
+    adminSecret && adminSecret.trim()
+      ? { admin_secret: adminSecret.trim() }
+      : {};
+  const res = await fetch('/admin/bootstrap', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const detail = data.detail;
+    const msg = Array.isArray(detail)
+      ? detail.map((d) => d.msg || JSON.stringify(d)).join('; ')
+      : (detail || `HTTP ${res.status}`);
+    throw new Error(typeof msg === 'string' ? msg : JSON.stringify(msg));
+  }
+  return data;
+}
+
+/** Verify admin secret against /admin/stats */
+export async function verifyAdminSecret(secret) {
+  const res = await fetch('/admin/stats', {
+    headers: { 'X-Admin-Secret': secret },
+  });
+  if (!res.ok) {
+    const text = await res.text().catch(() => res.statusText);
+    throw new Error(text || `HTTP ${res.status}`);
+  }
+  return res.json();
 }
 
 /** Start a server container */

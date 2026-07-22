@@ -13,7 +13,12 @@ After the farm is deployed, open the UI in your browser:
 | Local / default | `http://localhost:8485` |
 | Behind your own TLS / proxy | `https://<your-hostname>` |
 
-On first load, the UI reads `/ui-config` from the auth gateway and auto-fills your **API key** and **admin secret** when the deploy script created them. You can change these anytime in **Settings** (gear icon, top right).
+On first load:
+
+- If the farm already has an **admin secret** (normal deploy), the dashboard opens the home page and loads credentials from `/ui-config`.
+- If there is **no** admin secret yet, a one-time setup dialog appears. Use **Generate** to create the secret, then **Continue**.
+
+Manage Bearer API keys anytime under **Settings → API key management** (create, refresh, revoke). Rotate the admin secret from Settings as well.
 
 ---
 
@@ -164,8 +169,12 @@ Open **Settings** from the gear icon.
 | Field | Description |
 |-------|-------------|
 | **Base URL** | Farm endpoint (e.g. `http://localhost:8485`) |
-| **API Key** | Your `hd_sk_…` bearer token for MCP and UI API calls |
+| **Active API Key** | Bearer token this browser uses for MCP calls |
 | **Admin Secret** | Password for admin endpoints (server start/stop, key management) |
+
+### API key management
+
+**Settings → API key management** lists farm Bearer keys in a table. **Create key** issues a new token (plaintext shown once). **Refresh** reloads the list. **Revoke** deletes a key immediately.
 
 ### LLM provider keys (server-side vault)
 
@@ -179,7 +188,7 @@ Set **Ollama URL** (default `http://host.docker.internal:11434`) to use local mo
 
 ### Rotate admin secret
 
-**Rotate Secret** generates a new admin password and API key. Save the output immediately — the new credentials are shown only once.
+**Rotate** generates a new admin secret. Save it immediately — it is shown only in the Settings field after rotation.
 
 ---
 
@@ -194,14 +203,13 @@ Created automatically on first deploy. Used in:
 
 ### Creating additional keys
 
-Use the admin API (or ask your operator):
+Use **Settings → API Keys → Create**, or the admin API:
 
 ```bash
 curl -X POST "http://localhost:8485/admin/keys" \
   -H "X-Admin-Secret: $ADMIN_SECRET" \
-  -H "Authorization: Bearer $API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"name": "ci-runner", "scopes": ["naabu-mcp", "nuclei-mcp"]}'
+  -d '{"name": "ci-runner", "scopes": "*"}'
 ```
 
 Keys can be scoped to specific servers and rate-limited. Revoke with `DELETE /admin/keys/{id}`.

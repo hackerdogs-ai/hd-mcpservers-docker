@@ -864,6 +864,8 @@ ADMIN_SECRET=<your-secret> ./deploy.sh up --skip-build
 
 **Option B — Docker Compose only (no scripts):**
 
+`ADMIN_SECRET` is **optional** for an interactive install. If you omit it, open http://localhost:8485 and click **Generate** on first load.
+
 ```bash
 # Clone farm config (compose, Caddyfile, port-map.json) — images still pull from Hub
 git clone <repo-url>
@@ -872,19 +874,20 @@ cd hd-mcpservers-docker/mcpfarm
 # Create external Docker network `hdnet` (auth-gateway attaches here for Redis)
 docker network create hdnet 2>/dev/null || true
 
-# Write ADMIN_SECRET used by X-Admin-Secret /admin calls (port stays 8485 unless FARM_PORT set)
-echo "ADMIN_SECRET=<your-secret>" > .env
+# Optional .env — leave ADMIN_SECRET unset to create it in the UI
+# echo "ADMIN_SECRET=<your-secret>" > .env
+# Host port defaults to 8485 (set FARM_PORT in .env to change)
 
 # Download + start only farm infra: auth-gateway, Caddy (:8485), mcpfarm-ui — not the 400 tools
 docker compose pull auth-gateway caddy mcpfarm-ui
 docker compose up -d auth-gateway caddy mcpfarm-ui
 
-# Load port-map.json into SQLite `servers`; create seed-admin API key on first run (print once)
+# Load port-map.json into SQLite `servers` (and seed-admin API key on first run)
 docker exec mcpfarm-auth python seed.py
 
-# Build Caddy routes from `servers` and hot-reload so /{name}/* proxies to each tool
-curl -s -X POST http://localhost:8485/admin/reload \
-  -H "X-Admin-Secret: <your-secret>"
+# If you set ADMIN_SECRET in .env, reload Caddy routes now:
+# curl -s -X POST http://localhost:8485/admin/reload -H "X-Admin-Secret: $ADMIN_SECRET"
+# If you left it unset: open the UI, Generate the secret — routes reload automatically.
 
 # Optional: pull/start one tool container (naabu-mcp = example; any port-map.json name works)
 docker compose up -d --no-deps naabu-mcp
@@ -956,7 +959,7 @@ Point Cloudflare Tunnel, Caddy, nginx, ALB, etc. at `http://<farm-host>:8485`. F
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `ADMIN_SECRET` | Recommended | Admin API password |
+| `ADMIN_SECRET` | No (interactive) | Optional. If unset, the UI first-run screen Generates it. Set in `.env` for headless/prod. |
 | `FARM_PORT` | No | Host port (default `8485`) |
 | `MCPFARM_SECRETS_KEY` | Production | Fernet key for encrypted LLM provider keys |
 | `REDIS_URL` | No | Redis for vector index |

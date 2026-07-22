@@ -120,6 +120,13 @@ class TestHealth:
     def test_ui_config(self, client):
         r = client.get("/ui-config")
         assert r.status_code == 200
+        body = r.json()
+        assert body["admin_configured"] is True
+        assert body.get("admin_secret") == "test-admin-secret"
+
+    def test_bootstrap_rejected_when_configured(self, client):
+        r = client.post("/admin/bootstrap", json={})
+        assert r.status_code == 409
 
 
 # ─── Auth ───────────────────────────────────────────────────────────────────

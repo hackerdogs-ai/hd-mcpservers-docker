@@ -29,29 +29,26 @@ ADMIN_SECRET=<your-secret> ./deploy.sh up --skip-build
 
 ### Docker Compose only (no scripts)
 
+`ADMIN_SECRET` is optional for interactive installs: omit it, open the UI, and click **Generate**. For headless/prod, set it in `.env`.
+
 ```bash
 # Clone farm config (compose, Caddyfile, port-map.json) — images still pull from Hub
 git clone <repo-url>
 cd hd-mcpservers-docker/mcpfarm
 
-# Create external Docker network `hdnet` (auth-gateway attaches here for Redis)
 docker network create hdnet 2>/dev/null || true
 
-# Write ADMIN_SECRET used by X-Admin-Secret /admin calls (port stays 8485 unless FARM_PORT set)
-echo "ADMIN_SECRET=<your-secret>" > .env
+# Optional: echo "ADMIN_SECRET=<your-secret>" > .env
 
-# Download + start only farm infra: auth-gateway, Caddy (:8485), mcpfarm-ui — not the 400 tools
 docker compose pull auth-gateway caddy mcpfarm-ui
 docker compose up -d auth-gateway caddy mcpfarm-ui
 
-# Load port-map.json into SQLite `servers`; create seed-admin API key on first run (print once)
 docker exec mcpfarm-auth python seed.py
 
-# Build Caddy routes from `servers` and hot-reload so /{name}/* proxies to each tool
-curl -s -X POST http://localhost:8485/admin/reload \
-  -H "X-Admin-Secret: <your-secret>"
+# With ADMIN_SECRET in .env:
+# curl -s -X POST http://localhost:8485/admin/reload -H "X-Admin-Secret: $ADMIN_SECRET"
+# Without: open http://localhost:8485 → Generate (routes reload automatically)
 
-# Optional: pull/start one tool container (naabu-mcp = example; any port-map.json name works)
 docker compose up -d --no-deps naabu-mcp
 ```
 

@@ -18,6 +18,10 @@ import {
   listLlmKeys,
   putLlmKey,
   deleteLlmKey,
+  listApiKeys,
+  createApiKey,
+  revokeApiKey,
+  fetchUiConfig,
 } from '../lib/api.js';
 
 // LLM provider keys are stored server-side (encrypted). These never touch localStorage.
@@ -51,6 +55,20 @@ export default function Settings({ onClose }) {
   const [rotateMsg, setRotateMsg] = useState(null);
   // Masked status of server-side keys, keyed by provider → { key_prefix }.
   const [vaultKeys, setVaultKeys] = useState({});
+  const [farmKeys, setFarmKeys] = useState([]);
+  const [keysLoading, setKeysLoading] = useState(false);
+  const [keysErr, setKeysErr] = useState(null);
+  const [newKeyName, setNewKeyName] = useState('');
+  const [creatingKey, setCreatingKey] = useState(false);
+  const [createdPlaintext, setCreatedPlaintext] = useState(null);
+
+  /** Keep localStorage in sync so adminHeaders() matches the form field. */
+  function syncAdminSecret(secret) {
+    const value = (secret ?? '').trim();
+    setAdminSecret(value);
+    if (value) saveSettings({ adminSecret: value });
+    return value;
+  }
 
   function loadVaultKeys() {
     listLlmKeys()
@@ -62,21 +80,66 @@ export default function Settings({ onClose }) {
       .catch(() => setVaultKeys({}));
   }
 
+  function loadFarmKeys() {
+    setKeysLoading(true);
+    setKeysErr(null);
+    listApiKeys()
+      .then((rows) => setFarmKeys(Array.isArray(rows) ? rows : []))
+      .catch((e) => {
+        setFarmKeys([]);
+        const msg = e.message || String(e);
+        if (/403|invalid admin secret/i.test(msg)) {
+          setKeysErr(
+            'Admin secret mismatch. Reloading credentials from the farm… If this persists, paste the current ADMIN_SECRET below and click Save.',
+          );
+        } else {
+          setKeysErr(msg);
+        }
+      })
+      .finally(() => setKeysLoading(false));
+  }
+
   useEffect(() => {
-    setBaseUrl(getBaseUrl());
-    setApiKey(getApiKey());
-    setAdminSecret(getAdminSecret());
-    setOllamaUrl(getOllamaUrl());
-    setHeygenKey(getHeygenKey());
-    setHeygenAvatarId(getHeygenAvatarId());
-    setBedrockRegion(getBedrockRegion());
-    setBedrockModels(getBedrockModels());
-    setAzureOpenaiEndpoint(getAzureOpenAIEndpoint());
-    setAzureOpenaiModels(getAzureOpenAIModels());
-    setOpenrouterModels(getOpenRouterModels());
-    setGrokModels(getGrokModels());
-    setGeminiModels(getGeminiModels());
-    loadVaultKeys();
+    let cancelled = false;
+    async function init() {
+      setBaseUrl(getBaseUrl());
+      setApiKey(getApiKey());
+      setAdminSecret(getAdminSecret());
+      setOllamaUrl(getOllamaUrl());
+      setHeygenKey(getHeygenKey());
+      setHeygenAvatarId(getHeygenAvatarId());
+      setBedrockRegion(getBedrockRegion());
+      setBedrockModels(getBedrockModels());
+      setAzureOpenaiEndpoint(getAzureOpenAIEndpoint());
+      setAzureOpenaiModels(getAzureOpenAIModels());
+      setOpenrouterModels(getOpenRouterModels());
+      setGrokModels(getGrokModels());
+      setGeminiModels(getGeminiModels());
+
+      // Prefer live credentials from the gateway so a rotated secret is picked up.
+      try {
+        const cfg = await fetchUiConfig();
+        if (cancelled) return;
+        if (cfg.base_url !== undefined) {
+          setBaseUrl(cfg.base_url);
+          saveSettings({ baseUrl: cfg.base_url });
+        }
+        if (cfg.api_key) {
+          setApiKey(cfg.api_key);
+          saveSettings({ apiKey: cfg.api_key });
+        }
+        if (cfg.admin_secret) {
+          syncAdminSecret(cfg.admin_secret);
+        }
+      } catch {
+        /* keep localStorage values */
+      }
+      if (cancelled) return;
+      loadVaultKeys();
+      loadFarmKeys();
+    }
+    init();
+    return () => { cancelled = true; };
   }, []);
 
   async function handleSave() {
@@ -129,14 +192,21 @@ export default function Settings({ onClose }) {
   }
 
   async function handleRotate() {
+    syncAdminSecret(adminSecret);
     setRotating(true);
     setRotateMsg(null);
     try {
       const data = await rotateSecret();
       const newSecret = data.admin_secret;
-      setAdminSecret(newSecret);
-      saveSettings({ adminSecret: newSecret });
-      setRotateMsg({ ok: true, text: 'New secret saved' });
+      syncAdminSecret(newSecret);
+      if (data.api_key) {
+        setApiKey(data.api_key);
+        saveSettings({ apiKey: data.api_key });
+      }
+      setRotateMsg({
+        ok: true,
+        text: 'Rotated — this browser is updated. Copy the new secret; update .env if you keep ADMIN_SECRET there. Other browsers still on the old secret will get 403 until refreshed.',
+      });
     } catch (e) {
       setRotateMsg({ ok: false, text: e.message });
     } finally {
@@ -145,12 +215,55 @@ export default function Settings({ onClose }) {
     }
   }
 
+  async function handleCreateFarmKey() {
+    syncAdminSecret(adminSecret);
+    const name = (newKeyName || 'ui-key').trim();
+    setCreatingKey(true);
+    setKeysErr(null);
+    setCreatedPlaintext(null);
+    try {
+      const data = await createApiKey(name);
+      setCreatedPlaintext(data.key);
+      setNewKeyName('');
+      // Remember for Chat in this browser (not shown as a separate Settings field).
+      if (data.key) {
+        setApiKey(data.key);
+        saveSettings({ apiKey: data.key });
+      }
+      loadFarmKeys();
+      try {
+        await navigator.clipboard.writeText(data.key);
+      } catch { /* ignore */ }
+    } catch (e) {
+      setKeysErr(e.message);
+    } finally {
+      setCreatingKey(false);
+    }
+  }
+
+  async function handleRevokeFarmKey(id, keyPrefix) {
+    if (!window.confirm('Revoke this API key? Clients using it will fail immediately.')) return;
+    syncAdminSecret(adminSecret);
+    setKeysErr(null);
+    try {
+      await revokeApiKey(id);
+      if (createdPlaintext) setCreatedPlaintext(null);
+      if (keyPrefix && apiKey && apiKey.startsWith(keyPrefix)) {
+        setApiKey('');
+        saveSettings({ apiKey: '' });
+      }
+      loadFarmKeys();
+    } catch (e) {
+      setKeysErr(e.message);
+    }
+  }
+
   return (
     <div
       className="hd-modal-overlay"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div className="hd-modal">
+      <div className="hd-modal hd-modal--settings">
         <div className="hd-modal__head">
           <h2 className="hd-modal__title">Settings</h2>
           <button type="button" onClick={onClose} className="hd-modal__close" aria-label="Close">
@@ -166,28 +279,20 @@ export default function Settings({ onClose }) {
             placeholder="https://mcpservers-dev.hackerdogs.ai"
             type="text"
           />
-          <Field
-            label="API Key"
-            hint="Bearer token for MCP server access"
-            value={apiKey}
-            onChange={setApiKey}
-            placeholder="hd-..."
-            type="password"
-          />
           <div>
-            <label className="hd-label">
-              Admin Secret
+            <label className="hd-label" htmlFor="settings-admin-secret">
+              Admin secret
               <span className="hd-label-hint ml-2 text-xs">
-                X-Admin-Secret header for start/stop/reload
+                Farm operator password (X-Admin-Secret) for start/stop, Settings, and key management
               </span>
             </label>
             <div className="flex gap-2">
-              <input
-                type="password"
+              <PrefixedSecretInput
+                id="settings-admin-secret"
                 value={adminSecret}
-                onChange={(e) => setAdminSecret(e.target.value)}
-                placeholder="admin-secret"
-                className="hd-input flex-1 text-sm"
+                onChange={setAdminSecret}
+                placeholder="Paste or generate an admin secret"
+                className="hd-input flex-1 text-sm font-mono"
               />
               <button
                 type="button"
@@ -195,12 +300,156 @@ export default function Settings({ onClose }) {
                 disabled={rotating}
                 className={`hd-btn hd-btn--muted whitespace-nowrap${rotateMsg?.ok ? ' hd-text-ok' : ''}`}
               >
-                {rotating ? '…' : rotateMsg?.ok ? '✓ Rotated' : '↺ Generate'}
+                {rotating ? '…' : rotateMsg?.ok ? '✓ Rotated' : 'Rotate'}
               </button>
             </div>
+            {!adminSecret && (
+              <p className="mt-1 text-xs hd-label-hint">
+                Not set in this browser. If the farm already has one (e.g. from .env), paste it here.
+              </p>
+            )}
             {rotateMsg && !rotateMsg.ok && (
               <p className="mt-1 text-xs hd-text-err">{rotateMsg.text}</p>
             )}
+            {rotateMsg?.ok && (
+              <p className="mt-1 text-xs hd-text-ok">{rotateMsg.text}</p>
+            )}
+          </div>
+
+          <SectionTitle>API keys</SectionTitle>
+          <p className="hd-label-hint text-xs" style={{ marginTop: '-0.25rem' }}>
+            Tokens for MCP clients (Cursor, Claude Desktop, etc.) and for Chat in this browser.
+            Create a key when you need one — the full secret is shown only once. Revoke to invalidate it.
+          </p>
+          <div className="hd-keymgr">
+            <div className="hd-keymgr__toolbar">
+              <input
+                type="text"
+                value={newKeyName}
+                onChange={(e) => setNewKeyName(e.target.value)}
+                placeholder="Name (e.g. cursor-client)"
+                className="hd-input flex-1 text-sm"
+                aria-label="New API key name"
+              />
+              <button
+                type="button"
+                className="hd-btn hd-btn--primary whitespace-nowrap"
+                disabled={creatingKey}
+                onClick={handleCreateFarmKey}
+              >
+                {creatingKey ? 'Creating…' : 'Create key'}
+              </button>
+              <button
+                type="button"
+                className="hd-btn hd-btn--muted whitespace-nowrap"
+                disabled={keysLoading}
+                onClick={() => {
+                  syncAdminSecret(adminSecret);
+                  loadFarmKeys();
+                }}
+                title="Refresh list"
+              >
+                {keysLoading ? 'Refreshing…' : 'Refresh'}
+              </button>
+            </div>
+
+            {createdPlaintext && (
+              <div className="hd-keymgr__oneshot" role="status">
+                <button
+                  type="button"
+                  className="hd-keymgr__oneshot-dismiss"
+                  aria-label="Dismiss"
+                  title="Dismiss"
+                  onClick={() => setCreatedPlaintext(null)}
+                >
+                  ×
+                </button>
+                <div className="hd-keymgr__oneshot-label">
+                  Copy this key now — it will not be shown again in full.
+                  Chat in this browser will use it automatically.
+                </div>
+                <div className="hd-keymgr__oneshot-row">
+                  <code className="hd-keymgr__oneshot-value">{createdPlaintext}</code>
+                  <button
+                    type="button"
+                    className="hd-keymgr__icon-btn"
+                    aria-label="Copy to clipboard"
+                    title="Copy to clipboard"
+                    onClick={() => {
+                      navigator.clipboard?.writeText(createdPlaintext).catch(() => {});
+                    }}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {keysErr && <p className="text-xs hd-text-err">{keysErr}</p>}
+
+            <div className="hd-keymgr__table-wrap">
+              <table className="hd-keymgr__table">
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Prefix</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Created</th>
+                    <th scope="col" className="hd-keymgr__col-actions">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {keysLoading && farmKeys.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="hd-keymgr__empty">Loading…</td>
+                    </tr>
+                  ) : farmKeys.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="hd-keymgr__empty">No API keys yet. Create one when you need Chat or an MCP client.</td>
+                    </tr>
+                  ) : (
+                    farmKeys.map((k) => {
+                      const usedHere = Boolean(
+                        apiKey && k.key_prefix && apiKey.startsWith(k.key_prefix),
+                      );
+                      return (
+                      <tr key={k.id}>
+                        <td>
+                          {k.name}
+                          {usedHere && (
+                            <span className="hd-keymgr__badge hd-keymgr__badge--ok" style={{ marginLeft: 8 }}>
+                              This browser
+                            </span>
+                          )}
+                        </td>
+                        <td className="font-mono text-xs">{k.key_prefix}…</td>
+                        <td>
+                          <span className={k.is_active ? 'hd-keymgr__badge hd-keymgr__badge--ok' : 'hd-keymgr__badge hd-keymgr__badge--off'}>
+                            {k.is_active ? 'Active' : 'Inactive'}
+                          </span>
+                        </td>
+                        <td className="text-xs hd-label-hint">
+                          {k.created_at ? String(k.created_at).slice(0, 10) : '—'}
+                        </td>
+                        <td className="hd-keymgr__col-actions">
+                          <button
+                            type="button"
+                            className="hd-btn hd-btn--ghost hd-keymgr__revoke"
+                            onClick={() => handleRevokeFarmKey(k.id, k.key_prefix)}
+                          >
+                            Revoke
+                          </button>
+                        </td>
+                      </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
 
           <SectionTitle>Chat LLM Providers</SectionTitle>
@@ -211,7 +460,7 @@ export default function Settings({ onClose }) {
           <KeyField
             provider="claude"
             label="Claude API Key"
-            hint="Prompt mode, Nova, and Chat (Claude provider)"
+            hint="Nova and Chat (Claude provider)"
             value={claudeKey}
             onChange={setClaudeKey}
             placeholder="sk-ant-..."
@@ -427,6 +676,48 @@ function KeyField({ provider, label, hint, value, onChange, placeholder, vaultKe
   );
 }
 
+function maskWithVisiblePrefix(value, visible = 8) {
+  const s = String(value || '');
+  if (!s) return '';
+  const prefix = s.slice(0, Math.min(visible, s.length));
+  const maskedLen = Math.max(s.length - prefix.length, 0);
+  return prefix + '•'.repeat(maskedLen);
+}
+
+/**
+ * Standard secret field: prefix stays readable in the box; remainder is bullets.
+ * Focus shows the full value for paste/edit.
+ */
+function PrefixedSecretInput({
+  id,
+  value,
+  onChange,
+  placeholder,
+  className,
+  visiblePrefix = 8,
+}) {
+  const [focused, setFocused] = useState(false);
+  const display = focused || !value
+    ? value
+    : maskWithVisiblePrefix(value, visiblePrefix);
+
+  return (
+    <input
+      id={id}
+      type="text"
+      value={display}
+      onChange={(e) => onChange(e.target.value)}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+      placeholder={placeholder}
+      className={className}
+      autoComplete="off"
+      spellCheck={false}
+      aria-label="Admin secret"
+    />
+  );
+}
+
 function Field({ label, hint, value, onChange, placeholder, type = 'text' }) {
   return (
     <div>
@@ -440,6 +731,8 @@ function Field({ label, hint, value, onChange, placeholder, type = 'text' }) {
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         className="hd-input text-sm"
+        autoComplete="off"
+        spellCheck={false}
       />
     </div>
   );

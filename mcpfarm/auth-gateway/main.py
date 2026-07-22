@@ -27,6 +27,7 @@ import vector_index
 import vector_indexer
 from models import (
     ApiKey,
+    BootstrapAdmin,
     KeyCreate,
     KeyResponse,
     KeyUpdate,
@@ -58,7 +59,25 @@ def _load_admin_secret() -> str:
                 return s
     except FileNotFoundError:
         pass
-    return os.environ.get("ADMIN_SECRET", "")
+    return os.environ.get("ADMIN_SECRET", "").strip()
+
+
+def _admin_configured() -> bool:
+    return bool(ADMIN_SECRET)
+
+
+def _persist_admin_secret(secret: str) -> None:
+    """Write admin secret to the data volume and update the in-memory value."""
+    global ADMIN_SECRET
+    os.makedirs(os.path.dirname(_SECRET_FILE) or "/data", exist_ok=True)
+    with open(_SECRET_FILE, "w") as f:
+        f.write(secret)
+    try:
+        os.chmod(_SECRET_FILE, 0o600)
+    except OSError:
+        pass
+    ADMIN_SECRET = secret
+
 
 ADMIN_SECRET = _load_admin_secret()
 
@@ -387,18 +406,46 @@ async def require_api_key(request: Request) -> None:
 @app.post("/admin/rotate-secret", dependencies=[Depends(require_admin)])
 async def rotate_admin_secret():
     """Generate a new admin secret, persist it, and return it."""
-    global ADMIN_SECRET
     new_secret = secrets.token_hex(32)
-    with open(_SECRET_FILE, "w") as f:
-        f.write(new_secret)
-    ADMIN_SECRET = new_secret
-    # Also update ui-api-key file so /ui-config stays consistent
+    _persist_admin_secret(new_secret)
     try:
         with open("/data/ui-api-key") as f:
             api_key = f.read().strip()
     except FileNotFoundError:
         api_key = None
     return {"admin_secret": new_secret, "api_key": api_key}
+
+
+@app.post("/admin/bootstrap")
+async def bootstrap_admin_secret(payload: BootstrapAdmin = BootstrapAdmin()):
+    """
+    One-shot: set the initial admin secret when none is configured yet.
+
+    Rejects with 409 if an admin secret already exists (env or /data/admin-secret).
+    If payload.admin_secret is omitted, generates secrets.token_hex(32).
+    Returns the plaintext secret once.
+    """
+    if _admin_configured():
+        raise HTTPException(
+            status_code=409,
+            detail="Admin secret already configured — use Settings to rotate",
+        )
+    secret = (payload.admin_secret or "").strip()
+    if secret:
+        if len(secret) < 16:
+            raise HTTPException(
+                status_code=400,
+                detail="admin_secret must be at least 16 characters",
+            )
+    else:
+        secret = secrets.token_hex(32)
+    _persist_admin_secret(secret)
+    logger.info("Admin secret bootstrapped via /admin/bootstrap")
+    try:
+        await _reload_caddy_from_db()
+    except Exception as exc:
+        logger.warning("Caddy reload after bootstrap failed: %s", exc)
+    return {"admin_secret": secret, "admin_configured": True}
 
 
 # ---------------------------------------------------------------------------
@@ -412,14 +459,24 @@ async def health():
 
 @app.get("/ui-config")
 async def ui_config():
-    """Returns UI bootstrap config — API key + admin secret, no auth required."""
+    """
+    UI bootstrap config for the dashboard.
+    When an admin secret is already configured, return it so the UI can open
+    the home page without a setup gate. When unset, admin_secret is empty and
+    the UI shows the first-run bootstrap wizard.
+    """
     api_key = None
     try:
         with open("/data/ui-api-key") as f:
-            api_key = f.read().strip()
+            api_key = f.read().strip() or None
     except FileNotFoundError:
         pass
-    return {"base_url": "", "api_key": api_key, "admin_secret": ADMIN_SECRET}
+    return {
+        "base_url": "",
+        "api_key": api_key,
+        "admin_secret": ADMIN_SECRET if _admin_configured() else "",
+        "admin_configured": _admin_configured(),
+    }
 
 
 @app.get("/services")
@@ -548,6 +605,15 @@ async def create_key(payload: KeyCreate):
             ),
         )
         await db.commit()
+
+    # First key after a wipe becomes the UI bootstrap key for /ui-config.
+    if not os.path.exists("/data/ui-api-key"):
+        try:
+            os.makedirs("/data", exist_ok=True)
+            with open("/data/ui-api-key", "w") as kf:
+                kf.write(raw)
+        except OSError as exc:
+            logger.warning("Could not write /data/ui-api-key: %s", exc)
 
     return {
         "id": key_id,

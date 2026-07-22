@@ -34,9 +34,17 @@
   --semantic-error: #ef4444;
   --semantic-warning: #f59e0b;
   --semantic-info: #58a6ff;
-  --font-size-body: 0.875rem;
-  --font-size-code: 0.875rem;
-  --font-size-caption: 0.8125rem;
+  /* Type scale (rem @ 16px root). Dense dashboard body is 14px; avoid <12px. */
+  --font-size-xs: 0.75rem;      /* 12px — captions, hints, table meta */
+  --font-size-sm: 0.875rem;     /* 14px — body / controls (dashboard default) */
+  --font-size-md: 1rem;         /* 16px — comfortable reading / modal titles alt */
+  --font-size-lg: 1.125rem;     /* 18px — section / modal titles */
+  --font-size-xl: 1.25rem;      /* 20px — page titles */
+  --font-size-body: var(--font-size-sm);
+  --font-size-code: var(--font-size-sm);
+  --font-size-caption: var(--font-size-xs);
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
   --code-bg: #1a1a1a;
   --code-text: #e8e8e8;
   --code-key: #79c0ff;
@@ -97,6 +105,7 @@
 
 html {
   color-scheme: dark;
+  font-size: 100%; /* keep rem = browser root (typically 16px) */
 }
 
 html[data-theme="light"] {
@@ -107,11 +116,14 @@ html, body, #root {
   height: 100%;
   margin: 0;
   padding: 0;
+}
+
+body, #root {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
   font-size: var(--font-size-body);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
@@ -2121,13 +2133,14 @@ input[type="checkbox"] {
 .hd-select,
 .hd-textarea {
   width: 100%;
-  padding: 6px 10px;
+  padding: 0.5rem 0.75rem;
   border: 1px solid var(--border);
   border-radius: 5px;
   background: var(--input-bg);
   color: var(--text);
   font-family: inherit;
-  font-size: inherit;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
   outline: none;
   transition: border-color 0.15s, box-shadow 0.15s;
   box-sizing: border-box;
@@ -2142,7 +2155,7 @@ input[type="checkbox"] {
 
 .hd-label {
   display: block;
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   font-weight: 500;
   color: var(--text-secondary);
   margin-bottom: 4px;
@@ -2150,6 +2163,7 @@ input[type="checkbox"] {
 
 .hd-label-hint {
   font-weight: 400;
+  font-size: var(--font-size-xs);
   color: var(--text-dim);
 }
 
@@ -2158,11 +2172,12 @@ input[type="checkbox"] {
   align-items: center;
   justify-content: center;
   gap: 0.35em;
-  padding: 0.35rem 0.75rem;
+  padding: 0.45rem 0.85rem;
   border-radius: var(--hd-btn-radius);
-  font-size: 0.75rem;
+  font-size: var(--font-size-sm);
   font-weight: 600;
   font-family: inherit;
+  line-height: var(--line-height-tight);
   cursor: pointer;
   border: 1px solid transparent;
   transition: background 0.15s, border-color 0.15s, opacity 0.15s;
@@ -2415,6 +2430,15 @@ input[type="checkbox"] {
   box-shadow: 0 24px 64px var(--shadow-color);
 }
 
+/* Settings / forms with tables need more horizontal room */
+.hd-modal--settings {
+  max-width: min(48rem, calc(100vw - 2rem)); /* ~768px */
+}
+
+.hd-modal--settings .hd-modal__body {
+  padding: 1.25rem 1.75rem;
+}
+
 .hd-modal__head {
   display: flex;
   align-items: center;
@@ -2424,8 +2448,9 @@ input[type="checkbox"] {
 }
 
 .hd-modal__title {
-  font-size: 1.125rem;
+  font-size: var(--font-size-lg);
   font-weight: 600;
+  line-height: var(--line-height-tight);
   color: var(--text);
 }
 
@@ -2450,13 +2475,169 @@ input[type="checkbox"] {
 }
 
 .hd-settings-section-title {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--text-dim);
   padding-top: 0.5rem;
   margin-bottom: -0.25rem;
+}
+
+.hd-keymgr {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.hd-keymgr__toolbar {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.hd-keymgr__oneshot {
+  position: relative;
+  padding: 0.75rem 2rem 0.75rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--accent, #3d8) 8%, transparent);
+}
+
+.hd-keymgr__oneshot-dismiss {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.4rem;
+  border: none;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.15rem 0.35rem;
+  border-radius: 4px;
+}
+
+.hd-keymgr__oneshot-dismiss:hover {
+  color: var(--text);
+  background: color-mix(in srgb, var(--text-dim) 12%, transparent);
+}
+
+.hd-keymgr__oneshot-label {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  color: var(--text-dim);
+  padding-right: 0.5rem;
+}
+
+.hd-keymgr__oneshot-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.35rem;
+}
+
+.hd-keymgr__oneshot-value {
+  display: block;
+  flex: 1;
+  min-width: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: var(--font-size-xs);
+  word-break: break-all;
+}
+
+.hd-keymgr__icon-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+
+.hd-keymgr__icon-btn:hover {
+  color: var(--text);
+  background: color-mix(in srgb, var(--text-dim) 10%, transparent);
+}
+
+.hd-keymgr__oneshot-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.hd-keymgr__table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.hd-keymgr__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+}
+
+.hd-keymgr__table th,
+.hd-keymgr__table td {
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.hd-keymgr__table th {
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+  font-weight: 600;
+  background: color-mix(in srgb, var(--text-dim) 6%, transparent);
+}
+
+.hd-keymgr__table tr:last-child td {
+  border-bottom: none;
+}
+
+.hd-keymgr__empty {
+  text-align: center;
+  color: var(--text-dim);
+  padding: 1rem !important;
+}
+
+.hd-keymgr__col-actions {
+  text-align: right !important;
+  white-space: nowrap;
+}
+
+.hd-keymgr__badge {
+  display: inline-block;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+}
+
+.hd-keymgr__badge--ok {
+  background: color-mix(in srgb, #3d8 20%, transparent);
+  color: #3d8;
+}
+
+.hd-keymgr__badge--off {
+  background: color-mix(in srgb, #c44 20%, transparent);
+  color: #c44;
+}
+
+.hd-keymgr__revoke:hover {
+  color: #c44;
 }
 
 .hd-modal__foot {

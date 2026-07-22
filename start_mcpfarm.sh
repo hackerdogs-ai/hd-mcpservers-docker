@@ -50,7 +50,8 @@ Options:
 Environment:
   FARM_PORT=8485       Caddy / API port (default: 8485)
   UI_DEV_PORT=5173     Vite dev server port (default: 5173)
-  ADMIN_SECRET=...     Admin API secret (auto-generated in mcpfarm/.env on first run)
+  ADMIN_SECRET=        Optional. Leave empty to create via UI Generate on first open.
+                       Set only if you need headless /admin curl without the UI.
 
 Examples:
   $(basename "$0")                          # start without rebuilding (default)
@@ -134,6 +135,10 @@ start_vite_foreground() {
 }
 
 reload_routes() {
+  if [[ -z "${ADMIN_SECRET:-}" ]]; then
+    warn "ADMIN_SECRET unset — skip route reload (Generate it in the UI, then reload from Settings or: curl -X POST ${FARM_HTTP}/admin/reload -H \"X-Admin-Secret: …\")"
+    return 0
+  fi
   info "Reloading Caddy routes (UI → ${UI_UPSTREAM})..."
   local reload
   reload=$(curl -s -X POST "${FARM_HTTP}/admin/reload" \
@@ -209,19 +214,22 @@ mkdir -p "$MCPFARM_DIR/build-logs" "$RUN_DIR"
 # ---------------------------------------------------------------------------
 ENV_FILE="$MCPFARM_DIR/.env"
 if [[ ! -f "$ENV_FILE" ]]; then
-  ADMIN_SECRET="$(python3 -c "import secrets; print(secrets.token_hex(32))")"
   cat > "$ENV_FILE" <<EOF
-ADMIN_SECRET=${ADMIN_SECRET}
+# Leave ADMIN_SECRET empty for interactive setup — open the UI and click Generate.
+# Set it only for headless/scripts that call /admin/* without the UI.
+ADMIN_SECRET=
 FARM_PORT=${FARM_PORT}
 EOF
-  warn "Created $ENV_FILE with a new ADMIN_SECRET"
+  warn "Created $ENV_FILE (ADMIN_SECRET empty — create it in the UI on first open)"
 fi
 
 # shellcheck disable=SC1090
+set -a
 source "$ENV_FILE"
+set +a
 FARM_PORT="${FARM_PORT:-8485}"
 FARM_HTTP="http://localhost:${FARM_PORT}"
-ADMIN_SECRET="${ADMIN_SECRET:?ADMIN_SECRET missing from .env}"
+ADMIN_SECRET="${ADMIN_SECRET:-}"
 
 if [[ "$DOCKER_UI" == "false" ]]; then
   stop_vite
@@ -326,7 +334,11 @@ echo "============================================================"
 echo "  MCP Farm is running locally"
 echo ""
 echo "  API / backend:  ${FARM_HTTP}"
-echo "  Admin secret:   ${ADMIN_SECRET}"
+if [[ -n "${ADMIN_SECRET}" ]]; then
+  echo "  Admin secret:   ${ADMIN_SECRET}"
+else
+  echo "  Admin secret:   (not in .env — open ${FARM_HTTP}/ and click Generate)"
+fi
 echo ""
 if [[ "$DOCKER_UI" == "true" ]]; then
   echo "  UI:             ${FARM_HTTP}/"

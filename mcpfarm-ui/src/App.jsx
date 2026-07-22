@@ -1,19 +1,25 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { listServices, getAdminStats } from './lib/api.js';
+import {
+  listServices,
+  getAdminStats,
+  getAdminSecret,
+  fetchUiConfig,
+  saveSettings,
+  verifyAdminSecret,
+} from './lib/api.js';
 import { isServerRunning } from './lib/categories.js';
 import Marketplace from './components/Marketplace.jsx';
 import ServerDetail from './components/ServerDetail.jsx';
 import ServerList from './components/ServerList.jsx';
-import PromptMode from './components/PromptMode.jsx';
 import AgentChat from './components/AgentChat.jsx';
 import ChatMode from './components/ChatMode.jsx';
 import Settings from './components/Settings.jsx';
 import ThemeToggle from './components/ThemeToggle.jsx';
+import OnboardingWizard from './components/OnboardingWizard.jsx';
 
 const MODES = [
   { id: 'manual', label: 'Catalog' },
   { id: 'chat', label: 'Chat' },
-  { id: 'prompt', label: 'Prompt' },
   { id: 'agent', label: '✦ Nova' },
 ];
 
@@ -25,6 +31,8 @@ export default function App() {
   const [stats, setStats] = useState(null);
   const [showSettings, setShowSettings] = useState(false);
   const [selectedServer, setSelectedServer] = useState(null);
+  const [setupReady, setSetupReady] = useState(false);
+  const [setupChecking, setSetupChecking] = useState(true);
 
   const loadServers = useCallback(async () => {
     setServersLoading(true);
@@ -57,18 +65,51 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    fetch('/ui-config')
-      .then((r) => r.json())
-      .then((cfg) => {
-        if (cfg.api_key) localStorage.setItem('hd_api_key', cfg.api_key);
-        if (cfg.base_url !== undefined) localStorage.setItem('hd_base_url', cfg.base_url);
-        if (cfg.admin_secret) localStorage.setItem('hd_admin_secret', cfg.admin_secret);
-        loadServers();
-      })
-      .catch(() => {});
+    let cancelled = false;
+    async function checkSetup() {
+      setSetupChecking(true);
+      try {
+        const cfg = await fetchUiConfig();
+        if (cfg.base_url !== undefined) saveSettings({ baseUrl: cfg.base_url });
+        if (cfg.api_key) saveSettings({ apiKey: cfg.api_key });
+        if (cfg.admin_secret) saveSettings({ adminSecret: cfg.admin_secret });
+
+        // Block only until an admin secret exists. API keys are configured later
+        // in Settings — not part of first-run.
+        if (cfg.admin_configured) {
+          if (!cancelled) {
+            setSetupReady(true);
+            localStorage.setItem('hd_setup_complete', '1');
+          }
+          return;
+        }
+
+        const secret = getAdminSecret();
+        if (secret) {
+          try {
+            await verifyAdminSecret(secret);
+            if (!cancelled) {
+              setSetupReady(true);
+              localStorage.setItem('hd_setup_complete', '1');
+            }
+            return;
+          } catch {
+            /* show wizard */
+          }
+        }
+        if (!cancelled) setSetupReady(false);
+      } catch {
+        if (!cancelled) setSetupReady(!!getAdminSecret());
+      } finally {
+        if (!cancelled) setSetupChecking(false);
+      }
+    }
+    checkSetup();
+    return () => { cancelled = true; };
   }, []);
 
   useEffect(() => {
+    if (!setupReady) return undefined;
     loadServers();
     loadStats();
     const interval = setInterval(() => {
@@ -76,7 +117,11 @@ export default function App() {
       loadStats();
     }, 30000);
     return () => clearInterval(interval);
-  }, [loadServers, loadStats]);
+  }, [setupReady, loadServers, loadStats]);
+
+  function handleSetupComplete() {
+    setSetupReady(true);
+  }
 
   function handleSelectServer(name) {
     setSelectedServer(name);
@@ -88,6 +133,18 @@ export default function App() {
   }
 
   const runningCount = servers.filter((s) => isServerRunning(s)).length;
+
+  if (setupChecking) {
+    return (
+      <div className="app-shell flex flex-col h-screen overflow-hidden items-center justify-center">
+        <p className="hd-label-hint">Checking farm credentials…</p>
+      </div>
+    );
+  }
+
+  if (!setupReady) {
+    return <OnboardingWizard onComplete={handleSetupComplete} />;
+  }
 
   return (
     <div className="app-shell flex flex-col h-screen overflow-hidden">
@@ -152,7 +209,6 @@ export default function App() {
 
       {/* Main layout */}
       <div className="flex flex-1 overflow-hidden">
-        {/* ServerList sidebar — only for prompt mode */}
         {mode === 'prompt' && (
           <div className="w-56 flex-shrink-0 flex flex-col overflow-hidden">
             <ServerList
@@ -165,7 +221,6 @@ export default function App() {
           </div>
         )}
 
-        {/* Main panel */}
         <main className="flex flex-1 overflow-hidden">
           {mode === 'manual' && !selectedServer && (
             <Marketplace
@@ -185,9 +240,6 @@ export default function App() {
           )}
           {mode === 'chat' && (
             <ChatMode servers={servers} />
-          )}
-          {mode === 'prompt' && (
-            <PromptMode servers={servers} />
           )}
           {mode === 'agent' && (
             <AgentChat servers={servers} />
