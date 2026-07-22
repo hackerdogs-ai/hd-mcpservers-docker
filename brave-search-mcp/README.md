@@ -104,6 +104,8 @@ First, start the server using Docker Compose or `docker run` with HTTP mode (see
 }
 ```
 
+> **Where does `BRAVE_API_KEY` go in HTTP mode?** It is **not** part of the client config above and is **not** sent on each HTTP call. In HTTP (streamable-http) mode the key is supplied to the *server* once, at startup, as a container environment variable (`-e BRAVE_API_KEY=...`, the `environment:` block in Docker Compose, or the API-key field in the Hackerdogs farm UI). The server holds the key and attaches it to every upstream Brave Search API request on your behalf, so MCP clients only need the `url`. If you change the key, restart/recreate the container for it to take effect.
+
 > **When to use HTTP mode:** HTTP mode is ideal for shared/remote deployments, multi-user setups, and [Hackerdogs](https://hackerdogs.ai) scheduled prompts. The server runs as a long-lived process and accepts connections from multiple MCP clients concurrently.
 
 
@@ -125,6 +127,8 @@ When running through the [Hackerdogs MCP Farm](https://hackerdogs.ai), servers a
 ```
 
 > **Farm access:** The MCP Farm gateway handles authentication, rate limiting, and routing. Replace `localhost:8485` with your farm's host address and use your API key from the farm admin panel. See [Hackerdogs](https://hackerdogs.ai) for details.
+
+> **Two different keys — don't confuse them:** The `Authorization: Bearer <your-api-key>` header is your **MCP Farm gateway key** (it authenticates you to the farm). The **`BRAVE_API_KEY`** is separate — it is configured on the server (farm UI config field / container env) and is never placed in the client config. Clients authenticate to the gateway; the gateway/server holds the Brave key.
 
 ## Environment Variables
 

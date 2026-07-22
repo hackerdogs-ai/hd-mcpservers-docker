@@ -769,14 +769,15 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
         )}
 
         {activeTab === 'config' && (
-          <div className="sd-section">
-            <h3 className="sd-section-title">Environment Variables</h3>
-            {envKeys.length === 0 ? (
-              <p className="hd-text-dim">This server has no configurable environment variables.</p>
-            ) : (
-              <EnvEditor serverName={serverName} envObj={envObj} onSaved={() => onRefresh?.()} />
-            )}
-          </div>
+          <ConfigTab
+            serverName={serverName}
+            server={server}
+            envObj={envObj}
+            baseUrl={baseUrl}
+            farmKey={getApiKey()}
+            onLog={log}
+            onSaved={() => onRefresh?.()}
+          />
         )}
 
         {activeTab === 'connect' && (
@@ -828,12 +829,124 @@ export default function ServerDetail({ serverName, servers, onBack, onRefresh })
   );
 }
 
-function EnvEditor({ serverName, envObj, onSaved }) {
+// Env vars that are managed by the farm/runtime, not user-supplied secrets.
+const RUNTIME_ENV_KEYS = new Set(['MCP_TRANSPORT', 'MCP_PORT']);
+
+/**
+ * Build the set of MCP client configurations for a server, injecting the actual
+ * env values the user has entered. Keys with empty values fall back to an
+ * obvious `<your-KEY>` placeholder so the emitted config is still valid & usable.
+ */
+function buildMcpConfigs({ serverName, server, values, baseUrl, farmKey }) {
+  const secretKeys = Object.keys(values).filter(k => !RUNTIME_ENV_KEYS.has(k));
+  const gatewayBase = (baseUrl || window.location.origin).replace(/\/$/, '');
+
+  const envBlock = {};
+  let hasMissing = false;
+  secretKeys.forEach(k => {
+    const v = values[k];
+    if (v && String(v).length) {
+      envBlock[k] = String(v);
+    } else {
+      envBlock[k] = `<your-${k.toLowerCase()}>`;
+      hasMissing = true;
+    }
+  });
+
+  // Farm gateway (recommended) — authenticated via farm key; secret keys live server-side.
+  const farm = {
+    mcpServers: {
+      [serverName]: {
+        url: `${gatewayBase}/${serverName}/mcp`,
+        headers: {
+          Authorization: `Bearer ${farmKey && farmKey.length ? farmKey : '<your-farm-api-key>'}`,
+        },
+      },
+    },
+  };
+
+  // Local stdio via Docker — secret keys are passed straight into the container.
+  const dockerArgs = ['run', '-i', '--rm', '-e', 'MCP_TRANSPORT'];
+  secretKeys.forEach(k => { dockerArgs.push('-e', k); });
+  dockerArgs.push(server?.image || `hackerdogs/${serverName}:latest`);
+  const local = {
+    mcpServers: {
+      [serverName]: {
+        command: 'docker',
+        args: dockerArgs,
+        env: { MCP_TRANSPORT: 'stdio', ...envBlock },
+      },
+    },
+  };
+
+  // Direct HTTP to the container port (no gateway auth) — secret keys stay server-side.
+  const direct = {
+    mcpServers: {
+      [serverName]: {
+        url: `http://localhost:${server?.port || 'PORT'}/mcp`,
+      },
+    },
+  };
+
+  return {
+    hasMissing,
+    secretKeys,
+    blocks: [
+      {
+        id: 'farm',
+        label: 'Farm Gateway (recommended)',
+        note: 'Authenticated MCP Farm endpoint. The Authorization bearer is your farm API key. Server-side secrets are not included here — they are held by the server.',
+        json: JSON.stringify(farm, null, 2),
+      },
+      {
+        id: 'local',
+        label: 'Local (Docker / stdio)',
+        note: secretKeys.length
+          ? 'Runs the container locally over stdio. Includes the API key values you entered above.'
+          : 'Runs the container locally over stdio. This server needs no API keys.',
+        json: JSON.stringify(local, null, 2),
+      },
+      {
+        id: 'direct',
+        label: 'Direct HTTP (no gateway)',
+        note: 'Connects straight to the running container port. Secrets are configured on the server, not in this config.',
+        json: JSON.stringify(direct, null, 2),
+      },
+    ],
+  };
+}
+
+function ConfigBlock({ block, onCopy }) {
+  const [copied, setCopied] = useState(false);
+  return (
+    <div className="sd-code-block" style={{ marginBottom: 16 }}>
+      <div className="sd-code-head">
+        <span>{block.label}</span>
+        <button
+          className="sd-btn sd-btn--sm"
+          onClick={() => {
+            navigator.clipboard.writeText(block.json);
+            setCopied(true);
+            onCopy?.(block.label);
+            setTimeout(() => setCopied(false), 1500);
+          }}
+        >
+          {copied ? 'Copied' : 'Copy'}
+        </button>
+      </div>
+      {block.note && <p className="hd-text-muted" style={{ margin: '8px 12px 0' }}>{block.note}</p>}
+      <pre className="sd-code-body">{block.json}</pre>
+    </div>
+  );
+}
+
+function ConfigTab({ serverName, server, envObj, baseUrl, farmKey, onLog, onSaved }) {
   const keys = Object.keys(envObj);
   const [values, setValues] = useState({ ...envObj });
   const [saving, setSaving] = useState(false);
   const [showValues, setShowValues] = useState({});
   const [status, setStatus] = useState(null);
+  const [generated, setGenerated] = useState(null);
 
   async function handleSave(restart = false) {
     setSaving(true);
@@ -854,42 +967,82 @@ function EnvEditor({ serverName, envObj, onSaved }) {
     }
   }
 
+  function handleGenerate() {
+    // Generate from the live values the user has entered, not just the saved env.
+    setGenerated(buildMcpConfigs({ serverName, server, values, baseUrl, farmKey }));
+    onLog?.('Generated MCP server configurations', 'success');
+  }
+
   return (
-    <div className="space-y-3">
-      {keys.map(key => (
-        <div key={key} className="sd-form-field">
-          <label className="sd-form-label">{key}</label>
-          <div className="flex gap-2">
-            <input
-              type={showValues[key] ? 'text' : 'password'}
-              value={values[key] || ''}
-              onChange={e => setValues(p => ({ ...p, [key]: e.target.value }))}
-              placeholder={`Enter ${key}`}
-              className="sd-form-input"
-              style={{ flex: 1 }}
-            />
-            <button
-              type="button"
-              onClick={() => setShowValues(p => ({ ...p, [key]: !p[key] }))}
-              className="sd-btn sd-btn--sm"
-            >
-              {showValues[key] ? 'Hide' : 'Show'}
+    <div className="sd-section">
+      <h3 className="sd-section-title">Environment Variables</h3>
+      {keys.length === 0 ? (
+        <p className="hd-text-dim">This server has no configurable environment variables.</p>
+      ) : (
+        <div className="space-y-3">
+          {keys.map(key => (
+            <div key={key} className="sd-form-field">
+              <label className="sd-form-label">{key}</label>
+              <div className="flex gap-2">
+                <input
+                  type={showValues[key] ? 'text' : 'password'}
+                  value={values[key] || ''}
+                  onChange={e => setValues(p => ({ ...p, [key]: e.target.value }))}
+                  placeholder={`Enter ${key}`}
+                  className="sd-form-input"
+                  style={{ flex: 1 }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowValues(p => ({ ...p, [key]: !p[key] }))}
+                  className="sd-btn sd-btn--sm"
+                >
+                  {showValues[key] ? 'Hide' : 'Show'}
+                </button>
+              </div>
+            </div>
+          ))}
+          {status && (
+            <p className={status.type === 'error' ? 'sd-config-status sd-config-status--error' : 'sd-config-status sd-config-status--ok'}>
+              {status.text}
+            </p>
+          )}
+          <div className="flex gap-2 mt-4">
+            <button onClick={() => handleSave(false)} disabled={saving} className="sd-btn sd-btn--primary">
+              {saving ? 'Saving...' : 'Save'}
+            </button>
+            <button onClick={() => handleSave(true)} disabled={saving} className="sd-btn sd-btn--test">
+              Save & Restart
             </button>
           </div>
         </div>
-      ))}
-      {status && (
-        <p className={status.type === 'error' ? 'sd-config-status sd-config-status--error' : 'sd-config-status sd-config-status--ok'}>
-          {status.text}
-        </p>
       )}
-      <div className="flex gap-2 mt-4">
-        <button onClick={() => handleSave(false)} disabled={saving} className="sd-btn sd-btn--primary">
-          {saving ? 'Saving...' : 'Save'}
-        </button>
-        <button onClick={() => handleSave(true)} disabled={saving} className="sd-btn sd-btn--test">
-          Save & Restart
-        </button>
+
+      <div className="sd-config-generate" style={{ marginTop: 28 }}>
+        <div className="sd-terminal-head" style={{ marginBottom: 8 }}>
+          <h3 className="sd-section-title" style={{ marginBottom: 0 }}>MCP Server Configurations</h3>
+          <button onClick={handleGenerate} className="sd-btn sd-btn--primary">
+            {generated ? '↻ Regenerate' : 'Generate MCP Configurations'}
+          </button>
+        </div>
+        <p className="hd-text-dim" style={{ marginBottom: 12 }}>
+          {keys.length === 0
+            ? 'Generate ready-to-paste MCP client configs for connecting to this server.'
+            : 'Generate ready-to-paste MCP client configs. The Docker/stdio config embeds the API key values entered above (save them first to persist).'}
+        </p>
+
+        {generated && (
+          <>
+            {generated.hasMissing && (
+              <p className="sd-config-status sd-config-status--error" style={{ marginBottom: 12 }}>
+                Some API keys are empty — those fields use a <code>&lt;your-key&gt;</code> placeholder. Enter and save the keys, then regenerate.
+              </p>
+            )}
+            {generated.blocks.map(block => (
+              <ConfigBlock key={block.id} block={block} onCopy={label => onLog?.(`Copied ${label} config`, 'success')} />
+            ))}
+          </>
+        )}
       </div>
     </div>
   );
