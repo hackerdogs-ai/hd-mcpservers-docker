@@ -106,7 +106,7 @@ export default function OnboardingWizard({ onComplete }) {
               />
               <button
                 type="button"
-                className="hd-btn hd-btn--primary whitespace-nowrap"
+                className="hd-btn hd-btn--secondary whitespace-nowrap"
                 disabled={busy}
                 onClick={handleGenerate}
               >

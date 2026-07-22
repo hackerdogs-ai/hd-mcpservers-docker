@@ -32,3 +32,4 @@ scripts/run_index_*.sh
 
 .dockerhub-pat
 /mcpfarm/auth-gateway/tests
+/keys
