@@ -277,9 +277,48 @@ async def health_check_loop() -> None:
 # Startup / shutdown
 # ---------------------------------------------------------------------------
 
+PORT_MAP_PATH = os.environ.get("PORT_MAP_PATH", "/app/port-map.json")
+
+
+async def _reconcile_categories_from_port_map() -> None:
+    """Sync `category` for static servers from port-map.json.
+
+    Idempotent: only updates rows whose stored category differs from the map,
+    and never touches env/status/health or dynamic (user-added) servers.
+    """
+    try:
+        with open(PORT_MAP_PATH) as f:
+            port_map = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError) as exc:
+        logger.warning("Category reconcile skipped — cannot read %s: %s", PORT_MAP_PATH, exc)
+        return
+
+    updated = 0
+    async with aiosqlite.connect(DB_PATH) as db:
+        for name, info in port_map.items():
+            category = info.get("category")
+            if not category:
+                continue
+            cur = await db.execute(
+                "UPDATE servers SET category=? WHERE name=? AND source='static' "
+                "AND category IS NOT ?",
+                (category, name, category),
+            )
+            updated += cur.rowcount if cur.rowcount and cur.rowcount > 0 else 0
+        await db.commit()
+    if updated:
+        logger.info("Reconciled categories for %d server(s) from port-map.json", updated)
+
+
 @app.on_event("startup")
 async def startup_event() -> None:
     await init_db()
+
+    # Reconcile categories from port-map.json. The initial seed uses
+    # INSERT OR IGNORE, so category edits in port-map.json never reach existing
+    # rows. Sync them here (static servers only) so a restart picks up
+    # recategorizations without wiping the DB.
+    await _reconcile_categories_from_port_map()
 
     # Ensure /data/ui-api-key exists so the UI can authenticate MCP requests
     if not os.path.exists("/data/ui-api-key"):

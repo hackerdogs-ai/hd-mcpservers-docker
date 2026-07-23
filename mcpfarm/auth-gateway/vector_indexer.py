@@ -23,6 +23,7 @@ logger = logging.getLogger(__name__)
 # Human-readable category labels (mirrors mcpfarm-ui/src/lib/categories.js).
 CATEGORY_LABELS = {
     "core": "Core",
+    "ai-security": "AI Security",
     "network-recon": "Network Recon",
     "web-app": "Web App",
     "appsec": "AppSec",
@@ -32,6 +33,15 @@ CATEGORY_LABELS = {
     "cloud-container": "Cloud",
     "exploitation": "Exploitation",
     "network-attacks": "Net Attacks",
+    "threat-intel": "Threat Intel",
+    "finance": "Finance",
+    "geospatial": "Geospatial",
+    "science": "Science & Health",
+    "web-search": "Web & Search",
+    "productivity": "Productivity",
+    "devtools": "Dev Tools",
+    "observability": "Observability",
+    "data-ai": "Data & AI",
     "misc": "Misc",
 }
 

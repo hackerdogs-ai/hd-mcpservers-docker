@@ -117,6 +117,22 @@ def main() -> None:
 
     conn.commit()
 
+    # Reconcile categories for existing rows. INSERT OR IGNORE above leaves
+    # existing servers untouched, so category edits in port-map.json would never
+    # apply on a re-seed. Sync them explicitly (static servers only).
+    recategorized = 0
+    for name, info in port_map.items():
+        category = info.get("category")
+        if not category:
+            continue
+        cur = conn.execute(
+            "UPDATE servers SET category=? WHERE name=? AND source='static' "
+            "AND category IS NOT ?",
+            (category, name, category),
+        )
+        recategorized += cur.rowcount if cur.rowcount and cur.rowcount > 0 else 0
+    conn.commit()
+
     # Check if seed-admin key already exists
     row = conn.execute(
         "SELECT id, key_prefix FROM api_keys WHERE name='seed-admin'"
@@ -147,6 +163,7 @@ def main() -> None:
     print("  HACKERDOGS MCP FARM — SEED COMPLETE")
     print("=" * 60)
     print(f"  Seeded {seeded_count} new servers from port-map.json")
+    print(f"  Recategorized {recategorized} existing server(s)")
     print(f"  Total servers in port-map: {len(port_map)}")
     if plaintext_key:
         print()

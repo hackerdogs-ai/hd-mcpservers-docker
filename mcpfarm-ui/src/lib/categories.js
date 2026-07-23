@@ -20,6 +20,7 @@ function resolveCatColors(dark, light) {
 
 const CATEGORY_DEFS = {
   'core':            { label: 'Core',            dark: '#6eceda', light: '#0e7490' },
+  'ai-security':     { label: 'AI Security',     dark: '#f0883e', light: '#c2410c' },
   'network-recon':   { label: 'Network Recon',   dark: '#58a6ff', light: '#1d4ed8' },
   'web-app':         { label: 'Web App',         dark: '#bc8cff', light: '#6d28d9' },
   'appsec':          { label: 'AppSec',          dark: '#9b8afb', light: '#4338ca' },
@@ -29,6 +30,15 @@ const CATEGORY_DEFS = {
   'cloud-container': { label: 'Cloud',           dark: '#79c0ff', light: '#0369a1' },
   'exploitation':    { label: 'Exploitation',    dark: '#e091d4', light: '#7e22ce' },
   'network-attacks': { label: 'Net Attacks',     dark: '#8892ff', light: '#3730a3' },
+  'threat-intel':    { label: 'Threat Intel',    dark: '#ff7b72', light: '#b91c1c' },
+  'finance':         { label: 'Finance',         dark: '#3fb950', light: '#15803d' },
+  'geospatial':      { label: 'Geospatial',      dark: '#2dd4bf', light: '#0d9488' },
+  'science':         { label: 'Science & Health', dark: '#e3b341', light: '#b45309' },
+  'web-search':      { label: 'Web & Search',    dark: '#22d3ee', light: '#0891b2' },
+  'productivity':    { label: 'Productivity',    dark: '#a3e635', light: '#4d7c0f' },
+  'devtools':        { label: 'Dev Tools',       dark: '#d4a373', light: '#92400e' },
+  'observability':   { label: 'Observability',   dark: '#38bdf8', light: '#0284c7' },
+  'data-ai':         { label: 'Data & AI',       dark: '#fb7185', light: '#be123c' },
   'misc':            { label: 'Misc',            dark: '#8b949e', light: '#4b5563' },
 };
 
@@ -45,12 +55,14 @@ const STATUS_PALETTE = {
     stopped:   { color: '#8b949e', dot: '#484f58' },
     running:   { color: '#3fb950', dot: '#3fb950' },
     unhealthy: { color: '#d29922', dot: '#d29922' },
+    unknown:   { color: '#58a6ff', dot: '#58a6ff' },
   },
   light: {
     disabled:  { color: '#b91c1c', dot: '#dc2626' },
     stopped:   { color: '#4b5563', dot: '#374151' },
     running:   { color: '#15803d', dot: '#16a34a' },
     unhealthy: { color: '#b45309', dot: '#d97706' },
+    unknown:   { color: '#1d4ed8', dot: '#2563eb' },
   },
 };
 
@@ -68,11 +80,17 @@ export function isServerRunning(server) {
 
 export function getStatusInfo(server) {
   const s = (server.status || '').toLowerCase();
-  if (s === 'disabled') return { label: 'Disabled', ...statusColors('disabled') };
-  if (s === 'stopped') return { label: 'Stopped', ...statusColors('stopped') };
-  if (server.health_ok) return { label: 'Running', ...statusColors('running') };
-  if (s === 'running') return { label: 'Unhealthy', ...statusColors('unhealthy') };
-  return { label: 'Stopped', ...statusColors('stopped') };
+  if (s === 'disabled') return { key: 'disabled', label: 'Disabled', ...statusColors('disabled') };
+  if (s === 'stopped') return { key: 'stopped', label: 'Stopped', ...statusColors('stopped') };
+  if (server.health_ok) return { key: 'running', label: 'Running', ...statusColors('running') };
+  if (s === 'running') {
+    // Container is up but not passing health checks. Distinguish a server that
+    // has simply never been probed yet (no last_health) — that's Unknown, not
+    // a genuine failure — from one whose probe actually ran and failed.
+    if (!server.last_health) return { key: 'unknown', label: 'Unknown', ...statusColors('unknown') };
+    return { key: 'unhealthy', label: 'Unhealthy', ...statusColors('unhealthy') };
+  }
+  return { key: 'stopped', label: 'Stopped', ...statusColors('stopped') };
 }
 
 const INTERNAL_ENV_KEYS = new Set(['MCP_TRANSPORT', 'MCP_PORT']);

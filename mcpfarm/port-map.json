@@ -2,7 +2,7 @@
   "a2a-scanner-mcp": {
     "port": 8341,
     "image": "hackerdogs/a2a-scanner-mcp:latest",
-    "category": "misc",
+    "category": "ai-security",
     "env": []
   },
   "abstract-mcp": {
@@ -24,7 +24,7 @@
   "abusech-mcp": {
     "port": 8373,
     "image": "hackerdogs/abusech-mcp:latest",
-    "category": "misc",
+    "category": "threat-intel",
     "env": [
       "ABUSECH_API_KEY"
     ]
@@ -32,7 +32,7 @@
   "abuseipdb-mcp": {
     "port": 8374,
     "image": "hackerdogs/abuseipdb-mcp:latest",
-    "category": "misc",
+    "category": "threat-intel",
     "env": [
       "ABUSEIPDB_API_KEY"
     ]
@@ -40,13 +40,13 @@
   "acuvity-mcp-server-atlas-docs-mcp": {
     "port": 8403,
     "image": "hackerdogs/acuvity-mcp-server-atlas-docs-mcp:latest",
-    "category": "misc",
+    "category": "devtools",
     "env": []
   },
   "acuvity-mcp-server-atlassian-mcp": {
     "port": 8404,
     "image": "hackerdogs/acuvity-mcp-server-atlassian-mcp:latest",
-    "category": "misc",
+    "category": "productivity",
     "env": []
   },
   "acuvity-mcp-server-azure-mcp": {
@@ -58,7 +58,7 @@
   "acuvity-mcp-server-bing-search-mcp": {
     "port": 8405,
     "image": "hackerdogs/acuvity-mcp-server-bing-search-mcp:latest",
-    "category": "misc",
+    "category": "web-search",
     "env": []
   },
   "acuvity-mcp-server-brave-search-mcp": {
@@ -70,19 +70,19 @@
   "acuvity-mcp-server-calculator-mcp": {
     "port": 8407,
     "image": "hackerdogs/acuvity-mcp-server-calculator-mcp:latest",
-    "category": "misc",
+    "category": "data-ai",
     "env": []
   },
   "acuvity-mcp-server-chroma-mcp": {
     "port": 8408,
     "image": "hackerdogs/acuvity-mcp-server-chroma-mcp:latest",
-    "category": "misc",
+    "category": "data-ai",
     "env": []
   },
   "acuvity-mcp-server-docker-mcp": {
     "port": 8412,
     "image": "hackerdogs/acuvity-mcp-server-docker-mcp:latest",
-    "category": "misc",
+    "category": "devtools",
     "env": []
   },
   "acuvity-mcp-server-duckduckgo-mcp": {
@@ -94,79 +94,79 @@
   "acuvity-mcp-server-elevenlabs-mcp": {
     "port": 8417,
     "image": "hackerdogs/acuvity-mcp-server-elevenlabs-mcp:latest",
-    "category": "misc",
+    "category": "data-ai",
     "env": []
   },
   "acuvity-mcp-server-everything-mcp": {
     "port": 8431,
     "image": "hackerdogs/acuvity-mcp-server-everything-mcp:latest",
-    "category": "misc",
+    "category": "data-ai",
     "env": []
   },
   "acuvity-mcp-server-everything-wrong-mcp": {
     "port": 8418,
     "image": "hackerdogs/acuvity-mcp-server-everything-wrong-mcp:latest",
-    "category": "misc",
+    "category": "appsec",
     "env": []
   },
   "acuvity-mcp-server-fetch-mcp": {
     "port": 8419,
     "image": "hackerdogs/acuvity-mcp-server-fetch-mcp:latest",
-    "category": "misc",
+    "category": "web-search",
     "env": []
   },
   "acuvity-mcp-server-firecrawl-mcp": {
     "port": 8421,
     "image": "hackerdogs/acuvity-mcp-server-firecrawl-mcp:latest",
-    "category": "misc",
+    "category": "web-search",
     "env": []
   },
   "acuvity-mcp-server-google-maps-mcp": {
     "port": 8424,
     "image": "hackerdogs/acuvity-mcp-server-google-maps-mcp:latest",
-    "category": "misc",
+    "category": "geospatial",
     "env": []
   },
   "acuvity-mcp-server-grafana-mcp": {
     "port": 8425,
     "image": "hackerdogs/acuvity-mcp-server-grafana-mcp:latest",
-    "category": "misc",
+    "category": "observability",
     "env": []
   },
   "acuvity-mcp-server-harness-mcp": {
     "port": 8426,
     "image": "hackerdogs/acuvity-mcp-server-harness-mcp:latest",
-    "category": "misc",
+    "category": "devtools",
     "env": []
   },
   "acuvity-mcp-server-hyperbrowser-mcp": {
     "port": 8427,
     "image": "hackerdogs/acuvity-mcp-server-hyperbrowser-mcp:latest",
-    "category": "misc",
+    "category": "web-search",
     "env": []
   },
   "acuvity-mcp-server-kagisearch-mcp": {
     "port": 8428,
     "image": "hackerdogs/acuvity-mcp-server-kagisearch-mcp:latest",
-    "category": "misc",
+    "category": "web-search",
     "env": []
   },
   "acuvity-mcp-server-microsoft-graph-mcp": {
     "port": 8433,
     "image": "hackerdogs/acuvity-mcp-server-microsoft-graph-mcp:latest",
-    "category": "misc",
+    "category": "productivity",
     "env": []
   },
   "acuvity-mcp-server-notion-mcp": {
     "port": 8437,
     "image": "hackerdogs/acuvity-mcp-server-notion-mcp:latest",
-    "category": "misc",
+    "category": "productivity",
     "env": []
   },
   "acuvity-mcp-server-oshp-mcp": {
     "port": 8441,
     "image": "hackerdogs/acuvity-mcp-server-oshp-mcp:latest",
-    "category": "misc",
+    "category": "web-app",
     "env": []
   },
   "acuvity-mcp-server-playwright-mcp": {
@@ -178,19 +178,19 @@
   "acuvity-mcp-server-scrapezy-mcp": {
     "port": 8450,
     "image": "hackerdogs/acuvity-mcp-server-scrapezy-mcp:latest",
-    "category": "misc",
+    "category": "web-search",
     "env": []
   },
   "acuvity-mcp-server-sentry-mcp": {
     "port": 8452,
     "image": "hackerdogs/acuvity-mcp-server-sentry-mcp:latest",
-    "category": "misc",
+    "category": "observability",
     "env": []
   },
   "acuvity-mcp-server-slack-mcp": {
     "port": 8455,
     "image": "hackerdogs/acuvity-mcp-server-slack-mcp:latest",
-    "category": "misc",
+    "category": "productivity",
     "env": []
   },
   "adblock-mcp": {
@@ -214,19 +214,19 @@
   "ai-humanizer-mcp": {
     "port": 8601,
     "image": "hackerdogs/ai-humanizer-mcp:latest",
-    "category": "misc",
+    "category": "data-ai",
     "env": []
   },
   "ai-infra-guard-mcp": {
     "port": 8294,
     "image": "hackerdogs/ai-infra-guard-mcp:latest",
-    "category": "cloud-container",
+    "category": "ai-security",
     "env": []
   },
   "aibom-mcp": {
     "port": 8343,
     "image": "hackerdogs/aibom-mcp:latest",
-    "category": "appsec",
+    "category": "ai-security",
     "env": []
   },
   "aircrack-ng-mcp": {
@@ -244,7 +244,7 @@
   "alphavantage-mcp": {
     "port": 8402,
     "image": "hackerdogs/alphavantage-mcp:latest",
-    "category": "misc",
+    "category": "finance",
     "env": []
   },
   "alterx-mcp": {
@@ -274,7 +274,7 @@
   "apple-itunes-mcp": {
     "port": 8511,
     "image": "hackerdogs/apple-itunes-mcp:latest",
-    "category": "misc",
+    "category": "web-search",
     "env": []
   },
   "aquatone-mcp": {
@@ -324,7 +324,7 @@
   "augustus-mcp": {
     "port": 8101,
     "image": "hackerdogs/augustus-mcp:latest",
-    "category": "core",
+    "category": "ai-security",
     "env": [
       "OPENAI_API_KEY",
       "ANTHROPIC_API_KEY",
@@ -646,7 +646,7 @@
   "bitbucket-mcp": {
     "port": 8516,
     "image": "hackerdogs/bitbucket-mcp:latest",
-    "category": "misc",
+    "category": "devtools",
     "env": []
   },
   "blackbird-mcp": {
@@ -692,7 +692,7 @@
   "brightdata-mcp-server-mcp": {
     "port": 8630,
     "image": "hackerdogs/brightdata-mcp-server-mcp:latest",
-    "category": "misc",
+    "category": "web-search",
     "env": [
       "BRIGHTDATA_API_KEY"
     ]
@@ -700,7 +700,7 @@
   "browserless-mcp": {
     "port": 8518,
     "image": "hackerdogs/browserless-mcp:latest",
-    "category": "misc",
+    "category": "web-search",
     "env": [
       "BROWSERLESS_URL",
       "BROWSERLESS_API_KEY"
@@ -741,7 +741,7 @@
   "cero-mcp": {
     "port": 8685,
     "image": "hackerdogs/cero-mcp:latest",
-    "category": "misc",
+    "category": "network-recon",
     "env": []
   },
   "certgraph-mcp": {
@@ -777,7 +777,7 @@
   "cisco-mcp-scanner-mcp": {
     "port": 8342,
     "image": "hackerdogs/cisco-mcp-scanner-mcp:latest",
-    "category": "misc",
+    "category": "ai-security",
     "env": []
   },
   "clair-mcp": {
@@ -789,7 +789,7 @@
   "clinicaltrialsgov-mcp-server-mcp": {
     "port": 8632,
     "image": "hackerdogs/clinicaltrialsgov-mcp-server-mcp:latest",
-    "category": "misc",
+    "category": "science",
     "env": []
   },
   "cloud-datacenter-mcp": {
@@ -889,7 +889,7 @@
   "crunch-mcp": {
     "port": 8324,
     "image": "hackerdogs/crunch-mcp:latest",
-    "category": "misc",
+    "category": "exploitation",
     "env": []
   },
   "crunchbase-mcp": {
@@ -901,7 +901,7 @@
   "ctgov-mcp-docker-mcp": {
     "port": 8401,
     "image": "hackerdogs/ctgov-mcp-docker-mcp:latest",
-    "category": "misc",
+    "category": "science",
     "env": []
   },
   "cutter-mcp": {
@@ -1017,19 +1017,19 @@
   "earthquake-mcp": {
     "port": 8457,
     "image": "hackerdogs/earthquake-mcp:latest",
-    "category": "misc",
+    "category": "geospatial",
     "env": []
   },
   "edgartools-mcp-server-mcp": {
     "port": 8415,
     "image": "hackerdogs/edgartools-mcp-server-mcp:latest",
-    "category": "misc",
+    "category": "finance",
     "env": []
   },
   "edu-data-mcp": {
     "port": 8416,
     "image": "hackerdogs/edu-data-mcp:latest",
-    "category": "misc",
+    "category": "science",
     "env": []
   },
   "enum4linux-mcp": {
@@ -1103,7 +1103,7 @@
   "fetch-mcp": {
     "port": 8639,
     "image": "hackerdogs/fetch-mcp:latest",
-    "category": "misc",
+    "category": "web-search",
     "env": []
   },
   "ffuf-mcp": {
@@ -1115,7 +1115,7 @@
   "fierce-mcp": {
     "port": 8202,
     "image": "hackerdogs/fierce-mcp:latest",
-    "category": "misc",
+    "category": "network-recon",
     "env": []
   },
   "file-operations-mcp": {
@@ -1127,7 +1127,7 @@
   "financial-datasets-mcp": {
     "port": 8420,
     "image": "hackerdogs/financial-datasets-mcp:latest",
-    "category": "misc",
+    "category": "finance",
     "env": []
   },
   "firecrawl-mcp": {
@@ -1141,7 +1141,7 @@
   "flights-mcp": {
     "port": 8422,
     "image": "hackerdogs/flights-mcp:latest",
-    "category": "misc",
+    "category": "geospatial",
     "env": []
   },
   "foremost-mcp": {
@@ -1159,13 +1159,13 @@
   "fred-mcp": {
     "port": 8423,
     "image": "hackerdogs/fred-mcp:latest",
-    "category": "misc",
+    "category": "finance",
     "env": []
   },
   "garak-mcp": {
     "port": 8352,
     "image": "hackerdogs/garak-mcp:latest",
-    "category": "appsec",
+    "category": "ai-security",
     "env": []
   },
   "gau-mcp": {
@@ -1183,7 +1183,7 @@
   "geocoding-mcp": {
     "port": 8641,
     "image": "hackerdogs/geocoding-mcp:latest",
-    "category": "misc",
+    "category": "geospatial",
     "env": []
   },
   "ggshield-mcp": {
@@ -1207,7 +1207,7 @@
   "gitlab-mcp": {
     "port": 8642,
     "image": "hackerdogs/gitlab-mcp:latest",
-    "category": "misc",
+    "category": "devtools",
     "env": [
       "GITLAB_TOKEN"
     ]
@@ -1341,7 +1341,7 @@
   "imf-data-mcp": {
     "port": 8647,
     "image": "hackerdogs/imf-data-mcp:latest",
-    "category": "misc",
+    "category": "finance",
     "env": []
   },
   "ipinfo-mcp": {
@@ -1374,7 +1374,7 @@
   "jira-mcp": {
     "port": 8649,
     "image": "hackerdogs/jira-mcp:latest",
-    "category": "misc",
+    "category": "productivity",
     "env": [
       "JIRA_URL",
       "JIRA_EMAIL",
@@ -1414,7 +1414,7 @@
   "knostic-mcp-scanner-mcp": {
     "port": 8344,
     "image": "hackerdogs/knostic-mcp-scanner-mcp:latest",
-    "category": "appsec",
+    "category": "ai-security",
     "env": []
   },
   "kube-bench-mcp": {
@@ -1456,7 +1456,7 @@
   "mapboxserver-mcp": {
     "port": 8429,
     "image": "hackerdogs/mapboxserver-mcp:latest",
-    "category": "misc",
+    "category": "geospatial",
     "env": []
   },
   "marinetraffic-mcp": {
@@ -1480,13 +1480,13 @@
   "mcpscan-mcp": {
     "port": 8296,
     "image": "hackerdogs/mcpscan-mcp:latest",
-    "category": "appsec",
+    "category": "ai-security",
     "env": []
   },
   "mcpserver-audit-mcp": {
     "port": 8340,
     "image": "hackerdogs/mcpserver-audit-mcp:latest",
-    "category": "appsec",
+    "category": "ai-security",
     "env": []
   },
   "medusa-mcp": {
@@ -1525,7 +1525,7 @@
   "ms-fabric-rti-mcp": {
     "port": 8650,
     "image": "hackerdogs/ms-fabric-rti-mcp:latest",
-    "category": "misc",
+    "category": "observability",
     "env": [
       "FABRIC_API_KEY"
     ]
@@ -1533,7 +1533,7 @@
   "n2yo-mcp": {
     "port": 8435,
     "image": "hackerdogs/n2yo-mcp:latest",
-    "category": "misc",
+    "category": "geospatial",
     "env": []
   },
   "naabu-mcp": {
@@ -1551,7 +1551,7 @@
   "nasa-mcp": {
     "port": 8651,
     "image": "hackerdogs/nasa-mcp:latest",
-    "category": "misc",
+    "category": "geospatial",
     "env": [
       "NASA_API_KEY"
     ]
@@ -1625,7 +1625,7 @@
   "notion-mcp": {
     "port": 8652,
     "image": "hackerdogs/notion-mcp:latest",
-    "category": "misc",
+    "category": "productivity",
     "env": [
       "NOTION_API_KEY"
     ]
@@ -1633,13 +1633,13 @@
   "nova-framework-mcp": {
     "port": 8299,
     "image": "hackerdogs/nova-framework-mcp:latest",
-    "category": "core",
+    "category": "ai-security",
     "env": []
   },
   "nova-proximity-mcp": {
     "port": 8298,
     "image": "hackerdogs/nova-proximity-mcp:latest",
-    "category": "core",
+    "category": "ai-security",
     "env": []
   },
   "nuclei-mcp": {
@@ -1657,13 +1657,13 @@
   "octagon-mcp-server-mcp": {
     "port": 8653,
     "image": "hackerdogs/octagon-mcp-server-mcp:latest",
-    "category": "misc",
+    "category": "finance",
     "env": []
   },
   "octocode-mcp": {
     "port": 8654,
     "image": "hackerdogs/octocode-mcp:latest",
-    "category": "misc",
+    "category": "devtools",
     "env": []
   },
   "one-gadget-mcp": {
@@ -1683,7 +1683,7 @@
   "open-legal-mcp": {
     "port": 8439,
     "image": "hackerdogs/open-legal-mcp:latest",
-    "category": "misc",
+    "category": "science",
     "env": []
   },
   "opencti-mcp": {
@@ -1698,13 +1698,13 @@
   "opencv-mcp-server-mcp": {
     "port": 8440,
     "image": "hackerdogs/opencv-mcp-server-mcp:latest",
-    "category": "misc",
+    "category": "data-ai",
     "env": []
   },
   "openfda-mcp": {
     "port": 8655,
     "image": "hackerdogs/openfda-mcp:latest",
-    "category": "misc",
+    "category": "science",
     "env": []
   },
   "openrisk-mcp": {
@@ -1724,7 +1724,7 @@
   "osm-mcp-server-mcp": {
     "port": 8656,
     "image": "hackerdogs/osm-mcp-server-mcp:latest",
-    "category": "misc",
+    "category": "geospatial",
     "env": []
   },
   "osv-mcp": {
@@ -1750,7 +1750,7 @@
   "pagespeed-mcp": {
     "port": 8378,
     "image": "hackerdogs/pagespeed-mcp:latest",
-    "category": "misc",
+    "category": "web-app",
     "env": [
       "PAGESPEED_API_KEY"
     ]
@@ -1798,7 +1798,7 @@
   "pinecone-mcp": {
     "port": 8657,
     "image": "hackerdogs/pinecone-mcp:latest",
-    "category": "misc",
+    "category": "data-ai",
     "env": [
       "PINECONE_API_KEY"
     ]
@@ -1812,7 +1812,7 @@
   "polygon-mcp": {
     "port": 8445,
     "image": "hackerdogs/polygon-mcp:latest",
-    "category": "misc",
+    "category": "finance",
     "env": []
   },
   "port-scanner-mcp": {
@@ -1824,7 +1824,7 @@
   "postman-mcp": {
     "port": 8658,
     "image": "hackerdogs/postman-mcp:latest",
-    "category": "misc",
+    "category": "devtools",
     "env": [
       "POSTMAN_API_KEY"
     ]
@@ -1844,7 +1844,7 @@
   "pubmed-mcp": {
     "port": 8446,
     "image": "hackerdogs/pubmed-mcp:latest",
-    "category": "misc",
+    "category": "science",
     "env": []
   },
   "puppeteer-mcp": {
@@ -1880,13 +1880,13 @@
   "ramparts-mcp": {
     "port": 8295,
     "image": "hackerdogs/ramparts-mcp:latest",
-    "category": "appsec",
+    "category": "ai-security",
     "env": []
   },
   "rapidapi-hub-reverse-image-search-by-copyseeker-mcp": {
     "port": 8660,
     "image": "hackerdogs/rapidapi-hub-reverse-image-search-by-copyseeker-mcp:latest",
-    "category": "misc",
+    "category": "web-search",
     "env": [
       "RAPIDAPI_KEY"
     ]
@@ -1960,7 +1960,7 @@
   "s3-mcp-server-mcp": {
     "port": 8662,
     "image": "hackerdogs/s3-mcp-server-mcp:latest",
-    "category": "misc",
+    "category": "data-ai",
     "env": [
       "AWS_ACCESS_KEY_ID",
       "AWS_SECRET_ACCESS_KEY"
@@ -1975,7 +1975,7 @@
   "scc-mcp": {
     "port": 8663,
     "image": "hackerdogs/scc-mcp:latest",
-    "category": "misc",
+    "category": "devtools",
     "env": []
   },
   "scoutsuite-mcp": {
@@ -1987,7 +1987,7 @@
   "scrapy-mcp": {
     "port": 8526,
     "image": "hackerdogs/scrapy-mcp:latest",
-    "category": "misc",
+    "category": "web-search",
     "env": []
   },
   "search1api-mcp": {
@@ -2001,7 +2001,7 @@
   "sec-edgar-mcp": {
     "port": 8451,
     "image": "hackerdogs/sec-edgar-mcp:latest",
-    "category": "misc",
+    "category": "finance",
     "env": []
   },
   "secops-mcp": {
@@ -2013,7 +2013,7 @@
   "securemcp-mcp": {
     "port": 8297,
     "image": "hackerdogs/securemcp-mcp:latest",
-    "category": "appsec",
+    "category": "ai-security",
     "env": []
   },
   "semgrep-mcp": {
@@ -2025,7 +2025,7 @@
   "sentry-mcp": {
     "port": 8665,
     "image": "hackerdogs/sentry-mcp:latest",
-    "category": "misc",
+    "category": "observability",
     "env": [
       "SENTRY_AUTH_TOKEN"
     ]
@@ -2059,7 +2059,7 @@
   "slack-mcp": {
     "port": 8454,
     "image": "hackerdogs/slack-mcp:latest",
-    "category": "misc",
+    "category": "productivity",
     "env": []
   },
   "slowhttptest-mcp": {
@@ -2077,7 +2077,7 @@
   "smtp-user-enum-mcp": {
     "port": 8325,
     "image": "hackerdogs/smtp-user-enum-mcp:latest",
-    "category": "misc",
+    "category": "network-recon",
     "env": []
   },
   "smuggler-mcp": {
@@ -2146,7 +2146,7 @@
   "stripe-mcp": {
     "port": 8669,
     "image": "hackerdogs/stripe-mcp:latest",
-    "category": "misc",
+    "category": "finance",
     "env": [
       "STRIPE_SECRET_KEY"
     ]
@@ -2160,7 +2160,7 @@
   "subjack-mcp": {
     "port": 8260,
     "image": "hackerdogs/subjack-mcp:latest",
-    "category": "misc",
+    "category": "web-app",
     "env": []
   },
   "sublist3r-mcp": {
@@ -2178,7 +2178,7 @@
   "syft-mcp": {
     "port": 8358,
     "image": "hackerdogs/syft-mcp:latest",
-    "category": "misc",
+    "category": "appsec",
     "env": []
   },
   "terraform-mcp": {
@@ -2238,7 +2238,7 @@
   "tomtom-mcp": {
     "port": 8671,
     "image": "hackerdogs/tomtom-mcp:latest",
-    "category": "misc",
+    "category": "geospatial",
     "env": [
       "TOMTOM_API_KEY"
     ]
@@ -2311,13 +2311,13 @@
   "vanta-mcp": {
     "port": 8348,
     "image": "hackerdogs/vanta-mcp:latest",
-    "category": "misc",
+    "category": "appsec",
     "env": []
   },
   "variflight-mcp": {
     "port": 8672,
     "image": "hackerdogs/variflight-mcp:latest",
-    "category": "misc",
+    "category": "geospatial",
     "env": [
       "VARIFLIGHT_API_KEY"
     ]
@@ -2325,7 +2325,7 @@
   "victorialogs-mcp": {
     "port": 8527,
     "image": "hackerdogs/victorialogs-mcp:latest",
-    "category": "misc",
+    "category": "observability",
     "env": [
       "VICTORIALOGS_URL"
     ]
@@ -2433,13 +2433,13 @@
   "winston-ai-mcp": {
     "port": 8674,
     "image": "hackerdogs/winston-ai-mcp:latest",
-    "category": "misc",
+    "category": "data-ai",
     "env": []
   },
   "wiremcp-mcp": {
     "port": 8458,
     "image": "hackerdogs/wiremcp-mcp:latest",
-    "category": "misc",
+    "category": "network-recon",
     "env": []
   },
   "wireshark-mcp": {
@@ -2451,7 +2451,7 @@
   "world-bank-mcp": {
     "port": 8459,
     "image": "hackerdogs/world-bank-mcp:latest",
-    "category": "misc",
+    "category": "finance",
     "env": []
   },
   "wpscan-mcp": {
@@ -2511,19 +2511,19 @@
   "yfmcp-mcp": {
     "port": 8460,
     "image": "hackerdogs/yfmcp-mcp:latest",
-    "category": "misc",
+    "category": "finance",
     "env": []
   },
   "youtube-mcp": {
     "port": 8462,
     "image": "hackerdogs/youtube-mcp:latest",
-    "category": "misc",
+    "category": "web-search",
     "env": []
   },
   "youtube-transcript-mcp": {
     "port": 8675,
     "image": "hackerdogs/youtube-transcript-mcp:latest",
-    "category": "misc",
+    "category": "web-search",
     "env": []
   },
   "zap-lis-mcp": {
@@ -2613,31 +2613,31 @@
   "acuvity-mcp-server-alterx-mcp": {
     "image": "hackerdogs/acuvity-mcp-server-alterx-mcp:latest",
     "port": 8708,
-    "category": "recon",
+    "category": "network-recon",
     "env": []
   },
   "acuvity-mcp-server-amass-mcp": {
     "image": "hackerdogs/acuvity-mcp-server-amass-mcp:latest",
     "port": 8709,
-    "category": "recon",
+    "category": "network-recon",
     "env": []
   },
   "acuvity-mcp-server-arjun-mcp": {
     "image": "hackerdogs/acuvity-mcp-server-arjun-mcp:latest",
     "port": 8710,
-    "category": "recon",
+    "category": "web-app",
     "env": []
   },
   "acuvity-mcp-server-assetfinder-mcp": {
     "image": "hackerdogs/acuvity-mcp-server-assetfinder-mcp:latest",
     "port": 8711,
-    "category": "recon",
+    "category": "network-recon",
     "env": []
   },
   "hackerdogs-mcp-server-mcp": {
     "image": "",
     "port": 8712,
-    "category": "misc",
+    "category": "core",
     "env": [],
     "url": "https://mcp.hackerdogs.ai/mcp"
   }

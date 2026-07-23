@@ -533,6 +533,21 @@ input[type="checkbox"] {
   white-space: nowrap;
 }
 
+.mkt-facet-help {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 4px;
+  color: var(--text-muted);
+  opacity: 0.5;
+  vertical-align: middle;
+  cursor: help;
+  transition: opacity 0.12s ease;
+}
+
+.mkt-facet-help:hover {
+  opacity: 0.9;
+}
+
 /* ── Main results area ─────────────────────────────────────────────────── */
 
 .mkt-main {

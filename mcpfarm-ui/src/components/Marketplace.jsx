@@ -346,10 +346,12 @@ function ServerCard({ server, onClick, onAction, actionLoading, selected, onTogg
 }
 
 const STATUS_FILTERS = [
-  { id: 'all', label: 'All' },
-  { id: 'running', label: 'Running' },
-  { id: 'stopped', label: 'Stopped' },
-  { id: 'disabled', label: 'Disabled' },
+  { id: 'all', label: 'All', tip: 'Every server, regardless of status.' },
+  { id: 'running', label: 'Running', tip: 'Container is up and passing its health check.' },
+  { id: 'unhealthy', label: 'Unhealthy', tip: 'Container is running but its last health probe failed (e.g. crashed process, 5xx, or timeout).' },
+  { id: 'unknown', label: 'Unknown', tip: 'Container is running but has not been health-probed yet, so its health is undetermined.' },
+  { id: 'stopped', label: 'Stopped', tip: 'Container is not running.' },
+  { id: 'disabled', label: 'Disabled', tip: 'Server is administratively disabled and will not start until re-enabled.' },
 ];
 
 export default function Marketplace({ servers, loading, onSelectServer, onRefresh }) {
@@ -376,13 +378,18 @@ export default function Marketplace({ servers, loading, onSelectServer, onRefres
     return counts;
   }, [servers]);
 
-  const runningCount = useMemo(() =>
-    (servers || []).filter(s => isServerRunning(s)).length
-  , [servers]);
+  // Count servers by the same status key that drives the column label, so the
+  // facet counts and the status column can never disagree.
+  const statusCounts = useMemo(() => {
+    const counts = { running: 0, unhealthy: 0, unknown: 0, stopped: 0, disabled: 0 };
+    (servers || []).forEach(s => {
+      const key = getStatusInfo(s).key;
+      if (counts[key] !== undefined) counts[key] += 1;
+    });
+    return counts;
+  }, [servers]);
 
-  const disabledCount = useMemo(() =>
-    (servers || []).filter(s => (s.status || '').toLowerCase() === 'disabled').length
-  , [servers]);
+  const runningCount = statusCounts.running;
 
   const requiresKeyCount = useMemo(() =>
     (servers || []).filter(s => serverRequiresKey(s)).length
@@ -396,12 +403,8 @@ export default function Marketplace({ servers, loading, onSelectServer, onRefres
         const matchSearch = !search || name.includes(search.toLowerCase());
         const cat = s.category || 'misc';
         const matchCat = selectedCats.size === 0 || selectedCats.has(cat);
-        const sStatus = (s.status || '').toLowerCase();
         const matchStatus =
-          statusFilter === 'all' ||
-          (statusFilter === 'running' && isServerRunning(s)) ||
-          (statusFilter === 'stopped' && !isServerRunning(s) && sStatus !== 'disabled') ||
-          (statusFilter === 'disabled' && sStatus === 'disabled');
+          statusFilter === 'all' || getStatusInfo(s).key === statusFilter;
         const matchKey = !requiresKeyFilter || serverRequiresKey(s);
         return matchSearch && matchCat && matchStatus && matchKey;
       })
@@ -615,12 +618,20 @@ export default function Marketplace({ servers, loading, onSelectServer, onRefres
                 checked={statusFilter === f.id}
                 onChange={() => setStatusFilter(statusFilter === f.id ? 'all' : f.id)}
               />
-              <span className="mkt-facet-label">{f.label}</span>
+              <span className="mkt-facet-label">
+                {f.label}
+                {f.tip && (
+                  <span
+                    className="mkt-facet-help"
+                    title={f.tip}
+                    onClick={e => { e.preventDefault(); e.stopPropagation(); }}
+                  >
+                    <Icon name="help" size={13} />
+                  </span>
+                )}
+              </span>
               <span className="mkt-facet-count">
-                {f.id === 'all' ? (servers || []).length :
-                 f.id === 'running' ? runningCount :
-                 f.id === 'disabled' ? disabledCount :
-                 (servers || []).length - runningCount - disabledCount}
+                {f.id === 'all' ? (servers || []).length : (statusCounts[f.id] || 0)}
               </span>
             </label>
           ))}
