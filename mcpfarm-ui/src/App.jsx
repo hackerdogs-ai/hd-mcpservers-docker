@@ -11,7 +11,8 @@ import { isServerRunning } from './lib/categories.js';
 import Marketplace from './components/Marketplace.jsx';
 import ServerDetail from './components/ServerDetail.jsx';
 import ServerList from './components/ServerList.jsx';
-import AgentChat from './components/AgentChat.jsx';
+// Nova tab (HeyGen avatar + agent) is disabled on main — feature is incomplete.
+// import AgentChat from './components/AgentChat.jsx';
 import ChatMode from './components/ChatMode.jsx';
 import Settings from './components/Settings.jsx';
 import ThemeToggle from './components/ThemeToggle.jsx';
@@ -21,7 +22,8 @@ import Icon from './components/Icon.jsx';
 const MODES = [
   { id: 'manual', label: 'Catalog' },
   { id: 'chat', label: 'Chat' },
-  { id: 'agent', label: 'Nova' },
+  // Nova tab disabled on main — feature is incomplete.
+  // { id: 'agent', label: 'Nova' },
 ];
 
 export default function App() {
@@ -243,9 +245,11 @@ export default function App() {
           {mode === 'chat' && (
             <ChatMode servers={servers} />
           )}
+          {/* Nova tab disabled on main — feature is incomplete.
           {mode === 'agent' && (
             <AgentChat servers={servers} />
           )}
+          */}
         </main>
       </div>
 
