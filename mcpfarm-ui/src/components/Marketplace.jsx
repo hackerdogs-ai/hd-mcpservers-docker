@@ -1,10 +1,193 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { ALL_CATEGORIES, getCategoryInfo, getStatusInfo, isServerRunning, generateServerIcon, getServerDescription, serverRequiresKey, getRequiredEnvKeys } from '../lib/categories.js';
 import { useTheme } from '../lib/theme.js';
-import { startServer, stopServer, enableServer, disableServer } from '../lib/api.js';
+import { startServer, stopServer, enableServer, disableServer, getMcpServerConfig, getBaseUrl, getApiKey, listCategories } from '../lib/api.js';
 import { mcpClient } from '../lib/mcp.js';
 import AddServerDialog from './AddServerDialog.jsx';
 import Icon from './Icon.jsx';
+
+/* ── MCP config generator dialog ──────────────────────────────────────── */
+
+const MCP_VARIANTS = [
+  { id: 'farm', label: 'Farm Gateway', note: 'Authenticated MCP Farm endpoints. Server-side secrets stay on the farm; the bearer is your farm API key.' },
+  { id: 'local', label: 'Local (Docker / stdio)', note: 'Runs each server locally over stdio. Configured API key values are embedded in the config.' },
+  { id: 'direct', label: 'Direct HTTP', note: 'Connects straight to each container port with no gateway auth.' },
+];
+
+const MCP_SCOPES = [
+  { id: 'all', label: 'All' },
+  { id: 'enabled', label: 'Enabled' },
+  { id: 'running', label: 'Running' },
+];
+
+function downloadJson(filename, obj) {
+  const blob = new Blob([JSON.stringify(obj, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+function McpConfigDialog({ onClose }) {
+  const [variant, setVariant] = useState('farm');
+  const [scope, setScope] = useState('all');
+  const [category, setCategory] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [config, setConfig] = useState(null);
+  const [meta, setMeta] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [copied, setCopied] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+
+  React.useEffect(() => {
+    let cancelled = false;
+    listCategories()
+      .then(d => { if (!cancelled) setCategories(d?.categories || []); })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const baseUrl = getBaseUrl();
+      const apiKey = getApiKey();
+      const data = await getMcpServerConfig({ variant, scope, category, baseUrl, apiKey });
+      const { _meta, ...rest } = data || {};
+      setConfig(rest);
+      setMeta(_meta || null);
+    } catch (err) {
+      setError(err.message || String(err));
+      setConfig(null);
+      setMeta(null);
+    } finally {
+      setLoading(false);
+    }
+  }, [variant, scope, category]);
+
+  React.useEffect(() => { load(); }, [load]);
+
+  const jsonText = config ? JSON.stringify(config, null, 2) : '';
+  const serverCount = meta?.count ?? (config?.mcpServers ? Object.keys(config.mcpServers).length : 0);
+  const activeNote = MCP_VARIANTS.find(v => v.id === variant)?.note;
+
+  function handleCopy() {
+    if (!jsonText) return;
+    navigator.clipboard.writeText(jsonText);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  }
+
+  function handleDownload() {
+    if (!config) return;
+    downloadJson('mcp.json', config);
+  }
+
+  return (
+    <div className="hd-modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
+      <div className={`hd-modal hd-modal--settings mcp-config-modal ${expanded ? 'mcp-config-modal--expanded' : ''}`}>
+        <div className="hd-modal__head">
+          <h2 className="hd-modal__title">Create MCP Server Configuration</h2>
+          <div className="mcp-config-head-actions">
+            <button
+              type="button"
+              className="hd-modal__icon-btn"
+              onClick={() => setExpanded(v => !v)}
+              title={expanded ? 'Restore size' : 'Expand'}
+              aria-label={expanded ? 'Restore size' : 'Expand'}
+            >
+              <Icon name={expanded ? 'close_fullscreen' : 'open_in_full'} size={16} />
+            </button>
+            <button type="button" onClick={onClose} className="hd-modal__close" aria-label="Close">×</button>
+          </div>
+        </div>
+
+        <div className="hd-modal__body mcp-config-modal-body">
+          <div className="mcp-config-controls">
+            <div className="mcp-config-control-group" role="group" aria-label="Config style">
+              {MCP_VARIANTS.map(v => (
+                <button
+                  key={v.id}
+                  type="button"
+                  className={`mcp-config-seg ${variant === v.id ? 'mcp-config-seg--active' : ''}`}
+                  onClick={() => setVariant(v.id)}
+                >
+                  {v.label}
+                </button>
+              ))}
+            </div>
+            <div className="mcp-config-control-group" role="group" aria-label="Scope">
+              {MCP_SCOPES.map(s => (
+                <button
+                  key={s.id}
+                  type="button"
+                  className={`mcp-config-seg ${scope === s.id ? 'mcp-config-seg--active' : ''}`}
+                  onClick={() => setScope(s.id)}
+                >
+                  {s.label}
+                </button>
+              ))}
+            </div>
+            <select
+              className="mkt-select mcp-config-cat-select"
+              value={category}
+              onChange={e => setCategory(e.target.value)}
+              aria-label="Category"
+            >
+              <option value="">All categories</option>
+              {categories.map(c => {
+                const id = c.category || 'uncategorized';
+                const label = getCategoryInfo(id).label || id;
+                return (
+                  <option key={id} value={id === 'uncategorized' ? '' : id}>
+                    {label} ({c.count})
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+
+          {activeNote && <p className="mcp-config-note">{activeNote}</p>}
+
+          <div className="mcp-config-body">
+            {loading ? (
+              <div className="mcp-config-status">
+                <span className="spinner" style={{ width: 18, height: 18 }} /> Generating configuration…
+              </div>
+            ) : error ? (
+              <div className="mcp-config-status mcp-config-status--error">
+                <Icon name="error" size={18} /> {error}
+              </div>
+            ) : serverCount === 0 ? (
+              <div className="mcp-config-status">No servers match these filters.</div>
+            ) : (
+              <pre className="mcp-config-pre">{jsonText}</pre>
+            )}
+          </div>
+        </div>
+
+        <div className="hd-modal__foot mcp-config-foot">
+          <span className="mcp-config-count">
+            {loading ? '…' : `${serverCount} server${serverCount === 1 ? '' : 's'}`}
+          </span>
+          <span style={{ flex: 1 }} />
+          <button className="hd-btn hd-btn--muted" onClick={handleCopy} disabled={loading || !!error || serverCount === 0}>
+            <Icon name={copied ? 'check' : 'content_copy'} size={16} /> {copied ? 'Copied' : 'Copy'}
+          </button>
+          <button className="hd-btn hd-btn--primary" onClick={handleDownload} disabled={loading || !!error || serverCount === 0}>
+            <Icon name="download" size={16} /> Download mcp.json
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 /* ── Confirmation dialog (hd-dialog pattern) ──────────────────────────── */
 
@@ -366,6 +549,7 @@ export default function Marketplace({ servers, loading, onSelectServer, onRefres
   const [confirm, setConfirm] = useState(null);
   const [actionLoading, setActionLoading] = useState(null);
   const [showAddServer, setShowAddServer] = useState(false);
+  const [showMcpConfig, setShowMcpConfig] = useState(false);
   const [selectedServers, setSelectedServers] = useState(new Set());
   const [refreshing, setRefreshing] = useState(false);
 
@@ -768,6 +952,14 @@ export default function Marketplace({ servers, loading, onSelectServer, onRefres
             >
               {refreshing ? <span className="spinner" style={{ width: 14, height: 14 }} /> : <Icon name="refresh" size={16} />} Refresh
             </button>
+            <button
+              type="button"
+              className="mkt-bulk-btn mkt-bulk-btn--mcp"
+              onClick={() => setShowMcpConfig(true)}
+              title="Create MCP server configuration"
+            >
+              <Icon name="data_object" size={15} /> mcp
+            </button>
           </div>
           <ViewToggle viewMode={viewMode} onChange={setViewMode} />
         </div>
@@ -879,6 +1071,11 @@ export default function Marketplace({ servers, loading, onSelectServer, onRefres
           onClose={() => setShowAddServer(false)}
           onRefresh={onRefresh}
         />
+      )}
+
+      {/* MCP configuration generator dialog */}
+      {showMcpConfig && (
+        <McpConfigDialog onClose={() => setShowMcpConfig(false)} />
       )}
     </div>
   );

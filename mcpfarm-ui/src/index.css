@@ -724,6 +724,158 @@ input[type="checkbox"] {
   background: var(--surface-hover);
 }
 
+.mkt-bulk-btn--mcp {
+  font-family: Consolas, "SF Mono", "Roboto Mono", Menlo, monospace;
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+  color: color-mix(in srgb, var(--hd-primary) 82%, var(--text));
+  border-color: color-mix(in srgb, var(--hd-primary) 36%, var(--border));
+  background: color-mix(in srgb, var(--hd-primary) 10%, var(--surface));
+}
+
+.mkt-bulk-btn--mcp:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--hd-primary) 18%, var(--surface));
+  border-color: color-mix(in srgb, var(--hd-primary) 55%, var(--border));
+}
+
+/* ── MCP config generator dialog ───────────────────────────────────────── */
+
+/* Same footprint as the Settings modal, with an expand/restore toggle. */
+.mcp-config-modal--expanded {
+  max-width: calc(100vw - 2rem);
+  width: calc(100vw - 2rem);
+  max-height: calc(100vh - 2rem);
+  height: calc(100vh - 2rem);
+}
+
+.mcp-config-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.mcp-config-head-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hd-modal__icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+
+.hd-modal__icon-btn:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+.mcp-config-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.mcp-config-cat-select {
+  min-width: 150px;
+}
+
+.mcp-config-control-group {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: var(--hd-btn-radius);
+  overflow: hidden;
+}
+
+.mcp-config-seg {
+  padding: 5px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 0;
+  border-right: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-dim);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+
+.mcp-config-seg:last-child {
+  border-right: 0;
+}
+
+.mcp-config-seg:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+.mcp-config-seg--active {
+  background: color-mix(in srgb, var(--hd-primary) 16%, var(--surface));
+  color: color-mix(in srgb, var(--hd-primary) 85%, var(--text));
+}
+
+.mcp-config-note {
+  margin: 12px 0 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.mcp-config-body {
+  margin: 12px 0 0;
+  flex: 1;
+  min-height: 160px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--input-bg, var(--surface));
+  overflow: auto;
+}
+
+.mcp-config-pre {
+  margin: 0;
+  padding: 14px 16px;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-code);
+  line-height: 1.55;
+  color: var(--text-secondary);
+  white-space: pre;
+}
+
+.mcp-config-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 24px 16px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.mcp-config-status--error {
+  color: #ef4444;
+}
+
+.mcp-config-foot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mcp-config-count {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
 /* ── View toggle (list / tile) ─────────────────────────────────────────── */
 
 .mkt-view-toggle {

@@ -977,6 +977,187 @@ async def list_categories():
 
 
 # ---------------------------------------------------------------------------
+# Admin: aggregate MCP client configuration (mcp.json generator)
+# ---------------------------------------------------------------------------
+
+# Env vars that are managed by the farm/runtime, not user-supplied secrets.
+MCP_RUNTIME_ENV_KEYS = {"MCP_TRANSPORT", "MCP_PORT"}
+
+PORT_MAP_PATH = os.environ.get("PORT_MAP_PATH", "/app/port-map.json")
+_PORT_MAP_CACHE: Optional[dict] = None
+
+
+def _load_port_map() -> dict:
+    """Load and cache port-map.json (catalog of every server's required env keys)."""
+    global _PORT_MAP_CACHE
+    if _PORT_MAP_CACHE is None:
+        try:
+            with open(PORT_MAP_PATH) as f:
+                _PORT_MAP_CACHE = json.load(f)
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("Could not load port-map at %s: %s", PORT_MAP_PATH, exc)
+            _PORT_MAP_CACHE = {}
+    return _PORT_MAP_CACHE
+
+
+def _server_env_map(row: dict) -> dict:
+    try:
+        return json.loads(row.get("env") or "{}")
+    except Exception:
+        return {}
+
+
+def _required_env_keys(name: str, env: dict) -> List[str]:
+    """All secret env keys a server needs, in a stable order.
+
+    Merges the catalog's declared keys (port-map.json) with any keys already
+    stored on the server row, so nothing a server needs is ever omitted — even
+    for dynamically added servers not present in the catalog.
+    """
+    keys: List[str] = []
+    info = _load_port_map().get(name) or {}
+    for k in list(info.get("env") or []):
+        if k not in MCP_RUNTIME_ENV_KEYS and k not in keys:
+            keys.append(k)
+    for k in env:
+        if k not in MCP_RUNTIME_ENV_KEYS and k not in keys:
+            keys.append(k)
+    return keys
+
+
+def _env_value_or_placeholder(env: dict, key: str) -> str:
+    """Return the configured value for a key, or an obvious placeholder if unset."""
+    val = env.get(key)
+    if val is not None and str(val).strip() != "":
+        return str(val)
+    return f"<your-{key.lower()}>"
+
+
+def _read_ui_api_key() -> str:
+    try:
+        with open("/data/ui-api-key") as f:
+            return f.read().strip()
+    except FileNotFoundError:
+        return ""
+
+
+def _resolve_base_url(request: Request, override: Optional[str]) -> str:
+    """Best-effort public base URL for the farm gateway."""
+    if override:
+        return override.rstrip("/")
+    fwd_proto = (request.headers.get("x-forwarded-proto") or "").split(",")[0].strip()
+    fwd_host = (request.headers.get("x-forwarded-host") or "").split(",")[0].strip()
+    host = fwd_host or request.headers.get("host") or ""
+    proto = fwd_proto or request.url.scheme or "http"
+    return f"{proto}://{host}".rstrip("/") if host else ""
+
+
+def _build_mcp_entry(row: dict, variant: str, base_url: str, api_key: str) -> dict:
+    """Build a single mcpServers entry for one server, matching the UI variants."""
+    name = row["name"]
+    env = _server_env_map(row)
+    secret_keys = _required_env_keys(name, env)
+
+    if variant == "local":
+        # Local stdio via Docker. Every required key is passed with its configured
+        # value (or a placeholder) so the server works the moment it's pasted in.
+        docker_args = ["run", "-i", "--rm", "-e", "MCP_TRANSPORT"]
+        env_block = {"MCP_TRANSPORT": "stdio"}
+        for k in secret_keys:
+            docker_args.extend(["-e", k])
+            env_block[k] = _env_value_or_placeholder(env, k)
+        docker_args.append(row.get("image") or f"hackerdogs/{name}:latest")
+        return {"command": "docker", "args": docker_args, "env": env_block}
+
+    if variant == "direct":
+        # Direct HTTP to the container port. The connection itself carries no
+        # gateway auth, but the server still needs its own API keys — include them
+        # (values or placeholders) so the config is complete and self-documenting.
+        entry: dict = {"url": f"http://localhost:{row.get('port') or 'PORT'}/mcp"}
+        if secret_keys:
+            entry["env"] = {k: _env_value_or_placeholder(env, k) for k in secret_keys}
+        return entry
+
+    # farm gateway (default) — secrets stay server-side, auth via farm API key.
+    return {
+        "url": f"{base_url}/{name}/mcp" if base_url else f"/{name}/mcp",
+        "headers": {"Authorization": f"Bearer {api_key or '<your-farm-api-key>'}"},
+    }
+
+
+@app.get("/admin/servers/mcp-config", dependencies=[Depends(require_admin)])
+async def get_mcp_config(
+    request: Request,
+    variant: str = Query(
+        default="farm",
+        description="Config style: 'farm' (gateway URL + bearer), 'local' (docker/stdio with env), or 'direct' (localhost port).",
+    ),
+    scope: str = Query(
+        default="all",
+        description="Which servers to include: 'all', 'enabled' (exclude disabled), or 'running' (healthy only).",
+    ),
+    category: Optional[str] = Query(
+        default=None, description="Only include servers in this category (omit for all categories)."
+    ),
+    base_url: Optional[str] = Query(
+        default=None, description="Override the farm gateway base URL (farm variant)."
+    ),
+    api_key: Optional[str] = Query(
+        default=None, description="Override the bearer token used in the farm variant."
+    ),
+):
+    """Generate a complete `mcp.json` for every MCP server in the farm.
+
+    Returns an object of the shape ``{"mcpServers": {...}, "_meta": {...}}`` where
+    ``mcpServers`` is a ready-to-use MCP client configuration (Cursor / Claude
+    Desktop format) covering all matching servers with their keys and metadata
+    filled in. Drop the ``mcpServers`` object straight into your client config,
+    or download the whole payload as ``mcp.json``.
+    """
+    allowed_variants = {"farm", "local", "direct"}
+    if variant not in allowed_variants:
+        raise HTTPException(status_code=400, detail=f"variant must be one of {sorted(allowed_variants)}")
+    allowed_scope = {"all", "enabled", "running"}
+    if scope not in allowed_scope:
+        raise HTTPException(status_code=400, detail=f"scope must be one of {sorted(allowed_scope)}")
+
+    resolved_base = _resolve_base_url(request, base_url)
+    resolved_key = api_key or (_read_ui_api_key() if variant == "farm" else "")
+
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute("SELECT * FROM servers ORDER BY name") as cursor:
+            rows = [dict(r) for r in await cursor.fetchall()]
+
+    wanted_category = (category or "").strip()
+
+    mcp_servers: dict = {}
+    for row in rows:
+        status = (row.get("status") or "").lower()
+        if scope == "enabled" and status == "disabled":
+            continue
+        # "running" means the server is actually healthy — the DB status column is
+        # set optimistically on start and can be stale, so health_ok is authoritative.
+        if scope == "running" and not row.get("health_ok"):
+            continue
+        if wanted_category and (row.get("category") or "") != wanted_category:
+            continue
+        mcp_servers[row["name"]] = _build_mcp_entry(row, variant, resolved_base, resolved_key)
+
+    return {
+        "mcpServers": mcp_servers,
+        "_meta": {
+            "variant": variant,
+            "scope": scope,
+            "category": wanted_category or None,
+            "base_url": resolved_base,
+            "count": len(mcp_servers),
+            "generated_at": datetime.utcnow().isoformat() + "Z",
+        },
+    }
+
+
+# ---------------------------------------------------------------------------
 # Admin: single-server endpoints (parameterized routes)
 # ---------------------------------------------------------------------------
 

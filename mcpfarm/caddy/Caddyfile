@@ -22,6 +22,19 @@
         reverse_proxy auth-gateway:9090
     }
 
+    # OpenAPI / Swagger UI for the auth-gateway API
+    handle /docs* {
+        reverse_proxy auth-gateway:9090
+    }
+
+    handle /redoc* {
+        reverse_proxy auth-gateway:9090
+    }
+
+    handle /openapi.json {
+        reverse_proxy auth-gateway:9090
+    }
+
     handle /services* {
         reverse_proxy auth-gateway:9090
     }

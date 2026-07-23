@@ -332,6 +332,26 @@ export async function importServers(mcpServers) {
   });
 }
 
+/**
+ * Generate a complete mcp.json covering every server in the farm.
+ * Returns `{ mcpServers, _meta }`.
+ * @param {object} [opts]
+ * @param {'farm'|'local'|'direct'} [opts.variant='farm']
+ * @param {'all'|'enabled'|'running'} [opts.scope='all']
+ * @param {string} [opts.baseUrl] override farm gateway base URL
+ * @param {string} [opts.apiKey] override bearer token (farm variant)
+ */
+export async function getMcpServerConfig({ variant = 'farm', scope = 'all', category, baseUrl, apiKey } = {}) {
+  const params = new URLSearchParams();
+  if (variant) params.set('variant', variant);
+  if (scope) params.set('scope', scope);
+  if (category) params.set('category', category);
+  if (baseUrl) params.set('base_url', baseUrl);
+  if (apiKey) params.set('api_key', apiKey);
+  const qs = params.toString();
+  return apiFetch(`/admin/servers/mcp-config${qs ? '?' + qs : ''}`, { headers: adminHeaders() });
+}
+
 // ─── Chat / vector search / encrypted LLM keys ────────────────────────────
 
 /** Server-side single-turn LLM completion (keys decrypted server-side). */

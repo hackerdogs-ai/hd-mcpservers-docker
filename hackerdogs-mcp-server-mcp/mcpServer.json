@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "hackerdogs-mcp-server": {
-      "url": "https://mcp.hackerdogs.ai/mcp",
+      "url": "https://preview.hackerdogs.ai/mcp/",
       "headers": {
         "Authorization": "Bearer hd-YOUR_API_KEY"
       }
