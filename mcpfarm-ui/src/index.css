@@ -995,6 +995,7 @@ input[type="checkbox"] {
 }
 
 .mkt-list-col-head {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -1012,6 +1013,49 @@ input[type="checkbox"] {
   cursor: pointer;
   text-align: left;
   transition: color 0.12s ease;
+}
+
+/* Drag handle sitting on the column's trailing edge (within the grid gap). */
+.mkt-col-resizer {
+  position: absolute;
+  top: 50%;
+  right: -8px;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 20px;
+  cursor: col-resize;
+  touch-action: none;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mkt-col-resizer::after {
+  content: "";
+  width: 2px;
+  height: 60%;
+  border-radius: 2px;
+  background: transparent;
+  transition: background 0.12s ease;
+}
+
+.mkt-col-resizer:hover::after,
+.mkt-list-head:hover .mkt-col-resizer::after {
+  background: var(--border);
+}
+
+.mkt-col-resizer:hover::after {
+  background: var(--hd-primary);
+}
+
+body.mkt-col-resizing {
+  cursor: col-resize;
+  user-select: none;
+}
+
+body.mkt-col-resizing * {
+  cursor: col-resize !important;
 }
 
 .mkt-list-col-head-label {

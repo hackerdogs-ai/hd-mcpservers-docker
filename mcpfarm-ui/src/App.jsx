@@ -8,6 +8,7 @@ import {
   verifyAdminSecret,
 } from './lib/api.js';
 import { isServerRunning } from './lib/categories.js';
+import { useTheme } from './lib/theme.js';
 import Marketplace from './components/Marketplace.jsx';
 import ServerDetail from './components/ServerDetail.jsx';
 import ServerList from './components/ServerList.jsx';
@@ -27,6 +28,7 @@ const MODES = [
 ];
 
 export default function App() {
+  const theme = useTheme();
   const [mode, setMode] = useState('manual');
   const [servers, setServers] = useState([]);
   const [serversLoading, setServersLoading] = useState(true);
@@ -162,7 +164,7 @@ export default function App() {
             aria-label="Back to catalog search"
           >
             <img
-              src="/images/logo.svg"
+              src={theme === 'light' ? '/favicon.svg' : '/images/logo.svg'}
               alt=""
               style={{ height: 28, width: 'auto' }}
             />

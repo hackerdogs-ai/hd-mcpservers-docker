@@ -293,13 +293,40 @@ const ACTION_META = {
 };
 
 const LIST_SORT_COLUMNS = [
-  { id: 'name', label: 'Name' },
-  { id: 'description', label: 'Description' },
-  { id: 'category', label: 'Category' },
-  { id: 'status', label: 'Status' },
-  { id: 'key', label: 'Key' },
-  { id: 'port', label: 'Port' },
+  { id: 'name', label: 'Name', min: 90 },
+  { id: 'description', label: 'Description', min: 120 },
+  { id: 'category', label: 'Category', min: 80 },
+  { id: 'status', label: 'Status', min: 64 },
+  { id: 'key', label: 'Key', min: 36 },
+  { id: 'port', label: 'Port', min: 44 },
 ];
+
+// Column grid tracks in render order. Sortable data columns (see LIST_SORT_COLUMNS)
+// can be resized; the icon/actions/select chrome columns stay fixed.
+const LIST_COLUMN_TRACKS = [
+  { id: 'icon', def: '32px' },
+  { id: 'name', def: 'minmax(120px, 1.1fr)' },
+  { id: 'description', def: 'minmax(160px, 2fr)' },
+  { id: 'category', def: '108px' },
+  { id: 'status', def: '78px' },
+  { id: 'key', def: '40px' },
+  { id: 'port', def: '50px' },
+  { id: 'actions', def: '76px' },
+  { id: 'select', def: '44px' },
+];
+
+const COL_WIDTHS_STORAGE_KEY = 'mkt.listColWidths';
+
+function loadStoredColWidths() {
+  try {
+    const raw = localStorage.getItem(COL_WIDTHS_STORAGE_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  } catch {
+    return {};
+  }
+}
 
 function KeyIcon({ size = 16, className }) {
   return <Icon name="key" size={size} className={className} />;
@@ -347,10 +374,12 @@ function defaultSortDir(column) {
 
 /* ── List column header ───────────────────────────────────────────────── */
 
-function ListSortHeader({ column, label, sortBy, sortDir, onSort }) {
+function ListSortHeader({ column, label, sortBy, sortDir, onSort, minWidth, onResizeStart, onResizeReset }) {
   const active = sortBy === column;
+  const ref = React.useRef(null);
   return (
     <button
+      ref={ref}
       type="button"
       className={`mkt-list-col-head mkt-list-col-head--${column} ${active ? 'mkt-list-col-head--active' : ''}`}
       onClick={() => onSort(column)}
@@ -360,11 +389,28 @@ function ListSortHeader({ column, label, sortBy, sortDir, onSort }) {
       <span className="mkt-sort-indicator" aria-hidden="true">
         <Icon name={active ? (sortDir === 'asc' ? 'arrow_upward' : 'arrow_downward') : 'unfold_more'} size={16} />
       </span>
+      <span
+        className="mkt-col-resizer"
+        role="separator"
+        aria-orientation="vertical"
+        title="Drag to resize · double-click to reset"
+        onPointerDown={e => {
+          e.preventDefault();
+          e.stopPropagation();
+          const width = ref.current?.getBoundingClientRect().width || 0;
+          onResizeStart(column, e, width, minWidth);
+        }}
+        onClick={e => e.stopPropagation()}
+        onDoubleClick={e => {
+          e.stopPropagation();
+          onResizeReset(column);
+        }}
+      />
     </button>
   );
 }
 
-function ListHeader({ sortBy, sortDir, onSort, allSelected, someSelected, onToggleSelectAll }) {
+function ListHeader({ sortBy, sortDir, onSort, allSelected, someSelected, onToggleSelectAll, onResizeStart, onResizeReset }) {
   const selectAllRef = React.useRef(null);
 
   React.useEffect(() => {
@@ -381,9 +427,12 @@ function ListHeader({ sortBy, sortDir, onSort, allSelected, someSelected, onTogg
           key={col.id}
           column={col.id}
           label={col.label}
+          minWidth={col.min}
           sortBy={sortBy}
           sortDir={sortDir}
           onSort={onSort}
+          onResizeStart={onResizeStart}
+          onResizeReset={onResizeReset}
         />
       ))}
       <span className="mkt-list-col mkt-list-col--actions">Actions</span>
@@ -552,6 +601,51 @@ export default function Marketplace({ servers, loading, onSelectServer, onRefres
   const [showMcpConfig, setShowMcpConfig] = useState(false);
   const [selectedServers, setSelectedServers] = useState(new Set());
   const [refreshing, setRefreshing] = useState(false);
+  const [colWidths, setColWidths] = useState(loadStoredColWidths);
+
+  // Persist custom column widths so the layout survives reloads.
+  React.useEffect(() => {
+    try {
+      localStorage.setItem(COL_WIDTHS_STORAGE_KEY, JSON.stringify(colWidths));
+    } catch { /* ignore quota / privacy-mode errors */ }
+  }, [colWidths]);
+
+  const listGridTemplate = useMemo(
+    () =>
+      LIST_COLUMN_TRACKS.map(track => {
+        const w = colWidths[track.id];
+        return typeof w === 'number' ? `${w}px` : track.def;
+      }).join(' '),
+    [colWidths],
+  );
+
+  const handleColResizeStart = useCallback((columnId, e, startWidth, minWidth) => {
+    const startX = e.clientX;
+    const floor = minWidth || 40;
+
+    function onMove(ev) {
+      const next = Math.max(floor, Math.round(startWidth + (ev.clientX - startX)));
+      setColWidths(prev => (prev[columnId] === next ? prev : { ...prev, [columnId]: next }));
+    }
+    function onUp() {
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onUp);
+      document.body.classList.remove('mkt-col-resizing');
+    }
+
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onUp);
+    document.body.classList.add('mkt-col-resizing');
+  }, []);
+
+  const handleColResizeReset = useCallback(columnId => {
+    setColWidths(prev => {
+      if (prev[columnId] == null) return prev;
+      const next = { ...prev };
+      delete next[columnId];
+      return next;
+    });
+  }, []);
 
   const categoryCounts = useMemo(() => {
     const counts = {};
@@ -998,7 +1092,7 @@ export default function Marketplace({ servers, loading, onSelectServer, onRefres
 
         {/* Results: list or tile grid */}
         {viewMode === 'list' ? (
-          <div className="mkt-list" role="table">
+          <div className="mkt-list" role="table" style={{ '--mkt-list-cols': listGridTemplate }}>
             <ListHeader
               sortBy={sortBy}
               sortDir={sortDir}
@@ -1006,6 +1100,8 @@ export default function Marketplace({ servers, loading, onSelectServer, onRefres
               allSelected={allFilteredSelected}
               someSelected={someFilteredSelected}
               onToggleSelectAll={toggleSelectAll}
+              onResizeStart={handleColResizeStart}
+              onResizeReset={handleColResizeReset}
             />
             {filtered.map(server => (
               <ServerListRow
